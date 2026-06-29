@@ -19,23 +19,34 @@ import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import roleRoutes from './routes/roleRoutes.js';
 import { requireAuth } from './middleware/authMiddleware.js';
+import { uploadsDir } from './middleware/uploadMiddleware.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-const spec = swaggerJsdoc({
-  definition: {
-    openapi: '3.0.0',
-    info: { title: 'Pawsitive Transformations API', version: '1.0' },
-    servers: [{ url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : `http://localhost:${PORT}` }],
-  },
-  apis: [path.join(__dirname, 'routes/*.js')],
-});
+let spec = {
+  openapi: '3.0.0',
+  info: { title: 'Pawsitive Transformations API', version: '1.0' },
+  paths: {},
+};
+
+try {
+  spec = swaggerJsdoc({
+    definition: {
+      openapi: '3.0.0',
+      info: { title: 'Pawsitive Transformations API', version: '1.0' },
+      servers: [{ url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : `http://localhost:${PORT}` }],
+    },
+    apis: [path.join(__dirname, 'routes/*.js')],
+  });
+} catch (error) {
+  console.warn('Swagger init skipped:', error.message);
+}
 
 app.use(cors());
 app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+app.use('/uploads', express.static(uploadsDir));
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
 app.use('/api/auth', authRoutes);
@@ -54,7 +65,11 @@ app.use('/api/content', requireAuth, contentRoutes);
 app.use('/api/events', requireAuth, eventRoutes);
 
 app.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok' });
+  res.json({
+    status: 'ok',
+    vercel: Boolean(process.env.VERCEL),
+    databaseConfigured: Boolean(process.env.DATABASE_URL),
+  });
 });
 
 app.use((err, _req, res, _next) => {
