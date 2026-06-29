@@ -1,7 +1,5 @@
 {
   "version": 2,
-  "installCommand": "npm install --prefix server && npm install --prefix client",
-  "buildCommand": "npm run db:generate --prefix server && npm run db:push --prefix server && npm run vercel-build --prefix client",
   "builds": [
     {
       "src": "server/src/index.js",
