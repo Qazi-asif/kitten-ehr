@@ -25,6 +25,7 @@ import {
   fetchKittenById,
   fetchMedicalRecords,
   fetchWeightLogs,
+  getFileUrl,
   uploadDocument,
   uploadPrimaryPhoto,
 } from '../services/api';
@@ -188,7 +189,7 @@ function KittenDetailPage() {
               <div className="mt-3 flex gap-2">
                 <KittenPhoto kitten={kitten} allowFallback className="h-14 w-14 rounded-lg border border-slate-200" />
                 {photoDocs.slice(0, 2).map((doc) => (
-                  <img key={doc.id} src={doc.fileUrl?.startsWith('http') ? doc.fileUrl : `http://localhost:5000${doc.fileUrl}`} alt="" className="h-14 w-14 rounded-lg border border-slate-200 object-cover" />
+                  <img key={doc.id} src={getFileUrl(doc.fileUrl)} alt="" className="h-14 w-14 rounded-lg border border-slate-200 object-cover" />
                 ))}
                 {documents.length > 3 && (
                   <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-slate-100 text-xs font-bold text-slate-500">

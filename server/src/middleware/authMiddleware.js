@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '../lib/prisma.js';
 import { verifyToken } from '../utils/authUtils.js';
-
-const prisma = new PrismaClient();
 
 async function loadUserWithPermissions(userId) {
   const user = await prisma.user.findUnique({

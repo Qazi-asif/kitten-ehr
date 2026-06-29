@@ -1,6 +1,7 @@
 {
   "version": 2,
-  "installCommand": "npm install --prefix server && npm run db:generate --prefix server && npm install --prefix client",
+  "installCommand": "npm install --prefix server && npm install --prefix client",
+  "buildCommand": "npm run db:generate --prefix server && npm run db:push --prefix server && npm run vercel-build --prefix client",
   "builds": [
     {
       "src": "server/src/index.js",
@@ -12,9 +13,20 @@
       "config": { "distDir": "dist" }
     }
   ],
+  "functions": {
+    "server/src/index.js": {
+      "memory": 1024,
+      "maxDuration": 30,
+      "includeFiles": "server/prisma/**"
+    }
+  },
   "routes": [
     {
       "src": "/api/(.*)",
+      "dest": "server/src/index.js"
+    },
+    {
+      "src": "/api-docs(.*)",
       "dest": "server/src/index.js"
     },
     {

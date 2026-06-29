@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '../lib/prisma.js';
 import { hashPassword, sanitizeUser } from '../utils/authUtils.js';
-
-const prisma = new PrismaClient();
 
 export async function listUsers(req, res) {
   const users = await prisma.user.findMany({

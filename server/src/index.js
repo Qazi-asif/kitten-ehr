@@ -28,9 +28,9 @@ const spec = swaggerJsdoc({
   definition: {
     openapi: '3.0.0',
     info: { title: 'Pawsitive Transformations API', version: '1.0' },
-    servers: [{ url: 'http://localhost:5000' }],
+    servers: [{ url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : `http://localhost:${PORT}` }],
   },
-  apis: ['./src/routes/*.js'],
+  apis: [path.join(__dirname, 'routes/*.js')],
 });
 
 app.use(cors());

@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '../lib/prisma.js';
 import { comparePassword, hashPassword, sanitizeUser, signToken } from '../utils/authUtils.js';
-
-const prisma = new PrismaClient();
 
 function userPermissions(user) {
   return user.role.permissions.map((rp) => rp.permission.key);

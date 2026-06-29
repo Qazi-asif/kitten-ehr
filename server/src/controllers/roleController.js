@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '../lib/prisma.js';
 import { PERMISSIONS } from '../constants/permissions.js';
-
-const prisma = new PrismaClient();
 
 export async function listPermissions(req, res) {
   return res.json(PERMISSIONS);
