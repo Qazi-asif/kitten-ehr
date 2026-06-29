@@ -64,12 +64,6 @@ function PublicLayout() {
             >
               Staff Login
             </Link>
-            <Link
-              to="/login"
-              className="hidden rounded-md bg-slate-800 px-3 py-2 text-xs font-semibold text-white hover:bg-slate-900 md:inline-block"
-            >
-              Foster Portal
-            </Link>
           </div>
         </div>
 
@@ -101,13 +95,6 @@ function PublicLayout() {
                 className="rounded-md border border-slate-200 px-3 py-2.5 text-center text-sm font-semibold text-slate-700"
               >
                 Staff Login
-              </Link>
-              <Link
-                to="/login"
-                onClick={() => setMobileOpen(false)}
-                className="rounded-md bg-slate-800 px-3 py-2.5 text-center text-sm font-semibold text-white"
-              >
-                Foster Portal
               </Link>
             </div>
           </nav>

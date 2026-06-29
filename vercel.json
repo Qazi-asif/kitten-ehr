@@ -1,8 +1,9 @@
 {
   "version": 2,
+  "installCommand": "npm install --prefix server && npm run db:generate --prefix server && npm install --prefix client",
   "builds": [
     {
-      "src": "server/index.js",
+      "src": "server/src/index.js",
       "use": "@vercel/node"
     },
     {
@@ -14,12 +15,18 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "server/index.js"
+      "dest": "server/src/index.js"
+    },
+    {
+      "src": "/uploads/(.*)",
+      "dest": "server/src/index.js"
+    },
+    {
+      "handle": "filesystem"
     },
     {
       "src": "/(.*)",
-      "dest": "client/$1",
-      "continue": true
+      "dest": "/index.html"
     }
   ]
 }

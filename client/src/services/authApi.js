@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = import.meta.env.PROD ? '/api' : 'http://localhost:5000/api';
 const TOKEN_KEY = 'pt_auth_token';
 const USER_KEY = 'pt_auth_user';
 
