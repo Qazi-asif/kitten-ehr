@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "installCommand": "npm install --prefix server && npm run vercel:prepare --prefix server && npm install --prefix client",
   "builds": [
     {
       "src": "server/src/index.js",
@@ -15,7 +16,7 @@
     "server/src/index.js": {
       "memory": 1024,
       "maxDuration": 30,
-      "includeFiles": "server/prisma/**"
+      "includeFiles": "server/src/generated/**"
     }
   },
   "routes": [

@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "node --watch src/index.js",
     "start": "node src/index.js",
-    "postinstall": "prisma generate && node scripts/vercel-postinstall.cjs",
+    "postinstall": "prisma generate",
+    "vercel:prepare": "node scripts/vercel-postinstall.cjs",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:seed": "node prisma/seed.js",
