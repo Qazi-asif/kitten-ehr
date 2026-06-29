@@ -1,0 +1,100 @@
+import { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { fetchPublicKittenById } from '../../services/publicApi';
+import KittenPhoto from '../../components/KittenPhoto';
+import { formatKittenAge } from '../../utils/kittenImages';
+
+const SPONSOR_TIERS = [
+  { label: 'One Meal', amount: '$5' },
+  { label: 'Week of Food', amount: '$25' },
+  { label: 'Spay Surgery', amount: '$125' },
+  { label: 'Full Care', amount: '$200' },
+];
+
+function PublicKittenProfile() {
+  const { id } = useParams();
+  const [kitten, setKitten] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchPublicKittenById(id)
+      .then(setKitten)
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
+  }, [id]);
+
+  if (loading) return <div className="flex min-h-[50vh] items-center justify-center text-slate-500">Loading...</div>;
+  if (error) return <div className="px-6 py-12 text-red-600">{error}</div>;
+
+  const age = formatKittenAge(kitten.dateOfBirth);
+  const meta = [age?.replace(' old', ''), kitten.sex, kitten.breed].filter(Boolean).join(' · ');
+
+  return (
+    <div className="bg-white">
+      {/* Hero photo */}
+      <div className="relative aspect-[4/3] max-h-[420px] w-full overflow-hidden bg-slate-100 sm:aspect-[21/9]">
+        <KittenPhoto kitten={kitten} allowFallback className="h-full w-full" />
+      </div>
+
+      <div className="mx-auto max-w-3xl px-6 py-8 lg:px-8">
+        <Link to="/kittens" className="text-sm font-medium text-brand hover:underline">← Back to Adopt</Link>
+
+        <h1 className="mt-4 text-3xl font-bold text-slate-900">{kitten.name}</h1>
+        <p className="mt-1 text-brand">{meta}</p>
+        <p className="mt-1 text-sm text-slate-500">Available for Adoption</p>
+
+        <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <Link to={`/adopt?kitten=${kitten.name}`} className="rounded-md bg-brand py-3.5 text-center text-sm font-bold uppercase tracking-wide text-white hover:bg-brand-dark">
+            Adopt Me
+          </Link>
+          <a href="https://buy.stripe.com/test_placeholder" target="_blank" rel="noreferrer" className="rounded-md border-2 border-brand py-3.5 text-center text-sm font-bold uppercase tracking-wide text-brand hover:bg-brand-light">
+            Sponsor Me
+          </a>
+          <Link to="/donate" className="rounded-md border border-slate-300 py-3.5 text-center text-sm font-bold uppercase tracking-wide text-slate-700 hover:bg-slate-50">
+            Wishlist
+          </Link>
+        </div>
+
+        {kitten.rescueStory && (
+          <section className="mt-10">
+            <h2 className="text-lg font-bold text-slate-900">About Me</h2>
+            <p className="mt-3 leading-relaxed text-slate-600">{kitten.rescueStory}</p>
+          </section>
+        )}
+
+        <section className="mt-10 rounded-xl border border-slate-100 bg-brand-muted p-6">
+          <div className="flex items-center justify-between">
+            <h2 className="font-bold text-slate-900">Care Goal</h2>
+            <span className="text-sm font-semibold text-brand">$425 of $500</span>
+          </div>
+          <div className="mt-3 h-3 overflow-hidden rounded-full bg-white">
+            <div className="h-full w-[85%] rounded-full bg-brand" />
+          </div>
+        </section>
+
+        <section className="mt-10">
+          <h2 className="text-lg font-bold text-slate-900">Sponsorship Tiers</h2>
+          <div className="mt-4 grid grid-cols-2 gap-3">
+            {SPONSOR_TIERS.map((tier) => (
+              <div key={tier.label} className="rounded-lg border border-brand/20 bg-brand-light p-4 text-center">
+                <p className="text-xs font-semibold text-brand">{tier.label}</p>
+                <p className="mt-1 text-xl font-bold text-slate-900">{tier.amount}</p>
+              </div>
+            ))}
+          </div>
+          <a
+            href="https://buy.stripe.com/test_placeholder"
+            target="_blank"
+            rel="noreferrer"
+            className="mt-6 block w-full rounded-md bg-brand py-3.5 text-center text-sm font-bold uppercase tracking-wide text-white hover:bg-brand-dark"
+          >
+            Donate Now
+          </a>
+        </section>
+      </div>
+    </div>
+  );
+}
+
+export default PublicKittenProfile;

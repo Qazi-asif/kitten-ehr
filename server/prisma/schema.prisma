@@ -1,0 +1,216 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Litter {
+  id         Int      @id @default(autoincrement())
+  name       String
+  intakeDate DateTime
+  notes      String   @default("")
+  kittens    Kitten[]
+}
+
+model Foster {
+  id               Int         @id @default(autoincrement())
+  name             String
+  phone            String
+  email            String
+  address          String
+  emergencyContact String      @default("")
+  experienceLevel  String      @default("")
+  capabilityFlags  String      @default("")
+  notes            String      @default("")
+  createdAt        DateTime    @default(now())
+  currentKittens   Kitten[]    @relation("CurrentFoster")
+  placements       Placement[]
+}
+
+model Kitten {
+  id              Int              @id @default(autoincrement())
+  name            String
+  litterId        Int?
+  litter          Litter?          @relation(fields: [litterId], references: [id], onDelete: SetNull)
+  status          String           @default("In Foster Care")
+  rescueStory     String           @default("")
+  dateOfBirth     DateTime?
+  sex             String           @default("")
+  fixedStatus     String           @default("")
+  breed           String
+  color           String           @default("")
+  fivFelvStatus   String?
+  specialNeeds    String?
+  microchipNumber String           @default("")
+  primaryPhotoUrl String?
+  intakeDate      DateTime?
+  intakeSource    String           @default("")
+  currentFosterId Int?
+  currentFoster   Foster?          @relation("CurrentFoster", fields: [currentFosterId], references: [id], onDelete: SetNull)
+  createdAt       DateTime         @default(now())
+  placements      Placement[]
+  weightLogs      WeightLog[]
+  vaccines        Vaccine[]
+  medications     Medication[]
+  vetAppointments VetAppointment[]
+  documents       Document[]
+  sponsorships    Sponsorship[]
+}
+
+model Sponsorship {
+  id          Int      @id @default(autoincrement())
+  kittenId    Int
+  kitten      Kitten   @relation(fields: [kittenId], references: [id], onDelete: Cascade)
+  sponsorName String
+  amount      Float
+  tier        String
+  createdAt   DateTime @default(now())
+}
+
+model Placement {
+  id            Int       @id @default(autoincrement())
+  kittenId      Int
+  kitten        Kitten    @relation(fields: [kittenId], references: [id], onDelete: Cascade)
+  fosterId      Int
+  foster        Foster    @relation(fields: [fosterId], references: [id], onDelete: Restrict)
+  intakeDate    DateTime
+  dischargeDate DateTime?
+  dischargeType String?
+  notes         String    @default("")
+}
+
+model WeightLog {
+  id          Int      @id @default(autoincrement())
+  kittenId    Int
+  kitten      Kitten   @relation(fields: [kittenId], references: [id], onDelete: Cascade)
+  date        DateTime
+  weightOz    Float    @default(0)
+  weightGrams Float    @default(0)
+  loggedBy    String   @default("")
+  notes       String   @default("")
+}
+
+model Vaccine {
+  id             Int      @id @default(autoincrement())
+  kittenId       Int
+  kitten         Kitten   @relation(fields: [kittenId], references: [id], onDelete: Cascade)
+  type           String
+  dateGiven      DateTime
+  nextDueDate    DateTime?
+  lotNumber      String   @default("")
+  manufacturer   String   @default("")
+  administeredBy String   @default("")
+  notes          String   @default("")
+}
+
+model Medication {
+  id        Int       @id @default(autoincrement())
+  kittenId  Int
+  kitten    Kitten    @relation(fields: [kittenId], references: [id], onDelete: Cascade)
+  name      String
+  dose      String    @default("")
+  frequency String    @default("")
+  route     String    @default("")
+  condition String    @default("")
+  startDate DateTime
+  endDate   DateTime?
+  status    String    @default("Active")
+  notes     String    @default("")
+}
+
+model VetAppointment {
+  id           Int       @id @default(autoincrement())
+  kittenId     Int
+  kitten       Kitten    @relation(fields: [kittenId], references: [id], onDelete: Cascade)
+  date         DateTime
+  clinic       String    @default("")
+  vetName      String    @default("")
+  reason       String    @default("")
+  apptType     String    @default("")
+  diagnosis    String    @default("")
+  treatment    String    @default("")
+  followUpDate DateTime?
+  notes        String    @default("")
+}
+
+model Document {
+  id          Int      @id @default(autoincrement())
+  kittenId    Int
+  kitten      Kitten   @relation(fields: [kittenId], references: [id], onDelete: Cascade)
+  fileName    String
+  fileUrl     String
+  docType     String   @default("")
+  description String   @default("")
+  uploadedAt  DateTime @default(now())
+}
+
+model Application {
+  id        Int      @id @default(autoincrement())
+  type      String
+  status    String   @default("New")
+  formData  String   @default("{}")
+  createdAt DateTime @default(now())
+}
+
+model Content {
+  id        Int      @id @default(autoincrement())
+  title     String
+  slug      String   @unique
+  body      String   @default("")
+  category  String   @default("")
+  createdAt DateTime @default(now())
+}
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  title       String
+  date        DateTime
+  location    String   @default("")
+  description String   @default("")
+  isPublic    Boolean  @default(false)
+}
+
+model Role {
+  id          Int              @id @default(autoincrement())
+  name        String           @unique
+  description String           @default("")
+  isSystem    Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+  users       User[]
+  permissions RolePermission[]
+}
+
+model Permission {
+  id       Int              @id @default(autoincrement())
+  key      String           @unique
+  label    String
+  module   String           @default("")
+  roles    RolePermission[]
+}
+
+model RolePermission {
+  roleId       Int
+  permissionId Int
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  email        String    @unique
+  passwordHash String
+  firstName    String
+  lastName     String
+  isActive     Boolean   @default(true)
+  roleId       Int
+  role         Role      @relation(fields: [roleId], references: [id], onDelete: Restrict)
+  fosterId     Int?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  lastLoginAt  DateTime?
+}
