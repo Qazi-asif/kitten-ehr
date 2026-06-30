@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import PublicPageHeader from '../../components/PublicPageHeader';
 import { fetchPublicSettings, submitDonation } from '../../services/publicApi';
 
 const DONATION_TIERS = [
@@ -74,6 +73,19 @@ const DONATION_TIERS = [
     ),
   },
 ];
+
+const BASE_AMOUNTS = DONATION_TIERS.map((tier) => tier.amount);
+
+const AMOUNT_LABELS = Object.fromEntries(
+  DONATION_TIERS.map(({ amount, label }) => [
+    amount,
+    { label, desc: 'Support our rescue mission' },
+  ]),
+);
+
+const TIER_ICONS = Object.fromEntries(
+  DONATION_TIERS.map(({ amount, icon }) => [amount, icon]),
+);
 
 const OTHER_WAYS = [
   {
@@ -166,6 +178,7 @@ function DonatePage() {
       amount,
       label: AMOUNT_LABELS[amount]?.label || 'Suggested Gift',
       desc: AMOUNT_LABELS[amount]?.desc || 'Support our rescue mission',
+      icon: TIER_ICONS[amount],
       featured: amount === defaultAmount,
     }));
   }, [settings.defaultDonationAmount]);
@@ -285,7 +298,7 @@ function DonatePage() {
           <form onSubmit={handleDonate} className="space-y-4">
             <h2 className="text-xl font-bold text-slate-900">Choose Your Impact</h2>
             <div className="grid grid-cols-2 gap-3">
-              {amounts.map(({ amount, label, desc, featured }) => (
+              {amounts.map(({ amount, label, icon }) => (
                 <button
                   key={amount}
                   type="button"
