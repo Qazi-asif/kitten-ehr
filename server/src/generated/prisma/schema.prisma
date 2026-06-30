@@ -26,6 +26,8 @@ model Foster {
   emergencyContact String      @default("")
   experienceLevel  String      @default("")
   capabilityFlags  String      @default("")
+  maxKittens       Int         @default(0)
+  photoUrl         String?
   notes            String      @default("")
   createdAt        DateTime    @default(now())
   currentKittens   Kitten[]    @relation("CurrentFoster")
@@ -33,44 +35,51 @@ model Foster {
 }
 
 model Kitten {
-  id              Int              @id @default(autoincrement())
-  name            String
-  litterId        Int?
-  litter          Litter?          @relation(fields: [litterId], references: [id], onDelete: SetNull)
-  status          String           @default("In Foster Care")
-  rescueStory     String           @default("")
-  dateOfBirth     DateTime?
-  sex             String           @default("")
-  fixedStatus     String           @default("")
-  breed           String
-  color           String           @default("")
-  fivFelvStatus   String?
-  specialNeeds    String?
-  microchipNumber String           @default("")
-  primaryPhotoUrl String?
-  intakeDate      DateTime?
-  intakeSource    String           @default("")
-  currentFosterId Int?
-  currentFoster   Foster?          @relation("CurrentFoster", fields: [currentFosterId], references: [id], onDelete: SetNull)
-  createdAt       DateTime         @default(now())
-  placements      Placement[]
-  weightLogs      WeightLog[]
-  vaccines        Vaccine[]
-  medications     Medication[]
-  vetAppointments VetAppointment[]
-  documents       Document[]
-  sponsorships    Sponsorship[]
-  updates         Update[]
-  transactions    Transaction[]
+  id                     Int              @id @default(autoincrement())
+  name                   String
+  litterId               Int?
+  litter                 Litter?          @relation(fields: [litterId], references: [id], onDelete: SetNull)
+  status                 String           @default("In Foster Care")
+  rescueStory            String           @default("")
+  dateOfBirth            DateTime?
+  sex                    String           @default("")
+  fixedStatus            String           @default("")
+  breed                  String
+  color                  String           @default("")
+  fivFelvStatus          String?
+  specialNeeds           String?
+  microchipNumber        String           @default("")
+  primaryPhotoUrl        String?
+  intakeDate             DateTime?
+  intakeSource           String           @default("")
+  notes                  String           @default("")
+  internalNotes          String           @default("")
+  isListedOnWebsite      Boolean          @default(false)
+  websiteFeaturedComment String           @default("")
+  publishTargets         String[]         @default([])
+  currentFosterId        Int?
+  currentFoster          Foster?          @relation("CurrentFoster", fields: [currentFosterId], references: [id], onDelete: SetNull)
+  createdAt              DateTime         @default(now())
+  placements             Placement[]
+  weightLogs             WeightLog[]
+  vaccines               Vaccine[]
+  medications            Medication[]
+  vetAppointments        VetAppointment[]
+  documents              Document[]
+  sponsorships           Sponsorship[]
+  updates                Update[]
+  transactions           Transaction[]
 }
 
 model Update {
-  id        Int      @id @default(autoincrement())
-  kittenId  Int
-  kitten    Kitten   @relation(fields: [kittenId], references: [id], onDelete: Cascade)
-  content   String
-  isPublic  Boolean  @default(false)
-  createdAt DateTime @default(now())
+  id             Int      @id @default(autoincrement())
+  kittenId       Int
+  kitten         Kitten   @relation(fields: [kittenId], references: [id], onDelete: Cascade)
+  content        String
+  isPublic       Boolean  @default(false)
+  platformList   String   @default("")
+  publishTargets String[] @default([])
+  createdAt      DateTime @default(now())
 }
 
 model Sponsorship {
@@ -150,40 +159,45 @@ model VetAppointment {
 }
 
 model Document {
-  id          Int      @id @default(autoincrement())
-  kittenId    Int
-  kitten      Kitten   @relation(fields: [kittenId], references: [id], onDelete: Cascade)
-  fileName    String
-  fileUrl     String
-  docType     String   @default("")
-  description String   @default("")
-  uploadedAt  DateTime @default(now())
+  id             Int      @id @default(autoincrement())
+  kittenId       Int
+  kitten         Kitten   @relation(fields: [kittenId], references: [id], onDelete: Cascade)
+  fileName       String
+  fileUrl        String
+  docType        String   @default("")
+  description    String   @default("")
+  isPrimaryPhoto Boolean  @default(false)
+  sortOrder      Int      @default(0)
+  uploadedAt     DateTime @default(now())
 }
 
 model Application {
-  id        Int      @id @default(autoincrement())
-  type      String
-  status    String   @default("New")
-  formData  String   @default("{}")
-  createdAt DateTime @default(now())
+  id               Int      @id @default(autoincrement())
+  type             String
+  status           String   @default("New")
+  kittenOfInterest String?
+  formData         String   @default("{}")
+  createdAt        DateTime @default(now())
 }
 
 model Content {
-  id        Int      @id @default(autoincrement())
-  title     String
-  slug      String   @unique
-  body      String   @default("")
-  category  String   @default("")
-  createdAt DateTime @default(now())
+  id             Int      @id @default(autoincrement())
+  title          String
+  slug           String   @unique
+  body           String   @default("")
+  category       String   @default("")
+  publishTargets String[] @default([])
+  createdAt      DateTime @default(now())
 }
 
 model Event {
-  id          Int      @id @default(autoincrement())
-  title       String
-  date        DateTime
-  location    String   @default("")
-  description String   @default("")
-  isPublic    Boolean  @default(false)
+  id             Int      @id @default(autoincrement())
+  title          String
+  date           DateTime
+  location       String   @default("")
+  description    String   @default("")
+  isPublic       Boolean  @default(false)
+  publishTargets String[] @default([])
 }
 
 model Role {

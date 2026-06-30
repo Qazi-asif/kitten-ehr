@@ -5,7 +5,7 @@ import PublicLogo from '../components/PublicLogo';
 import { useAuth } from '../context/AuthContext';
 
 function LoginPage() {
-  const { login, isAuthenticated } = useAuth();
+  const { login, isAuthenticated, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [email, setEmail] = useState('');
@@ -25,7 +25,7 @@ function LoginPage() {
       ? requestedFrom
       : '/admin';
 
-  if (isAuthenticated) {
+  if (!loading && isAuthenticated) {
     return <Navigate to={redirectTo} replace />;
   }
 
@@ -65,6 +65,11 @@ function LoginPage() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {loading && (
+              <div className="rounded-lg bg-slate-50 px-3 py-2 text-sm text-slate-500">
+                Checking saved session...
+              </div>
+            )}
             {error && (
               <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>
             )}

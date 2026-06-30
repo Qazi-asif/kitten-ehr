@@ -4,6 +4,8 @@ import {
   formatZodError,
   updateKittenSchema,
 } from '../validations/kittenValidation.js';
+import { normalizePublishTargets, targetsIncludeWebsite } from '../utils/publishTargets.js';
+import { isUnknownPublishTargetsError, withLegacyWebsiteFlag } from '../utils/prismaPublishTargets.js';
 
 const kittenIncludes = {
   litter: { select: { id: true, name: true } },
@@ -130,14 +132,40 @@ export async function updateKitten(req, res, next) {
     if (body.currentFosterId !== undefined) {
       data.currentFosterId = body.currentFosterId ?? null;
     }
+    if (body.publishTargets !== undefined) {
+      data.publishTargets = normalizePublishTargets(body.publishTargets);
+      data.isListedOnWebsite = targetsIncludeWebsite(data.publishTargets);
+    } else if (body.isListedOnWebsite !== undefined) {
+      const currentTargets = normalizePublishTargets(existing.publishTargets);
+      data.isListedOnWebsite = body.isListedOnWebsite;
+      if (body.isListedOnWebsite && !currentTargets.includes('WEBSITE')) {
+        data.publishTargets = [...currentTargets, 'WEBSITE'];
+      }
+      if (!body.isListedOnWebsite) {
+        data.publishTargets = currentTargets.filter((target) => target !== 'WEBSITE');
+      }
+    }
 
     delete data.weightGrams;
 
-    const kitten = await prisma.kitten.update({
-      where: { id },
-      data,
-      include: kittenIncludes,
-    });
+    let kitten;
+    try {
+      kitten = await prisma.kitten.update({
+        where: { id },
+        data,
+        include: kittenIncludes,
+      });
+    } catch (error) {
+      if (!isUnknownPublishTargetsError(error) || data.publishTargets === undefined) {
+        throw error;
+      }
+
+      kitten = await prisma.kitten.update({
+        where: { id },
+        data: withLegacyWebsiteFlag(data, data.publishTargets),
+        include: kittenIncludes,
+      });
+    }
 
     res.json(kitten);
   } catch (error) {

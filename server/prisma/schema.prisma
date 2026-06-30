@@ -56,6 +56,7 @@ model Kitten {
   internalNotes   String           @default("")
   isListedOnWebsite Boolean        @default(false)
   websiteFeaturedComment String     @default("")
+  publishTargets  String[]         @default([])
   currentFosterId Int?
   currentFoster   Foster?          @relation("CurrentFoster", fields: [currentFosterId], references: [id], onDelete: SetNull)
   createdAt       DateTime         @default(now())
@@ -74,9 +75,10 @@ model Update {
   id           Int      @id @default(autoincrement())
   kittenId     Int
   kitten       Kitten   @relation(fields: [kittenId], references: [id], onDelete: Cascade)
-  content      String
-  isPublic     Boolean  @default(false)
-  platformList String   @default("")
+  content        String
+  isPublic       Boolean  @default(false)
+  platformList   String   @default("")
+  publishTargets String[] @default([])
   createdAt    DateTime @default(now())
 }
 
@@ -179,21 +181,23 @@ model Application {
 }
 
 model Content {
-  id        Int      @id @default(autoincrement())
-  title     String
-  slug      String   @unique
-  body      String   @default("")
-  category  String   @default("")
-  createdAt DateTime @default(now())
+  id             Int      @id @default(autoincrement())
+  title          String
+  slug           String   @unique
+  body           String   @default("")
+  category       String   @default("")
+  publishTargets String[] @default([])
+  createdAt      DateTime @default(now())
 }
 
 model Event {
-  id          Int      @id @default(autoincrement())
-  title       String
-  date        DateTime
-  location    String   @default("")
-  description String   @default("")
-  isPublic    Boolean  @default(false)
+  id             Int      @id @default(autoincrement())
+  title          String
+  date           DateTime
+  location       String   @default("")
+  description    String   @default("")
+  isPublic       Boolean  @default(false)
+  publishTargets String[] @default([])
 }
 
 model Role {

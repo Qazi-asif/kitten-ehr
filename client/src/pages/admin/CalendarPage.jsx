@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
+import PublishingMatrix, { PublishTargetBadges } from '../../components/PublishingMatrix';
 import { createEvent, deleteEvent, fetchEvents, updateEvent } from '../../services/api';
+import { resolvePublishTargets } from '../../utils/publishTargets';
 
 const initialForm = {
   title: '',
   date: '',
   location: '',
   description: '',
-  isPublic: false,
+  publishTargets: [],
 };
 
 function formatEventDate(value) {
@@ -42,11 +44,8 @@ function CalendarPage() {
   }, [load]);
 
   function handleChange(event) {
-    const { name, value, type, checked } = event.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
+    const { name, value } = event.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
   }
 
   async function handleSubmit(event) {
@@ -68,7 +67,7 @@ function CalendarPage() {
       date: toDateTimeLocalValue(item.date),
       location: item.location,
       description: item.description,
-      isPublic: item.isPublic,
+      publishTargets: resolvePublishTargets(item),
     });
   }
 
@@ -126,17 +125,18 @@ function CalendarPage() {
               className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
             />
           </label>
-          <label className="flex items-center gap-2 md:col-span-2">
-            <input
-              type="checkbox"
-              name="isPublic"
-              checked={form.isPublic}
-              onChange={handleChange}
-              className="rounded border-slate-300"
-            />
-            <span className="text-sm font-medium text-slate-700">Show on public website</span>
-          </label>
         </div>
+
+        <div className="mt-5">
+          <PublishingMatrix
+            currentTargets={form.publishTargets}
+            onChange={(publishTargets) => setForm((prev) => ({ ...prev, publishTargets }))}
+            title="Event Publishing"
+            description="Choose where this event should be promoted. Website publishes it on the public calendar."
+            compact
+          />
+        </div>
+
         <div className="mt-4 flex gap-3">
           <button
             type="submit"
@@ -169,7 +169,7 @@ function CalendarPage() {
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Title</th>
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Date</th>
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Location</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Public</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Publish Targets</th>
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Actions</th>
               </tr>
             </thead>
@@ -187,15 +187,7 @@ function CalendarPage() {
                     <td className="px-4 py-3 text-sm text-slate-600">{formatEventDate(item.date)}</td>
                     <td className="px-4 py-3 text-sm text-slate-600">{item.location || '—'}</td>
                     <td className="px-4 py-3 text-sm">
-                      <span
-                        className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${
-                          item.isPublic
-                            ? 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200'
-                            : 'bg-slate-100 text-slate-600 ring-1 ring-slate-200'
-                        }`}
-                      >
-                        {item.isPublic ? 'Yes' : 'No'}
-                      </span>
+                      <PublishTargetBadges targets={resolvePublishTargets(item)} />
                     </td>
                     <td className="px-4 py-3 text-sm">
                       <button

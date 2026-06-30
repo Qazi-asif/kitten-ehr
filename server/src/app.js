@@ -24,26 +24,23 @@ import updateRoutes from './routes/updateRoutes.js';
 import settingsRoutes from './routes/settingsRoutes.js';
 import financeRoutes from './routes/financeRoutes.js';
 import { requireAuth } from './middleware/authMiddleware.js';
+import { createOriginValidator } from './utils/corsOrigins.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 5000;
-const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
+const isOriginAllowed = createOriginValidator();
 
 app.use(helmet());
-
-const allowedOrigins = [CLIENT_URL];
-if (process.env.VERCEL_URL) {
-  allowedOrigins.push(`https://${process.env.VERCEL_URL}`);
-}
 
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (isOriginAllowed(origin)) {
         callback(null, true);
         return;
       }
+      console.warn('Blocked CORS origin:', origin);
       callback(new Error('Not allowed by CORS'));
     },
     credentials: true,

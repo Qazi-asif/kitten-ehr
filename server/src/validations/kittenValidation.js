@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { PUBLISH_PLATFORM_IDS } from '../utils/publishTargets.js';
 
 export const KITTEN_STATUSES = [
   'In Foster Care',
@@ -14,6 +15,8 @@ const optionalDate = z
   .optional()
   .transform((value) => (value ? new Date(value) : null));
 
+const publishTargetsField = z.array(z.enum(PUBLISH_PLATFORM_IDS)).optional();
+
 export const createKittenSchema = z.object({
   name: z.string().trim().min(1, 'Name is required').max(50, 'Name must be 50 characters or less'),
   status: z.enum(KITTEN_STATUSES).optional().default('In Foster Care'),
@@ -26,6 +29,7 @@ export const createKittenSchema = z.object({
   sex: z.string().max(20).optional().default(''),
   fixedStatus: z.string().max(40).optional().default(''),
   rescueStory: z.string().max(5000).optional().default(''),
+  publishTargets: publishTargetsField,
   weightGrams: z.coerce.number().positive('Weight must be a positive number').optional(),
 });
 
@@ -48,6 +52,7 @@ export const updateKittenSchema = z
     internalNotes: z.string().max(10000).optional(),
     isListedOnWebsite: z.boolean().optional(),
     websiteFeaturedComment: z.string().max(2000).optional(),
+    publishTargets: publishTargetsField,
     primaryPhotoUrl: z.string().max(5_000_000).optional().nullable(),
     litterId: z.coerce.number().int().positive().optional().nullable(),
     currentFosterId: z.coerce.number().int().positive().optional().nullable(),

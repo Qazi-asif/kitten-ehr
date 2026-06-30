@@ -17,6 +17,7 @@ export function AuthProvider({ children }) {
   const refreshUser = useCallback(async () => {
     const token = getAuthToken();
     if (!token) {
+      clearAuthSession();
       setUser(null);
       setLoading(false);
       return null;
@@ -27,10 +28,14 @@ export function AuthProvider({ children }) {
       if (current) {
         setAuthSession({ token, user: current });
         setUser(current);
+      } else if (current === undefined) {
+        const cached = getStoredUser();
+        setUser(cached);
       } else {
+        clearAuthSession();
         setUser(null);
       }
-      return current;
+      return current ?? null;
     } catch {
       clearAuthSession();
       setUser(null);
@@ -42,12 +47,15 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     refreshUser();
+    const failSafe = setTimeout(() => setLoading(false), 10000);
+    return () => clearTimeout(failSafe);
   }, [refreshUser]);
 
   async function login(email, password) {
     const data = await loginRequest(email, password);
     setAuthSession(data);
     setUser(data.user);
+    setLoading(false);
     return data.user;
   }
 

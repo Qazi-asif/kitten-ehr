@@ -1,4 +1,5 @@
 import prisma from '../lib/prisma.js';
+import { normalizePublishTargets, targetsIncludeWebsite } from '../utils/publishTargets.js';
 
 function normalizePlatformList(value) {
   if (Array.isArray(value)) {
@@ -8,6 +9,33 @@ function normalizePlatformList(value) {
     return value.trim();
   }
   return '';
+}
+
+function resolveUpdateTargets({ publishTargets, platforms, platformList }) {
+  if (publishTargets !== undefined) {
+    return normalizePublishTargets(publishTargets);
+  }
+  if (Array.isArray(platforms) && platforms.length > 0) {
+    return normalizePublishTargets(platforms);
+  }
+  if (typeof platformList === 'string' && platformList.trim()) {
+    const legacyMap = {
+      Facebook: 'FACEBOOK',
+      Instagram: 'INSTAGRAM',
+      'X (Twitter)': 'X',
+      Twitter: 'X',
+      TikTok: 'TIKTOK',
+      Website: 'WEBSITE',
+    };
+    return normalizePublishTargets(
+      platformList
+        .split(',')
+        .map((value) => value.trim())
+        .filter(Boolean)
+        .map((value) => legacyMap[value] || value.toUpperCase()),
+    );
+  }
+  return [];
 }
 
 export async function getUpdatesByKitten(req, res, next) {
@@ -31,7 +59,7 @@ export async function getUpdatesByKitten(req, res, next) {
 export async function createUpdate(req, res, next) {
   try {
     const kittenId = Number.parseInt(req.params.kittenId, 10);
-    const { content, isPublic, platformList } = req.body;
+    const { content, isPublic, platformList, publishTargets, platforms } = req.body;
 
     if (!content?.trim()) {
       return res.status(400).json({ error: 'content is required' });
@@ -40,12 +68,18 @@ export async function createUpdate(req, res, next) {
     const kitten = await prisma.kitten.findUnique({ where: { id: kittenId } });
     if (!kitten) return res.status(404).json({ error: 'Kitten not found' });
 
+    const resolvedTargets = resolveUpdateTargets({ publishTargets, platforms, platformList });
+    const websiteEnabled = publishTargets !== undefined || platforms !== undefined || platformList !== undefined
+      ? targetsIncludeWebsite(resolvedTargets)
+      : Boolean(isPublic);
+
     const update = await prisma.update.create({
       data: {
         kittenId,
         content: content.trim(),
-        isPublic: Boolean(isPublic),
-        platformList: normalizePlatformList(platformList),
+        publishTargets: resolvedTargets,
+        isPublic: websiteEnabled,
+        platformList: normalizePlatformList(platformList ?? resolvedTargets),
       },
     });
 
@@ -58,13 +92,14 @@ export async function createUpdate(req, res, next) {
 export async function createSocialPost(req, res, next) {
   try {
     const kittenId = Number.parseInt(req.params.kittenId, 10);
-    const { content, platforms } = req.body;
+    const { content, platforms, publishTargets } = req.body;
 
     if (!content?.trim()) {
       return res.status(400).json({ error: 'content is required' });
     }
 
-    if (!Array.isArray(platforms) || platforms.length === 0) {
+    const resolvedTargets = resolveUpdateTargets({ publishTargets, platforms });
+    if (resolvedTargets.length === 0) {
       return res.status(400).json({ error: 'At least one platform is required' });
     }
 
@@ -75,8 +110,9 @@ export async function createSocialPost(req, res, next) {
       data: {
         kittenId,
         content: content.trim(),
-        isPublic: true,
-        platformList: platforms.join(','),
+        publishTargets: resolvedTargets,
+        isPublic: targetsIncludeWebsite(resolvedTargets),
+        platformList: resolvedTargets.join(','),
       },
     });
 
@@ -90,7 +126,7 @@ export async function updateUpdate(req, res, next) {
   try {
     const kittenId = Number.parseInt(req.params.kittenId, 10);
     const updateId = Number.parseInt(req.params.updateId, 10);
-    const { content, isPublic, platformList } = req.body;
+    const { content, isPublic, platformList, publishTargets, platforms } = req.body;
 
     const existing = await prisma.update.findFirst({
       where: { id: updateId, kittenId },
@@ -100,8 +136,14 @@ export async function updateUpdate(req, res, next) {
 
     const data = {};
     if (content !== undefined) data.content = content.trim();
-    if (isPublic !== undefined) data.isPublic = Boolean(isPublic);
-    if (platformList !== undefined) data.platformList = normalizePlatformList(platformList);
+    if (publishTargets !== undefined || platforms !== undefined || platformList !== undefined) {
+      const resolvedTargets = resolveUpdateTargets({ publishTargets, platforms, platformList });
+      data.publishTargets = resolvedTargets;
+      data.isPublic = targetsIncludeWebsite(resolvedTargets);
+      data.platformList = normalizePlatformList(platformList ?? resolvedTargets);
+    } else if (isPublic !== undefined) {
+      data.isPublic = Boolean(isPublic);
+    }
 
     const update = await prisma.update.update({
       where: { id: updateId },

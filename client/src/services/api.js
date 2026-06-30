@@ -53,11 +53,20 @@ export async function fetchDashboardStats() {
 }
 
 export async function createKitten(kittenData) {
-  const response = await adminFetch('/kittens', {
-    method: 'POST',
-    body: JSON.stringify(kittenData),
-  });
-  if (!response.ok) throw new Error('Failed to create kitten');
+  let response;
+  try {
+    response = await adminFetch('/kittens', {
+      method: 'POST',
+      body: JSON.stringify(kittenData),
+    });
+  } catch {
+    throw new Error('Cannot reach the API server. Start the backend with: cd server && npm run dev');
+  }
+
+  if (!response.ok) {
+    throw new Error(await readApiError(response, 'Failed to create kitten'));
+  }
+
   return response.json();
 }
 
@@ -338,7 +347,10 @@ export async function createKittenUpdate(kittenId, data) {
 export async function createSocialMediaPost(kittenId, data) {
   const response = await adminFetch(`/kittens/${kittenId}/updates/social`, {
     method: 'POST',
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      content: data.content,
+      publishTargets: data.publishTargets || data.platforms || [],
+    }),
   });
   if (!response.ok) throw new Error(await readApiError(response, 'Failed to post to social platforms'));
   return response.json();

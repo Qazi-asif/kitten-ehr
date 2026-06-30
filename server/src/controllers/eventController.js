@@ -1,4 +1,5 @@
 import prisma from '../lib/prisma.js';
+import { normalizePublishTargets, targetsIncludeWebsite } from '../utils/publishTargets.js';
 
 export async function getAllEvents(_req, res, next) {
   try {
@@ -22,11 +23,15 @@ export async function getEventById(req, res, next) {
 
 export async function createEvent(req, res, next) {
   try {
-    const { title, date, location, description, isPublic } = req.body;
+    const { title, date, location, description, isPublic, publishTargets } = req.body;
 
     if (!title || !date) {
       return res.status(400).json({ error: 'title and date are required' });
     }
+
+    const normalizedTargets = publishTargets !== undefined
+      ? normalizePublishTargets(publishTargets)
+      : (isPublic ? ['WEBSITE'] : []);
 
     const event = await prisma.event.create({
       data: {
@@ -34,7 +39,8 @@ export async function createEvent(req, res, next) {
         date: new Date(date),
         location: location ?? '',
         description: description ?? '',
-        isPublic: Boolean(isPublic),
+        publishTargets: normalizedTargets,
+        isPublic: targetsIncludeWebsite(normalizedTargets),
       },
     });
 
@@ -47,17 +53,25 @@ export async function createEvent(req, res, next) {
 export async function updateEvent(req, res, next) {
   try {
     const id = Number.parseInt(req.params.id, 10);
-    const { title, date, location, description, isPublic } = req.body;
+    const { title, date, location, description, isPublic, publishTargets } = req.body;
+
+    const data = {
+      ...(title !== undefined && { title }),
+      ...(date !== undefined && { date: new Date(date) }),
+      ...(location !== undefined && { location }),
+      ...(description !== undefined && { description }),
+    };
+
+    if (publishTargets !== undefined) {
+      data.publishTargets = normalizePublishTargets(publishTargets);
+      data.isPublic = targetsIncludeWebsite(data.publishTargets);
+    } else if (isPublic !== undefined) {
+      data.isPublic = Boolean(isPublic);
+    }
 
     const event = await prisma.event.update({
       where: { id },
-      data: {
-        ...(title !== undefined && { title }),
-        ...(date !== undefined && { date: new Date(date) }),
-        ...(location !== undefined && { location }),
-        ...(description !== undefined && { description }),
-        ...(isPublic !== undefined && { isPublic: Boolean(isPublic) }),
-      },
+      data,
     });
 
     res.json(event);

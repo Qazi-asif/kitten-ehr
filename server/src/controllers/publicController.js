@@ -16,12 +16,12 @@ const publicKittenSelect = {
   primaryPhotoUrl: true,
 };
 
-const publicKittenWhere = { isListedOnWebsite: true };
+const publicWebsiteFilter = { publishTargets: { has: 'WEBSITE' } };
 
 export async function getPublicKittens(_req, res, next) {
   try {
     const kittens = await prisma.kitten.findMany({
-      where: publicKittenWhere,
+      where: publicWebsiteFilter,
       select: publicKittenSelect,
       orderBy: { id: 'asc' },
     });
@@ -36,7 +36,7 @@ export async function getPublicKittenById(req, res, next) {
     const id = Number.parseInt(req.params.id, 10);
 
     const kitten = await prisma.kitten.findFirst({
-      where: { id, ...publicKittenWhere },
+      where: { id, ...publicWebsiteFilter },
       select: publicKittenSelect,
     });
 
@@ -53,7 +53,7 @@ export async function getPublicKittenById(req, res, next) {
 export async function getPublicStats(_req, res, next) {
   try {
     const [availableKittens, adoptedKittens, activeFosters] = await Promise.all([
-      prisma.kitten.count({ where: { isListedOnWebsite: true } }),
+      prisma.kitten.count({ where: publicWebsiteFilter }),
       prisma.kitten.count({ where: { status: 'Adopted' } }),
       prisma.foster.count({ where: { currentKittens: { some: {} } } }),
     ]);
@@ -67,6 +67,7 @@ export async function getPublicStats(_req, res, next) {
 export async function getPublicContent(_req, res, next) {
   try {
     const articles = await prisma.content.findMany({
+      where: publicWebsiteFilter,
       orderBy: { createdAt: 'desc' },
       select: { id: true, title: true, slug: true, category: true, createdAt: true },
     });
@@ -78,8 +79,8 @@ export async function getPublicContent(_req, res, next) {
 
 export async function getPublicContentBySlug(req, res, next) {
   try {
-    const article = await prisma.content.findUnique({
-      where: { slug: req.params.slug },
+    const article = await prisma.content.findFirst({
+      where: { slug: req.params.slug, ...publicWebsiteFilter },
       select: { id: true, title: true, slug: true, body: true, category: true, createdAt: true },
     });
 
@@ -93,7 +94,7 @@ export async function getPublicContentBySlug(req, res, next) {
 export async function getPublicEvents(_req, res, next) {
   try {
     const events = await prisma.event.findMany({
-      where: { isPublic: true },
+      where: publicWebsiteFilter,
       orderBy: { date: 'asc' },
       select: {
         id: true,
@@ -114,7 +115,7 @@ export async function getPublicKittenPhotos(req, res, next) {
     const id = Number.parseInt(req.params.id, 10);
 
     const kitten = await prisma.kitten.findFirst({
-      where: { id, ...publicKittenWhere },
+      where: { id, ...publicWebsiteFilter },
       select: { id: true, primaryPhotoUrl: true },
     });
 
@@ -171,7 +172,7 @@ export async function getPublicKittenUpdates(req, res, next) {
     const id = Number.parseInt(req.params.id, 10);
 
     const kitten = await prisma.kitten.findFirst({
-      where: { id, isListedOnWebsite: true },
+      where: { id, ...publicWebsiteFilter },
       select: { id: true },
     });
 
@@ -180,7 +181,7 @@ export async function getPublicKittenUpdates(req, res, next) {
     }
 
     const updates = await prisma.update.findMany({
-      where: { kittenId: id, isPublic: true },
+      where: { kittenId: id, ...publicWebsiteFilter },
       orderBy: { createdAt: 'desc' },
       select: {
         id: true,

@@ -59,7 +59,15 @@ function KittensPage() {
     setError(null);
     try {
       const created = await createKitten(kittenData);
-      if (photoFile) await uploadPrimaryPhoto(created.id, photoFile);
+      if (photoFile) {
+        try {
+          await uploadPrimaryPhoto(created.id, photoFile);
+        } catch (uploadErr) {
+          await loadKittens();
+          setError(`Kitten "${created.name}" was saved, but the photo upload failed: ${uploadErr.message}`);
+          return;
+        }
+      }
       await loadKittens();
       setFormKey((k) => k + 1);
       closeAddForm();

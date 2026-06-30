@@ -1,9 +1,19 @@
 import { useCallback, useEffect, useState } from 'react';
+import PublishingMatrix, { PublishTargetBadges } from '../../components/PublishingMatrix';
 import { createContentItem, deleteContentItem, fetchContent, updateContentItem } from '../../services/api';
+import { resolvePublishTargets } from '../../utils/publishTargets';
+
+const emptyForm = {
+  title: '',
+  slug: '',
+  category: '',
+  body: '',
+  publishTargets: [],
+};
 
 function ContentManagerPage() {
   const [items, setItems] = useState([]);
-  const [form, setForm] = useState({ title: '', slug: '', category: '', body: '' });
+  const [form, setForm] = useState(emptyForm);
   const [editingId, setEditingId] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -27,14 +37,20 @@ function ContentManagerPage() {
     } else {
       await createContentItem(form);
     }
-    setForm({ title: '', slug: '', category: '', body: '' });
+    setForm(emptyForm);
     setEditingId(null);
     await load();
   }
 
   function startEdit(item) {
     setEditingId(item.id);
-    setForm({ title: item.title, slug: item.slug, category: item.category, body: item.body });
+    setForm({
+      title: item.title,
+      slug: item.slug,
+      category: item.category,
+      body: item.body,
+      publishTargets: resolvePublishTargets(item),
+    });
   }
 
   async function handleDelete(id) {
@@ -54,6 +70,17 @@ function ContentManagerPage() {
           <input name="category" value={form.category} onChange={handleChange} placeholder="Category" className="rounded-lg border border-gray-300 px-3 py-2 text-sm md:col-span-2" />
           <textarea name="body" value={form.body} onChange={handleChange} placeholder="Article body" rows={6} className="rounded-lg border border-gray-300 px-3 py-2 text-sm md:col-span-2" />
         </div>
+
+        <div className="mt-5">
+          <PublishingMatrix
+            currentTargets={form.publishTargets}
+            onChange={(publishTargets) => setForm((prev) => ({ ...prev, publishTargets }))}
+            title="Article Publishing"
+            description="Choose every platform where this educational article should be shared."
+            compact
+          />
+        </div>
+
         <button type="submit" className="mt-4 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700">
           {editingId ? 'Update' : 'Publish'}
         </button>
@@ -66,6 +93,7 @@ function ContentManagerPage() {
               <tr>
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Title</th>
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Category</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Publish Targets</th>
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Slug</th>
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Actions</th>
               </tr>
@@ -75,6 +103,9 @@ function ContentManagerPage() {
                 <tr key={item.id}>
                   <td className="px-4 py-3 text-sm font-medium">{item.title}</td>
                   <td className="px-4 py-3 text-sm">{item.category}</td>
+                  <td className="px-4 py-3 text-sm">
+                    <PublishTargetBadges targets={resolvePublishTargets(item)} />
+                  </td>
                   <td className="px-4 py-3 text-sm text-gray-500">{item.slug}</td>
                   <td className="px-4 py-3 text-sm">
                     <button type="button" onClick={() => startEdit(item)} className="mr-3 text-emerald-700 hover:underline">Edit</button>

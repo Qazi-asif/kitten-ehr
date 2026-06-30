@@ -3939,10 +3939,12 @@ export namespace Prisma {
 
   export type FosterAvgAggregateOutputType = {
     id: number | null
+    maxKittens: number | null
   }
 
   export type FosterSumAggregateOutputType = {
     id: number | null
+    maxKittens: number | null
   }
 
   export type FosterMinAggregateOutputType = {
@@ -3954,6 +3956,8 @@ export namespace Prisma {
     emergencyContact: string | null
     experienceLevel: string | null
     capabilityFlags: string | null
+    maxKittens: number | null
+    photoUrl: string | null
     notes: string | null
     createdAt: Date | null
   }
@@ -3967,6 +3971,8 @@ export namespace Prisma {
     emergencyContact: string | null
     experienceLevel: string | null
     capabilityFlags: string | null
+    maxKittens: number | null
+    photoUrl: string | null
     notes: string | null
     createdAt: Date | null
   }
@@ -3980,6 +3986,8 @@ export namespace Prisma {
     emergencyContact: number
     experienceLevel: number
     capabilityFlags: number
+    maxKittens: number
+    photoUrl: number
     notes: number
     createdAt: number
     _all: number
@@ -3988,10 +3996,12 @@ export namespace Prisma {
 
   export type FosterAvgAggregateInputType = {
     id?: true
+    maxKittens?: true
   }
 
   export type FosterSumAggregateInputType = {
     id?: true
+    maxKittens?: true
   }
 
   export type FosterMinAggregateInputType = {
@@ -4003,6 +4013,8 @@ export namespace Prisma {
     emergencyContact?: true
     experienceLevel?: true
     capabilityFlags?: true
+    maxKittens?: true
+    photoUrl?: true
     notes?: true
     createdAt?: true
   }
@@ -4016,6 +4028,8 @@ export namespace Prisma {
     emergencyContact?: true
     experienceLevel?: true
     capabilityFlags?: true
+    maxKittens?: true
+    photoUrl?: true
     notes?: true
     createdAt?: true
   }
@@ -4029,6 +4043,8 @@ export namespace Prisma {
     emergencyContact?: true
     experienceLevel?: true
     capabilityFlags?: true
+    maxKittens?: true
+    photoUrl?: true
     notes?: true
     createdAt?: true
     _all?: true
@@ -4129,6 +4145,8 @@ export namespace Prisma {
     emergencyContact: string
     experienceLevel: string
     capabilityFlags: string
+    maxKittens: number
+    photoUrl: string | null
     notes: string
     createdAt: Date
     _count: FosterCountAggregateOutputType | null
@@ -4161,6 +4179,8 @@ export namespace Prisma {
     emergencyContact?: boolean
     experienceLevel?: boolean
     capabilityFlags?: boolean
+    maxKittens?: boolean
+    photoUrl?: boolean
     notes?: boolean
     createdAt?: boolean
     currentKittens?: boolean | Foster$currentKittensArgs<ExtArgs>
@@ -4177,6 +4197,8 @@ export namespace Prisma {
     emergencyContact?: boolean
     experienceLevel?: boolean
     capabilityFlags?: boolean
+    maxKittens?: boolean
+    photoUrl?: boolean
     notes?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["foster"]>
@@ -4190,6 +4212,8 @@ export namespace Prisma {
     emergencyContact?: boolean
     experienceLevel?: boolean
     capabilityFlags?: boolean
+    maxKittens?: boolean
+    photoUrl?: boolean
     notes?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["foster"]>
@@ -4203,11 +4227,13 @@ export namespace Prisma {
     emergencyContact?: boolean
     experienceLevel?: boolean
     capabilityFlags?: boolean
+    maxKittens?: boolean
+    photoUrl?: boolean
     notes?: boolean
     createdAt?: boolean
   }
 
-  export type FosterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "phone" | "email" | "address" | "emergencyContact" | "experienceLevel" | "capabilityFlags" | "notes" | "createdAt", ExtArgs["result"]["foster"]>
+  export type FosterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "phone" | "email" | "address" | "emergencyContact" | "experienceLevel" | "capabilityFlags" | "maxKittens" | "photoUrl" | "notes" | "createdAt", ExtArgs["result"]["foster"]>
   export type FosterInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     currentKittens?: boolean | Foster$currentKittensArgs<ExtArgs>
     placements?: boolean | Foster$placementsArgs<ExtArgs>
@@ -4231,6 +4257,8 @@ export namespace Prisma {
       emergencyContact: string
       experienceLevel: string
       capabilityFlags: string
+      maxKittens: number
+      photoUrl: string | null
       notes: string
       createdAt: Date
     }, ExtArgs["result"]["foster"]>
@@ -4666,6 +4694,8 @@ export namespace Prisma {
     readonly emergencyContact: FieldRef<"Foster", 'String'>
     readonly experienceLevel: FieldRef<"Foster", 'String'>
     readonly capabilityFlags: FieldRef<"Foster", 'String'>
+    readonly maxKittens: FieldRef<"Foster", 'Int'>
+    readonly photoUrl: FieldRef<"Foster", 'String'>
     readonly notes: FieldRef<"Foster", 'String'>
     readonly createdAt: FieldRef<"Foster", 'DateTime'>
   }
@@ -5217,6 +5247,7 @@ export namespace Prisma {
     internalNotes: number
     isListedOnWebsite: number
     websiteFeaturedComment: number
+    publishTargets: number
     currentFosterId: number
     createdAt: number
     _all: number
@@ -5306,6 +5337,7 @@ export namespace Prisma {
     internalNotes?: true
     isListedOnWebsite?: true
     websiteFeaturedComment?: true
+    publishTargets?: true
     currentFosterId?: true
     createdAt?: true
     _all?: true
@@ -5418,6 +5450,7 @@ export namespace Prisma {
     internalNotes: string
     isListedOnWebsite: boolean
     websiteFeaturedComment: string
+    publishTargets: string[]
     currentFosterId: number | null
     createdAt: Date
     _count: KittenCountAggregateOutputType | null
@@ -5462,6 +5495,7 @@ export namespace Prisma {
     internalNotes?: boolean
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: boolean
+    publishTargets?: boolean
     currentFosterId?: boolean
     createdAt?: boolean
     litter?: boolean | Kitten$litterArgs<ExtArgs>
@@ -5499,6 +5533,7 @@ export namespace Prisma {
     internalNotes?: boolean
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: boolean
+    publishTargets?: boolean
     currentFosterId?: boolean
     createdAt?: boolean
     litter?: boolean | Kitten$litterArgs<ExtArgs>
@@ -5526,6 +5561,7 @@ export namespace Prisma {
     internalNotes?: boolean
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: boolean
+    publishTargets?: boolean
     currentFosterId?: boolean
     createdAt?: boolean
     litter?: boolean | Kitten$litterArgs<ExtArgs>
@@ -5553,11 +5589,12 @@ export namespace Prisma {
     internalNotes?: boolean
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: boolean
+    publishTargets?: boolean
     currentFosterId?: boolean
     createdAt?: boolean
   }
 
-  export type KittenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "litterId" | "status" | "rescueStory" | "dateOfBirth" | "sex" | "fixedStatus" | "breed" | "color" | "fivFelvStatus" | "specialNeeds" | "microchipNumber" | "primaryPhotoUrl" | "intakeDate" | "intakeSource" | "notes" | "internalNotes" | "isListedOnWebsite" | "websiteFeaturedComment" | "currentFosterId" | "createdAt", ExtArgs["result"]["kitten"]>
+  export type KittenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "litterId" | "status" | "rescueStory" | "dateOfBirth" | "sex" | "fixedStatus" | "breed" | "color" | "fivFelvStatus" | "specialNeeds" | "microchipNumber" | "primaryPhotoUrl" | "intakeDate" | "intakeSource" | "notes" | "internalNotes" | "isListedOnWebsite" | "websiteFeaturedComment" | "publishTargets" | "currentFosterId" | "createdAt", ExtArgs["result"]["kitten"]>
   export type KittenInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     litter?: boolean | Kitten$litterArgs<ExtArgs>
     currentFoster?: boolean | Kitten$currentFosterArgs<ExtArgs>
@@ -5617,6 +5654,7 @@ export namespace Prisma {
       internalNotes: string
       isListedOnWebsite: boolean
       websiteFeaturedComment: string
+      publishTargets: string[]
       currentFosterId: number | null
       createdAt: Date
     }, ExtArgs["result"]["kitten"]>
@@ -6073,6 +6111,7 @@ export namespace Prisma {
     readonly internalNotes: FieldRef<"Kitten", 'String'>
     readonly isListedOnWebsite: FieldRef<"Kitten", 'Boolean'>
     readonly websiteFeaturedComment: FieldRef<"Kitten", 'String'>
+    readonly publishTargets: FieldRef<"Kitten", 'String[]'>
     readonly currentFosterId: FieldRef<"Kitten", 'Int'>
     readonly createdAt: FieldRef<"Kitten", 'DateTime'>
   }
@@ -6789,6 +6828,7 @@ export namespace Prisma {
     content: number
     isPublic: number
     platformList: number
+    publishTargets: number
     createdAt: number
     _all: number
   }
@@ -6828,6 +6868,7 @@ export namespace Prisma {
     content?: true
     isPublic?: true
     platformList?: true
+    publishTargets?: true
     createdAt?: true
     _all?: true
   }
@@ -6924,6 +6965,7 @@ export namespace Prisma {
     content: string
     isPublic: boolean
     platformList: string
+    publishTargets: string[]
     createdAt: Date
     _count: UpdateCountAggregateOutputType | null
     _avg: UpdateAvgAggregateOutputType | null
@@ -6952,6 +6994,7 @@ export namespace Prisma {
     content?: boolean
     isPublic?: boolean
     platformList?: boolean
+    publishTargets?: boolean
     createdAt?: boolean
     kitten?: boolean | KittenDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["update"]>
@@ -6962,6 +7005,7 @@ export namespace Prisma {
     content?: boolean
     isPublic?: boolean
     platformList?: boolean
+    publishTargets?: boolean
     createdAt?: boolean
     kitten?: boolean | KittenDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["update"]>
@@ -6972,6 +7016,7 @@ export namespace Prisma {
     content?: boolean
     isPublic?: boolean
     platformList?: boolean
+    publishTargets?: boolean
     createdAt?: boolean
     kitten?: boolean | KittenDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["update"]>
@@ -6982,10 +7027,11 @@ export namespace Prisma {
     content?: boolean
     isPublic?: boolean
     platformList?: boolean
+    publishTargets?: boolean
     createdAt?: boolean
   }
 
-  export type UpdateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "kittenId" | "content" | "isPublic" | "platformList" | "createdAt", ExtArgs["result"]["update"]>
+  export type UpdateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "kittenId" | "content" | "isPublic" | "platformList" | "publishTargets" | "createdAt", ExtArgs["result"]["update"]>
   export type UpdateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     kitten?: boolean | KittenDefaultArgs<ExtArgs>
   }
@@ -7007,6 +7053,7 @@ export namespace Prisma {
       content: string
       isPublic: boolean
       platformList: string
+      publishTargets: string[]
       createdAt: Date
     }, ExtArgs["result"]["update"]>
     composites: {}
@@ -7437,6 +7484,7 @@ export namespace Prisma {
     readonly content: FieldRef<"Update", 'String'>
     readonly isPublic: FieldRef<"Update", 'Boolean'>
     readonly platformList: FieldRef<"Update", 'String'>
+    readonly publishTargets: FieldRef<"Update", 'String[]'>
     readonly createdAt: FieldRef<"Update", 'DateTime'>
   }
     
@@ -15901,6 +15949,7 @@ export namespace Prisma {
     id: number | null
     type: string | null
     status: string | null
+    kittenOfInterest: string | null
     formData: string | null
     createdAt: Date | null
   }
@@ -15909,6 +15958,7 @@ export namespace Prisma {
     id: number | null
     type: string | null
     status: string | null
+    kittenOfInterest: string | null
     formData: string | null
     createdAt: Date | null
   }
@@ -15917,6 +15967,7 @@ export namespace Prisma {
     id: number
     type: number
     status: number
+    kittenOfInterest: number
     formData: number
     createdAt: number
     _all: number
@@ -15935,6 +15986,7 @@ export namespace Prisma {
     id?: true
     type?: true
     status?: true
+    kittenOfInterest?: true
     formData?: true
     createdAt?: true
   }
@@ -15943,6 +15995,7 @@ export namespace Prisma {
     id?: true
     type?: true
     status?: true
+    kittenOfInterest?: true
     formData?: true
     createdAt?: true
   }
@@ -15951,6 +16004,7 @@ export namespace Prisma {
     id?: true
     type?: true
     status?: true
+    kittenOfInterest?: true
     formData?: true
     createdAt?: true
     _all?: true
@@ -16046,6 +16100,7 @@ export namespace Prisma {
     id: number
     type: string
     status: string
+    kittenOfInterest: string | null
     formData: string
     createdAt: Date
     _count: ApplicationCountAggregateOutputType | null
@@ -16073,6 +16128,7 @@ export namespace Prisma {
     id?: boolean
     type?: boolean
     status?: boolean
+    kittenOfInterest?: boolean
     formData?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["application"]>
@@ -16081,6 +16137,7 @@ export namespace Prisma {
     id?: boolean
     type?: boolean
     status?: boolean
+    kittenOfInterest?: boolean
     formData?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["application"]>
@@ -16089,6 +16146,7 @@ export namespace Prisma {
     id?: boolean
     type?: boolean
     status?: boolean
+    kittenOfInterest?: boolean
     formData?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["application"]>
@@ -16097,11 +16155,12 @@ export namespace Prisma {
     id?: boolean
     type?: boolean
     status?: boolean
+    kittenOfInterest?: boolean
     formData?: boolean
     createdAt?: boolean
   }
 
-  export type ApplicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "status" | "formData" | "createdAt", ExtArgs["result"]["application"]>
+  export type ApplicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "status" | "kittenOfInterest" | "formData" | "createdAt", ExtArgs["result"]["application"]>
 
   export type $ApplicationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Application"
@@ -16110,6 +16169,7 @@ export namespace Prisma {
       id: number
       type: string
       status: string
+      kittenOfInterest: string | null
       formData: string
       createdAt: Date
     }, ExtArgs["result"]["application"]>
@@ -16538,6 +16598,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Application", 'Int'>
     readonly type: FieldRef<"Application", 'String'>
     readonly status: FieldRef<"Application", 'String'>
+    readonly kittenOfInterest: FieldRef<"Application", 'String'>
     readonly formData: FieldRef<"Application", 'String'>
     readonly createdAt: FieldRef<"Application", 'DateTime'>
   }
@@ -16950,6 +17011,7 @@ export namespace Prisma {
     slug: number
     body: number
     category: number
+    publishTargets: number
     createdAt: number
     _all: number
   }
@@ -16987,6 +17049,7 @@ export namespace Prisma {
     slug?: true
     body?: true
     category?: true
+    publishTargets?: true
     createdAt?: true
     _all?: true
   }
@@ -17083,6 +17146,7 @@ export namespace Prisma {
     slug: string
     body: string
     category: string
+    publishTargets: string[]
     createdAt: Date
     _count: ContentCountAggregateOutputType | null
     _avg: ContentAvgAggregateOutputType | null
@@ -17111,6 +17175,7 @@ export namespace Prisma {
     slug?: boolean
     body?: boolean
     category?: boolean
+    publishTargets?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["content"]>
 
@@ -17120,6 +17185,7 @@ export namespace Prisma {
     slug?: boolean
     body?: boolean
     category?: boolean
+    publishTargets?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["content"]>
 
@@ -17129,6 +17195,7 @@ export namespace Prisma {
     slug?: boolean
     body?: boolean
     category?: boolean
+    publishTargets?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["content"]>
 
@@ -17138,10 +17205,11 @@ export namespace Prisma {
     slug?: boolean
     body?: boolean
     category?: boolean
+    publishTargets?: boolean
     createdAt?: boolean
   }
 
-  export type ContentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "slug" | "body" | "category" | "createdAt", ExtArgs["result"]["content"]>
+  export type ContentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "slug" | "body" | "category" | "publishTargets" | "createdAt", ExtArgs["result"]["content"]>
 
   export type $ContentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Content"
@@ -17152,6 +17220,7 @@ export namespace Prisma {
       slug: string
       body: string
       category: string
+      publishTargets: string[]
       createdAt: Date
     }, ExtArgs["result"]["content"]>
     composites: {}
@@ -17581,6 +17650,7 @@ export namespace Prisma {
     readonly slug: FieldRef<"Content", 'String'>
     readonly body: FieldRef<"Content", 'String'>
     readonly category: FieldRef<"Content", 'String'>
+    readonly publishTargets: FieldRef<"Content", 'String[]'>
     readonly createdAt: FieldRef<"Content", 'DateTime'>
   }
     
@@ -17993,6 +18063,7 @@ export namespace Prisma {
     location: number
     description: number
     isPublic: number
+    publishTargets: number
     _all: number
   }
 
@@ -18030,6 +18101,7 @@ export namespace Prisma {
     location?: true
     description?: true
     isPublic?: true
+    publishTargets?: true
     _all?: true
   }
 
@@ -18126,6 +18198,7 @@ export namespace Prisma {
     location: string
     description: string
     isPublic: boolean
+    publishTargets: string[]
     _count: EventCountAggregateOutputType | null
     _avg: EventAvgAggregateOutputType | null
     _sum: EventSumAggregateOutputType | null
@@ -18154,6 +18227,7 @@ export namespace Prisma {
     location?: boolean
     description?: boolean
     isPublic?: boolean
+    publishTargets?: boolean
   }, ExtArgs["result"]["event"]>
 
   export type EventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -18163,6 +18237,7 @@ export namespace Prisma {
     location?: boolean
     description?: boolean
     isPublic?: boolean
+    publishTargets?: boolean
   }, ExtArgs["result"]["event"]>
 
   export type EventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -18172,6 +18247,7 @@ export namespace Prisma {
     location?: boolean
     description?: boolean
     isPublic?: boolean
+    publishTargets?: boolean
   }, ExtArgs["result"]["event"]>
 
   export type EventSelectScalar = {
@@ -18181,9 +18257,10 @@ export namespace Prisma {
     location?: boolean
     description?: boolean
     isPublic?: boolean
+    publishTargets?: boolean
   }
 
-  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "date" | "location" | "description" | "isPublic", ExtArgs["result"]["event"]>
+  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "date" | "location" | "description" | "isPublic" | "publishTargets", ExtArgs["result"]["event"]>
 
   export type $EventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Event"
@@ -18195,6 +18272,7 @@ export namespace Prisma {
       location: string
       description: string
       isPublic: boolean
+      publishTargets: string[]
     }, ExtArgs["result"]["event"]>
     composites: {}
   }
@@ -18624,6 +18702,7 @@ export namespace Prisma {
     readonly location: FieldRef<"Event", 'String'>
     readonly description: FieldRef<"Event", 'String'>
     readonly isPublic: FieldRef<"Event", 'Boolean'>
+    readonly publishTargets: FieldRef<"Event", 'String[]'>
   }
     
 
@@ -25719,6 +25798,8 @@ export namespace Prisma {
     emergencyContact: 'emergencyContact',
     experienceLevel: 'experienceLevel',
     capabilityFlags: 'capabilityFlags',
+    maxKittens: 'maxKittens',
+    photoUrl: 'photoUrl',
     notes: 'notes',
     createdAt: 'createdAt'
   };
@@ -25747,6 +25828,7 @@ export namespace Prisma {
     internalNotes: 'internalNotes',
     isListedOnWebsite: 'isListedOnWebsite',
     websiteFeaturedComment: 'websiteFeaturedComment',
+    publishTargets: 'publishTargets',
     currentFosterId: 'currentFosterId',
     createdAt: 'createdAt'
   };
@@ -25760,6 +25842,7 @@ export namespace Prisma {
     content: 'content',
     isPublic: 'isPublic',
     platformList: 'platformList',
+    publishTargets: 'publishTargets',
     createdAt: 'createdAt'
   };
 
@@ -25872,6 +25955,7 @@ export namespace Prisma {
     id: 'id',
     type: 'type',
     status: 'status',
+    kittenOfInterest: 'kittenOfInterest',
     formData: 'formData',
     createdAt: 'createdAt'
   };
@@ -25885,6 +25969,7 @@ export namespace Prisma {
     slug: 'slug',
     body: 'body',
     category: 'category',
+    publishTargets: 'publishTargets',
     createdAt: 'createdAt'
   };
 
@@ -25897,7 +25982,8 @@ export namespace Prisma {
     date: 'date',
     location: 'location',
     description: 'description',
-    isPublic: 'isPublic'
+    isPublic: 'isPublic',
+    publishTargets: 'publishTargets'
   };
 
   export type EventScalarFieldEnum = (typeof EventScalarFieldEnum)[keyof typeof EventScalarFieldEnum]
@@ -26136,6 +26222,8 @@ export namespace Prisma {
     emergencyContact?: StringFilter<"Foster"> | string
     experienceLevel?: StringFilter<"Foster"> | string
     capabilityFlags?: StringFilter<"Foster"> | string
+    maxKittens?: IntFilter<"Foster"> | number
+    photoUrl?: StringNullableFilter<"Foster"> | string | null
     notes?: StringFilter<"Foster"> | string
     createdAt?: DateTimeFilter<"Foster"> | Date | string
     currentKittens?: KittenListRelationFilter
@@ -26151,6 +26239,8 @@ export namespace Prisma {
     emergencyContact?: SortOrder
     experienceLevel?: SortOrder
     capabilityFlags?: SortOrder
+    maxKittens?: SortOrder
+    photoUrl?: SortOrderInput | SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
     currentKittens?: KittenOrderByRelationAggregateInput
@@ -26169,6 +26259,8 @@ export namespace Prisma {
     emergencyContact?: StringFilter<"Foster"> | string
     experienceLevel?: StringFilter<"Foster"> | string
     capabilityFlags?: StringFilter<"Foster"> | string
+    maxKittens?: IntFilter<"Foster"> | number
+    photoUrl?: StringNullableFilter<"Foster"> | string | null
     notes?: StringFilter<"Foster"> | string
     createdAt?: DateTimeFilter<"Foster"> | Date | string
     currentKittens?: KittenListRelationFilter
@@ -26184,6 +26276,8 @@ export namespace Prisma {
     emergencyContact?: SortOrder
     experienceLevel?: SortOrder
     capabilityFlags?: SortOrder
+    maxKittens?: SortOrder
+    photoUrl?: SortOrderInput | SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
     _count?: FosterCountOrderByAggregateInput
@@ -26205,6 +26299,8 @@ export namespace Prisma {
     emergencyContact?: StringWithAggregatesFilter<"Foster"> | string
     experienceLevel?: StringWithAggregatesFilter<"Foster"> | string
     capabilityFlags?: StringWithAggregatesFilter<"Foster"> | string
+    maxKittens?: IntWithAggregatesFilter<"Foster"> | number
+    photoUrl?: StringNullableWithAggregatesFilter<"Foster"> | string | null
     notes?: StringWithAggregatesFilter<"Foster"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Foster"> | Date | string
   }
@@ -26233,6 +26329,7 @@ export namespace Prisma {
     internalNotes?: StringFilter<"Kitten"> | string
     isListedOnWebsite?: BoolFilter<"Kitten"> | boolean
     websiteFeaturedComment?: StringFilter<"Kitten"> | string
+    publishTargets?: StringNullableListFilter<"Kitten">
     currentFosterId?: IntNullableFilter<"Kitten"> | number | null
     createdAt?: DateTimeFilter<"Kitten"> | Date | string
     litter?: XOR<LitterNullableScalarRelationFilter, LitterWhereInput> | null
@@ -26269,6 +26366,7 @@ export namespace Prisma {
     internalNotes?: SortOrder
     isListedOnWebsite?: SortOrder
     websiteFeaturedComment?: SortOrder
+    publishTargets?: SortOrder
     currentFosterId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     litter?: LitterOrderByWithRelationInput
@@ -26308,6 +26406,7 @@ export namespace Prisma {
     internalNotes?: StringFilter<"Kitten"> | string
     isListedOnWebsite?: BoolFilter<"Kitten"> | boolean
     websiteFeaturedComment?: StringFilter<"Kitten"> | string
+    publishTargets?: StringNullableListFilter<"Kitten">
     currentFosterId?: IntNullableFilter<"Kitten"> | number | null
     createdAt?: DateTimeFilter<"Kitten"> | Date | string
     litter?: XOR<LitterNullableScalarRelationFilter, LitterWhereInput> | null
@@ -26344,6 +26443,7 @@ export namespace Prisma {
     internalNotes?: SortOrder
     isListedOnWebsite?: SortOrder
     websiteFeaturedComment?: SortOrder
+    publishTargets?: SortOrder
     currentFosterId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: KittenCountOrderByAggregateInput
@@ -26377,6 +26477,7 @@ export namespace Prisma {
     internalNotes?: StringWithAggregatesFilter<"Kitten"> | string
     isListedOnWebsite?: BoolWithAggregatesFilter<"Kitten"> | boolean
     websiteFeaturedComment?: StringWithAggregatesFilter<"Kitten"> | string
+    publishTargets?: StringNullableListFilter<"Kitten">
     currentFosterId?: IntNullableWithAggregatesFilter<"Kitten"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"Kitten"> | Date | string
   }
@@ -26390,6 +26491,7 @@ export namespace Prisma {
     content?: StringFilter<"Update"> | string
     isPublic?: BoolFilter<"Update"> | boolean
     platformList?: StringFilter<"Update"> | string
+    publishTargets?: StringNullableListFilter<"Update">
     createdAt?: DateTimeFilter<"Update"> | Date | string
     kitten?: XOR<KittenScalarRelationFilter, KittenWhereInput>
   }
@@ -26400,6 +26502,7 @@ export namespace Prisma {
     content?: SortOrder
     isPublic?: SortOrder
     platformList?: SortOrder
+    publishTargets?: SortOrder
     createdAt?: SortOrder
     kitten?: KittenOrderByWithRelationInput
   }
@@ -26413,6 +26516,7 @@ export namespace Prisma {
     content?: StringFilter<"Update"> | string
     isPublic?: BoolFilter<"Update"> | boolean
     platformList?: StringFilter<"Update"> | string
+    publishTargets?: StringNullableListFilter<"Update">
     createdAt?: DateTimeFilter<"Update"> | Date | string
     kitten?: XOR<KittenScalarRelationFilter, KittenWhereInput>
   }, "id">
@@ -26423,6 +26527,7 @@ export namespace Prisma {
     content?: SortOrder
     isPublic?: SortOrder
     platformList?: SortOrder
+    publishTargets?: SortOrder
     createdAt?: SortOrder
     _count?: UpdateCountOrderByAggregateInput
     _avg?: UpdateAvgOrderByAggregateInput
@@ -26440,6 +26545,7 @@ export namespace Prisma {
     content?: StringWithAggregatesFilter<"Update"> | string
     isPublic?: BoolWithAggregatesFilter<"Update"> | boolean
     platformList?: StringWithAggregatesFilter<"Update"> | string
+    publishTargets?: StringNullableListFilter<"Update">
     createdAt?: DateTimeWithAggregatesFilter<"Update"> | Date | string
   }
 
@@ -26977,6 +27083,7 @@ export namespace Prisma {
     id?: IntFilter<"Application"> | number
     type?: StringFilter<"Application"> | string
     status?: StringFilter<"Application"> | string
+    kittenOfInterest?: StringNullableFilter<"Application"> | string | null
     formData?: StringFilter<"Application"> | string
     createdAt?: DateTimeFilter<"Application"> | Date | string
   }
@@ -26985,6 +27092,7 @@ export namespace Prisma {
     id?: SortOrder
     type?: SortOrder
     status?: SortOrder
+    kittenOfInterest?: SortOrderInput | SortOrder
     formData?: SortOrder
     createdAt?: SortOrder
   }
@@ -26996,6 +27104,7 @@ export namespace Prisma {
     NOT?: ApplicationWhereInput | ApplicationWhereInput[]
     type?: StringFilter<"Application"> | string
     status?: StringFilter<"Application"> | string
+    kittenOfInterest?: StringNullableFilter<"Application"> | string | null
     formData?: StringFilter<"Application"> | string
     createdAt?: DateTimeFilter<"Application"> | Date | string
   }, "id">
@@ -27004,6 +27113,7 @@ export namespace Prisma {
     id?: SortOrder
     type?: SortOrder
     status?: SortOrder
+    kittenOfInterest?: SortOrderInput | SortOrder
     formData?: SortOrder
     createdAt?: SortOrder
     _count?: ApplicationCountOrderByAggregateInput
@@ -27020,6 +27130,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Application"> | number
     type?: StringWithAggregatesFilter<"Application"> | string
     status?: StringWithAggregatesFilter<"Application"> | string
+    kittenOfInterest?: StringNullableWithAggregatesFilter<"Application"> | string | null
     formData?: StringWithAggregatesFilter<"Application"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Application"> | Date | string
   }
@@ -27033,6 +27144,7 @@ export namespace Prisma {
     slug?: StringFilter<"Content"> | string
     body?: StringFilter<"Content"> | string
     category?: StringFilter<"Content"> | string
+    publishTargets?: StringNullableListFilter<"Content">
     createdAt?: DateTimeFilter<"Content"> | Date | string
   }
 
@@ -27042,6 +27154,7 @@ export namespace Prisma {
     slug?: SortOrder
     body?: SortOrder
     category?: SortOrder
+    publishTargets?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -27054,6 +27167,7 @@ export namespace Prisma {
     title?: StringFilter<"Content"> | string
     body?: StringFilter<"Content"> | string
     category?: StringFilter<"Content"> | string
+    publishTargets?: StringNullableListFilter<"Content">
     createdAt?: DateTimeFilter<"Content"> | Date | string
   }, "id" | "slug">
 
@@ -27063,6 +27177,7 @@ export namespace Prisma {
     slug?: SortOrder
     body?: SortOrder
     category?: SortOrder
+    publishTargets?: SortOrder
     createdAt?: SortOrder
     _count?: ContentCountOrderByAggregateInput
     _avg?: ContentAvgOrderByAggregateInput
@@ -27080,6 +27195,7 @@ export namespace Prisma {
     slug?: StringWithAggregatesFilter<"Content"> | string
     body?: StringWithAggregatesFilter<"Content"> | string
     category?: StringWithAggregatesFilter<"Content"> | string
+    publishTargets?: StringNullableListFilter<"Content">
     createdAt?: DateTimeWithAggregatesFilter<"Content"> | Date | string
   }
 
@@ -27093,6 +27209,7 @@ export namespace Prisma {
     location?: StringFilter<"Event"> | string
     description?: StringFilter<"Event"> | string
     isPublic?: BoolFilter<"Event"> | boolean
+    publishTargets?: StringNullableListFilter<"Event">
   }
 
   export type EventOrderByWithRelationInput = {
@@ -27102,6 +27219,7 @@ export namespace Prisma {
     location?: SortOrder
     description?: SortOrder
     isPublic?: SortOrder
+    publishTargets?: SortOrder
   }
 
   export type EventWhereUniqueInput = Prisma.AtLeast<{
@@ -27114,6 +27232,7 @@ export namespace Prisma {
     location?: StringFilter<"Event"> | string
     description?: StringFilter<"Event"> | string
     isPublic?: BoolFilter<"Event"> | boolean
+    publishTargets?: StringNullableListFilter<"Event">
   }, "id">
 
   export type EventOrderByWithAggregationInput = {
@@ -27123,6 +27242,7 @@ export namespace Prisma {
     location?: SortOrder
     description?: SortOrder
     isPublic?: SortOrder
+    publishTargets?: SortOrder
     _count?: EventCountOrderByAggregateInput
     _avg?: EventAvgOrderByAggregateInput
     _max?: EventMaxOrderByAggregateInput
@@ -27140,6 +27260,7 @@ export namespace Prisma {
     location?: StringWithAggregatesFilter<"Event"> | string
     description?: StringWithAggregatesFilter<"Event"> | string
     isPublic?: BoolWithAggregatesFilter<"Event"> | boolean
+    publishTargets?: StringNullableListFilter<"Event">
   }
 
   export type RoleWhereInput = {
@@ -27586,6 +27707,8 @@ export namespace Prisma {
     emergencyContact?: string
     experienceLevel?: string
     capabilityFlags?: string
+    maxKittens?: number
+    photoUrl?: string | null
     notes?: string
     createdAt?: Date | string
     currentKittens?: KittenCreateNestedManyWithoutCurrentFosterInput
@@ -27601,6 +27724,8 @@ export namespace Prisma {
     emergencyContact?: string
     experienceLevel?: string
     capabilityFlags?: string
+    maxKittens?: number
+    photoUrl?: string | null
     notes?: string
     createdAt?: Date | string
     currentKittens?: KittenUncheckedCreateNestedManyWithoutCurrentFosterInput
@@ -27615,6 +27740,8 @@ export namespace Prisma {
     emergencyContact?: StringFieldUpdateOperationsInput | string
     experienceLevel?: StringFieldUpdateOperationsInput | string
     capabilityFlags?: StringFieldUpdateOperationsInput | string
+    maxKittens?: IntFieldUpdateOperationsInput | number
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     currentKittens?: KittenUpdateManyWithoutCurrentFosterNestedInput
@@ -27630,6 +27757,8 @@ export namespace Prisma {
     emergencyContact?: StringFieldUpdateOperationsInput | string
     experienceLevel?: StringFieldUpdateOperationsInput | string
     capabilityFlags?: StringFieldUpdateOperationsInput | string
+    maxKittens?: IntFieldUpdateOperationsInput | number
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     currentKittens?: KittenUncheckedUpdateManyWithoutCurrentFosterNestedInput
@@ -27645,6 +27774,8 @@ export namespace Prisma {
     emergencyContact?: string
     experienceLevel?: string
     capabilityFlags?: string
+    maxKittens?: number
+    photoUrl?: string | null
     notes?: string
     createdAt?: Date | string
   }
@@ -27657,6 +27788,8 @@ export namespace Prisma {
     emergencyContact?: StringFieldUpdateOperationsInput | string
     experienceLevel?: StringFieldUpdateOperationsInput | string
     capabilityFlags?: StringFieldUpdateOperationsInput | string
+    maxKittens?: IntFieldUpdateOperationsInput | number
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -27670,6 +27803,8 @@ export namespace Prisma {
     emergencyContact?: StringFieldUpdateOperationsInput | string
     experienceLevel?: StringFieldUpdateOperationsInput | string
     capabilityFlags?: StringFieldUpdateOperationsInput | string
+    maxKittens?: IntFieldUpdateOperationsInput | number
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -27693,6 +27828,7 @@ export namespace Prisma {
     internalNotes?: string
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -27728,6 +27864,7 @@ export namespace Prisma {
     internalNotes?: string
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
     currentFosterId?: number | null
     createdAt?: Date | string
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
@@ -27760,6 +27897,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -27795,6 +27933,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
@@ -27829,6 +27968,7 @@ export namespace Prisma {
     internalNotes?: string
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
     currentFosterId?: number | null
     createdAt?: Date | string
   }
@@ -27852,6 +27992,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -27876,6 +28017,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -27884,6 +28026,7 @@ export namespace Prisma {
     content: string
     isPublic?: boolean
     platformList?: string
+    publishTargets?: UpdateCreatepublishTargetsInput | string[]
     createdAt?: Date | string
     kitten: KittenCreateNestedOneWithoutUpdatesInput
   }
@@ -27894,6 +28037,7 @@ export namespace Prisma {
     content: string
     isPublic?: boolean
     platformList?: string
+    publishTargets?: UpdateCreatepublishTargetsInput | string[]
     createdAt?: Date | string
   }
 
@@ -27901,6 +28045,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     platformList?: StringFieldUpdateOperationsInput | string
+    publishTargets?: UpdateUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     kitten?: KittenUpdateOneRequiredWithoutUpdatesNestedInput
   }
@@ -27911,6 +28056,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     platformList?: StringFieldUpdateOperationsInput | string
+    publishTargets?: UpdateUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -27920,6 +28066,7 @@ export namespace Prisma {
     content: string
     isPublic?: boolean
     platformList?: string
+    publishTargets?: UpdateCreatepublishTargetsInput | string[]
     createdAt?: Date | string
   }
 
@@ -27927,6 +28074,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     platformList?: StringFieldUpdateOperationsInput | string
+    publishTargets?: UpdateUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -27936,6 +28084,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     platformList?: StringFieldUpdateOperationsInput | string
+    publishTargets?: UpdateUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -28480,6 +28629,7 @@ export namespace Prisma {
   export type ApplicationCreateInput = {
     type: string
     status?: string
+    kittenOfInterest?: string | null
     formData?: string
     createdAt?: Date | string
   }
@@ -28488,6 +28638,7 @@ export namespace Prisma {
     id?: number
     type: string
     status?: string
+    kittenOfInterest?: string | null
     formData?: string
     createdAt?: Date | string
   }
@@ -28495,6 +28646,7 @@ export namespace Prisma {
   export type ApplicationUpdateInput = {
     type?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
     formData?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28503,6 +28655,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     type?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
     formData?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28511,6 +28664,7 @@ export namespace Prisma {
     id?: number
     type: string
     status?: string
+    kittenOfInterest?: string | null
     formData?: string
     createdAt?: Date | string
   }
@@ -28518,6 +28672,7 @@ export namespace Prisma {
   export type ApplicationUpdateManyMutationInput = {
     type?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
     formData?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28526,6 +28681,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     type?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
     formData?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28535,6 +28691,7 @@ export namespace Prisma {
     slug: string
     body?: string
     category?: string
+    publishTargets?: ContentCreatepublishTargetsInput | string[]
     createdAt?: Date | string
   }
 
@@ -28544,6 +28701,7 @@ export namespace Prisma {
     slug: string
     body?: string
     category?: string
+    publishTargets?: ContentCreatepublishTargetsInput | string[]
     createdAt?: Date | string
   }
 
@@ -28552,6 +28710,7 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
+    publishTargets?: ContentUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -28561,6 +28720,7 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
+    publishTargets?: ContentUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -28570,6 +28730,7 @@ export namespace Prisma {
     slug: string
     body?: string
     category?: string
+    publishTargets?: ContentCreatepublishTargetsInput | string[]
     createdAt?: Date | string
   }
 
@@ -28578,6 +28739,7 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
+    publishTargets?: ContentUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -28587,6 +28749,7 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
+    publishTargets?: ContentUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -28596,6 +28759,7 @@ export namespace Prisma {
     location?: string
     description?: string
     isPublic?: boolean
+    publishTargets?: EventCreatepublishTargetsInput | string[]
   }
 
   export type EventUncheckedCreateInput = {
@@ -28605,6 +28769,7 @@ export namespace Prisma {
     location?: string
     description?: string
     isPublic?: boolean
+    publishTargets?: EventCreatepublishTargetsInput | string[]
   }
 
   export type EventUpdateInput = {
@@ -28613,6 +28778,7 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     isPublic?: BoolFieldUpdateOperationsInput | boolean
+    publishTargets?: EventUpdatepublishTargetsInput | string[]
   }
 
   export type EventUncheckedUpdateInput = {
@@ -28622,6 +28788,7 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     isPublic?: BoolFieldUpdateOperationsInput | boolean
+    publishTargets?: EventUpdatepublishTargetsInput | string[]
   }
 
   export type EventCreateManyInput = {
@@ -28631,6 +28798,7 @@ export namespace Prisma {
     location?: string
     description?: string
     isPublic?: boolean
+    publishTargets?: EventCreatepublishTargetsInput | string[]
   }
 
   export type EventUpdateManyMutationInput = {
@@ -28639,6 +28807,7 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     isPublic?: BoolFieldUpdateOperationsInput | boolean
+    publishTargets?: EventUpdatepublishTargetsInput | string[]
   }
 
   export type EventUncheckedUpdateManyInput = {
@@ -28648,6 +28817,7 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     isPublic?: BoolFieldUpdateOperationsInput | boolean
+    publishTargets?: EventUpdatepublishTargetsInput | string[]
   }
 
   export type RoleCreateInput = {
@@ -29163,10 +29333,30 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type PlacementListRelationFilter = {
     every?: PlacementWhereInput
     some?: PlacementWhereInput
     none?: PlacementWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
   }
 
   export type PlacementOrderByRelationAggregateInput = {
@@ -29182,12 +29372,15 @@ export namespace Prisma {
     emergencyContact?: SortOrder
     experienceLevel?: SortOrder
     capabilityFlags?: SortOrder
+    maxKittens?: SortOrder
+    photoUrl?: SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
   }
 
   export type FosterAvgOrderByAggregateInput = {
     id?: SortOrder
+    maxKittens?: SortOrder
   }
 
   export type FosterMaxOrderByAggregateInput = {
@@ -29199,6 +29392,8 @@ export namespace Prisma {
     emergencyContact?: SortOrder
     experienceLevel?: SortOrder
     capabilityFlags?: SortOrder
+    maxKittens?: SortOrder
+    photoUrl?: SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
   }
@@ -29212,12 +29407,33 @@ export namespace Prisma {
     emergencyContact?: SortOrder
     experienceLevel?: SortOrder
     capabilityFlags?: SortOrder
+    maxKittens?: SortOrder
+    photoUrl?: SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
   }
 
   export type FosterSumOrderByAggregateInput = {
     id?: SortOrder
+    maxKittens?: SortOrder
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type IntNullableFilter<$PrismaModel = never> = {
@@ -29242,24 +29458,17 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
-  export type StringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
   export type BoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
   }
 
   export type LitterNullableScalarRelationFilter = {
@@ -29320,11 +29529,6 @@ export namespace Prisma {
     none?: TransactionWhereInput
   }
 
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
-  }
-
   export type WeightLogOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -29378,6 +29582,7 @@ export namespace Prisma {
     internalNotes?: SortOrder
     isListedOnWebsite?: SortOrder
     websiteFeaturedComment?: SortOrder
+    publishTargets?: SortOrder
     currentFosterId?: SortOrder
     createdAt?: SortOrder
   }
@@ -29474,24 +29679,6 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
@@ -29511,6 +29698,7 @@ export namespace Prisma {
     content?: SortOrder
     isPublic?: SortOrder
     platformList?: SortOrder
+    publishTargets?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -29901,6 +30089,7 @@ export namespace Prisma {
     id?: SortOrder
     type?: SortOrder
     status?: SortOrder
+    kittenOfInterest?: SortOrder
     formData?: SortOrder
     createdAt?: SortOrder
   }
@@ -29913,6 +30102,7 @@ export namespace Prisma {
     id?: SortOrder
     type?: SortOrder
     status?: SortOrder
+    kittenOfInterest?: SortOrder
     formData?: SortOrder
     createdAt?: SortOrder
   }
@@ -29921,6 +30111,7 @@ export namespace Prisma {
     id?: SortOrder
     type?: SortOrder
     status?: SortOrder
+    kittenOfInterest?: SortOrder
     formData?: SortOrder
     createdAt?: SortOrder
   }
@@ -29935,6 +30126,7 @@ export namespace Prisma {
     slug?: SortOrder
     body?: SortOrder
     category?: SortOrder
+    publishTargets?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -29971,6 +30163,7 @@ export namespace Prisma {
     location?: SortOrder
     description?: SortOrder
     isPublic?: SortOrder
+    publishTargets?: SortOrder
   }
 
   export type EventAvgOrderByAggregateInput = {
@@ -30353,6 +30546,10 @@ export namespace Prisma {
     connect?: PlacementWhereUniqueInput | PlacementWhereUniqueInput[]
   }
 
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
   export type KittenUpdateManyWithoutCurrentFosterNestedInput = {
     create?: XOR<KittenCreateWithoutCurrentFosterInput, KittenUncheckedCreateWithoutCurrentFosterInput> | KittenCreateWithoutCurrentFosterInput[] | KittenUncheckedCreateWithoutCurrentFosterInput[]
     connectOrCreate?: KittenCreateOrConnectWithoutCurrentFosterInput | KittenCreateOrConnectWithoutCurrentFosterInput[]
@@ -30407,6 +30604,10 @@ export namespace Prisma {
     update?: PlacementUpdateWithWhereUniqueWithoutFosterInput | PlacementUpdateWithWhereUniqueWithoutFosterInput[]
     updateMany?: PlacementUpdateManyWithWhereWithoutFosterInput | PlacementUpdateManyWithWhereWithoutFosterInput[]
     deleteMany?: PlacementScalarWhereInput | PlacementScalarWhereInput[]
+  }
+
+  export type KittenCreatepublishTargetsInput = {
+    set: string[]
   }
 
   export type LitterCreateNestedOneWithoutKittensInput = {
@@ -30551,12 +30752,13 @@ export namespace Prisma {
     set?: Date | string | null
   }
 
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
-  }
-
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
+  }
+
+  export type KittenUpdatepublishTargetsInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type LitterUpdateOneWithoutKittensNestedInput = {
@@ -30839,10 +31041,19 @@ export namespace Prisma {
     deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
   }
 
+  export type UpdateCreatepublishTargetsInput = {
+    set: string[]
+  }
+
   export type KittenCreateNestedOneWithoutUpdatesInput = {
     create?: XOR<KittenCreateWithoutUpdatesInput, KittenUncheckedCreateWithoutUpdatesInput>
     connectOrCreate?: KittenCreateOrConnectWithoutUpdatesInput
     connect?: KittenWhereUniqueInput
+  }
+
+  export type UpdateUpdatepublishTargetsInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type KittenUpdateOneRequiredWithoutUpdatesNestedInput = {
@@ -30971,6 +31182,24 @@ export namespace Prisma {
     upsert?: KittenUpsertWithoutDocumentsInput
     connect?: KittenWhereUniqueInput
     update?: XOR<XOR<KittenUpdateToOneWithWhereWithoutDocumentsInput, KittenUpdateWithoutDocumentsInput>, KittenUncheckedUpdateWithoutDocumentsInput>
+  }
+
+  export type ContentCreatepublishTargetsInput = {
+    set: string[]
+  }
+
+  export type ContentUpdatepublishTargetsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type EventCreatepublishTargetsInput = {
+    set: string[]
+  }
+
+  export type EventUpdatepublishTargetsInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type UserCreateNestedManyWithoutRoleInput = {
@@ -31251,6 +31480,37 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
   export type NestedIntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -31271,20 +31531,6 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type NestedBoolFilter<$PrismaModel = never> = {
@@ -31333,23 +31579,6 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
@@ -31393,6 +31622,7 @@ export namespace Prisma {
     internalNotes?: string
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
     createdAt?: Date | string
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
     placements?: PlacementCreateNestedManyWithoutKittenInput
@@ -31426,6 +31656,7 @@ export namespace Prisma {
     internalNotes?: string
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
     currentFosterId?: number | null
     createdAt?: Date | string
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
@@ -31489,6 +31720,7 @@ export namespace Prisma {
     internalNotes?: StringFilter<"Kitten"> | string
     isListedOnWebsite?: BoolFilter<"Kitten"> | boolean
     websiteFeaturedComment?: StringFilter<"Kitten"> | string
+    publishTargets?: StringNullableListFilter<"Kitten">
     currentFosterId?: IntNullableFilter<"Kitten"> | number | null
     createdAt?: DateTimeFilter<"Kitten"> | Date | string
   }
@@ -31512,6 +31744,7 @@ export namespace Prisma {
     internalNotes?: string
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     placements?: PlacementCreateNestedManyWithoutKittenInput
@@ -31546,6 +31779,7 @@ export namespace Prisma {
     internalNotes?: string
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
     createdAt?: Date | string
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogUncheckedCreateNestedManyWithoutKittenInput
@@ -31666,6 +31900,8 @@ export namespace Prisma {
     emergencyContact?: string
     experienceLevel?: string
     capabilityFlags?: string
+    maxKittens?: number
+    photoUrl?: string | null
     notes?: string
     createdAt?: Date | string
     placements?: PlacementCreateNestedManyWithoutFosterInput
@@ -31680,6 +31916,8 @@ export namespace Prisma {
     emergencyContact?: string
     experienceLevel?: string
     capabilityFlags?: string
+    maxKittens?: number
+    photoUrl?: string | null
     notes?: string
     createdAt?: Date | string
     placements?: PlacementUncheckedCreateNestedManyWithoutFosterInput
@@ -31905,6 +32143,7 @@ export namespace Prisma {
     content: string
     isPublic?: boolean
     platformList?: string
+    publishTargets?: UpdateCreatepublishTargetsInput | string[]
     createdAt?: Date | string
   }
 
@@ -31913,6 +32152,7 @@ export namespace Prisma {
     content: string
     isPublic?: boolean
     platformList?: string
+    publishTargets?: UpdateCreatepublishTargetsInput | string[]
     createdAt?: Date | string
   }
 
@@ -31998,6 +32238,8 @@ export namespace Prisma {
     emergencyContact?: StringFieldUpdateOperationsInput | string
     experienceLevel?: StringFieldUpdateOperationsInput | string
     capabilityFlags?: StringFieldUpdateOperationsInput | string
+    maxKittens?: IntFieldUpdateOperationsInput | number
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUpdateManyWithoutFosterNestedInput
@@ -32012,6 +32254,8 @@ export namespace Prisma {
     emergencyContact?: StringFieldUpdateOperationsInput | string
     experienceLevel?: StringFieldUpdateOperationsInput | string
     capabilityFlags?: StringFieldUpdateOperationsInput | string
+    maxKittens?: IntFieldUpdateOperationsInput | number
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUncheckedUpdateManyWithoutFosterNestedInput
@@ -32243,6 +32487,7 @@ export namespace Prisma {
     content?: StringFilter<"Update"> | string
     isPublic?: BoolFilter<"Update"> | boolean
     platformList?: StringFilter<"Update"> | string
+    publishTargets?: StringNullableListFilter<"Update">
     createdAt?: DateTimeFilter<"Update"> | Date | string
   }
 
@@ -32295,6 +32540,7 @@ export namespace Prisma {
     internalNotes?: string
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -32329,6 +32575,7 @@ export namespace Prisma {
     internalNotes?: string
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
     currentFosterId?: number | null
     createdAt?: Date | string
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
@@ -32376,6 +32623,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -32410,6 +32658,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
@@ -32441,6 +32690,7 @@ export namespace Prisma {
     internalNotes?: string
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -32475,6 +32725,7 @@ export namespace Prisma {
     internalNotes?: string
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
     currentFosterId?: number | null
     createdAt?: Date | string
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
@@ -32522,6 +32773,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -32556,6 +32808,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
@@ -32587,6 +32840,7 @@ export namespace Prisma {
     internalNotes?: string
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -32621,6 +32875,7 @@ export namespace Prisma {
     internalNotes?: string
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
     currentFosterId?: number | null
     createdAt?: Date | string
     weightLogs?: WeightLogUncheckedCreateNestedManyWithoutKittenInput
@@ -32646,6 +32901,8 @@ export namespace Prisma {
     emergencyContact?: string
     experienceLevel?: string
     capabilityFlags?: string
+    maxKittens?: number
+    photoUrl?: string | null
     notes?: string
     createdAt?: Date | string
     currentKittens?: KittenCreateNestedManyWithoutCurrentFosterInput
@@ -32660,6 +32917,8 @@ export namespace Prisma {
     emergencyContact?: string
     experienceLevel?: string
     capabilityFlags?: string
+    maxKittens?: number
+    photoUrl?: string | null
     notes?: string
     createdAt?: Date | string
     currentKittens?: KittenUncheckedCreateNestedManyWithoutCurrentFosterInput
@@ -32700,6 +32959,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -32734,6 +32994,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     weightLogs?: WeightLogUncheckedUpdateManyWithoutKittenNestedInput
@@ -32765,6 +33026,8 @@ export namespace Prisma {
     emergencyContact?: StringFieldUpdateOperationsInput | string
     experienceLevel?: StringFieldUpdateOperationsInput | string
     capabilityFlags?: StringFieldUpdateOperationsInput | string
+    maxKittens?: IntFieldUpdateOperationsInput | number
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     currentKittens?: KittenUpdateManyWithoutCurrentFosterNestedInput
@@ -32779,6 +33042,8 @@ export namespace Prisma {
     emergencyContact?: StringFieldUpdateOperationsInput | string
     experienceLevel?: StringFieldUpdateOperationsInput | string
     capabilityFlags?: StringFieldUpdateOperationsInput | string
+    maxKittens?: IntFieldUpdateOperationsInput | number
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     currentKittens?: KittenUncheckedUpdateManyWithoutCurrentFosterNestedInput
@@ -32803,6 +33068,7 @@ export namespace Prisma {
     internalNotes?: string
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -32837,6 +33103,7 @@ export namespace Prisma {
     internalNotes?: string
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
     currentFosterId?: number | null
     createdAt?: Date | string
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
@@ -32884,6 +33151,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -32918,6 +33186,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
@@ -32949,6 +33218,7 @@ export namespace Prisma {
     internalNotes?: string
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -32983,6 +33253,7 @@ export namespace Prisma {
     internalNotes?: string
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
     currentFosterId?: number | null
     createdAt?: Date | string
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
@@ -33030,6 +33301,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -33064,6 +33336,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
@@ -33095,6 +33368,7 @@ export namespace Prisma {
     internalNotes?: string
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -33129,6 +33403,7 @@ export namespace Prisma {
     internalNotes?: string
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
     currentFosterId?: number | null
     createdAt?: Date | string
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
@@ -33176,6 +33451,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -33210,6 +33486,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
@@ -33241,6 +33518,7 @@ export namespace Prisma {
     internalNotes?: string
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -33275,6 +33553,7 @@ export namespace Prisma {
     internalNotes?: string
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
     currentFosterId?: number | null
     createdAt?: Date | string
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
@@ -33322,6 +33601,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -33356,6 +33636,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
@@ -33387,6 +33668,7 @@ export namespace Prisma {
     internalNotes?: string
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -33421,6 +33703,7 @@ export namespace Prisma {
     internalNotes?: string
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
     currentFosterId?: number | null
     createdAt?: Date | string
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
@@ -33468,6 +33751,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -33502,6 +33786,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
@@ -33819,6 +34104,7 @@ export namespace Prisma {
     internalNotes?: string
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -33853,6 +34139,7 @@ export namespace Prisma {
     internalNotes?: string
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
     currentFosterId?: number | null
     createdAt?: Date | string
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
@@ -33900,6 +34187,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -33934,6 +34222,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
@@ -33966,6 +34255,7 @@ export namespace Prisma {
     internalNotes?: string
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
     currentFosterId?: number | null
     createdAt?: Date | string
   }
@@ -33989,6 +34279,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
     placements?: PlacementUpdateManyWithoutKittenNestedInput
@@ -34022,6 +34313,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
@@ -34055,6 +34347,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -34080,6 +34373,7 @@ export namespace Prisma {
     internalNotes?: string
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
     createdAt?: Date | string
   }
 
@@ -34111,6 +34405,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     placements?: PlacementUpdateManyWithoutKittenNestedInput
@@ -34145,6 +34440,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUncheckedUpdateManyWithoutKittenNestedInput
@@ -34178,6 +34474,7 @@ export namespace Prisma {
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -34286,6 +34583,7 @@ export namespace Prisma {
     content: string
     isPublic?: boolean
     platformList?: string
+    publishTargets?: UpdateCreatepublishTargetsInput | string[]
     createdAt?: Date | string
   }
 
@@ -34518,6 +34816,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     platformList?: StringFieldUpdateOperationsInput | string
+    publishTargets?: UpdateUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -34526,6 +34825,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     platformList?: StringFieldUpdateOperationsInput | string
+    publishTargets?: UpdateUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -34534,6 +34834,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     platformList?: StringFieldUpdateOperationsInput | string
+    publishTargets?: UpdateUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

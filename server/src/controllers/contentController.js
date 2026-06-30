@@ -1,4 +1,5 @@
 import prisma from '../lib/prisma.js';
+import { normalizePublishTargets } from '../utils/publishTargets.js';
 
 function slugify(text) {
   return text
@@ -30,7 +31,7 @@ export async function getContentById(req, res, next) {
 
 export async function createContent(req, res, next) {
   try {
-    const { title, slug, body, category } = req.body;
+    const { title, slug, body, category, publishTargets } = req.body;
     if (!title) return res.status(400).json({ error: 'title is required' });
 
     const item = await prisma.content.create({
@@ -39,6 +40,7 @@ export async function createContent(req, res, next) {
         slug: slug || slugify(title),
         body: body ?? '',
         category: category ?? '',
+        publishTargets: normalizePublishTargets(publishTargets),
       },
     });
 
@@ -51,7 +53,7 @@ export async function createContent(req, res, next) {
 export async function updateContent(req, res, next) {
   try {
     const id = Number.parseInt(req.params.id, 10);
-    const { title, slug, body, category } = req.body;
+    const { title, slug, body, category, publishTargets } = req.body;
 
     const item = await prisma.content.update({
       where: { id },
@@ -60,6 +62,7 @@ export async function updateContent(req, res, next) {
         ...(slug !== undefined && { slug }),
         ...(body !== undefined && { body }),
         ...(category !== undefined && { category }),
+        ...(publishTargets !== undefined && { publishTargets: normalizePublishTargets(publishTargets) }),
       },
     });
 

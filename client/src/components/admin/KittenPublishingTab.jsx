@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ExternalLink } from 'lucide-react';
+import PublishingMatrix from '../PublishingMatrix';
 import PhotoGalleryGrid from '../PhotoGalleryGrid';
 import {
   createSocialMediaPost,
@@ -8,12 +9,12 @@ import {
   getFileUrl,
   updateKitten,
 } from '../../services/api';
-
-const SOCIAL_PLATFORMS = [
-  { id: 'Facebook', label: 'Facebook' },
-  { id: 'Instagram', label: 'Instagram' },
-  { id: 'X (Twitter)', label: 'X (Twitter)' },
-];
+import {
+  getPublishPlatformLabel,
+  normalizePublishTargets,
+  resolvePublishTargets,
+  resolveUpdateTargets,
+} from '../../utils/publishTargets';
 
 function formatDate(value) {
   if (!value) return '—';
@@ -26,18 +27,13 @@ function formatDate(value) {
   });
 }
 
-function parsePlatforms(platformList) {
-  if (!platformList) return [];
-  return platformList.split(',').map((p) => p.trim()).filter(Boolean);
-}
-
 function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }) {
   const [publishingForm, setPublishingForm] = useState({
-    isListedOnWebsite: false,
+    publishTargets: [],
     websiteFeaturedComment: '',
   });
   const [socialCaption, setSocialCaption] = useState('');
-  const [selectedPlatforms, setSelectedPlatforms] = useState([]);
+  const [postTargets, setPostTargets] = useState([]);
   const [postHistory, setPostHistory] = useState([]);
   const [savingPublishing, setSavingPublishing] = useState(false);
   const [postingSocial, setPostingSocial] = useState(false);
@@ -46,14 +42,14 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
   useEffect(() => {
     if (!kitten) return;
     setPublishingForm({
-      isListedOnWebsite: Boolean(kitten.isListedOnWebsite),
+      publishTargets: resolvePublishTargets(kitten),
       websiteFeaturedComment: kitten.websiteFeaturedComment || '',
     });
   }, [kitten]);
 
   const loadPostHistory = useCallback(async () => {
     const updates = await fetchKittenUpdates(kittenId);
-    setPostHistory(updates.filter((entry) => entry.platformList));
+    setPostHistory(updates.filter((entry) => resolveUpdateTargets(entry).length > 0));
   }, [kittenId]);
 
   useEffect(() => {
@@ -78,45 +74,27 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
     return items;
   }, [galleryPhotos, kitten?.primaryPhotoUrl]);
 
-  async function handleToggleWebsiteListing() {
-    const nextValue = !publishingForm.isListedOnWebsite;
-    setSavingPublishing(true);
-    setError('');
-    try {
-      const updated = await updateKitten(kittenId, { isListedOnWebsite: nextValue });
-      setKitten(updated);
-      setPublishingForm((prev) => ({ ...prev, isListedOnWebsite: nextValue }));
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setSavingPublishing(false);
-    }
-  }
+  const listedOnWebsite = publishingForm.publishTargets.includes('WEBSITE');
 
-  async function handleSaveWebsiteDetails(event) {
+  async function handleSavePublishingSettings(event) {
     event.preventDefault();
     setSavingPublishing(true);
     setError('');
     try {
       const updated = await updateKitten(kittenId, {
+        publishTargets: publishingForm.publishTargets,
         websiteFeaturedComment: publishingForm.websiteFeaturedComment,
       });
       setKitten(updated);
-      setPublishingForm((prev) => ({
-        ...prev,
+      setPublishingForm({
+        publishTargets: resolvePublishTargets(updated),
         websiteFeaturedComment: updated.websiteFeaturedComment || '',
-      }));
+      });
     } catch (err) {
       setError(err.message);
     } finally {
       setSavingPublishing(false);
     }
-  }
-
-  function togglePlatform(platformId) {
-    setSelectedPlatforms((prev) =>
-      prev.includes(platformId) ? prev.filter((id) => id !== platformId) : [...prev, platformId],
-    );
   }
 
   async function handleSocialPost(event) {
@@ -125,7 +103,7 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
       setError('Write a social media caption before posting.');
       return;
     }
-    if (selectedPlatforms.length === 0) {
+    if (postTargets.length === 0) {
       setError('Select at least one platform.');
       return;
     }
@@ -135,14 +113,14 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
     try {
       await createSocialMediaPost(kittenId, {
         content: socialCaption.trim(),
-        platforms: selectedPlatforms,
+        publishTargets: postTargets,
       });
 
-      const platformLabels = selectedPlatforms.join(' & ');
-      window.alert(`Posted to ${platformLabels}!`);
+      const platformLabels = postTargets.map(getPublishPlatformLabel).join(', ');
+      window.alert(`Scheduled for ${platformLabels}!`);
 
       setSocialCaption('');
-      setSelectedPlatforms([]);
+      setPostTargets([]);
       await loadPostHistory();
     } catch (err) {
       setError(err.message);
@@ -152,7 +130,7 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
   }
 
   const platformSummary = useMemo(
-    () => postHistory.reduce((count, entry) => count + parsePlatforms(entry.platformList).length, 0),
+    () => postHistory.reduce((count, entry) => count + resolveUpdateTargets(entry).length, 0),
     [postHistory],
   );
 
@@ -162,40 +140,23 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
     <div className="space-y-8">
       {error && <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}
 
-      <section className="rounded-xl border border-gray-200 p-5">
-        <h3 className="text-sm font-bold uppercase tracking-wide text-gray-900">Website Visibility</h3>
-        <p className="mt-1 text-sm text-gray-500">
-          Control whether this kitten appears on the public adoption site.
-        </p>
+      <form onSubmit={handleSavePublishingSettings} className="space-y-6">
+        <PublishingMatrix
+          currentTargets={publishingForm.publishTargets}
+          onChange={(targets) =>
+            setPublishingForm((prev) => ({ ...prev, publishTargets: normalizePublishTargets(targets) }))
+          }
+          title="Publishing Matrix"
+          description="Choose exactly where this kitten should be published. Website controls the public adoption profile."
+        />
 
-        <div className="mt-5 flex flex-wrap items-center justify-between gap-4 rounded-lg border border-gray-100 bg-gray-50 p-4">
-          <div>
-            <p className="text-base font-semibold text-gray-900">List on Website</p>
-            <p className="text-sm text-gray-500">
-              {publishingForm.isListedOnWebsite
-                ? 'This kitten is visible on the public site.'
-                : 'Hidden from the public site.'}
-            </p>
-          </div>
-          <button
-            type="button"
-            disabled={savingPublishing}
-            onClick={handleToggleWebsiteListing}
-            className={`relative h-8 w-14 rounded-full transition-colors ${
-              publishingForm.isListedOnWebsite ? 'bg-emerald-600' : 'bg-gray-300'
-            }`}
-            aria-label="Toggle website listing"
-          >
-            <span
-              className={`absolute top-1 h-6 w-6 rounded-full bg-white shadow transition-transform ${
-                publishingForm.isListedOnWebsite ? 'left-7' : 'left-1'
-              }`}
-            />
-          </button>
-        </div>
+        <section className="rounded-xl border border-gray-200 p-5">
+          <h3 className="text-sm font-bold uppercase tracking-wide text-gray-900">Website Details</h3>
+          <p className="mt-1 text-sm text-gray-500">
+            Extra content shown on the public profile when Website is checked above.
+          </p>
 
-        <form onSubmit={handleSaveWebsiteDetails} className="mt-5 space-y-5">
-          <div className="rounded-lg border border-gray-100 bg-gray-50 p-4">
+          <div className="mt-5 rounded-lg border border-gray-100 bg-gray-50 p-4">
             <p className="text-xs font-semibold uppercase text-gray-500">Public Photo Gallery</p>
             <p className="mt-1 text-sm text-gray-600">
               The starred profile photo appears on adoption cards. All photos below are shown on the
@@ -228,7 +189,7 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
             )}
           </div>
 
-          <label className="block">
+          <label className="mt-5 block">
             <span className="text-xs font-semibold uppercase text-gray-500">Website Featured Comment</span>
             <textarea
               rows={3}
@@ -241,15 +202,15 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
             />
           </label>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="mt-5 flex flex-wrap items-center gap-3">
             <button
               type="submit"
               disabled={savingPublishing}
               className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-60"
             >
-              {savingPublishing ? 'Saving...' : 'Save Website Details'}
+              {savingPublishing ? 'Saving...' : 'Save Publishing Settings'}
             </button>
-            {publishingForm.isListedOnWebsite && (
+            {listedOnWebsite && (
               <Link
                 to={`/kittens/${kitten.id}`}
                 target="_blank"
@@ -260,13 +221,13 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
               </Link>
             )}
           </div>
-        </form>
-      </section>
+        </section>
+      </form>
 
       <section className="rounded-xl border border-gray-200 p-5">
         <h3 className="text-sm font-bold uppercase tracking-wide text-gray-900">Social Media Composer</h3>
         <p className="mt-1 text-sm text-gray-500">
-          Compose a caption and log simulated posts. All gallery photos above will be attached when live APIs are connected.
+          Compose a caption and choose the exact platforms for this kitten update.
         </p>
 
         {socialPhotos.length > 0 && (
@@ -280,27 +241,18 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
               rows={5}
               value={socialCaption}
               onChange={(e) => setSocialCaption(e.target.value)}
-              placeholder="Write a catchy caption for Facebook, Instagram, or X..."
+              placeholder="Write a catchy caption for your selected platforms..."
               className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
             />
           </label>
 
-          <fieldset>
-            <legend className="text-xs font-semibold uppercase text-gray-500">Platforms</legend>
-            <div className="mt-2 flex flex-wrap gap-4">
-              {SOCIAL_PLATFORMS.map((platform) => (
-                <label key={platform.id} className="flex items-center gap-2 text-sm text-gray-700">
-                  <input
-                    type="checkbox"
-                    checked={selectedPlatforms.includes(platform.id)}
-                    onChange={() => togglePlatform(platform.id)}
-                    className="rounded border-gray-300"
-                  />
-                  {platform.label}
-                </label>
-              ))}
-            </div>
-          </fieldset>
+          <PublishingMatrix
+            currentTargets={postTargets}
+            onChange={setPostTargets}
+            title="Post Destinations"
+            description="Select every account where this update should be published."
+            compact
+          />
 
           <button
             type="submit"
@@ -347,12 +299,12 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex flex-wrap gap-1.5">
-                        {parsePlatforms(entry.platformList).map((platform) => (
+                        {resolveUpdateTargets(entry).map((platform) => (
                           <span
                             key={`${entry.id}-${platform}`}
                             className="inline-flex rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-700"
                           >
-                            {platform}
+                            {getPublishPlatformLabel(platform)}
                           </span>
                         ))}
                       </div>

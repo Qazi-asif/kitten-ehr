@@ -137,6 +137,8 @@ exports.Prisma.FosterScalarFieldEnum = {
   emergencyContact: 'emergencyContact',
   experienceLevel: 'experienceLevel',
   capabilityFlags: 'capabilityFlags',
+  maxKittens: 'maxKittens',
+  photoUrl: 'photoUrl',
   notes: 'notes',
   createdAt: 'createdAt'
 };
@@ -162,6 +164,7 @@ exports.Prisma.KittenScalarFieldEnum = {
   internalNotes: 'internalNotes',
   isListedOnWebsite: 'isListedOnWebsite',
   websiteFeaturedComment: 'websiteFeaturedComment',
+  publishTargets: 'publishTargets',
   currentFosterId: 'currentFosterId',
   createdAt: 'createdAt'
 };
@@ -172,6 +175,7 @@ exports.Prisma.UpdateScalarFieldEnum = {
   content: 'content',
   isPublic: 'isPublic',
   platformList: 'platformList',
+  publishTargets: 'publishTargets',
   createdAt: 'createdAt'
 };
 
@@ -260,6 +264,7 @@ exports.Prisma.ApplicationScalarFieldEnum = {
   id: 'id',
   type: 'type',
   status: 'status',
+  kittenOfInterest: 'kittenOfInterest',
   formData: 'formData',
   createdAt: 'createdAt'
 };
@@ -270,6 +275,7 @@ exports.Prisma.ContentScalarFieldEnum = {
   slug: 'slug',
   body: 'body',
   category: 'category',
+  publishTargets: 'publishTargets',
   createdAt: 'createdAt'
 };
 
@@ -279,7 +285,8 @@ exports.Prisma.EventScalarFieldEnum = {
   date: 'date',
   location: 'location',
   description: 'description',
-  isPublic: 'isPublic'
+  isPublic: 'isPublic',
+  publishTargets: 'publishTargets'
 };
 
 exports.Prisma.RoleScalarFieldEnum = {

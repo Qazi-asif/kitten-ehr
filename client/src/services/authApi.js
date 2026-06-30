@@ -7,11 +7,16 @@ export function getAuthToken() {
 }
 
 export function getStoredUser() {
+  if (!getAuthToken()) {
+    return null;
+  }
+
   const raw = localStorage.getItem(USER_KEY);
   if (!raw) return null;
   try {
     return JSON.parse(raw);
   } catch {
+    clearAuthSession();
     return null;
   }
 }
@@ -27,13 +32,24 @@ export function clearAuthSession() {
 }
 
 export async function loginRequest(email, password) {
-  const response = await fetch(`${API_BASE}/auth/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password }),
-  });
+  let response;
+  try {
+    response = await fetch(`${API_BASE}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+  } catch {
+    throw new Error('Cannot reach the API server. Start the backend with: cd server && npm run dev');
+  }
 
-  const data = await response.json();
+  let data = {};
+  try {
+    data = await response.json();
+  } catch {
+    throw new Error('Unexpected response from login server');
+  }
+
   if (!response.ok) {
     throw new Error(data.error || 'Login failed');
   }
@@ -45,16 +61,26 @@ export async function fetchCurrentUser() {
   const token = getAuthToken();
   if (!token) return null;
 
-  const response = await fetch(`${API_BASE}/auth/me`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000);
 
-  if (!response.ok) {
-    clearAuthSession();
-    return null;
+    const response = await fetch(`${API_BASE}/auth/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      clearAuthSession();
+      return null;
+    }
+
+    return response.json();
+  } catch {
+    return undefined;
   }
-
-  return response.json();
 }
 
 export async function authFetch(path, options = {}) {
