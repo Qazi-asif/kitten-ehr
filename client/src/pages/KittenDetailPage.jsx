@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ChevronDown, ExternalLink, Printer } from 'lucide-react';
 import StatusBadge from '../components/admin/StatusBadge';
@@ -28,6 +28,7 @@ import {
   getFileUrl,
   uploadDocument,
   uploadPrimaryPhoto,
+  updateKitten,
 } from '../services/api';
 import { formatKittenAgeShort } from '../utils/kittenAge';
 import { formatKittenAge } from '../utils/kittenImages';
@@ -39,6 +40,22 @@ const TABS = [
   { id: 'vet-visits', label: 'Medical' },
   { id: 'weight', label: 'Weight' },
   { id: 'documents', label: 'Documents' },
+];
+
+const STATUS_OPTIONS = [
+  'In Foster Care',
+  'Available for Adoption',
+  'Adopted',
+  'Medical Hold',
+  'Transferred',
+  'Deceased',
+];
+
+const QUICK_ACTIONS = [
+  { label: 'Mark Available for Adoption', status: 'Available for Adoption' },
+  { label: 'Return to Foster Care', status: 'In Foster Care' },
+  { label: 'Mark Adopted', status: 'Adopted' },
+  { label: 'Set Medical Hold', status: 'Medical Hold' },
 ];
 
 function formatDate(value) {
@@ -58,12 +75,36 @@ function KittenDetailPage() {
   const [uploading, setUploading] = useState(false);
   const [photoUploading, setPhotoUploading] = useState(false);
   const [publicProfile, setPublicProfile] = useState(true);
+  const [showActionsMenu, setShowActionsMenu] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [profileForm, setProfileForm] = useState({});
+  const [notesForm, setNotesForm] = useState({ notes: '', internalNotes: '' });
+  const [savingProfile, setSavingProfile] = useState(false);
+  const [savingNotes, setSavingNotes] = useState(false);
   const [error, setError] = useState(null);
+  const actionsRef = useRef(null);
 
   const loadKitten = useCallback(async () => {
     const data = await fetchKittenById(id);
     setKitten(data);
     setPublicProfile(data.status === 'Available for Adoption');
+    setProfileForm({
+      name: data.name || '',
+      status: data.status || '',
+      breed: data.breed || '',
+      color: data.color || '',
+      sex: data.sex || '',
+      fixedStatus: data.fixedStatus || '',
+      dateOfBirth: data.dateOfBirth ? data.dateOfBirth.slice(0, 10) : '',
+      rescueStory: data.rescueStory || '',
+      fivFelvStatus: data.fivFelvStatus || '',
+      specialNeeds: data.specialNeeds || '',
+      microchipNumber: data.microchipNumber || '',
+    });
+    setNotesForm({
+      notes: data.notes || '',
+      internalNotes: data.internalNotes || '',
+    });
     return data;
   }, [id]);
 
@@ -92,6 +133,74 @@ function KittenDetailPage() {
         setLoading(false);
       });
   }, [id, loadKitten, loadMedical, loadWeights, loadDocuments]);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (actionsRef.current && !actionsRef.current.contains(event.target)) {
+        setShowActionsMenu(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  function handleProfileFieldChange(field, value) {
+    setProfileForm((prev) => ({ ...prev, [field]: value }));
+  }
+
+  async function handleQuickStatus(status) {
+    setShowActionsMenu(false);
+    setError(null);
+    try {
+      const updated = await updateKitten(id, { status });
+      setKitten(updated);
+      setProfileForm((prev) => ({ ...prev, status: updated.status }));
+      setPublicProfile(updated.status === 'Available for Adoption');
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
+  async function handleSaveProfile(event) {
+    event.preventDefault();
+    setSavingProfile(true);
+    setError(null);
+    try {
+      const updated = await updateKitten(id, profileForm);
+      setKitten(updated);
+      setPublicProfile(updated.status === 'Available for Adoption');
+      setEditMode(false);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSavingProfile(false);
+    }
+  }
+
+  async function handleSaveNotes() {
+    setSavingNotes(true);
+    setError(null);
+    try {
+      const updated = await updateKitten(id, notesForm);
+      setKitten(updated);
+      setNotesForm({
+        notes: updated.notes || '',
+        internalNotes: updated.internalNotes || '',
+      });
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSavingNotes(false);
+    }
+  }
+
+  async function handlePublicProfileToggle() {
+    const nextStatus = publicProfile ? 'In Foster Care' : 'Available for Adoption';
+    const updated = await updateKitten(id, { status: nextStatus });
+    setKitten(updated);
+    setProfileForm((prev) => ({ ...prev, status: updated.status }));
+    setPublicProfile(updated.status === 'Available for Adoption');
+  }
 
   async function handleCreateVaccine(formData) {
     setTabLoading(true);
@@ -162,12 +271,40 @@ function KittenDetailPage() {
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
           <Link to="/admin/kittens" className="text-sm font-medium text-brand hover:underline">← Back to Kittens</Link>
           <div className="flex items-center gap-2">
-            <button type="button" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50">
-              Actions
-              <ChevronDown className="h-4 w-4" />
-            </button>
-            <button type="button" className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">
-              Edit
+            <div className="relative" ref={actionsRef}>
+              <button
+                type="button"
+                onClick={() => setShowActionsMenu((open) => !open)}
+                className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50"
+              >
+                Actions
+                <ChevronDown className="h-4 w-4" />
+              </button>
+              {showActionsMenu && (
+                <div className="absolute right-0 z-20 mt-2 w-56 rounded-lg border border-slate-200 bg-white py-1 shadow-lg">
+                  {QUICK_ACTIONS.map((action) => (
+                    <button
+                      key={action.status}
+                      type="button"
+                      onClick={() => handleQuickStatus(action.status)}
+                      className="block w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
+                    >
+                      {action.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <button
+              type="button"
+              onClick={() => setEditMode((mode) => !mode)}
+              className={`rounded-lg border px-4 py-2 text-sm font-semibold ${
+                editMode
+                  ? 'border-brand bg-brand text-white'
+                  : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
+              }`}
+            >
+              {editMode ? 'Cancel Edit' : 'Edit'}
             </button>
             <button
               type="button"
@@ -179,6 +316,8 @@ function KittenDetailPage() {
             </button>
           </div>
         </div>
+
+        {error && <div className="mb-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}
 
         <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[280px_1fr]">
@@ -265,16 +404,82 @@ function KittenDetailPage() {
             {activeTab === 'overview' && (
               <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                 <div className="space-y-6">
-                  <section>
-                    <h2 className="text-sm font-bold uppercase tracking-wide text-slate-900">About {kitten.name}</h2>
-                    <div className="mt-3 rounded-lg border border-slate-100 bg-slate-50 p-4 text-sm leading-relaxed text-slate-600">
-                      {kitten.rescueStory || 'No rescue story recorded yet.'}
-                    </div>
-                  </section>
-                  <section>
-                    <h2 className="text-sm font-bold uppercase tracking-wide text-slate-900">Special Needs / Alerts</h2>
-                    <p className="mt-3 text-sm text-slate-600">{kitten.specialNeeds || 'None'}</p>
-                  </section>
+                  {editMode ? (
+                    <form className="space-y-4" onSubmit={handleSaveProfile}>
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        {[
+                          ['name', 'Name', 'text'],
+                          ['breed', 'Breed', 'text'],
+                          ['color', 'Color', 'text'],
+                          ['sex', 'Sex', 'text'],
+                          ['fixedStatus', 'Fixed Status', 'text'],
+                          ['dateOfBirth', 'Date of Birth', 'date'],
+                          ['fivFelvStatus', 'FIV/FeLV', 'text'],
+                          ['microchipNumber', 'Microchip #', 'text'],
+                        ].map(([field, label, type]) => (
+                          <label key={field} className="block">
+                            <span className="text-xs font-semibold uppercase text-slate-500">{label}</span>
+                            <input
+                              type={type}
+                              value={profileForm[field] || ''}
+                              onChange={(e) => handleProfileFieldChange(field, e.target.value)}
+                              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                            />
+                          </label>
+                        ))}
+                        <label className="block sm:col-span-2">
+                          <span className="text-xs font-semibold uppercase text-slate-500">Status</span>
+                          <select
+                            value={profileForm.status || ''}
+                            onChange={(e) => handleProfileFieldChange('status', e.target.value)}
+                            className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                          >
+                            {STATUS_OPTIONS.map((status) => (
+                              <option key={status} value={status}>{status}</option>
+                            ))}
+                          </select>
+                        </label>
+                      </div>
+                      <label className="block">
+                        <span className="text-xs font-semibold uppercase text-slate-500">Rescue Story</span>
+                        <textarea
+                          rows={4}
+                          value={profileForm.rescueStory || ''}
+                          onChange={(e) => handleProfileFieldChange('rescueStory', e.target.value)}
+                          className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                        />
+                      </label>
+                      <label className="block">
+                        <span className="text-xs font-semibold uppercase text-slate-500">Special Needs</span>
+                        <textarea
+                          rows={2}
+                          value={profileForm.specialNeeds || ''}
+                          onChange={(e) => handleProfileFieldChange('specialNeeds', e.target.value)}
+                          className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                        />
+                      </label>
+                      <button
+                        type="submit"
+                        disabled={savingProfile}
+                        className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-60"
+                      >
+                        {savingProfile ? 'Saving...' : 'Save Profile'}
+                      </button>
+                    </form>
+                  ) : (
+                    <>
+                      <section>
+                        <h2 className="text-sm font-bold uppercase tracking-wide text-slate-900">About {kitten.name}</h2>
+                        <div className="mt-3 rounded-lg border border-slate-100 bg-slate-50 p-4 text-sm leading-relaxed text-slate-600">
+                          {kitten.rescueStory || 'No rescue story recorded yet.'}
+                        </div>
+                      </section>
+                      <section>
+                        <h2 className="text-sm font-bold uppercase tracking-wide text-slate-900">Special Needs / Alerts</h2>
+                        <p className="mt-3 text-sm text-slate-600">{kitten.specialNeeds || 'None'}</p>
+                      </section>
+                    </>
+                  )}
                   <KittenPrimaryPhotoForm
                     kitten={kitten}
                     currentPhotoUrl={kitten.primaryPhotoUrl}
@@ -289,7 +494,7 @@ function KittenDetailPage() {
                       <h2 className="text-sm font-bold text-slate-900">Public Profile</h2>
                       <button
                         type="button"
-                        onClick={() => setPublicProfile((v) => !v)}
+                        onClick={handlePublicProfileToggle}
                         className={`relative h-6 w-11 rounded-full transition-colors ${publicProfile ? 'bg-brand' : 'bg-slate-300'}`}
                       >
                         <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${publicProfile ? 'left-5' : 'left-0.5'}`} />
@@ -326,12 +531,31 @@ function KittenDetailPage() {
                   <section>
                     <h2 className="text-sm font-bold uppercase tracking-wide text-slate-900">General Notes</h2>
                     <textarea
-                      readOnly
-                      value={kitten.notes || ''}
-                      placeholder="No general notes yet."
-                      rows={3}
-                      className="mt-3 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-600"
+                      value={notesForm.notes}
+                      onChange={(e) => setNotesForm((prev) => ({ ...prev, notes: e.target.value }))}
+                      placeholder="Add general care notes for this kitten..."
+                      rows={4}
+                      className="mt-3 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700"
                     />
+                  </section>
+
+                  <section>
+                    <h2 className="text-sm font-bold uppercase tracking-wide text-slate-900">Internal Notes (Private)</h2>
+                    <textarea
+                      value={notesForm.internalNotes}
+                      onChange={(e) => setNotesForm((prev) => ({ ...prev, internalNotes: e.target.value }))}
+                      placeholder="Staff-only notes..."
+                      rows={4}
+                      className="mt-3 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleSaveNotes}
+                      disabled={savingNotes}
+                      className="mt-3 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-60"
+                    >
+                      {savingNotes ? 'Saving...' : 'Save Notes'}
+                    </button>
                   </section>
                 </div>
               </div>

@@ -67,7 +67,9 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
   const [photoUploading, setPhotoUploading] = useState(false);
   const [publicProfile, setPublicProfile] = useState(true);
   const [profileForm, setProfileForm] = useState({});
+  const [notesForm, setNotesForm] = useState({ notes: '', internalNotes: '' });
   const [savingProfile, setSavingProfile] = useState(false);
+  const [savingNotes, setSavingNotes] = useState(false);
   const [updates, setUpdates] = useState([]);
   const [updateForm, setUpdateForm] = useState({ content: '', isPublic: false });
   const [savingUpdate, setSavingUpdate] = useState(false);
@@ -88,6 +90,10 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
       rescueStory: data.rescueStory || '',
       fivFelvStatus: data.fivFelvStatus || '',
       specialNeeds: data.specialNeeds || '',
+    });
+    setNotesForm({
+      notes: data.notes || '',
+      internalNotes: data.internalNotes || '',
     });
     return data;
   }, [kittenId]);
@@ -138,6 +144,20 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
       setPublicProfile(updated.status === 'Available for Adoption');
     } finally {
       setSavingProfile(false);
+    }
+  }
+
+  async function handleSaveNotes() {
+    setSavingNotes(true);
+    try {
+      const updated = await updateKitten(kittenId, notesForm);
+      setKitten(updated);
+      setNotesForm({
+        notes: updated.notes || '',
+        internalNotes: updated.internalNotes || '',
+      });
+    } finally {
+      setSavingNotes(false);
     }
   }
 
@@ -489,12 +509,32 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
             <div className="space-y-4">
               <section>
                 <h3 className="text-xs font-bold uppercase text-gray-700">General Notes</h3>
-                <textarea readOnly rows={4} placeholder="No general notes yet." className="mt-2 w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-600" />
+                <textarea
+                  rows={4}
+                  value={notesForm.notes}
+                  onChange={(e) => setNotesForm((prev) => ({ ...prev, notes: e.target.value }))}
+                  placeholder="Add general care notes for this kitten..."
+                  className="mt-2 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-700"
+                />
               </section>
               <section>
                 <h3 className="text-xs font-bold uppercase text-gray-700">Internal Notes (Private)</h3>
-                <textarea readOnly rows={4} placeholder="Private staff notes." className="mt-2 w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-600" />
+                <textarea
+                  rows={4}
+                  value={notesForm.internalNotes}
+                  onChange={(e) => setNotesForm((prev) => ({ ...prev, internalNotes: e.target.value }))}
+                  placeholder="Staff-only notes..."
+                  className="mt-2 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-700"
+                />
               </section>
+              <button
+                type="button"
+                onClick={handleSaveNotes}
+                disabled={savingNotes}
+                className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-60"
+              >
+                {savingNotes ? 'Saving...' : 'Save Notes'}
+              </button>
             </div>
           )}
         </div>

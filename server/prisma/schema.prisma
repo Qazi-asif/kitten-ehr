@@ -50,6 +50,8 @@ model Kitten {
   primaryPhotoUrl String?
   intakeDate      DateTime?
   intakeSource    String           @default("")
+  notes           String           @default("")
+  internalNotes   String           @default("")
   currentFosterId Int?
   currentFoster   Foster?          @relation("CurrentFoster", fields: [currentFosterId], references: [id], onDelete: SetNull)
   createdAt       DateTime         @default(now())

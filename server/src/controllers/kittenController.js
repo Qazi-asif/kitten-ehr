@@ -123,6 +123,8 @@ export async function updateKitten(req, res, next) {
       microchipNumber,
       intakeDate,
       intakeSource,
+      notes,
+      internalNotes,
       primaryPhotoUrl,
       litterId,
       currentFosterId,
@@ -146,6 +148,8 @@ export async function updateKitten(req, res, next) {
     if (microchipNumber !== undefined) data.microchipNumber = microchipNumber;
     if (intakeDate !== undefined) data.intakeDate = intakeDate ? new Date(intakeDate) : null;
     if (intakeSource !== undefined) data.intakeSource = intakeSource;
+    if (notes !== undefined) data.notes = notes;
+    if (internalNotes !== undefined) data.internalNotes = internalNotes;
     if (primaryPhotoUrl !== undefined) data.primaryPhotoUrl = primaryPhotoUrl;
     if (litterId !== undefined) {
       data.litterId = litterId ? Number.parseInt(litterId, 10) : null;
