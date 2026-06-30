@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Plus, Trash2 } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 import {
   createTransaction,
   deleteTransaction,
@@ -33,7 +34,15 @@ function formatCurrency(amount) {
   })}`;
 }
 
+function formatTransactionDate(value) {
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return '—';
+  return parsed.toLocaleDateString(undefined, { timeZone: 'UTC' });
+}
+
 function FinancePage() {
+  const { hasPermission } = useAuth();
+  const canManage = hasPermission('donations.manage');
   const [stats, setStats] = useState({
     income: { month: 0 },
     expenses: { month: 0 },
@@ -45,6 +54,7 @@ function FinancePage() {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [loading, setLoading] = useState(true);
+  const [transactionsLoading, setTransactionsLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
@@ -61,12 +71,17 @@ function FinancePage() {
   }, []);
 
   const loadTransactions = useCallback(async () => {
-    const data = await fetchTransactions({
-      type: typeFilter || undefined,
-      startDate: startDate || undefined,
-      endDate: endDate || undefined,
-    });
-    setTransactions(data);
+    setTransactionsLoading(true);
+    try {
+      const data = await fetchTransactions({
+        type: typeFilter || undefined,
+        startDate: startDate || undefined,
+        endDate: endDate || undefined,
+      });
+      setTransactions(data);
+    } finally {
+      setTransactionsLoading(false);
+    }
   }, [typeFilter, startDate, endDate]);
 
   const loadInitial = useCallback(async () => {
@@ -120,6 +135,8 @@ function FinancePage() {
   }
 
   async function handleDelete(id) {
+    if (!window.confirm('Delete this transaction? This cannot be undone.')) return;
+
     setError('');
     try {
       await deleteTransaction(id);
@@ -136,14 +153,16 @@ function FinancePage() {
           <h1 className="text-2xl font-bold text-slate-900">Finance</h1>
           <p className="mt-1 text-sm text-slate-500">Track rescue income, expenses, and monthly balance.</p>
         </div>
-        <button
-          type="button"
-          onClick={() => setShowForm(true)}
-          className="inline-flex items-center gap-2 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark"
-        >
-          <Plus className="h-4 w-4" />
-          Add Transaction
-        </button>
+        {canManage && (
+          <button
+            type="button"
+            onClick={() => setShowForm(true)}
+            className="inline-flex items-center gap-2 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark"
+          >
+            <Plus className="h-4 w-4" />
+            Add Transaction
+          </button>
+        )}
       </div>
 
       {error && <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}
@@ -202,10 +221,9 @@ function FinancePage() {
         </div>
       </div>
 
-      {loading ? (
-        <p className="text-sm text-slate-500">Loading transactions...</p>
-      ) : (
-        <div className="overflow-hidden rounded-xl border border-slate-100 bg-white shadow-sm">
+      {loading && <p className="text-sm text-slate-500">Loading finance summary...</p>}
+
+      <div className="overflow-hidden rounded-xl border border-slate-100 bg-white shadow-sm">
           <table className="min-w-full divide-y divide-slate-100">
             <thead className="bg-slate-50 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
               <tr>
@@ -215,20 +233,26 @@ function FinancePage() {
                 <th className="px-4 py-3">Kitten</th>
                 <th className="px-4 py-3">Amount</th>
                 <th className="px-4 py-3">Description</th>
-                <th className="px-4 py-3">Actions</th>
+                {canManage && <th className="px-4 py-3">Actions</th>}
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 text-sm">
-              {transactions.length === 0 ? (
+              {transactionsLoading ? (
                 <tr>
-                  <td colSpan={7} className="px-4 py-8 text-center text-slate-500">
+                  <td colSpan={canManage ? 7 : 6} className="px-4 py-8 text-center text-slate-500">
+                    Loading transactions...
+                  </td>
+                </tr>
+              ) : transactions.length === 0 ? (
+                <tr>
+                  <td colSpan={canManage ? 7 : 6} className="px-4 py-8 text-center text-slate-500">
                     No transactions found.
                   </td>
                 </tr>
               ) : (
                 transactions.map((tx) => (
                   <tr key={tx.id} className="hover:bg-slate-50">
-                    <td className="px-4 py-3 text-slate-600">{new Date(tx.date).toLocaleDateString()}</td>
+                    <td className="px-4 py-3 text-slate-600">{formatTransactionDate(tx.date)}</td>
                     <td className="px-4 py-3">
                       <span
                         className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${
@@ -244,25 +268,26 @@ function FinancePage() {
                     <td className="px-4 py-3 text-slate-600">{tx.kitten?.name || '—'}</td>
                     <td className="px-4 py-3 font-semibold text-slate-900">{formatCurrency(tx.amount)}</td>
                     <td className="px-4 py-3 text-slate-600">{tx.description || '—'}</td>
-                    <td className="px-4 py-3">
-                      <button
-                        type="button"
-                        onClick={() => handleDelete(tx.id)}
-                        className="inline-flex items-center gap-1 text-red-600 hover:underline"
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                        Delete
-                      </button>
-                    </td>
+                    {canManage && (
+                      <td className="px-4 py-3">
+                        <button
+                          type="button"
+                          onClick={() => handleDelete(tx.id)}
+                          className="inline-flex items-center gap-1 text-red-600 hover:underline"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                          Delete
+                        </button>
+                      </td>
+                    )}
                   </tr>
                 ))
               )}
             </tbody>
           </table>
         </div>
-      )}
 
-      {showForm && (
+      {showForm && canManage && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
           <form onSubmit={handleSubmit} className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl bg-white p-6 shadow-xl">
             <h2 className="text-lg font-bold text-slate-900">Add Transaction</h2>

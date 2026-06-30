@@ -134,3 +134,28 @@ export async function getPublicKittenUpdates(req, res, next) {
     next(error);
   }
 }
+
+export async function getPublicSettings(_req, res, next) {
+  try {
+    let settings = await prisma.settings.findUnique({ where: { id: 1 } });
+
+    if (!settings) {
+      settings = await prisma.settings.create({
+        data: {
+          id: 1,
+          orgName: 'Pawsitive Transformations',
+          missionStatement: '',
+          defaultDonationAmount: 50,
+          amazonWishlistUrl: '',
+          chewyWishlistUrl: '',
+          facebookUrl: '',
+          instagramUrl: '',
+        },
+      });
+    }
+
+    res.json(settings);
+  } catch (error) {
+    next(error);
+  }
+}

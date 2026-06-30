@@ -43,10 +43,19 @@ export async function updateSettings(req, res, next) {
 
     const data = {};
 
-    if (orgName !== undefined) data.orgName = orgName;
+    if (orgName !== undefined) {
+      if (typeof orgName !== 'string' || !orgName.trim()) {
+        return res.status(400).json({ error: 'orgName cannot be empty' });
+      }
+      data.orgName = orgName.trim();
+    }
     if (missionStatement !== undefined) data.missionStatement = missionStatement;
     if (defaultDonationAmount !== undefined) {
-      data.defaultDonationAmount = Number.parseInt(defaultDonationAmount, 10);
+      const parsed = Number.parseInt(defaultDonationAmount, 10);
+      if (Number.isNaN(parsed) || parsed < 1) {
+        return res.status(400).json({ error: 'defaultDonationAmount must be a positive integer' });
+      }
+      data.defaultDonationAmount = parsed;
     }
     if (amazonWishlistUrl !== undefined) data.amazonWishlistUrl = amazonWishlistUrl;
     if (chewyWishlistUrl !== undefined) data.chewyWishlistUrl = chewyWishlistUrl;

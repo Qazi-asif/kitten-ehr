@@ -35,9 +35,7 @@ export function fetchPublicEvents() {
 }
 
 export async function fetchPublicSettings() {
-  const response = await publicFetch('/settings');
-  if (!response.ok) throw new Error('Request failed');
-  return response.json();
+  return publicRequest('/settings');
 }
 
 export async function submitApplication(type, formData) {

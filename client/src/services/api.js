@@ -7,6 +7,15 @@ export async function adminFetch(path, options = {}) {
   return authFetch(path, options);
 }
 
+async function readApiError(response, fallback) {
+  try {
+    const data = await response.json();
+    return data.error || fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 export async function publicFetch(path, options = {}) {
   const headers = { ...(options.headers || {}) };
 
@@ -304,7 +313,7 @@ export async function updateSettings(data) {
     method: 'PATCH',
     body: JSON.stringify(data),
   });
-  if (!response.ok) throw new Error('Failed to update settings');
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to update settings'));
   return response.json();
 }
 
@@ -330,11 +339,11 @@ export async function createTransaction(data) {
     method: 'POST',
     body: JSON.stringify(data),
   });
-  if (!response.ok) throw new Error('Failed to create transaction');
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to create transaction'));
   return response.json();
 }
 
 export async function deleteTransaction(id) {
   const response = await adminFetch(`/transactions/${id}`, { method: 'DELETE' });
-  if (!response.ok) throw new Error('Failed to delete transaction');
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to delete transaction'));
 }

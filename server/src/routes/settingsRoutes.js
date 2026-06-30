@@ -4,7 +4,7 @@ import { requireAuth, requirePermission } from '../middleware/authMiddleware.js'
 
 const router = Router();
 
-router.get('/', getSettings);
+router.get('/', requireAuth, getSettings);
 router.patch('/', requireAuth, requirePermission('settings.manage'), updateSettings);
 
 export default router;

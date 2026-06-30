@@ -7,6 +7,7 @@ import {
   getPublicKittenById,
   getPublicKittenUpdates,
   getPublicKittens,
+  getPublicSettings,
   getPublicStats,
 } from '../controllers/publicController.js';
 
@@ -16,6 +17,7 @@ router.get('/kittens', getPublicKittens);
 router.get('/kittens/:id/updates', getPublicKittenUpdates);
 router.get('/kittens/:id', getPublicKittenById);
 router.get('/stats', getPublicStats);
+router.get('/settings', getPublicSettings);
 router.get('/content', getPublicContent);
 router.get('/content/:slug', getPublicContentBySlug);
 router.get('/events', getPublicEvents);

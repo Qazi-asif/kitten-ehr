@@ -21,17 +21,17 @@ import {
 import { useAuth } from '../../context/AuthContext';
 
 const navItems = [
-  { label: 'Dashboard', icon: LayoutDashboard, path: '/admin' },
-  { label: 'Kittens', icon: Cat, path: '/admin/kittens' },
-  { label: 'Litters', icon: Package, path: '/admin/litters' },
-  { label: 'Fosters', icon: Users, path: '/admin/fosters' },
-  { label: 'Applications', icon: ClipboardList, path: '/admin/applications' },
-  { label: 'Calendar', icon: Calendar, path: '/admin/calendar' },
-  { label: 'Finance', icon: DollarSign, path: '/admin/finance' },
-  { label: 'Sponsorships', icon: Heart, path: '/admin/sponsorships' },
-  { label: 'Website', icon: Globe, path: '/admin/content' },
+  { label: 'Dashboard', icon: LayoutDashboard, path: '/admin', permission: 'dashboard.view' },
+  { label: 'Kittens', icon: Cat, path: '/admin/kittens', permission: 'kittens.view' },
+  { label: 'Litters', icon: Package, path: '/admin/litters', permission: 'litters.view' },
+  { label: 'Fosters', icon: Users, path: '/admin/fosters', permission: 'fosters.view' },
+  { label: 'Applications', icon: ClipboardList, path: '/admin/applications', permission: 'applications.view' },
+  { label: 'Calendar', icon: Calendar, path: '/admin/calendar', permission: 'events.view' },
+  { label: 'Finance', icon: DollarSign, path: '/admin/finance', permission: 'donations.view' },
+  { label: 'Sponsorships', icon: Heart, path: '/admin/sponsorships', permission: 'sponsorships.view' },
+  { label: 'Website', icon: Globe, path: '/admin/content', permission: 'content.view' },
   { label: 'Social Media', icon: Share2, path: '/admin/social' },
-  { label: 'Reports', icon: BarChart3, path: '/admin/reports' },
+  { label: 'Reports', icon: BarChart3, path: '/admin/reports', permission: 'reports.view' },
   { label: 'Settings', icon: Settings, path: '/admin/settings' },
 ];
 
@@ -58,8 +58,16 @@ function getPageMeta(pathname) {
 function AdminLayout() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { user, logout, hasPermission, hasAnyPermission } = useAuth();
   const { title, subtitle } = getPageMeta(location.pathname);
+
+  const visibleNavItems = navItems.filter((item) => {
+    if (item.path === '/admin/settings') {
+      return hasAnyPermission(['users.view', 'roles.manage', 'settings.manage']);
+    }
+    if (item.permission) return hasPermission(item.permission);
+    return true;
+  });
 
   function isActive(path) {
     if (path === '/admin') return location.pathname === '/admin';
@@ -88,7 +96,7 @@ function AdminLayout() {
 
         <nav className="flex-1 overflow-y-auto px-3 py-4">
           <ul className="space-y-0.5">
-            {navItems.map(({ label, icon: Icon, path }) => (
+            {visibleNavItems.map(({ label, icon: Icon, path }) => (
               <li key={label}>
                 <Link
                   to={path}

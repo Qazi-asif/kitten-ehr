@@ -95,11 +95,11 @@ function DashboardPage() {
     const [statsData, kittensData, financeData] = await Promise.all([
       fetchDashboardStats(),
       fetchKittens(),
-      fetchFinanceStats().catch(() => ({ income: { month: 0 } })),
+      fetchFinanceStats().catch(() => ({ donations: { month: 0 } })),
     ]);
     setStats({
       ...statsData,
-      donationsThisMonth: financeData.income?.month ?? 0,
+      donationsThisMonth: financeData.donations?.month ?? 0,
     });
     setKittens(kittensData);
   }, []);
