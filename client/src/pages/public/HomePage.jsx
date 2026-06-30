@@ -21,18 +21,21 @@ const rescueNeeds = [
 ];
 
 function HomePage() {
-  const [stats, setStats] = useState({ availableKittens: 0, adoptedKittens: 0, activeFosters: 0 });
+  const [stats, setStats] = useState(null);
   const [featured, setFeatured] = useState([]);
   const [settings, setSettings] = useState({
     orgName: 'Pawsitive Transformations',
     missionStatement:
       'Pawsitive Transformations rescues, fosters, and finds loving homes for kittens in need across our community.',
   });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchPublicStats().then(setStats).catch(() => {});
-    fetchPublicKittens().then((data) => setFeatured(data.slice(0, 6))).catch(() => {});
-    fetchPublicSettings().then(setSettings).catch(() => {});
+    Promise.all([
+      fetchPublicStats().then(setStats).catch(() => setStats({ availableKittens: 0, adoptedKittens: 0, activeFosters: 0 })),
+      fetchPublicKittens().then((data) => setFeatured(data.slice(0, 6))).catch(() => setFeatured([])),
+      fetchPublicSettings().then(setSettings).catch(() => {}),
+    ]).finally(() => setLoading(false));
   }, []);
 
   return (
@@ -85,7 +88,9 @@ function HomePage() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <h2 className="text-center text-2xl font-bold text-slate-900">Featured Cats</h2>
           <div className="mt-8 flex justify-center gap-6 overflow-x-auto pb-4">
-            {featured.length === 0 ? (
+            {loading ? (
+              <p className="text-slate-500">Loading featured cats...</p>
+            ) : featured.length === 0 ? (
               <p className="text-slate-500">New arrivals coming soon!</p>
             ) : (
               featured.map((kitten) => (
@@ -134,7 +139,9 @@ function HomePage() {
             </div>
           </div>
           <p className="mt-6 text-sm text-slate-500">
-            Currently {stats.availableKittens} available for adoption · {stats.activeFosters} active foster homes
+            {loading
+              ? 'Loading live rescue stats...'
+              : `Currently ${stats?.availableKittens ?? 0} available for adoption · ${stats?.activeFosters ?? 0} active foster homes`}
           </p>
           <Link to="/about" className="mt-8 inline-block rounded-md border border-brand px-6 py-2.5 text-sm font-semibold text-brand hover:bg-white">
             Our Story
