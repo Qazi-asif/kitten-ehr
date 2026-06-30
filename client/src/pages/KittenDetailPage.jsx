@@ -15,6 +15,7 @@ import VetVisitForm from '../components/VetVisitForm';
 import VetVisitsTable from '../components/VetVisitsTable';
 import WeightLogForm from '../components/WeightLogForm';
 import WeightLogsTable from '../components/WeightLogsTable';
+import LitterSelect from '../components/admin/LitterSelect';
 import {
   createMedication,
   createVaccine,
@@ -22,6 +23,7 @@ import {
   createWeightLog,
   deleteDocument,
   fetchDocuments,
+  fetchLitters,
   fetchKittenById,
   fetchKittenPhotos,
   fetchMedicalRecords,
@@ -94,6 +96,9 @@ function KittenDetailPage() {
   const [notesForm, setNotesForm] = useState({ notes: '', internalNotes: '' });
   const [savingProfile, setSavingProfile] = useState(false);
   const [savingNotes, setSavingNotes] = useState(false);
+  const [litters, setLitters] = useState([]);
+  const [litterId, setLitterId] = useState('');
+  const [savingLitter, setSavingLitter] = useState(false);
   const [error, setError] = useState(null);
   const actionsRef = useRef(null);
 
@@ -112,7 +117,9 @@ function KittenDetailPage() {
       fivFelvStatus: data.fivFelvStatus || '',
       specialNeeds: data.specialNeeds || '',
       microchipNumber: data.microchipNumber || '',
+      litterId: data.litterId ? String(data.litterId) : '',
     });
+    setLitterId(data.litterId ? String(data.litterId) : '');
     setNotesForm({
       notes: data.notes || '',
       internalNotes: data.internalNotes || '',
@@ -139,6 +146,10 @@ function KittenDetailPage() {
       setKitten((prev) => (prev ? { ...prev, primaryPhotoUrl: data.primaryPhotoUrl } : prev));
     }
   }, [id]);
+
+  useEffect(() => {
+    fetchLitters().then(setLitters).catch(() => setLitters([]));
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -185,13 +196,34 @@ function KittenDetailPage() {
     setSavingProfile(true);
     setError(null);
     try {
-      const updated = await updateKitten(id, profileForm);
+      const updated = await updateKitten(id, {
+        ...profileForm,
+        litterId: litterId ? Number.parseInt(litterId, 10) : null,
+        dateOfBirth: profileForm.dateOfBirth || null,
+      });
       setKitten(updated);
+      setLitterId(updated.litterId ? String(updated.litterId) : '');
       setEditMode(false);
     } catch (err) {
       setError(err.message);
     } finally {
       setSavingProfile(false);
+    }
+  }
+
+  async function handleSaveLitterGroup() {
+    setSavingLitter(true);
+    setError(null);
+    try {
+      const updated = await updateKitten(id, {
+        litterId: litterId ? Number.parseInt(litterId, 10) : null,
+      });
+      setKitten(updated);
+      setLitterId(updated.litterId ? String(updated.litterId) : '');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSavingLitter(false);
     }
   }
 
@@ -405,6 +437,12 @@ function KittenDetailPage() {
 
               <dl className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 <div>
+                  <dt className="text-xs font-semibold uppercase tracking-wide text-slate-400">Litter Group</dt>
+                  <dd className="mt-1 text-sm font-medium text-slate-800">
+                    {kitten.litter?.name || 'None assigned'}
+                  </dd>
+                </div>
+                <div>
                   <dt className="text-xs font-semibold uppercase tracking-wide text-slate-400">Current Foster</dt>
                   <dd className="mt-1 text-sm font-medium text-slate-800">
                     {kitten.currentFoster ? (
@@ -488,6 +526,17 @@ function KittenDetailPage() {
                           </select>
                         </label>
                         <label className="block sm:col-span-2">
+                          <span className="text-xs font-semibold uppercase text-slate-500">Litter Group</span>
+                          <LitterSelect
+                            value={litterId}
+                            litters={litters}
+                            onChange={setLitterId}
+                            onLittersChange={setLitters}
+                            disabled={savingProfile}
+                            className="mt-1"
+                          />
+                        </label>
+                        <label className="block sm:col-span-2">
                           <span className="text-xs font-semibold uppercase text-slate-500">Status</span>
                           <select
                             value={profileForm.status || ''}
@@ -543,6 +592,29 @@ function KittenDetailPage() {
                 </div>
 
                 <div className="space-y-6">
+                  <section className="rounded-xl border border-emerald-200 bg-emerald-50/40 p-4">
+                    <h2 className="text-sm font-bold uppercase tracking-wide text-slate-900">Litter Group</h2>
+                    <p className="mt-1 text-xs text-slate-500">
+                      Link this kitten to others from the same intake.
+                    </p>
+                    <LitterSelect
+                      value={litterId}
+                      litters={litters}
+                      onChange={setLitterId}
+                      onLittersChange={setLitters}
+                      disabled={savingLitter}
+                      className="mt-3"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleSaveLitterGroup}
+                      disabled={savingLitter}
+                      className="mt-3 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-60"
+                    >
+                      {savingLitter ? 'Saving...' : 'Save litter group'}
+                    </button>
+                  </section>
+
                   <section>
                     <h2 className="text-sm font-bold uppercase tracking-wide text-slate-900">Quick Info</h2>
                     <dl className="mt-3 grid grid-cols-2 gap-3">

@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { Plus, Search, X } from 'lucide-react';
 import StatusBadge from '../components/admin/StatusBadge';
 import KittenForm from '../components/KittenForm';
+import LitterGroupsPanel from '../components/admin/LitterGroupsPanel';
 import KittenPhoto from '../components/KittenPhoto';
 import {
   createKitten,
@@ -142,6 +143,14 @@ function KittensPage() {
         </div>
       )}
 
+      <LitterGroupsPanel
+        litters={litters}
+        kittens={kittens}
+        litterFilter={litterFilter}
+        onLittersChange={setLitters}
+        onFilterChange={setLitterFilter}
+      />
+
       <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-5">
           <label className="relative lg:col-span-2">
@@ -166,43 +175,13 @@ function KittensPage() {
             ))}
           </select>
           <select value={litterFilter} onChange={(e) => setLitterFilter(e.target.value)} className="rounded-lg border border-slate-200 px-3 py-2 text-sm">
-            <option value="">Litter</option>
+            <option value="">Litter group</option>
             {litters.map((l) => (
               <option key={l.id} value={l.id}>{l.name}</option>
             ))}
           </select>
         </div>
       </div>
-
-      {litters.length > 0 && (
-        <details className="rounded-xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-          <summary className="cursor-pointer text-sm font-semibold text-slate-700">
-            Litter groups ({litters.length})
-          </summary>
-          <p className="mt-2 text-xs text-slate-500">
-            Use litter groups to link kittens from the same intake. Assign groups when adding or editing a kitten.
-          </p>
-          <ul className="mt-3 divide-y divide-slate-100 rounded-lg border border-slate-100">
-            {litters.map((litter) => (
-              <li key={litter.id} className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 text-sm">
-                <div>
-                  <p className="font-medium text-slate-900">{litter.name}</p>
-                  <p className="text-xs text-slate-500">
-                    Intake {new Date(litter.intakeDate).toLocaleDateString()} · {litter._count?.kittens ?? kittens.filter((k) => k.litter?.id === litter.id).length} kitten(s)
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setLitterFilter(String(litter.id))}
-                  className="rounded-md border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-600 hover:bg-slate-50"
-                >
-                  Show kittens
-                </button>
-              </li>
-            ))}
-          </ul>
-        </details>
-      )}
 
       {loading && <p className="text-sm text-slate-500">Loading kittens...</p>}
       {error && <p className="text-sm text-red-600">{error}</p>}
@@ -213,7 +192,7 @@ function KittensPage() {
             <table className="min-w-full">
               <thead>
                 <tr className="border-b border-slate-100 bg-slate-50/80">
-                  {['Photo', 'Name', 'Litter', 'Foster', 'Status', 'Age', 'Weight', 'Medical Alerts', 'Actions'].map((col) => (
+                  {['Photo', 'Name', 'Litter Group', 'Foster', 'Status', 'Age', 'Weight', 'Medical Alerts', 'Actions'].map((col) => (
                     <th key={col} className="px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-slate-400">
                       {col}
                     </th>
