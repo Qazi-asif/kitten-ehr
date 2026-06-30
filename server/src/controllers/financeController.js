@@ -1,4 +1,5 @@
 import prisma from '../lib/prisma.js';
+import { sendDonationReceivedEmails } from '../services/emailService.js';
 
 function getPeriodStarts(now = new Date()) {
   const weekStart = new Date(now);
@@ -133,7 +134,7 @@ export async function getAllTransactions(req, res, next) {
 
 export async function createTransaction(req, res, next) {
   try {
-    const { type, category, amount, description, date, kittenId } = req.body;
+    const { type, category, amount, description, date, kittenId, donorName, donorEmail } = req.body;
 
     if (!type || !category || amount == null || !date) {
       return res.status(400).json({ error: 'type, category, amount, and date are required' });
@@ -164,6 +165,8 @@ export async function createTransaction(req, res, next) {
         category,
         amount: parsedAmount,
         description: description ?? '',
+        donorName: donorName?.trim() || '',
+        donorEmail: donorEmail?.trim() || '',
         date: parsedDate,
         kittenId: parsedKittenId,
       },
@@ -171,6 +174,16 @@ export async function createTransaction(req, res, next) {
         kitten: { select: { id: true, name: true } },
       },
     });
+
+    if (category === 'Donation' && donorEmail?.trim()) {
+      sendDonationReceivedEmails({
+        transaction,
+        donorName: donorName?.trim() || 'Supporter',
+        donorEmail: donorEmail.trim(),
+      }).catch((error) => {
+        console.error('Donation email trigger failed:', error.message);
+      });
+    }
 
     res.status(201).json(transaction);
   } catch (error) {

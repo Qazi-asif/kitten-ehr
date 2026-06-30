@@ -11,7 +11,24 @@ const DEFAULTS = {
   chewyWishlistUrl: '',
   facebookUrl: '',
   instagramUrl: '',
+  emailsEnabled: false,
+  smtpHost: '',
+  smtpPort: 587,
+  smtpSecure: false,
+  smtpUser: '',
+  smtpPass: '',
+  fromEmail: '',
+  fromName: '',
+  adminNotifyEmail: '',
 };
+
+function sanitizeSettings(settings) {
+  const { smtpPass, ...rest } = settings;
+  return {
+    ...rest,
+    smtpPassConfigured: Boolean(smtpPass || process.env.SMTP_PASS),
+  };
+}
 
 export async function getSettings(_req, res, next) {
   try {
@@ -23,7 +40,7 @@ export async function getSettings(_req, res, next) {
       });
     }
 
-    res.json(settings);
+    res.json(sanitizeSettings(settings));
   } catch (error) {
     next(error);
   }
@@ -39,6 +56,15 @@ export async function updateSettings(req, res, next) {
       chewyWishlistUrl,
       facebookUrl,
       instagramUrl,
+      emailsEnabled,
+      smtpHost,
+      smtpPort,
+      smtpSecure,
+      smtpUser,
+      smtpPass,
+      fromEmail,
+      fromName,
+      adminNotifyEmail,
     } = req.body;
 
     const data = {};
@@ -61,6 +87,21 @@ export async function updateSettings(req, res, next) {
     if (chewyWishlistUrl !== undefined) data.chewyWishlistUrl = chewyWishlistUrl;
     if (facebookUrl !== undefined) data.facebookUrl = facebookUrl;
     if (instagramUrl !== undefined) data.instagramUrl = instagramUrl;
+    if (emailsEnabled !== undefined) data.emailsEnabled = Boolean(emailsEnabled);
+    if (smtpHost !== undefined) data.smtpHost = String(smtpHost).trim();
+    if (smtpPort !== undefined) {
+      const parsed = Number.parseInt(smtpPort, 10);
+      if (Number.isNaN(parsed) || parsed < 1) {
+        return res.status(400).json({ error: 'smtpPort must be a positive integer' });
+      }
+      data.smtpPort = parsed;
+    }
+    if (smtpSecure !== undefined) data.smtpSecure = Boolean(smtpSecure);
+    if (smtpUser !== undefined) data.smtpUser = String(smtpUser).trim();
+    if (smtpPass !== undefined && smtpPass !== '') data.smtpPass = String(smtpPass);
+    if (fromEmail !== undefined) data.fromEmail = String(fromEmail).trim();
+    if (fromName !== undefined) data.fromName = String(fromName).trim();
+    if (adminNotifyEmail !== undefined) data.adminNotifyEmail = String(adminNotifyEmail).trim();
 
     const settings = await prisma.settings.upsert({
       where: { id: SETTINGS_ID },
@@ -68,7 +109,7 @@ export async function updateSettings(req, res, next) {
       update: data,
     });
 
-    res.json(settings);
+    res.json(sanitizeSettings(settings));
   } catch (error) {
     next(error);
   }

@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   getApplicationDisplaySections,
   getApplicationSummary,
@@ -21,7 +21,15 @@ function FieldGrid({ fields }) {
   );
 }
 
-function ApplicationDetailPanel({ application, onClose, onStatusChange, saving = false }) {
+function ApplicationDetailPanel({ application, onClose, onStatusUpdate, saving = false }) {
+  const [pendingStatus, setPendingStatus] = useState(application?.status || 'New');
+  const [statusNotes, setStatusNotes] = useState(application?.statusNotes || '');
+
+  useEffect(() => {
+    setPendingStatus(application?.status || 'New');
+    setStatusNotes(application?.statusNotes || '');
+  }, [application?.id, application?.status, application?.statusNotes]);
+
   const kittenOfInterest = useMemo(
     () => resolveKittenOfInterest(application?.formData, application?.kittenOfInterest),
     [application?.formData, application?.kittenOfInterest],
@@ -37,6 +45,9 @@ function ApplicationDetailPanel({ application, onClose, onStatusChange, saving =
     [application?.formData, application?.type],
   );
 
+  const hasChanges =
+    pendingStatus !== application?.status || statusNotes !== (application?.statusNotes || '');
+
   if (!application) return null;
 
   return (
@@ -46,7 +57,7 @@ function ApplicationDetailPanel({ application, onClose, onStatusChange, saving =
           <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700">{application.type} Application</p>
           <h2 className="mt-1 text-xl font-bold text-gray-900">{getApplicationSummary(application.formData)}</h2>
           <p className="mt-1 text-sm text-gray-500">
-            Submitted {new Date(application.createdAt).toLocaleString()}
+            Application #{application.id} · Submitted {new Date(application.createdAt).toLocaleString()}
           </p>
         </div>
         <button
@@ -58,19 +69,55 @@ function ApplicationDetailPanel({ application, onClose, onStatusChange, saving =
         </button>
       </div>
 
-      <label className="mt-5 block max-w-sm">
-        <span className="text-sm font-medium text-gray-700">Status</span>
-        <select
-          value={application.status}
-          onChange={(e) => onStatusChange(application.id, e.target.value)}
+      <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
+        <label className="block">
+          <span className="text-sm font-medium text-gray-700">Status</span>
+          <select
+            value={pendingStatus}
+            onChange={(e) => setPendingStatus(e.target.value)}
+            disabled={saving}
+            className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm disabled:opacity-60"
+          >
+            {STATUS_OPTIONS.map((status) => (
+              <option key={status} value={status}>{status}</option>
+            ))}
+          </select>
+        </label>
+
+        <div className="rounded-lg border border-emerald-100 bg-emerald-50/60 px-4 py-3 text-sm text-emerald-900">
+          <p className="font-semibold">Email notifications</p>
+          <p className="mt-1 text-emerald-800">
+            Setting status to Approved, Denied, or Under Review sends a branded email to the applicant.
+          </p>
+        </div>
+      </div>
+
+      <label className="mt-4 block">
+        <span className="text-sm font-medium text-gray-700">
+          Review Notes {pendingStatus === 'Denied' ? '(reason for denial)' : ''}
+        </span>
+        <textarea
+          rows={4}
+          value={statusNotes}
+          onChange={(e) => setStatusNotes(e.target.value)}
           disabled={saving}
+          placeholder={
+            pendingStatus === 'Denied'
+              ? 'Explain why the application was denied. This is included in the applicant email.'
+              : 'Optional notes included in the applicant notification email.'
+          }
           className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm disabled:opacity-60"
-        >
-          {STATUS_OPTIONS.map((status) => (
-            <option key={status} value={status}>{status}</option>
-          ))}
-        </select>
+        />
       </label>
+
+      <button
+        type="button"
+        disabled={saving || !hasChanges}
+        onClick={() => onStatusUpdate(application.id, { status: pendingStatus, statusNotes })}
+        className="mt-4 rounded-lg bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800 disabled:opacity-60"
+      >
+        {saving ? 'Saving...' : 'Update Status & Notify Applicant'}
+      </button>
 
       <div className="mt-6 space-y-6">
         {sections.map((section) => (

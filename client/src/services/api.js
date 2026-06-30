@@ -197,12 +197,12 @@ export async function createApplication(data) {
   return response.json();
 }
 
-export async function updateApplicationStatus(id, status) {
+export async function updateApplicationStatus(id, payload) {
   const response = await adminFetch(`/applications/${id}`, {
     method: 'PATCH',
-    body: JSON.stringify({ status }),
+    body: JSON.stringify(payload),
   });
-  if (!response.ok) throw new Error('Failed to update application status');
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to update application status'));
   return response.json();
 }
 
@@ -432,4 +432,48 @@ export async function createTransaction(data) {
 export async function deleteTransaction(id) {
   const response = await adminFetch(`/transactions/${id}`, { method: 'DELETE' });
   if (!response.ok) throw new Error(await readApiError(response, 'Failed to delete transaction'));
+}
+
+export async function fetchEmailTemplates() {
+  const response = await adminFetch('/email-templates');
+  if (!response.ok) throw new Error('Failed to load email templates');
+  return response.json();
+}
+
+export async function createEmailTemplate(data) {
+  const response = await adminFetch('/email-templates', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to create email template'));
+  return response.json();
+}
+
+export async function updateEmailTemplate(id, data) {
+  const response = await adminFetch(`/email-templates/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to update email template'));
+  return response.json();
+}
+
+export async function deleteEmailTemplate(id) {
+  const response = await adminFetch(`/email-templates/${id}`, { method: 'DELETE' });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to delete email template'));
+}
+
+export async function fetchEmailLogs(limit = 50) {
+  const response = await adminFetch(`/email-templates/logs?limit=${limit}`);
+  if (!response.ok) throw new Error('Failed to load email logs');
+  return response.json();
+}
+
+export async function updateEmailSettings(data) {
+  const response = await adminFetch('/email-templates/settings', {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to update email settings'));
+  return response.json();
 }

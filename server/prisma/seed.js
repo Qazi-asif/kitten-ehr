@@ -1,6 +1,7 @@
 import { PrismaClient } from '../src/generated/prisma/index.js';
 import bcrypt from 'bcryptjs';
 import { DEFAULT_ROLES, PERMISSIONS } from '../src/constants/permissions.js';
+import { DEFAULT_EMAIL_TEMPLATES } from '../src/constants/emailTemplates.js';
 
 const prisma = new PrismaClient();
 
@@ -68,9 +69,26 @@ async function seedSettings() {
   });
 }
 
+async function seedEmailTemplates() {
+  for (const template of DEFAULT_EMAIL_TEMPLATES) {
+    await prisma.emailTemplate.upsert({
+      where: { key: template.key },
+      create: template,
+      update: {
+        name: template.name,
+        category: template.category,
+        description: template.description,
+        isSystem: template.isSystem,
+      },
+    });
+  }
+  console.log(`Seeded ${DEFAULT_EMAIL_TEMPLATES.length} email templates`);
+}
+
 async function main() {
   await seedAuth();
   await seedSettings();
+  await seedEmailTemplates();
   await prisma.weightLog.deleteMany();
   await prisma.vaccine.deleteMany();
   await prisma.medication.deleteMany();

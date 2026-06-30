@@ -4,8 +4,13 @@ import {
   extractKittenOfInterest,
   formatZodError,
 } from '../validations/applicationValidation.js';
+import { sendApplicationReceivedEmails, sendApplicationStatusChangedEmail } from '../services/emailService.js';
+import { APPLICATION_REVIEW_STATUSES } from '../constants/emailTemplates.js';
 
-export async function getApplications(req, res, next) {  try {
+const VALID_STATUSES = ['New', 'Under Review', 'Approved', 'Denied'];
+
+export async function getApplications(req, res, next) {
+  try {
     const { status } = req.query;
     const applications = await prisma.application.findMany({
       where: status ? { status } : undefined,
@@ -36,6 +41,11 @@ export async function createApplication(req, res, next) {
         kittenOfInterest: resolvedKittenOfInterest,
       },
     });
+
+    sendApplicationReceivedEmails(application).catch((error) => {
+      console.error('Application email trigger failed:', error.message);
+    });
+
     res.status(201).json(application);
   } catch (error) {
     next(error);
@@ -45,16 +55,36 @@ export async function createApplication(req, res, next) {
 export async function updateApplicationStatus(req, res, next) {
   try {
     const id = Number.parseInt(req.params.id, 10);
-    const { status } = req.body;
+    const { status, statusNotes } = req.body;
 
     if (!status) {
       return res.status(400).json({ error: 'status is required' });
     }
 
+    if (!VALID_STATUSES.includes(status)) {
+      return res.status(400).json({ error: `status must be one of: ${VALID_STATUSES.join(', ')}` });
+    }
+
+    const existing = await prisma.application.findUnique({ where: { id } });
+    if (!existing) return res.status(404).json({ error: 'Application not found' });
+
+    const statusChanged = existing.status !== status;
+    const normalizedNotes = typeof statusNotes === 'string' ? statusNotes.trim() : existing.statusNotes;
+
     const application = await prisma.application.update({
       where: { id },
-      data: { status },
+      data: {
+        status,
+        statusNotes: normalizedNotes,
+        statusUpdatedAt: statusChanged ? new Date() : existing.statusUpdatedAt,
+      },
     });
+
+    if (statusChanged && APPLICATION_REVIEW_STATUSES.includes(application.status)) {
+      sendApplicationStatusChangedEmail(application, normalizedNotes).catch((error) => {
+        console.error('Application status email trigger failed:', error.message);
+      });
+    }
 
     res.json(application);
   } catch (error) {

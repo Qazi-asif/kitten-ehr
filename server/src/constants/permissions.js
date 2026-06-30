@@ -27,6 +27,8 @@ export const PERMISSIONS = [
   { key: 'users.manage', label: 'Manage Users', module: 'Users & Roles' },
   { key: 'roles.manage', label: 'Manage Roles & Permissions', module: 'Users & Roles' },
   { key: 'settings.manage', label: 'Manage Organization Settings', module: 'Settings' },
+  { key: 'emails.view', label: 'View Email Templates', module: 'Emails' },
+  { key: 'emails.manage', label: 'Manage Email Templates & Delivery', module: 'Emails' },
 ];
 
 export const PERMISSION_KEYS = PERMISSIONS.map((p) => p.key);

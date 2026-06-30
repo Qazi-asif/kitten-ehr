@@ -15,6 +15,7 @@ import CalendarPage from './pages/admin/CalendarPage';
 import DashboardPage from './pages/admin/DashboardPage';
 import FinancePage from './pages/admin/FinancePage';
 import SettingsPage from './pages/admin/SettingsPage';
+import EmailTemplatesPage from './pages/admin/EmailTemplatesPage';
 import AboutPage from './pages/public/AboutPage';
 import AdoptionFormPage from './pages/public/AdoptionFormPage';
 import ArticlePage from './pages/public/ArticlePage';
@@ -68,6 +69,7 @@ function App() {
                 <Route path="donations" element={<FinancePage />} />
               </Route>
               <Route path="settings" element={<SettingsPage />} />
+              <Route path="emails" element={<EmailTemplatesPage />} />
               <Route path="*" element={<Navigate to="/admin" replace />} />
             </Route>
           </Route>

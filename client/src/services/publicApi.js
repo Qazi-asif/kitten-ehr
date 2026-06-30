@@ -55,3 +55,15 @@ export async function submitApplication(type, formData) {
   if (!response.ok) throw new Error('Failed to submit application');
   return response.json();
 }
+
+export async function submitDonation(data) {
+  const response = await publicFetch('/public/donations', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) {
+    const payload = await response.json().catch(() => ({}));
+    throw new Error(payload.error || 'Failed to submit donation');
+  }
+  return response.json();
+}

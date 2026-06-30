@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import PublicPageHeader from '../../components/PublicPageHeader';
-import { fetchPublicSettings } from '../../services/publicApi';
+import { fetchPublicSettings, submitDonation } from '../../services/publicApi';
 
 const BASE_AMOUNTS = [10, 25, 50, 75, 100, 250];
 
@@ -18,6 +18,13 @@ function DonatePage() {
   const outlet = useOutletContext();
   const [settings, setSettings] = useState(outlet?.settings ?? { defaultDonationAmount: 50 });
   const [selected, setSelected] = useState(settings.defaultDonationAmount || 50);
+  const [customAmount, setCustomAmount] = useState('');
+  const [donorName, setDonorName] = useState('');
+  const [donorEmail, setDonorEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
     fetchPublicSettings()
@@ -42,6 +49,8 @@ function DonatePage() {
     }));
   }, [settings.defaultDonationAmount]);
 
+  const donationAmount = selected === 0 ? Number.parseFloat(customAmount) : selected;
+
   const otherWays = [
     { label: 'Venmo', detail: '@PawsitiveTransform', href: null },
     { label: 'PayPal', detail: 'hello@pawsitivetransformations.org', href: null },
@@ -56,6 +65,40 @@ function DonatePage() {
       href: settings.chewyWishlistUrl || null,
     },
   ];
+
+  async function handleDonate(event) {
+    event.preventDefault();
+    setError('');
+    setSuccess('');
+
+    if (!donorName.trim() || !donorEmail.trim()) {
+      setError('Please enter your name and email.');
+      return;
+    }
+    if (!donationAmount || donationAmount <= 0) {
+      setError('Please choose or enter a valid donation amount.');
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      await submitDonation({
+        donorName: donorName.trim(),
+        donorEmail: donorEmail.trim(),
+        amount: donationAmount,
+        message: message.trim(),
+      });
+      setSuccess('Thank you for your donation! A confirmation email will be sent if email delivery is enabled.');
+      setDonorName('');
+      setDonorEmail('');
+      setMessage('');
+      setCustomAmount('');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   return (
     <div>
@@ -77,9 +120,9 @@ function DonatePage() {
             </p>
           </div>
 
-          <div>
+          <form onSubmit={handleDonate} className="space-y-4">
             <h2 className="text-xl font-bold text-slate-900">Choose Your Impact</h2>
-            <div className="mt-4 grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3">
               {amounts.map(({ amount, label, desc, featured }) => (
                 <button
                   key={amount}
@@ -112,15 +155,62 @@ function DonatePage() {
                 <p className="text-xs text-slate-500">Custom amount</p>
               </button>
             </div>
-            <a
-              href="https://buy.stripe.com/test_placeholder"
-              target="_blank"
-              rel="noreferrer"
-              className="mt-6 block w-full rounded-md bg-brand py-3.5 text-center text-sm font-semibold text-white hover:bg-brand-dark"
+
+            {selected === 0 && (
+              <label className="block">
+                <span className="mb-1 block text-xs font-medium text-slate-600">Custom Amount ($)</span>
+                <input
+                  type="number"
+                  min="1"
+                  step="0.01"
+                  required
+                  value={customAmount}
+                  onChange={(e) => setCustomAmount(e.target.value)}
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+                />
+              </label>
+            )}
+
+            <label className="block">
+              <span className="mb-1 block text-xs font-medium text-slate-600">Your Name</span>
+              <input
+                required
+                value={donorName}
+                onChange={(e) => setDonorName(e.target.value)}
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+              />
+            </label>
+            <label className="block">
+              <span className="mb-1 block text-xs font-medium text-slate-600">Email</span>
+              <input
+                type="email"
+                required
+                value={donorEmail}
+                onChange={(e) => setDonorEmail(e.target.value)}
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+              />
+            </label>
+            <label className="block">
+              <span className="mb-1 block text-xs font-medium text-slate-600">Message (optional)</span>
+              <textarea
+                rows={2}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+              />
+            </label>
+
+            {error && <p className="text-sm text-red-600">{error}</p>}
+            {success && <p className="text-sm text-emerald-700">{success}</p>}
+
+            <button
+              type="submit"
+              disabled={submitting}
+              className="w-full rounded-md bg-brand py-3.5 text-center text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-60"
             >
-              Donate Now{selected > 0 ? ` — $${selected}` : ''}
-            </a>
-          </div>
+              {submitting ? 'Processing...' : `Donate Now${donationAmount > 0 ? ` — $${donationAmount}` : ''}`}
+            </button>
+          </form>
 
           <div>
             <h2 className="text-xl font-bold text-slate-900">Other Ways to Give</h2>

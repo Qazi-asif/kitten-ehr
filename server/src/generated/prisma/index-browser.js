@@ -165,6 +165,9 @@ exports.Prisma.KittenScalarFieldEnum = {
   isListedOnWebsite: 'isListedOnWebsite',
   websiteFeaturedComment: 'websiteFeaturedComment',
   publishTargets: 'publishTargets',
+  amazonWishlistUrl: 'amazonWishlistUrl',
+  walmartWishlistUrl: 'walmartWishlistUrl',
+  chewyWishlistUrl: 'chewyWishlistUrl',
   currentFosterId: 'currentFosterId',
   createdAt: 'createdAt'
 };
@@ -331,7 +334,43 @@ exports.Prisma.SettingsScalarFieldEnum = {
   amazonWishlistUrl: 'amazonWishlistUrl',
   chewyWishlistUrl: 'chewyWishlistUrl',
   facebookUrl: 'facebookUrl',
-  instagramUrl: 'instagramUrl'
+  instagramUrl: 'instagramUrl',
+  emailsEnabled: 'emailsEnabled',
+  smtpHost: 'smtpHost',
+  smtpPort: 'smtpPort',
+  smtpSecure: 'smtpSecure',
+  smtpUser: 'smtpUser',
+  smtpPass: 'smtpPass',
+  fromEmail: 'fromEmail',
+  fromName: 'fromName',
+  adminNotifyEmail: 'adminNotifyEmail'
+};
+
+exports.Prisma.EmailTemplateScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  name: 'name',
+  category: 'category',
+  subject: 'subject',
+  bodyHtml: 'bodyHtml',
+  bodyText: 'bodyText',
+  description: 'description',
+  isSystem: 'isSystem',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.EmailLogScalarFieldEnum = {
+  id: 'id',
+  templateKey: 'templateKey',
+  toEmail: 'toEmail',
+  subject: 'subject',
+  status: 'status',
+  errorMessage: 'errorMessage',
+  relatedType: 'relatedType',
+  relatedId: 'relatedId',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.TransactionScalarFieldEnum = {
@@ -340,6 +379,8 @@ exports.Prisma.TransactionScalarFieldEnum = {
   category: 'category',
   amount: 'amount',
   description: 'description',
+  donorName: 'donorName',
+  donorEmail: 'donorEmail',
   date: 'date',
   kittenId: 'kittenId',
   createdAt: 'createdAt'
@@ -381,6 +422,8 @@ exports.Prisma.ModelName = {
   RolePermission: 'RolePermission',
   User: 'User',
   Settings: 'Settings',
+  EmailTemplate: 'EmailTemplate',
+  EmailLog: 'EmailLog',
   Transaction: 'Transaction'
 };
 

@@ -7,6 +7,7 @@ import {
   DollarSign,
   LayoutDashboard,
   LogOut,
+  Mail,
   Package,
   Plus,
   Search,
@@ -23,6 +24,7 @@ const navItems = [
   { label: 'Applications', icon: ClipboardList, path: '/admin/applications', permission: 'applications.view' },
   { label: 'Calendar', icon: Calendar, path: '/admin/calendar', permission: 'events.view' },
   { label: 'Finance', icon: DollarSign, path: '/admin/finance', permission: 'donations.view' },
+  { label: 'Emails', icon: Mail, path: '/admin/emails', permission: 'emails.view' },
   { label: 'Settings', icon: Settings, path: '/admin/settings' },
 ];
 
@@ -35,6 +37,7 @@ const pageMeta = [
   { match: (p) => p.startsWith('/admin/applications'), title: 'Applications', subtitle: 'Review adoption and foster applications.' },
   { match: (p) => p.startsWith('/admin/calendar'), title: 'Calendar', subtitle: 'Public events and staff schedule.' },
   { match: (p) => p.startsWith('/admin/finance') || p.startsWith('/admin/donations'), title: 'Finance', subtitle: 'Track income, expenses, and monthly rescue balance.' },
+  { match: (p) => p.startsWith('/admin/emails'), title: 'Emails', subtitle: 'Automatic email templates, delivery settings, and send log.' },
   { match: (p) => p.startsWith('/admin/settings'), title: 'Settings', subtitle: 'Organization settings, user accounts, roles, and permissions.' },
 ];
 

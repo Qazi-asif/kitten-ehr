@@ -122,10 +122,10 @@ function ApplicationsPage() {
     setSearchParams({});
   }
 
-  async function handleStatusChange(id, status) {
+  async function handleStatusUpdate(id, payload) {
     setSavingStatus(true);
     try {
-      const updated = await updateApplicationStatus(id, status);
+      const updated = await updateApplicationStatus(id, payload);
       setApplications((prev) => prev.map((app) => (app.id === id ? { ...app, ...updated } : app)));
       setSelected((prev) => (prev?.id === id ? { ...prev, ...updated } : prev));
     } catch (err) {
@@ -174,7 +174,7 @@ function ApplicationsPage() {
               <ApplicationDetailPanel
                 application={selected}
                 onClose={closeApplication}
-                onStatusChange={handleStatusChange}
+                onStatusUpdate={handleStatusUpdate}
                 saving={savingStatus}
               />
             ) : (

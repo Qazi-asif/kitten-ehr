@@ -109,6 +109,16 @@ export type User = $Result.DefaultSelection<Prisma.$UserPayload>
  */
 export type Settings = $Result.DefaultSelection<Prisma.$SettingsPayload>
 /**
+ * Model EmailTemplate
+ * 
+ */
+export type EmailTemplate = $Result.DefaultSelection<Prisma.$EmailTemplatePayload>
+/**
+ * Model EmailLog
+ * 
+ */
+export type EmailLog = $Result.DefaultSelection<Prisma.$EmailLogPayload>
+/**
  * Model Transaction
  * 
  */
@@ -421,6 +431,26 @@ export class PrismaClient<
     * ```
     */
   get settings(): Prisma.SettingsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.emailTemplate`: Exposes CRUD operations for the **EmailTemplate** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EmailTemplates
+    * const emailTemplates = await prisma.emailTemplate.findMany()
+    * ```
+    */
+  get emailTemplate(): Prisma.EmailTemplateDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.emailLog`: Exposes CRUD operations for the **EmailLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EmailLogs
+    * const emailLogs = await prisma.emailLog.findMany()
+    * ```
+    */
+  get emailLog(): Prisma.EmailLogDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.transaction`: Exposes CRUD operations for the **Transaction** model.
@@ -891,6 +921,8 @@ export namespace Prisma {
     RolePermission: 'RolePermission',
     User: 'User',
     Settings: 'Settings',
+    EmailTemplate: 'EmailTemplate',
+    EmailLog: 'EmailLog',
     Transaction: 'Transaction'
   };
 
@@ -910,7 +942,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "litter" | "foster" | "kitten" | "update" | "sponsorship" | "placement" | "weightLog" | "vaccine" | "medication" | "vetAppointment" | "document" | "application" | "content" | "event" | "role" | "permission" | "rolePermission" | "user" | "settings" | "transaction"
+      modelProps: "litter" | "foster" | "kitten" | "update" | "sponsorship" | "placement" | "weightLog" | "vaccine" | "medication" | "vetAppointment" | "document" | "application" | "content" | "event" | "role" | "permission" | "rolePermission" | "user" | "settings" | "emailTemplate" | "emailLog" | "transaction"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2320,6 +2352,154 @@ export namespace Prisma {
           }
         }
       }
+      EmailTemplate: {
+        payload: Prisma.$EmailTemplatePayload<ExtArgs>
+        fields: Prisma.EmailTemplateFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EmailTemplateFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EmailTemplateFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload>
+          }
+          findFirst: {
+            args: Prisma.EmailTemplateFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EmailTemplateFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload>
+          }
+          findMany: {
+            args: Prisma.EmailTemplateFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload>[]
+          }
+          create: {
+            args: Prisma.EmailTemplateCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload>
+          }
+          createMany: {
+            args: Prisma.EmailTemplateCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EmailTemplateCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload>[]
+          }
+          delete: {
+            args: Prisma.EmailTemplateDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload>
+          }
+          update: {
+            args: Prisma.EmailTemplateUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload>
+          }
+          deleteMany: {
+            args: Prisma.EmailTemplateDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EmailTemplateUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.EmailTemplateUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload>[]
+          }
+          upsert: {
+            args: Prisma.EmailTemplateUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload>
+          }
+          aggregate: {
+            args: Prisma.EmailTemplateAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEmailTemplate>
+          }
+          groupBy: {
+            args: Prisma.EmailTemplateGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EmailTemplateGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EmailTemplateCountArgs<ExtArgs>
+            result: $Utils.Optional<EmailTemplateCountAggregateOutputType> | number
+          }
+        }
+      }
+      EmailLog: {
+        payload: Prisma.$EmailLogPayload<ExtArgs>
+        fields: Prisma.EmailLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EmailLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EmailLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload>
+          }
+          findFirst: {
+            args: Prisma.EmailLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EmailLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload>
+          }
+          findMany: {
+            args: Prisma.EmailLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload>[]
+          }
+          create: {
+            args: Prisma.EmailLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload>
+          }
+          createMany: {
+            args: Prisma.EmailLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EmailLogCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload>[]
+          }
+          delete: {
+            args: Prisma.EmailLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload>
+          }
+          update: {
+            args: Prisma.EmailLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.EmailLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EmailLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.EmailLogUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload>[]
+          }
+          upsert: {
+            args: Prisma.EmailLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload>
+          }
+          aggregate: {
+            args: Prisma.EmailLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEmailLog>
+          }
+          groupBy: {
+            args: Prisma.EmailLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EmailLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EmailLogCountArgs<ExtArgs>
+            result: $Utils.Optional<EmailLogCountAggregateOutputType> | number
+          }
+        }
+      }
       Transaction: {
         payload: Prisma.$TransactionPayload<ExtArgs>
         fields: Prisma.TransactionFieldRefs
@@ -2509,6 +2689,8 @@ export namespace Prisma {
     rolePermission?: RolePermissionOmit
     user?: UserOmit
     settings?: SettingsOmit
+    emailTemplate?: EmailTemplateOmit
+    emailLog?: EmailLogOmit
     transaction?: TransactionOmit
   }
 
@@ -5197,6 +5379,9 @@ export namespace Prisma {
     internalNotes: string | null
     isListedOnWebsite: boolean | null
     websiteFeaturedComment: string | null
+    amazonWishlistUrl: string | null
+    walmartWishlistUrl: string | null
+    chewyWishlistUrl: string | null
     currentFosterId: number | null
     createdAt: Date | null
   }
@@ -5222,6 +5407,9 @@ export namespace Prisma {
     internalNotes: string | null
     isListedOnWebsite: boolean | null
     websiteFeaturedComment: string | null
+    amazonWishlistUrl: string | null
+    walmartWishlistUrl: string | null
+    chewyWishlistUrl: string | null
     currentFosterId: number | null
     createdAt: Date | null
   }
@@ -5248,6 +5436,9 @@ export namespace Prisma {
     isListedOnWebsite: number
     websiteFeaturedComment: number
     publishTargets: number
+    amazonWishlistUrl: number
+    walmartWishlistUrl: number
+    chewyWishlistUrl: number
     currentFosterId: number
     createdAt: number
     _all: number
@@ -5287,6 +5478,9 @@ export namespace Prisma {
     internalNotes?: true
     isListedOnWebsite?: true
     websiteFeaturedComment?: true
+    amazonWishlistUrl?: true
+    walmartWishlistUrl?: true
+    chewyWishlistUrl?: true
     currentFosterId?: true
     createdAt?: true
   }
@@ -5312,6 +5506,9 @@ export namespace Prisma {
     internalNotes?: true
     isListedOnWebsite?: true
     websiteFeaturedComment?: true
+    amazonWishlistUrl?: true
+    walmartWishlistUrl?: true
+    chewyWishlistUrl?: true
     currentFosterId?: true
     createdAt?: true
   }
@@ -5338,6 +5535,9 @@ export namespace Prisma {
     isListedOnWebsite?: true
     websiteFeaturedComment?: true
     publishTargets?: true
+    amazonWishlistUrl?: true
+    walmartWishlistUrl?: true
+    chewyWishlistUrl?: true
     currentFosterId?: true
     createdAt?: true
     _all?: true
@@ -5451,6 +5651,9 @@ export namespace Prisma {
     isListedOnWebsite: boolean
     websiteFeaturedComment: string
     publishTargets: string[]
+    amazonWishlistUrl: string | null
+    walmartWishlistUrl: string | null
+    chewyWishlistUrl: string | null
     currentFosterId: number | null
     createdAt: Date
     _count: KittenCountAggregateOutputType | null
@@ -5496,6 +5699,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: boolean
     publishTargets?: boolean
+    amazonWishlistUrl?: boolean
+    walmartWishlistUrl?: boolean
+    chewyWishlistUrl?: boolean
     currentFosterId?: boolean
     createdAt?: boolean
     litter?: boolean | Kitten$litterArgs<ExtArgs>
@@ -5534,6 +5740,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: boolean
     publishTargets?: boolean
+    amazonWishlistUrl?: boolean
+    walmartWishlistUrl?: boolean
+    chewyWishlistUrl?: boolean
     currentFosterId?: boolean
     createdAt?: boolean
     litter?: boolean | Kitten$litterArgs<ExtArgs>
@@ -5562,6 +5771,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: boolean
     publishTargets?: boolean
+    amazonWishlistUrl?: boolean
+    walmartWishlistUrl?: boolean
+    chewyWishlistUrl?: boolean
     currentFosterId?: boolean
     createdAt?: boolean
     litter?: boolean | Kitten$litterArgs<ExtArgs>
@@ -5590,11 +5802,14 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: boolean
     publishTargets?: boolean
+    amazonWishlistUrl?: boolean
+    walmartWishlistUrl?: boolean
+    chewyWishlistUrl?: boolean
     currentFosterId?: boolean
     createdAt?: boolean
   }
 
-  export type KittenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "litterId" | "status" | "rescueStory" | "dateOfBirth" | "sex" | "fixedStatus" | "breed" | "color" | "fivFelvStatus" | "specialNeeds" | "microchipNumber" | "primaryPhotoUrl" | "intakeDate" | "intakeSource" | "notes" | "internalNotes" | "isListedOnWebsite" | "websiteFeaturedComment" | "publishTargets" | "currentFosterId" | "createdAt", ExtArgs["result"]["kitten"]>
+  export type KittenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "litterId" | "status" | "rescueStory" | "dateOfBirth" | "sex" | "fixedStatus" | "breed" | "color" | "fivFelvStatus" | "specialNeeds" | "microchipNumber" | "primaryPhotoUrl" | "intakeDate" | "intakeSource" | "notes" | "internalNotes" | "isListedOnWebsite" | "websiteFeaturedComment" | "publishTargets" | "amazonWishlistUrl" | "walmartWishlistUrl" | "chewyWishlistUrl" | "currentFosterId" | "createdAt", ExtArgs["result"]["kitten"]>
   export type KittenInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     litter?: boolean | Kitten$litterArgs<ExtArgs>
     currentFoster?: boolean | Kitten$currentFosterArgs<ExtArgs>
@@ -5655,6 +5870,9 @@ export namespace Prisma {
       isListedOnWebsite: boolean
       websiteFeaturedComment: string
       publishTargets: string[]
+      amazonWishlistUrl: string | null
+      walmartWishlistUrl: string | null
+      chewyWishlistUrl: string | null
       currentFosterId: number | null
       createdAt: Date
     }, ExtArgs["result"]["kitten"]>
@@ -6112,6 +6330,9 @@ export namespace Prisma {
     readonly isListedOnWebsite: FieldRef<"Kitten", 'Boolean'>
     readonly websiteFeaturedComment: FieldRef<"Kitten", 'String'>
     readonly publishTargets: FieldRef<"Kitten", 'String[]'>
+    readonly amazonWishlistUrl: FieldRef<"Kitten", 'String'>
+    readonly walmartWishlistUrl: FieldRef<"Kitten", 'String'>
+    readonly chewyWishlistUrl: FieldRef<"Kitten", 'String'>
     readonly currentFosterId: FieldRef<"Kitten", 'Int'>
     readonly createdAt: FieldRef<"Kitten", 'DateTime'>
   }
@@ -23550,11 +23771,13 @@ export namespace Prisma {
   export type SettingsAvgAggregateOutputType = {
     id: number | null
     defaultDonationAmount: number | null
+    smtpPort: number | null
   }
 
   export type SettingsSumAggregateOutputType = {
     id: number | null
     defaultDonationAmount: number | null
+    smtpPort: number | null
   }
 
   export type SettingsMinAggregateOutputType = {
@@ -23566,6 +23789,15 @@ export namespace Prisma {
     chewyWishlistUrl: string | null
     facebookUrl: string | null
     instagramUrl: string | null
+    emailsEnabled: boolean | null
+    smtpHost: string | null
+    smtpPort: number | null
+    smtpSecure: boolean | null
+    smtpUser: string | null
+    smtpPass: string | null
+    fromEmail: string | null
+    fromName: string | null
+    adminNotifyEmail: string | null
   }
 
   export type SettingsMaxAggregateOutputType = {
@@ -23577,6 +23809,15 @@ export namespace Prisma {
     chewyWishlistUrl: string | null
     facebookUrl: string | null
     instagramUrl: string | null
+    emailsEnabled: boolean | null
+    smtpHost: string | null
+    smtpPort: number | null
+    smtpSecure: boolean | null
+    smtpUser: string | null
+    smtpPass: string | null
+    fromEmail: string | null
+    fromName: string | null
+    adminNotifyEmail: string | null
   }
 
   export type SettingsCountAggregateOutputType = {
@@ -23588,6 +23829,15 @@ export namespace Prisma {
     chewyWishlistUrl: number
     facebookUrl: number
     instagramUrl: number
+    emailsEnabled: number
+    smtpHost: number
+    smtpPort: number
+    smtpSecure: number
+    smtpUser: number
+    smtpPass: number
+    fromEmail: number
+    fromName: number
+    adminNotifyEmail: number
     _all: number
   }
 
@@ -23595,11 +23845,13 @@ export namespace Prisma {
   export type SettingsAvgAggregateInputType = {
     id?: true
     defaultDonationAmount?: true
+    smtpPort?: true
   }
 
   export type SettingsSumAggregateInputType = {
     id?: true
     defaultDonationAmount?: true
+    smtpPort?: true
   }
 
   export type SettingsMinAggregateInputType = {
@@ -23611,6 +23863,15 @@ export namespace Prisma {
     chewyWishlistUrl?: true
     facebookUrl?: true
     instagramUrl?: true
+    emailsEnabled?: true
+    smtpHost?: true
+    smtpPort?: true
+    smtpSecure?: true
+    smtpUser?: true
+    smtpPass?: true
+    fromEmail?: true
+    fromName?: true
+    adminNotifyEmail?: true
   }
 
   export type SettingsMaxAggregateInputType = {
@@ -23622,6 +23883,15 @@ export namespace Prisma {
     chewyWishlistUrl?: true
     facebookUrl?: true
     instagramUrl?: true
+    emailsEnabled?: true
+    smtpHost?: true
+    smtpPort?: true
+    smtpSecure?: true
+    smtpUser?: true
+    smtpPass?: true
+    fromEmail?: true
+    fromName?: true
+    adminNotifyEmail?: true
   }
 
   export type SettingsCountAggregateInputType = {
@@ -23633,6 +23903,15 @@ export namespace Prisma {
     chewyWishlistUrl?: true
     facebookUrl?: true
     instagramUrl?: true
+    emailsEnabled?: true
+    smtpHost?: true
+    smtpPort?: true
+    smtpSecure?: true
+    smtpUser?: true
+    smtpPass?: true
+    fromEmail?: true
+    fromName?: true
+    adminNotifyEmail?: true
     _all?: true
   }
 
@@ -23731,6 +24010,15 @@ export namespace Prisma {
     chewyWishlistUrl: string
     facebookUrl: string
     instagramUrl: string
+    emailsEnabled: boolean
+    smtpHost: string
+    smtpPort: number
+    smtpSecure: boolean
+    smtpUser: string
+    smtpPass: string
+    fromEmail: string
+    fromName: string
+    adminNotifyEmail: string
     _count: SettingsCountAggregateOutputType | null
     _avg: SettingsAvgAggregateOutputType | null
     _sum: SettingsSumAggregateOutputType | null
@@ -23761,6 +24049,15 @@ export namespace Prisma {
     chewyWishlistUrl?: boolean
     facebookUrl?: boolean
     instagramUrl?: boolean
+    emailsEnabled?: boolean
+    smtpHost?: boolean
+    smtpPort?: boolean
+    smtpSecure?: boolean
+    smtpUser?: boolean
+    smtpPass?: boolean
+    fromEmail?: boolean
+    fromName?: boolean
+    adminNotifyEmail?: boolean
   }, ExtArgs["result"]["settings"]>
 
   export type SettingsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -23772,6 +24069,15 @@ export namespace Prisma {
     chewyWishlistUrl?: boolean
     facebookUrl?: boolean
     instagramUrl?: boolean
+    emailsEnabled?: boolean
+    smtpHost?: boolean
+    smtpPort?: boolean
+    smtpSecure?: boolean
+    smtpUser?: boolean
+    smtpPass?: boolean
+    fromEmail?: boolean
+    fromName?: boolean
+    adminNotifyEmail?: boolean
   }, ExtArgs["result"]["settings"]>
 
   export type SettingsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -23783,6 +24089,15 @@ export namespace Prisma {
     chewyWishlistUrl?: boolean
     facebookUrl?: boolean
     instagramUrl?: boolean
+    emailsEnabled?: boolean
+    smtpHost?: boolean
+    smtpPort?: boolean
+    smtpSecure?: boolean
+    smtpUser?: boolean
+    smtpPass?: boolean
+    fromEmail?: boolean
+    fromName?: boolean
+    adminNotifyEmail?: boolean
   }, ExtArgs["result"]["settings"]>
 
   export type SettingsSelectScalar = {
@@ -23794,9 +24109,18 @@ export namespace Prisma {
     chewyWishlistUrl?: boolean
     facebookUrl?: boolean
     instagramUrl?: boolean
+    emailsEnabled?: boolean
+    smtpHost?: boolean
+    smtpPort?: boolean
+    smtpSecure?: boolean
+    smtpUser?: boolean
+    smtpPass?: boolean
+    fromEmail?: boolean
+    fromName?: boolean
+    adminNotifyEmail?: boolean
   }
 
-  export type SettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orgName" | "missionStatement" | "defaultDonationAmount" | "amazonWishlistUrl" | "chewyWishlistUrl" | "facebookUrl" | "instagramUrl", ExtArgs["result"]["settings"]>
+  export type SettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orgName" | "missionStatement" | "defaultDonationAmount" | "amazonWishlistUrl" | "chewyWishlistUrl" | "facebookUrl" | "instagramUrl" | "emailsEnabled" | "smtpHost" | "smtpPort" | "smtpSecure" | "smtpUser" | "smtpPass" | "fromEmail" | "fromName" | "adminNotifyEmail", ExtArgs["result"]["settings"]>
 
   export type $SettingsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Settings"
@@ -23810,6 +24134,15 @@ export namespace Prisma {
       chewyWishlistUrl: string
       facebookUrl: string
       instagramUrl: string
+      emailsEnabled: boolean
+      smtpHost: string
+      smtpPort: number
+      smtpSecure: boolean
+      smtpUser: string
+      smtpPass: string
+      fromEmail: string
+      fromName: string
+      adminNotifyEmail: string
     }, ExtArgs["result"]["settings"]>
     composites: {}
   }
@@ -24241,6 +24574,15 @@ export namespace Prisma {
     readonly chewyWishlistUrl: FieldRef<"Settings", 'String'>
     readonly facebookUrl: FieldRef<"Settings", 'String'>
     readonly instagramUrl: FieldRef<"Settings", 'String'>
+    readonly emailsEnabled: FieldRef<"Settings", 'Boolean'>
+    readonly smtpHost: FieldRef<"Settings", 'String'>
+    readonly smtpPort: FieldRef<"Settings", 'Int'>
+    readonly smtpSecure: FieldRef<"Settings", 'Boolean'>
+    readonly smtpUser: FieldRef<"Settings", 'String'>
+    readonly smtpPass: FieldRef<"Settings", 'String'>
+    readonly fromEmail: FieldRef<"Settings", 'String'>
+    readonly fromName: FieldRef<"Settings", 'String'>
+    readonly adminNotifyEmail: FieldRef<"Settings", 'String'>
   }
     
 
@@ -24608,6 +24950,2211 @@ export namespace Prisma {
 
 
   /**
+   * Model EmailTemplate
+   */
+
+  export type AggregateEmailTemplate = {
+    _count: EmailTemplateCountAggregateOutputType | null
+    _avg: EmailTemplateAvgAggregateOutputType | null
+    _sum: EmailTemplateSumAggregateOutputType | null
+    _min: EmailTemplateMinAggregateOutputType | null
+    _max: EmailTemplateMaxAggregateOutputType | null
+  }
+
+  export type EmailTemplateAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type EmailTemplateSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type EmailTemplateMinAggregateOutputType = {
+    id: number | null
+    key: string | null
+    name: string | null
+    category: string | null
+    subject: string | null
+    bodyHtml: string | null
+    bodyText: string | null
+    description: string | null
+    isSystem: boolean | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EmailTemplateMaxAggregateOutputType = {
+    id: number | null
+    key: string | null
+    name: string | null
+    category: string | null
+    subject: string | null
+    bodyHtml: string | null
+    bodyText: string | null
+    description: string | null
+    isSystem: boolean | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EmailTemplateCountAggregateOutputType = {
+    id: number
+    key: number
+    name: number
+    category: number
+    subject: number
+    bodyHtml: number
+    bodyText: number
+    description: number
+    isSystem: number
+    isActive: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type EmailTemplateAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type EmailTemplateSumAggregateInputType = {
+    id?: true
+  }
+
+  export type EmailTemplateMinAggregateInputType = {
+    id?: true
+    key?: true
+    name?: true
+    category?: true
+    subject?: true
+    bodyHtml?: true
+    bodyText?: true
+    description?: true
+    isSystem?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EmailTemplateMaxAggregateInputType = {
+    id?: true
+    key?: true
+    name?: true
+    category?: true
+    subject?: true
+    bodyHtml?: true
+    bodyText?: true
+    description?: true
+    isSystem?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EmailTemplateCountAggregateInputType = {
+    id?: true
+    key?: true
+    name?: true
+    category?: true
+    subject?: true
+    bodyHtml?: true
+    bodyText?: true
+    description?: true
+    isSystem?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type EmailTemplateAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmailTemplate to aggregate.
+     */
+    where?: EmailTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailTemplates to fetch.
+     */
+    orderBy?: EmailTemplateOrderByWithRelationInput | EmailTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EmailTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EmailTemplates
+    **/
+    _count?: true | EmailTemplateCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: EmailTemplateAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EmailTemplateSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EmailTemplateMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EmailTemplateMaxAggregateInputType
+  }
+
+  export type GetEmailTemplateAggregateType<T extends EmailTemplateAggregateArgs> = {
+        [P in keyof T & keyof AggregateEmailTemplate]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEmailTemplate[P]>
+      : GetScalarType<T[P], AggregateEmailTemplate[P]>
+  }
+
+
+
+
+  export type EmailTemplateGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmailTemplateWhereInput
+    orderBy?: EmailTemplateOrderByWithAggregationInput | EmailTemplateOrderByWithAggregationInput[]
+    by: EmailTemplateScalarFieldEnum[] | EmailTemplateScalarFieldEnum
+    having?: EmailTemplateScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EmailTemplateCountAggregateInputType | true
+    _avg?: EmailTemplateAvgAggregateInputType
+    _sum?: EmailTemplateSumAggregateInputType
+    _min?: EmailTemplateMinAggregateInputType
+    _max?: EmailTemplateMaxAggregateInputType
+  }
+
+  export type EmailTemplateGroupByOutputType = {
+    id: number
+    key: string
+    name: string
+    category: string
+    subject: string
+    bodyHtml: string
+    bodyText: string
+    description: string
+    isSystem: boolean
+    isActive: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: EmailTemplateCountAggregateOutputType | null
+    _avg: EmailTemplateAvgAggregateOutputType | null
+    _sum: EmailTemplateSumAggregateOutputType | null
+    _min: EmailTemplateMinAggregateOutputType | null
+    _max: EmailTemplateMaxAggregateOutputType | null
+  }
+
+  type GetEmailTemplateGroupByPayload<T extends EmailTemplateGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EmailTemplateGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EmailTemplateGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EmailTemplateGroupByOutputType[P]>
+            : GetScalarType<T[P], EmailTemplateGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EmailTemplateSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    key?: boolean
+    name?: boolean
+    category?: boolean
+    subject?: boolean
+    bodyHtml?: boolean
+    bodyText?: boolean
+    description?: boolean
+    isSystem?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["emailTemplate"]>
+
+  export type EmailTemplateSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    key?: boolean
+    name?: boolean
+    category?: boolean
+    subject?: boolean
+    bodyHtml?: boolean
+    bodyText?: boolean
+    description?: boolean
+    isSystem?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["emailTemplate"]>
+
+  export type EmailTemplateSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    key?: boolean
+    name?: boolean
+    category?: boolean
+    subject?: boolean
+    bodyHtml?: boolean
+    bodyText?: boolean
+    description?: boolean
+    isSystem?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["emailTemplate"]>
+
+  export type EmailTemplateSelectScalar = {
+    id?: boolean
+    key?: boolean
+    name?: boolean
+    category?: boolean
+    subject?: boolean
+    bodyHtml?: boolean
+    bodyText?: boolean
+    description?: boolean
+    isSystem?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type EmailTemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "key" | "name" | "category" | "subject" | "bodyHtml" | "bodyText" | "description" | "isSystem" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["emailTemplate"]>
+
+  export type $EmailTemplatePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EmailTemplate"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      key: string
+      name: string
+      category: string
+      subject: string
+      bodyHtml: string
+      bodyText: string
+      description: string
+      isSystem: boolean
+      isActive: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["emailTemplate"]>
+    composites: {}
+  }
+
+  type EmailTemplateGetPayload<S extends boolean | null | undefined | EmailTemplateDefaultArgs> = $Result.GetResult<Prisma.$EmailTemplatePayload, S>
+
+  type EmailTemplateCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EmailTemplateFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EmailTemplateCountAggregateInputType | true
+    }
+
+  export interface EmailTemplateDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EmailTemplate'], meta: { name: 'EmailTemplate' } }
+    /**
+     * Find zero or one EmailTemplate that matches the filter.
+     * @param {EmailTemplateFindUniqueArgs} args - Arguments to find a EmailTemplate
+     * @example
+     * // Get one EmailTemplate
+     * const emailTemplate = await prisma.emailTemplate.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EmailTemplateFindUniqueArgs>(args: SelectSubset<T, EmailTemplateFindUniqueArgs<ExtArgs>>): Prisma__EmailTemplateClient<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EmailTemplate that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EmailTemplateFindUniqueOrThrowArgs} args - Arguments to find a EmailTemplate
+     * @example
+     * // Get one EmailTemplate
+     * const emailTemplate = await prisma.emailTemplate.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EmailTemplateFindUniqueOrThrowArgs>(args: SelectSubset<T, EmailTemplateFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EmailTemplateClient<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmailTemplate that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailTemplateFindFirstArgs} args - Arguments to find a EmailTemplate
+     * @example
+     * // Get one EmailTemplate
+     * const emailTemplate = await prisma.emailTemplate.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EmailTemplateFindFirstArgs>(args?: SelectSubset<T, EmailTemplateFindFirstArgs<ExtArgs>>): Prisma__EmailTemplateClient<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmailTemplate that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailTemplateFindFirstOrThrowArgs} args - Arguments to find a EmailTemplate
+     * @example
+     * // Get one EmailTemplate
+     * const emailTemplate = await prisma.emailTemplate.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EmailTemplateFindFirstOrThrowArgs>(args?: SelectSubset<T, EmailTemplateFindFirstOrThrowArgs<ExtArgs>>): Prisma__EmailTemplateClient<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EmailTemplates that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailTemplateFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EmailTemplates
+     * const emailTemplates = await prisma.emailTemplate.findMany()
+     * 
+     * // Get first 10 EmailTemplates
+     * const emailTemplates = await prisma.emailTemplate.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const emailTemplateWithIdOnly = await prisma.emailTemplate.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EmailTemplateFindManyArgs>(args?: SelectSubset<T, EmailTemplateFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EmailTemplate.
+     * @param {EmailTemplateCreateArgs} args - Arguments to create a EmailTemplate.
+     * @example
+     * // Create one EmailTemplate
+     * const EmailTemplate = await prisma.emailTemplate.create({
+     *   data: {
+     *     // ... data to create a EmailTemplate
+     *   }
+     * })
+     * 
+     */
+    create<T extends EmailTemplateCreateArgs>(args: SelectSubset<T, EmailTemplateCreateArgs<ExtArgs>>): Prisma__EmailTemplateClient<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EmailTemplates.
+     * @param {EmailTemplateCreateManyArgs} args - Arguments to create many EmailTemplates.
+     * @example
+     * // Create many EmailTemplates
+     * const emailTemplate = await prisma.emailTemplate.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EmailTemplateCreateManyArgs>(args?: SelectSubset<T, EmailTemplateCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many EmailTemplates and returns the data saved in the database.
+     * @param {EmailTemplateCreateManyAndReturnArgs} args - Arguments to create many EmailTemplates.
+     * @example
+     * // Create many EmailTemplates
+     * const emailTemplate = await prisma.emailTemplate.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many EmailTemplates and only return the `id`
+     * const emailTemplateWithIdOnly = await prisma.emailTemplate.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EmailTemplateCreateManyAndReturnArgs>(args?: SelectSubset<T, EmailTemplateCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a EmailTemplate.
+     * @param {EmailTemplateDeleteArgs} args - Arguments to delete one EmailTemplate.
+     * @example
+     * // Delete one EmailTemplate
+     * const EmailTemplate = await prisma.emailTemplate.delete({
+     *   where: {
+     *     // ... filter to delete one EmailTemplate
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EmailTemplateDeleteArgs>(args: SelectSubset<T, EmailTemplateDeleteArgs<ExtArgs>>): Prisma__EmailTemplateClient<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EmailTemplate.
+     * @param {EmailTemplateUpdateArgs} args - Arguments to update one EmailTemplate.
+     * @example
+     * // Update one EmailTemplate
+     * const emailTemplate = await prisma.emailTemplate.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EmailTemplateUpdateArgs>(args: SelectSubset<T, EmailTemplateUpdateArgs<ExtArgs>>): Prisma__EmailTemplateClient<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EmailTemplates.
+     * @param {EmailTemplateDeleteManyArgs} args - Arguments to filter EmailTemplates to delete.
+     * @example
+     * // Delete a few EmailTemplates
+     * const { count } = await prisma.emailTemplate.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EmailTemplateDeleteManyArgs>(args?: SelectSubset<T, EmailTemplateDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EmailTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailTemplateUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EmailTemplates
+     * const emailTemplate = await prisma.emailTemplate.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EmailTemplateUpdateManyArgs>(args: SelectSubset<T, EmailTemplateUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EmailTemplates and returns the data updated in the database.
+     * @param {EmailTemplateUpdateManyAndReturnArgs} args - Arguments to update many EmailTemplates.
+     * @example
+     * // Update many EmailTemplates
+     * const emailTemplate = await prisma.emailTemplate.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more EmailTemplates and only return the `id`
+     * const emailTemplateWithIdOnly = await prisma.emailTemplate.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends EmailTemplateUpdateManyAndReturnArgs>(args: SelectSubset<T, EmailTemplateUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one EmailTemplate.
+     * @param {EmailTemplateUpsertArgs} args - Arguments to update or create a EmailTemplate.
+     * @example
+     * // Update or create a EmailTemplate
+     * const emailTemplate = await prisma.emailTemplate.upsert({
+     *   create: {
+     *     // ... data to create a EmailTemplate
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EmailTemplate we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EmailTemplateUpsertArgs>(args: SelectSubset<T, EmailTemplateUpsertArgs<ExtArgs>>): Prisma__EmailTemplateClient<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EmailTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailTemplateCountArgs} args - Arguments to filter EmailTemplates to count.
+     * @example
+     * // Count the number of EmailTemplates
+     * const count = await prisma.emailTemplate.count({
+     *   where: {
+     *     // ... the filter for the EmailTemplates we want to count
+     *   }
+     * })
+    **/
+    count<T extends EmailTemplateCountArgs>(
+      args?: Subset<T, EmailTemplateCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EmailTemplateCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EmailTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailTemplateAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EmailTemplateAggregateArgs>(args: Subset<T, EmailTemplateAggregateArgs>): Prisma.PrismaPromise<GetEmailTemplateAggregateType<T>>
+
+    /**
+     * Group by EmailTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailTemplateGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EmailTemplateGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EmailTemplateGroupByArgs['orderBy'] }
+        : { orderBy?: EmailTemplateGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EmailTemplateGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEmailTemplateGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EmailTemplate model
+   */
+  readonly fields: EmailTemplateFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EmailTemplate.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EmailTemplateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EmailTemplate model
+   */
+  interface EmailTemplateFieldRefs {
+    readonly id: FieldRef<"EmailTemplate", 'Int'>
+    readonly key: FieldRef<"EmailTemplate", 'String'>
+    readonly name: FieldRef<"EmailTemplate", 'String'>
+    readonly category: FieldRef<"EmailTemplate", 'String'>
+    readonly subject: FieldRef<"EmailTemplate", 'String'>
+    readonly bodyHtml: FieldRef<"EmailTemplate", 'String'>
+    readonly bodyText: FieldRef<"EmailTemplate", 'String'>
+    readonly description: FieldRef<"EmailTemplate", 'String'>
+    readonly isSystem: FieldRef<"EmailTemplate", 'Boolean'>
+    readonly isActive: FieldRef<"EmailTemplate", 'Boolean'>
+    readonly createdAt: FieldRef<"EmailTemplate", 'DateTime'>
+    readonly updatedAt: FieldRef<"EmailTemplate", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EmailTemplate findUnique
+   */
+  export type EmailTemplateFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailTemplate
+     */
+    omit?: EmailTemplateOmit<ExtArgs> | null
+    /**
+     * Filter, which EmailTemplate to fetch.
+     */
+    where: EmailTemplateWhereUniqueInput
+  }
+
+  /**
+   * EmailTemplate findUniqueOrThrow
+   */
+  export type EmailTemplateFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailTemplate
+     */
+    omit?: EmailTemplateOmit<ExtArgs> | null
+    /**
+     * Filter, which EmailTemplate to fetch.
+     */
+    where: EmailTemplateWhereUniqueInput
+  }
+
+  /**
+   * EmailTemplate findFirst
+   */
+  export type EmailTemplateFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailTemplate
+     */
+    omit?: EmailTemplateOmit<ExtArgs> | null
+    /**
+     * Filter, which EmailTemplate to fetch.
+     */
+    where?: EmailTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailTemplates to fetch.
+     */
+    orderBy?: EmailTemplateOrderByWithRelationInput | EmailTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmailTemplates.
+     */
+    cursor?: EmailTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmailTemplates.
+     */
+    distinct?: EmailTemplateScalarFieldEnum | EmailTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * EmailTemplate findFirstOrThrow
+   */
+  export type EmailTemplateFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailTemplate
+     */
+    omit?: EmailTemplateOmit<ExtArgs> | null
+    /**
+     * Filter, which EmailTemplate to fetch.
+     */
+    where?: EmailTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailTemplates to fetch.
+     */
+    orderBy?: EmailTemplateOrderByWithRelationInput | EmailTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmailTemplates.
+     */
+    cursor?: EmailTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmailTemplates.
+     */
+    distinct?: EmailTemplateScalarFieldEnum | EmailTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * EmailTemplate findMany
+   */
+  export type EmailTemplateFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailTemplate
+     */
+    omit?: EmailTemplateOmit<ExtArgs> | null
+    /**
+     * Filter, which EmailTemplates to fetch.
+     */
+    where?: EmailTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailTemplates to fetch.
+     */
+    orderBy?: EmailTemplateOrderByWithRelationInput | EmailTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EmailTemplates.
+     */
+    cursor?: EmailTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailTemplates.
+     */
+    skip?: number
+    distinct?: EmailTemplateScalarFieldEnum | EmailTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * EmailTemplate create
+   */
+  export type EmailTemplateCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailTemplate
+     */
+    omit?: EmailTemplateOmit<ExtArgs> | null
+    /**
+     * The data needed to create a EmailTemplate.
+     */
+    data: XOR<EmailTemplateCreateInput, EmailTemplateUncheckedCreateInput>
+  }
+
+  /**
+   * EmailTemplate createMany
+   */
+  export type EmailTemplateCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EmailTemplates.
+     */
+    data: EmailTemplateCreateManyInput | EmailTemplateCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EmailTemplate createManyAndReturn
+   */
+  export type EmailTemplateCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailTemplate
+     */
+    omit?: EmailTemplateOmit<ExtArgs> | null
+    /**
+     * The data used to create many EmailTemplates.
+     */
+    data: EmailTemplateCreateManyInput | EmailTemplateCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EmailTemplate update
+   */
+  export type EmailTemplateUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailTemplate
+     */
+    omit?: EmailTemplateOmit<ExtArgs> | null
+    /**
+     * The data needed to update a EmailTemplate.
+     */
+    data: XOR<EmailTemplateUpdateInput, EmailTemplateUncheckedUpdateInput>
+    /**
+     * Choose, which EmailTemplate to update.
+     */
+    where: EmailTemplateWhereUniqueInput
+  }
+
+  /**
+   * EmailTemplate updateMany
+   */
+  export type EmailTemplateUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EmailTemplates.
+     */
+    data: XOR<EmailTemplateUpdateManyMutationInput, EmailTemplateUncheckedUpdateManyInput>
+    /**
+     * Filter which EmailTemplates to update
+     */
+    where?: EmailTemplateWhereInput
+    /**
+     * Limit how many EmailTemplates to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmailTemplate updateManyAndReturn
+   */
+  export type EmailTemplateUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailTemplate
+     */
+    omit?: EmailTemplateOmit<ExtArgs> | null
+    /**
+     * The data used to update EmailTemplates.
+     */
+    data: XOR<EmailTemplateUpdateManyMutationInput, EmailTemplateUncheckedUpdateManyInput>
+    /**
+     * Filter which EmailTemplates to update
+     */
+    where?: EmailTemplateWhereInput
+    /**
+     * Limit how many EmailTemplates to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmailTemplate upsert
+   */
+  export type EmailTemplateUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailTemplate
+     */
+    omit?: EmailTemplateOmit<ExtArgs> | null
+    /**
+     * The filter to search for the EmailTemplate to update in case it exists.
+     */
+    where: EmailTemplateWhereUniqueInput
+    /**
+     * In case the EmailTemplate found by the `where` argument doesn't exist, create a new EmailTemplate with this data.
+     */
+    create: XOR<EmailTemplateCreateInput, EmailTemplateUncheckedCreateInput>
+    /**
+     * In case the EmailTemplate was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EmailTemplateUpdateInput, EmailTemplateUncheckedUpdateInput>
+  }
+
+  /**
+   * EmailTemplate delete
+   */
+  export type EmailTemplateDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailTemplate
+     */
+    omit?: EmailTemplateOmit<ExtArgs> | null
+    /**
+     * Filter which EmailTemplate to delete.
+     */
+    where: EmailTemplateWhereUniqueInput
+  }
+
+  /**
+   * EmailTemplate deleteMany
+   */
+  export type EmailTemplateDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmailTemplates to delete
+     */
+    where?: EmailTemplateWhereInput
+    /**
+     * Limit how many EmailTemplates to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmailTemplate without action
+   */
+  export type EmailTemplateDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailTemplate
+     */
+    omit?: EmailTemplateOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EmailLog
+   */
+
+  export type AggregateEmailLog = {
+    _count: EmailLogCountAggregateOutputType | null
+    _avg: EmailLogAvgAggregateOutputType | null
+    _sum: EmailLogSumAggregateOutputType | null
+    _min: EmailLogMinAggregateOutputType | null
+    _max: EmailLogMaxAggregateOutputType | null
+  }
+
+  export type EmailLogAvgAggregateOutputType = {
+    id: number | null
+    relatedId: number | null
+  }
+
+  export type EmailLogSumAggregateOutputType = {
+    id: number | null
+    relatedId: number | null
+  }
+
+  export type EmailLogMinAggregateOutputType = {
+    id: number | null
+    templateKey: string | null
+    toEmail: string | null
+    subject: string | null
+    status: string | null
+    errorMessage: string | null
+    relatedType: string | null
+    relatedId: number | null
+    createdAt: Date | null
+  }
+
+  export type EmailLogMaxAggregateOutputType = {
+    id: number | null
+    templateKey: string | null
+    toEmail: string | null
+    subject: string | null
+    status: string | null
+    errorMessage: string | null
+    relatedType: string | null
+    relatedId: number | null
+    createdAt: Date | null
+  }
+
+  export type EmailLogCountAggregateOutputType = {
+    id: number
+    templateKey: number
+    toEmail: number
+    subject: number
+    status: number
+    errorMessage: number
+    relatedType: number
+    relatedId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type EmailLogAvgAggregateInputType = {
+    id?: true
+    relatedId?: true
+  }
+
+  export type EmailLogSumAggregateInputType = {
+    id?: true
+    relatedId?: true
+  }
+
+  export type EmailLogMinAggregateInputType = {
+    id?: true
+    templateKey?: true
+    toEmail?: true
+    subject?: true
+    status?: true
+    errorMessage?: true
+    relatedType?: true
+    relatedId?: true
+    createdAt?: true
+  }
+
+  export type EmailLogMaxAggregateInputType = {
+    id?: true
+    templateKey?: true
+    toEmail?: true
+    subject?: true
+    status?: true
+    errorMessage?: true
+    relatedType?: true
+    relatedId?: true
+    createdAt?: true
+  }
+
+  export type EmailLogCountAggregateInputType = {
+    id?: true
+    templateKey?: true
+    toEmail?: true
+    subject?: true
+    status?: true
+    errorMessage?: true
+    relatedType?: true
+    relatedId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type EmailLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmailLog to aggregate.
+     */
+    where?: EmailLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailLogs to fetch.
+     */
+    orderBy?: EmailLogOrderByWithRelationInput | EmailLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EmailLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EmailLogs
+    **/
+    _count?: true | EmailLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: EmailLogAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EmailLogSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EmailLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EmailLogMaxAggregateInputType
+  }
+
+  export type GetEmailLogAggregateType<T extends EmailLogAggregateArgs> = {
+        [P in keyof T & keyof AggregateEmailLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEmailLog[P]>
+      : GetScalarType<T[P], AggregateEmailLog[P]>
+  }
+
+
+
+
+  export type EmailLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmailLogWhereInput
+    orderBy?: EmailLogOrderByWithAggregationInput | EmailLogOrderByWithAggregationInput[]
+    by: EmailLogScalarFieldEnum[] | EmailLogScalarFieldEnum
+    having?: EmailLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EmailLogCountAggregateInputType | true
+    _avg?: EmailLogAvgAggregateInputType
+    _sum?: EmailLogSumAggregateInputType
+    _min?: EmailLogMinAggregateInputType
+    _max?: EmailLogMaxAggregateInputType
+  }
+
+  export type EmailLogGroupByOutputType = {
+    id: number
+    templateKey: string
+    toEmail: string
+    subject: string
+    status: string
+    errorMessage: string
+    relatedType: string
+    relatedId: number | null
+    createdAt: Date
+    _count: EmailLogCountAggregateOutputType | null
+    _avg: EmailLogAvgAggregateOutputType | null
+    _sum: EmailLogSumAggregateOutputType | null
+    _min: EmailLogMinAggregateOutputType | null
+    _max: EmailLogMaxAggregateOutputType | null
+  }
+
+  type GetEmailLogGroupByPayload<T extends EmailLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EmailLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EmailLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EmailLogGroupByOutputType[P]>
+            : GetScalarType<T[P], EmailLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EmailLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    templateKey?: boolean
+    toEmail?: boolean
+    subject?: boolean
+    status?: boolean
+    errorMessage?: boolean
+    relatedType?: boolean
+    relatedId?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["emailLog"]>
+
+  export type EmailLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    templateKey?: boolean
+    toEmail?: boolean
+    subject?: boolean
+    status?: boolean
+    errorMessage?: boolean
+    relatedType?: boolean
+    relatedId?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["emailLog"]>
+
+  export type EmailLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    templateKey?: boolean
+    toEmail?: boolean
+    subject?: boolean
+    status?: boolean
+    errorMessage?: boolean
+    relatedType?: boolean
+    relatedId?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["emailLog"]>
+
+  export type EmailLogSelectScalar = {
+    id?: boolean
+    templateKey?: boolean
+    toEmail?: boolean
+    subject?: boolean
+    status?: boolean
+    errorMessage?: boolean
+    relatedType?: boolean
+    relatedId?: boolean
+    createdAt?: boolean
+  }
+
+  export type EmailLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "templateKey" | "toEmail" | "subject" | "status" | "errorMessage" | "relatedType" | "relatedId" | "createdAt", ExtArgs["result"]["emailLog"]>
+
+  export type $EmailLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EmailLog"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      templateKey: string
+      toEmail: string
+      subject: string
+      status: string
+      errorMessage: string
+      relatedType: string
+      relatedId: number | null
+      createdAt: Date
+    }, ExtArgs["result"]["emailLog"]>
+    composites: {}
+  }
+
+  type EmailLogGetPayload<S extends boolean | null | undefined | EmailLogDefaultArgs> = $Result.GetResult<Prisma.$EmailLogPayload, S>
+
+  type EmailLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EmailLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EmailLogCountAggregateInputType | true
+    }
+
+  export interface EmailLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EmailLog'], meta: { name: 'EmailLog' } }
+    /**
+     * Find zero or one EmailLog that matches the filter.
+     * @param {EmailLogFindUniqueArgs} args - Arguments to find a EmailLog
+     * @example
+     * // Get one EmailLog
+     * const emailLog = await prisma.emailLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EmailLogFindUniqueArgs>(args: SelectSubset<T, EmailLogFindUniqueArgs<ExtArgs>>): Prisma__EmailLogClient<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EmailLog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EmailLogFindUniqueOrThrowArgs} args - Arguments to find a EmailLog
+     * @example
+     * // Get one EmailLog
+     * const emailLog = await prisma.emailLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EmailLogFindUniqueOrThrowArgs>(args: SelectSubset<T, EmailLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EmailLogClient<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmailLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailLogFindFirstArgs} args - Arguments to find a EmailLog
+     * @example
+     * // Get one EmailLog
+     * const emailLog = await prisma.emailLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EmailLogFindFirstArgs>(args?: SelectSubset<T, EmailLogFindFirstArgs<ExtArgs>>): Prisma__EmailLogClient<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmailLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailLogFindFirstOrThrowArgs} args - Arguments to find a EmailLog
+     * @example
+     * // Get one EmailLog
+     * const emailLog = await prisma.emailLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EmailLogFindFirstOrThrowArgs>(args?: SelectSubset<T, EmailLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__EmailLogClient<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EmailLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EmailLogs
+     * const emailLogs = await prisma.emailLog.findMany()
+     * 
+     * // Get first 10 EmailLogs
+     * const emailLogs = await prisma.emailLog.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const emailLogWithIdOnly = await prisma.emailLog.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EmailLogFindManyArgs>(args?: SelectSubset<T, EmailLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EmailLog.
+     * @param {EmailLogCreateArgs} args - Arguments to create a EmailLog.
+     * @example
+     * // Create one EmailLog
+     * const EmailLog = await prisma.emailLog.create({
+     *   data: {
+     *     // ... data to create a EmailLog
+     *   }
+     * })
+     * 
+     */
+    create<T extends EmailLogCreateArgs>(args: SelectSubset<T, EmailLogCreateArgs<ExtArgs>>): Prisma__EmailLogClient<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EmailLogs.
+     * @param {EmailLogCreateManyArgs} args - Arguments to create many EmailLogs.
+     * @example
+     * // Create many EmailLogs
+     * const emailLog = await prisma.emailLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EmailLogCreateManyArgs>(args?: SelectSubset<T, EmailLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many EmailLogs and returns the data saved in the database.
+     * @param {EmailLogCreateManyAndReturnArgs} args - Arguments to create many EmailLogs.
+     * @example
+     * // Create many EmailLogs
+     * const emailLog = await prisma.emailLog.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many EmailLogs and only return the `id`
+     * const emailLogWithIdOnly = await prisma.emailLog.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EmailLogCreateManyAndReturnArgs>(args?: SelectSubset<T, EmailLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a EmailLog.
+     * @param {EmailLogDeleteArgs} args - Arguments to delete one EmailLog.
+     * @example
+     * // Delete one EmailLog
+     * const EmailLog = await prisma.emailLog.delete({
+     *   where: {
+     *     // ... filter to delete one EmailLog
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EmailLogDeleteArgs>(args: SelectSubset<T, EmailLogDeleteArgs<ExtArgs>>): Prisma__EmailLogClient<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EmailLog.
+     * @param {EmailLogUpdateArgs} args - Arguments to update one EmailLog.
+     * @example
+     * // Update one EmailLog
+     * const emailLog = await prisma.emailLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EmailLogUpdateArgs>(args: SelectSubset<T, EmailLogUpdateArgs<ExtArgs>>): Prisma__EmailLogClient<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EmailLogs.
+     * @param {EmailLogDeleteManyArgs} args - Arguments to filter EmailLogs to delete.
+     * @example
+     * // Delete a few EmailLogs
+     * const { count } = await prisma.emailLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EmailLogDeleteManyArgs>(args?: SelectSubset<T, EmailLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EmailLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EmailLogs
+     * const emailLog = await prisma.emailLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EmailLogUpdateManyArgs>(args: SelectSubset<T, EmailLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EmailLogs and returns the data updated in the database.
+     * @param {EmailLogUpdateManyAndReturnArgs} args - Arguments to update many EmailLogs.
+     * @example
+     * // Update many EmailLogs
+     * const emailLog = await prisma.emailLog.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more EmailLogs and only return the `id`
+     * const emailLogWithIdOnly = await prisma.emailLog.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends EmailLogUpdateManyAndReturnArgs>(args: SelectSubset<T, EmailLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one EmailLog.
+     * @param {EmailLogUpsertArgs} args - Arguments to update or create a EmailLog.
+     * @example
+     * // Update or create a EmailLog
+     * const emailLog = await prisma.emailLog.upsert({
+     *   create: {
+     *     // ... data to create a EmailLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EmailLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EmailLogUpsertArgs>(args: SelectSubset<T, EmailLogUpsertArgs<ExtArgs>>): Prisma__EmailLogClient<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EmailLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailLogCountArgs} args - Arguments to filter EmailLogs to count.
+     * @example
+     * // Count the number of EmailLogs
+     * const count = await prisma.emailLog.count({
+     *   where: {
+     *     // ... the filter for the EmailLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends EmailLogCountArgs>(
+      args?: Subset<T, EmailLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EmailLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EmailLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EmailLogAggregateArgs>(args: Subset<T, EmailLogAggregateArgs>): Prisma.PrismaPromise<GetEmailLogAggregateType<T>>
+
+    /**
+     * Group by EmailLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EmailLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EmailLogGroupByArgs['orderBy'] }
+        : { orderBy?: EmailLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EmailLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEmailLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EmailLog model
+   */
+  readonly fields: EmailLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EmailLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EmailLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EmailLog model
+   */
+  interface EmailLogFieldRefs {
+    readonly id: FieldRef<"EmailLog", 'Int'>
+    readonly templateKey: FieldRef<"EmailLog", 'String'>
+    readonly toEmail: FieldRef<"EmailLog", 'String'>
+    readonly subject: FieldRef<"EmailLog", 'String'>
+    readonly status: FieldRef<"EmailLog", 'String'>
+    readonly errorMessage: FieldRef<"EmailLog", 'String'>
+    readonly relatedType: FieldRef<"EmailLog", 'String'>
+    readonly relatedId: FieldRef<"EmailLog", 'Int'>
+    readonly createdAt: FieldRef<"EmailLog", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EmailLog findUnique
+   */
+  export type EmailLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailLog
+     */
+    select?: EmailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailLog
+     */
+    omit?: EmailLogOmit<ExtArgs> | null
+    /**
+     * Filter, which EmailLog to fetch.
+     */
+    where: EmailLogWhereUniqueInput
+  }
+
+  /**
+   * EmailLog findUniqueOrThrow
+   */
+  export type EmailLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailLog
+     */
+    select?: EmailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailLog
+     */
+    omit?: EmailLogOmit<ExtArgs> | null
+    /**
+     * Filter, which EmailLog to fetch.
+     */
+    where: EmailLogWhereUniqueInput
+  }
+
+  /**
+   * EmailLog findFirst
+   */
+  export type EmailLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailLog
+     */
+    select?: EmailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailLog
+     */
+    omit?: EmailLogOmit<ExtArgs> | null
+    /**
+     * Filter, which EmailLog to fetch.
+     */
+    where?: EmailLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailLogs to fetch.
+     */
+    orderBy?: EmailLogOrderByWithRelationInput | EmailLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmailLogs.
+     */
+    cursor?: EmailLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmailLogs.
+     */
+    distinct?: EmailLogScalarFieldEnum | EmailLogScalarFieldEnum[]
+  }
+
+  /**
+   * EmailLog findFirstOrThrow
+   */
+  export type EmailLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailLog
+     */
+    select?: EmailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailLog
+     */
+    omit?: EmailLogOmit<ExtArgs> | null
+    /**
+     * Filter, which EmailLog to fetch.
+     */
+    where?: EmailLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailLogs to fetch.
+     */
+    orderBy?: EmailLogOrderByWithRelationInput | EmailLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmailLogs.
+     */
+    cursor?: EmailLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmailLogs.
+     */
+    distinct?: EmailLogScalarFieldEnum | EmailLogScalarFieldEnum[]
+  }
+
+  /**
+   * EmailLog findMany
+   */
+  export type EmailLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailLog
+     */
+    select?: EmailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailLog
+     */
+    omit?: EmailLogOmit<ExtArgs> | null
+    /**
+     * Filter, which EmailLogs to fetch.
+     */
+    where?: EmailLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailLogs to fetch.
+     */
+    orderBy?: EmailLogOrderByWithRelationInput | EmailLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EmailLogs.
+     */
+    cursor?: EmailLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailLogs.
+     */
+    skip?: number
+    distinct?: EmailLogScalarFieldEnum | EmailLogScalarFieldEnum[]
+  }
+
+  /**
+   * EmailLog create
+   */
+  export type EmailLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailLog
+     */
+    select?: EmailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailLog
+     */
+    omit?: EmailLogOmit<ExtArgs> | null
+    /**
+     * The data needed to create a EmailLog.
+     */
+    data: XOR<EmailLogCreateInput, EmailLogUncheckedCreateInput>
+  }
+
+  /**
+   * EmailLog createMany
+   */
+  export type EmailLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EmailLogs.
+     */
+    data: EmailLogCreateManyInput | EmailLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EmailLog createManyAndReturn
+   */
+  export type EmailLogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailLog
+     */
+    select?: EmailLogSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailLog
+     */
+    omit?: EmailLogOmit<ExtArgs> | null
+    /**
+     * The data used to create many EmailLogs.
+     */
+    data: EmailLogCreateManyInput | EmailLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EmailLog update
+   */
+  export type EmailLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailLog
+     */
+    select?: EmailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailLog
+     */
+    omit?: EmailLogOmit<ExtArgs> | null
+    /**
+     * The data needed to update a EmailLog.
+     */
+    data: XOR<EmailLogUpdateInput, EmailLogUncheckedUpdateInput>
+    /**
+     * Choose, which EmailLog to update.
+     */
+    where: EmailLogWhereUniqueInput
+  }
+
+  /**
+   * EmailLog updateMany
+   */
+  export type EmailLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EmailLogs.
+     */
+    data: XOR<EmailLogUpdateManyMutationInput, EmailLogUncheckedUpdateManyInput>
+    /**
+     * Filter which EmailLogs to update
+     */
+    where?: EmailLogWhereInput
+    /**
+     * Limit how many EmailLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmailLog updateManyAndReturn
+   */
+  export type EmailLogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailLog
+     */
+    select?: EmailLogSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailLog
+     */
+    omit?: EmailLogOmit<ExtArgs> | null
+    /**
+     * The data used to update EmailLogs.
+     */
+    data: XOR<EmailLogUpdateManyMutationInput, EmailLogUncheckedUpdateManyInput>
+    /**
+     * Filter which EmailLogs to update
+     */
+    where?: EmailLogWhereInput
+    /**
+     * Limit how many EmailLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmailLog upsert
+   */
+  export type EmailLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailLog
+     */
+    select?: EmailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailLog
+     */
+    omit?: EmailLogOmit<ExtArgs> | null
+    /**
+     * The filter to search for the EmailLog to update in case it exists.
+     */
+    where: EmailLogWhereUniqueInput
+    /**
+     * In case the EmailLog found by the `where` argument doesn't exist, create a new EmailLog with this data.
+     */
+    create: XOR<EmailLogCreateInput, EmailLogUncheckedCreateInput>
+    /**
+     * In case the EmailLog was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EmailLogUpdateInput, EmailLogUncheckedUpdateInput>
+  }
+
+  /**
+   * EmailLog delete
+   */
+  export type EmailLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailLog
+     */
+    select?: EmailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailLog
+     */
+    omit?: EmailLogOmit<ExtArgs> | null
+    /**
+     * Filter which EmailLog to delete.
+     */
+    where: EmailLogWhereUniqueInput
+  }
+
+  /**
+   * EmailLog deleteMany
+   */
+  export type EmailLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmailLogs to delete
+     */
+    where?: EmailLogWhereInput
+    /**
+     * Limit how many EmailLogs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmailLog without action
+   */
+  export type EmailLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailLog
+     */
+    select?: EmailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailLog
+     */
+    omit?: EmailLogOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Model Transaction
    */
 
@@ -24637,6 +27184,8 @@ export namespace Prisma {
     category: string | null
     amount: number | null
     description: string | null
+    donorName: string | null
+    donorEmail: string | null
     date: Date | null
     kittenId: number | null
     createdAt: Date | null
@@ -24648,6 +27197,8 @@ export namespace Prisma {
     category: string | null
     amount: number | null
     description: string | null
+    donorName: string | null
+    donorEmail: string | null
     date: Date | null
     kittenId: number | null
     createdAt: Date | null
@@ -24659,6 +27210,8 @@ export namespace Prisma {
     category: number
     amount: number
     description: number
+    donorName: number
+    donorEmail: number
     date: number
     kittenId: number
     createdAt: number
@@ -24684,6 +27237,8 @@ export namespace Prisma {
     category?: true
     amount?: true
     description?: true
+    donorName?: true
+    donorEmail?: true
     date?: true
     kittenId?: true
     createdAt?: true
@@ -24695,6 +27250,8 @@ export namespace Prisma {
     category?: true
     amount?: true
     description?: true
+    donorName?: true
+    donorEmail?: true
     date?: true
     kittenId?: true
     createdAt?: true
@@ -24706,6 +27263,8 @@ export namespace Prisma {
     category?: true
     amount?: true
     description?: true
+    donorName?: true
+    donorEmail?: true
     date?: true
     kittenId?: true
     createdAt?: true
@@ -24804,6 +27363,8 @@ export namespace Prisma {
     category: string
     amount: number
     description: string
+    donorName: string
+    donorEmail: string
     date: Date
     kittenId: number | null
     createdAt: Date
@@ -24834,6 +27395,8 @@ export namespace Prisma {
     category?: boolean
     amount?: boolean
     description?: boolean
+    donorName?: boolean
+    donorEmail?: boolean
     date?: boolean
     kittenId?: boolean
     createdAt?: boolean
@@ -24846,6 +27409,8 @@ export namespace Prisma {
     category?: boolean
     amount?: boolean
     description?: boolean
+    donorName?: boolean
+    donorEmail?: boolean
     date?: boolean
     kittenId?: boolean
     createdAt?: boolean
@@ -24858,6 +27423,8 @@ export namespace Prisma {
     category?: boolean
     amount?: boolean
     description?: boolean
+    donorName?: boolean
+    donorEmail?: boolean
     date?: boolean
     kittenId?: boolean
     createdAt?: boolean
@@ -24870,12 +27437,14 @@ export namespace Prisma {
     category?: boolean
     amount?: boolean
     description?: boolean
+    donorName?: boolean
+    donorEmail?: boolean
     date?: boolean
     kittenId?: boolean
     createdAt?: boolean
   }
 
-  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "category" | "amount" | "description" | "date" | "kittenId" | "createdAt", ExtArgs["result"]["transaction"]>
+  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "category" | "amount" | "description" | "donorName" | "donorEmail" | "date" | "kittenId" | "createdAt", ExtArgs["result"]["transaction"]>
   export type TransactionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     kitten?: boolean | Transaction$kittenArgs<ExtArgs>
   }
@@ -24897,6 +27466,8 @@ export namespace Prisma {
       category: string
       amount: number
       description: string
+      donorName: string
+      donorEmail: string
       date: Date
       kittenId: number | null
       createdAt: Date
@@ -25329,6 +27900,8 @@ export namespace Prisma {
     readonly category: FieldRef<"Transaction", 'String'>
     readonly amount: FieldRef<"Transaction", 'Float'>
     readonly description: FieldRef<"Transaction", 'String'>
+    readonly donorName: FieldRef<"Transaction", 'String'>
+    readonly donorEmail: FieldRef<"Transaction", 'String'>
     readonly date: FieldRef<"Transaction", 'DateTime'>
     readonly kittenId: FieldRef<"Transaction", 'Int'>
     readonly createdAt: FieldRef<"Transaction", 'DateTime'>
@@ -25829,6 +28402,9 @@ export namespace Prisma {
     isListedOnWebsite: 'isListedOnWebsite',
     websiteFeaturedComment: 'websiteFeaturedComment',
     publishTargets: 'publishTargets',
+    amazonWishlistUrl: 'amazonWishlistUrl',
+    walmartWishlistUrl: 'walmartWishlistUrl',
+    chewyWishlistUrl: 'chewyWishlistUrl',
     currentFosterId: 'currentFosterId',
     createdAt: 'createdAt'
   };
@@ -26043,10 +28619,52 @@ export namespace Prisma {
     amazonWishlistUrl: 'amazonWishlistUrl',
     chewyWishlistUrl: 'chewyWishlistUrl',
     facebookUrl: 'facebookUrl',
-    instagramUrl: 'instagramUrl'
+    instagramUrl: 'instagramUrl',
+    emailsEnabled: 'emailsEnabled',
+    smtpHost: 'smtpHost',
+    smtpPort: 'smtpPort',
+    smtpSecure: 'smtpSecure',
+    smtpUser: 'smtpUser',
+    smtpPass: 'smtpPass',
+    fromEmail: 'fromEmail',
+    fromName: 'fromName',
+    adminNotifyEmail: 'adminNotifyEmail'
   };
 
   export type SettingsScalarFieldEnum = (typeof SettingsScalarFieldEnum)[keyof typeof SettingsScalarFieldEnum]
+
+
+  export const EmailTemplateScalarFieldEnum: {
+    id: 'id',
+    key: 'key',
+    name: 'name',
+    category: 'category',
+    subject: 'subject',
+    bodyHtml: 'bodyHtml',
+    bodyText: 'bodyText',
+    description: 'description',
+    isSystem: 'isSystem',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type EmailTemplateScalarFieldEnum = (typeof EmailTemplateScalarFieldEnum)[keyof typeof EmailTemplateScalarFieldEnum]
+
+
+  export const EmailLogScalarFieldEnum: {
+    id: 'id',
+    templateKey: 'templateKey',
+    toEmail: 'toEmail',
+    subject: 'subject',
+    status: 'status',
+    errorMessage: 'errorMessage',
+    relatedType: 'relatedType',
+    relatedId: 'relatedId',
+    createdAt: 'createdAt'
+  };
+
+  export type EmailLogScalarFieldEnum = (typeof EmailLogScalarFieldEnum)[keyof typeof EmailLogScalarFieldEnum]
 
 
   export const TransactionScalarFieldEnum: {
@@ -26055,6 +28673,8 @@ export namespace Prisma {
     category: 'category',
     amount: 'amount',
     description: 'description',
+    donorName: 'donorName',
+    donorEmail: 'donorEmail',
     date: 'date',
     kittenId: 'kittenId',
     createdAt: 'createdAt'
@@ -26330,6 +28950,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFilter<"Kitten"> | boolean
     websiteFeaturedComment?: StringFilter<"Kitten"> | string
     publishTargets?: StringNullableListFilter<"Kitten">
+    amazonWishlistUrl?: StringNullableFilter<"Kitten"> | string | null
+    walmartWishlistUrl?: StringNullableFilter<"Kitten"> | string | null
+    chewyWishlistUrl?: StringNullableFilter<"Kitten"> | string | null
     currentFosterId?: IntNullableFilter<"Kitten"> | number | null
     createdAt?: DateTimeFilter<"Kitten"> | Date | string
     litter?: XOR<LitterNullableScalarRelationFilter, LitterWhereInput> | null
@@ -26367,6 +28990,9 @@ export namespace Prisma {
     isListedOnWebsite?: SortOrder
     websiteFeaturedComment?: SortOrder
     publishTargets?: SortOrder
+    amazonWishlistUrl?: SortOrderInput | SortOrder
+    walmartWishlistUrl?: SortOrderInput | SortOrder
+    chewyWishlistUrl?: SortOrderInput | SortOrder
     currentFosterId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     litter?: LitterOrderByWithRelationInput
@@ -26407,6 +29033,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFilter<"Kitten"> | boolean
     websiteFeaturedComment?: StringFilter<"Kitten"> | string
     publishTargets?: StringNullableListFilter<"Kitten">
+    amazonWishlistUrl?: StringNullableFilter<"Kitten"> | string | null
+    walmartWishlistUrl?: StringNullableFilter<"Kitten"> | string | null
+    chewyWishlistUrl?: StringNullableFilter<"Kitten"> | string | null
     currentFosterId?: IntNullableFilter<"Kitten"> | number | null
     createdAt?: DateTimeFilter<"Kitten"> | Date | string
     litter?: XOR<LitterNullableScalarRelationFilter, LitterWhereInput> | null
@@ -26444,6 +29073,9 @@ export namespace Prisma {
     isListedOnWebsite?: SortOrder
     websiteFeaturedComment?: SortOrder
     publishTargets?: SortOrder
+    amazonWishlistUrl?: SortOrderInput | SortOrder
+    walmartWishlistUrl?: SortOrderInput | SortOrder
+    chewyWishlistUrl?: SortOrderInput | SortOrder
     currentFosterId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: KittenCountOrderByAggregateInput
@@ -26478,6 +29110,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolWithAggregatesFilter<"Kitten"> | boolean
     websiteFeaturedComment?: StringWithAggregatesFilter<"Kitten"> | string
     publishTargets?: StringNullableListFilter<"Kitten">
+    amazonWishlistUrl?: StringNullableWithAggregatesFilter<"Kitten"> | string | null
+    walmartWishlistUrl?: StringNullableWithAggregatesFilter<"Kitten"> | string | null
+    chewyWishlistUrl?: StringNullableWithAggregatesFilter<"Kitten"> | string | null
     currentFosterId?: IntNullableWithAggregatesFilter<"Kitten"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"Kitten"> | Date | string
   }
@@ -27520,6 +30155,15 @@ export namespace Prisma {
     chewyWishlistUrl?: StringFilter<"Settings"> | string
     facebookUrl?: StringFilter<"Settings"> | string
     instagramUrl?: StringFilter<"Settings"> | string
+    emailsEnabled?: BoolFilter<"Settings"> | boolean
+    smtpHost?: StringFilter<"Settings"> | string
+    smtpPort?: IntFilter<"Settings"> | number
+    smtpSecure?: BoolFilter<"Settings"> | boolean
+    smtpUser?: StringFilter<"Settings"> | string
+    smtpPass?: StringFilter<"Settings"> | string
+    fromEmail?: StringFilter<"Settings"> | string
+    fromName?: StringFilter<"Settings"> | string
+    adminNotifyEmail?: StringFilter<"Settings"> | string
   }
 
   export type SettingsOrderByWithRelationInput = {
@@ -27531,6 +30175,15 @@ export namespace Prisma {
     chewyWishlistUrl?: SortOrder
     facebookUrl?: SortOrder
     instagramUrl?: SortOrder
+    emailsEnabled?: SortOrder
+    smtpHost?: SortOrder
+    smtpPort?: SortOrder
+    smtpSecure?: SortOrder
+    smtpUser?: SortOrder
+    smtpPass?: SortOrder
+    fromEmail?: SortOrder
+    fromName?: SortOrder
+    adminNotifyEmail?: SortOrder
   }
 
   export type SettingsWhereUniqueInput = Prisma.AtLeast<{
@@ -27545,6 +30198,15 @@ export namespace Prisma {
     chewyWishlistUrl?: StringFilter<"Settings"> | string
     facebookUrl?: StringFilter<"Settings"> | string
     instagramUrl?: StringFilter<"Settings"> | string
+    emailsEnabled?: BoolFilter<"Settings"> | boolean
+    smtpHost?: StringFilter<"Settings"> | string
+    smtpPort?: IntFilter<"Settings"> | number
+    smtpSecure?: BoolFilter<"Settings"> | boolean
+    smtpUser?: StringFilter<"Settings"> | string
+    smtpPass?: StringFilter<"Settings"> | string
+    fromEmail?: StringFilter<"Settings"> | string
+    fromName?: StringFilter<"Settings"> | string
+    adminNotifyEmail?: StringFilter<"Settings"> | string
   }, "id">
 
   export type SettingsOrderByWithAggregationInput = {
@@ -27556,6 +30218,15 @@ export namespace Prisma {
     chewyWishlistUrl?: SortOrder
     facebookUrl?: SortOrder
     instagramUrl?: SortOrder
+    emailsEnabled?: SortOrder
+    smtpHost?: SortOrder
+    smtpPort?: SortOrder
+    smtpSecure?: SortOrder
+    smtpUser?: SortOrder
+    smtpPass?: SortOrder
+    fromEmail?: SortOrder
+    fromName?: SortOrder
+    adminNotifyEmail?: SortOrder
     _count?: SettingsCountOrderByAggregateInput
     _avg?: SettingsAvgOrderByAggregateInput
     _max?: SettingsMaxOrderByAggregateInput
@@ -27575,6 +30246,178 @@ export namespace Prisma {
     chewyWishlistUrl?: StringWithAggregatesFilter<"Settings"> | string
     facebookUrl?: StringWithAggregatesFilter<"Settings"> | string
     instagramUrl?: StringWithAggregatesFilter<"Settings"> | string
+    emailsEnabled?: BoolWithAggregatesFilter<"Settings"> | boolean
+    smtpHost?: StringWithAggregatesFilter<"Settings"> | string
+    smtpPort?: IntWithAggregatesFilter<"Settings"> | number
+    smtpSecure?: BoolWithAggregatesFilter<"Settings"> | boolean
+    smtpUser?: StringWithAggregatesFilter<"Settings"> | string
+    smtpPass?: StringWithAggregatesFilter<"Settings"> | string
+    fromEmail?: StringWithAggregatesFilter<"Settings"> | string
+    fromName?: StringWithAggregatesFilter<"Settings"> | string
+    adminNotifyEmail?: StringWithAggregatesFilter<"Settings"> | string
+  }
+
+  export type EmailTemplateWhereInput = {
+    AND?: EmailTemplateWhereInput | EmailTemplateWhereInput[]
+    OR?: EmailTemplateWhereInput[]
+    NOT?: EmailTemplateWhereInput | EmailTemplateWhereInput[]
+    id?: IntFilter<"EmailTemplate"> | number
+    key?: StringFilter<"EmailTemplate"> | string
+    name?: StringFilter<"EmailTemplate"> | string
+    category?: StringFilter<"EmailTemplate"> | string
+    subject?: StringFilter<"EmailTemplate"> | string
+    bodyHtml?: StringFilter<"EmailTemplate"> | string
+    bodyText?: StringFilter<"EmailTemplate"> | string
+    description?: StringFilter<"EmailTemplate"> | string
+    isSystem?: BoolFilter<"EmailTemplate"> | boolean
+    isActive?: BoolFilter<"EmailTemplate"> | boolean
+    createdAt?: DateTimeFilter<"EmailTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"EmailTemplate"> | Date | string
+  }
+
+  export type EmailTemplateOrderByWithRelationInput = {
+    id?: SortOrder
+    key?: SortOrder
+    name?: SortOrder
+    category?: SortOrder
+    subject?: SortOrder
+    bodyHtml?: SortOrder
+    bodyText?: SortOrder
+    description?: SortOrder
+    isSystem?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmailTemplateWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    key?: string
+    AND?: EmailTemplateWhereInput | EmailTemplateWhereInput[]
+    OR?: EmailTemplateWhereInput[]
+    NOT?: EmailTemplateWhereInput | EmailTemplateWhereInput[]
+    name?: StringFilter<"EmailTemplate"> | string
+    category?: StringFilter<"EmailTemplate"> | string
+    subject?: StringFilter<"EmailTemplate"> | string
+    bodyHtml?: StringFilter<"EmailTemplate"> | string
+    bodyText?: StringFilter<"EmailTemplate"> | string
+    description?: StringFilter<"EmailTemplate"> | string
+    isSystem?: BoolFilter<"EmailTemplate"> | boolean
+    isActive?: BoolFilter<"EmailTemplate"> | boolean
+    createdAt?: DateTimeFilter<"EmailTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"EmailTemplate"> | Date | string
+  }, "id" | "key">
+
+  export type EmailTemplateOrderByWithAggregationInput = {
+    id?: SortOrder
+    key?: SortOrder
+    name?: SortOrder
+    category?: SortOrder
+    subject?: SortOrder
+    bodyHtml?: SortOrder
+    bodyText?: SortOrder
+    description?: SortOrder
+    isSystem?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: EmailTemplateCountOrderByAggregateInput
+    _avg?: EmailTemplateAvgOrderByAggregateInput
+    _max?: EmailTemplateMaxOrderByAggregateInput
+    _min?: EmailTemplateMinOrderByAggregateInput
+    _sum?: EmailTemplateSumOrderByAggregateInput
+  }
+
+  export type EmailTemplateScalarWhereWithAggregatesInput = {
+    AND?: EmailTemplateScalarWhereWithAggregatesInput | EmailTemplateScalarWhereWithAggregatesInput[]
+    OR?: EmailTemplateScalarWhereWithAggregatesInput[]
+    NOT?: EmailTemplateScalarWhereWithAggregatesInput | EmailTemplateScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"EmailTemplate"> | number
+    key?: StringWithAggregatesFilter<"EmailTemplate"> | string
+    name?: StringWithAggregatesFilter<"EmailTemplate"> | string
+    category?: StringWithAggregatesFilter<"EmailTemplate"> | string
+    subject?: StringWithAggregatesFilter<"EmailTemplate"> | string
+    bodyHtml?: StringWithAggregatesFilter<"EmailTemplate"> | string
+    bodyText?: StringWithAggregatesFilter<"EmailTemplate"> | string
+    description?: StringWithAggregatesFilter<"EmailTemplate"> | string
+    isSystem?: BoolWithAggregatesFilter<"EmailTemplate"> | boolean
+    isActive?: BoolWithAggregatesFilter<"EmailTemplate"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"EmailTemplate"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"EmailTemplate"> | Date | string
+  }
+
+  export type EmailLogWhereInput = {
+    AND?: EmailLogWhereInput | EmailLogWhereInput[]
+    OR?: EmailLogWhereInput[]
+    NOT?: EmailLogWhereInput | EmailLogWhereInput[]
+    id?: IntFilter<"EmailLog"> | number
+    templateKey?: StringFilter<"EmailLog"> | string
+    toEmail?: StringFilter<"EmailLog"> | string
+    subject?: StringFilter<"EmailLog"> | string
+    status?: StringFilter<"EmailLog"> | string
+    errorMessage?: StringFilter<"EmailLog"> | string
+    relatedType?: StringFilter<"EmailLog"> | string
+    relatedId?: IntNullableFilter<"EmailLog"> | number | null
+    createdAt?: DateTimeFilter<"EmailLog"> | Date | string
+  }
+
+  export type EmailLogOrderByWithRelationInput = {
+    id?: SortOrder
+    templateKey?: SortOrder
+    toEmail?: SortOrder
+    subject?: SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrder
+    relatedType?: SortOrder
+    relatedId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EmailLogWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: EmailLogWhereInput | EmailLogWhereInput[]
+    OR?: EmailLogWhereInput[]
+    NOT?: EmailLogWhereInput | EmailLogWhereInput[]
+    templateKey?: StringFilter<"EmailLog"> | string
+    toEmail?: StringFilter<"EmailLog"> | string
+    subject?: StringFilter<"EmailLog"> | string
+    status?: StringFilter<"EmailLog"> | string
+    errorMessage?: StringFilter<"EmailLog"> | string
+    relatedType?: StringFilter<"EmailLog"> | string
+    relatedId?: IntNullableFilter<"EmailLog"> | number | null
+    createdAt?: DateTimeFilter<"EmailLog"> | Date | string
+  }, "id">
+
+  export type EmailLogOrderByWithAggregationInput = {
+    id?: SortOrder
+    templateKey?: SortOrder
+    toEmail?: SortOrder
+    subject?: SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrder
+    relatedType?: SortOrder
+    relatedId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: EmailLogCountOrderByAggregateInput
+    _avg?: EmailLogAvgOrderByAggregateInput
+    _max?: EmailLogMaxOrderByAggregateInput
+    _min?: EmailLogMinOrderByAggregateInput
+    _sum?: EmailLogSumOrderByAggregateInput
+  }
+
+  export type EmailLogScalarWhereWithAggregatesInput = {
+    AND?: EmailLogScalarWhereWithAggregatesInput | EmailLogScalarWhereWithAggregatesInput[]
+    OR?: EmailLogScalarWhereWithAggregatesInput[]
+    NOT?: EmailLogScalarWhereWithAggregatesInput | EmailLogScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"EmailLog"> | number
+    templateKey?: StringWithAggregatesFilter<"EmailLog"> | string
+    toEmail?: StringWithAggregatesFilter<"EmailLog"> | string
+    subject?: StringWithAggregatesFilter<"EmailLog"> | string
+    status?: StringWithAggregatesFilter<"EmailLog"> | string
+    errorMessage?: StringWithAggregatesFilter<"EmailLog"> | string
+    relatedType?: StringWithAggregatesFilter<"EmailLog"> | string
+    relatedId?: IntNullableWithAggregatesFilter<"EmailLog"> | number | null
+    createdAt?: DateTimeWithAggregatesFilter<"EmailLog"> | Date | string
   }
 
   export type TransactionWhereInput = {
@@ -27586,6 +30429,8 @@ export namespace Prisma {
     category?: StringFilter<"Transaction"> | string
     amount?: FloatFilter<"Transaction"> | number
     description?: StringFilter<"Transaction"> | string
+    donorName?: StringFilter<"Transaction"> | string
+    donorEmail?: StringFilter<"Transaction"> | string
     date?: DateTimeFilter<"Transaction"> | Date | string
     kittenId?: IntNullableFilter<"Transaction"> | number | null
     createdAt?: DateTimeFilter<"Transaction"> | Date | string
@@ -27598,6 +30443,8 @@ export namespace Prisma {
     category?: SortOrder
     amount?: SortOrder
     description?: SortOrder
+    donorName?: SortOrder
+    donorEmail?: SortOrder
     date?: SortOrder
     kittenId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -27613,6 +30460,8 @@ export namespace Prisma {
     category?: StringFilter<"Transaction"> | string
     amount?: FloatFilter<"Transaction"> | number
     description?: StringFilter<"Transaction"> | string
+    donorName?: StringFilter<"Transaction"> | string
+    donorEmail?: StringFilter<"Transaction"> | string
     date?: DateTimeFilter<"Transaction"> | Date | string
     kittenId?: IntNullableFilter<"Transaction"> | number | null
     createdAt?: DateTimeFilter<"Transaction"> | Date | string
@@ -27625,6 +30474,8 @@ export namespace Prisma {
     category?: SortOrder
     amount?: SortOrder
     description?: SortOrder
+    donorName?: SortOrder
+    donorEmail?: SortOrder
     date?: SortOrder
     kittenId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -27644,6 +30495,8 @@ export namespace Prisma {
     category?: StringWithAggregatesFilter<"Transaction"> | string
     amount?: FloatWithAggregatesFilter<"Transaction"> | number
     description?: StringWithAggregatesFilter<"Transaction"> | string
+    donorName?: StringWithAggregatesFilter<"Transaction"> | string
+    donorEmail?: StringWithAggregatesFilter<"Transaction"> | string
     date?: DateTimeWithAggregatesFilter<"Transaction"> | Date | string
     kittenId?: IntNullableWithAggregatesFilter<"Transaction"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"Transaction"> | Date | string
@@ -27829,6 +30682,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -27865,6 +30721,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
     currentFosterId?: number | null
     createdAt?: Date | string
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
@@ -27898,6 +30757,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -27934,6 +30796,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
@@ -27969,6 +30834,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
     currentFosterId?: number | null
     createdAt?: Date | string
   }
@@ -27993,6 +30861,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -28018,6 +30889,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -29068,6 +31942,15 @@ export namespace Prisma {
     chewyWishlistUrl?: string
     facebookUrl?: string
     instagramUrl?: string
+    emailsEnabled?: boolean
+    smtpHost?: string
+    smtpPort?: number
+    smtpSecure?: boolean
+    smtpUser?: string
+    smtpPass?: string
+    fromEmail?: string
+    fromName?: string
+    adminNotifyEmail?: string
   }
 
   export type SettingsUncheckedCreateInput = {
@@ -29079,6 +31962,15 @@ export namespace Prisma {
     chewyWishlistUrl?: string
     facebookUrl?: string
     instagramUrl?: string
+    emailsEnabled?: boolean
+    smtpHost?: string
+    smtpPort?: number
+    smtpSecure?: boolean
+    smtpUser?: string
+    smtpPass?: string
+    fromEmail?: string
+    fromName?: string
+    adminNotifyEmail?: string
   }
 
   export type SettingsUpdateInput = {
@@ -29090,6 +31982,15 @@ export namespace Prisma {
     chewyWishlistUrl?: StringFieldUpdateOperationsInput | string
     facebookUrl?: StringFieldUpdateOperationsInput | string
     instagramUrl?: StringFieldUpdateOperationsInput | string
+    emailsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    smtpHost?: StringFieldUpdateOperationsInput | string
+    smtpPort?: IntFieldUpdateOperationsInput | number
+    smtpSecure?: BoolFieldUpdateOperationsInput | boolean
+    smtpUser?: StringFieldUpdateOperationsInput | string
+    smtpPass?: StringFieldUpdateOperationsInput | string
+    fromEmail?: StringFieldUpdateOperationsInput | string
+    fromName?: StringFieldUpdateOperationsInput | string
+    adminNotifyEmail?: StringFieldUpdateOperationsInput | string
   }
 
   export type SettingsUncheckedUpdateInput = {
@@ -29101,6 +32002,15 @@ export namespace Prisma {
     chewyWishlistUrl?: StringFieldUpdateOperationsInput | string
     facebookUrl?: StringFieldUpdateOperationsInput | string
     instagramUrl?: StringFieldUpdateOperationsInput | string
+    emailsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    smtpHost?: StringFieldUpdateOperationsInput | string
+    smtpPort?: IntFieldUpdateOperationsInput | number
+    smtpSecure?: BoolFieldUpdateOperationsInput | boolean
+    smtpUser?: StringFieldUpdateOperationsInput | string
+    smtpPass?: StringFieldUpdateOperationsInput | string
+    fromEmail?: StringFieldUpdateOperationsInput | string
+    fromName?: StringFieldUpdateOperationsInput | string
+    adminNotifyEmail?: StringFieldUpdateOperationsInput | string
   }
 
   export type SettingsCreateManyInput = {
@@ -29112,6 +32022,15 @@ export namespace Prisma {
     chewyWishlistUrl?: string
     facebookUrl?: string
     instagramUrl?: string
+    emailsEnabled?: boolean
+    smtpHost?: string
+    smtpPort?: number
+    smtpSecure?: boolean
+    smtpUser?: string
+    smtpPass?: string
+    fromEmail?: string
+    fromName?: string
+    adminNotifyEmail?: string
   }
 
   export type SettingsUpdateManyMutationInput = {
@@ -29123,6 +32042,15 @@ export namespace Prisma {
     chewyWishlistUrl?: StringFieldUpdateOperationsInput | string
     facebookUrl?: StringFieldUpdateOperationsInput | string
     instagramUrl?: StringFieldUpdateOperationsInput | string
+    emailsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    smtpHost?: StringFieldUpdateOperationsInput | string
+    smtpPort?: IntFieldUpdateOperationsInput | number
+    smtpSecure?: BoolFieldUpdateOperationsInput | boolean
+    smtpUser?: StringFieldUpdateOperationsInput | string
+    smtpPass?: StringFieldUpdateOperationsInput | string
+    fromEmail?: StringFieldUpdateOperationsInput | string
+    fromName?: StringFieldUpdateOperationsInput | string
+    adminNotifyEmail?: StringFieldUpdateOperationsInput | string
   }
 
   export type SettingsUncheckedUpdateManyInput = {
@@ -29134,6 +32062,198 @@ export namespace Prisma {
     chewyWishlistUrl?: StringFieldUpdateOperationsInput | string
     facebookUrl?: StringFieldUpdateOperationsInput | string
     instagramUrl?: StringFieldUpdateOperationsInput | string
+    emailsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    smtpHost?: StringFieldUpdateOperationsInput | string
+    smtpPort?: IntFieldUpdateOperationsInput | number
+    smtpSecure?: BoolFieldUpdateOperationsInput | boolean
+    smtpUser?: StringFieldUpdateOperationsInput | string
+    smtpPass?: StringFieldUpdateOperationsInput | string
+    fromEmail?: StringFieldUpdateOperationsInput | string
+    fromName?: StringFieldUpdateOperationsInput | string
+    adminNotifyEmail?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type EmailTemplateCreateInput = {
+    key: string
+    name: string
+    category?: string
+    subject: string
+    bodyHtml?: string
+    bodyText?: string
+    description?: string
+    isSystem?: boolean
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailTemplateUncheckedCreateInput = {
+    id?: number
+    key: string
+    name: string
+    category?: string
+    subject: string
+    bodyHtml?: string
+    bodyText?: string
+    description?: string
+    isSystem?: boolean
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailTemplateUpdateInput = {
+    key?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    bodyHtml?: StringFieldUpdateOperationsInput | string
+    bodyText?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailTemplateUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    key?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    bodyHtml?: StringFieldUpdateOperationsInput | string
+    bodyText?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailTemplateCreateManyInput = {
+    id?: number
+    key: string
+    name: string
+    category?: string
+    subject: string
+    bodyHtml?: string
+    bodyText?: string
+    description?: string
+    isSystem?: boolean
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailTemplateUpdateManyMutationInput = {
+    key?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    bodyHtml?: StringFieldUpdateOperationsInput | string
+    bodyText?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailTemplateUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    key?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    bodyHtml?: StringFieldUpdateOperationsInput | string
+    bodyText?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailLogCreateInput = {
+    templateKey: string
+    toEmail: string
+    subject: string
+    status: string
+    errorMessage?: string
+    relatedType?: string
+    relatedId?: number | null
+    createdAt?: Date | string
+  }
+
+  export type EmailLogUncheckedCreateInput = {
+    id?: number
+    templateKey: string
+    toEmail: string
+    subject: string
+    status: string
+    errorMessage?: string
+    relatedType?: string
+    relatedId?: number | null
+    createdAt?: Date | string
+  }
+
+  export type EmailLogUpdateInput = {
+    templateKey?: StringFieldUpdateOperationsInput | string
+    toEmail?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    errorMessage?: StringFieldUpdateOperationsInput | string
+    relatedType?: StringFieldUpdateOperationsInput | string
+    relatedId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailLogUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    templateKey?: StringFieldUpdateOperationsInput | string
+    toEmail?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    errorMessage?: StringFieldUpdateOperationsInput | string
+    relatedType?: StringFieldUpdateOperationsInput | string
+    relatedId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailLogCreateManyInput = {
+    id?: number
+    templateKey: string
+    toEmail: string
+    subject: string
+    status: string
+    errorMessage?: string
+    relatedType?: string
+    relatedId?: number | null
+    createdAt?: Date | string
+  }
+
+  export type EmailLogUpdateManyMutationInput = {
+    templateKey?: StringFieldUpdateOperationsInput | string
+    toEmail?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    errorMessage?: StringFieldUpdateOperationsInput | string
+    relatedType?: StringFieldUpdateOperationsInput | string
+    relatedId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailLogUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    templateKey?: StringFieldUpdateOperationsInput | string
+    toEmail?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    errorMessage?: StringFieldUpdateOperationsInput | string
+    relatedType?: StringFieldUpdateOperationsInput | string
+    relatedId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TransactionCreateInput = {
@@ -29141,6 +32261,8 @@ export namespace Prisma {
     category: string
     amount: number
     description?: string
+    donorName?: string
+    donorEmail?: string
     date: Date | string
     createdAt?: Date | string
     kitten?: KittenCreateNestedOneWithoutTransactionsInput
@@ -29152,6 +32274,8 @@ export namespace Prisma {
     category: string
     amount: number
     description?: string
+    donorName?: string
+    donorEmail?: string
     date: Date | string
     kittenId?: number | null
     createdAt?: Date | string
@@ -29162,6 +32286,8 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     description?: StringFieldUpdateOperationsInput | string
+    donorName?: StringFieldUpdateOperationsInput | string
+    donorEmail?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     kitten?: KittenUpdateOneWithoutTransactionsNestedInput
@@ -29173,6 +32299,8 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     description?: StringFieldUpdateOperationsInput | string
+    donorName?: StringFieldUpdateOperationsInput | string
+    donorEmail?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     kittenId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -29184,6 +32312,8 @@ export namespace Prisma {
     category: string
     amount: number
     description?: string
+    donorName?: string
+    donorEmail?: string
     date: Date | string
     kittenId?: number | null
     createdAt?: Date | string
@@ -29194,6 +32324,8 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     description?: StringFieldUpdateOperationsInput | string
+    donorName?: StringFieldUpdateOperationsInput | string
+    donorEmail?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -29204,6 +32336,8 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     description?: StringFieldUpdateOperationsInput | string
+    donorName?: StringFieldUpdateOperationsInput | string
+    donorEmail?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     kittenId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -29583,6 +32717,9 @@ export namespace Prisma {
     isListedOnWebsite?: SortOrder
     websiteFeaturedComment?: SortOrder
     publishTargets?: SortOrder
+    amazonWishlistUrl?: SortOrder
+    walmartWishlistUrl?: SortOrder
+    chewyWishlistUrl?: SortOrder
     currentFosterId?: SortOrder
     createdAt?: SortOrder
   }
@@ -29614,6 +32751,9 @@ export namespace Prisma {
     internalNotes?: SortOrder
     isListedOnWebsite?: SortOrder
     websiteFeaturedComment?: SortOrder
+    amazonWishlistUrl?: SortOrder
+    walmartWishlistUrl?: SortOrder
+    chewyWishlistUrl?: SortOrder
     currentFosterId?: SortOrder
     createdAt?: SortOrder
   }
@@ -29639,6 +32779,9 @@ export namespace Prisma {
     internalNotes?: SortOrder
     isListedOnWebsite?: SortOrder
     websiteFeaturedComment?: SortOrder
+    amazonWishlistUrl?: SortOrder
+    walmartWishlistUrl?: SortOrder
+    chewyWishlistUrl?: SortOrder
     currentFosterId?: SortOrder
     createdAt?: SortOrder
   }
@@ -30376,11 +33519,21 @@ export namespace Prisma {
     chewyWishlistUrl?: SortOrder
     facebookUrl?: SortOrder
     instagramUrl?: SortOrder
+    emailsEnabled?: SortOrder
+    smtpHost?: SortOrder
+    smtpPort?: SortOrder
+    smtpSecure?: SortOrder
+    smtpUser?: SortOrder
+    smtpPass?: SortOrder
+    fromEmail?: SortOrder
+    fromName?: SortOrder
+    adminNotifyEmail?: SortOrder
   }
 
   export type SettingsAvgOrderByAggregateInput = {
     id?: SortOrder
     defaultDonationAmount?: SortOrder
+    smtpPort?: SortOrder
   }
 
   export type SettingsMaxOrderByAggregateInput = {
@@ -30392,6 +33545,15 @@ export namespace Prisma {
     chewyWishlistUrl?: SortOrder
     facebookUrl?: SortOrder
     instagramUrl?: SortOrder
+    emailsEnabled?: SortOrder
+    smtpHost?: SortOrder
+    smtpPort?: SortOrder
+    smtpSecure?: SortOrder
+    smtpUser?: SortOrder
+    smtpPass?: SortOrder
+    fromEmail?: SortOrder
+    fromName?: SortOrder
+    adminNotifyEmail?: SortOrder
   }
 
   export type SettingsMinOrderByAggregateInput = {
@@ -30403,11 +33565,120 @@ export namespace Prisma {
     chewyWishlistUrl?: SortOrder
     facebookUrl?: SortOrder
     instagramUrl?: SortOrder
+    emailsEnabled?: SortOrder
+    smtpHost?: SortOrder
+    smtpPort?: SortOrder
+    smtpSecure?: SortOrder
+    smtpUser?: SortOrder
+    smtpPass?: SortOrder
+    fromEmail?: SortOrder
+    fromName?: SortOrder
+    adminNotifyEmail?: SortOrder
   }
 
   export type SettingsSumOrderByAggregateInput = {
     id?: SortOrder
     defaultDonationAmount?: SortOrder
+    smtpPort?: SortOrder
+  }
+
+  export type EmailTemplateCountOrderByAggregateInput = {
+    id?: SortOrder
+    key?: SortOrder
+    name?: SortOrder
+    category?: SortOrder
+    subject?: SortOrder
+    bodyHtml?: SortOrder
+    bodyText?: SortOrder
+    description?: SortOrder
+    isSystem?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmailTemplateAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type EmailTemplateMaxOrderByAggregateInput = {
+    id?: SortOrder
+    key?: SortOrder
+    name?: SortOrder
+    category?: SortOrder
+    subject?: SortOrder
+    bodyHtml?: SortOrder
+    bodyText?: SortOrder
+    description?: SortOrder
+    isSystem?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmailTemplateMinOrderByAggregateInput = {
+    id?: SortOrder
+    key?: SortOrder
+    name?: SortOrder
+    category?: SortOrder
+    subject?: SortOrder
+    bodyHtml?: SortOrder
+    bodyText?: SortOrder
+    description?: SortOrder
+    isSystem?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmailTemplateSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type EmailLogCountOrderByAggregateInput = {
+    id?: SortOrder
+    templateKey?: SortOrder
+    toEmail?: SortOrder
+    subject?: SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrder
+    relatedType?: SortOrder
+    relatedId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EmailLogAvgOrderByAggregateInput = {
+    id?: SortOrder
+    relatedId?: SortOrder
+  }
+
+  export type EmailLogMaxOrderByAggregateInput = {
+    id?: SortOrder
+    templateKey?: SortOrder
+    toEmail?: SortOrder
+    subject?: SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrder
+    relatedType?: SortOrder
+    relatedId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EmailLogMinOrderByAggregateInput = {
+    id?: SortOrder
+    templateKey?: SortOrder
+    toEmail?: SortOrder
+    subject?: SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrder
+    relatedType?: SortOrder
+    relatedId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EmailLogSumOrderByAggregateInput = {
+    id?: SortOrder
+    relatedId?: SortOrder
   }
 
   export type KittenNullableScalarRelationFilter = {
@@ -30421,6 +33692,8 @@ export namespace Prisma {
     category?: SortOrder
     amount?: SortOrder
     description?: SortOrder
+    donorName?: SortOrder
+    donorEmail?: SortOrder
     date?: SortOrder
     kittenId?: SortOrder
     createdAt?: SortOrder
@@ -30438,6 +33711,8 @@ export namespace Prisma {
     category?: SortOrder
     amount?: SortOrder
     description?: SortOrder
+    donorName?: SortOrder
+    donorEmail?: SortOrder
     date?: SortOrder
     kittenId?: SortOrder
     createdAt?: SortOrder
@@ -30449,6 +33724,8 @@ export namespace Prisma {
     category?: SortOrder
     amount?: SortOrder
     description?: SortOrder
+    donorName?: SortOrder
+    donorEmail?: SortOrder
     date?: SortOrder
     kittenId?: SortOrder
     createdAt?: SortOrder
@@ -31623,6 +34900,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
     createdAt?: Date | string
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
     placements?: PlacementCreateNestedManyWithoutKittenInput
@@ -31657,6 +34937,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
     currentFosterId?: number | null
     createdAt?: Date | string
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
@@ -31721,6 +35004,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFilter<"Kitten"> | boolean
     websiteFeaturedComment?: StringFilter<"Kitten"> | string
     publishTargets?: StringNullableListFilter<"Kitten">
+    amazonWishlistUrl?: StringNullableFilter<"Kitten"> | string | null
+    walmartWishlistUrl?: StringNullableFilter<"Kitten"> | string | null
+    chewyWishlistUrl?: StringNullableFilter<"Kitten"> | string | null
     currentFosterId?: IntNullableFilter<"Kitten"> | number | null
     createdAt?: DateTimeFilter<"Kitten"> | Date | string
   }
@@ -31745,6 +35031,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     placements?: PlacementCreateNestedManyWithoutKittenInput
@@ -31780,6 +35069,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
     createdAt?: Date | string
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogUncheckedCreateNestedManyWithoutKittenInput
@@ -32171,6 +35463,8 @@ export namespace Prisma {
     category: string
     amount: number
     description?: string
+    donorName?: string
+    donorEmail?: string
     date: Date | string
     createdAt?: Date | string
   }
@@ -32181,6 +35475,8 @@ export namespace Prisma {
     category: string
     amount: number
     description?: string
+    donorName?: string
+    donorEmail?: string
     date: Date | string
     createdAt?: Date | string
   }
@@ -32516,6 +35812,8 @@ export namespace Prisma {
     category?: StringFilter<"Transaction"> | string
     amount?: FloatFilter<"Transaction"> | number
     description?: StringFilter<"Transaction"> | string
+    donorName?: StringFilter<"Transaction"> | string
+    donorEmail?: StringFilter<"Transaction"> | string
     date?: DateTimeFilter<"Transaction"> | Date | string
     kittenId?: IntNullableFilter<"Transaction"> | number | null
     createdAt?: DateTimeFilter<"Transaction"> | Date | string
@@ -32541,6 +35839,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -32576,6 +35877,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
     currentFosterId?: number | null
     createdAt?: Date | string
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
@@ -32624,6 +35928,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -32659,6 +35966,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
@@ -32691,6 +36001,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -32726,6 +36039,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
     currentFosterId?: number | null
     createdAt?: Date | string
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
@@ -32774,6 +36090,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -32809,6 +36128,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
@@ -32841,6 +36163,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -32876,6 +36201,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
     currentFosterId?: number | null
     createdAt?: Date | string
     weightLogs?: WeightLogUncheckedCreateNestedManyWithoutKittenInput
@@ -32960,6 +36288,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -32995,6 +36326,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     weightLogs?: WeightLogUncheckedUpdateManyWithoutKittenNestedInput
@@ -33069,6 +36403,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -33104,6 +36441,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
     currentFosterId?: number | null
     createdAt?: Date | string
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
@@ -33152,6 +36492,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -33187,6 +36530,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
@@ -33219,6 +36565,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -33254,6 +36603,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
     currentFosterId?: number | null
     createdAt?: Date | string
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
@@ -33302,6 +36654,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -33337,6 +36692,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
@@ -33369,6 +36727,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -33404,6 +36765,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
     currentFosterId?: number | null
     createdAt?: Date | string
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
@@ -33452,6 +36816,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -33487,6 +36854,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
@@ -33519,6 +36889,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -33554,6 +36927,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
     currentFosterId?: number | null
     createdAt?: Date | string
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
@@ -33602,6 +36978,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -33637,6 +37016,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
@@ -33669,6 +37051,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -33704,6 +37089,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
     currentFosterId?: number | null
     createdAt?: Date | string
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
@@ -33752,6 +37140,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -33787,6 +37178,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
@@ -34105,6 +37499,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -34140,6 +37537,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
     currentFosterId?: number | null
     createdAt?: Date | string
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
@@ -34188,6 +37588,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -34223,6 +37626,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
@@ -34256,6 +37662,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
     currentFosterId?: number | null
     createdAt?: Date | string
   }
@@ -34280,6 +37689,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
     placements?: PlacementUpdateManyWithoutKittenNestedInput
@@ -34314,6 +37726,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
@@ -34348,6 +37763,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -34374,6 +37792,9 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
     createdAt?: Date | string
   }
 
@@ -34406,6 +37827,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     placements?: PlacementUpdateManyWithoutKittenNestedInput
@@ -34441,6 +37865,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUncheckedUpdateManyWithoutKittenNestedInput
@@ -34475,6 +37902,9 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -34593,6 +38023,8 @@ export namespace Prisma {
     category: string
     amount: number
     description?: string
+    donorName?: string
+    donorEmail?: string
     date: Date | string
     createdAt?: Date | string
   }
@@ -34843,6 +38275,8 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     description?: StringFieldUpdateOperationsInput | string
+    donorName?: StringFieldUpdateOperationsInput | string
+    donorEmail?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -34853,6 +38287,8 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     description?: StringFieldUpdateOperationsInput | string
+    donorName?: StringFieldUpdateOperationsInput | string
+    donorEmail?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -34863,6 +38299,8 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     description?: StringFieldUpdateOperationsInput | string
+    donorName?: StringFieldUpdateOperationsInput | string
+    donorEmail?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

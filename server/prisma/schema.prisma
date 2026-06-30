@@ -175,12 +175,14 @@ model Document {
 }
 
 model Application {
-  id               Int      @id @default(autoincrement())
+  id               Int       @id @default(autoincrement())
   type             String
-  status           String   @default("New")
+  status           String    @default("New")
+  statusNotes      String    @default("")
+  statusUpdatedAt  DateTime?
   kittenOfInterest String?
-  formData         String   @default("{}")
-  createdAt        DateTime @default(now())
+  formData         String    @default("{}")
+  createdAt        DateTime  @default(now())
 }
 
 model Content {
@@ -246,14 +248,52 @@ model User {
 }
 
 model Settings {
-  id                    Int    @id @default(1)
-  orgName               String @default("Pawsitive Transformations")
-  missionStatement      String @default("")
-  defaultDonationAmount Int    @default(50)
-  amazonWishlistUrl     String @default("")
-  chewyWishlistUrl      String @default("")
-  facebookUrl           String @default("")
-  instagramUrl          String @default("")
+  id                    Int     @id @default(1)
+  orgName               String  @default("Pawsitive Transformations")
+  missionStatement      String  @default("")
+  defaultDonationAmount Int     @default(50)
+  amazonWishlistUrl     String  @default("")
+  chewyWishlistUrl      String  @default("")
+  facebookUrl           String  @default("")
+  instagramUrl          String  @default("")
+  emailsEnabled         Boolean @default(false)
+  smtpHost              String  @default("")
+  smtpPort              Int     @default(587)
+  smtpSecure            Boolean @default(false)
+  smtpUser              String  @default("")
+  smtpPass              String  @default("")
+  fromEmail             String  @default("")
+  fromName              String  @default("")
+  adminNotifyEmail      String  @default("")
+}
+
+model EmailTemplate {
+  id          Int      @id @default(autoincrement())
+  key         String   @unique
+  name        String
+  category    String   @default("General")
+  subject     String
+  bodyHtml    String   @default("")
+  bodyText    String   @default("")
+  description String   @default("")
+  isSystem    Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model EmailLog {
+  id                Int      @id @default(autoincrement())
+  templateKey       String
+  toEmail           String
+  subject           String
+  status            String
+  provider          String   @default("smtp")
+  externalMessageId String   @default("")
+  errorMessage      String   @default("")
+  relatedType       String   @default("")
+  relatedId         Int?
+  createdAt         DateTime @default(now())
 }
 
 model Transaction {
@@ -262,6 +302,8 @@ model Transaction {
   category    String
   amount      Float
   description String   @default("")
+  donorName   String   @default("")
+  donorEmail  String   @default("")
   date        DateTime
   kittenId    Int?
   kitten      Kitten?  @relation(fields: [kittenId], references: [id], onDelete: SetNull)

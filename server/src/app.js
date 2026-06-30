@@ -23,6 +23,7 @@ import roleRoutes from './routes/roleRoutes.js';
 import updateRoutes from './routes/updateRoutes.js';
 import settingsRoutes from './routes/settingsRoutes.js';
 import financeRoutes from './routes/financeRoutes.js';
+import emailTemplateRoutes from './routes/emailTemplateRoutes.js';
 import { requireAuth } from './middleware/authMiddleware.js';
 import { createOriginValidator } from './utils/corsOrigins.js';
 
@@ -63,8 +64,17 @@ const applicationLimiter = rateLimit({
   message: { error: 'Too many application submissions. Please try again later.' },
 });
 
+const donationLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many donation submissions. Please try again later.' },
+});
+
 app.use(globalLimiter);
 app.use('/api/public/applications', applicationLimiter);
+app.use('/api/public/donations', donationLimiter);
 
 app.use(express.json({ limit: '10mb' }));
 
@@ -105,6 +115,7 @@ app.use('/api/applications', requireAuth, applicationRoutes);
 app.use('/api/content', requireAuth, contentRoutes);
 app.use('/api/events', requireAuth, eventRoutes);
 app.use('/api/transactions', requireAuth, financeRoutes);
+app.use('/api/email-templates', emailTemplateRoutes);
 
 app.get('/api/health', (_req, res) => {
   res.json({
