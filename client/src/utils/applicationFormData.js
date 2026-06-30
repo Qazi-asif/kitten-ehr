@@ -7,31 +7,28 @@ const FIELD_LABELS = {
   kittenOfInterest: 'Kitten(s) of Interest',
   experience: 'Experience with Cats',
   experienceLevel: 'Experience Level',
+  ownOrRent: 'Own or Rent',
   household: 'Household',
   hasOtherPets: 'Other Pets at Home',
   homeType: 'Home Type',
   availability: 'Availability',
   message: 'Additional Message',
   applicant: 'Applicant',
-  kitten: 'Kitten',
+  kitten: 'Name',
   name: 'Name',
 };
 
-const DETAIL_EXCLUDED_KEYS = new Set(['kittenOfInterest', 'kittenInterest', 'kitten']);
+const DETAIL_EXCLUDED_KEYS = new Set(['kittenOfInterest', 'kittenInterest', 'kitten', 'currentPets']);
 
-const ADOPTION_FIELD_ORDER = ['fullName', 'name', 'email', 'phone', 'address', 'experience', 'household', 'message'];
+const SHARED_FIELD_ORDER = ['fullName', 'name', 'email', 'phone', 'address', 'ownOrRent', 'household'];
+const ADOPTION_FIELD_ORDER = [...SHARED_FIELD_ORDER, 'experience', 'message'];
 const FOSTER_FIELD_ORDER = [
-  'fullName',
-  'name',
-  'email',
-  'phone',
-  'address',
+  ...SHARED_FIELD_ORDER,
   'experienceLevel',
   'experience',
   'hasOtherPets',
   'homeType',
   'availability',
-  'household',
   'message',
 ];
 
@@ -75,6 +72,11 @@ export function resolveKittenOfInterest(formData, kittenOfInterest) {
   return parsed.kittenOfInterest || parsed.kittenInterest || parsed.kitten || '';
 }
 
+export function getHouseholdPets(formData) {
+  const parsed = parseApplicationFormData(formData);
+  return Array.isArray(parsed.currentPets) ? parsed.currentPets : [];
+}
+
 export function getApplicationDetailFields(formData, type) {
   const parsed = parseApplicationFormData(formData);
   const order = type === 'Foster' ? FOSTER_FIELD_ORDER : ADOPTION_FIELD_ORDER;
@@ -95,7 +97,8 @@ export function getApplicationDetailFields(formData, type) {
       !seen.has(key) &&
       !DETAIL_EXCLUDED_KEYS.has(key) &&
       value != null &&
-      value !== '',
+      value !== '' &&
+      !Array.isArray(value),
   );
 
   return [...ordered, ...extras];
