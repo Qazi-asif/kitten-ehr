@@ -8,7 +8,6 @@ import {
   LayoutDashboard,
   LogOut,
   Mail,
-  Plus,
   Search,
   Settings,
   Users,
@@ -72,10 +71,6 @@ function AdminLayout() {
       return location.pathname === '/admin/kittens' || location.pathname.startsWith('/admin/kittens/');
     }
     return location.pathname.startsWith(path);
-  }
-
-  function handleAddNew() {
-    navigate('/admin/kittens?add=1');
   }
 
   function handleLogout() {
@@ -148,14 +143,6 @@ function AdminLayout() {
             </div>
             {!hideHeaderActions && (
               <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={handleAddNew}
-                  className="inline-flex items-center gap-2 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-dark"
-                >
-                  <Plus className="h-4 w-4" />
-                  Add New
-                </button>
                 <div className="hidden items-center rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 md:flex">
                   <Search className="h-4 w-4 text-slate-400" />
                   <input
