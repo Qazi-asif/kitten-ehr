@@ -52,6 +52,8 @@ model Kitten {
   intakeSource    String           @default("")
   notes           String           @default("")
   internalNotes   String           @default("")
+  isListedOnWebsite Boolean        @default(false)
+  websiteFeaturedComment String     @default("")
   currentFosterId Int?
   currentFoster   Foster?          @relation("CurrentFoster", fields: [currentFosterId], references: [id], onDelete: SetNull)
   createdAt       DateTime         @default(now())
@@ -67,12 +69,13 @@ model Kitten {
 }
 
 model Update {
-  id        Int      @id @default(autoincrement())
-  kittenId  Int
-  kitten    Kitten   @relation(fields: [kittenId], references: [id], onDelete: Cascade)
-  content   String
-  isPublic  Boolean  @default(false)
-  createdAt DateTime @default(now())
+  id           Int      @id @default(autoincrement())
+  kittenId     Int
+  kitten       Kitten   @relation(fields: [kittenId], references: [id], onDelete: Cascade)
+  content      String
+  isPublic     Boolean  @default(false)
+  platformList String   @default("")
+  createdAt    DateTime @default(now())
 }
 
 model Sponsorship {

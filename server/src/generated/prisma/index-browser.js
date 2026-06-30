@@ -158,6 +158,10 @@ exports.Prisma.KittenScalarFieldEnum = {
   primaryPhotoUrl: 'primaryPhotoUrl',
   intakeDate: 'intakeDate',
   intakeSource: 'intakeSource',
+  notes: 'notes',
+  internalNotes: 'internalNotes',
+  isListedOnWebsite: 'isListedOnWebsite',
+  websiteFeaturedComment: 'websiteFeaturedComment',
   currentFosterId: 'currentFosterId',
   createdAt: 'createdAt'
 };
@@ -167,6 +171,7 @@ exports.Prisma.UpdateScalarFieldEnum = {
   kittenId: 'kittenId',
   content: 'content',
   isPublic: 'isPublic',
+  platformList: 'platformList',
   createdAt: 'createdAt'
 };
 

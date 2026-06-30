@@ -142,6 +142,8 @@ async function main() {
       intakeDate: new Date('2026-02-01'),
       intakeSource: 'Shelter transfer',
       primaryPhotoUrl: '/uploads/biscuit.jpg',
+      isListedOnWebsite: true,
+      websiteFeaturedComment: 'Sweet tabby girl who loves chin scratches and sunny naps.',
     },
   });
 
@@ -158,6 +160,8 @@ async function main() {
       currentFosterId: jane.id,
       rescueStory: 'Calm and curious grey kitten who loves sunny windowsills.',
       primaryPhotoUrl: '/uploads/gravy.jpg',
+      isListedOnWebsite: true,
+      websiteFeaturedComment: 'Gentle grey boy with curious eyes and a calm purr.',
     },
   });
 
@@ -174,6 +178,8 @@ async function main() {
       currentFosterId: mike.id,
       rescueStory: 'Tiny orange firecracker with a big personality.',
       primaryPhotoUrl: '/uploads/nugget.jpg',
+      isListedOnWebsite: true,
+      websiteFeaturedComment: 'Tiny orange firecracker full of zoomies and cuddles.',
     },
   });
 

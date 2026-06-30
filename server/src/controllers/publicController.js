@@ -5,6 +5,7 @@ const publicKittenSelect = {
   name: true,
   status: true,
   rescueStory: true,
+  websiteFeaturedComment: true,
   dateOfBirth: true,
   sex: true,
   fixedStatus: true,
@@ -15,10 +16,12 @@ const publicKittenSelect = {
   primaryPhotoUrl: true,
 };
 
+const publicKittenWhere = { isListedOnWebsite: true };
+
 export async function getPublicKittens(_req, res, next) {
   try {
     const kittens = await prisma.kitten.findMany({
-      where: { status: 'Available for Adoption' },
+      where: publicKittenWhere,
       select: publicKittenSelect,
       orderBy: { id: 'asc' },
     });
@@ -33,7 +36,7 @@ export async function getPublicKittenById(req, res, next) {
     const id = Number.parseInt(req.params.id, 10);
 
     const kitten = await prisma.kitten.findFirst({
-      where: { id, status: 'Available for Adoption' },
+      where: { id, ...publicKittenWhere },
       select: publicKittenSelect,
     });
 
@@ -50,7 +53,7 @@ export async function getPublicKittenById(req, res, next) {
 export async function getPublicStats(_req, res, next) {
   try {
     const [availableKittens, adoptedKittens, activeFosters] = await Promise.all([
-      prisma.kitten.count({ where: { status: 'Available for Adoption' } }),
+      prisma.kitten.count({ where: { isListedOnWebsite: true } }),
       prisma.kitten.count({ where: { status: 'Adopted' } }),
       prisma.foster.count({ where: { currentKittens: { some: {} } } }),
     ]);
@@ -111,7 +114,7 @@ export async function getPublicKittenUpdates(req, res, next) {
     const id = Number.parseInt(req.params.id, 10);
 
     const kitten = await prisma.kitten.findFirst({
-      where: { id, status: 'Available for Adoption' },
+      where: { id, isListedOnWebsite: true },
       select: { id: true },
     });
 

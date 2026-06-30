@@ -291,6 +291,15 @@ export async function createKittenUpdate(kittenId, data) {
   return response.json();
 }
 
+export async function createSocialMediaPost(kittenId, data) {
+  const response = await adminFetch(`/kittens/${kittenId}/updates/social`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to post to social platforms'));
+  return response.json();
+}
+
 export async function updateKittenUpdate(kittenId, updateId, data) {
   const response = await adminFetch(`/kittens/${kittenId}/updates/${updateId}`, {
     method: 'PATCH',

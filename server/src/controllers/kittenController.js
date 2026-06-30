@@ -125,6 +125,8 @@ export async function updateKitten(req, res, next) {
       intakeSource,
       notes,
       internalNotes,
+      isListedOnWebsite,
+      websiteFeaturedComment,
       primaryPhotoUrl,
       litterId,
       currentFosterId,
@@ -150,6 +152,8 @@ export async function updateKitten(req, res, next) {
     if (intakeSource !== undefined) data.intakeSource = intakeSource;
     if (notes !== undefined) data.notes = notes;
     if (internalNotes !== undefined) data.internalNotes = internalNotes;
+    if (isListedOnWebsite !== undefined) data.isListedOnWebsite = Boolean(isListedOnWebsite);
+    if (websiteFeaturedComment !== undefined) data.websiteFeaturedComment = websiteFeaturedComment;
     if (primaryPhotoUrl !== undefined) data.primaryPhotoUrl = primaryPhotoUrl;
     if (litterId !== undefined) {
       data.litterId = litterId ? Number.parseInt(litterId, 10) : null;

@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ExternalLink, Printer } from 'lucide-react';
+import { Printer } from 'lucide-react';
+import KittenPublishingTab from './KittenPublishingTab';
 import StatusBadge from './StatusBadge';
 import DocumentUploadForm from '../DocumentUploadForm';
 import DocumentsList from '../DocumentsList';
 import FaceSheet from '../FaceSheet';
 import KittenPhoto from '../KittenPhoto';
-import KittenPrimaryPhotoForm from '../KittenPrimaryPhotoForm';
 import MedicationForm from '../MedicationForm';
 import MedicationsTable from '../MedicationsTable';
 import VaccineForm from '../VaccineForm';
@@ -37,6 +37,7 @@ import { formatKittenAge } from '../../utils/kittenImages';
 
 const TABS = [
   { id: 'profile', label: 'Profile' },
+  { id: 'publishing', label: 'Publishing & Social' },
   { id: 'updates', label: 'Updates' },
   { id: 'medical', label: 'Medical' },
   { id: 'weight', label: 'Weight' },
@@ -65,7 +66,6 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
   const [tabLoading, setTabLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [photoUploading, setPhotoUploading] = useState(false);
-  const [publicProfile, setPublicProfile] = useState(true);
   const [profileForm, setProfileForm] = useState({});
   const [notesForm, setNotesForm] = useState({ notes: '', internalNotes: '' });
   const [savingProfile, setSavingProfile] = useState(false);
@@ -78,7 +78,6 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
   const loadKitten = useCallback(async () => {
     const data = await fetchKittenById(kittenId);
     setKitten(data);
-    setPublicProfile(data.status === 'Available for Adoption');
     setProfileForm({
       name: data.name || '',
       status: data.status || '',
@@ -141,7 +140,6 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
     try {
       const updated = await updateKitten(kittenId, profileForm);
       setKitten(updated);
-      setPublicProfile(updated.status === 'Available for Adoption');
     } finally {
       setSavingProfile(false);
     }
@@ -159,14 +157,6 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
     } finally {
       setSavingNotes(false);
     }
-  }
-
-  async function handlePublicProfileToggle() {
-    const nextStatus = publicProfile ? 'In Foster Care' : 'Available for Adoption';
-    const updated = await updateKitten(kittenId, { status: nextStatus });
-    setKitten(updated);
-    setProfileForm((prev) => ({ ...prev, status: updated.status }));
-    setPublicProfile(updated.status === 'Available for Adoption');
   }
 
   async function handleCreateUpdate(event) {
@@ -352,31 +342,6 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
                   className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
                 />
               </label>
-              <section className="flex items-center justify-between rounded-lg border border-gray-100 p-3">
-                <div>
-                  <p className="text-sm font-semibold text-gray-800">Public Profile</p>
-                  <p className="text-xs text-gray-500">{publicProfile ? 'Listed for adoption' : 'Hidden from public site'}</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={handlePublicProfileToggle}
-                  className={`relative h-6 w-11 rounded-full ${publicProfile ? 'bg-emerald-600' : 'bg-gray-300'}`}
-                >
-                  <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${publicProfile ? 'left-5' : 'left-0.5'}`} />
-                </button>
-              </section>
-              {publicProfile && kitten.status === 'Available for Adoption' && (
-                <Link to={`/kittens/${kitten.id}`} target="_blank" className="inline-flex items-center gap-1 text-sm font-semibold text-emerald-700 hover:underline">
-                  View Public Profile
-                  <ExternalLink className="h-3.5 w-3.5" />
-                </Link>
-              )}
-              <KittenPrimaryPhotoForm
-                kitten={kitten}
-                currentPhotoUrl={kitten.primaryPhotoUrl}
-                onUpload={handlePrimaryPhotoUpload}
-                uploading={photoUploading}
-              />
               <button
                 type="submit"
                 disabled={savingProfile}
@@ -385,6 +350,16 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
                 {savingProfile ? 'Saving...' : 'Save Profile'}
               </button>
             </form>
+          )}
+
+          {activeTab === 'publishing' && (
+            <KittenPublishingTab
+              kittenId={kittenId}
+              kitten={kitten}
+              setKitten={setKitten}
+              onPrimaryPhotoUpload={handlePrimaryPhotoUpload}
+              photoUploading={photoUploading}
+            />
           )}
 
           {activeTab === 'updates' && (

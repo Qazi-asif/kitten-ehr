@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ChevronDown, ExternalLink, Printer } from 'lucide-react';
+import { ChevronDown, Printer } from 'lucide-react';
 import StatusBadge from '../components/admin/StatusBadge';
+import KittenPublishingTab from '../components/admin/KittenPublishingTab';
 import DocumentUploadForm from '../components/DocumentUploadForm';
 import DocumentsList from '../components/DocumentsList';
 import FaceSheet from '../components/FaceSheet';
 import KittenPhoto from '../components/KittenPhoto';
-import KittenPrimaryPhotoForm from '../components/KittenPrimaryPhotoForm';
 import MedicationForm from '../components/MedicationForm';
 import MedicationsTable from '../components/MedicationsTable';
 import VaccineForm from '../components/VaccineForm';
@@ -35,6 +35,7 @@ import { formatKittenAge } from '../utils/kittenImages';
 
 const TABS = [
   { id: 'overview', label: 'Overview' },
+  { id: 'publishing', label: 'Publishing & Social' },
   { id: 'vaccinations', label: 'Vaccines' },
   { id: 'medications', label: 'Medications' },
   { id: 'vet-visits', label: 'Medical' },
@@ -74,7 +75,6 @@ function KittenDetailPage() {
   const [tabLoading, setTabLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [photoUploading, setPhotoUploading] = useState(false);
-  const [publicProfile, setPublicProfile] = useState(true);
   const [showActionsMenu, setShowActionsMenu] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [profileForm, setProfileForm] = useState({});
@@ -87,7 +87,6 @@ function KittenDetailPage() {
   const loadKitten = useCallback(async () => {
     const data = await fetchKittenById(id);
     setKitten(data);
-    setPublicProfile(data.status === 'Available for Adoption');
     setProfileForm({
       name: data.name || '',
       status: data.status || '',
@@ -155,7 +154,6 @@ function KittenDetailPage() {
       const updated = await updateKitten(id, { status });
       setKitten(updated);
       setProfileForm((prev) => ({ ...prev, status: updated.status }));
-      setPublicProfile(updated.status === 'Available for Adoption');
     } catch (err) {
       setError(err.message);
     }
@@ -168,7 +166,6 @@ function KittenDetailPage() {
     try {
       const updated = await updateKitten(id, profileForm);
       setKitten(updated);
-      setPublicProfile(updated.status === 'Available for Adoption');
       setEditMode(false);
     } catch (err) {
       setError(err.message);
@@ -192,14 +189,6 @@ function KittenDetailPage() {
     } finally {
       setSavingNotes(false);
     }
-  }
-
-  async function handlePublicProfileToggle() {
-    const nextStatus = publicProfile ? 'In Foster Care' : 'Available for Adoption';
-    const updated = await updateKitten(id, { status: nextStatus });
-    setKitten(updated);
-    setProfileForm((prev) => ({ ...prev, status: updated.status }));
-    setPublicProfile(updated.status === 'Available for Adoption');
   }
 
   async function handleCreateVaccine(formData) {
@@ -480,35 +469,9 @@ function KittenDetailPage() {
                       </section>
                     </>
                   )}
-                  <KittenPrimaryPhotoForm
-                    kitten={kitten}
-                    currentPhotoUrl={kitten.primaryPhotoUrl}
-                    onUpload={handlePrimaryPhotoUpload}
-                    uploading={photoUploading}
-                  />
                 </div>
 
                 <div className="space-y-6">
-                  <section className="rounded-lg border border-slate-100 p-4">
-                    <div className="flex items-center justify-between">
-                      <h2 className="text-sm font-bold text-slate-900">Public Profile</h2>
-                      <button
-                        type="button"
-                        onClick={handlePublicProfileToggle}
-                        className={`relative h-6 w-11 rounded-full transition-colors ${publicProfile ? 'bg-brand' : 'bg-slate-300'}`}
-                      >
-                        <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${publicProfile ? 'left-5' : 'left-0.5'}`} />
-                      </button>
-                    </div>
-                    <p className="mt-2 text-xs text-slate-500">Public Profile {publicProfile ? 'Enabled' : 'Disabled'}</p>
-                    {publicProfile && kitten.status === 'Available for Adoption' && (
-                      <Link to={`/kittens/${kitten.id}`} target="_blank" className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-brand hover:underline">
-                        View Public Profile
-                        <ExternalLink className="h-3.5 w-3.5" />
-                      </Link>
-                    )}
-                  </section>
-
                   <section>
                     <h2 className="text-sm font-bold uppercase tracking-wide text-slate-900">Quick Info</h2>
                     <dl className="mt-3 grid grid-cols-2 gap-3">
@@ -559,6 +522,16 @@ function KittenDetailPage() {
                   </section>
                 </div>
               </div>
+            )}
+
+            {activeTab === 'publishing' && (
+              <KittenPublishingTab
+                kittenId={id}
+                kitten={kitten}
+                setKitten={setKitten}
+                onPrimaryPhotoUpload={handlePrimaryPhotoUpload}
+                photoUploading={photoUploading}
+              />
             )}
 
             {activeTab === 'vaccinations' && (

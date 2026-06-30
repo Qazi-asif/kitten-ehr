@@ -45,6 +45,9 @@ function PublicKittenProfile() {
 
         <h1 className="mt-4 text-3xl font-bold text-slate-900">{kitten.name}</h1>
         <p className="mt-1 text-brand">{meta}</p>
+        {kitten.websiteFeaturedComment && (
+          <p className="mt-3 text-lg font-medium text-slate-700">{kitten.websiteFeaturedComment}</p>
+        )}
         <p className="mt-1 text-sm text-slate-500">Available for Adoption</p>
 
         <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
