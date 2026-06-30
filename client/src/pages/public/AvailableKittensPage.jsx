@@ -46,7 +46,35 @@ function AvailableKittensPage() {
 
   return (
     <div>
-      <PublicPageHeader title="Adopt" subtitle="Find your purr-fect match." />
+      {/* Hero Section */}
+      <section className="relative z-0 bg-white border-b border-slate-100 overflow-hidden h-[200px] lg:h-[350px]">
+        {/* Left Content */}
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="relative z-10 py-12 lg:py-14 max-w-sm">
+            <h1 className="text-6xl font-extrabold tracking-tight text-brand lg:text-7xl flex items-center gap-3">
+              Adopt
+              <svg viewBox="0 0 100 100" fill="currentColor" className="h-12 w-12 text-brand">
+                <circle cx="25" cy="30" r="9" />
+                <circle cx="43" cy="18" r="10" />
+                <circle cx="63" cy="18" r="10" />
+                <circle cx="81" cy="32" r="9" />
+                <path d="M 52,43 C 33,43 21,57 21,72 C 21,87 34,96 52,96 C 70,96 83,87 83,72 C 83,57 71,43 52,43 Z" />
+              </svg>
+            </h1>
+            <p className="mt-3 text-lg font-medium text-slate-600">Find your purr-fect match.</p>
+          </div>
+        </div>
+
+        {/* Right Image — pinned to right edge, no border, no shadow, pill-left clipped */}
+        <div className="hidden lg:block absolute inset-y-0 right-0 w-[58%] pointer-events-none">
+          <img
+            src="/images/about-hero.png"
+            alt="Adopt a cat"
+            className="h-full w-full object-cover object-left"
+
+          />
+        </div>
+      </section>
 
       <div className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-7xl flex-wrap gap-2 px-6 py-4 lg:px-8">
@@ -55,11 +83,10 @@ function AvailableKittensPage() {
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id)}
-              className={`rounded-full px-5 py-2 text-sm font-semibold transition-colors ${
-                activeTab === tab.id
+              className={`rounded-full px-5 py-2 text-sm font-semibold transition-colors ${activeTab === tab.id
                   ? 'bg-brand text-white shadow-sm'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-              }`}
+                }`}
             >
               {tab.label}
             </button>
@@ -120,13 +147,38 @@ function AvailableKittensPage() {
         )}
       </div>
 
-      <section className="border-t border-slate-100 bg-brand-light/50 py-14">
-        <div className="mx-auto max-w-2xl px-6 text-center lg:px-8">
-          <h2 className="text-2xl font-bold text-slate-900">Ready to Adopt?</h2>
-          <p className="mt-3 text-slate-600">Start your adoption application today and meet your new best friend.</p>
-          <Link to="/adopt" className="mt-6 inline-block rounded-md bg-brand px-8 py-3 text-sm font-semibold text-white hover:bg-brand-dark">
-            Apply to Adopt
-          </Link>
+      <section className="py-10 px-6 lg:px-8">
+        <div className="mx-auto max-w-4xl">
+          <div className="flex items-center gap-6 rounded-2xl border border-brand/40 bg-white px-8 py-6">
+            {/* Heart + Paw Icon */}
+            <div className="shrink-0">
+              <svg viewBox="0 0 64 64" fill="none" className="h-16 w-16 text-brand" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M32 56 C32 56 8 40 8 22 C8 14 14 8 22 8 C26.5 8 30.5 10.5 32 14 C33.5 10.5 37.5 8 42 8 C50 8 56 14 56 22 C56 40 32 56 32 56Z" />
+                <circle cx="26" cy="25" r="2.5" fill="currentColor" stroke="none" />
+                <circle cx="32" cy="22" r="2.5" fill="currentColor" stroke="none" />
+                <circle cx="38" cy="25" r="2.5" fill="currentColor" stroke="none" />
+                <path d="M24 31 C24 27 40 27 40 31 C40 36 35 39 32 39 C29 39 24 36 24 31Z" fill="currentColor" stroke="none" />
+              </svg>
+            </div>
+
+            {/* Text Content */}
+            <div className="flex-1 min-w-0">
+              <h2 className="text-xl font-bold text-brand">Adoption Application</h2>
+              <p className="mt-1.5 text-sm leading-relaxed text-slate-600">
+                Ready to adopt? Submit an application and our team will be in touch to help you meet your new best friend.
+              </p>
+            </div>
+
+            {/* CTA Button */}
+            <div className="shrink-0">
+              <Link
+                to="/adopt"
+                className="inline-flex items-center justify-center rounded-xl bg-brand px-7 py-4 text-base font-semibold text-white shadow-sm transition hover:bg-brand-dark whitespace-nowrap"
+              >
+                Apply to Adopt
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
     </div>
