@@ -6,11 +6,12 @@ function PublicLogo({ className = '', orgName = 'Pawsitive Transformations' }) {
   const secondary = words.slice(1).join(' ');
 
   return (
-    <Link to="/" className={`inline-block ${className}`}>
-      <span className="block text-[11px] font-semibold uppercase tracking-[0.35em] text-brand">{primary}</span>
-      {secondary ? (
-        <span className="block text-sm font-bold uppercase tracking-[0.2em] text-slate-800">{secondary}</span>
-      ) : null}
+    <Link to="/" className={`inline-flex items-center gap-2 ${className}`} aria-label="Home">
+      <img
+        src="/images/Pawsitive-01.jpeg"
+        alt="Pawsitive Transformations Logo"
+        className="h-20 sm:h-24 md:h-28 w-auto object-contain"
+      />
     </Link>
   );
 }

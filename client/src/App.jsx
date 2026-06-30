@@ -26,6 +26,7 @@ import EventsPage from './pages/public/EventsPage';
 import FosterFormPage from './pages/public/FosterFormPage';
 import GetInvolvedPage from './pages/public/GetInvolvedPage';
 import HomePage from './pages/public/HomePage';
+import CheckPage from './pages/public/CheckPage';
 import PublicKittenProfile from './pages/public/PublicKittenProfile';
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
 
           <Route element={<PublicLayout />}>
             <Route path="/" element={<HomePage />} />
+            <Route path="/check" element={<CheckPage />} />
             <Route path="/kittens" element={<AvailableKittensPage />} />
             <Route path="/kittens/:id" element={<PublicKittenProfile />} />
             <Route path="/adopt" element={<AdoptionFormPage />} />

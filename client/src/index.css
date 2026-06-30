@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif-brand: "Lora", Georgia, serif;
+  --font-handwriting: "Caveat", cursive;
   --color-brand: #009688;
   --color-brand-dark: #00796B;
   --color-brand-light: #E0F2F1;
