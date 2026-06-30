@@ -18,8 +18,8 @@ import publicRoutes from './routes/publicRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import roleRoutes from './routes/roleRoutes.js';
+import updateRoutes from './routes/updateRoutes.js';
 import { requireAuth } from './middleware/authMiddleware.js';
-import { uploadsDir } from './middleware/uploadMiddleware.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -46,7 +46,6 @@ try {
 
 app.use(cors());
 app.use(express.json());
-app.use('/uploads', express.static(uploadsDir));
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
 app.use('/api/auth', authRoutes);
@@ -55,6 +54,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/roles', roleRoutes);
 app.use('/api/kittens', requireAuth, kittenRoutes);
 app.use('/api/kittens/:kittenId/documents', requireAuth, documentRoutes);
+app.use('/api/kittens/:kittenId/updates', requireAuth, updateRoutes);
 app.use('/api/kittens/:kittenId/sponsorships', requireAuth, sponsorshipRoutes);
 app.use('/api/fosters', requireAuth, fosterRoutes);
 app.use('/api/litters', requireAuth, litterRoutes);

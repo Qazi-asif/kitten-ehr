@@ -27,12 +27,17 @@ import {
   fetchWeightLogs,
   uploadDocument,
   uploadPrimaryPhoto,
+  updateKitten,
+  fetchKittenUpdates,
+  createKittenUpdate,
+  deleteKittenUpdate,
 } from '../../services/api';
 import { formatKittenAgeShort } from '../../utils/kittenAge';
 import { formatKittenAge } from '../../utils/kittenImages';
 
 const TABS = [
   { id: 'profile', label: 'Profile' },
+  { id: 'updates', label: 'Updates' },
   { id: 'medical', label: 'Medical' },
   { id: 'weight', label: 'Weight' },
   { id: 'documents', label: 'Documents' },
@@ -61,13 +66,34 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
   const [uploading, setUploading] = useState(false);
   const [photoUploading, setPhotoUploading] = useState(false);
   const [publicProfile, setPublicProfile] = useState(true);
+  const [profileForm, setProfileForm] = useState({});
+  const [savingProfile, setSavingProfile] = useState(false);
+  const [updates, setUpdates] = useState([]);
+  const [updateForm, setUpdateForm] = useState({ content: '', isPublic: false });
+  const [savingUpdate, setSavingUpdate] = useState(false);
   const [error, setError] = useState(null);
 
   const loadKitten = useCallback(async () => {
     const data = await fetchKittenById(kittenId);
     setKitten(data);
     setPublicProfile(data.status === 'Available for Adoption');
+    setProfileForm({
+      name: data.name || '',
+      status: data.status || '',
+      breed: data.breed || '',
+      color: data.color || '',
+      sex: data.sex || '',
+      fixedStatus: data.fixedStatus || '',
+      dateOfBirth: data.dateOfBirth ? data.dateOfBirth.slice(0, 10) : '',
+      rescueStory: data.rescueStory || '',
+      fivFelvStatus: data.fivFelvStatus || '',
+      specialNeeds: data.specialNeeds || '',
+    });
     return data;
+  }, [kittenId]);
+
+  const loadUpdates = useCallback(async () => {
+    setUpdates(await fetchKittenUpdates(kittenId));
   }, [kittenId]);
 
   const loadMedical = useCallback(async () => {
@@ -89,7 +115,7 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
     setActiveTab('profile');
     loadKitten()
       .then(async () => {
-        await Promise.all([loadMedical(), loadWeights(), loadDocuments()]);
+        await Promise.all([loadMedical(), loadWeights(), loadDocuments(), loadUpdates()]);
         setLoading(false);
       })
       .catch((err) => {
@@ -97,7 +123,49 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
         setLoading(false);
       });
     return undefined;
-  }, [kittenId, loadKitten, loadMedical, loadWeights, loadDocuments]);
+  }, [kittenId, loadKitten, loadMedical, loadWeights, loadDocuments, loadUpdates]);
+
+  function handleProfileFieldChange(field, value) {
+    setProfileForm((prev) => ({ ...prev, [field]: value }));
+  }
+
+  async function handleSaveProfile(event) {
+    event.preventDefault();
+    setSavingProfile(true);
+    try {
+      const updated = await updateKitten(kittenId, profileForm);
+      setKitten(updated);
+      setPublicProfile(updated.status === 'Available for Adoption');
+    } finally {
+      setSavingProfile(false);
+    }
+  }
+
+  async function handlePublicProfileToggle() {
+    const nextStatus = publicProfile ? 'In Foster Care' : 'Available for Adoption';
+    const updated = await updateKitten(kittenId, { status: nextStatus });
+    setKitten(updated);
+    setProfileForm((prev) => ({ ...prev, status: updated.status }));
+    setPublicProfile(updated.status === 'Available for Adoption');
+  }
+
+  async function handleCreateUpdate(event) {
+    event.preventDefault();
+    if (!updateForm.content.trim()) return;
+    setSavingUpdate(true);
+    try {
+      await createKittenUpdate(kittenId, updateForm);
+      setUpdateForm({ content: '', isPublic: false });
+      await loadUpdates();
+    } finally {
+      setSavingUpdate(false);
+    }
+  }
+
+  async function handleDeleteUpdate(updateId) {
+    await deleteKittenUpdate(kittenId, updateId);
+    await loadUpdates();
+  }
 
   async function handleCreateVaccine(formData) {
     setTabLoading(true);
@@ -223,21 +291,55 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
           {tabLoading && <p className="mb-3 text-xs text-gray-500">Saving...</p>}
 
           {activeTab === 'profile' && (
-            <div className="space-y-5">
-              <section>
-                <h3 className="text-xs font-bold uppercase tracking-wide text-gray-700">Rescue Story</h3>
-                <p className="mt-2 rounded-lg bg-gray-50 p-3 text-sm leading-relaxed text-gray-600">
-                  {kitten.rescueStory || 'No rescue story recorded yet.'}
-                </p>
-              </section>
+            <form className="space-y-5" onSubmit={handleSaveProfile}>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {[
+                  ['name', 'Name', 'text'],
+                  ['breed', 'Breed', 'text'],
+                  ['color', 'Color', 'text'],
+                  ['sex', 'Sex', 'text'],
+                  ['fixedStatus', 'Fixed Status', 'text'],
+                  ['status', 'Status', 'text'],
+                  ['dateOfBirth', 'Date of Birth', 'date'],
+                  ['fivFelvStatus', 'FIV/FeLV Status', 'text'],
+                ].map(([field, label, type]) => (
+                  <label key={field} className="block">
+                    <span className="text-xs font-semibold uppercase text-gray-500">{label}</span>
+                    <input
+                      type={type}
+                      value={profileForm[field] || ''}
+                      onChange={(e) => handleProfileFieldChange(field, e.target.value)}
+                      className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+                    />
+                  </label>
+                ))}
+              </div>
+              <label className="block">
+                <span className="text-xs font-semibold uppercase text-gray-500">Rescue Story</span>
+                <textarea
+                  rows={4}
+                  value={profileForm.rescueStory || ''}
+                  onChange={(e) => handleProfileFieldChange('rescueStory', e.target.value)}
+                  className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+                />
+              </label>
+              <label className="block">
+                <span className="text-xs font-semibold uppercase text-gray-500">Special Needs</span>
+                <textarea
+                  rows={2}
+                  value={profileForm.specialNeeds || ''}
+                  onChange={(e) => handleProfileFieldChange('specialNeeds', e.target.value)}
+                  className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+                />
+              </label>
               <section className="flex items-center justify-between rounded-lg border border-gray-100 p-3">
                 <div>
                   <p className="text-sm font-semibold text-gray-800">Public Profile</p>
-                  <p className="text-xs text-gray-500">{publicProfile ? 'Enabled' : 'Disabled'}</p>
+                  <p className="text-xs text-gray-500">{publicProfile ? 'Listed for adoption' : 'Hidden from public site'}</p>
                 </div>
                 <button
                   type="button"
-                  onClick={() => setPublicProfile((v) => !v)}
+                  onClick={handlePublicProfileToggle}
                   className={`relative h-6 w-11 rounded-full ${publicProfile ? 'bg-emerald-600' : 'bg-gray-300'}`}
                 >
                   <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${publicProfile ? 'left-5' : 'left-0.5'}`} />
@@ -255,6 +357,84 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
                 onUpload={handlePrimaryPhotoUpload}
                 uploading={photoUploading}
               />
+              <button
+                type="submit"
+                disabled={savingProfile}
+                className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-60"
+              >
+                {savingProfile ? 'Saving...' : 'Save Profile'}
+              </button>
+            </form>
+          )}
+
+          {activeTab === 'updates' && (
+            <div className="space-y-6">
+              <form onSubmit={handleCreateUpdate} className="rounded-lg border border-gray-200 p-4">
+                <h3 className="text-xs font-bold uppercase text-gray-700">New Update</h3>
+                <textarea
+                  rows={3}
+                  value={updateForm.content}
+                  onChange={(e) => setUpdateForm((prev) => ({ ...prev, content: e.target.value }))}
+                  placeholder="Write a milestone or care update..."
+                  className="mt-3 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+                />
+                <label className="mt-3 flex items-center gap-2 text-sm text-gray-700">
+                  <input
+                    type="checkbox"
+                    checked={updateForm.isPublic}
+                    onChange={(e) => setUpdateForm((prev) => ({ ...prev, isPublic: e.target.checked }))}
+                    className="rounded border-gray-300"
+                  />
+                  Make Public
+                </label>
+                <button
+                  type="submit"
+                  disabled={savingUpdate}
+                  className="mt-3 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-60"
+                >
+                  {savingUpdate ? 'Posting...' : 'Post Update'}
+                </button>
+              </form>
+              <div className="overflow-hidden rounded-xl border border-gray-200">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Date</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Update</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Visibility</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {updates.length === 0 ? (
+                      <tr>
+                        <td colSpan={4} className="px-4 py-6 text-center text-sm text-gray-500">No updates yet.</td>
+                      </tr>
+                    ) : (
+                      updates.map((entry) => (
+                        <tr key={entry.id}>
+                          <td className="px-4 py-3 text-sm text-gray-500">{formatDate(entry.createdAt)}</td>
+                          <td className="px-4 py-3 text-sm text-gray-800">{entry.content}</td>
+                          <td className="px-4 py-3">
+                            <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-semibold ${entry.isPublic ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-100 text-gray-600'}`}>
+                              {entry.isPublic ? 'Public' : 'Private'}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3">
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteUpdate(entry.id)}
+                              className="text-sm font-medium text-red-600 hover:underline"
+                            >
+                              Delete
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
 

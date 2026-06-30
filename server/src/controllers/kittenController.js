@@ -109,16 +109,54 @@ export async function getKittenById(req, res, next) {
 export async function updateKitten(req, res, next) {
   try {
     const id = Number.parseInt(req.params.id, 10);
-    const { primaryPhotoUrl } = req.body;
+    const {
+      name,
+      status,
+      breed,
+      color,
+      sex,
+      fixedStatus,
+      rescueStory,
+      dateOfBirth,
+      fivFelvStatus,
+      specialNeeds,
+      microchipNumber,
+      intakeDate,
+      intakeSource,
+      primaryPhotoUrl,
+      litterId,
+      currentFosterId,
+    } = req.body;
 
     const existing = await prisma.kitten.findUnique({ where: { id } });
     if (!existing) return res.status(404).json({ error: 'Kitten not found' });
 
+    const data = {};
+
+    if (name !== undefined) data.name = name;
+    if (status !== undefined) data.status = status;
+    if (breed !== undefined) data.breed = breed;
+    if (color !== undefined) data.color = color;
+    if (sex !== undefined) data.sex = sex;
+    if (fixedStatus !== undefined) data.fixedStatus = fixedStatus;
+    if (rescueStory !== undefined) data.rescueStory = rescueStory;
+    if (dateOfBirth !== undefined) data.dateOfBirth = dateOfBirth ? new Date(dateOfBirth) : null;
+    if (fivFelvStatus !== undefined) data.fivFelvStatus = fivFelvStatus;
+    if (specialNeeds !== undefined) data.specialNeeds = specialNeeds;
+    if (microchipNumber !== undefined) data.microchipNumber = microchipNumber;
+    if (intakeDate !== undefined) data.intakeDate = intakeDate ? new Date(intakeDate) : null;
+    if (intakeSource !== undefined) data.intakeSource = intakeSource;
+    if (primaryPhotoUrl !== undefined) data.primaryPhotoUrl = primaryPhotoUrl;
+    if (litterId !== undefined) {
+      data.litterId = litterId ? Number.parseInt(litterId, 10) : null;
+    }
+    if (currentFosterId !== undefined) {
+      data.currentFosterId = currentFosterId ? Number.parseInt(currentFosterId, 10) : null;
+    }
+
     const kitten = await prisma.kitten.update({
       where: { id },
-      data: {
-        ...(primaryPhotoUrl !== undefined && { primaryPhotoUrl }),
-      },
+      data,
       include: kittenIncludes,
     });
 

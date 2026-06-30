@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { fetchPublicKittenById } from '../../services/publicApi';
+import { fetchPublicKittenById, fetchPublicKittenUpdates } from '../../services/publicApi';
 import KittenPhoto from '../../components/KittenPhoto';
 import { formatKittenAge } from '../../utils/kittenImages';
 
@@ -14,12 +14,16 @@ const SPONSOR_TIERS = [
 function PublicKittenProfile() {
   const { id } = useParams();
   const [kitten, setKitten] = useState(null);
+  const [updates, setUpdates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchPublicKittenById(id)
-      .then(setKitten)
+    Promise.all([fetchPublicKittenById(id), fetchPublicKittenUpdates(id)])
+      .then(([kittenData, updateData]) => {
+        setKitten(kittenData);
+        setUpdates(updateData);
+      })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, [id]);
@@ -32,7 +36,6 @@ function PublicKittenProfile() {
 
   return (
     <div className="bg-white">
-      {/* Hero photo */}
       <div className="relative aspect-[4/3] max-h-[420px] w-full overflow-hidden bg-slate-100 sm:aspect-[21/9]">
         <KittenPhoto kitten={kitten} allowFallback className="h-full w-full" />
       </div>
@@ -60,6 +63,26 @@ function PublicKittenProfile() {
           <section className="mt-10">
             <h2 className="text-lg font-bold text-slate-900">About Me</h2>
             <p className="mt-3 leading-relaxed text-slate-600">{kitten.rescueStory}</p>
+          </section>
+        )}
+
+        {updates.length > 0 && (
+          <section className="mt-10">
+            <h2 className="text-lg font-bold text-slate-900">News & Updates</h2>
+            <div className="mt-4 space-y-4">
+              {updates.map((entry) => (
+                <article key={entry.id} className="rounded-xl border border-slate-100 bg-slate-50 p-4">
+                  <time className="text-xs font-semibold uppercase tracking-wide text-brand">
+                    {new Date(entry.createdAt).toLocaleDateString(undefined, {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </time>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-700">{entry.content}</p>
+                </article>
+              ))}
+            </div>
           </section>
         )}
 

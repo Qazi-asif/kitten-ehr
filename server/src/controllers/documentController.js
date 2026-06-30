@@ -30,7 +30,7 @@ export async function uploadDocument(req, res, next) {
     if (!kitten) return res.status(404).json({ error: 'Kitten not found' });
 
     const { docType, description } = req.body;
-    const fileUrl = `/uploads/${req.file.filename}`;
+    const fileUrl = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
 
     const document = await prisma.document.create({
       data: {

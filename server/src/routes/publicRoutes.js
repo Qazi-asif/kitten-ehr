@@ -5,6 +5,7 @@ import {
   getPublicContentBySlug,
   getPublicEvents,
   getPublicKittenById,
+  getPublicKittenUpdates,
   getPublicKittens,
   getPublicStats,
 } from '../controllers/publicController.js';
@@ -12,6 +13,7 @@ import {
 const router = Router();
 
 router.get('/kittens', getPublicKittens);
+router.get('/kittens/:id/updates', getPublicKittenUpdates);
 router.get('/kittens/:id', getPublicKittenById);
 router.get('/stats', getPublicStats);
 router.get('/content', getPublicContent);

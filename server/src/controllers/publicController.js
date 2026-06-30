@@ -5,11 +5,11 @@ const publicKittenSelect = {
   name: true,
   status: true,
   rescueStory: true,
-  breed: true,
-  color: true,
   dateOfBirth: true,
   sex: true,
   fixedStatus: true,
+  breed: true,
+  color: true,
   fivFelvStatus: true,
   specialNeeds: true,
   primaryPhotoUrl: true,
@@ -101,6 +101,35 @@ export async function getPublicEvents(_req, res, next) {
       },
     });
     res.json(events);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getPublicKittenUpdates(req, res, next) {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+
+    const kitten = await prisma.kitten.findFirst({
+      where: { id, status: 'Available for Adoption' },
+      select: { id: true },
+    });
+
+    if (!kitten) {
+      return res.status(404).json({ error: 'Kitten not found' });
+    }
+
+    const updates = await prisma.update.findMany({
+      where: { kittenId: id, isPublic: true },
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        content: true,
+        createdAt: true,
+      },
+    });
+
+    res.json(updates);
   } catch (error) {
     next(error);
   }

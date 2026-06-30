@@ -14,6 +14,10 @@ export function fetchPublicKittenById(id) {
   return publicRequest(`/kittens/${id}`);
 }
 
+export function fetchPublicKittenUpdates(id) {
+  return publicRequest(`/kittens/${id}/updates`);
+}
+
 export function fetchPublicStats() {
   return publicRequest('/stats');
 }

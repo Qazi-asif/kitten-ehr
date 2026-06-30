@@ -60,6 +60,16 @@ model Kitten {
   vetAppointments VetAppointment[]
   documents       Document[]
   sponsorships    Sponsorship[]
+  updates         Update[]
+}
+
+model Update {
+  id        Int      @id @default(autoincrement())
+  kittenId  Int
+  kitten    Kitten   @relation(fields: [kittenId], references: [id], onDelete: Cascade)
+  content   String
+  isPublic  Boolean  @default(false)
+  createdAt DateTime @default(now())
 }
 
 model Sponsorship {

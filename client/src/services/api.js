@@ -263,6 +263,32 @@ export async function deleteEvent(id) {
 
 export function getFileUrl(path) {
   if (!path) return '#';
-  if (path.startsWith('http')) return path;
+  if (path.startsWith('http') || path.startsWith('data:')) return path;
   return `${SERVER_BASE}${path}`;
+}
+
+export function fetchKittenUpdates(kittenId) {
+  return adminRequest(`/kittens/${kittenId}/updates`);
+}
+
+export async function createKittenUpdate(kittenId, data) {
+  const response = await adminFetch(`/kittens/${kittenId}/updates`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error('Failed to create update');
+  return response.json();
+}
+
+export async function updateKittenUpdate(kittenId, updateId, data) {
+  const response = await adminFetch(`/kittens/${kittenId}/updates/${updateId}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error('Failed to update milestone');
+  return response.json();
+}
+
+export async function deleteKittenUpdate(kittenId, updateId) {
+  await adminFetch(`/kittens/${kittenId}/updates/${updateId}`, { method: 'DELETE' });
 }
