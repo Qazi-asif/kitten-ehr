@@ -182,9 +182,11 @@ export async function createWeightLog(logData) {
   return response.json();
 }
 
-export function fetchApplications(status) {
+export async function fetchApplications(status) {
   const query = status ? `?status=${encodeURIComponent(status)}` : '';
-  return adminRequest(`/applications${query}`);
+  const response = await adminFetch(`/applications${query}`);
+  if (!response.ok) throw new Error('Failed to load applications');
+  return response.json();
 }
 
 export async function createApplication(data) {
@@ -200,6 +202,7 @@ export async function updateApplicationStatus(id, status) {
     method: 'PATCH',
     body: JSON.stringify({ status }),
   });
+  if (!response.ok) throw new Error('Failed to update application status');
   return response.json();
 }
 

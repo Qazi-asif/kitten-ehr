@@ -2,7 +2,8 @@ import { Link } from 'react-router-dom';
 import { AlertCircle, AlertTriangle, CheckCircle2, Info, TrendingUp } from 'lucide-react';
 import { Cat, Heart, Users } from 'lucide-react';
 import KittenPhoto from '../../components/KittenPhoto';
-import { fetchDashboardStats, fetchFinanceStats, fetchKittens } from '../../services/api';
+import { fetchApplications, fetchDashboardStats, fetchFinanceStats, fetchKittens } from '../../services/api';
+import { getApplicationSummary, resolveKittenOfInterest } from '../../utils/applicationFormData';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 function formatCurrency(amount) {
@@ -90,18 +91,21 @@ function DashboardPage() {
     donationsThisMonth: 0,
   });
   const [kittens, setKittens] = useState([]);
+  const [applications, setApplications] = useState([]);
 
   const load = useCallback(async () => {
-    const [statsData, kittensData, financeData] = await Promise.all([
+    const [statsData, kittensData, financeData, applicationsData] = await Promise.all([
       fetchDashboardStats(),
       fetchKittens(),
       fetchFinanceStats().catch(() => ({ donations: { month: 0 } })),
+      fetchApplications().catch(() => []),
     ]);
     setStats({
       ...statsData,
       donationsThisMonth: financeData.donations?.month ?? 0,
     });
     setKittens(kittensData);
+    setApplications(applicationsData);
   }, []);
 
   useEffect(() => {
@@ -115,6 +119,14 @@ function DashboardPage() {
   const recentAdoptions = kittens
     .filter((k) => k.status === 'Adopted')
     .slice(0, 4);
+
+  const pendingApplications = useMemo(
+    () =>
+      applications
+        .filter((app) => app.status === 'New' || app.status === 'Under Review')
+        .slice(0, 5),
+    [applications],
+  );
 
   const alerts = [
     { icon: AlertCircle, color: 'text-red-500 bg-red-50', text: 'Vaccines overdue for 3 kittens' },
@@ -185,6 +197,52 @@ function DashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] lg:col-span-2">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-base font-bold text-slate-900">Pending Applications</h2>
+            <Link to="/admin/applications" className="text-sm font-semibold text-brand hover:underline">View all</Link>
+          </div>
+          {pendingApplications.length === 0 ? (
+            <p className="text-sm text-slate-500">No new adoption or foster applications right now.</p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-slate-100">
+                <thead>
+                  <tr>
+                    <th className="px-3 py-2 text-left text-xs font-semibold uppercase text-slate-500">Applicant</th>
+                    <th className="px-3 py-2 text-left text-xs font-semibold uppercase text-slate-500">Type</th>
+                    <th className="px-3 py-2 text-left text-xs font-semibold uppercase text-slate-500">Kitten</th>
+                    <th className="px-3 py-2 text-left text-xs font-semibold uppercase text-slate-500">Status</th>
+                    <th className="px-3 py-2 text-left text-xs font-semibold uppercase text-slate-500">Submitted</th>
+                    <th className="px-3 py-2 text-left text-xs font-semibold uppercase text-slate-500">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {pendingApplications.map((app) => (
+                    <tr key={app.id} className="hover:bg-slate-50">
+                      <td className="px-3 py-3 text-sm font-medium text-slate-900">{getApplicationSummary(app.formData)}</td>
+                      <td className="px-3 py-3 text-sm text-slate-600">{app.type}</td>
+                      <td className="px-3 py-3 text-sm text-slate-600">
+                        {resolveKittenOfInterest(app.formData, app.kittenOfInterest) || 'Unspecified'}
+                      </td>
+                      <td className="px-3 py-3 text-sm text-slate-600">{app.status}</td>
+                      <td className="px-3 py-3 text-sm text-slate-500">{new Date(app.createdAt).toLocaleDateString()}</td>
+                      <td className="px-3 py-3 text-sm">
+                        <Link
+                          to={`/admin/applications?id=${app.id}`}
+                          className="font-semibold text-brand hover:underline"
+                        >
+                          View
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+
         <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-base font-bold text-slate-900">Recent Intakes</h2>
