@@ -437,12 +437,6 @@ function KittenDetailPage() {
 
               <dl className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 <div>
-                  <dt className="text-xs font-semibold uppercase tracking-wide text-slate-400">Litter Group</dt>
-                  <dd className="mt-1 text-sm font-medium text-slate-800">
-                    {kitten.litter?.name || 'None assigned'}
-                  </dd>
-                </div>
-                <div>
                   <dt className="text-xs font-semibold uppercase tracking-wide text-slate-400">Current Foster</dt>
                   <dd className="mt-1 text-sm font-medium text-slate-800">
                     {kitten.currentFoster ? (
@@ -460,6 +454,35 @@ function KittenDetailPage() {
                 </div>
               </dl>
             </div>
+          </div>
+        </div>
+
+        <div className="mt-6 rounded-xl border-2 border-emerald-400 bg-emerald-50 p-5 shadow-sm">
+          <div>
+            <h2 className="text-lg font-bold text-emerald-950">Litter Group</h2>
+            <p className="mt-1 text-sm text-emerald-900">
+              Currently assigned: <strong>{kitten.litter?.name || 'None'}</strong>
+            </p>
+            <p className="mt-1 text-xs text-emerald-800">
+              Group kittens from the same intake (e.g. siblings rescued together).
+            </p>
+          </div>
+          <div className="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+            <LitterSelect
+              value={litterId}
+              litters={litters}
+              onChange={setLitterId}
+              onLittersChange={setLitters}
+              disabled={savingLitter}
+            />
+            <button
+              type="button"
+              onClick={handleSaveLitterGroup}
+              disabled={savingLitter}
+              className="h-fit rounded-lg bg-brand px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-60"
+            >
+              {savingLitter ? 'Saving...' : 'Save litter group'}
+            </button>
           </div>
         </div>
 
@@ -526,17 +549,6 @@ function KittenDetailPage() {
                           </select>
                         </label>
                         <label className="block sm:col-span-2">
-                          <span className="text-xs font-semibold uppercase text-slate-500">Litter Group</span>
-                          <LitterSelect
-                            value={litterId}
-                            litters={litters}
-                            onChange={setLitterId}
-                            onLittersChange={setLitters}
-                            disabled={savingProfile}
-                            className="mt-1"
-                          />
-                        </label>
-                        <label className="block sm:col-span-2">
                           <span className="text-xs font-semibold uppercase text-slate-500">Status</span>
                           <select
                             value={profileForm.status || ''}
@@ -592,29 +604,6 @@ function KittenDetailPage() {
                 </div>
 
                 <div className="space-y-6">
-                  <section className="rounded-xl border border-emerald-200 bg-emerald-50/40 p-4">
-                    <h2 className="text-sm font-bold uppercase tracking-wide text-slate-900">Litter Group</h2>
-                    <p className="mt-1 text-xs text-slate-500">
-                      Link this kitten to others from the same intake.
-                    </p>
-                    <LitterSelect
-                      value={litterId}
-                      litters={litters}
-                      onChange={setLitterId}
-                      onLittersChange={setLitters}
-                      disabled={savingLitter}
-                      className="mt-3"
-                    />
-                    <button
-                      type="button"
-                      onClick={handleSaveLitterGroup}
-                      disabled={savingLitter}
-                      className="mt-3 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-60"
-                    >
-                      {savingLitter ? 'Saving...' : 'Save litter group'}
-                    </button>
-                  </section>
-
                   <section>
                     <h2 className="text-sm font-bold uppercase tracking-wide text-slate-900">Quick Info</h2>
                     <dl className="mt-3 grid grid-cols-2 gap-3">
