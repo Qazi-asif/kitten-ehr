@@ -76,6 +76,7 @@ export async function createFoster(fosterData) {
     method: 'POST',
     body: JSON.stringify(fosterData),
   });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to create foster'));
   return response.json();
 }
 
@@ -94,6 +95,7 @@ export async function createLitter(litterData) {
     method: 'POST',
     body: JSON.stringify(litterData),
   });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to create litter'));
   return response.json();
 }
 
