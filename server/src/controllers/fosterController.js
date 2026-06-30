@@ -1,11 +1,16 @@
 import prisma from '../lib/prisma.js';
+import {
+  createFosterSchema,
+  formatZodError,
+  normalizeCapabilityFlags,
+} from '../validations/fosterValidation.js';
 
 export async function getAllFosters(_req, res, next) {
   try {
     const fosters = await prisma.foster.findMany({
       orderBy: { id: 'asc' },
       include: {
-        _count: { select: { currentKittens: true } },
+        _count: { select: { currentKittens: true, placements: true } },
       },
     });
     res.json(fosters);
@@ -16,33 +21,27 @@ export async function getAllFosters(_req, res, next) {
 
 export async function createFoster(req, res, next) {
   try {
-    const {
-      name,
-      phone,
-      email,
-      address,
-      emergencyContact,
-      experienceLevel,
-      capabilityFlags,
-      notes,
-    } = req.body;
+    const parsed = createFosterSchema.safeParse(req.body);
 
-    if (!name || !phone || !email || !address) {
-      return res.status(400).json({
-        error: 'name, phone, email, and address are required',
-      });
+    if (!parsed.success) {
+      return res.status(400).json({ error: formatZodError(parsed.error) });
     }
+
+    const data = parsed.data;
+    const capabilityFlags = normalizeCapabilityFlags(data.capabilityFlags, data.maxKittens);
 
     const foster = await prisma.foster.create({
       data: {
-        name,
-        phone,
-        email,
-        address,
-        emergencyContact: emergencyContact ?? '',
-        experienceLevel: experienceLevel ?? '',
-        capabilityFlags: capabilityFlags ?? '',
-        notes: notes ?? '',
+        name: data.name,
+        phone: data.phone,
+        email: data.email,
+        address: data.address,
+        emergencyContact: data.emergencyContact,
+        experienceLevel: data.experienceLevel,
+        capabilityFlags,
+        maxKittens: data.maxKittens,
+        photoUrl: data.photoUrl || null,
+        notes: data.notes,
       },
     });
 
@@ -69,12 +68,7 @@ export async function getFosterById(req, res, next) {
             color: true,
           },
         },
-        placements: {
-          orderBy: { intakeDate: 'desc' },
-          include: {
-            kitten: { select: { id: true, name: true } },
-          },
-        },
+        _count: { select: { placements: true, currentKittens: true } },
       },
     });
 

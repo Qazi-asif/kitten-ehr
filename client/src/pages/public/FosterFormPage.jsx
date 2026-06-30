@@ -1,13 +1,22 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { submitApplication } from '../../services/publicApi';
 
+function getPrefilledKittenInterest(params) {
+  return params.get('kitten') || params.get('name') || params.get('kittenId') || params.get('id') || '';
+}
+
 function FosterFormPage() {
+  const [params] = useSearchParams();
+  const prefilledKitten = getPrefilledKittenInterest(params);
+  const lockedKitten = Boolean(prefilledKitten);
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({
     fullName: '',
     email: '',
     phone: '',
     address: '',
+    kittenOfInterest: prefilledKitten,
     experienceLevel: '',
     hasOtherPets: '',
     homeType: '',
@@ -66,16 +75,56 @@ function FosterFormPage() {
             <h2 className="text-2xl font-bold text-gray-900">Foster Application</h2>
             <p className="mt-2 text-gray-600">Tell us about yourself and your home.</p>
             <form onSubmit={handleSubmit} className="mt-6 space-y-4 rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
-              {Object.keys(form).map((field) => (
-                <label key={field} className="block">
-                  <span className="mb-1 block text-sm font-medium capitalize text-gray-700">{field.replace(/([A-Z])/g, ' $1')}</span>
-                  {field === 'message' ? (
-                    <textarea name={field} value={form[field]} onChange={handleChange} rows={4} className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
-                  ) : (
-                    <input name={field} value={form[field]} onChange={handleChange} required={field !== 'message'} className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
-                  )}
-                </label>
-              ))}
+              <label className="block">
+                <span className="mb-1 block text-sm font-medium text-gray-700">Full Name</span>
+                <input name="fullName" value={form.fullName} onChange={handleChange} required className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+              </label>
+              <label className="block">
+                <span className="mb-1 block text-sm font-medium text-gray-700">Email</span>
+                <input type="email" name="email" value={form.email} onChange={handleChange} required className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+              </label>
+              <label className="block">
+                <span className="mb-1 block text-sm font-medium text-gray-700">Phone</span>
+                <input type="tel" name="phone" value={form.phone} onChange={handleChange} required className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+              </label>
+              <label className="block">
+                <span className="mb-1 block text-sm font-medium text-gray-700">Address</span>
+                <input name="address" value={form.address} onChange={handleChange} required className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+              </label>
+              <label className="block">
+                <span className="mb-1 block text-sm font-medium text-gray-700">Kitten(s) of Interest</span>
+                <input
+                  name="kittenOfInterest"
+                  value={form.kittenOfInterest}
+                  onChange={handleChange}
+                  disabled={lockedKitten}
+                  placeholder="Optional — specific kitten you'd like to foster"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm disabled:bg-gray-100 disabled:text-gray-700"
+                />
+                {lockedKitten && (
+                  <p className="mt-1 text-xs text-emerald-700">Pre-filled from the kitten profile you selected.</p>
+                )}
+              </label>
+              <label className="block">
+                <span className="mb-1 block text-sm font-medium text-gray-700">Experience Level</span>
+                <input name="experienceLevel" value={form.experienceLevel} onChange={handleChange} required className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+              </label>
+              <label className="block">
+                <span className="mb-1 block text-sm font-medium text-gray-700">Other Pets at Home</span>
+                <input name="hasOtherPets" value={form.hasOtherPets} onChange={handleChange} required className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+              </label>
+              <label className="block">
+                <span className="mb-1 block text-sm font-medium text-gray-700">Home Type</span>
+                <input name="homeType" value={form.homeType} onChange={handleChange} required className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+              </label>
+              <label className="block">
+                <span className="mb-1 block text-sm font-medium text-gray-700">Availability</span>
+                <input name="availability" value={form.availability} onChange={handleChange} required className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+              </label>
+              <label className="block">
+                <span className="mb-1 block text-sm font-medium text-gray-700">Additional Message</span>
+                <textarea name="message" value={form.message} onChange={handleChange} rows={4} className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+              </label>
               <button type="submit" className="rounded-lg bg-emerald-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700">
                 Submit Application
               </button>

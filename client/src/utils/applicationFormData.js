@@ -4,6 +4,7 @@ const FIELD_LABELS = {
   phone: 'Phone',
   address: 'Address',
   kittenInterest: 'Kitten Interest',
+  kittenOfInterest: 'Kitten(s) of Interest',
   experience: 'Experience',
   household: 'Household',
   message: 'Additional Message',

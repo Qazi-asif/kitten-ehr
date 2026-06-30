@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { fetchPublicKittenById, fetchPublicKittenUpdates } from '../../services/publicApi';
+import { fetchPublicKittenById, fetchPublicKittenPhotos, fetchPublicKittenUpdates } from '../../services/publicApi';
+import { getFileUrl } from '../../services/api';
 import KittenPhoto from '../../components/KittenPhoto';
 import { formatKittenAge } from '../../utils/kittenImages';
 
@@ -14,14 +15,16 @@ const SPONSOR_TIERS = [
 function PublicKittenProfile() {
   const { id } = useParams();
   const [kitten, setKitten] = useState(null);
+  const [photos, setPhotos] = useState([]);
   const [updates, setUpdates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    Promise.all([fetchPublicKittenById(id), fetchPublicKittenUpdates(id)])
-      .then(([kittenData, updateData]) => {
+    Promise.all([fetchPublicKittenById(id), fetchPublicKittenPhotos(id), fetchPublicKittenUpdates(id)])
+      .then(([kittenData, photoData, updateData]) => {
         setKitten(kittenData);
+        setPhotos(photoData);
         setUpdates(updateData);
       })
       .catch((err) => setError(err.message))
@@ -61,6 +64,28 @@ function PublicKittenProfile() {
             Wishlist
           </Link>
         </div>
+
+        {photos.length > 1 && (
+          <section className="mt-10">
+            <h2 className="text-lg font-bold text-slate-900">Photo Gallery</h2>
+            <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {photos.map((photo) => (
+                <div
+                  key={photo.id}
+                  className={`overflow-hidden rounded-xl border ${
+                    photo.isPrimaryPhoto ? 'border-brand ring-2 ring-brand/30' : 'border-slate-100'
+                  }`}
+                >
+                  <img
+                    src={getFileUrl(photo.fileUrl)}
+                    alt=""
+                    className="aspect-square w-full object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {kitten.rescueStory && (
           <section className="mt-10">

@@ -7,28 +7,65 @@ import {
 } from '../../utils/applicationFormData';
 
 const STATUS_OPTIONS = ['New', 'Under Review', 'Approved', 'Denied'];
+const DETAIL_EXCLUDED_KEYS = new Set(['kittenOfInterest', 'kittenInterest', 'kitten']);
 
-function ApplicationDetails({ formData }) {
-  const fields = useMemo(() => {
-    const parsed = parseApplicationFormData(formData);
-    return Object.entries(parsed).filter(([, value]) => value != null && value !== '');
-  }, [formData]);
+function KittenInterestCell({ value, formData }) {
+  const parsed = parseApplicationFormData(formData);
+  const interest = value || parsed.kittenOfInterest || parsed.kittenInterest || parsed.kitten;
 
-  if (fields.length === 0) {
-    return <p className="text-sm text-gray-500">No application details recorded.</p>;
+  if (!interest) {
+    return (
+      <span className="inline-flex rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-500">
+        Unspecified
+      </span>
+    );
   }
 
+  return <span className="text-sm font-medium text-gray-900">{interest}</span>;
+}
+
+function ApplicationDetails({ formData, kittenOfInterest }) {
+  const fields = useMemo(() => {
+    const parsed = parseApplicationFormData(formData);
+    return Object.entries(parsed).filter(
+      ([key, value]) => !DETAIL_EXCLUDED_KEYS.has(key) && value != null && value !== '',
+    );
+  }, [formData]);
+
+  const resolvedInterest = useMemo(() => {
+    if (kittenOfInterest) return kittenOfInterest;
+    const parsed = parseApplicationFormData(formData);
+    return parsed.kittenOfInterest || parsed.kittenInterest || parsed.kitten || '';
+  }, [formData, kittenOfInterest]);
+
   return (
-    <dl className="mt-4 divide-y divide-gray-100 rounded-lg border border-gray-100">
-      {fields.map(([key, value]) => (
-        <div key={key} className="grid grid-cols-1 gap-1 px-4 py-3 sm:grid-cols-[180px_1fr]">
-          <dt className="text-sm font-medium text-gray-500">{formatApplicationFieldLabel(key)}</dt>
-          <dd className="text-sm text-gray-900 whitespace-pre-wrap break-words">
-            {typeof value === 'object' ? JSON.stringify(value, null, 2) : String(value)}
-          </dd>
-        </div>
-      ))}
-    </dl>
+    <>
+      <div className="mt-4 rounded-lg border border-emerald-100 bg-emerald-50/60 p-4">
+        <p className="text-xs font-semibold uppercase tracking-wide text-emerald-800">Kitten of Interest</p>
+        {resolvedInterest ? (
+          <p className="mt-1 text-base font-semibold text-gray-900">{resolvedInterest}</p>
+        ) : (
+          <span className="mt-2 inline-flex rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-500">
+            Unspecified
+          </span>
+        )}
+      </div>
+
+      {fields.length === 0 ? (
+        <p className="mt-4 text-sm text-gray-500">No additional application details recorded.</p>
+      ) : (
+        <dl className="mt-4 divide-y divide-gray-100 rounded-lg border border-gray-100">
+          {fields.map(([key, value]) => (
+            <div key={key} className="grid grid-cols-1 gap-1 px-4 py-3 sm:grid-cols-[180px_1fr]">
+              <dt className="text-sm font-medium text-gray-500">{formatApplicationFieldLabel(key)}</dt>
+              <dd className="whitespace-pre-wrap break-words text-sm text-gray-900">
+                {typeof value === 'object' ? JSON.stringify(value, null, 2) : String(value)}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      )}
+    </>
   );
 }
 
@@ -91,6 +128,7 @@ function ApplicationsPage() {
                 <tr>
                   <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Applicant</th>
                   <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Type</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Kitten of Interest</th>
                   <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Status</th>
                   <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Date</th>
                   <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Actions</th>
@@ -99,7 +137,7 @@ function ApplicationsPage() {
               <tbody className="divide-y divide-gray-200">
                 {applications.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="px-4 py-8 text-center text-sm text-gray-500">
+                    <td colSpan={6} className="px-4 py-8 text-center text-sm text-gray-500">
                       No applications found.
                     </td>
                   </tr>
@@ -107,11 +145,14 @@ function ApplicationsPage() {
                   applications.map((app) => (
                     <tr key={app.id} className={`hover:bg-gray-50 ${selected?.id === app.id ? 'bg-emerald-50/50' : ''}`}>
                       <td className="px-4 py-3 text-sm font-medium text-gray-900">{getApplicationSummary(app.formData)}</td>
-                      <td className="px-4 py-3 text-sm">{app.type}</td>
-                      <td className="px-4 py-3 text-sm">{app.status}</td>
+                      <td className="px-4 py-3 text-sm text-gray-700">{app.type}</td>
+                      <td className="px-4 py-3">
+                        <KittenInterestCell value={app.kittenOfInterest} formData={app.formData} />
+                      </td>
+                      <td className="px-4 py-3 text-sm text-gray-700">{app.status}</td>
                       <td className="px-4 py-3 text-sm text-gray-500">{new Date(app.createdAt).toLocaleDateString()}</td>
                       <td className="px-4 py-3 text-sm">
-                        <button type="button" onClick={() => setSelected(app)} className="text-emerald-700 hover:underline">
+                        <button type="button" onClick={() => setSelected(app)} className="font-medium text-emerald-700 hover:underline">
                           View
                         </button>
                       </td>
@@ -141,7 +182,7 @@ function ApplicationsPage() {
                 </select>
               </label>
               <h3 className="mt-6 text-sm font-semibold uppercase tracking-wide text-gray-500">Application Details</h3>
-              <ApplicationDetails formData={selected.formData} />
+              <ApplicationDetails formData={selected.formData} kittenOfInterest={selected.kittenOfInterest} />
             </div>
           ) : (
             <div className="flex min-h-[240px] items-center justify-center rounded-xl border border-dashed border-gray-200 bg-gray-50 p-6 text-sm text-gray-500">

@@ -1,168 +1,166 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { fetchFosterById } from '../services/api';
-
-const statusBadgeClass = {
-  'In Foster Care': 'bg-emerald-100 text-emerald-800',
-  'Available for Adoption': 'bg-blue-100 text-blue-800',
-  Adopted: 'bg-purple-100 text-purple-800',
-  'Medical Hold': 'bg-amber-100 text-amber-800',
-};
-
-function StatusBadge({ status }) {
-  const badgeClass = statusBadgeClass[status] ?? 'bg-gray-100 text-gray-700';
-
-  return (
-    <span
-      className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-medium ${badgeClass}`}
-    >
-      {status}
-    </span>
-  );
-}
+import { Mail, MapPin, Phone, Users } from 'lucide-react';
+import AssignKittenForm from '../components/admin/AssignKittenForm';
+import FosterCapabilityBadges from '../components/admin/FosterCapabilityBadges';
+import FosterPlacementTable from '../components/admin/FosterPlacementTable';
+import FosterPhoto from '../components/FosterPhoto';
+import {
+  createFosterPlacement,
+  fetchFosterById,
+  fetchFosterPlacements,
+  fetchKittens,
+} from '../services/api';
 
 function FosterDetailPage() {
   const { id } = useParams();
   const [foster, setFoster] = useState(null);
+  const [placements, setPlacements] = useState([]);
+  const [kittens, setKittens] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [assigning, setAssigning] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
+  const loadData = useCallback(async () => {
     setLoading(true);
     setError(null);
-
-    fetchFosterById(id)
-      .then((data) => {
-        setFoster(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
+    try {
+      const [fosterData, placementData, kittenData] = await Promise.all([
+        fetchFosterById(id),
+        fetchFosterPlacements(id),
+        fetchKittens(),
+      ]);
+      setFoster(fosterData);
+      setPlacements(placementData);
+      setKittens(kittenData);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   }, [id]);
 
-  if (loading) {
-    return <p className="text-gray-500">Loading foster...</p>;
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
+
+  async function handleAssignKitten(payload) {
+    setAssigning(true);
+    setError(null);
+    try {
+      await createFosterPlacement(id, payload);
+      await loadData();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setAssigning(false);
+    }
   }
 
-  if (error) {
+  if (loading) {
+    return <p className="text-slate-500">Loading foster dashboard...</p>;
+  }
+
+  if (error && !foster) {
     return (
       <div>
-        <Link to="/admin/fosters" className="text-sm font-medium text-emerald-700 hover:text-emerald-900">
-          ← Back to fosters
-        </Link>
+        <Link to="/admin/fosters" className="text-sm font-medium text-brand hover:underline">← Back to fosters</Link>
         <p className="mt-4 text-red-600">{error}</p>
       </div>
     );
   }
 
+  const activePlacements = placements.filter((placement) => !placement.dischargeDate).length;
+
   return (
-    <div>
-      <Link
-        to="/admin/fosters"
-        className="inline-flex items-center text-sm font-medium text-emerald-700 hover:text-emerald-900"
-      >
+    <div className="space-y-6">
+      <Link to="/admin/fosters" className="inline-flex text-sm font-medium text-brand hover:underline">
         ← Back to fosters
       </Link>
 
-      <h1 className="mt-4 text-3xl font-bold text-gray-900">{foster.name}</h1>
+      {error && <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}
 
-      <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-          <p className="text-sm text-gray-500">Phone</p>
-          <p className="mt-1 font-semibold text-gray-900">{foster.phone}</p>
-        </div>
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-          <p className="text-sm text-gray-500">Email</p>
-          <p className="mt-1 font-semibold text-gray-900">{foster.email}</p>
-        </div>
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-          <p className="text-sm text-gray-500">Experience</p>
-          <p className="mt-1 font-semibold text-gray-900">{foster.experienceLevel || '—'}</p>
-        </div>
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-          <p className="text-sm text-gray-500">Emergency Contact</p>
-          <p className="mt-1 font-semibold text-gray-900">{foster.emergencyContact || '—'}</p>
-        </div>
-      </div>
+      <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="grid grid-cols-1 gap-6 p-6 lg:grid-cols-[220px_1fr]">
+          <div>
+            <FosterPhoto foster={foster} allowFallback className="aspect-square w-full rounded-2xl border border-slate-200" />
+          </div>
 
-      <div className="mt-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-        <p className="text-sm text-gray-500">Address</p>
-        <p className="mt-1 font-semibold text-gray-900">{foster.address}</p>
-      </div>
+          <div>
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <h1 className="text-3xl font-bold text-slate-900">{foster.name}</h1>
+                <p className="mt-1 text-sm text-slate-500">
+                  {foster.experienceLevel || 'Experience not set'} · Capacity {activePlacements}
+                  {foster.maxKittens ? ` / ${foster.maxKittens}` : ''}
+                </p>
+              </div>
+              <div className="rounded-full bg-brand-light px-4 py-2 text-sm font-semibold text-brand-dark">
+                {foster._count?.placements ?? placements.length} total placements
+              </div>
+            </div>
 
-      {foster.capabilityFlags && (
-        <div className="mt-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-          <p className="text-sm text-gray-500">Capabilities</p>
-          <p className="mt-1 text-gray-900">{foster.capabilityFlags.replace(/,/g, ', ')}</p>
+            <div className="mt-5">
+              <h2 className="text-xs font-bold uppercase tracking-wide text-slate-500">Capabilities</h2>
+              <div className="mt-2">
+                <FosterCapabilityBadges capabilityFlags={foster.capabilityFlags} />
+              </div>
+            </div>
+
+            <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              <div className="rounded-xl border border-slate-100 bg-slate-50 p-4">
+                <div className="flex items-center gap-2 text-slate-500">
+                  <Phone className="h-4 w-4" />
+                  <span className="text-xs font-semibold uppercase">Phone</span>
+                </div>
+                <p className="mt-2 text-sm font-semibold text-slate-900">{foster.phone}</p>
+              </div>
+              <div className="rounded-xl border border-slate-100 bg-slate-50 p-4">
+                <div className="flex items-center gap-2 text-slate-500">
+                  <Mail className="h-4 w-4" />
+                  <span className="text-xs font-semibold uppercase">Email</span>
+                </div>
+                <p className="mt-2 text-sm font-semibold text-slate-900">{foster.email}</p>
+              </div>
+              <div className="rounded-xl border border-slate-100 bg-slate-50 p-4 sm:col-span-2">
+                <div className="flex items-center gap-2 text-slate-500">
+                  <MapPin className="h-4 w-4" />
+                  <span className="text-xs font-semibold uppercase">Address</span>
+                </div>
+                <p className="mt-2 text-sm font-semibold text-slate-900">{foster.address}</p>
+              </div>
+            </div>
+
+            <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="rounded-xl border border-slate-100 bg-slate-50 p-4">
+                <div className="flex items-center gap-2 text-slate-500">
+                  <Users className="h-4 w-4" />
+                  <span className="text-xs font-semibold uppercase">Emergency Contact</span>
+                </div>
+                <p className="mt-2 text-sm font-semibold text-slate-900">{foster.emergencyContact || '—'}</p>
+              </div>
+              <div className="rounded-xl border border-slate-100 bg-slate-50 p-4">
+                <span className="text-xs font-semibold uppercase text-slate-500">Notes</span>
+                <p className="mt-2 text-sm text-slate-700">{foster.notes || 'No notes recorded.'}</p>
+              </div>
+            </div>
+          </div>
         </div>
-      )}
+      </section>
 
-      {foster.notes && (
-        <div className="mt-4 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-          <h2 className="mb-2 text-sm font-semibold text-gray-700">Notes</h2>
-          <p className="text-gray-600">{foster.notes}</p>
-        </div>
-      )}
-
-      <div className="mt-6 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-        <div className="border-b border-gray-200 px-6 py-4">
-          <h2 className="text-sm font-semibold text-gray-900">
-            Kittens in foster ({foster.currentKittens.length})
-          </h2>
+      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h2 className="text-lg font-bold text-slate-900">Placement History</h2>
+            <p className="mt-1 text-sm text-slate-500">Every kitten hosted by this foster home, with intake and discharge dates.</p>
+          </div>
+          <AssignKittenForm kittens={kittens} onSubmit={handleAssignKitten} submitting={assigning} />
         </div>
 
-        {foster.currentKittens.length === 0 ? (
-          <p className="px-6 py-8 text-center text-gray-500">No kittens assigned yet.</p>
-        ) : (
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Name</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Breed</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Color</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200 bg-white">
-              {foster.currentKittens.map((kitten, index) => (
-                <tr
-                  key={kitten.id}
-                  className={index % 2 === 0 ? 'bg-white hover:bg-gray-50' : 'bg-gray-50/50 hover:bg-gray-100'}
-                >
-                  <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">
-                    <Link
-                      to={`/admin/kittens/${kitten.id}`}
-                      className="text-emerald-700 hover:text-emerald-900 hover:underline"
-                    >
-                      {kitten.name}
-                    </Link>
-                  </td>
-                  <td className="whitespace-nowrap px-6 py-4 text-sm">
-                    <StatusBadge status={kitten.status} />
-                  </td>
-                  <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-600">
-                    {kitten.breed}
-                  </td>
-                  <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-600">
-                    {kitten.color || '—'}
-                  </td>
-                  <td className="whitespace-nowrap px-6 py-4 text-sm">
-                    <Link
-                      to={`/admin/kittens/${kitten.id}`}
-                      className="rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50"
-                    >
-                      View
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+        <div className="mt-5">
+          <FosterPlacementTable placements={placements} />
+        </div>
+      </section>
     </div>
   );
 }

@@ -14740,11 +14740,13 @@ export namespace Prisma {
   export type DocumentAvgAggregateOutputType = {
     id: number | null
     kittenId: number | null
+    sortOrder: number | null
   }
 
   export type DocumentSumAggregateOutputType = {
     id: number | null
     kittenId: number | null
+    sortOrder: number | null
   }
 
   export type DocumentMinAggregateOutputType = {
@@ -14754,6 +14756,8 @@ export namespace Prisma {
     fileUrl: string | null
     docType: string | null
     description: string | null
+    isPrimaryPhoto: boolean | null
+    sortOrder: number | null
     uploadedAt: Date | null
   }
 
@@ -14764,6 +14768,8 @@ export namespace Prisma {
     fileUrl: string | null
     docType: string | null
     description: string | null
+    isPrimaryPhoto: boolean | null
+    sortOrder: number | null
     uploadedAt: Date | null
   }
 
@@ -14774,6 +14780,8 @@ export namespace Prisma {
     fileUrl: number
     docType: number
     description: number
+    isPrimaryPhoto: number
+    sortOrder: number
     uploadedAt: number
     _all: number
   }
@@ -14782,11 +14790,13 @@ export namespace Prisma {
   export type DocumentAvgAggregateInputType = {
     id?: true
     kittenId?: true
+    sortOrder?: true
   }
 
   export type DocumentSumAggregateInputType = {
     id?: true
     kittenId?: true
+    sortOrder?: true
   }
 
   export type DocumentMinAggregateInputType = {
@@ -14796,6 +14806,8 @@ export namespace Prisma {
     fileUrl?: true
     docType?: true
     description?: true
+    isPrimaryPhoto?: true
+    sortOrder?: true
     uploadedAt?: true
   }
 
@@ -14806,6 +14818,8 @@ export namespace Prisma {
     fileUrl?: true
     docType?: true
     description?: true
+    isPrimaryPhoto?: true
+    sortOrder?: true
     uploadedAt?: true
   }
 
@@ -14816,6 +14830,8 @@ export namespace Prisma {
     fileUrl?: true
     docType?: true
     description?: true
+    isPrimaryPhoto?: true
+    sortOrder?: true
     uploadedAt?: true
     _all?: true
   }
@@ -14913,6 +14929,8 @@ export namespace Prisma {
     fileUrl: string
     docType: string
     description: string
+    isPrimaryPhoto: boolean
+    sortOrder: number
     uploadedAt: Date
     _count: DocumentCountAggregateOutputType | null
     _avg: DocumentAvgAggregateOutputType | null
@@ -14942,6 +14960,8 @@ export namespace Prisma {
     fileUrl?: boolean
     docType?: boolean
     description?: boolean
+    isPrimaryPhoto?: boolean
+    sortOrder?: boolean
     uploadedAt?: boolean
     kitten?: boolean | KittenDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["document"]>
@@ -14953,6 +14973,8 @@ export namespace Prisma {
     fileUrl?: boolean
     docType?: boolean
     description?: boolean
+    isPrimaryPhoto?: boolean
+    sortOrder?: boolean
     uploadedAt?: boolean
     kitten?: boolean | KittenDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["document"]>
@@ -14964,6 +14986,8 @@ export namespace Prisma {
     fileUrl?: boolean
     docType?: boolean
     description?: boolean
+    isPrimaryPhoto?: boolean
+    sortOrder?: boolean
     uploadedAt?: boolean
     kitten?: boolean | KittenDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["document"]>
@@ -14975,10 +14999,12 @@ export namespace Prisma {
     fileUrl?: boolean
     docType?: boolean
     description?: boolean
+    isPrimaryPhoto?: boolean
+    sortOrder?: boolean
     uploadedAt?: boolean
   }
 
-  export type DocumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "kittenId" | "fileName" | "fileUrl" | "docType" | "description" | "uploadedAt", ExtArgs["result"]["document"]>
+  export type DocumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "kittenId" | "fileName" | "fileUrl" | "docType" | "description" | "isPrimaryPhoto" | "sortOrder" | "uploadedAt", ExtArgs["result"]["document"]>
   export type DocumentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     kitten?: boolean | KittenDefaultArgs<ExtArgs>
   }
@@ -15001,6 +15027,8 @@ export namespace Prisma {
       fileUrl: string
       docType: string
       description: string
+      isPrimaryPhoto: boolean
+      sortOrder: number
       uploadedAt: Date
     }, ExtArgs["result"]["document"]>
     composites: {}
@@ -15432,6 +15460,8 @@ export namespace Prisma {
     readonly fileUrl: FieldRef<"Document", 'String'>
     readonly docType: FieldRef<"Document", 'String'>
     readonly description: FieldRef<"Document", 'String'>
+    readonly isPrimaryPhoto: FieldRef<"Document", 'Boolean'>
+    readonly sortOrder: FieldRef<"Document", 'Int'>
     readonly uploadedAt: FieldRef<"Document", 'DateTime'>
   }
     
@@ -25830,6 +25860,8 @@ export namespace Prisma {
     fileUrl: 'fileUrl',
     docType: 'docType',
     description: 'description',
+    isPrimaryPhoto: 'isPrimaryPhoto',
+    sortOrder: 'sortOrder',
     uploadedAt: 'uploadedAt'
   };
 
@@ -26871,6 +26903,8 @@ export namespace Prisma {
     fileUrl?: StringFilter<"Document"> | string
     docType?: StringFilter<"Document"> | string
     description?: StringFilter<"Document"> | string
+    isPrimaryPhoto?: BoolFilter<"Document"> | boolean
+    sortOrder?: IntFilter<"Document"> | number
     uploadedAt?: DateTimeFilter<"Document"> | Date | string
     kitten?: XOR<KittenScalarRelationFilter, KittenWhereInput>
   }
@@ -26882,6 +26916,8 @@ export namespace Prisma {
     fileUrl?: SortOrder
     docType?: SortOrder
     description?: SortOrder
+    isPrimaryPhoto?: SortOrder
+    sortOrder?: SortOrder
     uploadedAt?: SortOrder
     kitten?: KittenOrderByWithRelationInput
   }
@@ -26896,6 +26932,8 @@ export namespace Prisma {
     fileUrl?: StringFilter<"Document"> | string
     docType?: StringFilter<"Document"> | string
     description?: StringFilter<"Document"> | string
+    isPrimaryPhoto?: BoolFilter<"Document"> | boolean
+    sortOrder?: IntFilter<"Document"> | number
     uploadedAt?: DateTimeFilter<"Document"> | Date | string
     kitten?: XOR<KittenScalarRelationFilter, KittenWhereInput>
   }, "id">
@@ -26907,6 +26945,8 @@ export namespace Prisma {
     fileUrl?: SortOrder
     docType?: SortOrder
     description?: SortOrder
+    isPrimaryPhoto?: SortOrder
+    sortOrder?: SortOrder
     uploadedAt?: SortOrder
     _count?: DocumentCountOrderByAggregateInput
     _avg?: DocumentAvgOrderByAggregateInput
@@ -26925,6 +26965,8 @@ export namespace Prisma {
     fileUrl?: StringWithAggregatesFilter<"Document"> | string
     docType?: StringWithAggregatesFilter<"Document"> | string
     description?: StringWithAggregatesFilter<"Document"> | string
+    isPrimaryPhoto?: BoolWithAggregatesFilter<"Document"> | boolean
+    sortOrder?: IntWithAggregatesFilter<"Document"> | number
     uploadedAt?: DateTimeWithAggregatesFilter<"Document"> | Date | string
   }
 
@@ -28360,6 +28402,8 @@ export namespace Prisma {
     fileUrl: string
     docType?: string
     description?: string
+    isPrimaryPhoto?: boolean
+    sortOrder?: number
     uploadedAt?: Date | string
     kitten: KittenCreateNestedOneWithoutDocumentsInput
   }
@@ -28371,6 +28415,8 @@ export namespace Prisma {
     fileUrl: string
     docType?: string
     description?: string
+    isPrimaryPhoto?: boolean
+    sortOrder?: number
     uploadedAt?: Date | string
   }
 
@@ -28379,6 +28425,8 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     docType?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    isPrimaryPhoto?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     kitten?: KittenUpdateOneRequiredWithoutDocumentsNestedInput
   }
@@ -28390,6 +28438,8 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     docType?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    isPrimaryPhoto?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -28400,6 +28450,8 @@ export namespace Prisma {
     fileUrl: string
     docType?: string
     description?: string
+    isPrimaryPhoto?: boolean
+    sortOrder?: number
     uploadedAt?: Date | string
   }
 
@@ -28408,6 +28460,8 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     docType?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    isPrimaryPhoto?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -28418,6 +28472,8 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     docType?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    isPrimaryPhoto?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -29800,12 +29856,15 @@ export namespace Prisma {
     fileUrl?: SortOrder
     docType?: SortOrder
     description?: SortOrder
+    isPrimaryPhoto?: SortOrder
+    sortOrder?: SortOrder
     uploadedAt?: SortOrder
   }
 
   export type DocumentAvgOrderByAggregateInput = {
     id?: SortOrder
     kittenId?: SortOrder
+    sortOrder?: SortOrder
   }
 
   export type DocumentMaxOrderByAggregateInput = {
@@ -29815,6 +29874,8 @@ export namespace Prisma {
     fileUrl?: SortOrder
     docType?: SortOrder
     description?: SortOrder
+    isPrimaryPhoto?: SortOrder
+    sortOrder?: SortOrder
     uploadedAt?: SortOrder
   }
 
@@ -29825,12 +29886,15 @@ export namespace Prisma {
     fileUrl?: SortOrder
     docType?: SortOrder
     description?: SortOrder
+    isPrimaryPhoto?: SortOrder
+    sortOrder?: SortOrder
     uploadedAt?: SortOrder
   }
 
   export type DocumentSumOrderByAggregateInput = {
     id?: SortOrder
     kittenId?: SortOrder
+    sortOrder?: SortOrder
   }
 
   export type ApplicationCountOrderByAggregateInput = {
@@ -31786,6 +31850,8 @@ export namespace Prisma {
     fileUrl: string
     docType?: string
     description?: string
+    isPrimaryPhoto?: boolean
+    sortOrder?: number
     uploadedAt?: Date | string
   }
 
@@ -31795,6 +31861,8 @@ export namespace Prisma {
     fileUrl: string
     docType?: string
     description?: string
+    isPrimaryPhoto?: boolean
+    sortOrder?: number
     uploadedAt?: Date | string
   }
 
@@ -32117,6 +32185,8 @@ export namespace Prisma {
     fileUrl?: StringFilter<"Document"> | string
     docType?: StringFilter<"Document"> | string
     description?: StringFilter<"Document"> | string
+    isPrimaryPhoto?: BoolFilter<"Document"> | boolean
+    sortOrder?: IntFilter<"Document"> | number
     uploadedAt?: DateTimeFilter<"Document"> | Date | string
   }
 
@@ -34198,6 +34268,8 @@ export namespace Prisma {
     fileUrl: string
     docType?: string
     description?: string
+    isPrimaryPhoto?: boolean
+    sortOrder?: number
     uploadedAt?: Date | string
   }
 
@@ -34392,6 +34464,8 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     docType?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    isPrimaryPhoto?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -34401,6 +34475,8 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     docType?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    isPrimaryPhoto?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -34410,6 +34486,8 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     docType?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    isPrimaryPhoto?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

@@ -1,5 +1,7 @@
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import swaggerUi from 'swagger-ui-express';
@@ -26,6 +28,48 @@ import { requireAuth } from './middleware/authMiddleware.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 5000;
+const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
+
+app.use(helmet());
+
+const allowedOrigins = [CLIENT_URL];
+if (process.env.VERCEL_URL) {
+  allowedOrigins.push(`https://${process.env.VERCEL_URL}`);
+}
+
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+      callback(new Error('Not allowed by CORS'));
+    },
+    credentials: true,
+  }),
+);
+
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests. Please try again later.' },
+});
+
+const applicationLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many application submissions. Please try again later.' },
+});
+
+app.use(globalLimiter);
+app.use('/api/public/applications', applicationLimiter);
+
+app.use(express.json({ limit: '6mb' }));
 
 let spec = {
   openapi: '3.0.0',
@@ -45,9 +89,6 @@ try {
 } catch (error) {
   console.warn('Swagger init skipped:', error.message);
 }
-
-app.use(cors());
-app.use(express.json());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
 app.use('/api/auth', authRoutes);
@@ -77,7 +118,12 @@ app.get('/api/health', (_req, res) => {
 });
 
 app.use((err, _req, res, _next) => {
-  console.error(err.stack);
+  console.error(err.stack || err.message || err);
+
+  if (err.message === 'Not allowed by CORS') {
+    return res.status(403).json({ error: 'Origin not allowed' });
+  }
+
   res.status(500).json({ error: 'Internal Server Error' });
 });
 

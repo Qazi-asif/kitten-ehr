@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { getAllKittens, createKitten, getKittenById, getDashboardStats, updateKitten } from '../controllers/kittenController.js';
+import { getKittenPlacements } from '../controllers/placementController.js';
 
 const router = Router();
 
@@ -139,56 +140,7 @@ router.post('/', createKitten);
  *                   example: 38
  */
 router.get('/dashboard/stats', getDashboardStats);
-
-/**
- * @swagger
- * /api/kittens/{id}:
- *   get:
- *     summary: Get a kitten by ID
- *     description: Returns a single kitten by its ID
- *     tags:
- *       - Kittens
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *         example: 1
- *     responses:
- *       200:
- *         description: Kitten found
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: integer
- *                   example: 1
- *                 name:
- *                   type: string
- *                   example: Biscuit
- *                 status:
- *                   type: string
- *                   example: In Foster Care
- *                 age:
- *                   type: string
- *                   example: 8 weeks
- *                 breed:
- *                   type: string
- *                   example: Domestic Shorthair
- *       404:
- *         description: Kitten not found
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   example: Kitten not found
- */
+router.get('/:id/placements', getKittenPlacements);
 router.get('/:id', getKittenById);
 
 router.patch('/:id', updateKitten);

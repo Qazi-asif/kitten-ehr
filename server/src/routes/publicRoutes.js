@@ -5,6 +5,7 @@ import {
   getPublicContentBySlug,
   getPublicEvents,
   getPublicKittenById,
+  getPublicKittenPhotos,
   getPublicKittenUpdates,
   getPublicKittens,
   getPublicSettings,
@@ -14,6 +15,7 @@ import {
 const router = Router();
 
 router.get('/kittens', getPublicKittens);
+router.get('/kittens/:id/photos', getPublicKittenPhotos);
 router.get('/kittens/:id/updates', getPublicKittenUpdates);
 router.get('/kittens/:id', getPublicKittenById);
 router.get('/stats', getPublicStats);

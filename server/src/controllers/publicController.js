@@ -109,6 +109,63 @@ export async function getPublicEvents(_req, res, next) {
   }
 }
 
+export async function getPublicKittenPhotos(req, res, next) {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+
+    const kitten = await prisma.kitten.findFirst({
+      where: { id, ...publicKittenWhere },
+      select: { id: true, primaryPhotoUrl: true },
+    });
+
+    if (!kitten) {
+      return res.status(404).json({ error: 'Kitten not found' });
+    }
+
+    const documents = await prisma.document.findMany({
+      where: { kittenId: id },
+      orderBy: [{ isPrimaryPhoto: 'desc' }, { sortOrder: 'asc' }, { uploadedAt: 'desc' }],
+      select: {
+        id: true,
+        fileUrl: true,
+        docType: true,
+        isPrimaryPhoto: true,
+        uploadedAt: true,
+      },
+    });
+
+    const photos = documents.filter(
+      (doc) =>
+        doc.isPrimaryPhoto ||
+        doc.fileUrl.startsWith('data:image/') ||
+        /Photo/i.test(doc.docType || '') ||
+        /\.(jpg|jpeg|png|webp|gif)$/i.test(doc.fileUrl),
+    );
+
+    const gallery = [];
+    const seen = new Set();
+
+    if (kitten.primaryPhotoUrl) {
+      gallery.push({
+        id: 'primary',
+        fileUrl: kitten.primaryPhotoUrl,
+        isPrimaryPhoto: true,
+      });
+      seen.add(kitten.primaryPhotoUrl);
+    }
+
+    for (const photo of photos) {
+      if (seen.has(photo.fileUrl)) continue;
+      gallery.push(photo);
+      seen.add(photo.fileUrl);
+    }
+
+    res.json(gallery);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export async function getPublicKittenUpdates(req, res, next) {
   try {
     const id = Number.parseInt(req.params.id, 10);

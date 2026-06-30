@@ -92,8 +92,9 @@ async function main() {
       email: 'jane@example.com',
       address: '123 Oak Street',
       emergencyContact: '555-0101',
-      experienceLevel: 'Experienced',
-      capabilityFlags: 'bottle,big_cats',
+      experienceLevel: 'Advanced',
+      capabilityFlags: 'bottle_babies,medical_cases,large_capacity',
+      maxKittens: 4,
       notes: 'Spare bathroom available for kittens',
     },
   });
@@ -106,7 +107,8 @@ async function main() {
       address: '456 Pine Avenue',
       emergencyContact: '555-0201',
       experienceLevel: 'Intermediate',
-      capabilityFlags: 'bottle',
+      capabilityFlags: 'bottle_babies',
+      maxKittens: 2,
       notes: 'Experienced bottle feeder',
     },
   });

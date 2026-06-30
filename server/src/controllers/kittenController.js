@@ -1,4 +1,9 @@
 import prisma from '../lib/prisma.js';
+import {
+  createKittenSchema,
+  formatZodError,
+  updateKittenSchema,
+} from '../validations/kittenValidation.js';
 
 const kittenIncludes = {
   litter: { select: { id: true, name: true } },
@@ -20,6 +25,12 @@ export async function getAllKittens(_req, res) {
 
 export async function createKitten(req, res, next) {
   try {
+    const parsed = createKittenSchema.safeParse(req.body);
+
+    if (!parsed.success) {
+      return res.status(400).json({ error: formatZodError(parsed.error) });
+    }
+
     const {
       name,
       status,
@@ -32,18 +43,10 @@ export async function createKitten(req, res, next) {
       sex,
       fixedStatus,
       rescueStory,
-    } = req.body;
+    } = parsed.data;
 
-    if (!name || !breed) {
-      return res.status(400).json({
-        error: 'name and breed are required',
-      });
-    }
-
-    const parsedLitterId = litterId ? Number.parseInt(litterId, 10) : null;
-    const parsedFosterId = (currentFosterId ?? fosterId)
-      ? Number.parseInt(currentFosterId ?? fosterId, 10)
-      : null;
+    const parsedLitterId = litterId ?? null;
+    const parsedFosterId = currentFosterId ?? fosterId ?? null;
 
     if (parsedLitterId) {
       const litter = await prisma.litter.findUnique({ where: { id: parsedLitterId } });
@@ -58,15 +61,15 @@ export async function createKitten(req, res, next) {
     const kitten = await prisma.kitten.create({
       data: {
         name,
-        status: status ?? 'In Foster Care',
+        status,
         breed,
-        color: color ?? '',
+        color,
         litterId: parsedLitterId,
         currentFosterId: parsedFosterId,
-        dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
-        sex: sex ?? '',
-        fixedStatus: fixedStatus ?? '',
-        rescueStory: rescueStory ?? '',
+        dateOfBirth: dateOfBirth ?? null,
+        sex,
+        fixedStatus,
+        rescueStory,
       },
       include: kittenIncludes,
     });
@@ -109,58 +112,26 @@ export async function getKittenById(req, res, next) {
 export async function updateKitten(req, res, next) {
   try {
     const id = Number.parseInt(req.params.id, 10);
-    const {
-      name,
-      status,
-      breed,
-      color,
-      sex,
-      fixedStatus,
-      rescueStory,
-      dateOfBirth,
-      fivFelvStatus,
-      specialNeeds,
-      microchipNumber,
-      intakeDate,
-      intakeSource,
-      notes,
-      internalNotes,
-      isListedOnWebsite,
-      websiteFeaturedComment,
-      primaryPhotoUrl,
-      litterId,
-      currentFosterId,
-    } = req.body;
+    const parsed = updateKittenSchema.safeParse(req.body);
+
+    if (!parsed.success) {
+      return res.status(400).json({ error: formatZodError(parsed.error) });
+    }
 
     const existing = await prisma.kitten.findUnique({ where: { id } });
     if (!existing) return res.status(404).json({ error: 'Kitten not found' });
 
-    const data = {};
+    const body = parsed.data;
+    const data = { ...body };
 
-    if (name !== undefined) data.name = name;
-    if (status !== undefined) data.status = status;
-    if (breed !== undefined) data.breed = breed;
-    if (color !== undefined) data.color = color;
-    if (sex !== undefined) data.sex = sex;
-    if (fixedStatus !== undefined) data.fixedStatus = fixedStatus;
-    if (rescueStory !== undefined) data.rescueStory = rescueStory;
-    if (dateOfBirth !== undefined) data.dateOfBirth = dateOfBirth ? new Date(dateOfBirth) : null;
-    if (fivFelvStatus !== undefined) data.fivFelvStatus = fivFelvStatus;
-    if (specialNeeds !== undefined) data.specialNeeds = specialNeeds;
-    if (microchipNumber !== undefined) data.microchipNumber = microchipNumber;
-    if (intakeDate !== undefined) data.intakeDate = intakeDate ? new Date(intakeDate) : null;
-    if (intakeSource !== undefined) data.intakeSource = intakeSource;
-    if (notes !== undefined) data.notes = notes;
-    if (internalNotes !== undefined) data.internalNotes = internalNotes;
-    if (isListedOnWebsite !== undefined) data.isListedOnWebsite = Boolean(isListedOnWebsite);
-    if (websiteFeaturedComment !== undefined) data.websiteFeaturedComment = websiteFeaturedComment;
-    if (primaryPhotoUrl !== undefined) data.primaryPhotoUrl = primaryPhotoUrl;
-    if (litterId !== undefined) {
-      data.litterId = litterId ? Number.parseInt(litterId, 10) : null;
+    if (body.litterId !== undefined) {
+      data.litterId = body.litterId ?? null;
     }
-    if (currentFosterId !== undefined) {
-      data.currentFosterId = currentFosterId ? Number.parseInt(currentFosterId, 10) : null;
+    if (body.currentFosterId !== undefined) {
+      data.currentFosterId = body.currentFosterId ?? null;
     }
+
+    delete data.weightGrams;
 
     const kitten = await prisma.kitten.update({
       where: { id },
@@ -185,18 +156,13 @@ export async function getDashboardStats(_req, res, next) {
       adoptionsThisYear,
     ] = await Promise.all([
       prisma.kitten.count({
-        where: { status: { notIn: ['Adopted', 'Deceased', 'Transferred'] } },
+        where: { status: { in: ['In Foster Care', 'Medical Hold'] } },
       }),
       prisma.kitten.count({ where: { status: 'Available for Adoption' } }),
-      prisma.application.count({ where: { status: 'Under Review' } }),
-      prisma.foster.count({
-        where: { currentKittens: { some: {} } },
-      }),
-      prisma.placement.count({
-        where: {
-          dischargeType: 'Adopted',
-          dischargeDate: { gte: yearStart },
-        },
+      prisma.application.count({ where: { status: { in: ['New', 'Under Review'] } } }),
+      prisma.foster.count({ where: { currentKittens: { some: {} } } }),
+      prisma.kitten.count({
+        where: { status: 'Adopted', createdAt: { gte: yearStart } },
       }),
     ]);
 

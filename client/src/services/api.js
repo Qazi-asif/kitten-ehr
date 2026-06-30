@@ -86,6 +86,27 @@ export async function fetchFosterById(id) {
   return response.json();
 }
 
+export async function fetchFosterPlacements(fosterId) {
+  const response = await adminFetch(`/fosters/${fosterId}/placements`);
+  if (!response.ok) throw new Error('Failed to load foster placements');
+  return response.json();
+}
+
+export async function createFosterPlacement(fosterId, data) {
+  const response = await adminFetch(`/fosters/${fosterId}/placements`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to create placement'));
+  return response.json();
+}
+
+export async function fetchKittenPlacements(kittenId) {
+  const response = await adminFetch(`/kittens/${kittenId}/placements`);
+  if (!response.ok) throw new Error('Failed to load kitten placements');
+  return response.json();
+}
+
 export function fetchLitters() {
   return adminRequest('/litters');
 }
@@ -177,6 +198,33 @@ export function fetchDocuments(kittenId) {
   return adminRequest(`/kittens/${kittenId}/documents`);
 }
 
+export function fetchKittenPhotos(kittenId) {
+  return adminFetch(`/kittens/${kittenId}/documents/photos`).then(async (response) => {
+    if (!response.ok) throw new Error('Failed to load photos');
+    return response.json();
+  });
+}
+
+export async function uploadKittenPhoto(kittenId, file, { setAsPrimary = false } = {}) {
+  const formData = new FormData();
+  formData.append('file', file);
+  if (setAsPrimary) formData.append('setAsPrimary', 'true');
+  const response = await adminFetch(`/kittens/${kittenId}/documents/photos`, {
+    method: 'POST',
+    body: formData,
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Photo upload failed'));
+  return response.json();
+}
+
+export async function setKittenPrimaryPhoto(kittenId, documentId) {
+  const response = await adminFetch(`/kittens/${kittenId}/documents/${documentId}/set-primary`, {
+    method: 'PATCH',
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to set profile photo'));
+  return response.json();
+}
+
 export async function uploadDocument(kittenId, { file, docType, description }) {
   const formData = new FormData();
   formData.append('file', file);
@@ -191,12 +239,8 @@ export async function uploadDocument(kittenId, { file, docType, description }) {
 }
 
 export async function uploadPrimaryPhoto(kittenId, file) {
-  const uploaded = await uploadDocument(kittenId, {
-    file,
-    docType: 'Primary Photo',
-    description: 'Profile photo',
-  });
-  return updateKitten(kittenId, { primaryPhotoUrl: uploaded.fileUrl });
+  const result = await uploadKittenPhoto(kittenId, file, { setAsPrimary: true });
+  return fetchKittenById(kittenId);
 }
 
 export async function updateKitten(id, data) {

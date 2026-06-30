@@ -26,6 +26,8 @@ model Foster {
   emergencyContact String      @default("")
   experienceLevel  String      @default("")
   capabilityFlags  String      @default("")
+  maxKittens       Int         @default(0)
+  photoUrl         String?
   notes            String      @default("")
   createdAt        DateTime    @default(now())
   currentKittens   Kitten[]    @relation("CurrentFoster")
@@ -155,22 +157,25 @@ model VetAppointment {
 }
 
 model Document {
-  id          Int      @id @default(autoincrement())
-  kittenId    Int
-  kitten      Kitten   @relation(fields: [kittenId], references: [id], onDelete: Cascade)
-  fileName    String
-  fileUrl     String
-  docType     String   @default("")
-  description String   @default("")
-  uploadedAt  DateTime @default(now())
+  id             Int      @id @default(autoincrement())
+  kittenId       Int
+  kitten         Kitten   @relation(fields: [kittenId], references: [id], onDelete: Cascade)
+  fileName       String
+  fileUrl        String
+  docType        String   @default("")
+  description    String   @default("")
+  isPrimaryPhoto Boolean  @default(false)
+  sortOrder      Int      @default(0)
+  uploadedAt     DateTime @default(now())
 }
 
 model Application {
-  id        Int      @id @default(autoincrement())
-  type      String
-  status    String   @default("New")
-  formData  String   @default("{}")
-  createdAt DateTime @default(now())
+  id               Int      @id @default(autoincrement())
+  type             String
+  status           String   @default("New")
+  kittenOfInterest String?
+  formData         String   @default("{}")
+  createdAt        DateTime @default(now())
 }
 
 model Content {

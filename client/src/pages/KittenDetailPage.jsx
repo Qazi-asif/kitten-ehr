@@ -3,10 +3,10 @@ import { Link, useParams } from 'react-router-dom';
 import { ChevronDown, Printer } from 'lucide-react';
 import StatusBadge from '../components/admin/StatusBadge';
 import KittenPublishingTab from '../components/admin/KittenPublishingTab';
+import KittenPhotoManager from '../components/admin/KittenPhotoManager';
 import DocumentUploadForm from '../components/DocumentUploadForm';
 import DocumentsList from '../components/DocumentsList';
 import FaceSheet from '../components/FaceSheet';
-import KittenPhoto from '../components/KittenPhoto';
 import MedicationForm from '../components/MedicationForm';
 import MedicationsTable from '../components/MedicationsTable';
 import VaccineForm from '../components/VaccineForm';
@@ -23,11 +23,12 @@ import {
   deleteDocument,
   fetchDocuments,
   fetchKittenById,
+  fetchKittenPhotos,
   fetchMedicalRecords,
   fetchWeightLogs,
-  getFileUrl,
+  setKittenPrimaryPhoto,
   uploadDocument,
-  uploadPrimaryPhoto,
+  uploadKittenPhoto,
   updateKitten,
 } from '../services/api';
 import { formatKittenAgeShort } from '../utils/kittenAge';
@@ -70,6 +71,7 @@ function KittenDetailPage() {
   const [medical, setMedical] = useState({ vaccines: [], medications: [], vetAppointments: [] });
   const [weightLogs, setWeightLogs] = useState([]);
   const [documents, setDocuments] = useState([]);
+  const [galleryPhotos, setGalleryPhotos] = useState([]);
   const [activeTab, setActiveTab] = useState('overview');
   const [loading, setLoading] = useState(true);
   const [tabLoading, setTabLoading] = useState(false);
@@ -119,19 +121,27 @@ function KittenDetailPage() {
     setDocuments(await fetchDocuments(id));
   }, [id]);
 
+  const loadPhotos = useCallback(async () => {
+    const data = await fetchKittenPhotos(id);
+    setGalleryPhotos(data.photos || []);
+    if (data.primaryPhotoUrl) {
+      setKitten((prev) => (prev ? { ...prev, primaryPhotoUrl: data.primaryPhotoUrl } : prev));
+    }
+  }, [id]);
+
   useEffect(() => {
     setLoading(true);
     setError(null);
     loadKitten()
       .then(async () => {
-        await Promise.all([loadMedical(), loadWeights(), loadDocuments()]);
+        await Promise.all([loadMedical(), loadWeights(), loadDocuments(), loadPhotos()]);
         setLoading(false);
       })
       .catch((err) => {
         setError(err.message);
         setLoading(false);
       });
-  }, [id, loadKitten, loadMedical, loadWeights, loadDocuments]);
+  }, [id, loadKitten, loadMedical, loadWeights, loadDocuments, loadPhotos]);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -226,12 +236,50 @@ function KittenDetailPage() {
     setUploading(false);
   }
 
-  async function handlePrimaryPhotoUpload(file) {
+  async function handleUploadPhotos(files) {
     setPhotoUploading(true);
-    const updated = await uploadPrimaryPhoto(id, file);
-    setKitten(updated);
-    await loadDocuments();
-    setPhotoUploading(false);
+    setError(null);
+    try {
+      for (const file of files) {
+        const result = await uploadKittenPhoto(id, file, { setAsPrimary: galleryPhotos.length === 0 });
+        if (result.primaryPhotoUrl) {
+          setKitten((prev) => (prev ? { ...prev, primaryPhotoUrl: result.primaryPhotoUrl } : prev));
+        }
+      }
+      await Promise.all([loadPhotos(), loadDocuments()]);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setPhotoUploading(false);
+    }
+  }
+
+  async function handleSetPrimaryPhoto(documentId) {
+    setPhotoUploading(true);
+    setError(null);
+    try {
+      const result = await setKittenPrimaryPhoto(id, documentId);
+      setKitten((prev) => (prev ? { ...prev, primaryPhotoUrl: result.primaryPhotoUrl } : prev));
+      await loadPhotos();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setPhotoUploading(false);
+    }
+  }
+
+  async function handleDeletePhoto(documentId) {
+    setPhotoUploading(true);
+    setError(null);
+    try {
+      await deleteDocument(id, documentId);
+      await loadKitten();
+      await Promise.all([loadPhotos(), loadDocuments()]);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setPhotoUploading(false);
+    }
   }
 
   async function handleDeleteDocument(documentId) {
@@ -251,7 +299,6 @@ function KittenDetailPage() {
   }
 
   const latestWeight = weightLogs[0];
-  const photoDocs = documents.filter((d) => d.docType?.includes('Photo') || d.fileUrl?.match(/\.(jpg|jpeg|png|webp)$/i)).slice(0, 4);
   const age = formatKittenAge(kitten.dateOfBirth);
 
   return (
@@ -311,20 +358,20 @@ function KittenDetailPage() {
         <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[280px_1fr]">
             <div>
-              <div className="overflow-hidden rounded-xl border border-slate-200 bg-slate-100">
-                <KittenPhoto kitten={kitten} allowFallback className="aspect-square w-full" />
-              </div>
-              <div className="mt-3 flex gap-2">
-                <KittenPhoto kitten={kitten} allowFallback className="h-14 w-14 rounded-lg border border-slate-200" />
-                {photoDocs.slice(0, 2).map((doc) => (
-                  <img key={doc.id} src={getFileUrl(doc.fileUrl)} alt="" className="h-14 w-14 rounded-lg border border-slate-200 object-cover" />
-                ))}
-                {documents.length > 3 && (
-                  <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-slate-100 text-xs font-bold text-slate-500">
-                    +{documents.length - 3}
-                  </div>
-                )}
-              </div>
+              <KittenPhotoManager
+                kitten={kitten}
+                photos={galleryPhotos}
+                editMode={editMode}
+                uploading={photoUploading}
+                onUploadFiles={handleUploadPhotos}
+                onSetPrimary={handleSetPrimaryPhoto}
+                onDeletePhoto={handleDeletePhoto}
+              />
+              {editMode && (
+                <p className="mt-2 text-xs text-brand">
+                  Edit mode: add photos, set the profile picture, or remove images.
+                </p>
+              )}
             </div>
 
             <div>
@@ -528,9 +575,8 @@ function KittenDetailPage() {
               <KittenPublishingTab
                 kittenId={id}
                 kitten={kitten}
+                galleryPhotos={galleryPhotos}
                 setKitten={setKitten}
-                onPrimaryPhotoUpload={handlePrimaryPhotoUpload}
-                photoUploading={photoUploading}
               />
             )}
 

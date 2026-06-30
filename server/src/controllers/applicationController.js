@@ -1,7 +1,11 @@
 import prisma from '../lib/prisma.js';
+import {
+  createApplicationSchema,
+  extractKittenOfInterest,
+  formatZodError,
+} from '../validations/applicationValidation.js';
 
-export async function getApplications(req, res, next) {
-  try {
+export async function getApplications(req, res, next) {  try {
     const { status } = req.query;
     const applications = await prisma.application.findMany({
       where: status ? { status } : undefined,
@@ -15,23 +19,23 @@ export async function getApplications(req, res, next) {
 
 export async function createApplication(req, res, next) {
   try {
-    const { type, formData } = req.body;
+    const parsed = createApplicationSchema.safeParse(req.body);
 
-    if (!type || !formData) {
-      return res.status(400).json({ error: 'type and formData are required' });
+    if (!parsed.success) {
+      return res.status(400).json({ error: formatZodError(parsed.error) });
     }
 
-    if (!['Adoption', 'Foster'].includes(type)) {
-      return res.status(400).json({ error: 'type must be Adoption or Foster' });
-    }
+    const { type, formData, kittenOfInterest } = parsed.data;
+    const serializedFormData = typeof formData === 'string' ? formData : JSON.stringify(formData);
+    const resolvedKittenOfInterest = extractKittenOfInterest(formData, kittenOfInterest);
 
     const application = await prisma.application.create({
       data: {
         type,
-        formData: typeof formData === 'string' ? formData : JSON.stringify(formData),
+        formData: serializedFormData,
+        kittenOfInterest: resolvedKittenOfInterest,
       },
     });
-
     res.status(201).json(application);
   } catch (error) {
     next(error);

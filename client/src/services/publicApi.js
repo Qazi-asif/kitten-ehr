@@ -14,6 +14,10 @@ export function fetchPublicKittenById(id) {
   return publicRequest(`/kittens/${id}`);
 }
 
+export function fetchPublicKittenPhotos(id) {
+  return publicRequest(`/kittens/${id}/photos`);
+}
+
 export function fetchPublicKittenUpdates(id) {
   return publicRequest(`/kittens/${id}/updates`);
 }
@@ -39,9 +43,14 @@ export async function fetchPublicSettings() {
 }
 
 export async function submitApplication(type, formData) {
+  const kittenOfInterest = formData.kittenOfInterest || formData.kittenInterest || '';
   const response = await publicFetch('/public/applications', {
     method: 'POST',
-    body: JSON.stringify({ type, formData: JSON.stringify(formData) }),
+    body: JSON.stringify({
+      type,
+      formData: JSON.stringify(formData),
+      kittenOfInterest: kittenOfInterest || undefined,
+    }),
   });
   if (!response.ok) throw new Error('Failed to submit application');
   return response.json();

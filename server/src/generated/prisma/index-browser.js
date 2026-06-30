@@ -251,6 +251,8 @@ exports.Prisma.DocumentScalarFieldEnum = {
   fileUrl: 'fileUrl',
   docType: 'docType',
   description: 'description',
+  isPrimaryPhoto: 'isPrimaryPhoto',
+  sortOrder: 'sortOrder',
   uploadedAt: 'uploadedAt'
 };
 

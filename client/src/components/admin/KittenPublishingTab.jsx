@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ExternalLink } from 'lucide-react';
-import KittenPrimaryPhotoForm from '../KittenPrimaryPhotoForm';
+import PhotoGalleryGrid from '../PhotoGalleryGrid';
 import {
   createSocialMediaPost,
   fetchKittenUpdates,
+  getFileUrl,
   updateKitten,
 } from '../../services/api';
 
@@ -30,13 +31,7 @@ function parsePlatforms(platformList) {
   return platformList.split(',').map((p) => p.trim()).filter(Boolean);
 }
 
-function KittenPublishingTab({
-  kittenId,
-  kitten,
-  setKitten,
-  onPrimaryPhotoUpload,
-  photoUploading,
-}) {
+function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }) {
   const [publishingForm, setPublishingForm] = useState({
     isListedOnWebsite: false,
     websiteFeaturedComment: '',
@@ -64,6 +59,24 @@ function KittenPublishingTab({
   useEffect(() => {
     loadPostHistory().catch(() => setPostHistory([]));
   }, [loadPostHistory]);
+
+  const socialPhotos = useMemo(() => {
+    const seen = new Set();
+    const items = [];
+
+    if (kitten?.primaryPhotoUrl) {
+      items.push({ id: 'primary', fileUrl: kitten.primaryPhotoUrl });
+      seen.add(kitten.primaryPhotoUrl);
+    }
+
+    for (const photo of galleryPhotos) {
+      if (seen.has(photo.fileUrl)) continue;
+      items.push(photo);
+      seen.add(photo.fileUrl);
+    }
+
+    return items;
+  }, [galleryPhotos, kitten?.primaryPhotoUrl]);
 
   async function handleToggleWebsiteListing() {
     const nextValue = !publishingForm.isListedOnWebsite;
@@ -182,12 +195,38 @@ function KittenPublishingTab({
         </div>
 
         <form onSubmit={handleSaveWebsiteDetails} className="mt-5 space-y-5">
-          <KittenPrimaryPhotoForm
-            kitten={kitten}
-            currentPhotoUrl={kitten.primaryPhotoUrl}
-            onUpload={onPrimaryPhotoUpload}
-            uploading={photoUploading}
-          />
+          <div className="rounded-lg border border-gray-100 bg-gray-50 p-4">
+            <p className="text-xs font-semibold uppercase text-gray-500">Public Photo Gallery</p>
+            <p className="mt-1 text-sm text-gray-600">
+              The starred profile photo appears on adoption cards. All photos below are shown on the
+              public profile and included in social posts.
+            </p>
+            {socialPhotos.length > 0 ? (
+              <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                {socialPhotos.map((photo) => {
+                  const isPrimary = photo.fileUrl === kitten.primaryPhotoUrl || photo.isPrimaryPhoto;
+                  return (
+                    <div key={photo.id} className="relative overflow-hidden rounded-lg border border-gray-200">
+                      <img
+                        src={getFileUrl(photo.fileUrl)}
+                        alt=""
+                        className="aspect-square w-full object-cover"
+                      />
+                      {isPrimary && (
+                        <span className="absolute left-1 top-1 rounded-full bg-emerald-600 px-2 py-0.5 text-[10px] font-bold uppercase text-white">
+                          Profile
+                        </span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <p className="mt-3 text-sm text-gray-500">
+                No photos yet. Open the kitten profile, click Edit, and use Add Photos.
+              </p>
+            )}
+          </div>
 
           <label className="block">
             <span className="text-xs font-semibold uppercase text-gray-500">Website Featured Comment</span>
@@ -227,8 +266,12 @@ function KittenPublishingTab({
       <section className="rounded-xl border border-gray-200 p-5">
         <h3 className="text-sm font-bold uppercase tracking-wide text-gray-900">Social Media Composer</h3>
         <p className="mt-1 text-sm text-gray-500">
-          Compose a caption and log simulated posts. Real platform APIs will be connected later.
+          Compose a caption and log simulated posts. All gallery photos above will be attached when live APIs are connected.
         </p>
+
+        {socialPhotos.length > 0 && (
+          <PhotoGalleryGrid photos={socialPhotos} compact title="Photos in this post" />
+        )}
 
         <form onSubmit={handleSocialPost} className="mt-5 space-y-4">
           <label className="block">

@@ -2,6 +2,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Printer } from 'lucide-react';
 import KittenPublishingTab from './KittenPublishingTab';
+import KittenPhotoManager from './KittenPhotoManager';
+import KittenPlacementTable from './KittenPlacementTable';
 import StatusBadge from './StatusBadge';
 import DocumentUploadForm from '../DocumentUploadForm';
 import DocumentsList from '../DocumentsList';
@@ -23,10 +25,13 @@ import {
   deleteDocument,
   fetchDocuments,
   fetchKittenById,
+  fetchKittenPhotos,
+  fetchKittenPlacements,
   fetchMedicalRecords,
   fetchWeightLogs,
+  setKittenPrimaryPhoto,
   uploadDocument,
-  uploadPrimaryPhoto,
+  uploadKittenPhoto,
   updateKitten,
   fetchKittenUpdates,
   createKittenUpdate,
@@ -61,6 +66,8 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
   const [medical, setMedical] = useState({ vaccines: [], medications: [], vetAppointments: [] });
   const [weightLogs, setWeightLogs] = useState([]);
   const [documents, setDocuments] = useState([]);
+  const [galleryPhotos, setGalleryPhotos] = useState([]);
+  const [placements, setPlacements] = useState([]);
   const [activeTab, setActiveTab] = useState('profile');
   const [loading, setLoading] = useState(true);
   const [tabLoading, setTabLoading] = useState(false);
@@ -113,6 +120,18 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
     setDocuments(await fetchDocuments(kittenId));
   }, [kittenId]);
 
+  const loadPhotos = useCallback(async () => {
+    const data = await fetchKittenPhotos(kittenId);
+    setGalleryPhotos(data.photos || []);
+    if (data.primaryPhotoUrl) {
+      setKitten((prev) => (prev ? { ...prev, primaryPhotoUrl: data.primaryPhotoUrl } : prev));
+    }
+  }, [kittenId]);
+
+  const loadPlacements = useCallback(async () => {
+    setPlacements(await fetchKittenPlacements(kittenId));
+  }, [kittenId]);
+
   useEffect(() => {
     if (!kittenId) return undefined;
     setLoading(true);
@@ -120,7 +139,7 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
     setActiveTab('profile');
     loadKitten()
       .then(async () => {
-        await Promise.all([loadMedical(), loadWeights(), loadDocuments(), loadUpdates()]);
+        await Promise.all([loadMedical(), loadWeights(), loadDocuments(), loadUpdates(), loadPhotos(), loadPlacements()]);
         setLoading(false);
       })
       .catch((err) => {
@@ -128,7 +147,7 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
         setLoading(false);
       });
     return undefined;
-  }, [kittenId, loadKitten, loadMedical, loadWeights, loadDocuments, loadUpdates]);
+  }, [kittenId, loadKitten, loadMedical, loadWeights, loadDocuments, loadUpdates, loadPhotos, loadPlacements]);
 
   function handleProfileFieldChange(field, value) {
     setProfileForm((prev) => ({ ...prev, [field]: value }));
@@ -212,12 +231,50 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
     setUploading(false);
   }
 
-  async function handlePrimaryPhotoUpload(file) {
+  async function handleUploadPhotos(files) {
     setPhotoUploading(true);
-    const updated = await uploadPrimaryPhoto(kittenId, file);
-    setKitten(updated);
-    await loadDocuments();
-    setPhotoUploading(false);
+    setError(null);
+    try {
+      for (const file of files) {
+        const result = await uploadKittenPhoto(kittenId, file, { setAsPrimary: galleryPhotos.length === 0 });
+        if (result.primaryPhotoUrl) {
+          setKitten((prev) => (prev ? { ...prev, primaryPhotoUrl: result.primaryPhotoUrl } : prev));
+        }
+      }
+      await Promise.all([loadPhotos(), loadDocuments()]);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setPhotoUploading(false);
+    }
+  }
+
+  async function handleSetPrimaryPhoto(documentId) {
+    setPhotoUploading(true);
+    setError(null);
+    try {
+      const result = await setKittenPrimaryPhoto(kittenId, documentId);
+      setKitten((prev) => (prev ? { ...prev, primaryPhotoUrl: result.primaryPhotoUrl } : prev));
+      await loadPhotos();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setPhotoUploading(false);
+    }
+  }
+
+  async function handleDeletePhoto(documentId) {
+    setPhotoUploading(true);
+    setError(null);
+    try {
+      await deleteDocument(kittenId, documentId);
+      await loadKitten();
+      await Promise.all([loadPhotos(), loadDocuments()]);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setPhotoUploading(false);
+    }
   }
 
   async function handleDeleteDocument(documentId) {
@@ -301,6 +358,16 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
           {tabLoading && <p className="mb-3 text-xs text-gray-500">Saving...</p>}
 
           {activeTab === 'profile' && (
+            <div className="space-y-6">
+              <KittenPhotoManager
+                kitten={kitten}
+                photos={galleryPhotos}
+                editMode
+                uploading={photoUploading}
+                onUploadFiles={handleUploadPhotos}
+                onSetPrimary={handleSetPrimaryPhoto}
+                onDeletePhoto={handleDeletePhoto}
+              />
             <form className="space-y-5" onSubmit={handleSaveProfile}>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {[
@@ -350,15 +417,15 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
                 {savingProfile ? 'Saving...' : 'Save Profile'}
               </button>
             </form>
+            </div>
           )}
 
           {activeTab === 'publishing' && (
             <KittenPublishingTab
               kittenId={kittenId}
               kitten={kitten}
+              galleryPhotos={galleryPhotos}
               setKitten={setKitten}
-              onPrimaryPhotoUpload={handlePrimaryPhotoUpload}
-              photoUploading={photoUploading}
             />
           )}
 
@@ -468,15 +535,16 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
           )}
 
           {activeTab === 'placements' && (
-            <div className="space-y-3 text-sm text-gray-600">
-              <p><span className="font-semibold text-gray-800">Current Foster:</span> {kitten.currentFoster?.name || 'None'}</p>
-              <p><span className="font-semibold text-gray-800">Intake Date:</span> {formatDate(kitten.intakeDate)}</p>
-              <p><span className="font-semibold text-gray-800">Intake Source:</span> {kitten.intakeSource || '—'}</p>
-              {kitten.currentFoster && (
-                <Link to={`/admin/fosters/${kitten.currentFoster.id}`} className="inline-block text-sm font-semibold text-emerald-700 hover:underline">
-                  View foster profile →
-                </Link>
-              )}
+            <div className="space-y-4">
+              <div className="rounded-lg border border-gray-100 bg-gray-50 p-4 text-sm text-gray-700">
+                <p><span className="font-semibold text-gray-900">Current Foster:</span> {kitten.currentFoster?.name || 'None assigned'}</p>
+                {kitten.currentFoster && (
+                  <Link to={`/admin/fosters/${kitten.currentFoster.id}`} className="mt-2 inline-block text-sm font-semibold text-emerald-700 hover:underline">
+                    View foster dashboard →
+                  </Link>
+                )}
+              </div>
+              <KittenPlacementTable placements={placements} />
             </div>
           )}
 
