@@ -1,6 +1,5 @@
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
-  Bell,
   Calendar,
   Cat,
   ClipboardList,
@@ -8,7 +7,6 @@ import {
   LayoutDashboard,
   LogOut,
   Mail,
-  Search,
   Settings,
   Users,
 } from 'lucide-react';
@@ -78,8 +76,6 @@ function AdminLayout() {
     navigate('/login');
   }
 
-  const hideHeaderActions = location.pathname.startsWith('/admin/kittens/') && location.pathname !== '/admin/kittens';
-
   return (
     <div className="min-h-screen bg-[#F4F7F6]">
       <aside className="fixed left-0 top-0 z-40 flex h-full w-[260px] flex-col bg-sidebar text-white print:hidden">
@@ -141,39 +137,14 @@ function AdminLayout() {
               <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
               {subtitle && <p className="mt-0.5 text-sm text-slate-500">{subtitle}</p>}
             </div>
-            {!hideHeaderActions && (
-              <div className="flex items-center gap-2">
-                <div className="hidden items-center rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 md:flex">
-                  <Search className="h-4 w-4 text-slate-400" />
-                  <input
-                    type="search"
-                    placeholder="Search..."
-                    className="ml-2 w-40 bg-transparent text-sm text-slate-700 outline-none placeholder:text-slate-400"
-                  />
-                </div>
-                <button type="button" className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 hover:bg-slate-50">
-                  <Bell className="h-4 w-4" />
-                </button>
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-white px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-50"
-                >
-                  <LogOut className="h-4 w-4" />
-                  Sign Out
-                </button>
-              </div>
-            )}
-            {hideHeaderActions && (
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-white px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-50"
-              >
-                <LogOut className="h-4 w-4" />
-                Sign Out
-              </button>
-            )}
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-white px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-50"
+            >
+              <LogOut className="h-4 w-4" />
+              Sign Out
+            </button>
           </div>
         </header>
 
