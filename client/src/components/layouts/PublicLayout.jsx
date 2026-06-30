@@ -7,7 +7,8 @@ import PublicLogo from '../PublicLogo';
 const navLinks = [
   { label: 'Home', path: '/' },
   { label: 'About', path: '/about' },
-  { label: 'Adopt', path: '/kittens' },
+  { label: 'Cats', path: '/kittens' },
+  { label: 'Adopt', path: '/adopt' },
   { label: 'Foster', path: '/foster' },
   { label: 'Get Involved', path: '/get-involved' },
   { label: 'Education', path: '/education' },

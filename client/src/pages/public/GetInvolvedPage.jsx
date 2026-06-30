@@ -2,11 +2,11 @@ import { Link } from 'react-router-dom';
 import { Building, Heart, Users, BookOpen, Stethoscope } from 'lucide-react';
 
 const opportunities = [
-  { icon: Heart, title: 'Foster Opportunities', text: 'Open your home temporarily and save lives. We provide supplies and medical care.', link: '/foster' },
-  { icon: Users, title: 'Volunteer Opportunities', text: 'Help at events, transport kittens, or assist with daily rescue operations.', link: '/get-involved' },
-  { icon: BookOpen, title: 'Community Outreach', text: 'Spread the word about TNR, adoption, and responsible pet ownership.', link: '/education' },
-  { icon: Building, title: 'Corporate Sponsorships', text: 'Partner with us to fund rescue efforts and community wellness programs.', link: '/contact' },
-  { icon: Stethoscope, title: 'Wellness Partnerships', text: 'Veterinary clinics and wellness providers — join our care network.', link: '/contact' },
+  { icon: Heart, title: 'Adoption Application', text: 'Ready for a forever friend? Apply to adopt one of our available kittens.', link: '/adopt', cta: 'Apply to Adopt' },
+  { icon: Users, title: 'Foster Application', text: 'Open your home temporarily and save lives. We provide supplies and medical care.', link: '/foster', cta: 'Apply to Foster' },
+  { icon: BookOpen, title: 'Community Outreach', text: 'Spread the word about TNR, adoption, and responsible pet ownership.', link: '/education', cta: 'Learn More' },
+  { icon: Building, title: 'Corporate Sponsorships', text: 'Partner with us to fund rescue efforts and community wellness programs.', link: '/contact', cta: 'Learn More' },
+  { icon: Stethoscope, title: 'Wellness Partnerships', text: 'Veterinary clinics and wellness providers — join our care network.', link: '/contact', cta: 'Learn More' },
 ];
 
 function GetInvolvedPage() {
@@ -21,7 +21,7 @@ function GetInvolvedPage() {
 
       <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-          {opportunities.map(({ icon: Icon, title, text, link }) => (
+          {opportunities.map(({ icon: Icon, title, text, link, cta = 'Learn More' }) => (
             <div key={title} className="flex flex-col rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
                 <Icon className="h-5 w-5" />
@@ -29,7 +29,7 @@ function GetInvolvedPage() {
               <h3 className="mt-4 text-sm font-bold text-gray-900">{title}</h3>
               <p className="mt-2 flex-1 text-sm leading-relaxed text-gray-500">{text}</p>
               <Link to={link} className="mt-4 inline-block rounded-lg bg-emerald-600 px-4 py-2 text-center text-sm font-semibold text-white hover:bg-emerald-700">
-                Learn More
+                {cta}
               </Link>
             </div>
           ))}

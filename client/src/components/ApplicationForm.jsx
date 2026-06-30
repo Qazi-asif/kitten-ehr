@@ -3,23 +3,36 @@ import { useSearchParams } from 'react-router-dom';
 import HouseholdPetsSection from './HouseholdPetsSection';
 import { submitApplication } from '../services/publicApi';
 
-const APPLICATION_TYPES = ['Adoption', 'Foster'];
 const OWN_OR_RENT_OPTIONS = ['', 'Own', 'Rent'];
+
+const FORM_COPY = {
+  Adoption: {
+    title: 'Adoption Application',
+    subtitle: 'Tell us about yourself and the forever home you can provide.',
+    submitLabel: 'Submit Adoption Application',
+    successMessage: 'Thank you! Our team will review your adoption application and be in touch soon.',
+  },
+  Foster: {
+    title: 'Foster Application',
+    subtitle: 'Tell us about yourself, your home, and your availability to foster.',
+    submitLabel: 'Submit Foster Application',
+    successMessage: 'Thank you for wanting to foster! We will review your application and contact you.',
+  },
+};
 
 function getPrefilledKittenInterest(params) {
   return params.get('kitten') || params.get('name') || params.get('kittenId') || params.get('id') || '';
 }
 
-function ApplicationForm({ defaultType = 'Adoption' }) {
+function ApplicationForm({ defaultType = 'Adoption', lockType = true }) {
   const [params] = useSearchParams();
   const prefilledKitten = getPrefilledKittenInterest(params);
   const lockedKitten = Boolean(prefilledKitten);
+  const applicationType = defaultType === 'Foster' ? 'Foster' : 'Adoption';
+  const copy = FORM_COPY[applicationType];
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
-  const [applicationType, setApplicationType] = useState(
-    APPLICATION_TYPES.includes(defaultType) ? defaultType : 'Adoption',
-  );
   const [form, setForm] = useState({
     fullName: '',
     email: '',
@@ -77,33 +90,24 @@ function ApplicationForm({ defaultType = 'Adoption' }) {
     return (
       <div className="mx-auto max-w-2xl px-6 py-16 text-center">
         <h1 className="text-2xl font-bold text-emerald-800">Application Submitted!</h1>
-        <p className="mt-4 text-gray-600">
-          Thank you! Our team will review your {applicationType.toLowerCase()} application and be in touch soon.
-        </p>
+        <p className="mt-4 text-gray-600">{copy.successMessage}</p>
       </div>
     );
   }
 
   return (
     <div className="mx-auto max-w-2xl px-6 py-12">
-      <h1 className="mb-2 text-3xl font-bold text-gray-900">Application</h1>
-      <p className="mb-8 text-gray-600">Tell us about yourself and the home you can provide.</p>
+      <h1 className="mb-2 text-3xl font-bold text-gray-900">{copy.title}</h1>
+      <p className="mb-8 text-gray-600">{copy.subtitle}</p>
 
       {error && <div className="mb-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}
 
       <form onSubmit={handleSubmit} className="space-y-4 rounded-xl border border-gray-100 bg-white p-6 shadow-md">
-        <label className="block">
-          <span className="mb-1 block text-sm font-medium text-gray-700">Application Type</span>
-          <select
-            value={applicationType}
-            onChange={(e) => setApplicationType(e.target.value)}
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
-          >
-            {APPLICATION_TYPES.map((type) => (
-              <option key={type} value={type}>{type}</option>
-            ))}
-          </select>
-        </label>
+        {!lockType && (
+          <p className="rounded-lg bg-gray-50 px-3 py-2 text-sm text-gray-600">
+            Application type: <span className="font-semibold text-gray-900">{applicationType}</span>
+          </p>
+        )}
 
         <label className="block">
           <span className="mb-1 block text-sm font-medium text-gray-700">Full Name</span>
@@ -182,7 +186,7 @@ function ApplicationForm({ defaultType = 'Adoption' }) {
           disabled={submitting}
           className="rounded-lg bg-emerald-600 px-6 py-2 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-60"
         >
-          {submitting ? 'Submitting...' : 'Submit Application'}
+          {submitting ? 'Submitting...' : copy.submitLabel}
         </button>
       </form>
     </div>

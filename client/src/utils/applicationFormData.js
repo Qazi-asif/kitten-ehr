@@ -32,6 +32,10 @@ const FOSTER_FIELD_ORDER = [
   'message',
 ];
 
+const APPLICANT_FIELDS = ['fullName', 'email', 'phone', 'address'];
+const ADOPTION_SPECIFIC_FIELDS = ['experience'];
+const FOSTER_SPECIFIC_FIELDS = ['experienceLevel', 'homeType', 'availability'];
+
 export function parseApplicationFormData(formData) {
   if (!formData) return {};
 
@@ -75,6 +79,61 @@ export function resolveKittenOfInterest(formData, kittenOfInterest) {
 export function getHouseholdPets(formData) {
   const parsed = parseApplicationFormData(formData);
   return Array.isArray(parsed.currentPets) ? parsed.currentPets : [];
+}
+
+function formatFieldValue(value) {
+  if (value == null || value === '') return '—';
+  if (typeof value === 'object') return JSON.stringify(value, null, 2);
+  return String(value);
+}
+
+function pickField(parsed, key) {
+  return formatFieldValue(parsed[key]);
+}
+
+export function getApplicationDisplaySections(formData, type) {
+  const parsed = parseApplicationFormData(formData);
+  const homeValue = parsed.ownOrRent || parsed.household || parsed.hasOtherPets;
+  const specificFields = type === 'Foster' ? FOSTER_SPECIFIC_FIELDS : ADOPTION_SPECIFIC_FIELDS;
+
+  return [
+    {
+      title: 'Applicant Information',
+      fields: APPLICANT_FIELDS.map((key) => ({
+        key,
+        label: formatApplicationFieldLabel(key),
+        value: pickField(parsed, key),
+      })),
+    },
+    {
+      title: 'Home Information',
+      fields: [
+        {
+          key: 'ownOrRent',
+          label: formatApplicationFieldLabel('ownOrRent'),
+          value: formatFieldValue(homeValue),
+        },
+      ],
+    },
+    {
+      title: type === 'Foster' ? 'Foster Details' : 'Adoption Details',
+      fields: specificFields.map((key) => ({
+        key,
+        label: formatApplicationFieldLabel(key),
+        value: pickField(parsed, key),
+      })),
+    },
+    {
+      title: 'Additional Message',
+      fields: [
+        {
+          key: 'message',
+          label: formatApplicationFieldLabel('message'),
+          value: pickField(parsed, 'message'),
+        },
+      ],
+    },
+  ];
 }
 
 export function getApplicationDetailFields(formData, type) {

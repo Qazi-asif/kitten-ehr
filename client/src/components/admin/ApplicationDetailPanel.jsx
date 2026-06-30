@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import {
-  formatApplicationFieldLabel,
-  getApplicationDetailFields,
+  getApplicationDisplaySections,
   getApplicationSummary,
   getHouseholdPets,
   resolveKittenOfInterest,
@@ -9,12 +8,20 @@ import {
 
 const STATUS_OPTIONS = ['New', 'Under Review', 'Approved', 'Denied'];
 
-function ApplicationDetailPanel({ application, onClose, onStatusChange, saving = false }) {
-  const fields = useMemo(
-    () => getApplicationDetailFields(application?.formData, application?.type),
-    [application?.formData, application?.type],
+function FieldGrid({ fields }) {
+  return (
+    <dl className="mt-3 divide-y divide-gray-100 rounded-lg border border-gray-100">
+      {fields.map((field) => (
+        <div key={field.key} className="grid grid-cols-1 gap-1 px-4 py-3 sm:grid-cols-[180px_1fr]">
+          <dt className="text-sm font-medium text-gray-500">{field.label}</dt>
+          <dd className="whitespace-pre-wrap break-words text-sm text-gray-900">{field.value}</dd>
+        </div>
+      ))}
+    </dl>
   );
+}
 
+function ApplicationDetailPanel({ application, onClose, onStatusChange, saving = false }) {
   const kittenOfInterest = useMemo(
     () => resolveKittenOfInterest(application?.formData, application?.kittenOfInterest),
     [application?.formData, application?.kittenOfInterest],
@@ -23,6 +30,11 @@ function ApplicationDetailPanel({ application, onClose, onStatusChange, saving =
   const householdPets = useMemo(
     () => getHouseholdPets(application?.formData),
     [application?.formData],
+  );
+
+  const sections = useMemo(
+    () => getApplicationDisplaySections(application?.formData, application?.type),
+    [application?.formData, application?.type],
   );
 
   if (!application) return null;
@@ -60,52 +72,48 @@ function ApplicationDetailPanel({ application, onClose, onStatusChange, saving =
         </select>
       </label>
 
-      <div className="mt-5 rounded-lg border border-emerald-100 bg-emerald-50/60 p-4">
-        <p className="text-xs font-semibold uppercase tracking-wide text-emerald-800">Kitten of Interest</p>
-        {kittenOfInterest ? (
-          <p className="mt-1 text-base font-semibold text-gray-900">{kittenOfInterest}</p>
-        ) : (
-          <span className="mt-2 inline-flex rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-500">
-            Unspecified
-          </span>
-        )}
-      </div>
+      <div className="mt-6 space-y-6">
+        {sections.map((section) => (
+          <div key={section.title}>
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500">{section.title}</h3>
+            <FieldGrid fields={section.fields} />
+          </div>
+        ))}
 
-      <h3 className="mt-6 text-sm font-semibold uppercase tracking-wide text-gray-500">Full Application</h3>
-
-      {fields.length === 0 ? (
-        <p className="mt-4 text-sm text-gray-500">No additional application details recorded.</p>
-      ) : (
-        <dl className="mt-4 divide-y divide-gray-100 rounded-lg border border-gray-100">
-          {fields.map(([key, value]) => (
-            <div key={key} className="grid grid-cols-1 gap-1 px-4 py-3 sm:grid-cols-[180px_1fr]">
-              <dt className="text-sm font-medium text-gray-500">{formatApplicationFieldLabel(key)}</dt>
-              <dd className="whitespace-pre-wrap break-words text-sm text-gray-900">
-                {typeof value === 'object' ? JSON.stringify(value, null, 2) : String(value)}
-              </dd>
-            </div>
-          ))}
-        </dl>
-      )}
-
-      {householdPets.length > 0 && (
-        <div className="mt-6">
-          <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500">Current Pets in Household</h3>
-          <div className="mt-4 space-y-3">
-            {householdPets.map((pet, index) => (
-              <div key={index} className="rounded-lg border border-gray-100 bg-gray-50 p-4">
-                <p className="text-sm font-semibold text-gray-900">Pet {index + 1}: {pet.name || 'Unnamed'}</p>
-                <dl className="mt-3 grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
-                  <div><span className="text-gray-500">Species:</span> {pet.species || '—'}</div>
-                  <div><span className="text-gray-500">Age:</span> {pet.age || '—'}</div>
-                  <div><span className="text-gray-500">Fixed:</span> {pet.fixed || '—'}</div>
-                  <div><span className="text-gray-500">Good with Other Animals:</span> {pet.goodWithOtherAnimals || '—'}</div>
-                </dl>
-              </div>
-            ))}
+        <div>
+          <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500">Kitten of Interest</h3>
+          <div className="mt-3 rounded-lg border border-emerald-100 bg-emerald-50/60 p-4">
+            {kittenOfInterest ? (
+              <p className="text-base font-semibold text-gray-900">{kittenOfInterest}</p>
+            ) : (
+              <p className="text-sm text-gray-500">Unspecified</p>
+            )}
           </div>
         </div>
-      )}
+
+        <div>
+          <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500">Current Pets in Household</h3>
+          {householdPets.length === 0 ? (
+            <p className="mt-3 rounded-lg border border-gray-100 bg-gray-50 px-4 py-3 text-sm text-gray-500">
+              No household pets listed.
+            </p>
+          ) : (
+            <div className="mt-3 space-y-3">
+              {householdPets.map((pet, index) => (
+                <div key={index} className="rounded-lg border border-gray-100 bg-gray-50 p-4">
+                  <p className="text-sm font-semibold text-gray-900">Pet {index + 1}: {pet.name || 'Unnamed'}</p>
+                  <dl className="mt-3 grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
+                    <div><span className="text-gray-500">Species:</span> {pet.species || '—'}</div>
+                    <div><span className="text-gray-500">Age:</span> {pet.age || '—'}</div>
+                    <div><span className="text-gray-500">Fixed:</span> {pet.fixed || '—'}</div>
+                    <div><span className="text-gray-500">Good with Other Animals:</span> {pet.goodWithOtherAnimals || '—'}</div>
+                  </dl>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
     </section>
   );
 }
