@@ -1,21 +1,16 @@
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
-  BarChart3,
   Bell,
-  BookOpen,
   Calendar,
   Cat,
   ClipboardList,
   DollarSign,
-  Globe,
-  Heart,
   LayoutDashboard,
   LogOut,
   Package,
   Plus,
   Search,
   Settings,
-  Share2,
   Users,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
@@ -28,26 +23,18 @@ const navItems = [
   { label: 'Applications', icon: ClipboardList, path: '/admin/applications', permission: 'applications.view' },
   { label: 'Calendar', icon: Calendar, path: '/admin/calendar', permission: 'events.view' },
   { label: 'Finance', icon: DollarSign, path: '/admin/finance', permission: 'donations.view' },
-  { label: 'Sponsorships', icon: Heart, path: '/admin/sponsorships', permission: 'sponsorships.view' },
-  { label: 'Website', icon: Globe, path: '/admin/content', permission: 'content.view' },
-  { label: 'Social Media', icon: Share2, path: '/admin/social' },
-  { label: 'Reports', icon: BarChart3, path: '/admin/reports', permission: 'reports.view' },
   { label: 'Settings', icon: Settings, path: '/admin/settings' },
 ];
 
 const pageMeta = [
   { match: (p) => p === '/admin', title: 'Dashboard', subtitle: 'Good morning, Ashley — here is what needs your attention today.' },
-  { match: (p) => p.startsWith('/admin/kittens/'), title: 'Kitten Profile', subtitle: 'Medical records, photos, and adoption details.' },
+  { match: (p) => p.startsWith('/admin/kittens/'), title: 'Kitten Profile', subtitle: 'Medical records, publishing, and adoption details.' },
   { match: (p) => p === '/admin/kittens', title: 'Kittens', subtitle: 'Manage all kittens in the rescue program.' },
   { match: (p) => p.startsWith('/admin/litters'), title: 'Litters', subtitle: 'Track intake groups and litter assignments.' },
   { match: (p) => p.startsWith('/admin/fosters'), title: 'Fosters', subtitle: 'Foster home contacts and placements.' },
   { match: (p) => p.startsWith('/admin/applications'), title: 'Applications', subtitle: 'Review adoption and foster applications.' },
-  { match: (p) => p.startsWith('/admin/calendar'), title: 'Calendar', subtitle: 'Events and scheduled appointments.' },
-  { match: (p) => p.startsWith('/admin/content'), title: 'Website', subtitle: 'Manage public education content.' },
+  { match: (p) => p.startsWith('/admin/calendar'), title: 'Calendar', subtitle: 'Public events and staff schedule.' },
   { match: (p) => p.startsWith('/admin/finance') || p.startsWith('/admin/donations'), title: 'Finance', subtitle: 'Track income, expenses, and monthly rescue balance.' },
-  { match: (p) => p.startsWith('/admin/sponsorships'), title: 'Sponsorships', subtitle: 'Kitten sponsorship programs.' },
-  { match: (p) => p.startsWith('/admin/social'), title: 'Social Media', subtitle: 'Plan and schedule social posts.' },
-  { match: (p) => p.startsWith('/admin/reports'), title: 'Reports', subtitle: 'Rescue analytics and exports.' },
   { match: (p) => p.startsWith('/admin/settings'), title: 'Settings', subtitle: 'Organization settings, user accounts, roles, and permissions.' },
 ];
 
