@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Plus, Shield, Trash2, UserCog, Users } from 'lucide-react';
+import { Building2, Plus, Shield, Trash2, UserCog, Users } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { fetchSettings, updateSettings } from '../../services/api';
 import {
   createRole,
   createUser,
@@ -14,9 +15,20 @@ import {
 } from '../../services/authApi';
 
 const TABS = [
+  { id: 'organization', label: 'Organization', icon: Building2 },
   { id: 'users', label: 'Users', icon: Users },
   { id: 'roles', label: 'Roles & Permissions', icon: Shield },
 ];
+
+const EMPTY_ORG = {
+  orgName: '',
+  missionStatement: '',
+  defaultDonationAmount: 50,
+  amazonWishlistUrl: '',
+  chewyWishlistUrl: '',
+  facebookUrl: '',
+  instagramUrl: '',
+};
 
 const EMPTY_USER = {
   email: '',
@@ -35,20 +47,24 @@ const EMPTY_ROLE = {
 
 function SettingsPage() {
   const { hasPermission } = useAuth();
-  const [activeTab, setActiveTab] = useState('users');
+  const [activeTab, setActiveTab] = useState('organization');
   const [users, setUsers] = useState([]);
   const [roles, setRoles] = useState([]);
   const [permissions, setPermissions] = useState([]);
+  const [orgSettings, setOrgSettings] = useState(EMPTY_ORG);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [userForm, setUserForm] = useState(null);
   const [roleForm, setRoleForm] = useState(null);
   const [selectedRoleId, setSelectedRoleId] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [orgSaving, setOrgSaving] = useState(false);
 
   const canManageUsers = hasPermission('users.manage');
   const canManageRoles = hasPermission('roles.manage');
-  const canViewSettings = hasPermission('users.view') || hasPermission('roles.manage') || hasPermission('settings.manage');
+  const canManageOrg = hasPermission('settings.manage');
+  const canViewUsers = hasPermission('users.view');
+  const canViewSettings = canViewUsers || canManageRoles || canManageOrg;
 
   const permissionsByModule = useMemo(() => {
     const groups = {};
@@ -65,25 +81,69 @@ function SettingsPage() {
     setLoading(true);
     setError('');
     try {
-      const [usersData, rolesData, permissionsData] = await Promise.all([
-        fetchUsers(),
-        fetchRoles(),
-        fetchPermissions(),
-      ]);
-      setUsers(usersData);
-      setRoles(rolesData);
-      setPermissions(permissionsData);
-      setSelectedRoleId((prev) => prev ?? rolesData[0]?.id ?? null);
+      const settingsData = await fetchSettings();
+      setOrgSettings({
+        orgName: settingsData.orgName || '',
+        missionStatement: settingsData.missionStatement || '',
+        defaultDonationAmount: settingsData.defaultDonationAmount ?? 50,
+        amazonWishlistUrl: settingsData.amazonWishlistUrl || '',
+        chewyWishlistUrl: settingsData.chewyWishlistUrl || '',
+        facebookUrl: settingsData.facebookUrl || '',
+        instagramUrl: settingsData.instagramUrl || '',
+      });
+
+      const tasks = [];
+      if (canViewUsers) tasks.push(fetchUsers().then(setUsers));
+      if (canManageRoles || canViewUsers) {
+        tasks.push(
+          fetchRoles().then((rolesData) => {
+            setRoles(rolesData);
+            setSelectedRoleId((prev) => prev ?? rolesData[0]?.id ?? null);
+          }),
+          fetchPermissions().then(setPermissions),
+        );
+      }
+      await Promise.all(tasks);
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [canViewUsers, canManageRoles]);
 
   useEffect(() => {
     load();
   }, [load]);
+
+  async function saveOrganization(event) {
+    event.preventDefault();
+    if (!canManageOrg) return;
+    setOrgSaving(true);
+    setError('');
+    try {
+      const updated = await updateSettings({
+        ...orgSettings,
+        defaultDonationAmount: Number.parseInt(orgSettings.defaultDonationAmount, 10) || 50,
+      });
+      setOrgSettings({
+        orgName: updated.orgName || '',
+        missionStatement: updated.missionStatement || '',
+        defaultDonationAmount: updated.defaultDonationAmount ?? 50,
+        amazonWishlistUrl: updated.amazonWishlistUrl || '',
+        chewyWishlistUrl: updated.chewyWishlistUrl || '',
+        facebookUrl: updated.facebookUrl || '',
+        instagramUrl: updated.instagramUrl || '',
+      });
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setOrgSaving(false);
+    }
+  }
+
+  function handleOrgFieldChange(field, value) {
+    setOrgSettings((prev) => ({ ...prev, [field]: value }));
+  }
 
   function openCreateUser() {
     setUserForm({ ...EMPTY_USER, roleId: roles[0]?.id || '' });
@@ -205,7 +265,7 @@ function SettingsPage() {
     return (
       <div className="rounded-xl border border-slate-100 bg-white p-12 text-center shadow-sm">
         <h2 className="text-xl font-bold text-slate-900">Access Denied</h2>
-        <p className="mt-2 text-sm text-slate-500">You need user or role management permissions to access Settings.</p>
+        <p className="mt-2 text-sm text-slate-500">You need permission to manage organization settings, users, or roles.</p>
       </div>
     );
   }
@@ -218,9 +278,9 @@ function SettingsPage() {
             <UserCog className="h-5 w-5" />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-slate-900">Users, Roles & Permissions</h2>
+            <h2 className="text-lg font-bold text-slate-900">Organization & Access</h2>
             <p className="mt-1 text-sm text-slate-500">
-              Create staff accounts, assign roles, and control what each person can access in the EHR.
+              Manage public-facing website text, donation defaults, and staff accounts.
             </p>
           </div>
         </div>
@@ -230,7 +290,12 @@ function SettingsPage() {
 
       <div className="border-b border-slate-200">
         <nav className="-mb-px flex gap-6">
-          {TABS.map(({ id, label, icon: Icon }) => (
+          {TABS.filter((tab) => {
+            if (tab.id === 'organization') return canManageOrg || canViewSettings;
+            if (tab.id === 'users') return canViewUsers;
+            if (tab.id === 'roles') return canManageRoles || canViewUsers;
+            return true;
+          }).map(({ id, label, icon: Icon }) => (
             <button
               key={id}
               type="button"
@@ -247,6 +312,105 @@ function SettingsPage() {
           ))}
         </nav>
       </div>
+
+      {activeTab === 'organization' && (
+        <form onSubmit={saveOrganization} className="space-y-6 rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
+          <div>
+            <h3 className="text-base font-bold text-slate-900">Public Website Content</h3>
+            <p className="mt-1 text-sm text-slate-500">
+              These values appear on the public site navbar, footer, home page, and donate page.
+            </p>
+          </div>
+
+          <label className="block">
+            <span className="mb-1 block text-xs font-medium text-slate-600">Organization Name</span>
+            <input
+              value={orgSettings.orgName}
+              onChange={(e) => handleOrgFieldChange('orgName', e.target.value)}
+              disabled={!canManageOrg}
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-slate-50"
+            />
+          </label>
+
+          <label className="block">
+            <span className="mb-1 block text-xs font-medium text-slate-600">Mission Statement</span>
+            <textarea
+              rows={4}
+              value={orgSettings.missionStatement}
+              onChange={(e) => handleOrgFieldChange('missionStatement', e.target.value)}
+              disabled={!canManageOrg}
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-slate-50"
+            />
+          </label>
+
+          <label className="block max-w-xs">
+            <span className="mb-1 block text-xs font-medium text-slate-600">Default Donation Amount ($)</span>
+            <input
+              type="number"
+              min="1"
+              value={orgSettings.defaultDonationAmount}
+              onChange={(e) => handleOrgFieldChange('defaultDonationAmount', e.target.value)}
+              disabled={!canManageOrg}
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-slate-50"
+            />
+          </label>
+
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <label className="block">
+              <span className="mb-1 block text-xs font-medium text-slate-600">Amazon Wishlist URL</span>
+              <input
+                type="url"
+                value={orgSettings.amazonWishlistUrl}
+                onChange={(e) => handleOrgFieldChange('amazonWishlistUrl', e.target.value)}
+                disabled={!canManageOrg}
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-slate-50"
+              />
+            </label>
+            <label className="block">
+              <span className="mb-1 block text-xs font-medium text-slate-600">Chewy Wishlist URL</span>
+              <input
+                type="url"
+                value={orgSettings.chewyWishlistUrl}
+                onChange={(e) => handleOrgFieldChange('chewyWishlistUrl', e.target.value)}
+                disabled={!canManageOrg}
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-slate-50"
+              />
+            </label>
+            <label className="block">
+              <span className="mb-1 block text-xs font-medium text-slate-600">Facebook URL</span>
+              <input
+                type="url"
+                value={orgSettings.facebookUrl}
+                onChange={(e) => handleOrgFieldChange('facebookUrl', e.target.value)}
+                disabled={!canManageOrg}
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-slate-50"
+              />
+            </label>
+            <label className="block">
+              <span className="mb-1 block text-xs font-medium text-slate-600">Instagram URL</span>
+              <input
+                type="url"
+                value={orgSettings.instagramUrl}
+                onChange={(e) => handleOrgFieldChange('instagramUrl', e.target.value)}
+                disabled={!canManageOrg}
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-slate-50"
+              />
+            </label>
+          </div>
+
+          {canManageOrg ? (
+            <button
+              type="submit"
+              disabled={orgSaving}
+              className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-60"
+            >
+              {orgSaving ? 'Saving...' : 'Save Organization Settings'}
+            </button>
+          ) : (
+            <p className="text-sm text-slate-500">You can view these settings but need organization management permission to edit.</p>
+          )}
+        </form>
+      )}
 
       {activeTab === 'users' && (
         <div className="space-y-4">

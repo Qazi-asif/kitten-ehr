@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { Mail, Menu, X } from 'lucide-react';
+import { fetchPublicSettings } from '../../services/publicApi';
 import PublicLogo from '../PublicLogo';
 
 const navLinks = [
@@ -14,9 +15,22 @@ const navLinks = [
   { label: 'Contact', path: '/contact' },
 ];
 
+const DEFAULT_SETTINGS = {
+  orgName: 'Pawsitive Transformations',
+  facebookUrl: '',
+  instagramUrl: '',
+};
+
 function PublicLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [settings, setSettings] = useState(DEFAULT_SETTINGS);
   const location = useLocation();
+
+  useEffect(() => {
+    fetchPublicSettings()
+      .then(setSettings)
+      .catch(() => {});
+  }, []);
 
   function isActive(path) {
     if (path === '/') return location.pathname === '/';
@@ -27,7 +41,7 @@ function PublicLayout() {
     <div className="flex min-h-screen flex-col bg-white text-slate-700">
       <header className="sticky top-0 z-50 border-b border-slate-200 bg-white shadow-sm">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-3 lg:px-8">
-          <PublicLogo />
+          <PublicLogo orgName={settings.orgName} />
 
           <nav className="hidden items-center gap-6 xl:flex">
             {navLinks.map((link) => (
@@ -102,16 +116,23 @@ function PublicLayout() {
       </header>
 
       <main className="flex-1">
-        <Outlet />
+        <Outlet context={{ settings }} />
       </main>
 
       <footer className="bg-brand text-white">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-5 sm:flex-row lg:px-8">
-          <p className="text-sm font-medium text-white/95">EIN: 88-1234567</p>
+          <p className="text-sm font-medium text-white/95">{settings.orgName}</p>
           <div className="flex items-center gap-6 text-sm font-semibold">
-            <a href="https://facebook.com" className="text-white/90 hover:text-white">Facebook</a>
-            <a href="https://instagram.com" className="text-white/90 hover:text-white">Instagram</a>
-            <a href="https://tiktok.com" className="text-white/90 hover:text-white">TikTok</a>
+            {settings.facebookUrl ? (
+              <a href={settings.facebookUrl} target="_blank" rel="noreferrer" className="text-white/90 hover:text-white">
+                Facebook
+              </a>
+            ) : null}
+            {settings.instagramUrl ? (
+              <a href={settings.instagramUrl} target="_blank" rel="noreferrer" className="text-white/90 hover:text-white">
+                Instagram
+              </a>
+            ) : null}
             <a href="mailto:hello@pawsitivetransformations.org" className="text-white/90 hover:text-white" aria-label="Email">
               <Mail className="h-5 w-5" />
             </a>

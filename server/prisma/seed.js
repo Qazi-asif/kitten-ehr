@@ -50,8 +50,27 @@ async function seedAuth() {
   console.log('Seeded roles, permissions, and admin user (admin@pawsitivetransformations.org / Admin123!)');
 }
 
+async function seedSettings() {
+  await prisma.settings.upsert({
+    where: { id: 1 },
+    create: {
+      id: 1,
+      orgName: 'Pawsitive Transformations',
+      missionStatement:
+        'Pawsitive Transformations rescues, fosters, and finds loving homes for kittens in need across our community.',
+      defaultDonationAmount: 50,
+      amazonWishlistUrl: '',
+      chewyWishlistUrl: '',
+      facebookUrl: '',
+      instagramUrl: '',
+    },
+    update: {},
+  });
+}
+
 async function main() {
   await seedAuth();
+  await seedSettings();
   await prisma.weightLog.deleteMany();
   await prisma.vaccine.deleteMany();
   await prisma.medication.deleteMany();
@@ -64,6 +83,7 @@ async function main() {
   await prisma.application.deleteMany();
   await prisma.content.deleteMany();
   await prisma.event.deleteMany();
+  await prisma.transaction.deleteMany();
 
   const jane = await prisma.foster.create({
     data: {
@@ -253,6 +273,48 @@ async function main() {
         location: 'Internal',
         description: 'Weekly kitten medical check-in.',
         isPublic: false,
+      },
+    ],
+  });
+
+  await prisma.transaction.createMany({
+    data: [
+      {
+        type: 'INCOME',
+        category: 'Donation',
+        amount: 250,
+        description: 'Monthly supporter gift',
+        date: new Date('2026-06-28'),
+      },
+      {
+        type: 'EXPENSE',
+        category: 'Vet Bill',
+        amount: 185,
+        description: 'FVRCP booster + exam',
+        date: new Date('2026-06-26'),
+        kittenId: biscuit.id,
+      },
+      {
+        type: 'INCOME',
+        category: 'Sponsorship',
+        amount: 500,
+        description: 'Named sponsor for June',
+        date: new Date('2026-06-24'),
+        kittenId: gravy.id,
+      },
+      {
+        type: 'EXPENSE',
+        category: 'Food',
+        amount: 94.5,
+        description: 'Kitten kibble bulk order',
+        date: new Date('2026-06-22'),
+      },
+      {
+        type: 'EXPENSE',
+        category: 'Supplies',
+        amount: 62,
+        description: 'Litter, toys, carriers',
+        date: new Date('2026-06-20'),
       },
     ],
   });

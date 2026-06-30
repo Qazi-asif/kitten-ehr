@@ -1,24 +1,61 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import PublicPageHeader from '../../components/PublicPageHeader';
+import { fetchPublicSettings } from '../../services/publicApi';
 
-const AMOUNTS = [
-  { amount: 10, label: 'Feed a Cat', desc: 'One week of meals' },
-  { amount: 25, label: 'Litter & Supplies', desc: 'Essentials for foster homes' },
-  { amount: 50, label: 'Vaccines', desc: 'Core vaccines for one kitten' },
-  { amount: 75, label: 'Medical Care', desc: 'Exam and treatment fund' },
-  { amount: 100, label: 'Spay/Neuter', desc: 'Surgery for one kitten' },
-  { amount: 250, label: 'Full Rescue', desc: 'Complete intake for one kitten' },
-];
+const BASE_AMOUNTS = [10, 25, 50, 75, 100, 250];
 
-const OTHER_WAYS = [
-  { label: 'Venmo', detail: '@PawsitiveTransform' },
-  { label: 'PayPal', detail: 'hello@pawsitivetransformations.org' },
-  { label: 'Amazon Wishlist', detail: 'Shop our supply list' },
-  { label: 'Chewy Wishlist', detail: 'Food & formula donations' },
-];
+const AMOUNT_LABELS = {
+  10: { label: 'Feed a Cat', desc: 'One week of meals' },
+  25: { label: 'Litter & Supplies', desc: 'Essentials for foster homes' },
+  50: { label: 'Vaccines', desc: 'Core vaccines for one kitten' },
+  75: { label: 'Medical Care', desc: 'Exam and treatment fund' },
+  100: { label: 'Spay/Neuter', desc: 'Surgery for one kitten' },
+  250: { label: 'Full Rescue', desc: 'Complete intake for one kitten' },
+};
 
 function DonatePage() {
-  const [selected, setSelected] = useState(50);
+  const outlet = useOutletContext();
+  const [settings, setSettings] = useState(outlet?.settings ?? { defaultDonationAmount: 50 });
+  const [selected, setSelected] = useState(settings.defaultDonationAmount || 50);
+
+  useEffect(() => {
+    fetchPublicSettings()
+      .then((data) => {
+        setSettings(data);
+        setSelected(data.defaultDonationAmount || 50);
+      })
+      .catch(() => {});
+  }, []);
+
+  const amounts = useMemo(() => {
+    const defaultAmount = settings.defaultDonationAmount || 50;
+    const values = BASE_AMOUNTS.includes(defaultAmount)
+      ? BASE_AMOUNTS
+      : [...BASE_AMOUNTS, defaultAmount].sort((a, b) => a - b);
+
+    return values.map((amount) => ({
+      amount,
+      label: AMOUNT_LABELS[amount]?.label || 'Suggested Gift',
+      desc: AMOUNT_LABELS[amount]?.desc || 'Support our rescue mission',
+      featured: amount === defaultAmount,
+    }));
+  }, [settings.defaultDonationAmount]);
+
+  const otherWays = [
+    { label: 'Venmo', detail: '@PawsitiveTransform', href: null },
+    { label: 'PayPal', detail: 'hello@pawsitivetransformations.org', href: null },
+    {
+      label: 'Amazon Wishlist',
+      detail: settings.amazonWishlistUrl ? 'Shop our supply list' : 'Link coming soon',
+      href: settings.amazonWishlistUrl || null,
+    },
+    {
+      label: 'Chewy Wishlist',
+      detail: settings.chewyWishlistUrl ? 'Food & formula donations' : 'Link coming soon',
+      href: settings.chewyWishlistUrl || null,
+    },
+  ];
 
   return (
     <div>
@@ -36,14 +73,14 @@ function DonatePage() {
               Every dollar helps us rescue kittens, provide round-the-clock bottle feeding, cover vet bills, and place cats in loving forever homes.
             </p>
             <p className="mt-4 text-sm leading-relaxed text-slate-600">
-              Pawsitive Transformations is a 501(c)(3) nonprofit. Your donation is tax-deductible.
+              {settings.orgName || 'Pawsitive Transformations'} is a 501(c)(3) nonprofit. Your donation is tax-deductible.
             </p>
           </div>
 
           <div>
             <h2 className="text-xl font-bold text-slate-900">Choose Your Impact</h2>
             <div className="mt-4 grid grid-cols-2 gap-3">
-              {AMOUNTS.map(({ amount, label, desc }) => (
+              {amounts.map(({ amount, label, desc, featured }) => (
                 <button
                   key={amount}
                   type="button"
@@ -55,7 +92,10 @@ function DonatePage() {
                   }`}
                 >
                   <p className="text-lg font-bold text-brand">${amount}</p>
-                  <p className="text-xs font-semibold text-slate-800">{label}</p>
+                  <p className="text-xs font-semibold text-slate-800">
+                    {label}
+                    {featured ? ' · Suggested' : ''}
+                  </p>
                   <p className="mt-1 text-[11px] text-slate-500">{desc}</p>
                 </button>
               ))}
@@ -85,14 +125,20 @@ function DonatePage() {
           <div>
             <h2 className="text-xl font-bold text-slate-900">Other Ways to Give</h2>
             <ul className="mt-4 space-y-4">
-              {OTHER_WAYS.map((way) => (
+              {otherWays.map((way) => (
                 <li key={way.label} className="flex items-start gap-3 rounded-lg border border-slate-100 bg-white p-4 shadow-sm">
                   <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-light text-xs font-bold text-brand">
                     {way.label[0]}
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-slate-800">{way.label}</p>
-                    <p className="text-xs text-slate-500">{way.detail}</p>
+                    {way.href ? (
+                      <a href={way.href} target="_blank" rel="noreferrer" className="text-xs text-brand hover:underline">
+                        {way.detail}
+                      </a>
+                    ) : (
+                      <p className="text-xs text-slate-500">{way.detail}</p>
+                    )}
                   </div>
                 </li>
               ))}

@@ -19,6 +19,8 @@ import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import roleRoutes from './routes/roleRoutes.js';
 import updateRoutes from './routes/updateRoutes.js';
+import settingsRoutes from './routes/settingsRoutes.js';
+import financeRoutes from './routes/financeRoutes.js';
 import { requireAuth } from './middleware/authMiddleware.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -49,6 +51,7 @@ app.use(express.json());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
 app.use('/api/auth', authRoutes);
+app.use('/api/settings', settingsRoutes);
 app.use('/api/public', publicRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/roles', roleRoutes);
@@ -63,6 +66,7 @@ app.use('/api/weights', requireAuth, weightRoutes);
 app.use('/api/applications', requireAuth, applicationRoutes);
 app.use('/api/content', requireAuth, contentRoutes);
 app.use('/api/events', requireAuth, eventRoutes);
+app.use('/api/transactions', requireAuth, financeRoutes);
 
 app.get('/api/health', (_req, res) => {
   res.json({

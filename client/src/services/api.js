@@ -292,3 +292,49 @@ export async function updateKittenUpdate(kittenId, updateId, data) {
 export async function deleteKittenUpdate(kittenId, updateId) {
   await adminFetch(`/kittens/${kittenId}/updates/${updateId}`, { method: 'DELETE' });
 }
+
+export async function fetchSettings() {
+  const response = await adminFetch('/settings');
+  if (!response.ok) throw new Error('Failed to load settings');
+  return response.json();
+}
+
+export async function updateSettings(data) {
+  const response = await adminFetch('/settings', {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error('Failed to update settings');
+  return response.json();
+}
+
+export async function fetchFinanceStats() {
+  const response = await adminFetch('/transactions/stats');
+  if (!response.ok) throw new Error('Failed to load finance stats');
+  return response.json();
+}
+
+export async function fetchTransactions(filters = {}) {
+  const params = new URLSearchParams();
+  if (filters.type) params.set('type', filters.type);
+  if (filters.startDate) params.set('startDate', filters.startDate);
+  if (filters.endDate) params.set('endDate', filters.endDate);
+  const query = params.toString();
+  const response = await adminFetch(`/transactions${query ? `?${query}` : ''}`);
+  if (!response.ok) throw new Error('Failed to load transactions');
+  return response.json();
+}
+
+export async function createTransaction(data) {
+  const response = await adminFetch('/transactions', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error('Failed to create transaction');
+  return response.json();
+}
+
+export async function deleteTransaction(id) {
+  const response = await adminFetch(`/transactions/${id}`, { method: 'DELETE' });
+  if (!response.ok) throw new Error('Failed to delete transaction');
+}

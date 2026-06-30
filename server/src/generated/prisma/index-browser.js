@@ -162,6 +162,14 @@ exports.Prisma.KittenScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.UpdateScalarFieldEnum = {
+  id: 'id',
+  kittenId: 'kittenId',
+  content: 'content',
+  isPublic: 'isPublic',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SponsorshipScalarFieldEnum = {
   id: 'id',
   kittenId: 'kittenId',
@@ -301,6 +309,28 @@ exports.Prisma.UserScalarFieldEnum = {
   lastLoginAt: 'lastLoginAt'
 };
 
+exports.Prisma.SettingsScalarFieldEnum = {
+  id: 'id',
+  orgName: 'orgName',
+  missionStatement: 'missionStatement',
+  defaultDonationAmount: 'defaultDonationAmount',
+  amazonWishlistUrl: 'amazonWishlistUrl',
+  chewyWishlistUrl: 'chewyWishlistUrl',
+  facebookUrl: 'facebookUrl',
+  instagramUrl: 'instagramUrl'
+};
+
+exports.Prisma.TransactionScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  category: 'category',
+  amount: 'amount',
+  description: 'description',
+  date: 'date',
+  kittenId: 'kittenId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -321,6 +351,7 @@ exports.Prisma.ModelName = {
   Litter: 'Litter',
   Foster: 'Foster',
   Kitten: 'Kitten',
+  Update: 'Update',
   Sponsorship: 'Sponsorship',
   Placement: 'Placement',
   WeightLog: 'WeightLog',
@@ -334,7 +365,9 @@ exports.Prisma.ModelName = {
   Role: 'Role',
   Permission: 'Permission',
   RolePermission: 'RolePermission',
-  User: 'User'
+  User: 'User',
+  Settings: 'Settings',
+  Transaction: 'Transaction'
 };
 
 /**

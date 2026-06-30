@@ -27,7 +27,7 @@ const navItems = [
   { label: 'Fosters', icon: Users, path: '/admin/fosters' },
   { label: 'Applications', icon: ClipboardList, path: '/admin/applications' },
   { label: 'Calendar', icon: Calendar, path: '/admin/calendar' },
-  { label: 'Donations', icon: DollarSign, path: '/admin/donations' },
+  { label: 'Finance', icon: DollarSign, path: '/admin/finance' },
   { label: 'Sponsorships', icon: Heart, path: '/admin/sponsorships' },
   { label: 'Website', icon: Globe, path: '/admin/content' },
   { label: 'Social Media', icon: Share2, path: '/admin/social' },
@@ -44,11 +44,11 @@ const pageMeta = [
   { match: (p) => p.startsWith('/admin/applications'), title: 'Applications', subtitle: 'Review adoption and foster applications.' },
   { match: (p) => p.startsWith('/admin/calendar'), title: 'Calendar', subtitle: 'Events and scheduled appointments.' },
   { match: (p) => p.startsWith('/admin/content'), title: 'Website', subtitle: 'Manage public education content.' },
-  { match: (p) => p.startsWith('/admin/donations'), title: 'Donations', subtitle: 'Track and manage donations.' },
+  { match: (p) => p.startsWith('/admin/finance') || p.startsWith('/admin/donations'), title: 'Finance', subtitle: 'Track income, expenses, and monthly rescue balance.' },
   { match: (p) => p.startsWith('/admin/sponsorships'), title: 'Sponsorships', subtitle: 'Kitten sponsorship programs.' },
   { match: (p) => p.startsWith('/admin/social'), title: 'Social Media', subtitle: 'Plan and schedule social posts.' },
   { match: (p) => p.startsWith('/admin/reports'), title: 'Reports', subtitle: 'Rescue analytics and exports.' },
-  { match: (p) => p.startsWith('/admin/settings'), title: 'Settings', subtitle: 'Manage user accounts, roles, and permissions.' },
+  { match: (p) => p.startsWith('/admin/settings'), title: 'Settings', subtitle: 'Organization settings, user accounts, roles, and permissions.' },
 ];
 
 function getPageMeta(pathname) {

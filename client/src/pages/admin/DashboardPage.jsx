@@ -1,15 +1,22 @@
 import { Link } from 'react-router-dom';
-import { AlertCircle, AlertTriangle, CheckCircle2, Info } from 'lucide-react';
-import { Cat, ClipboardList, Heart, Users } from 'lucide-react';
+import { AlertCircle, AlertTriangle, CheckCircle2, Info, TrendingUp } from 'lucide-react';
+import { Cat, Heart, Users } from 'lucide-react';
 import KittenPhoto from '../../components/KittenPhoto';
-import { fetchDashboardStats, fetchKittens } from '../../services/api';
+import { fetchDashboardStats, fetchFinanceStats, fetchKittens } from '../../services/api';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
+function formatCurrency(amount) {
+  return `$${Number(amount || 0).toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
+}
+
 const statCards = [
-  { key: 'activeKittens', label: 'Active Kittens', icon: Cat, color: 'text-brand bg-brand-light' },
-  { key: 'availableForAdoption', label: 'Available for Adoption', icon: Heart, color: 'text-emerald-600 bg-emerald-50' },
-  { key: 'activeFosters', label: 'Active Fosters', icon: Users, color: 'text-purple-600 bg-purple-50' },
-  { key: 'adoptionsThisYear', label: 'Adoptions This Year', icon: ClipboardList, color: 'text-blue-600 bg-blue-50' },
+  { key: 'activeKittens', label: 'Active Kittens', icon: Cat, color: 'text-brand bg-brand-light', format: 'number' },
+  { key: 'availableForAdoption', label: 'Available for Adoption', icon: Heart, color: 'text-emerald-600 bg-emerald-50', format: 'number' },
+  { key: 'activeFosters', label: 'Active Fosters', icon: Users, color: 'text-purple-600 bg-purple-50', format: 'number' },
+  { key: 'donationsThisMonth', label: 'Donations This Month', icon: TrendingUp, color: 'text-emerald-600 bg-emerald-50', format: 'currency' },
 ];
 
 const STATUS_COLORS = {
@@ -80,16 +87,20 @@ function DashboardPage() {
     activeKittens: 0,
     availableForAdoption: 0,
     activeFosters: 0,
-    adoptionsThisYear: 0,
+    donationsThisMonth: 0,
   });
   const [kittens, setKittens] = useState([]);
 
   const load = useCallback(async () => {
-    const [statsData, kittensData] = await Promise.all([
+    const [statsData, kittensData, financeData] = await Promise.all([
       fetchDashboardStats(),
       fetchKittens(),
+      fetchFinanceStats().catch(() => ({ income: { month: 0 } })),
     ]);
-    setStats(statsData);
+    setStats({
+      ...statsData,
+      donationsThisMonth: financeData.income?.month ?? 0,
+    });
     setKittens(kittensData);
   }, []);
 
@@ -115,12 +126,20 @@ function DashboardPage() {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
-        {statCards.map(({ key, label, icon: Icon, color }) => (
+        {statCards.map(({ key, label, icon: Icon, color, format }) => (
           <div key={key} className="rounded-xl border border-slate-100 bg-white p-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-500">{label}</p>
-                <p className="mt-2 text-3xl font-bold text-slate-900">{stats[key] ?? 0}</p>
+                <p className="mt-2 text-3xl font-bold text-slate-900">
+                  {format === 'currency' ? formatCurrency(stats[key]) : (stats[key] ?? 0)}
+                </p>
+                {key === 'donationsThisMonth' && (
+                  <p className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-emerald-600">
+                    <TrendingUp className="h-3.5 w-3.5" />
+                    Monthly income
+                  </p>
+                )}
               </div>
               <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${color}`}>
                 <Icon className="h-5 w-5" />

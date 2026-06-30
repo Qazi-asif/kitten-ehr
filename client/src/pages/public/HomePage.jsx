@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { BookOpen, Heart, Home, PawPrint, Users } from 'lucide-react';
 import PublicLogo from '../../components/PublicLogo';
 import PublicKittenCard from '../../components/PublicKittenCard';
-import { fetchPublicKittens, fetchPublicStats } from '../../services/publicApi';
+import { fetchPublicKittens, fetchPublicSettings, fetchPublicStats } from '../../services/publicApi';
 
 const pillars = [
   { icon: Heart, title: 'Rescue', text: 'Saving neonatal and special-needs kittens from the streets and shelters.' },
@@ -23,10 +23,16 @@ const rescueNeeds = [
 function HomePage() {
   const [stats, setStats] = useState({ availableKittens: 0, adoptedKittens: 0, activeFosters: 0 });
   const [featured, setFeatured] = useState([]);
+  const [settings, setSettings] = useState({
+    orgName: 'Pawsitive Transformations',
+    missionStatement:
+      'Pawsitive Transformations rescues, fosters, and finds loving homes for kittens in need across our community.',
+  });
 
   useEffect(() => {
     fetchPublicStats().then(setStats).catch(() => {});
     fetchPublicKittens().then((data) => setFeatured(data.slice(0, 6))).catch(() => {});
+    fetchPublicSettings().then(setSettings).catch(() => {});
   }, []);
 
   return (
@@ -35,12 +41,12 @@ function HomePage() {
       <section className="bg-brand-light/60">
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-6 py-14 lg:grid-cols-2 lg:px-8 lg:py-20">
           <div>
-            <PublicLogo className="mb-6" />
+            <PublicLogo className="mb-6" orgName={settings.orgName} />
             <h1 className="text-3xl font-bold leading-tight text-slate-900 lg:text-4xl">
               Every Kitten Deserves a Chance
             </h1>
             <p className="mt-4 max-w-lg text-base leading-relaxed text-slate-600">
-              Pawsitive Transformations rescues, fosters, and finds loving homes for kittens in need across our community.
+              {settings.missionStatement}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link to="/kittens" className="rounded-md bg-brand px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-dark">

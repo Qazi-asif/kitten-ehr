@@ -15,6 +15,7 @@ import ApplicationsPage from './pages/admin/ApplicationsPage';
 import CalendarPage from './pages/admin/CalendarPage';
 import ContentManagerPage from './pages/admin/ContentManagerPage';
 import DashboardPage from './pages/admin/DashboardPage';
+import FinancePage from './pages/admin/FinancePage';
 import SettingsPage from './pages/admin/SettingsPage';
 import AboutPage from './pages/public/AboutPage';
 import AdoptionFormPage from './pages/public/AdoptionFormPage';
@@ -63,7 +64,8 @@ function App() {
               <Route path="applications" element={<ApplicationsPage />} />
               <Route path="calendar" element={<CalendarPage />} />
               <Route path="content" element={<ContentManagerPage />} />
-              <Route path="donations" element={<AdminPlaceholderPage title="Donations" description="Donation tracking and Stripe reconciliation will appear here." />} />
+              <Route path="finance" element={<FinancePage />} />
+              <Route path="donations" element={<FinancePage />} />
               <Route path="sponsorships" element={<AdminPlaceholderPage title="Sponsorships" description="Manage kitten sponsorship tiers and donor records." />} />
               <Route path="social" element={<AdminPlaceholderPage title="Social Media" description="Schedule posts and track engagement across channels." />} />
               <Route path="reports" element={<AdminPlaceholderPage title="Reports" description="Export rescue metrics, medical summaries, and adoption reports." />} />

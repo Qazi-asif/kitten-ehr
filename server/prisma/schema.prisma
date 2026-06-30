@@ -61,6 +61,7 @@ model Kitten {
   documents       Document[]
   sponsorships    Sponsorship[]
   updates         Update[]
+  transactions    Transaction[]
 }
 
 model Update {
@@ -225,4 +226,27 @@ model User {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   lastLoginAt  DateTime?
+}
+
+model Settings {
+  id                    Int    @id @default(1)
+  orgName               String @default("Pawsitive Transformations")
+  missionStatement      String @default("")
+  defaultDonationAmount Int    @default(50)
+  amazonWishlistUrl     String @default("")
+  chewyWishlistUrl      String @default("")
+  facebookUrl           String @default("")
+  instagramUrl          String @default("")
+}
+
+model Transaction {
+  id          Int      @id @default(autoincrement())
+  type        String
+  category    String
+  amount      Float
+  description String   @default("")
+  date        DateTime
+  kittenId    Int?
+  kitten      Kitten?  @relation(fields: [kittenId], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
 }
