@@ -10,6 +10,7 @@ const STATUS_OPTIONS = [
 ];
 
 const SEX_OPTIONS = ['', 'Male', 'Female'];
+const FIXED_STATUS_OPTIONS = ['', 'Intact', 'Spayed/Neutered'];
 
 const initialFormState = {
   name: '',
@@ -93,7 +94,11 @@ function KittenForm({ onSubmit, litters = [], fosters = [], submitting = false }
           </label>
           <label className="block">
             <span className="mb-1 block text-sm font-medium text-slate-700">Fixed Status</span>
-            <input type="text" name="fixedStatus" value={form.fixedStatus} onChange={handleChange} placeholder="e.g. Spayed, Neutered" className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" />
+            <select name="fixedStatus" value={form.fixedStatus} onChange={handleChange} className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
+              {FIXED_STATUS_OPTIONS.map((option) => (
+                <option key={option || 'unset'} value={option}>{option || 'Not specified'}</option>
+              ))}
+            </select>
           </label>
           <label className="block">
             <span className="mb-1 block text-sm font-medium text-slate-700">Status</span>

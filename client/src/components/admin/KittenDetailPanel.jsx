@@ -52,6 +52,8 @@ const TABS = [
   { id: 'notes', label: 'Notes' },
 ];
 
+const FIXED_STATUS_OPTIONS = ['', 'Intact', 'Spayed/Neutered'];
+
 function formatDate(value) {
   if (!value) return '—';
   return new Date(value).toLocaleDateString();
@@ -60,6 +62,15 @@ function formatDate(value) {
 function gramsToLbs(grams) {
   if (!grams) return '—';
   return `${(grams / 453.592).toFixed(1)} lbs`;
+}
+
+function normalizeFixedStatus(value) {
+  const trimmed = (value || '').trim();
+  if (!trimmed) return '';
+  if (trimmed === 'Intact' || trimmed === 'Spayed/Neutered') return trimmed;
+  if (/^intact$/i.test(trimmed)) return 'Intact';
+  if (/spay|neut/i.test(trimmed)) return 'Spayed/Neutered';
+  return '';
 }
 
 function KittenDetailPanel({ kittenId, embedded = false }) {
@@ -93,7 +104,7 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
       breed: data.breed || '',
       color: data.color || '',
       sex: data.sex || '',
-      fixedStatus: data.fixedStatus || '',
+      fixedStatus: normalizeFixedStatus(data.fixedStatus),
       dateOfBirth: data.dateOfBirth ? data.dateOfBirth.slice(0, 10) : '',
       rescueStory: data.rescueStory || '',
       fivFelvStatus: data.fivFelvStatus || '',
@@ -192,7 +203,7 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
         breed: updated.breed || '',
         color: updated.color || '',
         sex: updated.sex || '',
-        fixedStatus: updated.fixedStatus || '',
+        fixedStatus: normalizeFixedStatus(updated.fixedStatus),
         dateOfBirth: updated.dateOfBirth ? updated.dateOfBirth.slice(0, 10) : '',
         rescueStory: updated.rescueStory || '',
         fivFelvStatus: updated.fivFelvStatus || '',
@@ -418,7 +429,6 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
                   ['breed', 'Breed', 'text'],
                   ['color', 'Color', 'text'],
                   ['sex', 'Sex', 'text'],
-                  ['fixedStatus', 'Fixed Status', 'text'],
                   ['status', 'Status', 'text'],
                   ['dateOfBirth', 'Date of Birth', 'date'],
                   ['fivFelvStatus', 'FIV/FeLV Status', 'text'],
@@ -433,6 +443,20 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
                     />
                   </label>
                 ))}
+                <label className="block">
+                  <span className="text-xs font-semibold uppercase text-gray-500">Fixed Status</span>
+                  <select
+                    value={profileForm.fixedStatus || ''}
+                    onChange={(e) => handleProfileFieldChange('fixedStatus', e.target.value)}
+                    className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+                  >
+                    {FIXED_STATUS_OPTIONS.map((option) => (
+                      <option key={option || 'unset'} value={option}>
+                        {option || 'Not specified'}
+                      </option>
+                    ))}
+                  </select>
+                </label>
               </div>
               <label className="block">
                 <span className="text-xs font-semibold uppercase text-gray-500">Rescue Story</span>

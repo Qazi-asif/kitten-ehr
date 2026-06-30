@@ -10,6 +10,13 @@ export const KITTEN_STATUSES = [
   'Deceased',
 ];
 
+export const FIXED_STATUS_OPTIONS = ['Intact', 'Spayed/Neutered'];
+
+const fixedStatusField = z
+  .union([z.enum(FIXED_STATUS_OPTIONS), z.literal('')])
+  .optional()
+  .default('');
+
 const optionalDate = z
   .union([z.string().min(1), z.null()])
   .optional()
@@ -27,7 +34,7 @@ export const createKittenSchema = z.object({
   fosterId: z.coerce.number().int().positive().optional().nullable(),
   dateOfBirth: optionalDate,
   sex: z.string().max(20).optional().default(''),
-  fixedStatus: z.string().max(40).optional().default(''),
+  fixedStatus: fixedStatusField,
   rescueStory: z.string().max(5000).optional().default(''),
   publishTargets: publishTargetsField,
   weightGrams: z.coerce.number().positive('Weight must be a positive number').optional(),
@@ -42,7 +49,7 @@ export const updateKittenSchema = z
     breed: z.string().trim().min(1).max(80).optional(),
     color: z.string().max(80).optional(),
     sex: z.string().max(20).optional(),
-    fixedStatus: z.string().max(40).optional(),
+    fixedStatus: fixedStatusField.optional(),
     rescueStory: z.string().max(5000).optional(),
     dateOfBirth: optionalDate,
     fivFelvStatus: z.string().max(80).optional().nullable(),

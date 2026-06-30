@@ -53,6 +53,8 @@ const STATUS_OPTIONS = [
   'Deceased',
 ];
 
+const FIXED_STATUS_OPTIONS = ['', 'Intact', 'Spayed/Neutered'];
+
 const QUICK_ACTIONS = [
   { label: 'Mark Available for Adoption', status: 'Available for Adoption' },
   { label: 'Return to Foster Care', status: 'In Foster Care' },
@@ -63,6 +65,15 @@ const QUICK_ACTIONS = [
 function formatDate(value) {
   if (!value) return '—';
   return new Date(value).toLocaleDateString();
+}
+
+function normalizeFixedStatus(value) {
+  const trimmed = (value || '').trim();
+  if (!trimmed) return '';
+  if (trimmed === 'Intact' || trimmed === 'Spayed/Neutered') return trimmed;
+  if (/^intact$/i.test(trimmed)) return 'Intact';
+  if (/spay|neut/i.test(trimmed)) return 'Spayed/Neutered';
+  return '';
 }
 
 function KittenDetailPage() {
@@ -95,7 +106,7 @@ function KittenDetailPage() {
       breed: data.breed || '',
       color: data.color || '',
       sex: data.sex || '',
-      fixedStatus: data.fixedStatus || '',
+      fixedStatus: normalizeFixedStatus(data.fixedStatus),
       dateOfBirth: data.dateOfBirth ? data.dateOfBirth.slice(0, 10) : '',
       rescueStory: data.rescueStory || '',
       fivFelvStatus: data.fivFelvStatus || '',
@@ -448,7 +459,6 @@ function KittenDetailPage() {
                           ['breed', 'Breed', 'text'],
                           ['color', 'Color', 'text'],
                           ['sex', 'Sex', 'text'],
-                          ['fixedStatus', 'Fixed Status', 'text'],
                           ['dateOfBirth', 'Date of Birth', 'date'],
                           ['fivFelvStatus', 'FIV/FeLV', 'text'],
                           ['microchipNumber', 'Microchip #', 'text'],
@@ -463,6 +473,20 @@ function KittenDetailPage() {
                             />
                           </label>
                         ))}
+                        <label className="block">
+                          <span className="text-xs font-semibold uppercase text-slate-500">Fixed Status</span>
+                          <select
+                            value={profileForm.fixedStatus || ''}
+                            onChange={(e) => handleProfileFieldChange('fixedStatus', e.target.value)}
+                            className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                          >
+                            {FIXED_STATUS_OPTIONS.map((option) => (
+                              <option key={option || 'unset'} value={option}>
+                                {option || 'Not specified'}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
                         <label className="block sm:col-span-2">
                           <span className="text-xs font-semibold uppercase text-slate-500">Status</span>
                           <select
