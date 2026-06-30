@@ -132,6 +132,15 @@ export async function updateKitten(req, res, next) {
     if (body.currentFosterId !== undefined) {
       data.currentFosterId = body.currentFosterId ?? null;
     }
+    if (body.amazonWishlistUrl !== undefined) {
+      data.amazonWishlistUrl = body.amazonWishlistUrl?.trim() || null;
+    }
+    if (body.walmartWishlistUrl !== undefined) {
+      data.walmartWishlistUrl = body.walmartWishlistUrl?.trim() || null;
+    }
+    if (body.chewyWishlistUrl !== undefined) {
+      data.chewyWishlistUrl = body.chewyWishlistUrl?.trim() || null;
+    }
     if (body.publishTargets !== undefined) {
       data.publishTargets = normalizePublishTargets(body.publishTargets);
       data.isListedOnWebsite = targetsIncludeWebsite(data.publishTargets);

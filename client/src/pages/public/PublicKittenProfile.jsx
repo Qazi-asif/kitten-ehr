@@ -12,6 +12,27 @@ const SPONSOR_TIERS = [
   { label: 'Full Care', amount: '$200' },
 ];
 
+const KITTEN_WISHLISTS = [
+  {
+    field: 'amazonWishlistUrl',
+    label: 'Amazon Wishlist',
+    description: 'Shop supplies for this kitten',
+    buttonClass: 'border-amber-300 bg-amber-50 text-amber-900 hover:bg-amber-100',
+  },
+  {
+    field: 'walmartWishlistUrl',
+    label: 'Walmart Wishlist',
+    description: 'Help with everyday essentials',
+    buttonClass: 'border-blue-300 bg-blue-50 text-blue-900 hover:bg-blue-100',
+  },
+  {
+    field: 'chewyWishlistUrl',
+    label: 'Chewy Wishlist',
+    description: 'Food, formula, and pet supplies',
+    buttonClass: 'border-teal-300 bg-teal-50 text-teal-900 hover:bg-teal-100',
+  },
+];
+
 function PublicKittenProfile() {
   const { id } = useParams();
   const [kitten, setKitten] = useState(null);
@@ -36,6 +57,7 @@ function PublicKittenProfile() {
 
   const age = formatKittenAge(kitten.dateOfBirth);
   const meta = [age?.replace(' old', ''), kitten.sex, kitten.breed].filter(Boolean).join(' · ');
+  const activeWishlists = KITTEN_WISHLISTS.filter((store) => kitten[store.field]);
 
   return (
     <div className="bg-white">
@@ -91,6 +113,29 @@ function PublicKittenProfile() {
           <section className="mt-10">
             <h2 className="text-lg font-bold text-slate-900">About Me</h2>
             <p className="mt-3 leading-relaxed text-slate-600">{kitten.rescueStory}</p>
+          </section>
+        )}
+
+        {activeWishlists.length > 0 && (
+          <section className="mt-10">
+            <h2 className="text-lg font-bold text-slate-900">Sponsor This Kitten&apos;s Needs</h2>
+            <p className="mt-2 text-sm text-slate-600">
+              Send supplies directly to support {kitten.name}&apos;s care through these store wishlists.
+            </p>
+            <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
+              {activeWishlists.map((store) => (
+                <a
+                  key={store.field}
+                  href={kitten[store.field]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`flex flex-col rounded-xl border p-4 text-center transition-colors ${store.buttonClass}`}
+                >
+                  <span className="text-sm font-bold">{store.label}</span>
+                  <span className="mt-1 text-xs opacity-80">{store.description}</span>
+                </a>
+              ))}
+            </div>
           </section>
         )}
 

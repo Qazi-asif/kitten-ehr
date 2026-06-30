@@ -1,5 +1,6 @@
 import prisma from '../lib/prisma.js';
 import { validateUploadedFile } from '../utils/fileValidation.js';
+import { parseImageUpload } from '../utils/parseImageUpload.js';
 import {
   isPhotoDocument,
   photoDocumentOrderBy,
@@ -101,20 +102,21 @@ export async function uploadDocument(req, res, next) {
 export async function uploadPhoto(req, res, next) {
   try {
     const kittenId = Number.parseInt(req.params.kittenId, 10);
+    const upload = parseImageUpload(req);
 
-    const fileCheck = validateUploadedFile(req.file);
+    const fileCheck = validateUploadedFile(upload);
     if (!fileCheck.ok) {
       return res.status(fileCheck.status).json({ error: fileCheck.error });
     }
 
-    if (!req.file.mimetype?.startsWith('image/')) {
+    if (!upload.mimetype?.startsWith('image/')) {
       return res.status(400).json({ error: 'Only image files are allowed' });
     }
 
     const kitten = await findKitten(kittenId);
     if (!kitten) return res.status(404).json({ error: 'Kitten not found' });
 
-    const fileUrl = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+    const fileUrl = `data:${upload.mimetype};base64,${upload.buffer.toString('base64')}`;
     const setAsPrimary = req.body.setAsPrimary === 'true' || req.body.setAsPrimary === true;
     const existingPhotos = await prisma.document.findMany({ where: { kittenId } });
     const hasPrimary = Boolean(kitten.primaryPhotoUrl) || existingPhotos.some((doc) => doc.isPrimaryPhoto);
@@ -137,7 +139,7 @@ export async function uploadPhoto(req, res, next) {
       return tx.document.create({
         data: {
           kittenId,
-          fileName: req.file.originalname,
+          fileName: upload.originalname,
           fileUrl,
           docType: shouldSetPrimary ? 'Primary Photo' : 'Photo',
           description: req.body.description ?? '',

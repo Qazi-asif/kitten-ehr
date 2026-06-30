@@ -24,6 +24,7 @@ import {
   createWeightLog,
   deleteDocument,
   fetchDocuments,
+  fetchFosters,
   fetchKittenById,
   fetchKittenPhotos,
   fetchKittenPlacements,
@@ -80,6 +81,7 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
   const [updates, setUpdates] = useState([]);
   const [updateForm, setUpdateForm] = useState({ content: '', isPublic: false });
   const [savingUpdate, setSavingUpdate] = useState(false);
+  const [fosters, setFosters] = useState([]);
   const [error, setError] = useState(null);
 
   const loadKitten = useCallback(async () => {
@@ -96,6 +98,10 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
       rescueStory: data.rescueStory || '',
       fivFelvStatus: data.fivFelvStatus || '',
       specialNeeds: data.specialNeeds || '',
+      currentFosterId: data.currentFosterId ? String(data.currentFosterId) : '',
+      amazonWishlistUrl: data.amazonWishlistUrl || '',
+      walmartWishlistUrl: data.walmartWishlistUrl || '',
+      chewyWishlistUrl: data.chewyWishlistUrl || '',
     });
     setNotesForm({
       notes: data.notes || '',
@@ -133,6 +139,10 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
   }, [kittenId]);
 
   useEffect(() => {
+    fetchFosters().then(setFosters).catch(() => setFosters([]));
+  }, []);
+
+  useEffect(() => {
     if (!kittenId) return undefined;
     setLoading(true);
     setError(null);
@@ -157,8 +167,41 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
     event.preventDefault();
     setSavingProfile(true);
     try {
-      const updated = await updateKitten(kittenId, profileForm);
+      const updated = await updateKitten(kittenId, {
+        name: profileForm.name,
+        status: profileForm.status,
+        breed: profileForm.breed,
+        color: profileForm.color,
+        sex: profileForm.sex,
+        fixedStatus: profileForm.fixedStatus,
+        dateOfBirth: profileForm.dateOfBirth || null,
+        rescueStory: profileForm.rescueStory,
+        fivFelvStatus: profileForm.fivFelvStatus || null,
+        specialNeeds: profileForm.specialNeeds || null,
+        currentFosterId: profileForm.currentFosterId
+          ? Number.parseInt(profileForm.currentFosterId, 10)
+          : null,
+        amazonWishlistUrl: profileForm.amazonWishlistUrl?.trim() || null,
+        walmartWishlistUrl: profileForm.walmartWishlistUrl?.trim() || null,
+        chewyWishlistUrl: profileForm.chewyWishlistUrl?.trim() || null,
+      });
       setKitten(updated);
+      setProfileForm({
+        name: updated.name || '',
+        status: updated.status || '',
+        breed: updated.breed || '',
+        color: updated.color || '',
+        sex: updated.sex || '',
+        fixedStatus: updated.fixedStatus || '',
+        dateOfBirth: updated.dateOfBirth ? updated.dateOfBirth.slice(0, 10) : '',
+        rescueStory: updated.rescueStory || '',
+        fivFelvStatus: updated.fivFelvStatus || '',
+        specialNeeds: updated.specialNeeds || '',
+        currentFosterId: updated.currentFosterId ? String(updated.currentFosterId) : '',
+        amazonWishlistUrl: updated.amazonWishlistUrl || '',
+        walmartWishlistUrl: updated.walmartWishlistUrl || '',
+        chewyWishlistUrl: updated.chewyWishlistUrl || '',
+      });
     } finally {
       setSavingProfile(false);
     }
@@ -409,6 +452,45 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
                   className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
                 />
               </label>
+              <label className="block sm:col-span-2">
+                <span className="text-xs font-semibold uppercase text-gray-500">Current Foster</span>
+                <select
+                  value={profileForm.currentFosterId || ''}
+                  onChange={(e) => handleProfileFieldChange('currentFosterId', e.target.value)}
+                  className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+                >
+                  <option value="">No foster assigned</option>
+                  {fosters.map((foster) => (
+                    <option key={foster.id} value={foster.id}>
+                      {foster.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <section className="sm:col-span-2 rounded-xl border border-gray-200 bg-gray-50 p-4">
+                <h3 className="text-sm font-bold text-gray-900">Individual Kitten Wishlists</h3>
+                <p className="mt-1 text-xs text-gray-500">
+                  Add store-specific wishlist links for this kitten. They appear on the public profile when saved.
+                </p>
+                <div className="mt-4 space-y-3">
+                  {[
+                    ['amazonWishlistUrl', 'Amazon Wishlist Link'],
+                    ['walmartWishlistUrl', 'Walmart Wishlist Link'],
+                    ['chewyWishlistUrl', 'Chewy Wishlist Link'],
+                  ].map(([field, label]) => (
+                    <label key={field} className="block">
+                      <span className="text-xs font-semibold uppercase text-gray-500">{label}</span>
+                      <input
+                        type="url"
+                        value={profileForm[field] || ''}
+                        onChange={(e) => handleProfileFieldChange(field, e.target.value)}
+                        placeholder="https://..."
+                        className="mt-1 w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm"
+                      />
+                    </label>
+                  ))}
+                </div>
+              </section>
               <button
                 type="submit"
                 disabled={savingProfile}

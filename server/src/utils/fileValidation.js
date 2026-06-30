@@ -1,4 +1,11 @@
-const ALLOWED_MIME_TYPES = new Set(['image/jpeg', 'image/png', 'application/pdf']);
+const ALLOWED_MIME_TYPES = new Set([
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/webp',
+  'image/gif',
+  'application/pdf',
+]);
 const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024;
 
 export function validateUploadedFile(file) {

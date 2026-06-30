@@ -66,7 +66,7 @@ const applicationLimiter = rateLimit({
 app.use(globalLimiter);
 app.use('/api/public/applications', applicationLimiter);
 
-app.use(express.json({ limit: '6mb' }));
+app.use(express.json({ limit: '10mb' }));
 
 let spec = {
   openapi: '3.0.0',
@@ -119,6 +119,21 @@ app.use((err, _req, res, _next) => {
 
   if (err.message === 'Not allowed by CORS') {
     return res.status(403).json({ error: 'Origin not allowed' });
+  }
+
+  if (err.code === 'LIMIT_FILE_SIZE') {
+    return res.status(413).json({ error: 'File too large. Max 5MB.' });
+  }
+
+  if (err.name === 'MulterError') {
+    return res.status(400).json({ error: err.message || 'File upload failed' });
+  }
+
+  if (err.code?.startsWith('P')) {
+    const hint = err.message?.includes('does not exist')
+      ? ' Database schema may be out of date — run: cd server && npx prisma db push'
+      : '';
+    return res.status(500).json({ error: `Database error:${hint} ${err.message}` });
   }
 
   res.status(500).json({ error: 'Internal Server Error' });

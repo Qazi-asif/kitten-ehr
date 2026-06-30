@@ -33,6 +33,8 @@ export const createKittenSchema = z.object({
   weightGrams: z.coerce.number().positive('Weight must be a positive number').optional(),
 });
 
+const optionalUrl = z.string().trim().max(500).optional().nullable();
+
 export const updateKittenSchema = z
   .object({
     name: z.string().trim().min(1).max(50).optional(),
@@ -56,6 +58,9 @@ export const updateKittenSchema = z
     primaryPhotoUrl: z.string().max(5_000_000).optional().nullable(),
     litterId: z.coerce.number().int().positive().optional().nullable(),
     currentFosterId: z.coerce.number().int().positive().optional().nullable(),
+    amazonWishlistUrl: optionalUrl,
+    walmartWishlistUrl: optionalUrl,
+    chewyWishlistUrl: optionalUrl,
     weightGrams: z.coerce.number().positive('Weight must be a positive number').optional(),
   })
   .strict();

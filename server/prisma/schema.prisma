@@ -57,6 +57,9 @@ model Kitten {
   isListedOnWebsite Boolean        @default(false)
   websiteFeaturedComment String     @default("")
   publishTargets  String[]         @default([])
+  amazonWishlistUrl  String?
+  walmartWishlistUrl String?
+  chewyWishlistUrl   String?
   currentFosterId Int?
   currentFoster   Foster?          @relation("CurrentFoster", fields: [currentFosterId], references: [id], onDelete: SetNull)
   createdAt       DateTime         @default(now())

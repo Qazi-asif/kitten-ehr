@@ -14,6 +14,9 @@ const publicKittenSelect = {
   fivFelvStatus: true,
   specialNeeds: true,
   primaryPhotoUrl: true,
+  amazonWishlistUrl: true,
+  walmartWishlistUrl: true,
+  chewyWishlistUrl: true,
 };
 
 const publicWebsiteFilter = { publishTargets: { has: 'WEBSITE' } };

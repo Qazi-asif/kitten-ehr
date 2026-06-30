@@ -214,13 +214,29 @@ export function fetchKittenPhotos(kittenId) {
   });
 }
 
+function readFileAsDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error('Could not read the selected photo'));
+    reader.readAsDataURL(file);
+  });
+}
+
 export async function uploadKittenPhoto(kittenId, file, { setAsPrimary = false } = {}) {
-  const formData = new FormData();
-  formData.append('file', file);
-  if (setAsPrimary) formData.append('setAsPrimary', 'true');
+  if (file.size > 5 * 1024 * 1024) {
+    throw new Error('Photo is too large. Max 5MB.');
+  }
+
+  const imageData = await readFileAsDataUrl(file);
   const response = await adminFetch(`/kittens/${kittenId}/documents/photos`, {
     method: 'POST',
-    body: formData,
+    body: JSON.stringify({
+      imageData,
+      fileName: file.name,
+      mimeType: file.type,
+      setAsPrimary,
+    }),
   });
   if (!response.ok) throw new Error(await readApiError(response, 'Photo upload failed'));
   return response.json();
