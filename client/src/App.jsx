@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminLayout from './components/layouts/AdminLayout';
@@ -66,6 +66,7 @@ function App() {
                 <Route path="donations" element={<FinancePage />} />
               </Route>
               <Route path="settings" element={<SettingsPage />} />
+              <Route path="*" element={<Navigate to="/admin" replace />} />
             </Route>
           </Route>
         </Routes>

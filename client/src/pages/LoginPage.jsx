@@ -13,7 +13,17 @@ function LoginPage() {
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
-  const redirectTo = location.state?.from || '/admin';
+  const legacyAdminPaths = new Set([
+    '/admin/content',
+    '/admin/social',
+    '/admin/sponsorships',
+    '/admin/reports',
+  ]);
+  const requestedFrom = location.state?.from;
+  const redirectTo =
+    requestedFrom?.startsWith('/admin') && !legacyAdminPaths.has(requestedFrom)
+      ? requestedFrom
+      : '/admin';
 
   if (isAuthenticated) {
     return <Navigate to={redirectTo} replace />;

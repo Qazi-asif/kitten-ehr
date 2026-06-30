@@ -22,15 +22,22 @@ export function AuthProvider({ children }) {
       return null;
     }
 
-    const current = await fetchCurrentUser();
-    if (current) {
-      setAuthSession({ token, user: current });
-      setUser(current);
-    } else {
+    try {
+      const current = await fetchCurrentUser();
+      if (current) {
+        setAuthSession({ token, user: current });
+        setUser(current);
+      } else {
+        setUser(null);
+      }
+      return current;
+    } catch {
+      clearAuthSession();
       setUser(null);
+      return null;
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
-    return current;
   }, []);
 
   useEffect(() => {

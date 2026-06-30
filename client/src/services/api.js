@@ -1,7 +1,7 @@
 import { authFetch } from './authApi';
 
-const API_BASE = import.meta.env.PROD ? '/api' : 'http://localhost:5000/api';
-const SERVER_BASE = import.meta.env.PROD ? '' : 'http://localhost:5000';
+const API_BASE = '/api';
+const SERVER_BASE = '';
 
 export async function adminFetch(path, options = {}) {
   return authFetch(path, options);
