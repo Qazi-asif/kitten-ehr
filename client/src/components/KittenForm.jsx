@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import ProfilePhotoUpload from './ProfilePhotoUpload';
+import LitterSelect from './admin/LitterSelect';
 
 const STATUS_OPTIONS = [
   'In Foster Care',
@@ -25,7 +26,7 @@ const initialFormState = {
   rescueStory: '',
 };
 
-function KittenForm({ onSubmit, litters = [], fosters = [], submitting = false }) {
+function KittenForm({ onSubmit, litters = [], onLittersChange, fosters = [], submitting = false }) {
   const [form, setForm] = useState(initialFormState);
   const [photoFile, setPhotoFile] = useState(null);
 
@@ -109,13 +110,14 @@ function KittenForm({ onSubmit, litters = [], fosters = [], submitting = false }
             </select>
           </label>
           <label className="block">
-            <span className="mb-1 block text-sm font-medium text-slate-700">Litter</span>
-            <select name="litterId" value={form.litterId} onChange={handleChange} className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
-              <option value="">No litter assigned</option>
-              {litters.map((litter) => (
-                <option key={litter.id} value={litter.id}>{litter.name}</option>
-              ))}
-            </select>
+            <span className="mb-1 block text-sm font-medium text-slate-700">Litter Group</span>
+            <LitterSelect
+              value={form.litterId}
+              litters={litters}
+              onChange={(value) => setForm((prev) => ({ ...prev, litterId: value }))}
+              onLittersChange={onLittersChange || (() => {})}
+              disabled={submitting}
+            />
           </label>
           <label className="block md:col-span-2">
             <span className="mb-1 block text-sm font-medium text-slate-700">Foster Home</span>

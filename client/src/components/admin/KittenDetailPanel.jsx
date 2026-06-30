@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Printer } from 'lucide-react';
 import KittenPublishingTab from './KittenPublishingTab';
 import KittenPhotoManager from './KittenPhotoManager';
+import LitterSelect from './LitterSelect';
 import KittenPlacementTable from './KittenPlacementTable';
 import StatusBadge from './StatusBadge';
 import DocumentUploadForm from '../DocumentUploadForm';
@@ -25,6 +26,7 @@ import {
   deleteDocument,
   fetchDocuments,
   fetchFosters,
+  fetchLitters,
   fetchKittenById,
   fetchKittenPhotos,
   fetchKittenPlacements,
@@ -93,6 +95,7 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
   const [updateForm, setUpdateForm] = useState({ content: '', isPublic: false });
   const [savingUpdate, setSavingUpdate] = useState(false);
   const [fosters, setFosters] = useState([]);
+  const [litters, setLitters] = useState([]);
   const [error, setError] = useState(null);
 
   const loadKitten = useCallback(async () => {
@@ -110,6 +113,7 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
       fivFelvStatus: data.fivFelvStatus || '',
       specialNeeds: data.specialNeeds || '',
       currentFosterId: data.currentFosterId ? String(data.currentFosterId) : '',
+      litterId: data.litterId ? String(data.litterId) : '',
       amazonWishlistUrl: data.amazonWishlistUrl || '',
       walmartWishlistUrl: data.walmartWishlistUrl || '',
       chewyWishlistUrl: data.chewyWishlistUrl || '',
@@ -151,6 +155,7 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
 
   useEffect(() => {
     fetchFosters().then(setFosters).catch(() => setFosters([]));
+    fetchLitters().then(setLitters).catch(() => setLitters([]));
   }, []);
 
   useEffect(() => {
@@ -192,6 +197,7 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
         currentFosterId: profileForm.currentFosterId
           ? Number.parseInt(profileForm.currentFosterId, 10)
           : null,
+        litterId: profileForm.litterId ? Number.parseInt(profileForm.litterId, 10) : null,
         amazonWishlistUrl: profileForm.amazonWishlistUrl?.trim() || null,
         walmartWishlistUrl: profileForm.walmartWishlistUrl?.trim() || null,
         chewyWishlistUrl: profileForm.chewyWishlistUrl?.trim() || null,
@@ -209,6 +215,7 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
         fivFelvStatus: updated.fivFelvStatus || '',
         specialNeeds: updated.specialNeeds || '',
         currentFosterId: updated.currentFosterId ? String(updated.currentFosterId) : '',
+        litterId: updated.litterId ? String(updated.litterId) : '',
         amazonWishlistUrl: updated.amazonWishlistUrl || '',
         walmartWishlistUrl: updated.walmartWishlistUrl || '',
         chewyWishlistUrl: updated.chewyWishlistUrl || '',
@@ -474,6 +481,17 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
                   value={profileForm.specialNeeds || ''}
                   onChange={(e) => handleProfileFieldChange('specialNeeds', e.target.value)}
                   className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+                />
+              </label>
+              <label className="block sm:col-span-2">
+                <span className="text-xs font-semibold uppercase text-gray-500">Litter Group</span>
+                <LitterSelect
+                  value={profileForm.litterId || ''}
+                  litters={litters}
+                  onChange={(value) => handleProfileFieldChange('litterId', value)}
+                  onLittersChange={setLitters}
+                  disabled={savingProfile}
+                  className="mt-1"
                 />
               </label>
               <label className="block sm:col-span-2">

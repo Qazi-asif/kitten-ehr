@@ -131,7 +131,14 @@ function KittensPage() {
           >
             <X className="h-5 w-5" />
           </button>
-          <KittenForm key={formKey} onSubmit={handleCreateKitten} litters={litters} fosters={fosters} submitting={submitting} />
+          <KittenForm
+            key={formKey}
+            onSubmit={handleCreateKitten}
+            litters={litters}
+            onLittersChange={setLitters}
+            fosters={fosters}
+            submitting={submitting}
+          />
         </div>
       )}
 
@@ -167,6 +174,36 @@ function KittensPage() {
         </div>
       </div>
 
+      {litters.length > 0 && (
+        <details className="rounded-xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+          <summary className="cursor-pointer text-sm font-semibold text-slate-700">
+            Litter groups ({litters.length})
+          </summary>
+          <p className="mt-2 text-xs text-slate-500">
+            Use litter groups to link kittens from the same intake. Assign groups when adding or editing a kitten.
+          </p>
+          <ul className="mt-3 divide-y divide-slate-100 rounded-lg border border-slate-100">
+            {litters.map((litter) => (
+              <li key={litter.id} className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 text-sm">
+                <div>
+                  <p className="font-medium text-slate-900">{litter.name}</p>
+                  <p className="text-xs text-slate-500">
+                    Intake {new Date(litter.intakeDate).toLocaleDateString()} · {litter._count?.kittens ?? kittens.filter((k) => k.litter?.id === litter.id).length} kitten(s)
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setLitterFilter(String(litter.id))}
+                  className="rounded-md border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-600 hover:bg-slate-50"
+                >
+                  Show kittens
+                </button>
+              </li>
+            ))}
+          </ul>
+        </details>
+      )}
+
       {loading && <p className="text-sm text-slate-500">Loading kittens...</p>}
       {error && <p className="text-sm text-red-600">{error}</p>}
 
@@ -201,7 +238,13 @@ function KittensPage() {
                       </td>
                       <td className="whitespace-nowrap px-5 py-3 text-sm text-slate-600">
                         {kitten.litter ? (
-                          <Link to={`/admin/litters/${kitten.litter.id}`} className="hover:text-brand">{kitten.litter.name}</Link>
+                          <button
+                            type="button"
+                            onClick={() => setLitterFilter(String(kitten.litter.id))}
+                            className="font-medium text-brand hover:underline"
+                          >
+                            {kitten.litter.name}
+                          </button>
                         ) : '—'}
                       </td>
                       <td className="whitespace-nowrap px-5 py-3 text-sm text-slate-600">

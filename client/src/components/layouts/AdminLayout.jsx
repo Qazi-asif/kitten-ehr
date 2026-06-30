@@ -8,7 +8,6 @@ import {
   LayoutDashboard,
   LogOut,
   Mail,
-  Package,
   Plus,
   Search,
   Settings,
@@ -19,7 +18,6 @@ import { useAuth } from '../../context/AuthContext';
 const navItems = [
   { label: 'Dashboard', icon: LayoutDashboard, path: '/admin', permission: 'dashboard.view' },
   { label: 'Kittens', icon: Cat, path: '/admin/kittens', permission: 'kittens.view' },
-  { label: 'Litters', icon: Package, path: '/admin/litters', permission: 'litters.view' },
   { label: 'Fosters', icon: Users, path: '/admin/fosters', permission: 'fosters.view' },
   { label: 'Applications', icon: ClipboardList, path: '/admin/applications', permission: 'applications.view' },
   { label: 'Calendar', icon: Calendar, path: '/admin/calendar', permission: 'events.view' },
@@ -31,8 +29,7 @@ const navItems = [
 const pageMeta = [
   { match: (p) => p === '/admin', title: 'Dashboard' },
   { match: (p) => p.startsWith('/admin/kittens/'), title: 'Kitten Profile', subtitle: 'Medical records, publishing, and adoption details.' },
-  { match: (p) => p === '/admin/kittens', title: 'Kittens', subtitle: 'Manage all kittens in the rescue program.' },
-  { match: (p) => p.startsWith('/admin/litters'), title: 'Litters', subtitle: 'Track intake groups and litter assignments.' },
+  { match: (p) => p === '/admin/kittens', title: 'Kittens', subtitle: 'Manage kittens and link them to litter intake groups.' },
   { match: (p) => p.startsWith('/admin/fosters'), title: 'Fosters', subtitle: 'Foster home contacts and placements.' },
   { match: (p) => p.startsWith('/admin/applications'), title: 'Applications', subtitle: 'Review adoption and foster applications.' },
   { match: (p) => p.startsWith('/admin/calendar'), title: 'Calendar', subtitle: 'Public events and staff schedule.' },
