@@ -14,6 +14,11 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(getStoredUser);
   const [loading, setLoading] = useState(true);
 
+  const logout = useCallback(() => {
+    clearAuthSession();
+    setUser(null);
+  }, []);
+
   const refreshUser = useCallback(async () => {
     const token = getAuthToken();
     if (!token) {
@@ -23,19 +28,22 @@ export function AuthProvider({ children }) {
       return null;
     }
 
+    if (typeof navigator !== 'undefined' && !navigator.onLine) {
+      clearAuthSession();
+      setUser(null);
+      setLoading(false);
+      return null;
+    }
+
     try {
       const current = await fetchCurrentUser();
       if (current) {
-        setAuthSession({ token, user: current });
         setUser(current);
-      } else if (current === undefined) {
-        const cached = getStoredUser();
-        setUser(cached);
       } else {
         clearAuthSession();
         setUser(null);
       }
-      return current ?? null;
+      return current;
     } catch {
       clearAuthSession();
       setUser(null);
@@ -51,17 +59,21 @@ export function AuthProvider({ children }) {
     return () => clearTimeout(failSafe);
   }, [refreshUser]);
 
-  async function login(email, password) {
+  useEffect(() => {
+    function handleOffline() {
+      logout();
+    }
+
+    window.addEventListener('offline', handleOffline);
+    return () => window.removeEventListener('offline', handleOffline);
+  }, [logout]);
+
+  async function login(email, password, remember = false) {
     const data = await loginRequest(email, password);
-    setAuthSession(data);
+    setAuthSession({ token: data.token, user: data.user, remember });
     setUser(data.user);
     setLoading(false);
     return data.user;
-  }
-
-  function logout() {
-    clearAuthSession();
-    setUser(null);
   }
 
   function hasPermission(key) {
@@ -83,7 +95,7 @@ export function AuthProvider({ children }) {
       hasAnyPermission,
       isAuthenticated: Boolean(user),
     }),
-    [user, loading, refreshUser],
+    [user, loading, logout, refreshUser],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

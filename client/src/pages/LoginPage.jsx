@@ -10,6 +10,7 @@ function LoginPage() {
   const location = useLocation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
@@ -34,7 +35,7 @@ function LoginPage() {
     setSubmitting(true);
     setError('');
     try {
-      await login(email, password);
+      await login(email, password, rememberMe);
       navigate(redirectTo, { replace: true });
     } catch (err) {
       setError(err.message || 'Login failed');
@@ -80,9 +81,9 @@ function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                autoComplete="email"
+                autoComplete="username"
                 className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
-                placeholder="you@pawsitivetransformations.org"
+                placeholder="you@organization.org"
               />
             </label>
             <label className="block">
@@ -96,6 +97,18 @@ function LoginPage() {
                 className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
               />
             </label>
+            <label className="flex items-center gap-2 text-sm text-slate-700">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="rounded border-slate-300 text-brand focus:ring-brand/30"
+              />
+              Keep me logged in
+            </label>
+            <p className="text-xs text-slate-500">
+              If unchecked, you will be signed out when you close the browser.
+            </p>
             <button
               type="submit"
               disabled={submitting}
@@ -107,7 +120,7 @@ function LoginPage() {
           </form>
 
           <p className="mt-6 text-center text-xs text-slate-400">
-            Default admin: admin@pawsitivetransformations.org / Admin123!
+            Contact your organization administrator if you need access.
           </p>
         </div>
       </main>

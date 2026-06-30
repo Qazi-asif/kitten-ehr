@@ -29,7 +29,7 @@ const navItems = [
 ];
 
 const pageMeta = [
-  { match: (p) => p === '/admin', title: 'Dashboard', subtitle: 'Good morning, Ashley — here is what needs your attention today.' },
+  { match: (p) => p === '/admin', title: 'Dashboard' },
   { match: (p) => p.startsWith('/admin/kittens/'), title: 'Kitten Profile', subtitle: 'Medical records, publishing, and adoption details.' },
   { match: (p) => p === '/admin/kittens', title: 'Kittens', subtitle: 'Manage all kittens in the rescue program.' },
   { match: (p) => p.startsWith('/admin/litters'), title: 'Litters', subtitle: 'Track intake groups and litter assignments.' },
@@ -41,15 +41,25 @@ const pageMeta = [
   { match: (p) => p.startsWith('/admin/settings'), title: 'Settings', subtitle: 'Organization settings, user accounts, roles, and permissions.' },
 ];
 
-function getPageMeta(pathname) {
-  return pageMeta.find((m) => m.match(pathname)) ?? { title: 'Admin', subtitle: '' };
+function getPageMeta(pathname, user) {
+  const meta = pageMeta.find((m) => m.match(pathname)) ?? { title: 'Admin', subtitle: '' };
+
+  if (pathname === '/admin') {
+    const name = user?.firstName?.trim() || 'there';
+    return {
+      ...meta,
+      subtitle: `Good morning, ${name} — here is what needs your attention today.`,
+    };
+  }
+
+  return meta;
 }
 
 function AdminLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout, hasPermission, hasAnyPermission } = useAuth();
-  const { title, subtitle } = getPageMeta(location.pathname);
+  const { title, subtitle } = getPageMeta(location.pathname, user);
 
   const visibleNavItems = navItems.filter((item) => {
     if (item.path === '/admin/settings') {
@@ -69,6 +79,11 @@ function AdminLayout() {
 
   function handleAddNew() {
     navigate('/admin/kittens?add=1');
+  }
+
+  function handleLogout() {
+    logout();
+    navigate('/login');
   }
 
   const hideHeaderActions = location.pathname.startsWith('/admin/kittens/') && location.pathname !== '/admin/kittens';
@@ -117,14 +132,11 @@ function AdminLayout() {
             </div>
             <button
               type="button"
-              onClick={() => {
-                logout();
-                navigate('/login');
-              }}
-              className="rounded p-1.5 text-slate-400 hover:bg-sidebar-hover hover:text-white"
-              title="Sign out"
+              onClick={handleLogout}
+              className="flex w-full items-center justify-center gap-2 rounded-lg border border-sidebar-border px-3 py-2 text-sm font-semibold text-slate-200 transition-colors hover:bg-sidebar-hover hover:text-white"
             >
               <LogOut className="h-4 w-4" />
+              Sign Out
             </button>
           </div>
         </div>
@@ -158,7 +170,25 @@ function AdminLayout() {
                 <button type="button" className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 hover:bg-slate-50">
                   <Bell className="h-4 w-4" />
                 </button>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-white px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-50"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Sign Out
+                </button>
               </div>
+            )}
+            {hideHeaderActions && (
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-white px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-50"
+              >
+                <LogOut className="h-4 w-4" />
+                Sign Out
+              </button>
             )}
           </div>
         </header>

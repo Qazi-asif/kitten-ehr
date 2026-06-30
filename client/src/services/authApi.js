@@ -1,9 +1,22 @@
 const API_BASE = '/api';
 const TOKEN_KEY = 'pt_auth_token';
 const USER_KEY = 'pt_auth_user';
+const REMEMBER_KEY = 'pt_auth_remember';
+
+function getSessionStorage() {
+  return sessionStorage.getItem(TOKEN_KEY) ? sessionStorage : null;
+}
+
+function getPersistentStorage() {
+  return localStorage.getItem(TOKEN_KEY) ? localStorage : null;
+}
 
 export function getAuthToken() {
-  return localStorage.getItem(TOKEN_KEY);
+  return sessionStorage.getItem(TOKEN_KEY) || localStorage.getItem(TOKEN_KEY);
+}
+
+export function isRememberMeEnabled() {
+  return localStorage.getItem(REMEMBER_KEY) === '1';
 }
 
 export function getStoredUser() {
@@ -11,7 +24,7 @@ export function getStoredUser() {
     return null;
   }
 
-  const raw = localStorage.getItem(USER_KEY);
+  const raw = sessionStorage.getItem(USER_KEY) || localStorage.getItem(USER_KEY);
   if (!raw) return null;
   try {
     return JSON.parse(raw);
@@ -21,14 +34,22 @@ export function getStoredUser() {
   }
 }
 
-export function setAuthSession({ token, user }) {
-  localStorage.setItem(TOKEN_KEY, token);
-  localStorage.setItem(USER_KEY, JSON.stringify(user));
+export function setAuthSession({ token, user, remember = false }) {
+  clearAuthSession();
+  const storage = remember ? localStorage : sessionStorage;
+  storage.setItem(TOKEN_KEY, token);
+  storage.setItem(USER_KEY, JSON.stringify(user));
+  if (remember) {
+    localStorage.setItem(REMEMBER_KEY, '1');
+  }
 }
 
 export function clearAuthSession() {
+  sessionStorage.removeItem(TOKEN_KEY);
+  sessionStorage.removeItem(USER_KEY);
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(USER_KEY);
+  localStorage.removeItem(REMEMBER_KEY);
 }
 
 export async function loginRequest(email, password) {
@@ -40,7 +61,7 @@ export async function loginRequest(email, password) {
       body: JSON.stringify({ email, password }),
     });
   } catch {
-    throw new Error('Cannot reach the API server. Start the backend with: cd server && npm run dev');
+    throw new Error('Cannot reach the API server. Check your internet connection and try again.');
   }
 
   let data = {};
@@ -61,6 +82,11 @@ export async function fetchCurrentUser() {
   const token = getAuthToken();
   if (!token) return null;
 
+  if (typeof navigator !== 'undefined' && !navigator.onLine) {
+    clearAuthSession();
+    return null;
+  }
+
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 8000);
@@ -77,9 +103,13 @@ export async function fetchCurrentUser() {
       return null;
     }
 
-    return response.json();
+    const user = await response.json();
+    const storage = getSessionStorage() || getPersistentStorage() || localStorage;
+    storage.setItem(USER_KEY, JSON.stringify(user));
+    return user;
   } catch {
-    return undefined;
+    clearAuthSession();
+    return null;
   }
 }
 

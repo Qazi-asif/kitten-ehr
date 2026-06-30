@@ -46,7 +46,7 @@ const EMPTY_ROLE = {
 };
 
 function SettingsPage() {
-  const { hasPermission } = useAuth();
+  const { user: currentUser, refreshUser, hasPermission } = useAuth();
   const [activeTab, setActiveTab] = useState('organization');
   const [users, setUsers] = useState([]);
   const [roles, setRoles] = useState([]);
@@ -177,6 +177,9 @@ function SettingsPage() {
 
       if (userForm.id) {
         await updateUser(userForm.id, payload);
+        if (currentUser?.id === userForm.id) {
+          await refreshUser();
+        }
       } else {
         if (!userForm.password) throw new Error('Password is required for new users');
         await createUser(payload);
@@ -235,6 +238,9 @@ function SettingsPage() {
           description: roleForm.description,
           permissions: roleForm.permissions,
         });
+        if (currentUser?.roleId === roleForm.id) {
+          await refreshUser();
+        }
       } else {
         await createRole(roleForm);
       }
