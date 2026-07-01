@@ -385,7 +385,8 @@ function SettingsPage() {
             <label className="block">
               <span className="mb-1 block text-xs font-medium text-slate-600">Facebook URL</span>
               <input
-                type="url"
+                type="text"
+                placeholder="https://facebook.com/your-page"
                 value={orgSettings.facebookUrl}
                 onChange={(e) => handleOrgFieldChange('facebookUrl', e.target.value)}
                 disabled={!canManageOrg}
@@ -395,7 +396,8 @@ function SettingsPage() {
             <label className="block">
               <span className="mb-1 block text-xs font-medium text-slate-600">Instagram URL</span>
               <input
-                type="url"
+                type="text"
+                placeholder="https://instagram.com/your-page"
                 value={orgSettings.instagramUrl}
                 onChange={(e) => handleOrgFieldChange('instagramUrl', e.target.value)}
                 disabled={!canManageOrg}

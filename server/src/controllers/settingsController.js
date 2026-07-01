@@ -2,6 +2,14 @@ import prisma from '../lib/prisma.js';
 
 const SETTINGS_ID = 1;
 
+function normalizeOptionalUrl(value) {
+  if (value === undefined) return undefined;
+  const trimmed = String(value).trim();
+  if (!trimmed) return '';
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  return `https://${trimmed}`;
+}
+
 const DEFAULTS = {
   orgName: 'Pawsitive Transformations',
   missionStatement:
@@ -83,10 +91,10 @@ export async function updateSettings(req, res, next) {
       }
       data.defaultDonationAmount = parsed;
     }
-    if (amazonWishlistUrl !== undefined) data.amazonWishlistUrl = amazonWishlistUrl;
-    if (chewyWishlistUrl !== undefined) data.chewyWishlistUrl = chewyWishlistUrl;
-    if (facebookUrl !== undefined) data.facebookUrl = facebookUrl;
-    if (instagramUrl !== undefined) data.instagramUrl = instagramUrl;
+    if (amazonWishlistUrl !== undefined) data.amazonWishlistUrl = normalizeOptionalUrl(amazonWishlistUrl);
+    if (chewyWishlistUrl !== undefined) data.chewyWishlistUrl = normalizeOptionalUrl(chewyWishlistUrl);
+    if (facebookUrl !== undefined) data.facebookUrl = normalizeOptionalUrl(facebookUrl);
+    if (instagramUrl !== undefined) data.instagramUrl = normalizeOptionalUrl(instagramUrl);
     if (emailsEnabled !== undefined) data.emailsEnabled = Boolean(emailsEnabled);
     if (smtpHost !== undefined) data.smtpHost = String(smtpHost).trim();
     if (smtpPort !== undefined) {

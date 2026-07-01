@@ -13,3 +13,15 @@ export function withLegacyWebsiteFlag(data, publishTargets) {
 
   return next;
 }
+
+export function withLegacyUpdateTargets(data, publishTargets) {
+  const next = { ...data };
+  delete next.publishTargets;
+
+  if (Array.isArray(publishTargets)) {
+    next.isPublic = publishTargets.includes('WEBSITE');
+    next.platformList = publishTargets.join(',');
+  }
+
+  return next;
+}

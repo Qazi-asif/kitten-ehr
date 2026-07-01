@@ -1,5 +1,6 @@
 import prisma from '../lib/prisma.js';
 import { normalizePublishTargets, targetsIncludeWebsite } from '../utils/publishTargets.js';
+import { isUnknownPublishTargetsError, withLegacyUpdateTargets } from '../utils/prismaPublishTargets.js';
 
 function normalizePlatformList(value) {
   if (Array.isArray(value)) {
@@ -38,6 +39,48 @@ function resolveUpdateTargets({ publishTargets, platforms, platformList }) {
   return [];
 }
 
+function buildUpdateData({ kittenId, content, resolvedTargets }) {
+  return {
+    kittenId,
+    content: content.trim(),
+    publishTargets: resolvedTargets,
+    isPublic: targetsIncludeWebsite(resolvedTargets),
+    platformList: resolvedTargets.join(','),
+  };
+}
+
+async function createUpdateRecord(data) {
+  try {
+    return await prisma.update.create({ data });
+  } catch (error) {
+    if (!isUnknownPublishTargetsError(error) || data.publishTargets === undefined) {
+      throw error;
+    }
+
+    return prisma.update.create({
+      data: withLegacyUpdateTargets(data, data.publishTargets),
+    });
+  }
+}
+
+async function patchUpdateRecord(updateId, data) {
+  try {
+    return await prisma.update.update({
+      where: { id: updateId },
+      data,
+    });
+  } catch (error) {
+    if (!isUnknownPublishTargetsError(error) || data.publishTargets === undefined) {
+      throw error;
+    }
+
+    return prisma.update.update({
+      where: { id: updateId },
+      data: withLegacyUpdateTargets(data, data.publishTargets),
+    });
+  }
+}
+
 export async function getUpdatesByKitten(req, res, next) {
   try {
     const kittenId = Number.parseInt(req.params.kittenId, 10);
@@ -73,14 +116,12 @@ export async function createUpdate(req, res, next) {
       ? targetsIncludeWebsite(resolvedTargets)
       : Boolean(isPublic);
 
-    const update = await prisma.update.create({
-      data: {
-        kittenId,
-        content: content.trim(),
-        publishTargets: resolvedTargets,
-        isPublic: websiteEnabled,
-        platformList: normalizePlatformList(platformList ?? resolvedTargets),
-      },
+    const update = await createUpdateRecord({
+      kittenId,
+      content: content.trim(),
+      publishTargets: resolvedTargets,
+      isPublic: websiteEnabled,
+      platformList: normalizePlatformList(platformList ?? resolvedTargets),
     });
 
     res.status(201).json(update);
@@ -106,15 +147,13 @@ export async function createSocialPost(req, res, next) {
     const kitten = await prisma.kitten.findUnique({ where: { id: kittenId } });
     if (!kitten) return res.status(404).json({ error: 'Kitten not found' });
 
-    const update = await prisma.update.create({
-      data: {
+    const update = await createUpdateRecord(
+      buildUpdateData({
         kittenId,
-        content: content.trim(),
-        publishTargets: resolvedTargets,
-        isPublic: targetsIncludeWebsite(resolvedTargets),
-        platformList: resolvedTargets.join(','),
-      },
-    });
+        content,
+        resolvedTargets,
+      }),
+    );
 
     res.status(201).json(update);
   } catch (error) {
@@ -145,10 +184,7 @@ export async function updateUpdate(req, res, next) {
       data.isPublic = Boolean(isPublic);
     }
 
-    const update = await prisma.update.update({
-      where: { id: updateId },
-      data,
-    });
+    const update = await patchUpdateRecord(updateId, data);
 
     res.json(update);
   } catch (error) {

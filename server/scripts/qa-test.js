@@ -10,6 +10,8 @@ const ADMIN = { email: 'admin@pawsitivetransformations.org', password: 'Admin123
 const results = [];
 let token = '';
 let createdTxId = null;
+let createdSocialUpdateId = null;
+let qaKittenId = null;
 
 function pass(name) {
   results.push({ name, ok: true });
@@ -137,10 +139,91 @@ async function run() {
 
   try {
     const { data } = await api('/api/kittens');
-    if (Array.isArray(data)) pass(`GET /api/kittens (${data.length} records)`);
-    else fail('GET /api/kittens', 'not array');
+    if (Array.isArray(data)) {
+      qaKittenId = data[0]?.id ?? null;
+      pass(`GET /api/kittens (${data.length} records)`);
+    } else fail('GET /api/kittens', 'not array');
   } catch (e) {
     fail('GET /api/kittens', e.message);
+  }
+
+  // Organization social URLs
+  try {
+    const { data } = await api('/api/settings', {
+      method: 'PATCH',
+      body: {
+        facebookUrl: 'facebook.com/pawsitive-test',
+        instagramUrl: 'instagram.com/pawsitive-test',
+      },
+    });
+    if (
+      data?.facebookUrl === 'https://facebook.com/pawsitive-test'
+      && data?.instagramUrl === 'https://instagram.com/pawsitive-test'
+    ) {
+      pass('PATCH /api/settings normalizes social URLs');
+    } else {
+      fail('PATCH /api/settings normalizes social URLs', JSON.stringify({
+        facebookUrl: data?.facebookUrl,
+        instagramUrl: data?.instagramUrl,
+      }));
+    }
+  } catch (e) {
+    fail('PATCH /api/settings normalizes social URLs', e.message);
+  }
+
+  if (qaKittenId) {
+    try {
+      const { data, response } = await api(`/api/kittens/${qaKittenId}`, {
+        method: 'PATCH',
+        body: {
+          publishTargets: ['WEBSITE', 'FACEBOOK'],
+          websiteFeaturedComment: 'QA publishing test',
+        },
+      });
+      if (response.ok && Array.isArray(data.publishTargets) && data.publishTargets.includes('FACEBOOK')) {
+        pass(`PATCH /api/kittens/${qaKittenId} publishing settings`);
+      } else {
+        fail(`PATCH /api/kittens/${qaKittenId} publishing settings`, JSON.stringify(data));
+      }
+    } catch (e) {
+      fail(`PATCH /api/kittens/${qaKittenId} publishing settings`, e.message);
+    }
+
+    try {
+      const { data, response } = await api(`/api/kittens/${qaKittenId}/updates/social`, {
+        method: 'POST',
+        body: {
+          content: 'QA social post caption',
+          publishTargets: ['FACEBOOK', 'INSTAGRAM'],
+        },
+        expectStatus: 201,
+      });
+      createdSocialUpdateId = data?.id ?? null;
+      const targets = data?.publishTargets?.length
+        ? data.publishTargets
+        : String(data?.platformList || '').split(',').filter(Boolean);
+      if (response.status === 201 && targets.length >= 2) {
+        pass(`POST /api/kittens/${qaKittenId}/updates/social`);
+      } else {
+        fail(`POST /api/kittens/${qaKittenId}/updates/social`, JSON.stringify(data));
+      }
+    } catch (e) {
+      fail(`POST /api/kittens/${qaKittenId}/updates/social`, e.message);
+    }
+
+    if (createdSocialUpdateId) {
+      try {
+        await api(`/api/kittens/${qaKittenId}/updates/${createdSocialUpdateId}`, {
+          method: 'DELETE',
+          expectStatus: 204,
+        });
+        pass(`DELETE /api/kittens/${qaKittenId}/updates/${createdSocialUpdateId}`);
+      } catch (e) {
+        fail('DELETE social update cleanup', e.message);
+      }
+    }
+  } else {
+    fail('Kitten publishing QA', 'No kitten available to test publishing/social post');
   }
 
   // Finance stats
