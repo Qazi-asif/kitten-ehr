@@ -15,9 +15,10 @@ export async function generateCaption(req, res, next) {
   try {
     const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) {
-      return res.status(503).json({
-        error: 'OpenAI API key is not configured. Add OPENAI_API_KEY to your server .env file.',
-      });
+      const hint = process.env.VERCEL
+        ? 'Add OPENAI_API_KEY in Vercel → Project Settings → Environment Variables, then redeploy.'
+        : 'Add OPENAI_API_KEY to your server/.env file and restart the server.';
+      return res.status(503).json({ error: `OpenAI API key is not configured. ${hint}` });
     }
 
     const { name, story, status } = req.body;
