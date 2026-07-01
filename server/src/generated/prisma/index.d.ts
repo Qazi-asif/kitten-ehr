@@ -7031,6 +7031,7 @@ export namespace Prisma {
     content: string | null
     isPublic: boolean | null
     platformList: string | null
+    socialDeliveryLog: string | null
     createdAt: Date | null
   }
 
@@ -7040,6 +7041,7 @@ export namespace Prisma {
     content: string | null
     isPublic: boolean | null
     platformList: string | null
+    socialDeliveryLog: string | null
     createdAt: Date | null
   }
 
@@ -7050,6 +7052,7 @@ export namespace Prisma {
     isPublic: number
     platformList: number
     publishTargets: number
+    socialDeliveryLog: number
     createdAt: number
     _all: number
   }
@@ -7071,6 +7074,7 @@ export namespace Prisma {
     content?: true
     isPublic?: true
     platformList?: true
+    socialDeliveryLog?: true
     createdAt?: true
   }
 
@@ -7080,6 +7084,7 @@ export namespace Prisma {
     content?: true
     isPublic?: true
     platformList?: true
+    socialDeliveryLog?: true
     createdAt?: true
   }
 
@@ -7090,6 +7095,7 @@ export namespace Prisma {
     isPublic?: true
     platformList?: true
     publishTargets?: true
+    socialDeliveryLog?: true
     createdAt?: true
     _all?: true
   }
@@ -7187,6 +7193,7 @@ export namespace Prisma {
     isPublic: boolean
     platformList: string
     publishTargets: string[]
+    socialDeliveryLog: string
     createdAt: Date
     _count: UpdateCountAggregateOutputType | null
     _avg: UpdateAvgAggregateOutputType | null
@@ -7216,6 +7223,7 @@ export namespace Prisma {
     isPublic?: boolean
     platformList?: boolean
     publishTargets?: boolean
+    socialDeliveryLog?: boolean
     createdAt?: boolean
     kitten?: boolean | KittenDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["update"]>
@@ -7227,6 +7235,7 @@ export namespace Prisma {
     isPublic?: boolean
     platformList?: boolean
     publishTargets?: boolean
+    socialDeliveryLog?: boolean
     createdAt?: boolean
     kitten?: boolean | KittenDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["update"]>
@@ -7238,6 +7247,7 @@ export namespace Prisma {
     isPublic?: boolean
     platformList?: boolean
     publishTargets?: boolean
+    socialDeliveryLog?: boolean
     createdAt?: boolean
     kitten?: boolean | KittenDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["update"]>
@@ -7249,10 +7259,11 @@ export namespace Prisma {
     isPublic?: boolean
     platformList?: boolean
     publishTargets?: boolean
+    socialDeliveryLog?: boolean
     createdAt?: boolean
   }
 
-  export type UpdateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "kittenId" | "content" | "isPublic" | "platformList" | "publishTargets" | "createdAt", ExtArgs["result"]["update"]>
+  export type UpdateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "kittenId" | "content" | "isPublic" | "platformList" | "publishTargets" | "socialDeliveryLog" | "createdAt", ExtArgs["result"]["update"]>
   export type UpdateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     kitten?: boolean | KittenDefaultArgs<ExtArgs>
   }
@@ -7275,6 +7286,7 @@ export namespace Prisma {
       isPublic: boolean
       platformList: string
       publishTargets: string[]
+      socialDeliveryLog: string
       createdAt: Date
     }, ExtArgs["result"]["update"]>
     composites: {}
@@ -7706,6 +7718,7 @@ export namespace Prisma {
     readonly isPublic: FieldRef<"Update", 'Boolean'>
     readonly platformList: FieldRef<"Update", 'String'>
     readonly publishTargets: FieldRef<"Update", 'String[]'>
+    readonly socialDeliveryLog: FieldRef<"Update", 'String'>
     readonly createdAt: FieldRef<"Update", 'DateTime'>
   }
     
@@ -16170,6 +16183,8 @@ export namespace Prisma {
     id: number | null
     type: string | null
     status: string | null
+    statusNotes: string | null
+    statusUpdatedAt: Date | null
     kittenOfInterest: string | null
     formData: string | null
     createdAt: Date | null
@@ -16179,6 +16194,8 @@ export namespace Prisma {
     id: number | null
     type: string | null
     status: string | null
+    statusNotes: string | null
+    statusUpdatedAt: Date | null
     kittenOfInterest: string | null
     formData: string | null
     createdAt: Date | null
@@ -16188,6 +16205,8 @@ export namespace Prisma {
     id: number
     type: number
     status: number
+    statusNotes: number
+    statusUpdatedAt: number
     kittenOfInterest: number
     formData: number
     createdAt: number
@@ -16207,6 +16226,8 @@ export namespace Prisma {
     id?: true
     type?: true
     status?: true
+    statusNotes?: true
+    statusUpdatedAt?: true
     kittenOfInterest?: true
     formData?: true
     createdAt?: true
@@ -16216,6 +16237,8 @@ export namespace Prisma {
     id?: true
     type?: true
     status?: true
+    statusNotes?: true
+    statusUpdatedAt?: true
     kittenOfInterest?: true
     formData?: true
     createdAt?: true
@@ -16225,6 +16248,8 @@ export namespace Prisma {
     id?: true
     type?: true
     status?: true
+    statusNotes?: true
+    statusUpdatedAt?: true
     kittenOfInterest?: true
     formData?: true
     createdAt?: true
@@ -16321,6 +16346,8 @@ export namespace Prisma {
     id: number
     type: string
     status: string
+    statusNotes: string
+    statusUpdatedAt: Date | null
     kittenOfInterest: string | null
     formData: string
     createdAt: Date
@@ -16349,6 +16376,8 @@ export namespace Prisma {
     id?: boolean
     type?: boolean
     status?: boolean
+    statusNotes?: boolean
+    statusUpdatedAt?: boolean
     kittenOfInterest?: boolean
     formData?: boolean
     createdAt?: boolean
@@ -16358,6 +16387,8 @@ export namespace Prisma {
     id?: boolean
     type?: boolean
     status?: boolean
+    statusNotes?: boolean
+    statusUpdatedAt?: boolean
     kittenOfInterest?: boolean
     formData?: boolean
     createdAt?: boolean
@@ -16367,6 +16398,8 @@ export namespace Prisma {
     id?: boolean
     type?: boolean
     status?: boolean
+    statusNotes?: boolean
+    statusUpdatedAt?: boolean
     kittenOfInterest?: boolean
     formData?: boolean
     createdAt?: boolean
@@ -16376,12 +16409,14 @@ export namespace Prisma {
     id?: boolean
     type?: boolean
     status?: boolean
+    statusNotes?: boolean
+    statusUpdatedAt?: boolean
     kittenOfInterest?: boolean
     formData?: boolean
     createdAt?: boolean
   }
 
-  export type ApplicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "status" | "kittenOfInterest" | "formData" | "createdAt", ExtArgs["result"]["application"]>
+  export type ApplicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "status" | "statusNotes" | "statusUpdatedAt" | "kittenOfInterest" | "formData" | "createdAt", ExtArgs["result"]["application"]>
 
   export type $ApplicationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Application"
@@ -16390,6 +16425,8 @@ export namespace Prisma {
       id: number
       type: string
       status: string
+      statusNotes: string
+      statusUpdatedAt: Date | null
       kittenOfInterest: string | null
       formData: string
       createdAt: Date
@@ -16819,6 +16856,8 @@ export namespace Prisma {
     readonly id: FieldRef<"Application", 'Int'>
     readonly type: FieldRef<"Application", 'String'>
     readonly status: FieldRef<"Application", 'String'>
+    readonly statusNotes: FieldRef<"Application", 'String'>
+    readonly statusUpdatedAt: FieldRef<"Application", 'DateTime'>
     readonly kittenOfInterest: FieldRef<"Application", 'String'>
     readonly formData: FieldRef<"Application", 'String'>
     readonly createdAt: FieldRef<"Application", 'DateTime'>
@@ -23789,6 +23828,10 @@ export namespace Prisma {
     chewyWishlistUrl: string | null
     facebookUrl: string | null
     instagramUrl: string | null
+    socialPostingEnabled: boolean | null
+    facebookPageId: string | null
+    facebookPageAccessToken: string | null
+    instagramBusinessAccountId: string | null
     emailsEnabled: boolean | null
     smtpHost: string | null
     smtpPort: number | null
@@ -23809,6 +23852,10 @@ export namespace Prisma {
     chewyWishlistUrl: string | null
     facebookUrl: string | null
     instagramUrl: string | null
+    socialPostingEnabled: boolean | null
+    facebookPageId: string | null
+    facebookPageAccessToken: string | null
+    instagramBusinessAccountId: string | null
     emailsEnabled: boolean | null
     smtpHost: string | null
     smtpPort: number | null
@@ -23829,6 +23876,10 @@ export namespace Prisma {
     chewyWishlistUrl: number
     facebookUrl: number
     instagramUrl: number
+    socialPostingEnabled: number
+    facebookPageId: number
+    facebookPageAccessToken: number
+    instagramBusinessAccountId: number
     emailsEnabled: number
     smtpHost: number
     smtpPort: number
@@ -23863,6 +23914,10 @@ export namespace Prisma {
     chewyWishlistUrl?: true
     facebookUrl?: true
     instagramUrl?: true
+    socialPostingEnabled?: true
+    facebookPageId?: true
+    facebookPageAccessToken?: true
+    instagramBusinessAccountId?: true
     emailsEnabled?: true
     smtpHost?: true
     smtpPort?: true
@@ -23883,6 +23938,10 @@ export namespace Prisma {
     chewyWishlistUrl?: true
     facebookUrl?: true
     instagramUrl?: true
+    socialPostingEnabled?: true
+    facebookPageId?: true
+    facebookPageAccessToken?: true
+    instagramBusinessAccountId?: true
     emailsEnabled?: true
     smtpHost?: true
     smtpPort?: true
@@ -23903,6 +23962,10 @@ export namespace Prisma {
     chewyWishlistUrl?: true
     facebookUrl?: true
     instagramUrl?: true
+    socialPostingEnabled?: true
+    facebookPageId?: true
+    facebookPageAccessToken?: true
+    instagramBusinessAccountId?: true
     emailsEnabled?: true
     smtpHost?: true
     smtpPort?: true
@@ -24010,6 +24073,10 @@ export namespace Prisma {
     chewyWishlistUrl: string
     facebookUrl: string
     instagramUrl: string
+    socialPostingEnabled: boolean
+    facebookPageId: string
+    facebookPageAccessToken: string
+    instagramBusinessAccountId: string
     emailsEnabled: boolean
     smtpHost: string
     smtpPort: number
@@ -24049,6 +24116,10 @@ export namespace Prisma {
     chewyWishlistUrl?: boolean
     facebookUrl?: boolean
     instagramUrl?: boolean
+    socialPostingEnabled?: boolean
+    facebookPageId?: boolean
+    facebookPageAccessToken?: boolean
+    instagramBusinessAccountId?: boolean
     emailsEnabled?: boolean
     smtpHost?: boolean
     smtpPort?: boolean
@@ -24069,6 +24140,10 @@ export namespace Prisma {
     chewyWishlistUrl?: boolean
     facebookUrl?: boolean
     instagramUrl?: boolean
+    socialPostingEnabled?: boolean
+    facebookPageId?: boolean
+    facebookPageAccessToken?: boolean
+    instagramBusinessAccountId?: boolean
     emailsEnabled?: boolean
     smtpHost?: boolean
     smtpPort?: boolean
@@ -24089,6 +24164,10 @@ export namespace Prisma {
     chewyWishlistUrl?: boolean
     facebookUrl?: boolean
     instagramUrl?: boolean
+    socialPostingEnabled?: boolean
+    facebookPageId?: boolean
+    facebookPageAccessToken?: boolean
+    instagramBusinessAccountId?: boolean
     emailsEnabled?: boolean
     smtpHost?: boolean
     smtpPort?: boolean
@@ -24109,6 +24188,10 @@ export namespace Prisma {
     chewyWishlistUrl?: boolean
     facebookUrl?: boolean
     instagramUrl?: boolean
+    socialPostingEnabled?: boolean
+    facebookPageId?: boolean
+    facebookPageAccessToken?: boolean
+    instagramBusinessAccountId?: boolean
     emailsEnabled?: boolean
     smtpHost?: boolean
     smtpPort?: boolean
@@ -24120,7 +24203,7 @@ export namespace Prisma {
     adminNotifyEmail?: boolean
   }
 
-  export type SettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orgName" | "missionStatement" | "defaultDonationAmount" | "amazonWishlistUrl" | "chewyWishlistUrl" | "facebookUrl" | "instagramUrl" | "emailsEnabled" | "smtpHost" | "smtpPort" | "smtpSecure" | "smtpUser" | "smtpPass" | "fromEmail" | "fromName" | "adminNotifyEmail", ExtArgs["result"]["settings"]>
+  export type SettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orgName" | "missionStatement" | "defaultDonationAmount" | "amazonWishlistUrl" | "chewyWishlistUrl" | "facebookUrl" | "instagramUrl" | "socialPostingEnabled" | "facebookPageId" | "facebookPageAccessToken" | "instagramBusinessAccountId" | "emailsEnabled" | "smtpHost" | "smtpPort" | "smtpSecure" | "smtpUser" | "smtpPass" | "fromEmail" | "fromName" | "adminNotifyEmail", ExtArgs["result"]["settings"]>
 
   export type $SettingsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Settings"
@@ -24134,6 +24217,10 @@ export namespace Prisma {
       chewyWishlistUrl: string
       facebookUrl: string
       instagramUrl: string
+      socialPostingEnabled: boolean
+      facebookPageId: string
+      facebookPageAccessToken: string
+      instagramBusinessAccountId: string
       emailsEnabled: boolean
       smtpHost: string
       smtpPort: number
@@ -24574,6 +24661,10 @@ export namespace Prisma {
     readonly chewyWishlistUrl: FieldRef<"Settings", 'String'>
     readonly facebookUrl: FieldRef<"Settings", 'String'>
     readonly instagramUrl: FieldRef<"Settings", 'String'>
+    readonly socialPostingEnabled: FieldRef<"Settings", 'Boolean'>
+    readonly facebookPageId: FieldRef<"Settings", 'String'>
+    readonly facebookPageAccessToken: FieldRef<"Settings", 'String'>
+    readonly instagramBusinessAccountId: FieldRef<"Settings", 'String'>
     readonly emailsEnabled: FieldRef<"Settings", 'Boolean'>
     readonly smtpHost: FieldRef<"Settings", 'String'>
     readonly smtpPort: FieldRef<"Settings", 'Int'>
@@ -26097,6 +26188,8 @@ export namespace Prisma {
     toEmail: string | null
     subject: string | null
     status: string | null
+    provider: string | null
+    externalMessageId: string | null
     errorMessage: string | null
     relatedType: string | null
     relatedId: number | null
@@ -26109,6 +26202,8 @@ export namespace Prisma {
     toEmail: string | null
     subject: string | null
     status: string | null
+    provider: string | null
+    externalMessageId: string | null
     errorMessage: string | null
     relatedType: string | null
     relatedId: number | null
@@ -26121,6 +26216,8 @@ export namespace Prisma {
     toEmail: number
     subject: number
     status: number
+    provider: number
+    externalMessageId: number
     errorMessage: number
     relatedType: number
     relatedId: number
@@ -26145,6 +26242,8 @@ export namespace Prisma {
     toEmail?: true
     subject?: true
     status?: true
+    provider?: true
+    externalMessageId?: true
     errorMessage?: true
     relatedType?: true
     relatedId?: true
@@ -26157,6 +26256,8 @@ export namespace Prisma {
     toEmail?: true
     subject?: true
     status?: true
+    provider?: true
+    externalMessageId?: true
     errorMessage?: true
     relatedType?: true
     relatedId?: true
@@ -26169,6 +26270,8 @@ export namespace Prisma {
     toEmail?: true
     subject?: true
     status?: true
+    provider?: true
+    externalMessageId?: true
     errorMessage?: true
     relatedType?: true
     relatedId?: true
@@ -26268,6 +26371,8 @@ export namespace Prisma {
     toEmail: string
     subject: string
     status: string
+    provider: string
+    externalMessageId: string
     errorMessage: string
     relatedType: string
     relatedId: number | null
@@ -26299,6 +26404,8 @@ export namespace Prisma {
     toEmail?: boolean
     subject?: boolean
     status?: boolean
+    provider?: boolean
+    externalMessageId?: boolean
     errorMessage?: boolean
     relatedType?: boolean
     relatedId?: boolean
@@ -26311,6 +26418,8 @@ export namespace Prisma {
     toEmail?: boolean
     subject?: boolean
     status?: boolean
+    provider?: boolean
+    externalMessageId?: boolean
     errorMessage?: boolean
     relatedType?: boolean
     relatedId?: boolean
@@ -26323,6 +26432,8 @@ export namespace Prisma {
     toEmail?: boolean
     subject?: boolean
     status?: boolean
+    provider?: boolean
+    externalMessageId?: boolean
     errorMessage?: boolean
     relatedType?: boolean
     relatedId?: boolean
@@ -26335,13 +26446,15 @@ export namespace Prisma {
     toEmail?: boolean
     subject?: boolean
     status?: boolean
+    provider?: boolean
+    externalMessageId?: boolean
     errorMessage?: boolean
     relatedType?: boolean
     relatedId?: boolean
     createdAt?: boolean
   }
 
-  export type EmailLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "templateKey" | "toEmail" | "subject" | "status" | "errorMessage" | "relatedType" | "relatedId" | "createdAt", ExtArgs["result"]["emailLog"]>
+  export type EmailLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "templateKey" | "toEmail" | "subject" | "status" | "provider" | "externalMessageId" | "errorMessage" | "relatedType" | "relatedId" | "createdAt", ExtArgs["result"]["emailLog"]>
 
   export type $EmailLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "EmailLog"
@@ -26352,6 +26465,8 @@ export namespace Prisma {
       toEmail: string
       subject: string
       status: string
+      provider: string
+      externalMessageId: string
       errorMessage: string
       relatedType: string
       relatedId: number | null
@@ -26784,6 +26899,8 @@ export namespace Prisma {
     readonly toEmail: FieldRef<"EmailLog", 'String'>
     readonly subject: FieldRef<"EmailLog", 'String'>
     readonly status: FieldRef<"EmailLog", 'String'>
+    readonly provider: FieldRef<"EmailLog", 'String'>
+    readonly externalMessageId: FieldRef<"EmailLog", 'String'>
     readonly errorMessage: FieldRef<"EmailLog", 'String'>
     readonly relatedType: FieldRef<"EmailLog", 'String'>
     readonly relatedId: FieldRef<"EmailLog", 'Int'>
@@ -28419,6 +28536,7 @@ export namespace Prisma {
     isPublic: 'isPublic',
     platformList: 'platformList',
     publishTargets: 'publishTargets',
+    socialDeliveryLog: 'socialDeliveryLog',
     createdAt: 'createdAt'
   };
 
@@ -28531,6 +28649,8 @@ export namespace Prisma {
     id: 'id',
     type: 'type',
     status: 'status',
+    statusNotes: 'statusNotes',
+    statusUpdatedAt: 'statusUpdatedAt',
     kittenOfInterest: 'kittenOfInterest',
     formData: 'formData',
     createdAt: 'createdAt'
@@ -28620,6 +28740,10 @@ export namespace Prisma {
     chewyWishlistUrl: 'chewyWishlistUrl',
     facebookUrl: 'facebookUrl',
     instagramUrl: 'instagramUrl',
+    socialPostingEnabled: 'socialPostingEnabled',
+    facebookPageId: 'facebookPageId',
+    facebookPageAccessToken: 'facebookPageAccessToken',
+    instagramBusinessAccountId: 'instagramBusinessAccountId',
     emailsEnabled: 'emailsEnabled',
     smtpHost: 'smtpHost',
     smtpPort: 'smtpPort',
@@ -28658,6 +28782,8 @@ export namespace Prisma {
     toEmail: 'toEmail',
     subject: 'subject',
     status: 'status',
+    provider: 'provider',
+    externalMessageId: 'externalMessageId',
     errorMessage: 'errorMessage',
     relatedType: 'relatedType',
     relatedId: 'relatedId',
@@ -29127,6 +29253,7 @@ export namespace Prisma {
     isPublic?: BoolFilter<"Update"> | boolean
     platformList?: StringFilter<"Update"> | string
     publishTargets?: StringNullableListFilter<"Update">
+    socialDeliveryLog?: StringFilter<"Update"> | string
     createdAt?: DateTimeFilter<"Update"> | Date | string
     kitten?: XOR<KittenScalarRelationFilter, KittenWhereInput>
   }
@@ -29138,6 +29265,7 @@ export namespace Prisma {
     isPublic?: SortOrder
     platformList?: SortOrder
     publishTargets?: SortOrder
+    socialDeliveryLog?: SortOrder
     createdAt?: SortOrder
     kitten?: KittenOrderByWithRelationInput
   }
@@ -29152,6 +29280,7 @@ export namespace Prisma {
     isPublic?: BoolFilter<"Update"> | boolean
     platformList?: StringFilter<"Update"> | string
     publishTargets?: StringNullableListFilter<"Update">
+    socialDeliveryLog?: StringFilter<"Update"> | string
     createdAt?: DateTimeFilter<"Update"> | Date | string
     kitten?: XOR<KittenScalarRelationFilter, KittenWhereInput>
   }, "id">
@@ -29163,6 +29292,7 @@ export namespace Prisma {
     isPublic?: SortOrder
     platformList?: SortOrder
     publishTargets?: SortOrder
+    socialDeliveryLog?: SortOrder
     createdAt?: SortOrder
     _count?: UpdateCountOrderByAggregateInput
     _avg?: UpdateAvgOrderByAggregateInput
@@ -29181,6 +29311,7 @@ export namespace Prisma {
     isPublic?: BoolWithAggregatesFilter<"Update"> | boolean
     platformList?: StringWithAggregatesFilter<"Update"> | string
     publishTargets?: StringNullableListFilter<"Update">
+    socialDeliveryLog?: StringWithAggregatesFilter<"Update"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Update"> | Date | string
   }
 
@@ -29718,6 +29849,8 @@ export namespace Prisma {
     id?: IntFilter<"Application"> | number
     type?: StringFilter<"Application"> | string
     status?: StringFilter<"Application"> | string
+    statusNotes?: StringFilter<"Application"> | string
+    statusUpdatedAt?: DateTimeNullableFilter<"Application"> | Date | string | null
     kittenOfInterest?: StringNullableFilter<"Application"> | string | null
     formData?: StringFilter<"Application"> | string
     createdAt?: DateTimeFilter<"Application"> | Date | string
@@ -29727,6 +29860,8 @@ export namespace Prisma {
     id?: SortOrder
     type?: SortOrder
     status?: SortOrder
+    statusNotes?: SortOrder
+    statusUpdatedAt?: SortOrderInput | SortOrder
     kittenOfInterest?: SortOrderInput | SortOrder
     formData?: SortOrder
     createdAt?: SortOrder
@@ -29739,6 +29874,8 @@ export namespace Prisma {
     NOT?: ApplicationWhereInput | ApplicationWhereInput[]
     type?: StringFilter<"Application"> | string
     status?: StringFilter<"Application"> | string
+    statusNotes?: StringFilter<"Application"> | string
+    statusUpdatedAt?: DateTimeNullableFilter<"Application"> | Date | string | null
     kittenOfInterest?: StringNullableFilter<"Application"> | string | null
     formData?: StringFilter<"Application"> | string
     createdAt?: DateTimeFilter<"Application"> | Date | string
@@ -29748,6 +29885,8 @@ export namespace Prisma {
     id?: SortOrder
     type?: SortOrder
     status?: SortOrder
+    statusNotes?: SortOrder
+    statusUpdatedAt?: SortOrderInput | SortOrder
     kittenOfInterest?: SortOrderInput | SortOrder
     formData?: SortOrder
     createdAt?: SortOrder
@@ -29765,6 +29904,8 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Application"> | number
     type?: StringWithAggregatesFilter<"Application"> | string
     status?: StringWithAggregatesFilter<"Application"> | string
+    statusNotes?: StringWithAggregatesFilter<"Application"> | string
+    statusUpdatedAt?: DateTimeNullableWithAggregatesFilter<"Application"> | Date | string | null
     kittenOfInterest?: StringNullableWithAggregatesFilter<"Application"> | string | null
     formData?: StringWithAggregatesFilter<"Application"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Application"> | Date | string
@@ -30155,6 +30296,10 @@ export namespace Prisma {
     chewyWishlistUrl?: StringFilter<"Settings"> | string
     facebookUrl?: StringFilter<"Settings"> | string
     instagramUrl?: StringFilter<"Settings"> | string
+    socialPostingEnabled?: BoolFilter<"Settings"> | boolean
+    facebookPageId?: StringFilter<"Settings"> | string
+    facebookPageAccessToken?: StringFilter<"Settings"> | string
+    instagramBusinessAccountId?: StringFilter<"Settings"> | string
     emailsEnabled?: BoolFilter<"Settings"> | boolean
     smtpHost?: StringFilter<"Settings"> | string
     smtpPort?: IntFilter<"Settings"> | number
@@ -30175,6 +30320,10 @@ export namespace Prisma {
     chewyWishlistUrl?: SortOrder
     facebookUrl?: SortOrder
     instagramUrl?: SortOrder
+    socialPostingEnabled?: SortOrder
+    facebookPageId?: SortOrder
+    facebookPageAccessToken?: SortOrder
+    instagramBusinessAccountId?: SortOrder
     emailsEnabled?: SortOrder
     smtpHost?: SortOrder
     smtpPort?: SortOrder
@@ -30198,6 +30347,10 @@ export namespace Prisma {
     chewyWishlistUrl?: StringFilter<"Settings"> | string
     facebookUrl?: StringFilter<"Settings"> | string
     instagramUrl?: StringFilter<"Settings"> | string
+    socialPostingEnabled?: BoolFilter<"Settings"> | boolean
+    facebookPageId?: StringFilter<"Settings"> | string
+    facebookPageAccessToken?: StringFilter<"Settings"> | string
+    instagramBusinessAccountId?: StringFilter<"Settings"> | string
     emailsEnabled?: BoolFilter<"Settings"> | boolean
     smtpHost?: StringFilter<"Settings"> | string
     smtpPort?: IntFilter<"Settings"> | number
@@ -30218,6 +30371,10 @@ export namespace Prisma {
     chewyWishlistUrl?: SortOrder
     facebookUrl?: SortOrder
     instagramUrl?: SortOrder
+    socialPostingEnabled?: SortOrder
+    facebookPageId?: SortOrder
+    facebookPageAccessToken?: SortOrder
+    instagramBusinessAccountId?: SortOrder
     emailsEnabled?: SortOrder
     smtpHost?: SortOrder
     smtpPort?: SortOrder
@@ -30246,6 +30403,10 @@ export namespace Prisma {
     chewyWishlistUrl?: StringWithAggregatesFilter<"Settings"> | string
     facebookUrl?: StringWithAggregatesFilter<"Settings"> | string
     instagramUrl?: StringWithAggregatesFilter<"Settings"> | string
+    socialPostingEnabled?: BoolWithAggregatesFilter<"Settings"> | boolean
+    facebookPageId?: StringWithAggregatesFilter<"Settings"> | string
+    facebookPageAccessToken?: StringWithAggregatesFilter<"Settings"> | string
+    instagramBusinessAccountId?: StringWithAggregatesFilter<"Settings"> | string
     emailsEnabled?: BoolWithAggregatesFilter<"Settings"> | boolean
     smtpHost?: StringWithAggregatesFilter<"Settings"> | string
     smtpPort?: IntWithAggregatesFilter<"Settings"> | number
@@ -30355,6 +30516,8 @@ export namespace Prisma {
     toEmail?: StringFilter<"EmailLog"> | string
     subject?: StringFilter<"EmailLog"> | string
     status?: StringFilter<"EmailLog"> | string
+    provider?: StringFilter<"EmailLog"> | string
+    externalMessageId?: StringFilter<"EmailLog"> | string
     errorMessage?: StringFilter<"EmailLog"> | string
     relatedType?: StringFilter<"EmailLog"> | string
     relatedId?: IntNullableFilter<"EmailLog"> | number | null
@@ -30367,6 +30530,8 @@ export namespace Prisma {
     toEmail?: SortOrder
     subject?: SortOrder
     status?: SortOrder
+    provider?: SortOrder
+    externalMessageId?: SortOrder
     errorMessage?: SortOrder
     relatedType?: SortOrder
     relatedId?: SortOrderInput | SortOrder
@@ -30382,6 +30547,8 @@ export namespace Prisma {
     toEmail?: StringFilter<"EmailLog"> | string
     subject?: StringFilter<"EmailLog"> | string
     status?: StringFilter<"EmailLog"> | string
+    provider?: StringFilter<"EmailLog"> | string
+    externalMessageId?: StringFilter<"EmailLog"> | string
     errorMessage?: StringFilter<"EmailLog"> | string
     relatedType?: StringFilter<"EmailLog"> | string
     relatedId?: IntNullableFilter<"EmailLog"> | number | null
@@ -30394,6 +30561,8 @@ export namespace Prisma {
     toEmail?: SortOrder
     subject?: SortOrder
     status?: SortOrder
+    provider?: SortOrder
+    externalMessageId?: SortOrder
     errorMessage?: SortOrder
     relatedType?: SortOrder
     relatedId?: SortOrderInput | SortOrder
@@ -30414,6 +30583,8 @@ export namespace Prisma {
     toEmail?: StringWithAggregatesFilter<"EmailLog"> | string
     subject?: StringWithAggregatesFilter<"EmailLog"> | string
     status?: StringWithAggregatesFilter<"EmailLog"> | string
+    provider?: StringWithAggregatesFilter<"EmailLog"> | string
+    externalMessageId?: StringWithAggregatesFilter<"EmailLog"> | string
     errorMessage?: StringWithAggregatesFilter<"EmailLog"> | string
     relatedType?: StringWithAggregatesFilter<"EmailLog"> | string
     relatedId?: IntNullableWithAggregatesFilter<"EmailLog"> | number | null
@@ -30901,6 +31072,7 @@ export namespace Prisma {
     isPublic?: boolean
     platformList?: string
     publishTargets?: UpdateCreatepublishTargetsInput | string[]
+    socialDeliveryLog?: string
     createdAt?: Date | string
     kitten: KittenCreateNestedOneWithoutUpdatesInput
   }
@@ -30912,6 +31084,7 @@ export namespace Prisma {
     isPublic?: boolean
     platformList?: string
     publishTargets?: UpdateCreatepublishTargetsInput | string[]
+    socialDeliveryLog?: string
     createdAt?: Date | string
   }
 
@@ -30920,6 +31093,7 @@ export namespace Prisma {
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     platformList?: StringFieldUpdateOperationsInput | string
     publishTargets?: UpdateUpdatepublishTargetsInput | string[]
+    socialDeliveryLog?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     kitten?: KittenUpdateOneRequiredWithoutUpdatesNestedInput
   }
@@ -30931,6 +31105,7 @@ export namespace Prisma {
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     platformList?: StringFieldUpdateOperationsInput | string
     publishTargets?: UpdateUpdatepublishTargetsInput | string[]
+    socialDeliveryLog?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -30941,6 +31116,7 @@ export namespace Prisma {
     isPublic?: boolean
     platformList?: string
     publishTargets?: UpdateCreatepublishTargetsInput | string[]
+    socialDeliveryLog?: string
     createdAt?: Date | string
   }
 
@@ -30949,6 +31125,7 @@ export namespace Prisma {
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     platformList?: StringFieldUpdateOperationsInput | string
     publishTargets?: UpdateUpdatepublishTargetsInput | string[]
+    socialDeliveryLog?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -30959,6 +31136,7 @@ export namespace Prisma {
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     platformList?: StringFieldUpdateOperationsInput | string
     publishTargets?: UpdateUpdatepublishTargetsInput | string[]
+    socialDeliveryLog?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -31503,6 +31681,8 @@ export namespace Prisma {
   export type ApplicationCreateInput = {
     type: string
     status?: string
+    statusNotes?: string
+    statusUpdatedAt?: Date | string | null
     kittenOfInterest?: string | null
     formData?: string
     createdAt?: Date | string
@@ -31512,6 +31692,8 @@ export namespace Prisma {
     id?: number
     type: string
     status?: string
+    statusNotes?: string
+    statusUpdatedAt?: Date | string | null
     kittenOfInterest?: string | null
     formData?: string
     createdAt?: Date | string
@@ -31520,6 +31702,8 @@ export namespace Prisma {
   export type ApplicationUpdateInput = {
     type?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    statusNotes?: StringFieldUpdateOperationsInput | string
+    statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
     formData?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31529,6 +31713,8 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     type?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    statusNotes?: StringFieldUpdateOperationsInput | string
+    statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
     formData?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31538,6 +31724,8 @@ export namespace Prisma {
     id?: number
     type: string
     status?: string
+    statusNotes?: string
+    statusUpdatedAt?: Date | string | null
     kittenOfInterest?: string | null
     formData?: string
     createdAt?: Date | string
@@ -31546,6 +31734,8 @@ export namespace Prisma {
   export type ApplicationUpdateManyMutationInput = {
     type?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    statusNotes?: StringFieldUpdateOperationsInput | string
+    statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
     formData?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31555,6 +31745,8 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     type?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    statusNotes?: StringFieldUpdateOperationsInput | string
+    statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
     formData?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31942,6 +32134,10 @@ export namespace Prisma {
     chewyWishlistUrl?: string
     facebookUrl?: string
     instagramUrl?: string
+    socialPostingEnabled?: boolean
+    facebookPageId?: string
+    facebookPageAccessToken?: string
+    instagramBusinessAccountId?: string
     emailsEnabled?: boolean
     smtpHost?: string
     smtpPort?: number
@@ -31962,6 +32158,10 @@ export namespace Prisma {
     chewyWishlistUrl?: string
     facebookUrl?: string
     instagramUrl?: string
+    socialPostingEnabled?: boolean
+    facebookPageId?: string
+    facebookPageAccessToken?: string
+    instagramBusinessAccountId?: string
     emailsEnabled?: boolean
     smtpHost?: string
     smtpPort?: number
@@ -31982,6 +32182,10 @@ export namespace Prisma {
     chewyWishlistUrl?: StringFieldUpdateOperationsInput | string
     facebookUrl?: StringFieldUpdateOperationsInput | string
     instagramUrl?: StringFieldUpdateOperationsInput | string
+    socialPostingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    facebookPageId?: StringFieldUpdateOperationsInput | string
+    facebookPageAccessToken?: StringFieldUpdateOperationsInput | string
+    instagramBusinessAccountId?: StringFieldUpdateOperationsInput | string
     emailsEnabled?: BoolFieldUpdateOperationsInput | boolean
     smtpHost?: StringFieldUpdateOperationsInput | string
     smtpPort?: IntFieldUpdateOperationsInput | number
@@ -32002,6 +32206,10 @@ export namespace Prisma {
     chewyWishlistUrl?: StringFieldUpdateOperationsInput | string
     facebookUrl?: StringFieldUpdateOperationsInput | string
     instagramUrl?: StringFieldUpdateOperationsInput | string
+    socialPostingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    facebookPageId?: StringFieldUpdateOperationsInput | string
+    facebookPageAccessToken?: StringFieldUpdateOperationsInput | string
+    instagramBusinessAccountId?: StringFieldUpdateOperationsInput | string
     emailsEnabled?: BoolFieldUpdateOperationsInput | boolean
     smtpHost?: StringFieldUpdateOperationsInput | string
     smtpPort?: IntFieldUpdateOperationsInput | number
@@ -32022,6 +32230,10 @@ export namespace Prisma {
     chewyWishlistUrl?: string
     facebookUrl?: string
     instagramUrl?: string
+    socialPostingEnabled?: boolean
+    facebookPageId?: string
+    facebookPageAccessToken?: string
+    instagramBusinessAccountId?: string
     emailsEnabled?: boolean
     smtpHost?: string
     smtpPort?: number
@@ -32042,6 +32254,10 @@ export namespace Prisma {
     chewyWishlistUrl?: StringFieldUpdateOperationsInput | string
     facebookUrl?: StringFieldUpdateOperationsInput | string
     instagramUrl?: StringFieldUpdateOperationsInput | string
+    socialPostingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    facebookPageId?: StringFieldUpdateOperationsInput | string
+    facebookPageAccessToken?: StringFieldUpdateOperationsInput | string
+    instagramBusinessAccountId?: StringFieldUpdateOperationsInput | string
     emailsEnabled?: BoolFieldUpdateOperationsInput | boolean
     smtpHost?: StringFieldUpdateOperationsInput | string
     smtpPort?: IntFieldUpdateOperationsInput | number
@@ -32062,6 +32278,10 @@ export namespace Prisma {
     chewyWishlistUrl?: StringFieldUpdateOperationsInput | string
     facebookUrl?: StringFieldUpdateOperationsInput | string
     instagramUrl?: StringFieldUpdateOperationsInput | string
+    socialPostingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    facebookPageId?: StringFieldUpdateOperationsInput | string
+    facebookPageAccessToken?: StringFieldUpdateOperationsInput | string
+    instagramBusinessAccountId?: StringFieldUpdateOperationsInput | string
     emailsEnabled?: BoolFieldUpdateOperationsInput | boolean
     smtpHost?: StringFieldUpdateOperationsInput | string
     smtpPort?: IntFieldUpdateOperationsInput | number
@@ -32180,6 +32400,8 @@ export namespace Prisma {
     toEmail: string
     subject: string
     status: string
+    provider?: string
+    externalMessageId?: string
     errorMessage?: string
     relatedType?: string
     relatedId?: number | null
@@ -32192,6 +32414,8 @@ export namespace Prisma {
     toEmail: string
     subject: string
     status: string
+    provider?: string
+    externalMessageId?: string
     errorMessage?: string
     relatedType?: string
     relatedId?: number | null
@@ -32203,6 +32427,8 @@ export namespace Prisma {
     toEmail?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    externalMessageId?: StringFieldUpdateOperationsInput | string
     errorMessage?: StringFieldUpdateOperationsInput | string
     relatedType?: StringFieldUpdateOperationsInput | string
     relatedId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -32215,6 +32441,8 @@ export namespace Prisma {
     toEmail?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    externalMessageId?: StringFieldUpdateOperationsInput | string
     errorMessage?: StringFieldUpdateOperationsInput | string
     relatedType?: StringFieldUpdateOperationsInput | string
     relatedId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -32227,6 +32455,8 @@ export namespace Prisma {
     toEmail: string
     subject: string
     status: string
+    provider?: string
+    externalMessageId?: string
     errorMessage?: string
     relatedType?: string
     relatedId?: number | null
@@ -32238,6 +32468,8 @@ export namespace Prisma {
     toEmail?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    externalMessageId?: StringFieldUpdateOperationsInput | string
     errorMessage?: StringFieldUpdateOperationsInput | string
     relatedType?: StringFieldUpdateOperationsInput | string
     relatedId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -32250,6 +32482,8 @@ export namespace Prisma {
     toEmail?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    externalMessageId?: StringFieldUpdateOperationsInput | string
     errorMessage?: StringFieldUpdateOperationsInput | string
     relatedType?: StringFieldUpdateOperationsInput | string
     relatedId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -32842,6 +33076,7 @@ export namespace Prisma {
     isPublic?: SortOrder
     platformList?: SortOrder
     publishTargets?: SortOrder
+    socialDeliveryLog?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -32856,6 +33091,7 @@ export namespace Prisma {
     content?: SortOrder
     isPublic?: SortOrder
     platformList?: SortOrder
+    socialDeliveryLog?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -32865,6 +33101,7 @@ export namespace Prisma {
     content?: SortOrder
     isPublic?: SortOrder
     platformList?: SortOrder
+    socialDeliveryLog?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -33232,6 +33469,8 @@ export namespace Prisma {
     id?: SortOrder
     type?: SortOrder
     status?: SortOrder
+    statusNotes?: SortOrder
+    statusUpdatedAt?: SortOrder
     kittenOfInterest?: SortOrder
     formData?: SortOrder
     createdAt?: SortOrder
@@ -33245,6 +33484,8 @@ export namespace Prisma {
     id?: SortOrder
     type?: SortOrder
     status?: SortOrder
+    statusNotes?: SortOrder
+    statusUpdatedAt?: SortOrder
     kittenOfInterest?: SortOrder
     formData?: SortOrder
     createdAt?: SortOrder
@@ -33254,6 +33495,8 @@ export namespace Prisma {
     id?: SortOrder
     type?: SortOrder
     status?: SortOrder
+    statusNotes?: SortOrder
+    statusUpdatedAt?: SortOrder
     kittenOfInterest?: SortOrder
     formData?: SortOrder
     createdAt?: SortOrder
@@ -33519,6 +33762,10 @@ export namespace Prisma {
     chewyWishlistUrl?: SortOrder
     facebookUrl?: SortOrder
     instagramUrl?: SortOrder
+    socialPostingEnabled?: SortOrder
+    facebookPageId?: SortOrder
+    facebookPageAccessToken?: SortOrder
+    instagramBusinessAccountId?: SortOrder
     emailsEnabled?: SortOrder
     smtpHost?: SortOrder
     smtpPort?: SortOrder
@@ -33545,6 +33792,10 @@ export namespace Prisma {
     chewyWishlistUrl?: SortOrder
     facebookUrl?: SortOrder
     instagramUrl?: SortOrder
+    socialPostingEnabled?: SortOrder
+    facebookPageId?: SortOrder
+    facebookPageAccessToken?: SortOrder
+    instagramBusinessAccountId?: SortOrder
     emailsEnabled?: SortOrder
     smtpHost?: SortOrder
     smtpPort?: SortOrder
@@ -33565,6 +33816,10 @@ export namespace Prisma {
     chewyWishlistUrl?: SortOrder
     facebookUrl?: SortOrder
     instagramUrl?: SortOrder
+    socialPostingEnabled?: SortOrder
+    facebookPageId?: SortOrder
+    facebookPageAccessToken?: SortOrder
+    instagramBusinessAccountId?: SortOrder
     emailsEnabled?: SortOrder
     smtpHost?: SortOrder
     smtpPort?: SortOrder
@@ -33641,6 +33896,8 @@ export namespace Prisma {
     toEmail?: SortOrder
     subject?: SortOrder
     status?: SortOrder
+    provider?: SortOrder
+    externalMessageId?: SortOrder
     errorMessage?: SortOrder
     relatedType?: SortOrder
     relatedId?: SortOrder
@@ -33658,6 +33915,8 @@ export namespace Prisma {
     toEmail?: SortOrder
     subject?: SortOrder
     status?: SortOrder
+    provider?: SortOrder
+    externalMessageId?: SortOrder
     errorMessage?: SortOrder
     relatedType?: SortOrder
     relatedId?: SortOrder
@@ -33670,6 +33929,8 @@ export namespace Prisma {
     toEmail?: SortOrder
     subject?: SortOrder
     status?: SortOrder
+    provider?: SortOrder
+    externalMessageId?: SortOrder
     errorMessage?: SortOrder
     relatedType?: SortOrder
     relatedId?: SortOrder
@@ -35436,6 +35697,7 @@ export namespace Prisma {
     isPublic?: boolean
     platformList?: string
     publishTargets?: UpdateCreatepublishTargetsInput | string[]
+    socialDeliveryLog?: string
     createdAt?: Date | string
   }
 
@@ -35445,6 +35707,7 @@ export namespace Prisma {
     isPublic?: boolean
     platformList?: string
     publishTargets?: UpdateCreatepublishTargetsInput | string[]
+    socialDeliveryLog?: string
     createdAt?: Date | string
   }
 
@@ -35784,6 +36047,7 @@ export namespace Prisma {
     isPublic?: BoolFilter<"Update"> | boolean
     platformList?: StringFilter<"Update"> | string
     publishTargets?: StringNullableListFilter<"Update">
+    socialDeliveryLog?: StringFilter<"Update"> | string
     createdAt?: DateTimeFilter<"Update"> | Date | string
   }
 
@@ -38014,6 +38278,7 @@ export namespace Prisma {
     isPublic?: boolean
     platformList?: string
     publishTargets?: UpdateCreatepublishTargetsInput | string[]
+    socialDeliveryLog?: string
     createdAt?: Date | string
   }
 
@@ -38249,6 +38514,7 @@ export namespace Prisma {
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     platformList?: StringFieldUpdateOperationsInput | string
     publishTargets?: UpdateUpdatepublishTargetsInput | string[]
+    socialDeliveryLog?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -38258,6 +38524,7 @@ export namespace Prisma {
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     platformList?: StringFieldUpdateOperationsInput | string
     publishTargets?: UpdateUpdatepublishTargetsInput | string[]
+    socialDeliveryLog?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -38267,6 +38534,7 @@ export namespace Prisma {
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     platformList?: StringFieldUpdateOperationsInput | string
     publishTargets?: UpdateUpdatepublishTargetsInput | string[]
+    socialDeliveryLog?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

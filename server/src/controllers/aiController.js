@@ -11,14 +11,43 @@ function getDonationUrl() {
   return 'https://buy.stripe.com/test_placeholder';
 }
 
+function resolveAiProvider() {
+  const grokKey = process.env.XAI_API_KEY || process.env.GROK_API_KEY;
+  if (grokKey?.trim()) {
+    const baseUrl = (process.env.XAI_API_BASE_URL || 'https://api.x.ai/v1').trim().replace(/\/$/, '');
+    return {
+      apiKey: grokKey.trim(),
+      apiUrl: `${baseUrl}/chat/completions`,
+      model: process.env.GROK_MODEL || process.env.XAI_MODEL || 'grok-3-mini',
+      providerLabel: 'Grok',
+    };
+  }
+
+  const openaiKey = process.env.OPENAI_API_KEY;
+  if (openaiKey?.trim()) {
+    return {
+      apiKey: openaiKey.trim(),
+      apiUrl: 'https://api.openai.com/v1/chat/completions',
+      model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
+      providerLabel: 'OpenAI',
+    };
+  }
+
+  return null;
+}
+
+function getMissingKeyHint() {
+  if (process.env.VERCEL) {
+    return 'Add XAI_API_KEY or GROK_API_KEY (or OPENAI_API_KEY) in Vercel → Project Settings → Environment Variables, then redeploy.';
+  }
+  return 'Add XAI_API_KEY, GROK_API_KEY, or OPENAI_API_KEY to server/.env and restart the server.';
+}
+
 export async function generateCaption(req, res, next) {
   try {
-    const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) {
-      const hint = process.env.VERCEL
-        ? 'Add OPENAI_API_KEY in Vercel → Project Settings → Environment Variables, then redeploy.'
-        : 'Add OPENAI_API_KEY to your server/.env file and restart the server.';
-      return res.status(503).json({ error: `OpenAI API key is not configured. ${hint}` });
+    const provider = resolveAiProvider();
+    if (!provider) {
+      return res.status(503).json({ error: `AI API key is not configured. ${getMissingKeyHint()}` });
     }
 
     const { name, story, status } = req.body;
@@ -36,14 +65,14 @@ export async function generateCaption(req, res, next) {
       `Donation URL (use as [DONATE_LINK] in the closing call to action): ${donationUrl}`,
     ].join('\n');
 
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    const response = await fetch(provider.apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
+        Authorization: `Bearer ${provider.apiKey}`,
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: provider.model,
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
           { role: 'user', content: userPrompt },
@@ -56,13 +85,13 @@ export async function generateCaption(req, res, next) {
     const payload = await response.json().catch(() => ({}));
 
     if (!response.ok) {
-      const message = payload.error?.message || 'OpenAI request failed';
+      const message = payload.error?.message || `${provider.providerLabel} request failed`;
       return res.status(response.status >= 500 ? 502 : 400).json({ error: message });
     }
 
     let caption = payload.choices?.[0]?.message?.content?.trim();
     if (!caption) {
-      return res.status(502).json({ error: 'OpenAI returned an empty caption' });
+      return res.status(502).json({ error: `${provider.providerLabel} returned an empty caption` });
     }
 
     caption = caption.replace(/\[DONATE_LINK\]/g, donationUrl);

@@ -162,7 +162,7 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
       });
       setSocialCaption(result.caption);
     } catch (err) {
-      setCaptionError(err.message || 'Could not generate caption. Check your OpenAI API key.');
+      setCaptionError(err.message || 'Could not generate caption. Check your AI API key in Vercel or server .env.');
     } finally {
       setGeneratingCaption(false);
     }

@@ -6,6 +6,11 @@ import {
 } from '../validations/kittenValidation.js';
 import { normalizePublishTargets, targetsIncludeWebsite } from '../utils/publishTargets.js';
 import { isUnknownPublishTargetsError, withLegacyWebsiteFlag } from '../utils/prismaPublishTargets.js';
+import {
+  kittenListSelect,
+  serializeKittenForDetail,
+  serializeKittenForList,
+} from '../utils/kittenSerialization.js';
 
 const kittenIncludes = {
   litter: { select: { id: true, name: true } },
@@ -16,9 +21,9 @@ export async function getAllKittens(_req, res) {
   try {
     const kittens = await prisma.kitten.findMany({
       orderBy: { id: 'asc' },
-      include: kittenIncludes,
+      select: kittenListSelect,
     });
-    res.json(kittens);
+    res.json(kittens.map(serializeKittenForList));
   } catch (error) {
     console.error('Failed to fetch kittens:', error);
     res.status(500).json({ error: 'Failed to fetch kittens' });
@@ -105,7 +110,7 @@ export async function getKittenById(req, res, next) {
       return res.status(404).json({ error: 'Kitten not found' });
     }
 
-    res.json(kitten);
+    res.json(serializeKittenForDetail(kitten));
   } catch (error) {
     next(error);
   }

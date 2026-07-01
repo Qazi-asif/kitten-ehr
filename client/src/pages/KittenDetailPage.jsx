@@ -87,7 +87,9 @@ function KittenDetailPage() {
   const [galleryPhotos, setGalleryPhotos] = useState([]);
   const [activeTab, setActiveTab] = useState('overview');
   const [loading, setLoading] = useState(true);
+  const [photosLoading, setPhotosLoading] = useState(false);
   const [tabLoading, setTabLoading] = useState(false);
+  const [loadedTabs, setLoadedTabs] = useState(() => new Set());
   const [uploading, setUploading] = useState(false);
   const [photoUploading, setPhotoUploading] = useState(false);
   const [showActionsMenu, setShowActionsMenu] = useState(false);
@@ -148,22 +150,72 @@ function KittenDetailPage() {
   }, [id]);
 
   useEffect(() => {
-    fetchLitters().then(setLitters).catch(() => setLitters([]));
-  }, []);
-
-  useEffect(() => {
     setLoading(true);
+    setPhotosLoading(true);
     setError(null);
-    loadKitten()
-      .then(async () => {
-        await Promise.all([loadMedical(), loadWeights(), loadDocuments(), loadPhotos()]);
-        setLoading(false);
-      })
+    setLoadedTabs(new Set(['overview']));
+    setActiveTab('overview');
+    setGalleryPhotos([]);
+
+    Promise.all([
+      loadKitten(),
+      fetchLitters().then(setLitters).catch(() => setLitters([])),
+    ])
+      .then(() => setLoading(false))
       .catch((err) => {
         setError(err.message);
         setLoading(false);
+        setPhotosLoading(false);
       });
-  }, [id, loadKitten, loadMedical, loadWeights, loadDocuments, loadPhotos]);
+
+    loadPhotos()
+      .catch(() => setGalleryPhotos([]))
+      .finally(() => setPhotosLoading(false));
+  }, [id, loadKitten, loadPhotos]);
+
+  useEffect(() => {
+    if (loading) return undefined;
+
+    const medicalTabs = new Set(['vaccinations', 'medications', 'vet-visits']);
+    if (activeTab === 'overview' || activeTab === 'publishing') return undefined;
+    if (loadedTabs.has(activeTab)) return undefined;
+    if (medicalTabs.has(activeTab) && ['vaccinations', 'medications', 'vet-visits'].some((tab) => loadedTabs.has(tab))) {
+      return undefined;
+    }
+
+    let cancelled = false;
+
+    async function loadTabData() {
+      setTabLoading(true);
+      try {
+        if (medicalTabs.has(activeTab)) {
+          await loadMedical();
+          if (!cancelled) {
+            setLoadedTabs((prev) => new Set([...prev, 'vaccinations', 'medications', 'vet-visits']));
+          }
+        } else if (activeTab === 'weight') {
+          await loadWeights();
+          if (!cancelled) {
+            setLoadedTabs((prev) => new Set([...prev, activeTab]));
+          }
+        } else if (activeTab === 'documents') {
+          await loadDocuments();
+          if (!cancelled) {
+            setLoadedTabs((prev) => new Set([...prev, activeTab]));
+          }
+        }
+      } catch (err) {
+        if (!cancelled) setError(err.message);
+      } finally {
+        if (!cancelled) setTabLoading(false);
+      }
+    }
+
+    loadTabData();
+    return () => {
+      cancelled = true;
+    };
+  }, [activeTab, loading, loadedTabs, loadMedical, loadWeights, loadDocuments]);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -507,7 +559,11 @@ function KittenDetailPage() {
           </div>
 
           <div className="p-6">
-            {tabLoading && <p className="mb-4 text-sm text-slate-500">Saving...</p>}
+            {(tabLoading || photosLoading) && (
+              <p className="mb-4 text-sm text-slate-500">
+                {photosLoading && activeTab === 'overview' ? 'Loading photos...' : 'Loading tab data...'}
+              </p>
+            )}
 
             {activeTab === 'overview' && (
               <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">

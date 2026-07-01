@@ -84,7 +84,9 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
   const [placements, setPlacements] = useState([]);
   const [activeTab, setActiveTab] = useState('profile');
   const [loading, setLoading] = useState(true);
+  const [photosLoading, setPhotosLoading] = useState(false);
   const [tabLoading, setTabLoading] = useState(false);
+  const [loadedTabs, setLoadedTabs] = useState(() => new Set());
   const [uploading, setUploading] = useState(false);
   const [photoUploading, setPhotoUploading] = useState(false);
   const [profileForm, setProfileForm] = useState({});
@@ -154,26 +156,74 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
   }, [kittenId]);
 
   useEffect(() => {
-    fetchFosters().then(setFosters).catch(() => setFosters([]));
-    fetchLitters().then(setLitters).catch(() => setLitters([]));
-  }, []);
-
-  useEffect(() => {
     if (!kittenId) return undefined;
     setLoading(true);
+    setPhotosLoading(true);
     setError(null);
     setActiveTab('profile');
-    loadKitten()
-      .then(async () => {
-        await Promise.all([loadMedical(), loadWeights(), loadDocuments(), loadUpdates(), loadPhotos(), loadPlacements()]);
-        setLoading(false);
-      })
+    setLoadedTabs(new Set(['profile']));
+    setGalleryPhotos([]);
+
+    Promise.all([
+      loadKitten(),
+      fetchFosters().then(setFosters).catch(() => setFosters([])),
+      fetchLitters().then(setLitters).catch(() => setLitters([])),
+    ])
+      .then(() => setLoading(false))
       .catch((err) => {
         setError(err.message);
         setLoading(false);
+        setPhotosLoading(false);
       });
+
+    loadPhotos()
+      .catch(() => setGalleryPhotos([]))
+      .finally(() => setPhotosLoading(false));
+
     return undefined;
-  }, [kittenId, loadKitten, loadMedical, loadWeights, loadDocuments, loadUpdates, loadPhotos, loadPlacements]);
+  }, [kittenId, loadKitten, loadPhotos]);
+
+  useEffect(() => {
+    if (loading || !kittenId) return undefined;
+
+    const medicalTabs = new Set(['medical']);
+    if (activeTab === 'profile' || activeTab === 'publishing' || activeTab === 'notes') return undefined;
+    if (loadedTabs.has(activeTab)) return undefined;
+
+    let cancelled = false;
+
+    async function loadTabData() {
+      setTabLoading(true);
+      try {
+        if (medicalTabs.has(activeTab)) {
+          await loadMedical();
+        } else if (activeTab === 'weight') {
+          await loadWeights();
+        } else if (activeTab === 'documents') {
+          await loadDocuments();
+        } else if (activeTab === 'updates') {
+          await loadUpdates();
+        } else if (activeTab === 'placements') {
+          await loadPlacements();
+        } else {
+          return;
+        }
+
+        if (!cancelled) {
+          setLoadedTabs((prev) => new Set([...prev, activeTab]));
+        }
+      } catch (err) {
+        if (!cancelled) setError(err.message);
+      } finally {
+        if (!cancelled) setTabLoading(false);
+      }
+    }
+
+    loadTabData();
+    return () => {
+      cancelled = true;
+    };
+  }, [activeTab, kittenId, loading, loadedTabs, loadMedical, loadWeights, loadDocuments, loadUpdates, loadPlacements]);
 
   function handleProfileFieldChange(field, value) {
     setProfileForm((prev) => ({ ...prev, [field]: value }));
@@ -416,7 +466,11 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
         </div>
 
         <div className="max-h-[calc(100vh-320px)] overflow-y-auto p-5">
-          {tabLoading && <p className="mb-3 text-xs text-gray-500">Saving...</p>}
+          {(tabLoading || photosLoading) && (
+            <p className="mb-3 text-xs text-gray-500">
+              {photosLoading && activeTab === 'profile' ? 'Loading photos...' : 'Loading tab data...'}
+            </p>
+          )}
 
           {activeTab === 'profile' && (
             <div className="space-y-6">

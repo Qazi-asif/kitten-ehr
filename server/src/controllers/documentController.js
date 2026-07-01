@@ -8,7 +8,10 @@ import {
 } from '../utils/photoDocuments.js';
 
 async function findKitten(kittenId) {
-  return prisma.kitten.findUnique({ where: { id: kittenId } });
+  return prisma.kitten.findUnique({
+    where: { id: kittenId },
+    select: { id: true, primaryPhotoUrl: true, createdAt: true },
+  });
 }
 
 export async function getDocumentsByKitten(req, res, next) {
@@ -118,11 +121,21 @@ export async function uploadPhoto(req, res, next) {
 
     const fileUrl = `data:${upload.mimetype};base64,${upload.buffer.toString('base64')}`;
     const setAsPrimary = req.body.setAsPrimary === 'true' || req.body.setAsPrimary === true;
-    const existingPhotos = await prisma.document.findMany({ where: { kittenId } });
-    const hasPrimary = Boolean(kitten.primaryPhotoUrl) || existingPhotos.some((doc) => doc.isPrimaryPhoto);
+    const [hasPrimaryPhotoDoc, photoCount] = await Promise.all([
+      prisma.document.count({ where: { kittenId, isPrimaryPhoto: true } }),
+      prisma.document.count({
+        where: {
+          kittenId,
+          OR: [
+            { isPrimaryPhoto: true },
+            { docType: { in: ['Photo', 'Primary Photo', 'Gallery Photo'] } },
+            { fileUrl: { startsWith: 'data:image/' } },
+          ],
+        },
+      }),
+    ]);
+    const hasPrimary = Boolean(kitten.primaryPhotoUrl) || hasPrimaryPhotoDoc > 0;
     const shouldSetPrimary = setAsPrimary || !hasPrimary;
-
-    const photoCount = existingPhotos.filter(isPhotoDocument).length;
 
     const document = await prisma.$transaction(async (tx) => {
       if (shouldSetPrimary) {

@@ -72,6 +72,11 @@ model Kitten {
   sponsorships    Sponsorship[]
   updates         Update[]
   transactions    Transaction[]
+
+  @@index([status])
+  @@index([litterId])
+  @@index([currentFosterId])
+  @@index([status, createdAt])
 }
 
 model Update {
@@ -84,6 +89,9 @@ model Update {
   publishTargets    String[] @default([])
   socialDeliveryLog String   @default("")
   createdAt         DateTime @default(now())
+
+  @@index([kittenId])
+  @@index([kittenId, createdAt])
 }
 
 model Sponsorship {
@@ -94,6 +102,8 @@ model Sponsorship {
   amount      Float
   tier        String
   createdAt   DateTime @default(now())
+
+  @@index([kittenId])
 }
 
 model Placement {
@@ -106,6 +116,9 @@ model Placement {
   dischargeDate DateTime?
   dischargeType String?
   notes         String    @default("")
+
+  @@index([kittenId])
+  @@index([fosterId])
 }
 
 model WeightLog {
@@ -117,6 +130,8 @@ model WeightLog {
   weightGrams Float    @default(0)
   loggedBy    String   @default("")
   notes       String   @default("")
+
+  @@index([kittenId, date])
 }
 
 model Vaccine {
@@ -130,6 +145,8 @@ model Vaccine {
   manufacturer   String   @default("")
   administeredBy String   @default("")
   notes          String   @default("")
+
+  @@index([kittenId])
 }
 
 model Medication {
@@ -145,6 +162,8 @@ model Medication {
   endDate   DateTime?
   status    String    @default("Active")
   notes     String    @default("")
+
+  @@index([kittenId])
 }
 
 model VetAppointment {
@@ -160,6 +179,8 @@ model VetAppointment {
   treatment    String    @default("")
   followUpDate DateTime?
   notes        String    @default("")
+
+  @@index([kittenId])
 }
 
 model Document {
@@ -173,6 +194,9 @@ model Document {
   isPrimaryPhoto Boolean  @default(false)
   sortOrder      Int      @default(0)
   uploadedAt     DateTime @default(now())
+
+  @@index([kittenId])
+  @@index([kittenId, isPrimaryPhoto])
 }
 
 model Application {

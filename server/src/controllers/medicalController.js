@@ -4,16 +4,16 @@ export async function getMedicalByKittenId(req, res, next) {
   try {
     const kittenId = Number.parseInt(req.params.kittenId, 10);
 
-    const kitten = await prisma.kitten.findUnique({ where: { id: kittenId } });
-    if (!kitten) {
-      return res.status(404).json({ error: 'Kitten not found' });
-    }
-
-    const [vaccines, medications, vetAppointments] = await Promise.all([
+    const [kitten, vaccines, medications, vetAppointments] = await Promise.all([
+      prisma.kitten.findUnique({ where: { id: kittenId }, select: { id: true } }),
       prisma.vaccine.findMany({ where: { kittenId }, orderBy: { dateGiven: 'desc' } }),
       prisma.medication.findMany({ where: { kittenId }, orderBy: { startDate: 'desc' } }),
       prisma.vetAppointment.findMany({ where: { kittenId }, orderBy: { date: 'desc' } }),
     ]);
+
+    if (!kitten) {
+      return res.status(404).json({ error: 'Kitten not found' });
+    }
 
     res.json({ vaccines, medications, vetAppointments });
   } catch (error) {

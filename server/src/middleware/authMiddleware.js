@@ -1,7 +1,11 @@
 import prisma from '../lib/prisma.js';
 import { verifyToken } from '../utils/authUtils.js';
+import { getCachedAuth, setCachedAuth } from '../utils/authCache.js';
 
 async function loadUserWithPermissions(userId) {
+  const cached = getCachedAuth(userId);
+  if (cached) return cached;
+
   const user = await prisma.user.findUnique({
     where: { id: userId },
     include: {
@@ -18,7 +22,9 @@ async function loadUserWithPermissions(userId) {
   if (!user || !user.isActive) return null;
 
   const permissions = user.role.permissions.map((rp) => rp.permission.key);
-  return { user, permissions };
+  const result = { user, permissions };
+  setCachedAuth(userId, result);
+  return result;
 }
 
 export async function requireAuth(req, res, next) {

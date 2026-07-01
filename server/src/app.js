@@ -56,6 +56,7 @@ const globalLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Too many requests. Please try again later.' },
+  skip: (req) => req.headers.authorization?.startsWith('Bearer '),
 });
 
 const applicationLimiter = rateLimit({

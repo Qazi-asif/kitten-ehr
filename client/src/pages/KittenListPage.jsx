@@ -45,9 +45,11 @@ function KittensPage() {
   }, []);
 
   useEffect(() => {
-    loadKittens();
-    fetchLitters().then(setLitters).catch(() => {});
-    fetchFosters().then(setFosters).catch(() => {});
+    Promise.all([
+      loadKittens(),
+      fetchLitters().then(setLitters).catch(() => {}),
+      fetchFosters().then(setFosters).catch(() => {}),
+    ]).catch(() => {});
   }, [loadKittens]);
 
   function closeAddForm() {

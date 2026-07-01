@@ -179,6 +179,7 @@ exports.Prisma.UpdateScalarFieldEnum = {
   isPublic: 'isPublic',
   platformList: 'platformList',
   publishTargets: 'publishTargets',
+  socialDeliveryLog: 'socialDeliveryLog',
   createdAt: 'createdAt'
 };
 
@@ -267,6 +268,8 @@ exports.Prisma.ApplicationScalarFieldEnum = {
   id: 'id',
   type: 'type',
   status: 'status',
+  statusNotes: 'statusNotes',
+  statusUpdatedAt: 'statusUpdatedAt',
   kittenOfInterest: 'kittenOfInterest',
   formData: 'formData',
   createdAt: 'createdAt'
@@ -335,6 +338,10 @@ exports.Prisma.SettingsScalarFieldEnum = {
   chewyWishlistUrl: 'chewyWishlistUrl',
   facebookUrl: 'facebookUrl',
   instagramUrl: 'instagramUrl',
+  socialPostingEnabled: 'socialPostingEnabled',
+  facebookPageId: 'facebookPageId',
+  facebookPageAccessToken: 'facebookPageAccessToken',
+  instagramBusinessAccountId: 'instagramBusinessAccountId',
   emailsEnabled: 'emailsEnabled',
   smtpHost: 'smtpHost',
   smtpPort: 'smtpPort',
@@ -367,6 +374,8 @@ exports.Prisma.EmailLogScalarFieldEnum = {
   toEmail: 'toEmail',
   subject: 'subject',
   status: 'status',
+  provider: 'provider',
+  externalMessageId: 'externalMessageId',
   errorMessage: 'errorMessage',
   relatedType: 'relatedType',
   relatedId: 'relatedId',
