@@ -1,5 +1,6 @@
 import prisma from '../lib/prisma.js';
 import { testSocialConnection } from '../services/socialMediaService.js';
+import { isAiKeyConfiguredInEnv } from '../utils/aiProvider.js';
 
 const SETTINGS_ID = 1;
 
@@ -24,6 +25,8 @@ const DEFAULTS = {
   facebookPageId: '',
   facebookPageAccessToken: '',
   instagramBusinessAccountId: '',
+  xaiApiKey: '',
+  grokModel: 'grok-3-mini',
   emailsEnabled: false,
   smtpHost: '',
   smtpPort: 587,
@@ -36,13 +39,14 @@ const DEFAULTS = {
 };
 
 function sanitizeSettings(settings) {
-  const { smtpPass, facebookPageAccessToken, ...rest } = settings;
+  const { smtpPass, facebookPageAccessToken, xaiApiKey, ...rest } = settings;
   return {
     ...rest,
     smtpPassConfigured: Boolean(smtpPass || process.env.SMTP_PASS),
     facebookPageAccessTokenConfigured: Boolean(
       facebookPageAccessToken || process.env.FACEBOOK_PAGE_ACCESS_TOKEN,
     ),
+    xaiApiKeyConfigured: Boolean(xaiApiKey?.trim() || isAiKeyConfiguredInEnv()),
   };
 }
 
@@ -76,6 +80,8 @@ export async function updateSettings(req, res, next) {
       facebookPageId,
       facebookPageAccessToken,
       instagramBusinessAccountId,
+      xaiApiKey,
+      grokModel,
       emailsEnabled,
       smtpHost,
       smtpPort,
@@ -114,6 +120,13 @@ export async function updateSettings(req, res, next) {
     }
     if (instagramBusinessAccountId !== undefined) {
       data.instagramBusinessAccountId = String(instagramBusinessAccountId).trim();
+    }
+    if (xaiApiKey !== undefined && xaiApiKey !== '') {
+      data.xaiApiKey = String(xaiApiKey).trim();
+    }
+    if (grokModel !== undefined) {
+      const model = String(grokModel).trim();
+      data.grokModel = model || 'grok-3-mini';
     }
     if (emailsEnabled !== undefined) data.emailsEnabled = Boolean(emailsEnabled);
     if (smtpHost !== undefined) data.smtpHost = String(smtpHost).trim();

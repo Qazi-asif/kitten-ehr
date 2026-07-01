@@ -32,6 +32,8 @@ const EMPTY_ORG = {
   facebookPageId: '',
   facebookPageAccessToken: '',
   instagramBusinessAccountId: '',
+  xaiApiKey: '',
+  grokModel: 'grok-3-mini',
 };
 
 const EMPTY_USER = {
@@ -100,6 +102,9 @@ function SettingsPage() {
         facebookPageId: settingsData.facebookPageId || '',
         facebookPageAccessToken: '',
         instagramBusinessAccountId: settingsData.instagramBusinessAccountId || '',
+        xaiApiKey: '',
+        grokModel: settingsData.grokModel || 'grok-3-mini',
+        xaiApiKeyConfigured: Boolean(settingsData.xaiApiKeyConfigured),
       });
 
       const tasks = [];
@@ -147,6 +152,9 @@ function SettingsPage() {
         facebookPageId: updated.facebookPageId || '',
         facebookPageAccessToken: '',
         instagramBusinessAccountId: updated.instagramBusinessAccountId || '',
+        xaiApiKey: '',
+        grokModel: updated.grokModel || 'grok-3-mini',
+        xaiApiKeyConfigured: Boolean(updated.xaiApiKeyConfigured),
       });
     } catch (err) {
       setError(err.message);
@@ -432,6 +440,42 @@ function SettingsPage() {
                 className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-slate-50"
               />
             </label>
+          </div>
+
+          <div className="rounded-xl border border-brand/20 bg-brand-light/30 p-5">
+            <h3 className="text-sm font-bold text-slate-900">AI Copywriter (Grok / xAI)</h3>
+            <p className="mt-1 text-sm text-slate-600">
+              Powers the Generate AI Caption button on the Publishing tab. Save your xAI key here, or set{' '}
+              <code className="rounded bg-white px-1 py-0.5 text-xs">XAI_API_KEY</code> in Vercel environment
+              variables.
+            </p>
+            {orgSettings.xaiApiKeyConfigured && (
+              <p className="mt-2 text-xs font-semibold text-emerald-700">AI key is configured.</p>
+            )}
+            <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+              <label className="block md:col-span-2">
+                <span className="mb-1 block text-xs font-medium text-slate-600">xAI / Grok API Key</span>
+                <input
+                  type="password"
+                  value={orgSettings.xaiApiKey}
+                  onChange={(e) => handleOrgFieldChange('xaiApiKey', e.target.value)}
+                  disabled={!canManageOrg}
+                  placeholder="Leave blank to keep existing key"
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-white"
+                />
+              </label>
+              <label className="block">
+                <span className="mb-1 block text-xs font-medium text-slate-600">Grok Model</span>
+                <input
+                  type="text"
+                  value={orgSettings.grokModel}
+                  onChange={(e) => handleOrgFieldChange('grokModel', e.target.value)}
+                  disabled={!canManageOrg}
+                  placeholder="grok-3-mini"
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-white"
+                />
+              </label>
+            </div>
           </div>
 
           <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
