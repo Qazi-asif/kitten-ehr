@@ -5,6 +5,8 @@ import { getFileUrl } from '../../services/api';
 import KittenPhoto from '../../components/KittenPhoto';
 import { formatKittenAge } from '../../utils/kittenImages';
 
+const DONATE_STRIPE_URL = 'https://buy.stripe.com/test_placeholder';
+
 const SPONSOR_TIERS = [
   { label: 'One Meal', amount: '$5' },
   { label: 'Week of Food', amount: '$25' },
@@ -65,6 +67,31 @@ function PublicKittenProfile() {
         <KittenPhoto kitten={kitten} allowFallback className="h-full w-full" />
       </div>
 
+      <div className="border-b border-brand/20 bg-gradient-to-r from-brand/10 via-brand-light to-brand/10 px-6 py-5">
+        <div className="mx-auto flex max-w-3xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-wide text-brand">Support {kitten.name}&apos;s care</p>
+            <p className="mt-1 text-sm text-slate-700">Every share helps — sponsor or donate today.</p>
+          </div>
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <Link
+              to="/donate"
+              className="rounded-md bg-brand px-6 py-3 text-center text-sm font-bold uppercase tracking-wide text-white shadow-sm hover:bg-brand-dark"
+            >
+              Donate Now
+            </Link>
+            <a
+              href={DONATE_STRIPE_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-md border-2 border-brand bg-white px-6 py-3 text-center text-sm font-bold uppercase tracking-wide text-brand hover:bg-brand-light"
+            >
+              Sponsor This Kitten
+            </a>
+          </div>
+        </div>
+      </div>
+
       <div className="mx-auto max-w-3xl px-6 py-8 lg:px-8">
         <Link to="/kittens" className="text-sm font-medium text-brand hover:underline">← Back to Adopt</Link>
 
@@ -79,7 +106,7 @@ function PublicKittenProfile() {
           <Link to={`/adopt?kitten=${kitten.name}`} className="rounded-md bg-brand py-3.5 text-center text-sm font-bold uppercase tracking-wide text-white hover:bg-brand-dark">
             Adopt Me
           </Link>
-          <a href="https://buy.stripe.com/test_placeholder" target="_blank" rel="noreferrer" className="rounded-md border-2 border-brand py-3.5 text-center text-sm font-bold uppercase tracking-wide text-brand hover:bg-brand-light">
+          <a href={DONATE_STRIPE_URL} target="_blank" rel="noreferrer" className="rounded-md border-2 border-brand py-3.5 text-center text-sm font-bold uppercase tracking-wide text-brand hover:bg-brand-light">
             Sponsor Me
           </a>
           <Link to="/donate" className="rounded-md border border-slate-300 py-3.5 text-center text-sm font-bold uppercase tracking-wide text-slate-700 hover:bg-slate-50">
@@ -180,7 +207,7 @@ function PublicKittenProfile() {
             ))}
           </div>
           <a
-            href="https://buy.stripe.com/test_placeholder"
+            href={DONATE_STRIPE_URL}
             target="_blank"
             rel="noreferrer"
             className="mt-6 block w-full rounded-md bg-brand py-3.5 text-center text-sm font-bold uppercase tracking-wide text-white hover:bg-brand-dark"

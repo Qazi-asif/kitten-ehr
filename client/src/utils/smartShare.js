@@ -5,19 +5,11 @@ export function getPublicKittenUrl(kittenId, origin = window.location.origin) {
 }
 
 export function buildFacebookShareUrl(publicUrl, caption) {
-  const params = new URLSearchParams({
-    u: publicUrl,
-    quote: caption,
-  });
-  return `https://www.facebook.com/sharer/sharer.php?${params.toString()}`;
+  return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(publicUrl)}&quote=${encodeURIComponent(caption)}`;
 }
 
 export function buildTwitterShareUrl(publicUrl, caption) {
-  const params = new URLSearchParams({
-    text: caption,
-    url: publicUrl,
-  });
-  return `https://twitter.com/intent/tweet?${params.toString()}`;
+  return `https://twitter.com/intent/tweet?text=${encodeURIComponent(caption)}&url=${encodeURIComponent(publicUrl)}`;
 }
 
 export function openShareWindow(url) {
