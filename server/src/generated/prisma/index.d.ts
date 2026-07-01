@@ -23832,6 +23832,8 @@ export namespace Prisma {
     facebookPageId: string | null
     facebookPageAccessToken: string | null
     instagramBusinessAccountId: string | null
+    groqApiKey: string | null
+    groqModel: string | null
     emailsEnabled: boolean | null
     smtpHost: string | null
     smtpPort: number | null
@@ -23856,6 +23858,8 @@ export namespace Prisma {
     facebookPageId: string | null
     facebookPageAccessToken: string | null
     instagramBusinessAccountId: string | null
+    groqApiKey: string | null
+    groqModel: string | null
     emailsEnabled: boolean | null
     smtpHost: string | null
     smtpPort: number | null
@@ -23880,6 +23884,8 @@ export namespace Prisma {
     facebookPageId: number
     facebookPageAccessToken: number
     instagramBusinessAccountId: number
+    groqApiKey: number
+    groqModel: number
     emailsEnabled: number
     smtpHost: number
     smtpPort: number
@@ -23918,6 +23924,8 @@ export namespace Prisma {
     facebookPageId?: true
     facebookPageAccessToken?: true
     instagramBusinessAccountId?: true
+    groqApiKey?: true
+    groqModel?: true
     emailsEnabled?: true
     smtpHost?: true
     smtpPort?: true
@@ -23942,6 +23950,8 @@ export namespace Prisma {
     facebookPageId?: true
     facebookPageAccessToken?: true
     instagramBusinessAccountId?: true
+    groqApiKey?: true
+    groqModel?: true
     emailsEnabled?: true
     smtpHost?: true
     smtpPort?: true
@@ -23966,6 +23976,8 @@ export namespace Prisma {
     facebookPageId?: true
     facebookPageAccessToken?: true
     instagramBusinessAccountId?: true
+    groqApiKey?: true
+    groqModel?: true
     emailsEnabled?: true
     smtpHost?: true
     smtpPort?: true
@@ -24077,6 +24089,8 @@ export namespace Prisma {
     facebookPageId: string
     facebookPageAccessToken: string
     instagramBusinessAccountId: string
+    groqApiKey: string
+    groqModel: string
     emailsEnabled: boolean
     smtpHost: string
     smtpPort: number
@@ -24120,6 +24134,8 @@ export namespace Prisma {
     facebookPageId?: boolean
     facebookPageAccessToken?: boolean
     instagramBusinessAccountId?: boolean
+    groqApiKey?: boolean
+    groqModel?: boolean
     emailsEnabled?: boolean
     smtpHost?: boolean
     smtpPort?: boolean
@@ -24144,6 +24160,8 @@ export namespace Prisma {
     facebookPageId?: boolean
     facebookPageAccessToken?: boolean
     instagramBusinessAccountId?: boolean
+    groqApiKey?: boolean
+    groqModel?: boolean
     emailsEnabled?: boolean
     smtpHost?: boolean
     smtpPort?: boolean
@@ -24168,6 +24186,8 @@ export namespace Prisma {
     facebookPageId?: boolean
     facebookPageAccessToken?: boolean
     instagramBusinessAccountId?: boolean
+    groqApiKey?: boolean
+    groqModel?: boolean
     emailsEnabled?: boolean
     smtpHost?: boolean
     smtpPort?: boolean
@@ -24192,6 +24212,8 @@ export namespace Prisma {
     facebookPageId?: boolean
     facebookPageAccessToken?: boolean
     instagramBusinessAccountId?: boolean
+    groqApiKey?: boolean
+    groqModel?: boolean
     emailsEnabled?: boolean
     smtpHost?: boolean
     smtpPort?: boolean
@@ -24203,7 +24225,7 @@ export namespace Prisma {
     adminNotifyEmail?: boolean
   }
 
-  export type SettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orgName" | "missionStatement" | "defaultDonationAmount" | "amazonWishlistUrl" | "chewyWishlistUrl" | "facebookUrl" | "instagramUrl" | "socialPostingEnabled" | "facebookPageId" | "facebookPageAccessToken" | "instagramBusinessAccountId" | "emailsEnabled" | "smtpHost" | "smtpPort" | "smtpSecure" | "smtpUser" | "smtpPass" | "fromEmail" | "fromName" | "adminNotifyEmail", ExtArgs["result"]["settings"]>
+  export type SettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orgName" | "missionStatement" | "defaultDonationAmount" | "amazonWishlistUrl" | "chewyWishlistUrl" | "facebookUrl" | "instagramUrl" | "socialPostingEnabled" | "facebookPageId" | "facebookPageAccessToken" | "instagramBusinessAccountId" | "groqApiKey" | "groqModel" | "emailsEnabled" | "smtpHost" | "smtpPort" | "smtpSecure" | "smtpUser" | "smtpPass" | "fromEmail" | "fromName" | "adminNotifyEmail", ExtArgs["result"]["settings"]>
 
   export type $SettingsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Settings"
@@ -24221,6 +24243,8 @@ export namespace Prisma {
       facebookPageId: string
       facebookPageAccessToken: string
       instagramBusinessAccountId: string
+      groqApiKey: string
+      groqModel: string
       emailsEnabled: boolean
       smtpHost: string
       smtpPort: number
@@ -24665,6 +24689,8 @@ export namespace Prisma {
     readonly facebookPageId: FieldRef<"Settings", 'String'>
     readonly facebookPageAccessToken: FieldRef<"Settings", 'String'>
     readonly instagramBusinessAccountId: FieldRef<"Settings", 'String'>
+    readonly groqApiKey: FieldRef<"Settings", 'String'>
+    readonly groqModel: FieldRef<"Settings", 'String'>
     readonly emailsEnabled: FieldRef<"Settings", 'Boolean'>
     readonly smtpHost: FieldRef<"Settings", 'String'>
     readonly smtpPort: FieldRef<"Settings", 'Int'>
@@ -28744,6 +28770,8 @@ export namespace Prisma {
     facebookPageId: 'facebookPageId',
     facebookPageAccessToken: 'facebookPageAccessToken',
     instagramBusinessAccountId: 'instagramBusinessAccountId',
+    groqApiKey: 'groqApiKey',
+    groqModel: 'groqModel',
     emailsEnabled: 'emailsEnabled',
     smtpHost: 'smtpHost',
     smtpPort: 'smtpPort',
@@ -30300,6 +30328,8 @@ export namespace Prisma {
     facebookPageId?: StringFilter<"Settings"> | string
     facebookPageAccessToken?: StringFilter<"Settings"> | string
     instagramBusinessAccountId?: StringFilter<"Settings"> | string
+    groqApiKey?: StringFilter<"Settings"> | string
+    groqModel?: StringFilter<"Settings"> | string
     emailsEnabled?: BoolFilter<"Settings"> | boolean
     smtpHost?: StringFilter<"Settings"> | string
     smtpPort?: IntFilter<"Settings"> | number
@@ -30324,6 +30354,8 @@ export namespace Prisma {
     facebookPageId?: SortOrder
     facebookPageAccessToken?: SortOrder
     instagramBusinessAccountId?: SortOrder
+    groqApiKey?: SortOrder
+    groqModel?: SortOrder
     emailsEnabled?: SortOrder
     smtpHost?: SortOrder
     smtpPort?: SortOrder
@@ -30351,6 +30383,8 @@ export namespace Prisma {
     facebookPageId?: StringFilter<"Settings"> | string
     facebookPageAccessToken?: StringFilter<"Settings"> | string
     instagramBusinessAccountId?: StringFilter<"Settings"> | string
+    groqApiKey?: StringFilter<"Settings"> | string
+    groqModel?: StringFilter<"Settings"> | string
     emailsEnabled?: BoolFilter<"Settings"> | boolean
     smtpHost?: StringFilter<"Settings"> | string
     smtpPort?: IntFilter<"Settings"> | number
@@ -30375,6 +30409,8 @@ export namespace Prisma {
     facebookPageId?: SortOrder
     facebookPageAccessToken?: SortOrder
     instagramBusinessAccountId?: SortOrder
+    groqApiKey?: SortOrder
+    groqModel?: SortOrder
     emailsEnabled?: SortOrder
     smtpHost?: SortOrder
     smtpPort?: SortOrder
@@ -30407,6 +30443,8 @@ export namespace Prisma {
     facebookPageId?: StringWithAggregatesFilter<"Settings"> | string
     facebookPageAccessToken?: StringWithAggregatesFilter<"Settings"> | string
     instagramBusinessAccountId?: StringWithAggregatesFilter<"Settings"> | string
+    groqApiKey?: StringWithAggregatesFilter<"Settings"> | string
+    groqModel?: StringWithAggregatesFilter<"Settings"> | string
     emailsEnabled?: BoolWithAggregatesFilter<"Settings"> | boolean
     smtpHost?: StringWithAggregatesFilter<"Settings"> | string
     smtpPort?: IntWithAggregatesFilter<"Settings"> | number
@@ -32138,6 +32176,8 @@ export namespace Prisma {
     facebookPageId?: string
     facebookPageAccessToken?: string
     instagramBusinessAccountId?: string
+    groqApiKey?: string
+    groqModel?: string
     emailsEnabled?: boolean
     smtpHost?: string
     smtpPort?: number
@@ -32162,6 +32202,8 @@ export namespace Prisma {
     facebookPageId?: string
     facebookPageAccessToken?: string
     instagramBusinessAccountId?: string
+    groqApiKey?: string
+    groqModel?: string
     emailsEnabled?: boolean
     smtpHost?: string
     smtpPort?: number
@@ -32186,6 +32228,8 @@ export namespace Prisma {
     facebookPageId?: StringFieldUpdateOperationsInput | string
     facebookPageAccessToken?: StringFieldUpdateOperationsInput | string
     instagramBusinessAccountId?: StringFieldUpdateOperationsInput | string
+    groqApiKey?: StringFieldUpdateOperationsInput | string
+    groqModel?: StringFieldUpdateOperationsInput | string
     emailsEnabled?: BoolFieldUpdateOperationsInput | boolean
     smtpHost?: StringFieldUpdateOperationsInput | string
     smtpPort?: IntFieldUpdateOperationsInput | number
@@ -32210,6 +32254,8 @@ export namespace Prisma {
     facebookPageId?: StringFieldUpdateOperationsInput | string
     facebookPageAccessToken?: StringFieldUpdateOperationsInput | string
     instagramBusinessAccountId?: StringFieldUpdateOperationsInput | string
+    groqApiKey?: StringFieldUpdateOperationsInput | string
+    groqModel?: StringFieldUpdateOperationsInput | string
     emailsEnabled?: BoolFieldUpdateOperationsInput | boolean
     smtpHost?: StringFieldUpdateOperationsInput | string
     smtpPort?: IntFieldUpdateOperationsInput | number
@@ -32234,6 +32280,8 @@ export namespace Prisma {
     facebookPageId?: string
     facebookPageAccessToken?: string
     instagramBusinessAccountId?: string
+    groqApiKey?: string
+    groqModel?: string
     emailsEnabled?: boolean
     smtpHost?: string
     smtpPort?: number
@@ -32258,6 +32306,8 @@ export namespace Prisma {
     facebookPageId?: StringFieldUpdateOperationsInput | string
     facebookPageAccessToken?: StringFieldUpdateOperationsInput | string
     instagramBusinessAccountId?: StringFieldUpdateOperationsInput | string
+    groqApiKey?: StringFieldUpdateOperationsInput | string
+    groqModel?: StringFieldUpdateOperationsInput | string
     emailsEnabled?: BoolFieldUpdateOperationsInput | boolean
     smtpHost?: StringFieldUpdateOperationsInput | string
     smtpPort?: IntFieldUpdateOperationsInput | number
@@ -32282,6 +32332,8 @@ export namespace Prisma {
     facebookPageId?: StringFieldUpdateOperationsInput | string
     facebookPageAccessToken?: StringFieldUpdateOperationsInput | string
     instagramBusinessAccountId?: StringFieldUpdateOperationsInput | string
+    groqApiKey?: StringFieldUpdateOperationsInput | string
+    groqModel?: StringFieldUpdateOperationsInput | string
     emailsEnabled?: BoolFieldUpdateOperationsInput | boolean
     smtpHost?: StringFieldUpdateOperationsInput | string
     smtpPort?: IntFieldUpdateOperationsInput | number
@@ -33766,6 +33818,8 @@ export namespace Prisma {
     facebookPageId?: SortOrder
     facebookPageAccessToken?: SortOrder
     instagramBusinessAccountId?: SortOrder
+    groqApiKey?: SortOrder
+    groqModel?: SortOrder
     emailsEnabled?: SortOrder
     smtpHost?: SortOrder
     smtpPort?: SortOrder
@@ -33796,6 +33850,8 @@ export namespace Prisma {
     facebookPageId?: SortOrder
     facebookPageAccessToken?: SortOrder
     instagramBusinessAccountId?: SortOrder
+    groqApiKey?: SortOrder
+    groqModel?: SortOrder
     emailsEnabled?: SortOrder
     smtpHost?: SortOrder
     smtpPort?: SortOrder
@@ -33820,6 +33876,8 @@ export namespace Prisma {
     facebookPageId?: SortOrder
     facebookPageAccessToken?: SortOrder
     instagramBusinessAccountId?: SortOrder
+    groqApiKey?: SortOrder
+    groqModel?: SortOrder
     emailsEnabled?: SortOrder
     smtpHost?: SortOrder
     smtpPort?: SortOrder

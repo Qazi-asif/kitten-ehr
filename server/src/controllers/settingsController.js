@@ -25,8 +25,8 @@ const DEFAULTS = {
   facebookPageId: '',
   facebookPageAccessToken: '',
   instagramBusinessAccountId: '',
-  xaiApiKey: '',
-  grokModel: 'grok-3-mini-latest',
+  groqApiKey: '',
+  groqModel: 'llama-3.3-70b-versatile',
   emailsEnabled: false,
   smtpHost: '',
   smtpPort: 587,
@@ -39,14 +39,14 @@ const DEFAULTS = {
 };
 
 function sanitizeSettings(settings) {
-  const { smtpPass, facebookPageAccessToken, xaiApiKey, ...rest } = settings;
+  const { smtpPass, facebookPageAccessToken, groqApiKey, ...rest } = settings;
   return {
     ...rest,
     smtpPassConfigured: Boolean(smtpPass || process.env.SMTP_PASS),
     facebookPageAccessTokenConfigured: Boolean(
       facebookPageAccessToken || process.env.FACEBOOK_PAGE_ACCESS_TOKEN,
     ),
-    xaiApiKeyConfigured: Boolean(xaiApiKey?.trim() || isAiKeyConfiguredInEnv()),
+    groqApiKeyConfigured: Boolean(groqApiKey?.trim() || isAiKeyConfiguredInEnv()),
   };
 }
 
@@ -80,6 +80,8 @@ export async function updateSettings(req, res, next) {
       facebookPageId,
       facebookPageAccessToken,
       instagramBusinessAccountId,
+      groqApiKey,
+      groqModel,
       xaiApiKey,
       grokModel,
       emailsEnabled,
@@ -121,12 +123,14 @@ export async function updateSettings(req, res, next) {
     if (instagramBusinessAccountId !== undefined) {
       data.instagramBusinessAccountId = String(instagramBusinessAccountId).trim();
     }
-    if (xaiApiKey !== undefined && xaiApiKey !== '') {
-      data.xaiApiKey = String(xaiApiKey).trim();
+    const apiKeyInput = groqApiKey ?? xaiApiKey;
+    if (apiKeyInput !== undefined && apiKeyInput !== '') {
+      data.groqApiKey = String(apiKeyInput).trim();
     }
-    if (grokModel !== undefined) {
-      const model = String(grokModel).trim();
-      data.grokModel = model || 'grok-3-mini';
+    const modelInput = groqModel ?? grokModel;
+    if (modelInput !== undefined) {
+      const model = String(modelInput).trim();
+      data.groqModel = model || 'llama-3.3-70b-versatile';
     }
     if (emailsEnabled !== undefined) data.emailsEnabled = Boolean(emailsEnabled);
     if (smtpHost !== undefined) data.smtpHost = String(smtpHost).trim();

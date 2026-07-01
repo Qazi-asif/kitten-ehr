@@ -1,14 +1,14 @@
-const GROK_MODEL_FALLBACKS = ['grok-3-mini-latest', 'grok-3-mini', 'grok-4.3'];
+const GROQ_MODEL_FALLBACKS = ['llama-3.3-70b-versatile', 'llama-3.1-8b-instant', 'gemma2-9b-it'];
 
-export function extractAiError(payload, fallback, status) {
+export function extractAiError(payload, fallback, status, providerLabel = 'AI') {
   if (status === 401) {
-    return 'Invalid or expired xAI API key. Update it in Settings → Organization → AI Copywriter.';
+    return `Invalid or expired ${providerLabel} API key. Update it in Settings → Organization → AI Copywriter.`;
   }
   if (status === 403) {
-    return 'xAI API access denied. Check billing and API permissions at console.x.ai.';
+    return `${providerLabel} API access denied. Check your API key and account at console.groq.com.`;
   }
   if (status === 429) {
-    return 'xAI rate limit reached. Wait a moment and try again.';
+    return `${providerLabel} rate limit reached. Wait a moment and try again.`;
   }
 
   if (!payload || typeof payload !== 'object') return fallback;
@@ -28,7 +28,7 @@ export function extractAiError(payload, fallback, status) {
 
 function shouldTryNextModel(status, message) {
   if ([400, 404, 422].includes(status)) {
-    return /model|not found|does not exist|invalid/i.test(message);
+    return /model|not found|does not exist|invalid|decommissioned/i.test(message);
   }
   return false;
 }
@@ -38,9 +38,8 @@ function shouldRetryStatus(status) {
 }
 
 export async function createChatCompletion(provider, messages, options = {}) {
-  const isGrok = provider.providerLabel === 'Grok';
-  const models = isGrok
-    ? [...new Set([provider.model, ...GROK_MODEL_FALLBACKS])]
+  const models = provider.supportsModelFallback
+    ? [...new Set([provider.model, ...GROQ_MODEL_FALLBACKS])]
     : [provider.model];
 
   let lastStatus = 502;
@@ -77,14 +76,14 @@ export async function createChatCompletion(provider, messages, options = {}) {
       }
 
       lastStatus = response.status;
-      lastError = extractAiError(payload, lastError, response.status);
+      lastError = extractAiError(payload, lastError, response.status, provider.providerLabel);
       console.error(`${provider.providerLabel} API error (${response.status}) model=${model}:`, lastError);
 
       if (shouldRetryStatus(response.status) && attempt < maxAttempts - 1) {
         continue;
       }
 
-      if (isGrok && shouldTryNextModel(response.status, lastError) && modelIndex < models.length - 1) {
+      if (provider.supportsModelFallback && shouldTryNextModel(response.status, lastError) && modelIndex < models.length - 1) {
         break;
       }
 
