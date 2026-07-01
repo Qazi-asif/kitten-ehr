@@ -1,4 +1,5 @@
 import { getMissingKeyHint, resolveAiProvider } from '../utils/aiProvider.js';
+import { createChatCompletion } from '../utils/aiChat.js';
 
 const SYSTEM_PROMPT =
   'You are an expert social media manager for a cat rescue. Write a highly engaging, emotional, and optimized Facebook/Instagram caption for this kitten. Follow 2026 Meta best practices: start with a hook, use emojis, keep it under 200 words, include 3-5 relevant hashtags. Do not use banned or overly aggressive language. CRITICAL: You must end every caption with a call to action including the donation link. Format it exactly like this at the end: "Support our rescue and donate here: [DONATE_LINK]"';
@@ -35,29 +36,10 @@ export async function generateCaption(req, res, next) {
       `Donation URL (use as [DONATE_LINK] in the closing call to action): ${donationUrl}`,
     ].join('\n');
 
-    const response = await fetch(provider.apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${provider.apiKey}`,
-      },
-      body: JSON.stringify({
-        model: provider.model,
-        messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          { role: 'user', content: userPrompt },
-        ],
-        temperature: 0.8,
-        max_tokens: 400,
-      }),
-    });
-
-    const payload = await response.json().catch(() => ({}));
-
-    if (!response.ok) {
-      const message = payload.error?.message || `${provider.providerLabel} request failed`;
-      return res.status(response.status >= 500 ? 502 : 400).json({ error: message });
-    }
+    const { payload } = await createChatCompletion(provider, [
+      { role: 'system', content: SYSTEM_PROMPT },
+      { role: 'user', content: userPrompt },
+    ]);
 
     let caption = payload.choices?.[0]?.message?.content?.trim();
     if (!caption) {
@@ -71,6 +53,10 @@ export async function generateCaption(req, res, next) {
 
     res.json({ caption });
   } catch (error) {
+    if (error.status) {
+      const status = error.status >= 500 ? 502 : error.status;
+      return res.status(status).json({ error: error.message });
+    }
     next(error);
   }
 }

@@ -26,7 +26,7 @@ const DEFAULTS = {
   facebookPageAccessToken: '',
   instagramBusinessAccountId: '',
   xaiApiKey: '',
-  grokModel: 'grok-3-mini',
+  grokModel: 'grok-3-mini-latest',
   emailsEnabled: false,
   smtpHost: '',
   smtpPort: 587,

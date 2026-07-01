@@ -7,7 +7,7 @@ function buildGrokProvider(apiKey, modelOverride) {
   return {
     apiKey,
     apiUrl: `${baseUrl}/chat/completions`,
-    model: modelOverride || process.env.GROK_MODEL || process.env.XAI_MODEL || 'grok-3-mini',
+    model: modelOverride || process.env.GROK_MODEL || process.env.XAI_MODEL || 'grok-3-mini-latest',
     providerLabel: 'Grok',
   };
 }

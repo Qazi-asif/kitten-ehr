@@ -33,7 +33,7 @@ const EMPTY_ORG = {
   facebookPageAccessToken: '',
   instagramBusinessAccountId: '',
   xaiApiKey: '',
-  grokModel: 'grok-3-mini',
+  grokModel: 'grok-3-mini-latest',
 };
 
 const EMPTY_USER = {
