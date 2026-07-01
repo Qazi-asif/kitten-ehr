@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Building2, Plus, Shield, Trash2, UserCog, Users } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { fetchSettings, updateSettings } from '../../services/api';
+import { fetchSettings, testSocialSettingsConnection, updateSettings } from '../../services/api';
 import {
   createRole,
   createUser,
@@ -28,6 +28,10 @@ const EMPTY_ORG = {
   chewyWishlistUrl: '',
   facebookUrl: '',
   instagramUrl: '',
+  socialPostingEnabled: false,
+  facebookPageId: '',
+  facebookPageAccessToken: '',
+  instagramBusinessAccountId: '',
 };
 
 const EMPTY_USER = {
@@ -59,6 +63,8 @@ function SettingsPage() {
   const [selectedRoleId, setSelectedRoleId] = useState(null);
   const [saving, setSaving] = useState(false);
   const [orgSaving, setOrgSaving] = useState(false);
+  const [socialTesting, setSocialTesting] = useState(false);
+  const [socialTestMessage, setSocialTestMessage] = useState('');
 
   const canManageUsers = hasPermission('users.manage');
   const canManageRoles = hasPermission('roles.manage');
@@ -90,6 +96,10 @@ function SettingsPage() {
         chewyWishlistUrl: settingsData.chewyWishlistUrl || '',
         facebookUrl: settingsData.facebookUrl || '',
         instagramUrl: settingsData.instagramUrl || '',
+        socialPostingEnabled: Boolean(settingsData.socialPostingEnabled),
+        facebookPageId: settingsData.facebookPageId || '',
+        facebookPageAccessToken: '',
+        instagramBusinessAccountId: settingsData.instagramBusinessAccountId || '',
       });
 
       const tasks = [];
@@ -133,6 +143,10 @@ function SettingsPage() {
         chewyWishlistUrl: updated.chewyWishlistUrl || '',
         facebookUrl: updated.facebookUrl || '',
         instagramUrl: updated.instagramUrl || '',
+        socialPostingEnabled: Boolean(updated.socialPostingEnabled),
+        facebookPageId: updated.facebookPageId || '',
+        facebookPageAccessToken: '',
+        instagramBusinessAccountId: updated.instagramBusinessAccountId || '',
       });
     } catch (err) {
       setError(err.message);
@@ -143,6 +157,20 @@ function SettingsPage() {
 
   function handleOrgFieldChange(field, value) {
     setOrgSettings((prev) => ({ ...prev, [field]: value }));
+  }
+
+  async function handleTestSocialConnection() {
+    setSocialTesting(true);
+    setSocialTestMessage('');
+    setError('');
+    try {
+      const result = await testSocialSettingsConnection();
+      setSocialTestMessage(result.message || 'Social connection successful.');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSocialTesting(false);
+    }
   }
 
   function openCreateUser() {
@@ -404,6 +432,75 @@ function SettingsPage() {
                 className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-slate-50"
               />
             </label>
+          </div>
+
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
+            <h3 className="text-sm font-bold text-slate-900">Automatic Social Posting (Facebook & Instagram)</h3>
+            <p className="mt-1 text-sm text-slate-600">
+              Profile URLs above appear on the public site footer. Add Facebook Graph API credentials here to publish
+              kitten updates directly from the Publishing tab.
+            </p>
+
+            <label className="mt-4 flex items-center gap-2 text-sm text-slate-700">
+              <input
+                type="checkbox"
+                checked={orgSettings.socialPostingEnabled}
+                onChange={(e) => handleOrgFieldChange('socialPostingEnabled', e.target.checked)}
+                disabled={!canManageOrg}
+              />
+              Enable automatic posting via Facebook Graph API
+            </label>
+
+            <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+              <label className="block">
+                <span className="mb-1 block text-xs font-medium text-slate-600">Facebook Page ID</span>
+                <input
+                  type="text"
+                  value={orgSettings.facebookPageId}
+                  onChange={(e) => handleOrgFieldChange('facebookPageId', e.target.value)}
+                  disabled={!canManageOrg}
+                  placeholder="123456789012345"
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-white"
+                />
+              </label>
+              <label className="block">
+                <span className="mb-1 block text-xs font-medium text-slate-600">Instagram Business Account ID (optional)</span>
+                <input
+                  type="text"
+                  value={orgSettings.instagramBusinessAccountId}
+                  onChange={(e) => handleOrgFieldChange('instagramBusinessAccountId', e.target.value)}
+                  disabled={!canManageOrg}
+                  placeholder="Auto-detected from Facebook page"
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-white"
+                />
+              </label>
+              <label className="block md:col-span-2">
+                <span className="mb-1 block text-xs font-medium text-slate-600">Facebook Page Access Token</span>
+                <input
+                  type="password"
+                  value={orgSettings.facebookPageAccessToken}
+                  onChange={(e) => handleOrgFieldChange('facebookPageAccessToken', e.target.value)}
+                  disabled={!canManageOrg}
+                  placeholder="Leave blank to keep existing token"
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-white"
+                />
+              </label>
+            </div>
+
+            {canManageOrg && (
+              <button
+                type="button"
+                onClick={handleTestSocialConnection}
+                disabled={socialTesting}
+                className="mt-4 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 disabled:opacity-60"
+              >
+                {socialTesting ? 'Testing...' : 'Test Facebook Connection'}
+              </button>
+            )}
+
+            {socialTestMessage && (
+              <p className="mt-3 text-sm text-emerald-700">{socialTestMessage}</p>
+            )}
           </div>
 
           {canManageOrg ? (

@@ -75,14 +75,15 @@ model Kitten {
 }
 
 model Update {
-  id           Int      @id @default(autoincrement())
-  kittenId     Int
-  kitten       Kitten   @relation(fields: [kittenId], references: [id], onDelete: Cascade)
-  content        String
-  isPublic       Boolean  @default(false)
-  platformList   String   @default("")
-  publishTargets String[] @default([])
-  createdAt    DateTime @default(now())
+  id                Int      @id @default(autoincrement())
+  kittenId          Int
+  kitten            Kitten   @relation(fields: [kittenId], references: [id], onDelete: Cascade)
+  content           String
+  isPublic          Boolean  @default(false)
+  platformList      String   @default("")
+  publishTargets    String[] @default([])
+  socialDeliveryLog String   @default("")
+  createdAt         DateTime @default(now())
 }
 
 model Sponsorship {
@@ -254,9 +255,13 @@ model Settings {
   defaultDonationAmount Int     @default(50)
   amazonWishlistUrl     String  @default("")
   chewyWishlistUrl      String  @default("")
-  facebookUrl           String  @default("")
-  instagramUrl          String  @default("")
-  emailsEnabled         Boolean @default(false)
+  facebookUrl                String  @default("")
+  instagramUrl               String  @default("")
+  socialPostingEnabled       Boolean @default(false)
+  facebookPageId             String  @default("")
+  facebookPageAccessToken    String  @default("")
+  instagramBusinessAccountId String  @default("")
+  emailsEnabled              Boolean @default(false)
   smtpHost              String  @default("")
   smtpPort              Int     @default(587)
   smtpSecure            Boolean @default(false)

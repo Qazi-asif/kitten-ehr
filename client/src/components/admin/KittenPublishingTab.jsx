@@ -1,20 +1,30 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, Sparkles, Upload } from 'lucide-react';
 import PublishingMatrix from '../PublishingMatrix';
-import PhotoGalleryGrid from '../PhotoGalleryGrid';
 import {
   createSocialMediaPost,
   fetchKittenUpdates,
   getFileUrl,
   updateKitten,
+  uploadKittenPhoto,
 } from '../../services/api';
 import {
+  getDeliveryStatusLabel,
   getPublishPlatformLabel,
   normalizePublishTargets,
+  parseSocialDeliveryLog,
   resolvePublishTargets,
   resolveUpdateTargets,
 } from '../../utils/publishTargets';
+import {
+  buildFacebookShareUrl,
+  buildMockAiCaption,
+  buildTwitterShareUrl,
+  copyCaptionToClipboard,
+  getPublicKittenUrl,
+  openShareWindow,
+} from '../../utils/smartShare';
 
 function formatDate(value) {
   if (!value) return '—';
@@ -27,17 +37,35 @@ function formatDate(value) {
   });
 }
 
+function ShareButton({ label, sublabel, className, disabled, onClick }) {
+  return (
+    <button
+      type="button"
+      disabled={disabled}
+      onClick={onClick}
+      className={`flex min-h-[88px] flex-col items-center justify-center rounded-2xl px-4 py-5 text-center text-white shadow-md transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60 ${className}`}
+    >
+      <span className="text-base font-bold">{label}</span>
+      <span className="mt-1 text-xs font-medium text-white/80">{sublabel}</span>
+    </button>
+  );
+}
+
 function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }) {
   const [publishingForm, setPublishingForm] = useState({
     publishTargets: [],
     websiteFeaturedComment: '',
   });
   const [socialCaption, setSocialCaption] = useState('');
-  const [postTargets, setPostTargets] = useState([]);
+  const [selectedPhotoKey, setSelectedPhotoKey] = useState('');
+  const [extraSocialPhotos, setExtraSocialPhotos] = useState([]);
   const [postHistory, setPostHistory] = useState([]);
   const [savingPublishing, setSavingPublishing] = useState(false);
-  const [postingSocial, setPostingSocial] = useState(false);
+  const [sharingPlatform, setSharingPlatform] = useState('');
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const uploadInputRef = useRef(null);
 
   useEffect(() => {
     if (!kitten) return;
@@ -56,25 +84,49 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
     loadPostHistory().catch(() => setPostHistory([]));
   }, [loadPostHistory]);
 
-  const socialPhotos = useMemo(() => {
+  const photoOptions = useMemo(() => {
     const seen = new Set();
     const items = [];
 
     if (kitten?.primaryPhotoUrl) {
-      items.push({ id: 'primary', fileUrl: kitten.primaryPhotoUrl });
+      items.push({
+        key: 'primary',
+        label: 'Primary profile photo',
+        fileUrl: kitten.primaryPhotoUrl,
+      });
       seen.add(kitten.primaryPhotoUrl);
     }
 
-    for (const photo of galleryPhotos) {
-      if (seen.has(photo.fileUrl)) continue;
-      items.push(photo);
+    galleryPhotos.forEach((photo, index) => {
+      if (seen.has(photo.fileUrl)) return;
+      items.push({
+        key: String(photo.id ?? `gallery-${index}`),
+        label: photo.fileName || `Gallery photo ${index + 1}`,
+        fileUrl: photo.fileUrl,
+      });
       seen.add(photo.fileUrl);
-    }
+    });
+
+    extraSocialPhotos.forEach((photo) => {
+      items.push(photo);
+    });
 
     return items;
-  }, [galleryPhotos, kitten?.primaryPhotoUrl]);
+  }, [extraSocialPhotos, galleryPhotos, kitten?.primaryPhotoUrl]);
 
+  useEffect(() => {
+    if (photoOptions.length === 0) {
+      setSelectedPhotoKey('');
+      return;
+    }
+    if (!photoOptions.some((photo) => photo.key === selectedPhotoKey)) {
+      setSelectedPhotoKey(photoOptions[0].key);
+    }
+  }, [photoOptions, selectedPhotoKey]);
+
+  const selectedPhoto = photoOptions.find((photo) => photo.key === selectedPhotoKey) ?? null;
   const listedOnWebsite = publishingForm.publishTargets.includes('WEBSITE');
+  const publicKittenUrl = getPublicKittenUrl(kitten?.id);
 
   async function handleSavePublishingSettings(event) {
     event.preventDefault();
@@ -97,35 +149,74 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
     }
   }
 
-  async function handleSocialPost(event) {
-    event.preventDefault();
-    if (!socialCaption.trim()) {
-      setError('Write a social media caption before posting.');
-      return;
-    }
-    if (postTargets.length === 0) {
-      setError('Select at least one platform.');
-      return;
-    }
+  function handleGenerateCaption() {
+    const mockLine = buildMockAiCaption(kitten.name || 'this kitten');
+    setSocialCaption((prev) => (prev.trim() ? `${prev.trim()}\n\n${mockLine}` : mockLine));
+  }
 
-    setPostingSocial(true);
+  async function handleSocialPhotoUpload(event) {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+
+    setUploadingPhoto(true);
     setError('');
     try {
-      await createSocialMediaPost(kittenId, {
-        content: socialCaption.trim(),
-        publishTargets: postTargets,
-      });
-
-      const platformLabels = postTargets.map(getPublishPlatformLabel).join(', ');
-      window.alert(`Scheduled for ${platformLabels}!`);
-
-      setSocialCaption('');
-      setPostTargets([]);
-      await loadPostHistory();
+      const uploaded = await uploadKittenPhoto(kittenId, file, { setAsPrimary: false });
+      const photoKey = `social-${uploaded.photo?.id ?? Date.now()}`;
+      setExtraSocialPhotos((prev) => [
+        ...prev,
+        {
+          key: photoKey,
+          label: uploaded.photo?.fileName || 'New social photo',
+          fileUrl: uploaded.photo?.fileUrl,
+        },
+      ]);
+      setSelectedPhotoKey(photoKey);
     } catch (err) {
       setError(err.message);
     } finally {
-      setPostingSocial(false);
+      setUploadingPhoto(false);
+    }
+  }
+
+  async function logSmartShare(platform) {
+    await createSocialMediaPost(kittenId, {
+      content: socialCaption.trim(),
+      publishTargets: [platform],
+    });
+    await loadPostHistory();
+  }
+
+  async function handleSmartShare(platform) {
+    setError('');
+    setSuccessMessage('');
+
+    if (!socialCaption.trim()) {
+      setError('Write a caption before sharing.');
+      return;
+    }
+
+    const caption = socialCaption.trim();
+    setSharingPlatform(platform);
+
+    try {
+      if (platform === 'FACEBOOK') {
+        openShareWindow(buildFacebookShareUrl(publicKittenUrl, caption));
+      } else if (platform === 'X') {
+        openShareWindow(buildTwitterShareUrl(publicKittenUrl, caption));
+      } else if (platform === 'INSTAGRAM') {
+        await copyCaptionToClipboard(caption);
+        setSuccessMessage(
+          'Caption copied! Please paste this into the Instagram app and attach your photo.',
+        );
+      }
+
+      await logSmartShare(platform);
+    } catch (err) {
+      setError(err.message || 'Could not log this share. Try again.');
+    } finally {
+      setSharingPlatform('');
     }
   }
 
@@ -139,6 +230,11 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
   return (
     <div className="space-y-8">
       {error && <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}
+      {successMessage && (
+        <div className="rounded-lg bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800">
+          {successMessage}
+        </div>
+      )}
 
       <form onSubmit={handleSavePublishingSettings} className="space-y-6">
         <PublishingMatrix
@@ -155,39 +251,6 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
           <p className="mt-1 text-sm text-gray-500">
             Extra content shown on the public profile when Website is checked above.
           </p>
-
-          <div className="mt-5 rounded-lg border border-gray-100 bg-gray-50 p-4">
-            <p className="text-xs font-semibold uppercase text-gray-500">Public Photo Gallery</p>
-            <p className="mt-1 text-sm text-gray-600">
-              The starred profile photo appears on adoption cards. All photos below are shown on the
-              public profile and included in social posts.
-            </p>
-            {socialPhotos.length > 0 ? (
-              <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-                {socialPhotos.map((photo) => {
-                  const isPrimary = photo.fileUrl === kitten.primaryPhotoUrl || photo.isPrimaryPhoto;
-                  return (
-                    <div key={photo.id} className="relative overflow-hidden rounded-lg border border-gray-200">
-                      <img
-                        src={getFileUrl(photo.fileUrl)}
-                        alt=""
-                        className="aspect-square w-full object-cover"
-                      />
-                      {isPrimary && (
-                        <span className="absolute left-1 top-1 rounded-full bg-emerald-600 px-2 py-0.5 text-[10px] font-bold uppercase text-white">
-                          Profile
-                        </span>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <p className="mt-3 text-sm text-gray-500">
-                No photos yet. Open the kitten profile, click Edit, and use Add Photos.
-              </p>
-            )}
-          </div>
 
           <label className="mt-5 block">
             <span className="text-xs font-semibold uppercase text-gray-500">Website Featured Comment</span>
@@ -224,44 +287,122 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
         </section>
       </form>
 
-      <section className="rounded-xl border border-gray-200 p-5">
-        <h3 className="text-sm font-bold uppercase tracking-wide text-gray-900">Social Media Composer</h3>
-        <p className="mt-1 text-sm text-gray-500">
-          Compose a caption and choose the exact platforms for this kitten update.
-        </p>
+      <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="border-b border-slate-200 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 px-6 py-5 text-white">
+          <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/60">Social Media Manager</p>
+          <h3 className="mt-1 text-xl font-bold">Smart Share Hub</h3>
+          <p className="mt-1 text-sm text-white/75">
+            Opens the real Facebook and X share windows with your caption and public kitten link pre-filled.
+          </p>
+        </div>
 
-        {socialPhotos.length > 0 && (
-          <PhotoGalleryGrid photos={socialPhotos} compact title="Photos in this post" />
-        )}
-
-        <form onSubmit={handleSocialPost} className="mt-5 space-y-4">
-          <label className="block">
-            <span className="text-xs font-semibold uppercase text-gray-500">Social Media Caption</span>
+        <div className="space-y-6 p-6">
+          <div>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">Caption</label>
+              <button
+                type="button"
+                onClick={handleGenerateCaption}
+                className="inline-flex items-center gap-2 rounded-lg border border-brand/20 bg-brand-light px-3 py-1.5 text-xs font-semibold text-brand hover:bg-brand/10"
+              >
+                <Sparkles className="h-3.5 w-3.5" />
+                Generate AI Caption
+              </button>
+            </div>
             <textarea
               rows={5}
               value={socialCaption}
               onChange={(e) => setSocialCaption(e.target.value)}
-              placeholder="Write a catchy caption for your selected platforms..."
-              className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+              placeholder="Write a catchy caption for your social post..."
+              className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-800 shadow-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
             />
-          </label>
+          </div>
 
-          <PublishingMatrix
-            currentTargets={postTargets}
-            onChange={setPostTargets}
-            title="Post Destinations"
-            description="Select every account where this update should be published."
-            compact
-          />
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_220px]">
+            <div>
+              <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">Photo for social post</label>
+              <select
+                value={selectedPhotoKey}
+                onChange={(e) => setSelectedPhotoKey(e.target.value)}
+                disabled={photoOptions.length === 0}
+                className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 shadow-sm"
+              >
+                {photoOptions.length === 0 ? (
+                  <option value="">No photos available</option>
+                ) : (
+                  photoOptions.map((photo) => (
+                    <option key={photo.key} value={photo.key}>
+                      {photo.label}
+                    </option>
+                  ))
+                )}
+              </select>
 
-          <button
-            type="submit"
-            disabled={postingSocial}
-            className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 disabled:opacity-60"
-          >
-            {postingSocial ? 'Posting...' : 'Post to Selected Platforms'}
-          </button>
-        </form>
+              <div className="mt-3 flex flex-wrap items-center gap-3">
+                <input
+                  ref={uploadInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleSocialPhotoUpload}
+                />
+                <button
+                  type="button"
+                  onClick={() => uploadInputRef.current?.click()}
+                  disabled={uploadingPhoto}
+                  className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 disabled:opacity-60"
+                >
+                  <Upload className="h-4 w-4" />
+                  {uploadingPhoto ? 'Uploading...' : 'Upload photo for social'}
+                </button>
+                <span className="text-xs text-slate-500">
+                  Public link:{' '}
+                  <a href={publicKittenUrl} target="_blank" rel="noreferrer" className="font-medium text-brand hover:underline">
+                    {publicKittenUrl}
+                  </a>
+                </span>
+              </div>
+            </div>
+
+            <div className="overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+              {selectedPhoto ? (
+                <img
+                  src={getFileUrl(selectedPhoto.fileUrl)}
+                  alt=""
+                  className="aspect-square h-full w-full object-cover"
+                />
+              ) : (
+                <div className="flex aspect-square items-center justify-center px-4 text-center text-sm text-slate-500">
+                  Upload or add a kitten photo to preview it here.
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <ShareButton
+              label="Share to Facebook"
+              sublabel="Opens Facebook share dialog"
+              className="bg-[#1877F2] hover:bg-[#166FE5]"
+              disabled={sharingPlatform === 'FACEBOOK'}
+              onClick={() => handleSmartShare('FACEBOOK')}
+            />
+            <ShareButton
+              label="Share to Instagram"
+              sublabel="Copies caption to clipboard"
+              className="bg-gradient-to-br from-[#833AB4] via-[#FD1D1D] to-[#FCAF45] hover:opacity-95"
+              disabled={sharingPlatform === 'INSTAGRAM'}
+              onClick={() => handleSmartShare('INSTAGRAM')}
+            />
+            <ShareButton
+              label="Share to X"
+              sublabel="Opens X compose window"
+              className="bg-black hover:bg-slate-900"
+              disabled={sharingPlatform === 'X'}
+              onClick={() => handleSmartShare('X')}
+            />
+          </div>
+        </div>
       </section>
 
       <section className="rounded-xl border border-gray-200 p-5">
@@ -269,7 +410,7 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
           <div>
             <h3 className="text-sm font-bold uppercase tracking-wide text-gray-900">Post History Log</h3>
             <p className="mt-1 text-sm text-gray-500">
-              {postHistory.length} social post{postHistory.length === 1 ? '' : 's'} · {platformSummary} platform pushes logged
+              {postHistory.length} social post{postHistory.length === 1 ? '' : 's'} · {platformSummary} shares logged
             </p>
           </div>
         </div>
@@ -280,37 +421,56 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
               <tr>
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Date</th>
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Caption Preview</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Platforms</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Platform</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Status</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               {postHistory.length === 0 ? (
                 <tr>
-                  <td colSpan={3} className="px-4 py-8 text-center text-sm text-gray-500">
-                    No social posts logged yet.
+                  <td colSpan={4} className="px-4 py-8 text-center text-sm text-gray-500">
+                    No social posts logged yet. Use a share button above to get started.
                   </td>
                 </tr>
               ) : (
-                postHistory.map((entry) => (
-                  <tr key={entry.id}>
-                    <td className="px-4 py-3 text-sm text-gray-500">{formatDate(entry.createdAt)}</td>
-                    <td className="px-4 py-3 text-sm text-gray-800">
-                      {entry.content.length > 120 ? `${entry.content.slice(0, 120)}…` : entry.content}
-                    </td>
-                    <td className="px-4 py-3">
-                      <div className="flex flex-wrap gap-1.5">
-                        {resolveUpdateTargets(entry).map((platform) => (
-                          <span
-                            key={`${entry.id}-${platform}`}
-                            className="inline-flex rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-700"
-                          >
-                            {getPublishPlatformLabel(platform)}
-                          </span>
-                        ))}
-                      </div>
-                    </td>
-                  </tr>
-                ))
+                postHistory.map((entry) => {
+                  const delivery = parseSocialDeliveryLog(entry.socialDeliveryLog);
+                  const platforms = resolveUpdateTargets(entry);
+
+                  return (
+                    <tr key={entry.id}>
+                      <td className="px-4 py-3 text-sm text-gray-500">{formatDate(entry.createdAt)}</td>
+                      <td className="px-4 py-3 text-sm text-gray-800">
+                        {entry.content.length > 120 ? `${entry.content.slice(0, 120)}…` : entry.content}
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="flex flex-wrap gap-1.5">
+                          {platforms.map((platform) => (
+                            <span
+                              key={`${entry.id}-${platform}`}
+                              className="inline-flex rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-700"
+                            >
+                              {getPublishPlatformLabel(platform)}
+                            </span>
+                          ))}
+                        </div>
+                      </td>
+                      <td className="px-4 py-3 text-sm text-gray-600">
+                        {delivery.length > 0 ? (
+                          <div className="space-y-1">
+                            {delivery.map((item) => (
+                              <div key={`${entry.id}-${item.platform}-status`}>
+                                {getDeliveryStatusLabel(item.status)}
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          'Posted'
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>

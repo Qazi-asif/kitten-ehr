@@ -108,3 +108,20 @@ export function resolveUpdateTargets(entry) {
     .map((value) => LEGACY_PLATFORM_MAP[value] || value.toUpperCase())
     .filter((id) => PUBLISH_PLATFORM_IDS.includes(id));
 }
+
+export function parseSocialDeliveryLog(value) {
+  if (!value) return [];
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+export function getDeliveryStatusLabel(status) {
+  if (status === 'posted') return 'Posted';
+  if (status === 'manual') return 'Share manually';
+  if (status === 'failed') return 'Failed';
+  return 'Skipped';
+}

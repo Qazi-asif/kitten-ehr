@@ -1,4 +1,5 @@
 import prisma from '../lib/prisma.js';
+import { testSocialConnection } from '../services/socialMediaService.js';
 
 const SETTINGS_ID = 1;
 
@@ -19,6 +20,10 @@ const DEFAULTS = {
   chewyWishlistUrl: '',
   facebookUrl: '',
   instagramUrl: '',
+  socialPostingEnabled: false,
+  facebookPageId: '',
+  facebookPageAccessToken: '',
+  instagramBusinessAccountId: '',
   emailsEnabled: false,
   smtpHost: '',
   smtpPort: 587,
@@ -31,10 +36,13 @@ const DEFAULTS = {
 };
 
 function sanitizeSettings(settings) {
-  const { smtpPass, ...rest } = settings;
+  const { smtpPass, facebookPageAccessToken, ...rest } = settings;
   return {
     ...rest,
     smtpPassConfigured: Boolean(smtpPass || process.env.SMTP_PASS),
+    facebookPageAccessTokenConfigured: Boolean(
+      facebookPageAccessToken || process.env.FACEBOOK_PAGE_ACCESS_TOKEN,
+    ),
   };
 }
 
@@ -64,6 +72,10 @@ export async function updateSettings(req, res, next) {
       chewyWishlistUrl,
       facebookUrl,
       instagramUrl,
+      socialPostingEnabled,
+      facebookPageId,
+      facebookPageAccessToken,
+      instagramBusinessAccountId,
       emailsEnabled,
       smtpHost,
       smtpPort,
@@ -95,6 +107,14 @@ export async function updateSettings(req, res, next) {
     if (chewyWishlistUrl !== undefined) data.chewyWishlistUrl = normalizeOptionalUrl(chewyWishlistUrl);
     if (facebookUrl !== undefined) data.facebookUrl = normalizeOptionalUrl(facebookUrl);
     if (instagramUrl !== undefined) data.instagramUrl = normalizeOptionalUrl(instagramUrl);
+    if (socialPostingEnabled !== undefined) data.socialPostingEnabled = Boolean(socialPostingEnabled);
+    if (facebookPageId !== undefined) data.facebookPageId = String(facebookPageId).trim();
+    if (facebookPageAccessToken !== undefined && facebookPageAccessToken !== '') {
+      data.facebookPageAccessToken = String(facebookPageAccessToken).trim();
+    }
+    if (instagramBusinessAccountId !== undefined) {
+      data.instagramBusinessAccountId = String(instagramBusinessAccountId).trim();
+    }
     if (emailsEnabled !== undefined) data.emailsEnabled = Boolean(emailsEnabled);
     if (smtpHost !== undefined) data.smtpHost = String(smtpHost).trim();
     if (smtpPort !== undefined) {
@@ -118,6 +138,18 @@ export async function updateSettings(req, res, next) {
     });
 
     res.json(sanitizeSettings(settings));
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function testSocialSettings(_req, res, next) {
+  try {
+    const result = await testSocialConnection();
+    if (!result.ok) {
+      return res.status(400).json(result);
+    }
+    res.json(result);
   } catch (error) {
     next(error);
   }

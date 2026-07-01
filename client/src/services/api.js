@@ -403,6 +403,13 @@ export async function updateSettings(data) {
   return response.json();
 }
 
+export async function testSocialSettingsConnection() {
+  const response = await adminFetch('/settings/social/test', { method: 'POST' });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(payload.message || payload.error || 'Social connection test failed');
+  return payload;
+}
+
 export async function fetchFinanceStats() {
   const response = await adminFetch('/transactions/stats');
   if (!response.ok) throw new Error('Failed to load finance stats');

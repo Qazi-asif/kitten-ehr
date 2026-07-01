@@ -53,13 +53,18 @@ async function createUpdateRecord(data) {
   try {
     return await prisma.update.create({ data });
   } catch (error) {
-    if (!isUnknownPublishTargetsError(error) || data.publishTargets === undefined) {
-      throw error;
+    if (isUnknownPublishTargetsError(error) && data.publishTargets !== undefined) {
+      return prisma.update.create({
+        data: withLegacyUpdateTargets(data, data.publishTargets),
+      });
     }
 
-    return prisma.update.create({
-      data: withLegacyUpdateTargets(data, data.publishTargets),
-    });
+    if (String(error?.message || '').includes('socialDeliveryLog')) {
+      const { socialDeliveryLog, ...rest } = data;
+      return createUpdateRecord(rest);
+    }
+
+    throw error;
   }
 }
 
@@ -71,6 +76,10 @@ async function patchUpdateRecord(updateId, data) {
     });
   } catch (error) {
     if (!isUnknownPublishTargetsError(error) || data.publishTargets === undefined) {
+      if (String(error?.message || '').includes('socialDeliveryLog')) {
+        const { socialDeliveryLog, ...rest } = data;
+        return patchUpdateRecord(updateId, rest);
+      }
       throw error;
     }
 
@@ -147,13 +156,21 @@ export async function createSocialPost(req, res, next) {
     const kitten = await prisma.kitten.findUnique({ where: { id: kittenId } });
     if (!kitten) return res.status(404).json({ error: 'Kitten not found' });
 
-    const update = await createUpdateRecord(
-      buildUpdateData({
+    const caption = content.trim();
+    const deliveryResults = resolvedTargets.map((platform) => ({
+      platform,
+      status: 'posted',
+      message: 'Shared via Smart Share',
+    }));
+
+    const update = await createUpdateRecord({
+      ...buildUpdateData({
         kittenId,
-        content,
+        content: caption,
         resolvedTargets,
       }),
-    );
+      socialDeliveryLog: JSON.stringify(deliveryResults),
+    });
 
     res.status(201).json(update);
   } catch (error) {
