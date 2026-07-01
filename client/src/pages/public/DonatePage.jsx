@@ -436,18 +436,24 @@ function DonatePage() {
             </svg>
 
             {/* LEFT cat — cute.png, bigger */}
-            <img
-              src="/images/kittens/cute.png"
-              alt="Cute rescue kitten"
-              className="absolute bottom-0 left-10 h-72 lg:h-80 w-auto object-contain object-bottom"
-            />
+            <div className="absolute bottom-0 left-10 w-auto h-72 lg:h-80 flex flex-col items-center">
+              <img
+                src="/images/3.png"
+                alt="Cute rescue kitten"
+                className="h-full w-auto object-contain object-bottom relative z-10"
+              />
+              <div className="absolute bottom-2 h-4 w-4/5 rounded-[100%] bg-black/20 blur-md -z-10"></div>
+            </div>
 
             {/* RIGHT cat — donate-cat.png, parallel to left */}
-            <img
-              src="/images/donate-cat.png"
-              alt="Playing rescue kitten"
-              className="absolute bottom-0 right-10 h-72 lg:h-80 w-auto object-contain object-bottom"
-            />
+            <div className="hidden lg:flex absolute bottom-0 right-10 w-auto h-72 lg:h-80 flex-col items-center">
+              <img
+                src="/images/8.png"
+                alt="Playing rescue kitten"
+                className="h-full w-auto object-contain object-bottom relative z-10"
+              />
+              <div className="absolute bottom-2 h-4 w-4/5 rounded-[100%] bg-black/20 blur-md -z-10"></div>
+            </div>
 
           </div>
         </div>

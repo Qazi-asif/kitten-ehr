@@ -45,10 +45,10 @@ function HomePage() {
   const displayCats = featured.length >= 4
     ? featured.slice(0, 4).map(c => ({ image: getKittenImageUrl(c, { allowFallback: true }) }))
     : [
-      { image: '/images/kittens/biscuit.jpg' },
-      { image: '/images/kittens/gravy.jpg' },
-      { image: '/images/kittens/nugget.jpg' },
-      { image: '/images/kittens/cute.png' },
+      { image: '/images/21.png' },
+      { image: '/images/22.png' },
+      { image: '/images/18.png' },
+      { image: '/images/17.png' },
     ];
 
   return (
@@ -156,9 +156,9 @@ function HomePage() {
                   <PawIcon className="h-5 w-5 text-brand" />
                   Featured Cats
                 </h2>
-                <div className="mt-8 grid grid-cols-4 gap-2">
+                <div className="mt-8 grid grid-cols-2 gap-4">
                   {displayCats.map((cat, idx) => (
-                    <div key={idx} className="overflow-hidden rounded-lg border border-slate-200 aspect-[3/4] bg-slate-50">
+                    <div key={idx} className="overflow-hidden rounded-lg border border-slate-200 aspect-[3/4] bg-slate-50 shadow-sm transition hover:shadow-md">
                       <img src={cat.image} alt="Featured Kitten" className="h-full w-full object-cover" />
                     </div>
                   ))}

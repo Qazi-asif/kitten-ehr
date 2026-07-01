@@ -149,7 +149,7 @@ function AvailableKittensPage() {
 
       <section className="py-10 px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
-          <div className="flex items-center gap-6 rounded-2xl border border-brand/40 bg-white px-8 py-6">
+          <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-6 rounded-2xl border border-brand/40 bg-white px-8 py-6">
             {/* Heart + Paw Icon */}
             <div className="shrink-0">
               <svg viewBox="0 0 64 64" fill="none" className="h-16 w-16 text-brand" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -170,10 +170,10 @@ function AvailableKittensPage() {
             </div>
 
             {/* CTA Button */}
-            <div className="shrink-0">
+            <div className="shrink-0 w-full sm:w-auto mt-2 sm:mt-0">
               <Link
                 to="/adopt"
-                className="inline-flex items-center justify-center rounded-xl bg-brand px-7 py-4 text-base font-semibold text-white shadow-sm transition hover:bg-brand-dark whitespace-nowrap"
+                className="inline-flex items-center justify-center w-full rounded-xl bg-brand px-7 py-4 text-base font-semibold text-white shadow-sm transition hover:bg-brand-dark whitespace-nowrap"
               >
                 Apply to Adopt
               </Link>
