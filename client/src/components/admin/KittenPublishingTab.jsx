@@ -5,6 +5,7 @@ import PublishingMatrix from '../PublishingMatrix';
 import {
   createSocialMediaPost,
   fetchKittenUpdates,
+  generateAiCaption,
   getFileUrl,
   updateKitten,
   uploadKittenPhoto,
@@ -19,7 +20,6 @@ import {
 } from '../../utils/publishTargets';
 import {
   buildFacebookShareUrl,
-  buildMockAiCaption,
   buildTwitterShareUrl,
   copyCaptionToClipboard,
   getPublicKittenUrl,
@@ -63,6 +63,8 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
   const [savingPublishing, setSavingPublishing] = useState(false);
   const [sharingPlatform, setSharingPlatform] = useState('');
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [generatingCaption, setGeneratingCaption] = useState(false);
+  const [captionError, setCaptionError] = useState('');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const uploadInputRef = useRef(null);
@@ -149,9 +151,21 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
     }
   }
 
-  function handleGenerateCaption() {
-    const mockLine = buildMockAiCaption(kitten.name || 'this kitten');
-    setSocialCaption((prev) => (prev.trim() ? `${prev.trim()}\n\n${mockLine}` : mockLine));
+  async function handleGenerateCaption() {
+    setGeneratingCaption(true);
+    setCaptionError('');
+    try {
+      const result = await generateAiCaption({
+        name: kitten.name || '',
+        story: kitten.rescueStory || publishingForm.websiteFeaturedComment || '',
+        status: kitten.status || '',
+      });
+      setSocialCaption(result.caption);
+    } catch (err) {
+      setCaptionError(err.message || 'Could not generate caption. Check your OpenAI API key.');
+    } finally {
+      setGeneratingCaption(false);
+    }
   }
 
   async function handleSocialPhotoUpload(event) {
@@ -303,12 +317,16 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
               <button
                 type="button"
                 onClick={handleGenerateCaption}
-                className="inline-flex items-center gap-2 rounded-lg border border-brand/20 bg-brand-light px-3 py-1.5 text-xs font-semibold text-brand hover:bg-brand/10"
+                disabled={generatingCaption}
+                className="inline-flex items-center gap-2 rounded-lg border border-brand/20 bg-brand-light px-4 py-2 text-sm font-semibold text-brand hover:bg-brand/10 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                <Sparkles className="h-3.5 w-3.5" />
-                Generate AI Caption
+                <Sparkles className="h-4 w-4" />
+                {generatingCaption ? 'Generating...' : '✨ Generate AI Caption'}
               </button>
             </div>
+            {captionError && (
+              <p className="mt-2 text-xs text-red-600">{captionError}</p>
+            )}
             <textarea
               rows={5}
               value={socialCaption}

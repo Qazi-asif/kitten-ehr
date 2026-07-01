@@ -24,6 +24,7 @@ import updateRoutes from './routes/updateRoutes.js';
 import settingsRoutes from './routes/settingsRoutes.js';
 import financeRoutes from './routes/financeRoutes.js';
 import emailTemplateRoutes from './routes/emailTemplateRoutes.js';
+import aiRoutes from './routes/aiRoutes.js';
 import { requireAuth } from './middleware/authMiddleware.js';
 import { createOriginValidator } from './utils/corsOrigins.js';
 
@@ -116,6 +117,7 @@ app.use('/api/content', requireAuth, contentRoutes);
 app.use('/api/events', requireAuth, eventRoutes);
 app.use('/api/transactions', requireAuth, financeRoutes);
 app.use('/api/email-templates', emailTemplateRoutes);
+app.use('/api', requireAuth, aiRoutes);
 
 app.get('/api/health', (_req, res) => {
   res.json({

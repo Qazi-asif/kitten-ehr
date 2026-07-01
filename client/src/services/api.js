@@ -410,6 +410,15 @@ export async function testSocialSettingsConnection() {
   return payload;
 }
 
+export async function generateAiCaption(data) {
+  const response = await adminFetch('/generate-caption', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to generate caption'));
+  return response.json();
+}
+
 export async function fetchFinanceStats() {
   const response = await adminFetch('/transactions/stats');
   if (!response.ok) throw new Error('Failed to load finance stats');
