@@ -40,7 +40,7 @@ import {
   deleteKittenUpdate,
 } from '../../services/api';
 import { formatKittenAgeShort } from '../../utils/kittenAge';
-import { formatKittenAge } from '../../utils/kittenImages';
+import { formatKittenAge, resolvePrimaryPhotoUrl } from '../../utils/kittenImages';
 
 const TABS = [
   { id: 'profile', label: 'Profile' },
@@ -144,9 +144,11 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
 
   const loadPhotos = useCallback(async () => {
     const data = await fetchKittenPhotos(kittenId);
-    setGalleryPhotos(data.photos || []);
-    if (data.primaryPhotoUrl) {
-      setKitten((prev) => (prev ? { ...prev, primaryPhotoUrl: data.primaryPhotoUrl } : prev));
+    const photos = data.photos || [];
+    setGalleryPhotos(photos);
+    const resolvedPrimary = resolvePrimaryPhotoUrl(data);
+    if (resolvedPrimary) {
+      setKitten((prev) => (prev ? { ...prev, primaryPhotoUrl: resolvedPrimary } : prev));
     }
   }, [kittenId]);
 

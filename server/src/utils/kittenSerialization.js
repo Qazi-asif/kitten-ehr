@@ -36,10 +36,8 @@ export function serializeKittenForList(kitten) {
 export function serializeKittenForDetail(kitten) {
   if (!kitten) return kitten;
 
-  const hasPrimaryPhoto = Boolean(kitten.primaryPhotoUrl);
   return {
     ...kitten,
-    hasPrimaryPhoto,
-    primaryPhotoUrl: stripInlineDataUrl(kitten.primaryPhotoUrl),
+    hasPrimaryPhoto: Boolean(kitten.primaryPhotoUrl),
   };
 }

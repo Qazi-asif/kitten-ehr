@@ -173,6 +173,32 @@ async function run() {
 
   if (qaKittenId) {
     try {
+      const { data } = await api(`/api/kittens/${qaKittenId}`);
+      if (data?.id === qaKittenId) {
+        if (data.hasPrimaryPhoto && !data.primaryPhotoUrl) {
+          fail(`GET /api/kittens/${qaKittenId} detail photo`, 'hasPrimaryPhoto true but primaryPhotoUrl missing');
+        } else {
+          pass(`GET /api/kittens/${qaKittenId} detail (photo=${data.hasPrimaryPhoto ? 'yes' : 'none'})`);
+        }
+      } else {
+        fail(`GET /api/kittens/${qaKittenId}`, JSON.stringify(data));
+      }
+    } catch (e) {
+      fail(`GET /api/kittens/${qaKittenId}`, e.message);
+    }
+
+    try {
+      const { data } = await api(`/api/kittens/${qaKittenId}/documents/photos`);
+      if (Array.isArray(data.photos)) {
+        pass(`GET /api/kittens/${qaKittenId}/documents/photos (${data.photos.length} photos)`);
+      } else {
+        fail(`GET /api/kittens/${qaKittenId}/documents/photos`, 'missing photos array');
+      }
+    } catch (e) {
+      fail(`GET /api/kittens/${qaKittenId}/documents/photos`, e.message);
+    }
+
+    try {
       const { data, response } = await api(`/api/kittens/${qaKittenId}`, {
         method: 'PATCH',
         body: {

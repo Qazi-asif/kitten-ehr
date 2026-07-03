@@ -7,6 +7,13 @@ const KITTEN_FALLBACKS = {
   pumpkin: '/images/kittens/nugget.jpg',
 };
 
+export function resolvePrimaryPhotoUrl({ primaryPhotoUrl, photos } = {}) {
+  if (primaryPhotoUrl) return primaryPhotoUrl;
+  const primaryDoc = photos?.find((photo) => photo.isPrimaryPhoto);
+  if (primaryDoc?.fileUrl) return primaryDoc.fileUrl;
+  return photos?.[0]?.fileUrl ?? null;
+}
+
 export function getKittenImageUrl(kitten, { allowFallback = false } = {}) {
   if (kitten?.primaryPhotoUrl) {
     return getFileUrl(kitten.primaryPhotoUrl);
