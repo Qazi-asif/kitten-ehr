@@ -6,8 +6,7 @@ import KittenPhotoManager from './KittenPhotoManager';
 import LitterSelect from './LitterSelect';
 import KittenPlacementTable from './KittenPlacementTable';
 import StatusBadge from './StatusBadge';
-import DocumentUploadForm from '../DocumentUploadForm';
-import DocumentsList from '../DocumentsList';
+import KittenDocumentsTab from './KittenDocumentsTab';
 import FaceSheet from '../FaceSheet';
 import KittenPhoto from '../KittenPhoto';
 import MedicationForm from '../MedicationForm';
@@ -706,10 +705,13 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
           )}
 
           {activeTab === 'documents' && (
-            <>
-              <DocumentUploadForm onUpload={handleUploadDocument} uploading={uploading} />
-              <DocumentsList documents={documents} onDelete={handleDeleteDocument} />
-            </>
+            <KittenDocumentsTab
+              kittenId={kittenId}
+              documents={documents}
+              onUpload={handleUploadDocument}
+              uploading={uploading}
+              onDelete={handleDeleteDocument}
+            />
           )}
 
           {activeTab === 'placements' && (

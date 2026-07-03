@@ -4,8 +4,7 @@ import { ChevronDown, Printer } from 'lucide-react';
 import StatusBadge from '../components/admin/StatusBadge';
 import KittenPublishingTab from '../components/admin/KittenPublishingTab';
 import KittenPhotoManager from '../components/admin/KittenPhotoManager';
-import DocumentUploadForm from '../components/DocumentUploadForm';
-import DocumentsList from '../components/DocumentsList';
+import KittenDocumentsTab from '../components/admin/KittenDocumentsTab';
 import FaceSheet from '../components/FaceSheet';
 import MedicationForm from '../components/MedicationForm';
 import MedicationsTable from '../components/MedicationsTable';
@@ -750,10 +749,13 @@ function KittenDetailPage() {
             )}
 
             {activeTab === 'documents' && (
-              <>
-                <DocumentUploadForm onUpload={handleUploadDocument} uploading={uploading} />
-                <DocumentsList documents={documents} onDelete={handleDeleteDocument} />
-              </>
+              <KittenDocumentsTab
+                kittenId={id}
+                documents={documents}
+                onUpload={handleUploadDocument}
+                uploading={uploading}
+                onDelete={handleDeleteDocument}
+              />
             )}
           </div>
         </div>

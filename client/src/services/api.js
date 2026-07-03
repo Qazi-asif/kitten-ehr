@@ -284,6 +284,15 @@ export async function deleteDocument(kittenId, documentId) {
   await adminFetch(`/kittens/${kittenId}/documents/${documentId}`, { method: 'DELETE' });
 }
 
+export async function sendKittenDocumentsEmail(kittenId, data) {
+  const response = await adminFetch(`/kittens/${kittenId}/send-email`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to send email'));
+  return response.json();
+}
+
 export function fetchContent() {
   return adminRequest('/content');
 }
