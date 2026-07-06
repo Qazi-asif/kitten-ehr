@@ -3,3 +3,7 @@ node_modules
 server/uploads/*
 *.db
 *.tmp*
+
+.cursorrules
+.cursor/
+.vscode/

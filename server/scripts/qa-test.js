@@ -189,15 +189,48 @@ async function run() {
         type: 'FOSTER',
         signerName: 'QA Tester',
         signerEmail: 'qa-contract@test.com',
+        kittenName: 'QA Biscuit',
         documentVersion: '1.0',
       },
       expectStatus: 201,
     });
     createdContractId = data?.id ?? null;
-    if (response.status === 201 && createdContractId) pass(`POST /api/contracts created id=${createdContractId}`);
-    else fail('POST /api/contracts', JSON.stringify(data));
+    if (response.status === 201 && createdContractId && data.kittenName === 'QA Biscuit') {
+      pass(`POST /api/contracts created id=${createdContractId}`);
+    } else fail('POST /api/contracts', JSON.stringify(data));
   } catch (e) {
     fail('POST /api/contracts', e.message);
+  }
+
+  if (createdContractId) {
+    try {
+      const { data, response } = await api(`/api/contracts/${createdContractId}`, {
+        method: 'PATCH',
+        body: { signerName: 'QA Tester Updated', kittenName: 'QA Biscuit Updated' },
+      });
+      if (response.ok && data.signerName === 'QA Tester Updated') {
+        pass(`PATCH /api/contracts/${createdContractId}`);
+      } else fail(`PATCH /api/contracts/${createdContractId}`, JSON.stringify(data));
+    } catch (e) {
+      fail(`PATCH /api/contracts/${createdContractId}`, e.message);
+    }
+  }
+
+  try {
+    const { data } = await api('/api/contracts/stats');
+    if (typeof data.total === 'number' && Array.isArray(data.recentSigned)) {
+      pass(`GET /api/contracts/stats (total=${data.total})`);
+    } else fail('GET /api/contracts/stats', JSON.stringify(data));
+  } catch (e) {
+    fail('GET /api/contracts/stats', e.message);
+  }
+
+  try {
+    const { data } = await api('/api/contracts?search=Biscuit');
+    if (Array.isArray(data)) pass(`GET /api/contracts?search=Biscuit (${data.length} matches)`);
+    else fail('GET /api/contracts?search=Biscuit', 'not array');
+  } catch (e) {
+    fail('GET /api/contracts?search=Biscuit', e.message);
   }
 
   if (createdContractId) {
@@ -225,6 +258,39 @@ async function run() {
     } catch (e) {
       fail(`POST /api/contracts/${createdContractId}/sign`, e.message);
     }
+
+    try {
+      const { response, data } = await api(`/api/contracts/${createdContractId}`, {
+        method: 'PATCH',
+        body: { signerName: 'Should Fail' },
+        expectStatus: 400,
+      });
+      if (response.status === 400) pass(`PATCH signed contract blocked for id=${createdContractId}`);
+      else fail(`PATCH signed contract blocked for id=${createdContractId}`, JSON.stringify(data));
+    } catch (e) {
+      fail(`PATCH signed contract blocked for id=${createdContractId}`, e.message);
+    }
+  }
+
+  try {
+    const { data, response } = await api('/api/contracts', {
+      method: 'POST',
+      body: {
+        type: 'ADOPTION',
+        signerName: 'QA Delete Me',
+        signerEmail: 'qa-delete@test.com',
+        kittenName: 'QA Temp Cat',
+        documentVersion: '1.0',
+      },
+      expectStatus: 201,
+    });
+    if (response.status === 201 && data?.id) {
+      const deleteResponse = await api(`/api/contracts/${data.id}`, { method: 'DELETE', expectStatus: 204 });
+      if (deleteResponse.response.status === 204) pass(`DELETE /api/contracts/${data.id}`);
+      else fail(`DELETE /api/contracts/${data.id}`, String(deleteResponse.response.status));
+    } else fail('DELETE /api/contracts draft setup', JSON.stringify(data));
+  } catch (e) {
+    fail('DELETE /api/contracts draft', e.message);
   }
 
   try {

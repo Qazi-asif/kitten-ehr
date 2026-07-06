@@ -284,6 +284,8 @@ exports.Prisma.ContractScalarFieldEnum = {
   type: 'type',
   signerName: 'signerName',
   signerEmail: 'signerEmail',
+  kittenName: 'kittenName',
+  kittenId: 'kittenId',
   applicationId: 'applicationId',
   documentVersion: 'documentVersion',
   signedPdfUrl: 'signedPdfUrl',

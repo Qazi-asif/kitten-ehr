@@ -503,9 +503,24 @@ export async function updateEmailSettings(data) {
   return response.json();
 }
 
-export async function fetchContracts() {
-  const response = await adminFetch('/contracts');
+export async function fetchContracts(filters = {}) {
+  const params = new URLSearchParams();
+  if (filters.search) params.set('search', filters.search);
+  if (filters.status) params.set('status', filters.status);
+  if (filters.dateFrom) params.set('dateFrom', filters.dateFrom);
+  if (filters.dateTo) params.set('dateTo', filters.dateTo);
+  if (filters.dateField) params.set('dateField', filters.dateField);
+  if (filters.signedOnly) params.set('signedOnly', 'true');
+
+  const query = params.toString();
+  const response = await adminFetch(`/contracts${query ? `?${query}` : ''}`);
   if (!response.ok) throw new Error('Failed to load contracts');
+  return response.json();
+}
+
+export async function fetchContractStats() {
+  const response = await adminFetch('/contracts/stats');
+  if (!response.ok) throw new Error('Failed to load contract stats');
   return response.json();
 }
 
@@ -542,6 +557,20 @@ export async function markContractSigned(id, data) {
   });
   if (!response.ok) throw new Error(await readApiError(response, 'Failed to mark contract signed'));
   return response.json();
+}
+
+export async function updateContract(id, data) {
+  const response = await adminFetch(`/contracts/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to update contract'));
+  return response.json();
+}
+
+export async function deleteContract(id) {
+  const response = await adminFetch(`/contracts/${id}`, { method: 'DELETE' });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to delete contract'));
 }
 
 export async function fetchOnboardingList() {

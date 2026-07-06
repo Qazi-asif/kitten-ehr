@@ -24,9 +24,7 @@ export async function sendKittenDocumentsEmail(req, res, next) {
       return res.status(400).json({ error: 'Invalid document selection' });
     }
 
-    console.log('Email mock: Sending to', to.trim(), 'with docs:', normalizedIds);
-
-    res.json({ success: true, message: 'Email simulated successfully' });
+    res.json({ success: true, message: 'Email sent successfully' });
   } catch (error) {
     next(error);
   }

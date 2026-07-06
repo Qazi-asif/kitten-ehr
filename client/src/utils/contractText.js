@@ -1,11 +1,12 @@
 export function getDefaultContractText(contract) {
   const signer = contract?.signerName || '[Signer Name]';
+  const kitten = contract?.kittenName || contract?.kitten?.name || '[Kitten Name]';
   const type = contract?.type === 'ADOPTION' ? 'Adoption' : 'Foster Care';
   const version = contract?.documentVersion || '1.0';
 
   return `${type.toUpperCase()} AGREEMENT (Version ${version})
 
-This ${type} Agreement ("Agreement") is entered into between Pawsitive Transformations ("Organization") and ${signer} ("Participant").
+This ${type} Agreement ("Agreement") is entered into between Pawsitive Transformations ("Organization") and ${signer} ("Participant") regarding the care of ${kitten} ("Animal").
 
 1. PARTICIPANT RESPONSIBILITIES
 Participant agrees to provide safe, humane care and to follow all medical, feeding, and handling instructions provided by the Organization.

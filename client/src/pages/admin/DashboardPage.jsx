@@ -1,8 +1,15 @@
 import { Link } from 'react-router-dom';
-import { AlertCircle, AlertTriangle, CheckCircle2, Info, TrendingUp } from 'lucide-react';
+import { AlertCircle, AlertTriangle, CheckCircle2, FileSignature, Info, TrendingUp } from 'lucide-react';
 import { Cat, Heart, Users } from 'lucide-react';
 import KittenPhoto from '../../components/KittenPhoto';
-import { fetchApplications, fetchDashboardStats, fetchFinanceStats, fetchKittens } from '../../services/api';
+import {
+  fetchApplications,
+  fetchContractStats,
+  fetchDashboardStats,
+  fetchFinanceStats,
+  fetchKittens,
+} from '../../services/api';
+import { resolveContractKittenName } from '../../utils/contractAudit';
 import { getApplicationSummary, resolveKittenOfInterest } from '../../utils/applicationFormData';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
@@ -92,13 +99,21 @@ function DashboardPage() {
   });
   const [kittens, setKittens] = useState([]);
   const [applications, setApplications] = useState([]);
+  const [contractStats, setContractStats] = useState({
+    total: 0,
+    sent: 0,
+    signed: 0,
+    void: 0,
+    recentSigned: [],
+  });
 
   const load = useCallback(async () => {
-    const [statsData, kittensData, financeData, applicationsData] = await Promise.all([
+    const [statsData, kittensData, financeData, applicationsData, contractsData] = await Promise.all([
       fetchDashboardStats(),
       fetchKittens(),
       fetchFinanceStats().catch(() => ({ donations: { month: 0 } })),
       fetchApplications().catch(() => []),
+      fetchContractStats().catch(() => ({ total: 0, sent: 0, signed: 0, void: 0, recentSigned: [] })),
     ]);
     setStats({
       ...statsData,
@@ -106,6 +121,7 @@ function DashboardPage() {
     });
     setKittens(kittensData);
     setApplications(applicationsData);
+    setContractStats(contractsData);
   }, []);
 
   useEffect(() => {
@@ -159,6 +175,72 @@ function DashboardPage() {
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="mb-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <FileSignature className="h-5 w-5 text-emerald-600" />
+            <h2 className="text-base font-bold text-slate-900">Contract Status</h2>
+          </div>
+          <Link to="/admin/contracts" className="text-sm font-semibold text-brand hover:underline">
+            View all contracts
+          </Link>
+        </div>
+
+        <div className="mb-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {[
+            { label: 'Total', value: contractStats.total, style: 'bg-slate-50 text-slate-900' },
+            { label: 'Pending', value: contractStats.sent, style: 'bg-amber-50 text-amber-800' },
+            { label: 'Signed', value: contractStats.signed, style: 'bg-emerald-50 text-emerald-800' },
+            { label: 'Void', value: contractStats.void, style: 'bg-slate-100 text-slate-600' },
+          ].map((item) => (
+            <div key={item.label} className={`rounded-lg px-4 py-3 ${item.style}`}>
+              <p className="text-xs font-semibold uppercase">{item.label}</p>
+              <p className="mt-1 text-2xl font-bold">{item.value}</p>
+            </div>
+          ))}
+        </div>
+
+        {contractStats.recentSigned?.length === 0 ? (
+          <p className="text-sm text-slate-500">No signed contracts yet.</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-slate-100">
+              <thead>
+                <tr>
+                  <th className="px-3 py-2 text-left text-xs font-semibold uppercase text-slate-500">Kitten</th>
+                  <th className="px-3 py-2 text-left text-xs font-semibold uppercase text-slate-500">Signer</th>
+                  <th className="px-3 py-2 text-left text-xs font-semibold uppercase text-slate-500">Type</th>
+                  <th className="px-3 py-2 text-left text-xs font-semibold uppercase text-slate-500">Signed</th>
+                  <th className="px-3 py-2 text-left text-xs font-semibold uppercase text-slate-500">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {contractStats.recentSigned.map((contract) => (
+                  <tr key={contract.id} className="hover:bg-slate-50">
+                    <td className="px-3 py-3 text-sm font-medium text-slate-900">
+                      {resolveContractKittenName(contract)}
+                    </td>
+                    <td className="px-3 py-3 text-sm text-slate-600">{contract.signerName}</td>
+                    <td className="px-3 py-3 text-sm text-slate-600">{contract.type}</td>
+                    <td className="px-3 py-3 text-sm text-slate-500">
+                      {contract.signedAt ? new Date(contract.signedAt).toLocaleDateString() : '—'}
+                    </td>
+                    <td className="px-3 py-3 text-sm">
+                      <Link
+                        to={`/admin/contracts?review=${contract.id}`}
+                        className="font-semibold text-brand hover:underline"
+                      >
+                        Review
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">

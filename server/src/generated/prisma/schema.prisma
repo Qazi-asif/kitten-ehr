@@ -72,6 +72,7 @@ model Kitten {
   sponsorships           Sponsorship[]
   updates                Update[]
   transactions           Transaction[]
+  contracts              Contract[]
 
   @@index([status])
   @@index([litterId])
@@ -235,6 +236,9 @@ model Contract {
   type            ContractType
   signerName      String
   signerEmail     String
+  kittenName      String         @default("")
+  kittenId        Int?
+  kitten          Kitten?        @relation(fields: [kittenId], references: [id], onDelete: SetNull)
   applicationId   Int?
   application     Application?   @relation(fields: [applicationId], references: [id], onDelete: SetNull)
   documentVersion String
@@ -245,8 +249,12 @@ model Contract {
   createdAt       DateTime       @default(now())
 
   @@index([applicationId])
+  @@index([kittenId])
+  @@index([kittenName])
   @@index([status])
   @@index([signerEmail])
+  @@index([signedAt])
+  @@index([createdAt])
 }
 
 enum FosterOnboardingStatus {
