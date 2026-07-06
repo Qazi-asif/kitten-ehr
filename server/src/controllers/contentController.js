@@ -83,3 +83,34 @@ export async function deleteContent(req, res, next) {
     next(error);
   }
 }
+
+export async function markContentComplete(req, res, next) {
+  try {
+    const contentId = Number.parseInt(req.params.id, 10);
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({ error: 'Authentication required' });
+    }
+
+    const content = await prisma.content.findUnique({ where: { id: contentId } });
+    if (!content) return res.status(404).json({ error: 'Content not found' });
+
+    const completion = await prisma.contentCompletion.upsert({
+      where: {
+        userId_contentId: { userId, contentId },
+      },
+      update: {
+        completedAt: new Date(),
+      },
+      create: {
+        userId,
+        contentId,
+      },
+    });
+
+    res.status(201).json(completion);
+  } catch (error) {
+    next(error);
+  }
+}

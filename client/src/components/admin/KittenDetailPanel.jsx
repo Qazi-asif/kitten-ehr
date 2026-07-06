@@ -98,6 +98,7 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
   const [fosters, setFosters] = useState([]);
   const [litters, setLitters] = useState([]);
   const [error, setError] = useState(null);
+  const [alertsDismissed, setAlertsDismissed] = useState(false);
 
   const loadKitten = useCallback(async () => {
     const data = await fetchKittenById(kittenId);
@@ -161,6 +162,7 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
     setLoading(true);
     setPhotosLoading(true);
     setError(null);
+    setAlertsDismissed(false);
     setActiveTab('profile');
     setLoadedTabs(new Set(['profile']));
     setGalleryPhotos([]);
@@ -407,10 +409,31 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
 
   const latestWeight = weightLogs[0];
   const age = formatKittenAge(kitten.dateOfBirth);
+  const medicalFlags = kitten.flags || [];
 
   return (
     <>
       <div className={`rounded-lg border border-gray-200 bg-white shadow-sm ${embedded ? '' : 'print:hidden'}`}>
+        {!alertsDismissed && medicalFlags.length > 0 && (
+          <div className="flex flex-wrap items-start justify-between gap-3 border-b border-red-200 bg-red-50 px-5 py-3">
+            <div>
+              <p className="text-sm font-bold text-red-800">Medical Alerts</p>
+              <ul className="mt-1 list-inside list-disc text-sm text-red-700">
+                {medicalFlags.map((flag) => (
+                  <li key={`${flag.type}-${flag.label}`}>{flag.label}</li>
+                ))}
+              </ul>
+            </div>
+            <button
+              type="button"
+              onClick={() => setAlertsDismissed(true)}
+              className="rounded-lg border border-red-200 bg-white px-3 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-100"
+            >
+              Dismiss
+            </button>
+          </div>
+        )}
+
         {!embedded && (
           <div className="flex items-center justify-end gap-2 border-b border-gray-100 px-4 py-3">
             <button type="button" onClick={() => window.print()} className="inline-flex items-center gap-1 rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50">

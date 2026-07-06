@@ -8,6 +8,15 @@ import {
 
 const STATUS_OPTIONS = ['New', 'Under Review', 'Approved', 'Denied'];
 
+const REJECTION_REASONS = [
+  'Incomplete application',
+  'Housing requirements not met',
+  'Insufficient experience',
+  'Unable to reach applicant',
+  'No longer accepting fosters/adoptions',
+  'Other',
+];
+
 function FieldGrid({ fields }) {
   return (
     <dl className="mt-3 divide-y divide-gray-100 rounded-lg border border-gray-100">
@@ -24,11 +33,13 @@ function FieldGrid({ fields }) {
 function ApplicationDetailPanel({ application, onClose, onStatusUpdate, saving = false }) {
   const [pendingStatus, setPendingStatus] = useState(application?.status || 'New');
   const [statusNotes, setStatusNotes] = useState(application?.statusNotes || '');
+  const [rejectionReason, setRejectionReason] = useState(application?.rejectionReason || '');
 
   useEffect(() => {
     setPendingStatus(application?.status || 'New');
     setStatusNotes(application?.statusNotes || '');
-  }, [application?.id, application?.status, application?.statusNotes]);
+    setRejectionReason(application?.rejectionReason || '');
+  }, [application?.id, application?.status, application?.statusNotes, application?.rejectionReason]);
 
   const kittenOfInterest = useMemo(
     () => resolveKittenOfInterest(application?.formData, application?.kittenOfInterest),
@@ -46,7 +57,9 @@ function ApplicationDetailPanel({ application, onClose, onStatusUpdate, saving =
   );
 
   const hasChanges =
-    pendingStatus !== application?.status || statusNotes !== (application?.statusNotes || '');
+    pendingStatus !== application?.status
+    || statusNotes !== (application?.statusNotes || '')
+    || (pendingStatus === 'Denied' && rejectionReason !== (application?.rejectionReason || ''));
 
   if (!application) return null;
 
@@ -92,6 +105,24 @@ function ApplicationDetailPanel({ application, onClose, onStatusUpdate, saving =
         </div>
       </div>
 
+      {pendingStatus === 'Denied' && (
+        <label className="mt-4 block">
+          <span className="text-sm font-medium text-gray-700">Rejection Reason *</span>
+          <select
+            value={rejectionReason}
+            onChange={(e) => setRejectionReason(e.target.value)}
+            disabled={saving}
+            required
+            className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm disabled:opacity-60"
+          >
+            <option value="">Select a reason</option>
+            {REJECTION_REASONS.map((reason) => (
+              <option key={reason} value={reason}>{reason}</option>
+            ))}
+          </select>
+        </label>
+      )}
+
       <label className="mt-4 block">
         <span className="text-sm font-medium text-gray-700">
           Review Notes {pendingStatus === 'Denied' ? '(reason for denial)' : ''}
@@ -112,8 +143,13 @@ function ApplicationDetailPanel({ application, onClose, onStatusUpdate, saving =
 
       <button
         type="button"
-        disabled={saving || !hasChanges}
-        onClick={() => onStatusUpdate(application.id, { status: pendingStatus, statusNotes })}
+        disabled={saving || !hasChanges || (pendingStatus === 'Denied' && !rejectionReason)}
+        onClick={() => onStatusUpdate(application.id, {
+          status: pendingStatus,
+          statusNotes,
+          rejectionReason: pendingStatus === 'Denied' ? rejectionReason : undefined,
+          rejectionNotes: pendingStatus === 'Denied' ? statusNotes : undefined,
+        })}
         className="mt-4 rounded-lg bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800 disabled:opacity-60"
       >
         {saving ? 'Saving...' : 'Update Status & Notify Applicant'}

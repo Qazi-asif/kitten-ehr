@@ -42,8 +42,24 @@ export async function fetchPublicSettings() {
   return publicRequest('/settings');
 }
 
-export async function submitApplication(type, formData) {
+export async function submitApplication(type, formData, photos = []) {
   const kittenOfInterest = formData.kittenOfInterest || formData.kittenInterest || '';
+
+  if (photos.length > 0) {
+    const body = new FormData();
+    body.append('type', type);
+    body.append('formData', JSON.stringify(formData));
+    if (kittenOfInterest) body.append('kittenOfInterest', kittenOfInterest);
+    photos.slice(0, 3).forEach((file) => body.append('photos', file));
+
+    const response = await publicFetch('/public/applications', {
+      method: 'POST',
+      body,
+    });
+    if (!response.ok) throw new Error('Failed to submit application');
+    return response.json();
+  }
+
   const response = await publicFetch('/public/applications', {
     method: 'POST',
     body: JSON.stringify({

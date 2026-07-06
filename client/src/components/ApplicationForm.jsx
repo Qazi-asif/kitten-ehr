@@ -1,11 +1,17 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import HouseholdPetsSection from './HouseholdPetsSection';
 import { submitApplication } from '../services/publicApi';
-import { CheckCircle2, Send } from 'lucide-react';
+import { CheckCircle2, ImagePlus, Send, X } from 'lucide-react';
 
 const OWN_OR_RENT_OPTIONS = ['', 'Own', 'Rent'];
-
+const FOSTER_PHOTO_ACCEPT = 'image/jpeg,image/png,image/heic,image/heif,.jpg,.jpeg,.png,.heic,.heif';
+const FOSTER_PHOTO_TYPES = new Set([
+  'image/jpeg',
+  'image/png',
+  'image/heic',
+  'image/heif',
+]);
 const FORM_COPY = {
   Adoption: {
     title: 'Adoption Application',
@@ -25,7 +31,7 @@ function getPrefilledKittenInterest(params) {
   return params.get('kitten') || params.get('name') || params.get('kittenId') || params.get('id') || '';
 }
 
-function ApplicationForm({ defaultType = 'Adoption', lockType = true }) {
+function ApplicationForm({ defaultType = 'Adoption', lockType = true, allowPhotoUpload = false, maxPhotos = 3 }) {
   const [params] = useSearchParams();
   const prefilledKitten = getPrefilledKittenInterest(params);
   const lockedKitten = Boolean(prefilledKitten);
@@ -34,6 +40,8 @@ function ApplicationForm({ defaultType = 'Adoption', lockType = true }) {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [photoFiles, setPhotoFiles] = useState([]);
+  const [photoPreviews, setPhotoPreviews] = useState([]);
   const [form, setForm] = useState({
     fullName: '',
     email: '',
@@ -52,6 +60,42 @@ function ApplicationForm({ defaultType = 'Adoption', lockType = true }) {
   function handleChange(e) {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+  }
+
+  useEffect(() => {
+    const previews = photoFiles.map((file) => URL.createObjectURL(file));
+    setPhotoPreviews(previews);
+    return () => previews.forEach((url) => URL.revokeObjectURL(url));
+  }, [photoFiles]);
+
+  function isAcceptedPhoto(file) {
+    const type = (file.type || '').toLowerCase();
+    if (FOSTER_PHOTO_TYPES.has(type)) return true;
+    return /\.(jpe?g|png|heic|heif)$/i.test(file.name || '');
+  }
+
+  function handlePhotoChange(e) {
+    const selected = Array.from(e.target.files || []);
+
+    if (selected.length !== maxPhotos) {
+      setError(`Please select exactly ${maxPhotos} photos (JPG, PNG, or HEIC).`);
+      e.target.value = '';
+      return;
+    }
+
+    const invalid = selected.find((file) => !isAcceptedPhoto(file));
+    if (invalid) {
+      setError('Photos must be JPG, PNG, or HEIC files.');
+      e.target.value = '';
+      return;
+    }
+
+    setError('');
+    setPhotoFiles(selected);
+  }
+
+  function removePhoto(index) {
+    setPhotoFiles((prev) => prev.filter((_, i) => i !== index));
   }
 
   async function handleSubmit(e) {
@@ -78,7 +122,7 @@ function ApplicationForm({ defaultType = 'Adoption', lockType = true }) {
         payload.availability = form.availability;
       }
 
-      await submitApplication(applicationType, payload);
+      await submitApplication(applicationType, payload, allowPhotoUpload ? photoFiles : []);
       setSubmitted(true);
     } catch (err) {
       setError(err.message || 'Failed to submit application');
@@ -221,6 +265,69 @@ function ApplicationForm({ defaultType = 'Adoption', lockType = true }) {
             <textarea name="message" value={form.message} onChange={handleChange} rows={5} placeholder="Anything else we should know?" className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm focus:border-brand focus:ring-brand" />
           </label>
         </div>
+
+        {allowPhotoUpload && (
+          <>
+            <h3 className="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand/10 text-brand text-xs">5</span>
+              Home Photos
+            </h3>
+            <div className="mb-10 rounded-2xl border-2 border-dashed border-brand/30 bg-brand/5 p-6">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-sm font-semibold text-slate-900">Upload exactly {maxPhotos} photos of your home setup</p>
+                  <p className="mt-1 text-sm text-slate-600">JPG, PNG, or HEIC — foster space, supplies, or safe room.</p>
+                </div>
+                <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-brand-dark">
+                  <ImagePlus className="h-4 w-4" />
+                  Choose 3 Photos
+                  <input
+                    type="file"
+                    accept={FOSTER_PHOTO_ACCEPT}
+                    multiple
+                    onChange={handlePhotoChange}
+                    className="sr-only"
+                  />
+                </label>
+              </div>
+
+              <div className="mt-5 grid grid-cols-3 gap-3">
+                {Array.from({ length: maxPhotos }).map((_, index) => {
+                  const preview = photoPreviews[index];
+                  return (
+                    <div
+                      key={index}
+                      className="relative aspect-square overflow-hidden rounded-xl border border-slate-200 bg-white"
+                    >
+                      {preview ? (
+                        <>
+                          <img src={preview} alt={`Upload preview ${index + 1}`} className="h-full w-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => removePhoto(index)}
+                            className="absolute right-2 top-2 rounded-full bg-white/95 p-1 text-slate-600 shadow hover:text-red-600"
+                            aria-label={`Remove photo ${index + 1}`}
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
+                        </>
+                      ) : (
+                        <div className="flex h-full flex-col items-center justify-center px-2 text-center text-xs text-slate-400">
+                          <ImagePlus className="mb-2 h-6 w-6" />
+                          Photo {index + 1}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+
+              <p className="mt-3 text-xs font-medium text-slate-500">
+                {photoFiles.length}/{maxPhotos} photos selected
+              </p>
+            </div>
+          </>
+        )}
 
         {/* Submit Button */}
         <div className="pt-8 border-t border-slate-100 flex justify-end">

@@ -200,24 +200,127 @@ model Document {
 }
 
 model Application {
-  id               Int       @id @default(autoincrement())
+  id               Int                 @id @default(autoincrement())
   type             String
-  status           String    @default("New")
-  statusNotes      String    @default("")
+  status           String              @default("New")
+  statusNotes      String              @default("")
   statusUpdatedAt  DateTime?
   kittenOfInterest String?
-  formData         String    @default("{}")
-  createdAt        DateTime  @default(now())
+  formData         String              @default("{}")
+  rejectionReason  String?
+  rejectionNotes   String?
+  rejectedById     Int?
+  rejectedAt       DateTime?
+  rejectedBy       User?               @relation("ApplicationRejectedBy", fields: [rejectedById], references: [id], onDelete: SetNull)
+  createdAt        DateTime            @default(now())
+  contracts        Contract[]
+  uploads          ApplicationUpload[]
+
+  @@index([rejectedById])
+}
+
+enum ContractType {
+  FOSTER
+  ADOPTION
+}
+
+enum ContractStatus {
+  SENT
+  SIGNED
+  VOID
+}
+
+model Contract {
+  id               Int            @id @default(autoincrement())
+  type             ContractType
+  signerName       String
+  signerEmail      String
+  applicationId    Int?
+  application      Application?   @relation(fields: [applicationId], references: [id], onDelete: SetNull)
+  documentVersion  String
+  signedPdfUrl     String         @default("")
+  signatureAudit   String         @default("{}")
+  status           ContractStatus @default(SENT)
+  signedAt         DateTime?
+  createdAt        DateTime       @default(now())
+
+  @@index([applicationId])
+  @@index([status])
+  @@index([signerEmail])
+}
+
+enum FosterOnboardingStatus {
+  APPLIED
+  SCREENING
+  APPROVED
+  ACTIVE
+  DECLINED
+  WITHDRAWN
+}
+
+model FosterOnboarding {
+  id              Int                    @id @default(autoincrement())
+  applicantName   String
+  applicantEmail  String
+  status          FosterOnboardingStatus @default(APPLIED)
+  notes           String                 @default("")
+  createdAt       DateTime               @default(now())
+  checklistItems  OnboardingChecklist[]
+
+  @@index([status])
+  @@index([applicantEmail])
+}
+
+model OnboardingChecklist {
+  id              Int              @id @default(autoincrement())
+  onboardingId    Int
+  onboarding      FosterOnboarding @relation(fields: [onboardingId], references: [id], onDelete: Cascade)
+  stepKey         String
+  label           String
+  isComplete      Boolean          @default(false)
+  completedAt     DateTime?
+  completedBy     Int?
+  completedByUser User?            @relation("ChecklistCompletedBy", fields: [completedBy], references: [id], onDelete: SetNull)
+
+  @@index([onboardingId])
+  @@index([completedBy])
+  @@unique([onboardingId, stepKey])
+}
+
+model ApplicationUpload {
+  id            Int         @id @default(autoincrement())
+  applicationId Int
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  fileUrl       String
+  fileType      String
+  createdAt     DateTime    @default(now())
+
+  @@index([applicationId])
 }
 
 model Content {
-  id             Int      @id @default(autoincrement())
+  id             Int                 @id @default(autoincrement())
   title          String
-  slug           String   @unique
-  body           String   @default("")
-  category       String   @default("")
-  publishTargets String[] @default([])
-  createdAt      DateTime @default(now())
+  slug           String              @unique
+  body           String              @default("")
+  category       String              @default("")
+  isRequired     Boolean             @default(false)
+  publishTargets String[]            @default([])
+  createdAt      DateTime            @default(now())
+  completions    ContentCompletion[]
+}
+
+model ContentCompletion {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contentId   Int
+  content     Content  @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  completedAt DateTime @default(now())
+
+  @@unique([userId, contentId])
+  @@index([userId])
+  @@index([contentId])
 }
 
 model Event {
@@ -258,18 +361,21 @@ model RolePermission {
 }
 
 model User {
-  id           Int       @id @default(autoincrement())
-  email        String    @unique
-  passwordHash String
-  firstName    String
-  lastName     String
-  isActive     Boolean   @default(true)
-  roleId       Int
-  role         Role      @relation(fields: [roleId], references: [id], onDelete: Restrict)
-  fosterId     Int?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  lastLoginAt  DateTime?
+  id                    Int                   @id @default(autoincrement())
+  email                 String                @unique
+  passwordHash          String
+  firstName             String
+  lastName              String
+  isActive              Boolean               @default(true)
+  roleId                Int
+  role                  Role                  @relation(fields: [roleId], references: [id], onDelete: Restrict)
+  fosterId              Int?
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+  lastLoginAt           DateTime?
+  rejectedApplications  Application[]         @relation("ApplicationRejectedBy")
+  completedChecklistItems OnboardingChecklist[] @relation("ChecklistCompletedBy")
+  contentCompletions    ContentCompletion[]
 }
 
 model Settings {

@@ -49,7 +49,7 @@ function FosterFormPage() {
       </div>
       
       <div className="-mt-8 relative z-20">
-        <ApplicationForm defaultType="Foster" lockType />
+        <ApplicationForm defaultType="Foster" lockType allowPhotoUpload maxPhotos={3} />
       </div>
     </div>
   );

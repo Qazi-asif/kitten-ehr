@@ -74,10 +74,35 @@ export type Document = $Result.DefaultSelection<Prisma.$DocumentPayload>
  */
 export type Application = $Result.DefaultSelection<Prisma.$ApplicationPayload>
 /**
+ * Model Contract
+ * 
+ */
+export type Contract = $Result.DefaultSelection<Prisma.$ContractPayload>
+/**
+ * Model FosterOnboarding
+ * 
+ */
+export type FosterOnboarding = $Result.DefaultSelection<Prisma.$FosterOnboardingPayload>
+/**
+ * Model OnboardingChecklist
+ * 
+ */
+export type OnboardingChecklist = $Result.DefaultSelection<Prisma.$OnboardingChecklistPayload>
+/**
+ * Model ApplicationUpload
+ * 
+ */
+export type ApplicationUpload = $Result.DefaultSelection<Prisma.$ApplicationUploadPayload>
+/**
  * Model Content
  * 
  */
 export type Content = $Result.DefaultSelection<Prisma.$ContentPayload>
+/**
+ * Model ContentCompletion
+ * 
+ */
+export type ContentCompletion = $Result.DefaultSelection<Prisma.$ContentCompletionPayload>
 /**
  * Model Event
  * 
@@ -123,6 +148,52 @@ export type EmailLog = $Result.DefaultSelection<Prisma.$EmailLogPayload>
  * 
  */
 export type Transaction = $Result.DefaultSelection<Prisma.$TransactionPayload>
+
+/**
+ * Enums
+ */
+export namespace $Enums {
+  export const ContractType: {
+  FOSTER: 'FOSTER',
+  ADOPTION: 'ADOPTION'
+};
+
+export type ContractType = (typeof ContractType)[keyof typeof ContractType]
+
+
+export const ContractStatus: {
+  SENT: 'SENT',
+  SIGNED: 'SIGNED',
+  VOID: 'VOID'
+};
+
+export type ContractStatus = (typeof ContractStatus)[keyof typeof ContractStatus]
+
+
+export const FosterOnboardingStatus: {
+  APPLIED: 'APPLIED',
+  SCREENING: 'SCREENING',
+  APPROVED: 'APPROVED',
+  ACTIVE: 'ACTIVE',
+  DECLINED: 'DECLINED',
+  WITHDRAWN: 'WITHDRAWN'
+};
+
+export type FosterOnboardingStatus = (typeof FosterOnboardingStatus)[keyof typeof FosterOnboardingStatus]
+
+}
+
+export type ContractType = $Enums.ContractType
+
+export const ContractType: typeof $Enums.ContractType
+
+export type ContractStatus = $Enums.ContractStatus
+
+export const ContractStatus: typeof $Enums.ContractStatus
+
+export type FosterOnboardingStatus = $Enums.FosterOnboardingStatus
+
+export const FosterOnboardingStatus: typeof $Enums.FosterOnboardingStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -363,6 +434,46 @@ export class PrismaClient<
   get application(): Prisma.ApplicationDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.contract`: Exposes CRUD operations for the **Contract** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Contracts
+    * const contracts = await prisma.contract.findMany()
+    * ```
+    */
+  get contract(): Prisma.ContractDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.fosterOnboarding`: Exposes CRUD operations for the **FosterOnboarding** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FosterOnboardings
+    * const fosterOnboardings = await prisma.fosterOnboarding.findMany()
+    * ```
+    */
+  get fosterOnboarding(): Prisma.FosterOnboardingDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.onboardingChecklist`: Exposes CRUD operations for the **OnboardingChecklist** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more OnboardingChecklists
+    * const onboardingChecklists = await prisma.onboardingChecklist.findMany()
+    * ```
+    */
+  get onboardingChecklist(): Prisma.OnboardingChecklistDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.applicationUpload`: Exposes CRUD operations for the **ApplicationUpload** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ApplicationUploads
+    * const applicationUploads = await prisma.applicationUpload.findMany()
+    * ```
+    */
+  get applicationUpload(): Prisma.ApplicationUploadDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.content`: Exposes CRUD operations for the **Content** model.
     * Example usage:
     * ```ts
@@ -371,6 +482,16 @@ export class PrismaClient<
     * ```
     */
   get content(): Prisma.ContentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.contentCompletion`: Exposes CRUD operations for the **ContentCompletion** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ContentCompletions
+    * const contentCompletions = await prisma.contentCompletion.findMany()
+    * ```
+    */
+  get contentCompletion(): Prisma.ContentCompletionDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.event`: Exposes CRUD operations for the **Event** model.
@@ -914,7 +1035,12 @@ export namespace Prisma {
     VetAppointment: 'VetAppointment',
     Document: 'Document',
     Application: 'Application',
+    Contract: 'Contract',
+    FosterOnboarding: 'FosterOnboarding',
+    OnboardingChecklist: 'OnboardingChecklist',
+    ApplicationUpload: 'ApplicationUpload',
     Content: 'Content',
+    ContentCompletion: 'ContentCompletion',
     Event: 'Event',
     Role: 'Role',
     Permission: 'Permission',
@@ -942,7 +1068,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "litter" | "foster" | "kitten" | "update" | "sponsorship" | "placement" | "weightLog" | "vaccine" | "medication" | "vetAppointment" | "document" | "application" | "content" | "event" | "role" | "permission" | "rolePermission" | "user" | "settings" | "emailTemplate" | "emailLog" | "transaction"
+      modelProps: "litter" | "foster" | "kitten" | "update" | "sponsorship" | "placement" | "weightLog" | "vaccine" | "medication" | "vetAppointment" | "document" | "application" | "contract" | "fosterOnboarding" | "onboardingChecklist" | "applicationUpload" | "content" | "contentCompletion" | "event" | "role" | "permission" | "rolePermission" | "user" | "settings" | "emailTemplate" | "emailLog" | "transaction"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1834,6 +1960,302 @@ export namespace Prisma {
           }
         }
       }
+      Contract: {
+        payload: Prisma.$ContractPayload<ExtArgs>
+        fields: Prisma.ContractFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ContractFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ContractFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractPayload>
+          }
+          findFirst: {
+            args: Prisma.ContractFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ContractFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractPayload>
+          }
+          findMany: {
+            args: Prisma.ContractFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractPayload>[]
+          }
+          create: {
+            args: Prisma.ContractCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractPayload>
+          }
+          createMany: {
+            args: Prisma.ContractCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ContractCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractPayload>[]
+          }
+          delete: {
+            args: Prisma.ContractDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractPayload>
+          }
+          update: {
+            args: Prisma.ContractUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractPayload>
+          }
+          deleteMany: {
+            args: Prisma.ContractDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ContractUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ContractUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractPayload>[]
+          }
+          upsert: {
+            args: Prisma.ContractUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractPayload>
+          }
+          aggregate: {
+            args: Prisma.ContractAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateContract>
+          }
+          groupBy: {
+            args: Prisma.ContractGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ContractGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ContractCountArgs<ExtArgs>
+            result: $Utils.Optional<ContractCountAggregateOutputType> | number
+          }
+        }
+      }
+      FosterOnboarding: {
+        payload: Prisma.$FosterOnboardingPayload<ExtArgs>
+        fields: Prisma.FosterOnboardingFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FosterOnboardingFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FosterOnboardingPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FosterOnboardingFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FosterOnboardingPayload>
+          }
+          findFirst: {
+            args: Prisma.FosterOnboardingFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FosterOnboardingPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FosterOnboardingFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FosterOnboardingPayload>
+          }
+          findMany: {
+            args: Prisma.FosterOnboardingFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FosterOnboardingPayload>[]
+          }
+          create: {
+            args: Prisma.FosterOnboardingCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FosterOnboardingPayload>
+          }
+          createMany: {
+            args: Prisma.FosterOnboardingCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FosterOnboardingCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FosterOnboardingPayload>[]
+          }
+          delete: {
+            args: Prisma.FosterOnboardingDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FosterOnboardingPayload>
+          }
+          update: {
+            args: Prisma.FosterOnboardingUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FosterOnboardingPayload>
+          }
+          deleteMany: {
+            args: Prisma.FosterOnboardingDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FosterOnboardingUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FosterOnboardingUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FosterOnboardingPayload>[]
+          }
+          upsert: {
+            args: Prisma.FosterOnboardingUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FosterOnboardingPayload>
+          }
+          aggregate: {
+            args: Prisma.FosterOnboardingAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFosterOnboarding>
+          }
+          groupBy: {
+            args: Prisma.FosterOnboardingGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FosterOnboardingGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FosterOnboardingCountArgs<ExtArgs>
+            result: $Utils.Optional<FosterOnboardingCountAggregateOutputType> | number
+          }
+        }
+      }
+      OnboardingChecklist: {
+        payload: Prisma.$OnboardingChecklistPayload<ExtArgs>
+        fields: Prisma.OnboardingChecklistFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.OnboardingChecklistFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OnboardingChecklistPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.OnboardingChecklistFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OnboardingChecklistPayload>
+          }
+          findFirst: {
+            args: Prisma.OnboardingChecklistFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OnboardingChecklistPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.OnboardingChecklistFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OnboardingChecklistPayload>
+          }
+          findMany: {
+            args: Prisma.OnboardingChecklistFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OnboardingChecklistPayload>[]
+          }
+          create: {
+            args: Prisma.OnboardingChecklistCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OnboardingChecklistPayload>
+          }
+          createMany: {
+            args: Prisma.OnboardingChecklistCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.OnboardingChecklistCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OnboardingChecklistPayload>[]
+          }
+          delete: {
+            args: Prisma.OnboardingChecklistDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OnboardingChecklistPayload>
+          }
+          update: {
+            args: Prisma.OnboardingChecklistUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OnboardingChecklistPayload>
+          }
+          deleteMany: {
+            args: Prisma.OnboardingChecklistDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.OnboardingChecklistUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.OnboardingChecklistUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OnboardingChecklistPayload>[]
+          }
+          upsert: {
+            args: Prisma.OnboardingChecklistUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OnboardingChecklistPayload>
+          }
+          aggregate: {
+            args: Prisma.OnboardingChecklistAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateOnboardingChecklist>
+          }
+          groupBy: {
+            args: Prisma.OnboardingChecklistGroupByArgs<ExtArgs>
+            result: $Utils.Optional<OnboardingChecklistGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.OnboardingChecklistCountArgs<ExtArgs>
+            result: $Utils.Optional<OnboardingChecklistCountAggregateOutputType> | number
+          }
+        }
+      }
+      ApplicationUpload: {
+        payload: Prisma.$ApplicationUploadPayload<ExtArgs>
+        fields: Prisma.ApplicationUploadFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ApplicationUploadFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ApplicationUploadPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ApplicationUploadFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ApplicationUploadPayload>
+          }
+          findFirst: {
+            args: Prisma.ApplicationUploadFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ApplicationUploadPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ApplicationUploadFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ApplicationUploadPayload>
+          }
+          findMany: {
+            args: Prisma.ApplicationUploadFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ApplicationUploadPayload>[]
+          }
+          create: {
+            args: Prisma.ApplicationUploadCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ApplicationUploadPayload>
+          }
+          createMany: {
+            args: Prisma.ApplicationUploadCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ApplicationUploadCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ApplicationUploadPayload>[]
+          }
+          delete: {
+            args: Prisma.ApplicationUploadDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ApplicationUploadPayload>
+          }
+          update: {
+            args: Prisma.ApplicationUploadUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ApplicationUploadPayload>
+          }
+          deleteMany: {
+            args: Prisma.ApplicationUploadDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ApplicationUploadUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ApplicationUploadUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ApplicationUploadPayload>[]
+          }
+          upsert: {
+            args: Prisma.ApplicationUploadUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ApplicationUploadPayload>
+          }
+          aggregate: {
+            args: Prisma.ApplicationUploadAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateApplicationUpload>
+          }
+          groupBy: {
+            args: Prisma.ApplicationUploadGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ApplicationUploadGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ApplicationUploadCountArgs<ExtArgs>
+            result: $Utils.Optional<ApplicationUploadCountAggregateOutputType> | number
+          }
+        }
+      }
       Content: {
         payload: Prisma.$ContentPayload<ExtArgs>
         fields: Prisma.ContentFieldRefs
@@ -1905,6 +2327,80 @@ export namespace Prisma {
           count: {
             args: Prisma.ContentCountArgs<ExtArgs>
             result: $Utils.Optional<ContentCountAggregateOutputType> | number
+          }
+        }
+      }
+      ContentCompletion: {
+        payload: Prisma.$ContentCompletionPayload<ExtArgs>
+        fields: Prisma.ContentCompletionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ContentCompletionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContentCompletionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ContentCompletionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContentCompletionPayload>
+          }
+          findFirst: {
+            args: Prisma.ContentCompletionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContentCompletionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ContentCompletionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContentCompletionPayload>
+          }
+          findMany: {
+            args: Prisma.ContentCompletionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContentCompletionPayload>[]
+          }
+          create: {
+            args: Prisma.ContentCompletionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContentCompletionPayload>
+          }
+          createMany: {
+            args: Prisma.ContentCompletionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ContentCompletionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContentCompletionPayload>[]
+          }
+          delete: {
+            args: Prisma.ContentCompletionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContentCompletionPayload>
+          }
+          update: {
+            args: Prisma.ContentCompletionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContentCompletionPayload>
+          }
+          deleteMany: {
+            args: Prisma.ContentCompletionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ContentCompletionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ContentCompletionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContentCompletionPayload>[]
+          }
+          upsert: {
+            args: Prisma.ContentCompletionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContentCompletionPayload>
+          }
+          aggregate: {
+            args: Prisma.ContentCompletionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateContentCompletion>
+          }
+          groupBy: {
+            args: Prisma.ContentCompletionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ContentCompletionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ContentCompletionCountArgs<ExtArgs>
+            result: $Utils.Optional<ContentCompletionCountAggregateOutputType> | number
           }
         }
       }
@@ -2682,7 +3178,12 @@ export namespace Prisma {
     vetAppointment?: VetAppointmentOmit
     document?: DocumentOmit
     application?: ApplicationOmit
+    contract?: ContractOmit
+    fosterOnboarding?: FosterOnboardingOmit
+    onboardingChecklist?: OnboardingChecklistOmit
+    applicationUpload?: ApplicationUploadOmit
     content?: ContentOmit
+    contentCompletion?: ContentCompletionOmit
     event?: EventOmit
     role?: RoleOmit
     permission?: PermissionOmit
@@ -2942,6 +3443,108 @@ export namespace Prisma {
 
 
   /**
+   * Count Type ApplicationCountOutputType
+   */
+
+  export type ApplicationCountOutputType = {
+    contracts: number
+    uploads: number
+  }
+
+  export type ApplicationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    contracts?: boolean | ApplicationCountOutputTypeCountContractsArgs
+    uploads?: boolean | ApplicationCountOutputTypeCountUploadsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ApplicationCountOutputType without action
+   */
+  export type ApplicationCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ApplicationCountOutputType
+     */
+    select?: ApplicationCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ApplicationCountOutputType without action
+   */
+  export type ApplicationCountOutputTypeCountContractsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ContractWhereInput
+  }
+
+  /**
+   * ApplicationCountOutputType without action
+   */
+  export type ApplicationCountOutputTypeCountUploadsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ApplicationUploadWhereInput
+  }
+
+
+  /**
+   * Count Type FosterOnboardingCountOutputType
+   */
+
+  export type FosterOnboardingCountOutputType = {
+    checklistItems: number
+  }
+
+  export type FosterOnboardingCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    checklistItems?: boolean | FosterOnboardingCountOutputTypeCountChecklistItemsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * FosterOnboardingCountOutputType without action
+   */
+  export type FosterOnboardingCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FosterOnboardingCountOutputType
+     */
+    select?: FosterOnboardingCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * FosterOnboardingCountOutputType without action
+   */
+  export type FosterOnboardingCountOutputTypeCountChecklistItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OnboardingChecklistWhereInput
+  }
+
+
+  /**
+   * Count Type ContentCountOutputType
+   */
+
+  export type ContentCountOutputType = {
+    completions: number
+  }
+
+  export type ContentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    completions?: boolean | ContentCountOutputTypeCountCompletionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ContentCountOutputType without action
+   */
+  export type ContentCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContentCountOutputType
+     */
+    select?: ContentCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ContentCountOutputType without action
+   */
+  export type ContentCountOutputTypeCountCompletionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ContentCompletionWhereInput
+  }
+
+
+  /**
    * Count Type RoleCountOutputType
    */
 
@@ -3009,6 +3612,55 @@ export namespace Prisma {
    */
   export type PermissionCountOutputTypeCountRolesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: RolePermissionWhereInput
+  }
+
+
+  /**
+   * Count Type UserCountOutputType
+   */
+
+  export type UserCountOutputType = {
+    rejectedApplications: number
+    completedChecklistItems: number
+    contentCompletions: number
+  }
+
+  export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    rejectedApplications?: boolean | UserCountOutputTypeCountRejectedApplicationsArgs
+    completedChecklistItems?: boolean | UserCountOutputTypeCountCompletedChecklistItemsArgs
+    contentCompletions?: boolean | UserCountOutputTypeCountContentCompletionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserCountOutputType
+     */
+    select?: UserCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountRejectedApplicationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ApplicationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCompletedChecklistItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OnboardingChecklistWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountContentCompletionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ContentCompletionWhereInput
   }
 
 
@@ -16173,10 +16825,12 @@ export namespace Prisma {
 
   export type ApplicationAvgAggregateOutputType = {
     id: number | null
+    rejectedById: number | null
   }
 
   export type ApplicationSumAggregateOutputType = {
     id: number | null
+    rejectedById: number | null
   }
 
   export type ApplicationMinAggregateOutputType = {
@@ -16187,6 +16841,10 @@ export namespace Prisma {
     statusUpdatedAt: Date | null
     kittenOfInterest: string | null
     formData: string | null
+    rejectionReason: string | null
+    rejectionNotes: string | null
+    rejectedById: number | null
+    rejectedAt: Date | null
     createdAt: Date | null
   }
 
@@ -16198,6 +16856,10 @@ export namespace Prisma {
     statusUpdatedAt: Date | null
     kittenOfInterest: string | null
     formData: string | null
+    rejectionReason: string | null
+    rejectionNotes: string | null
+    rejectedById: number | null
+    rejectedAt: Date | null
     createdAt: Date | null
   }
 
@@ -16209,6 +16871,10 @@ export namespace Prisma {
     statusUpdatedAt: number
     kittenOfInterest: number
     formData: number
+    rejectionReason: number
+    rejectionNotes: number
+    rejectedById: number
+    rejectedAt: number
     createdAt: number
     _all: number
   }
@@ -16216,10 +16882,12 @@ export namespace Prisma {
 
   export type ApplicationAvgAggregateInputType = {
     id?: true
+    rejectedById?: true
   }
 
   export type ApplicationSumAggregateInputType = {
     id?: true
+    rejectedById?: true
   }
 
   export type ApplicationMinAggregateInputType = {
@@ -16230,6 +16898,10 @@ export namespace Prisma {
     statusUpdatedAt?: true
     kittenOfInterest?: true
     formData?: true
+    rejectionReason?: true
+    rejectionNotes?: true
+    rejectedById?: true
+    rejectedAt?: true
     createdAt?: true
   }
 
@@ -16241,6 +16913,10 @@ export namespace Prisma {
     statusUpdatedAt?: true
     kittenOfInterest?: true
     formData?: true
+    rejectionReason?: true
+    rejectionNotes?: true
+    rejectedById?: true
+    rejectedAt?: true
     createdAt?: true
   }
 
@@ -16252,6 +16928,10 @@ export namespace Prisma {
     statusUpdatedAt?: true
     kittenOfInterest?: true
     formData?: true
+    rejectionReason?: true
+    rejectionNotes?: true
+    rejectedById?: true
+    rejectedAt?: true
     createdAt?: true
     _all?: true
   }
@@ -16350,6 +17030,10 @@ export namespace Prisma {
     statusUpdatedAt: Date | null
     kittenOfInterest: string | null
     formData: string
+    rejectionReason: string | null
+    rejectionNotes: string | null
+    rejectedById: number | null
+    rejectedAt: Date | null
     createdAt: Date
     _count: ApplicationCountAggregateOutputType | null
     _avg: ApplicationAvgAggregateOutputType | null
@@ -16380,7 +17064,15 @@ export namespace Prisma {
     statusUpdatedAt?: boolean
     kittenOfInterest?: boolean
     formData?: boolean
+    rejectionReason?: boolean
+    rejectionNotes?: boolean
+    rejectedById?: boolean
+    rejectedAt?: boolean
     createdAt?: boolean
+    rejectedBy?: boolean | Application$rejectedByArgs<ExtArgs>
+    contracts?: boolean | Application$contractsArgs<ExtArgs>
+    uploads?: boolean | Application$uploadsArgs<ExtArgs>
+    _count?: boolean | ApplicationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["application"]>
 
   export type ApplicationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -16391,7 +17083,12 @@ export namespace Prisma {
     statusUpdatedAt?: boolean
     kittenOfInterest?: boolean
     formData?: boolean
+    rejectionReason?: boolean
+    rejectionNotes?: boolean
+    rejectedById?: boolean
+    rejectedAt?: boolean
     createdAt?: boolean
+    rejectedBy?: boolean | Application$rejectedByArgs<ExtArgs>
   }, ExtArgs["result"]["application"]>
 
   export type ApplicationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -16402,7 +17099,12 @@ export namespace Prisma {
     statusUpdatedAt?: boolean
     kittenOfInterest?: boolean
     formData?: boolean
+    rejectionReason?: boolean
+    rejectionNotes?: boolean
+    rejectedById?: boolean
+    rejectedAt?: boolean
     createdAt?: boolean
+    rejectedBy?: boolean | Application$rejectedByArgs<ExtArgs>
   }, ExtArgs["result"]["application"]>
 
   export type ApplicationSelectScalar = {
@@ -16413,14 +17115,34 @@ export namespace Prisma {
     statusUpdatedAt?: boolean
     kittenOfInterest?: boolean
     formData?: boolean
+    rejectionReason?: boolean
+    rejectionNotes?: boolean
+    rejectedById?: boolean
+    rejectedAt?: boolean
     createdAt?: boolean
   }
 
-  export type ApplicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "status" | "statusNotes" | "statusUpdatedAt" | "kittenOfInterest" | "formData" | "createdAt", ExtArgs["result"]["application"]>
+  export type ApplicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "status" | "statusNotes" | "statusUpdatedAt" | "kittenOfInterest" | "formData" | "rejectionReason" | "rejectionNotes" | "rejectedById" | "rejectedAt" | "createdAt", ExtArgs["result"]["application"]>
+  export type ApplicationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    rejectedBy?: boolean | Application$rejectedByArgs<ExtArgs>
+    contracts?: boolean | Application$contractsArgs<ExtArgs>
+    uploads?: boolean | Application$uploadsArgs<ExtArgs>
+    _count?: boolean | ApplicationCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ApplicationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    rejectedBy?: boolean | Application$rejectedByArgs<ExtArgs>
+  }
+  export type ApplicationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    rejectedBy?: boolean | Application$rejectedByArgs<ExtArgs>
+  }
 
   export type $ApplicationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Application"
-    objects: {}
+    objects: {
+      rejectedBy: Prisma.$UserPayload<ExtArgs> | null
+      contracts: Prisma.$ContractPayload<ExtArgs>[]
+      uploads: Prisma.$ApplicationUploadPayload<ExtArgs>[]
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       type: string
@@ -16429,6 +17151,10 @@ export namespace Prisma {
       statusUpdatedAt: Date | null
       kittenOfInterest: string | null
       formData: string
+      rejectionReason: string | null
+      rejectionNotes: string | null
+      rejectedById: number | null
+      rejectedAt: Date | null
       createdAt: Date
     }, ExtArgs["result"]["application"]>
     composites: {}
@@ -16824,6 +17550,9 @@ export namespace Prisma {
    */
   export interface Prisma__ApplicationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    rejectedBy<T extends Application$rejectedByArgs<ExtArgs> = {}>(args?: Subset<T, Application$rejectedByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    contracts<T extends Application$contractsArgs<ExtArgs> = {}>(args?: Subset<T, Application$contractsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    uploads<T extends Application$uploadsArgs<ExtArgs> = {}>(args?: Subset<T, Application$uploadsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ApplicationUploadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -16860,6 +17589,10 @@ export namespace Prisma {
     readonly statusUpdatedAt: FieldRef<"Application", 'DateTime'>
     readonly kittenOfInterest: FieldRef<"Application", 'String'>
     readonly formData: FieldRef<"Application", 'String'>
+    readonly rejectionReason: FieldRef<"Application", 'String'>
+    readonly rejectionNotes: FieldRef<"Application", 'String'>
+    readonly rejectedById: FieldRef<"Application", 'Int'>
+    readonly rejectedAt: FieldRef<"Application", 'DateTime'>
     readonly createdAt: FieldRef<"Application", 'DateTime'>
   }
     
@@ -16877,6 +17610,10 @@ export namespace Prisma {
      * Omit specific fields from the Application
      */
     omit?: ApplicationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationInclude<ExtArgs> | null
     /**
      * Filter, which Application to fetch.
      */
@@ -16896,6 +17633,10 @@ export namespace Prisma {
      */
     omit?: ApplicationOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationInclude<ExtArgs> | null
+    /**
      * Filter, which Application to fetch.
      */
     where: ApplicationWhereUniqueInput
@@ -16913,6 +17654,10 @@ export namespace Prisma {
      * Omit specific fields from the Application
      */
     omit?: ApplicationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationInclude<ExtArgs> | null
     /**
      * Filter, which Application to fetch.
      */
@@ -16962,6 +17707,10 @@ export namespace Prisma {
      */
     omit?: ApplicationOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationInclude<ExtArgs> | null
+    /**
      * Filter, which Application to fetch.
      */
     where?: ApplicationWhereInput
@@ -17010,6 +17759,10 @@ export namespace Prisma {
      */
     omit?: ApplicationOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationInclude<ExtArgs> | null
+    /**
      * Filter, which Applications to fetch.
      */
     where?: ApplicationWhereInput
@@ -17053,6 +17806,10 @@ export namespace Prisma {
      */
     omit?: ApplicationOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationInclude<ExtArgs> | null
+    /**
      * The data needed to create a Application.
      */
     data: XOR<ApplicationCreateInput, ApplicationUncheckedCreateInput>
@@ -17086,6 +17843,10 @@ export namespace Prisma {
      */
     data: ApplicationCreateManyInput | ApplicationCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -17100,6 +17861,10 @@ export namespace Prisma {
      * Omit specific fields from the Application
      */
     omit?: ApplicationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationInclude<ExtArgs> | null
     /**
      * The data needed to update a Application.
      */
@@ -17152,6 +17917,10 @@ export namespace Prisma {
      * Limit how many Applications to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -17166,6 +17935,10 @@ export namespace Prisma {
      * Omit specific fields from the Application
      */
     omit?: ApplicationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationInclude<ExtArgs> | null
     /**
      * The filter to search for the Application to update in case it exists.
      */
@@ -17193,6 +17966,10 @@ export namespace Prisma {
      */
     omit?: ApplicationOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationInclude<ExtArgs> | null
+    /**
      * Filter which Application to delete.
      */
     where: ApplicationWhereUniqueInput
@@ -17213,6 +17990,73 @@ export namespace Prisma {
   }
 
   /**
+   * Application.rejectedBy
+   */
+  export type Application$rejectedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Application.contracts
+   */
+  export type Application$contractsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Contract
+     */
+    select?: ContractSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Contract
+     */
+    omit?: ContractOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractInclude<ExtArgs> | null
+    where?: ContractWhereInput
+    orderBy?: ContractOrderByWithRelationInput | ContractOrderByWithRelationInput[]
+    cursor?: ContractWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ContractScalarFieldEnum | ContractScalarFieldEnum[]
+  }
+
+  /**
+   * Application.uploads
+   */
+  export type Application$uploadsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ApplicationUpload
+     */
+    select?: ApplicationUploadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ApplicationUpload
+     */
+    omit?: ApplicationUploadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationUploadInclude<ExtArgs> | null
+    where?: ApplicationUploadWhereInput
+    orderBy?: ApplicationUploadOrderByWithRelationInput | ApplicationUploadOrderByWithRelationInput[]
+    cursor?: ApplicationUploadWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ApplicationUploadScalarFieldEnum | ApplicationUploadScalarFieldEnum[]
+  }
+
+  /**
    * Application without action
    */
   export type ApplicationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -17224,6 +18068,4569 @@ export namespace Prisma {
      * Omit specific fields from the Application
      */
     omit?: ApplicationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Contract
+   */
+
+  export type AggregateContract = {
+    _count: ContractCountAggregateOutputType | null
+    _avg: ContractAvgAggregateOutputType | null
+    _sum: ContractSumAggregateOutputType | null
+    _min: ContractMinAggregateOutputType | null
+    _max: ContractMaxAggregateOutputType | null
+  }
+
+  export type ContractAvgAggregateOutputType = {
+    id: number | null
+    applicationId: number | null
+  }
+
+  export type ContractSumAggregateOutputType = {
+    id: number | null
+    applicationId: number | null
+  }
+
+  export type ContractMinAggregateOutputType = {
+    id: number | null
+    type: $Enums.ContractType | null
+    signerName: string | null
+    signerEmail: string | null
+    applicationId: number | null
+    documentVersion: string | null
+    signedPdfUrl: string | null
+    signatureAudit: string | null
+    status: $Enums.ContractStatus | null
+    signedAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type ContractMaxAggregateOutputType = {
+    id: number | null
+    type: $Enums.ContractType | null
+    signerName: string | null
+    signerEmail: string | null
+    applicationId: number | null
+    documentVersion: string | null
+    signedPdfUrl: string | null
+    signatureAudit: string | null
+    status: $Enums.ContractStatus | null
+    signedAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type ContractCountAggregateOutputType = {
+    id: number
+    type: number
+    signerName: number
+    signerEmail: number
+    applicationId: number
+    documentVersion: number
+    signedPdfUrl: number
+    signatureAudit: number
+    status: number
+    signedAt: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type ContractAvgAggregateInputType = {
+    id?: true
+    applicationId?: true
+  }
+
+  export type ContractSumAggregateInputType = {
+    id?: true
+    applicationId?: true
+  }
+
+  export type ContractMinAggregateInputType = {
+    id?: true
+    type?: true
+    signerName?: true
+    signerEmail?: true
+    applicationId?: true
+    documentVersion?: true
+    signedPdfUrl?: true
+    signatureAudit?: true
+    status?: true
+    signedAt?: true
+    createdAt?: true
+  }
+
+  export type ContractMaxAggregateInputType = {
+    id?: true
+    type?: true
+    signerName?: true
+    signerEmail?: true
+    applicationId?: true
+    documentVersion?: true
+    signedPdfUrl?: true
+    signatureAudit?: true
+    status?: true
+    signedAt?: true
+    createdAt?: true
+  }
+
+  export type ContractCountAggregateInputType = {
+    id?: true
+    type?: true
+    signerName?: true
+    signerEmail?: true
+    applicationId?: true
+    documentVersion?: true
+    signedPdfUrl?: true
+    signatureAudit?: true
+    status?: true
+    signedAt?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type ContractAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Contract to aggregate.
+     */
+    where?: ContractWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Contracts to fetch.
+     */
+    orderBy?: ContractOrderByWithRelationInput | ContractOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ContractWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Contracts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Contracts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Contracts
+    **/
+    _count?: true | ContractCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ContractAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ContractSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ContractMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ContractMaxAggregateInputType
+  }
+
+  export type GetContractAggregateType<T extends ContractAggregateArgs> = {
+        [P in keyof T & keyof AggregateContract]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateContract[P]>
+      : GetScalarType<T[P], AggregateContract[P]>
+  }
+
+
+
+
+  export type ContractGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ContractWhereInput
+    orderBy?: ContractOrderByWithAggregationInput | ContractOrderByWithAggregationInput[]
+    by: ContractScalarFieldEnum[] | ContractScalarFieldEnum
+    having?: ContractScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ContractCountAggregateInputType | true
+    _avg?: ContractAvgAggregateInputType
+    _sum?: ContractSumAggregateInputType
+    _min?: ContractMinAggregateInputType
+    _max?: ContractMaxAggregateInputType
+  }
+
+  export type ContractGroupByOutputType = {
+    id: number
+    type: $Enums.ContractType
+    signerName: string
+    signerEmail: string
+    applicationId: number | null
+    documentVersion: string
+    signedPdfUrl: string
+    signatureAudit: string
+    status: $Enums.ContractStatus
+    signedAt: Date | null
+    createdAt: Date
+    _count: ContractCountAggregateOutputType | null
+    _avg: ContractAvgAggregateOutputType | null
+    _sum: ContractSumAggregateOutputType | null
+    _min: ContractMinAggregateOutputType | null
+    _max: ContractMaxAggregateOutputType | null
+  }
+
+  type GetContractGroupByPayload<T extends ContractGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ContractGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ContractGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ContractGroupByOutputType[P]>
+            : GetScalarType<T[P], ContractGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ContractSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    signerName?: boolean
+    signerEmail?: boolean
+    applicationId?: boolean
+    documentVersion?: boolean
+    signedPdfUrl?: boolean
+    signatureAudit?: boolean
+    status?: boolean
+    signedAt?: boolean
+    createdAt?: boolean
+    application?: boolean | Contract$applicationArgs<ExtArgs>
+  }, ExtArgs["result"]["contract"]>
+
+  export type ContractSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    signerName?: boolean
+    signerEmail?: boolean
+    applicationId?: boolean
+    documentVersion?: boolean
+    signedPdfUrl?: boolean
+    signatureAudit?: boolean
+    status?: boolean
+    signedAt?: boolean
+    createdAt?: boolean
+    application?: boolean | Contract$applicationArgs<ExtArgs>
+  }, ExtArgs["result"]["contract"]>
+
+  export type ContractSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    signerName?: boolean
+    signerEmail?: boolean
+    applicationId?: boolean
+    documentVersion?: boolean
+    signedPdfUrl?: boolean
+    signatureAudit?: boolean
+    status?: boolean
+    signedAt?: boolean
+    createdAt?: boolean
+    application?: boolean | Contract$applicationArgs<ExtArgs>
+  }, ExtArgs["result"]["contract"]>
+
+  export type ContractSelectScalar = {
+    id?: boolean
+    type?: boolean
+    signerName?: boolean
+    signerEmail?: boolean
+    applicationId?: boolean
+    documentVersion?: boolean
+    signedPdfUrl?: boolean
+    signatureAudit?: boolean
+    status?: boolean
+    signedAt?: boolean
+    createdAt?: boolean
+  }
+
+  export type ContractOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "signerName" | "signerEmail" | "applicationId" | "documentVersion" | "signedPdfUrl" | "signatureAudit" | "status" | "signedAt" | "createdAt", ExtArgs["result"]["contract"]>
+  export type ContractInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    application?: boolean | Contract$applicationArgs<ExtArgs>
+  }
+  export type ContractIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    application?: boolean | Contract$applicationArgs<ExtArgs>
+  }
+  export type ContractIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    application?: boolean | Contract$applicationArgs<ExtArgs>
+  }
+
+  export type $ContractPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Contract"
+    objects: {
+      application: Prisma.$ApplicationPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      type: $Enums.ContractType
+      signerName: string
+      signerEmail: string
+      applicationId: number | null
+      documentVersion: string
+      signedPdfUrl: string
+      signatureAudit: string
+      status: $Enums.ContractStatus
+      signedAt: Date | null
+      createdAt: Date
+    }, ExtArgs["result"]["contract"]>
+    composites: {}
+  }
+
+  type ContractGetPayload<S extends boolean | null | undefined | ContractDefaultArgs> = $Result.GetResult<Prisma.$ContractPayload, S>
+
+  type ContractCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ContractFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ContractCountAggregateInputType | true
+    }
+
+  export interface ContractDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Contract'], meta: { name: 'Contract' } }
+    /**
+     * Find zero or one Contract that matches the filter.
+     * @param {ContractFindUniqueArgs} args - Arguments to find a Contract
+     * @example
+     * // Get one Contract
+     * const contract = await prisma.contract.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ContractFindUniqueArgs>(args: SelectSubset<T, ContractFindUniqueArgs<ExtArgs>>): Prisma__ContractClient<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Contract that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ContractFindUniqueOrThrowArgs} args - Arguments to find a Contract
+     * @example
+     * // Get one Contract
+     * const contract = await prisma.contract.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ContractFindUniqueOrThrowArgs>(args: SelectSubset<T, ContractFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ContractClient<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Contract that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractFindFirstArgs} args - Arguments to find a Contract
+     * @example
+     * // Get one Contract
+     * const contract = await prisma.contract.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ContractFindFirstArgs>(args?: SelectSubset<T, ContractFindFirstArgs<ExtArgs>>): Prisma__ContractClient<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Contract that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractFindFirstOrThrowArgs} args - Arguments to find a Contract
+     * @example
+     * // Get one Contract
+     * const contract = await prisma.contract.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ContractFindFirstOrThrowArgs>(args?: SelectSubset<T, ContractFindFirstOrThrowArgs<ExtArgs>>): Prisma__ContractClient<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Contracts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Contracts
+     * const contracts = await prisma.contract.findMany()
+     * 
+     * // Get first 10 Contracts
+     * const contracts = await prisma.contract.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const contractWithIdOnly = await prisma.contract.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ContractFindManyArgs>(args?: SelectSubset<T, ContractFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Contract.
+     * @param {ContractCreateArgs} args - Arguments to create a Contract.
+     * @example
+     * // Create one Contract
+     * const Contract = await prisma.contract.create({
+     *   data: {
+     *     // ... data to create a Contract
+     *   }
+     * })
+     * 
+     */
+    create<T extends ContractCreateArgs>(args: SelectSubset<T, ContractCreateArgs<ExtArgs>>): Prisma__ContractClient<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Contracts.
+     * @param {ContractCreateManyArgs} args - Arguments to create many Contracts.
+     * @example
+     * // Create many Contracts
+     * const contract = await prisma.contract.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ContractCreateManyArgs>(args?: SelectSubset<T, ContractCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Contracts and returns the data saved in the database.
+     * @param {ContractCreateManyAndReturnArgs} args - Arguments to create many Contracts.
+     * @example
+     * // Create many Contracts
+     * const contract = await prisma.contract.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Contracts and only return the `id`
+     * const contractWithIdOnly = await prisma.contract.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ContractCreateManyAndReturnArgs>(args?: SelectSubset<T, ContractCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Contract.
+     * @param {ContractDeleteArgs} args - Arguments to delete one Contract.
+     * @example
+     * // Delete one Contract
+     * const Contract = await prisma.contract.delete({
+     *   where: {
+     *     // ... filter to delete one Contract
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ContractDeleteArgs>(args: SelectSubset<T, ContractDeleteArgs<ExtArgs>>): Prisma__ContractClient<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Contract.
+     * @param {ContractUpdateArgs} args - Arguments to update one Contract.
+     * @example
+     * // Update one Contract
+     * const contract = await prisma.contract.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ContractUpdateArgs>(args: SelectSubset<T, ContractUpdateArgs<ExtArgs>>): Prisma__ContractClient<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Contracts.
+     * @param {ContractDeleteManyArgs} args - Arguments to filter Contracts to delete.
+     * @example
+     * // Delete a few Contracts
+     * const { count } = await prisma.contract.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ContractDeleteManyArgs>(args?: SelectSubset<T, ContractDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Contracts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Contracts
+     * const contract = await prisma.contract.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ContractUpdateManyArgs>(args: SelectSubset<T, ContractUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Contracts and returns the data updated in the database.
+     * @param {ContractUpdateManyAndReturnArgs} args - Arguments to update many Contracts.
+     * @example
+     * // Update many Contracts
+     * const contract = await prisma.contract.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Contracts and only return the `id`
+     * const contractWithIdOnly = await prisma.contract.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ContractUpdateManyAndReturnArgs>(args: SelectSubset<T, ContractUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Contract.
+     * @param {ContractUpsertArgs} args - Arguments to update or create a Contract.
+     * @example
+     * // Update or create a Contract
+     * const contract = await prisma.contract.upsert({
+     *   create: {
+     *     // ... data to create a Contract
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Contract we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ContractUpsertArgs>(args: SelectSubset<T, ContractUpsertArgs<ExtArgs>>): Prisma__ContractClient<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Contracts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractCountArgs} args - Arguments to filter Contracts to count.
+     * @example
+     * // Count the number of Contracts
+     * const count = await prisma.contract.count({
+     *   where: {
+     *     // ... the filter for the Contracts we want to count
+     *   }
+     * })
+    **/
+    count<T extends ContractCountArgs>(
+      args?: Subset<T, ContractCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ContractCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Contract.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ContractAggregateArgs>(args: Subset<T, ContractAggregateArgs>): Prisma.PrismaPromise<GetContractAggregateType<T>>
+
+    /**
+     * Group by Contract.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ContractGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ContractGroupByArgs['orderBy'] }
+        : { orderBy?: ContractGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ContractGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetContractGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Contract model
+   */
+  readonly fields: ContractFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Contract.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ContractClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    application<T extends Contract$applicationArgs<ExtArgs> = {}>(args?: Subset<T, Contract$applicationArgs<ExtArgs>>): Prisma__ApplicationClient<$Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Contract model
+   */
+  interface ContractFieldRefs {
+    readonly id: FieldRef<"Contract", 'Int'>
+    readonly type: FieldRef<"Contract", 'ContractType'>
+    readonly signerName: FieldRef<"Contract", 'String'>
+    readonly signerEmail: FieldRef<"Contract", 'String'>
+    readonly applicationId: FieldRef<"Contract", 'Int'>
+    readonly documentVersion: FieldRef<"Contract", 'String'>
+    readonly signedPdfUrl: FieldRef<"Contract", 'String'>
+    readonly signatureAudit: FieldRef<"Contract", 'String'>
+    readonly status: FieldRef<"Contract", 'ContractStatus'>
+    readonly signedAt: FieldRef<"Contract", 'DateTime'>
+    readonly createdAt: FieldRef<"Contract", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Contract findUnique
+   */
+  export type ContractFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Contract
+     */
+    select?: ContractSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Contract
+     */
+    omit?: ContractOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractInclude<ExtArgs> | null
+    /**
+     * Filter, which Contract to fetch.
+     */
+    where: ContractWhereUniqueInput
+  }
+
+  /**
+   * Contract findUniqueOrThrow
+   */
+  export type ContractFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Contract
+     */
+    select?: ContractSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Contract
+     */
+    omit?: ContractOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractInclude<ExtArgs> | null
+    /**
+     * Filter, which Contract to fetch.
+     */
+    where: ContractWhereUniqueInput
+  }
+
+  /**
+   * Contract findFirst
+   */
+  export type ContractFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Contract
+     */
+    select?: ContractSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Contract
+     */
+    omit?: ContractOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractInclude<ExtArgs> | null
+    /**
+     * Filter, which Contract to fetch.
+     */
+    where?: ContractWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Contracts to fetch.
+     */
+    orderBy?: ContractOrderByWithRelationInput | ContractOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Contracts.
+     */
+    cursor?: ContractWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Contracts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Contracts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Contracts.
+     */
+    distinct?: ContractScalarFieldEnum | ContractScalarFieldEnum[]
+  }
+
+  /**
+   * Contract findFirstOrThrow
+   */
+  export type ContractFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Contract
+     */
+    select?: ContractSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Contract
+     */
+    omit?: ContractOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractInclude<ExtArgs> | null
+    /**
+     * Filter, which Contract to fetch.
+     */
+    where?: ContractWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Contracts to fetch.
+     */
+    orderBy?: ContractOrderByWithRelationInput | ContractOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Contracts.
+     */
+    cursor?: ContractWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Contracts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Contracts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Contracts.
+     */
+    distinct?: ContractScalarFieldEnum | ContractScalarFieldEnum[]
+  }
+
+  /**
+   * Contract findMany
+   */
+  export type ContractFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Contract
+     */
+    select?: ContractSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Contract
+     */
+    omit?: ContractOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractInclude<ExtArgs> | null
+    /**
+     * Filter, which Contracts to fetch.
+     */
+    where?: ContractWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Contracts to fetch.
+     */
+    orderBy?: ContractOrderByWithRelationInput | ContractOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Contracts.
+     */
+    cursor?: ContractWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Contracts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Contracts.
+     */
+    skip?: number
+    distinct?: ContractScalarFieldEnum | ContractScalarFieldEnum[]
+  }
+
+  /**
+   * Contract create
+   */
+  export type ContractCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Contract
+     */
+    select?: ContractSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Contract
+     */
+    omit?: ContractOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Contract.
+     */
+    data: XOR<ContractCreateInput, ContractUncheckedCreateInput>
+  }
+
+  /**
+   * Contract createMany
+   */
+  export type ContractCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Contracts.
+     */
+    data: ContractCreateManyInput | ContractCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Contract createManyAndReturn
+   */
+  export type ContractCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Contract
+     */
+    select?: ContractSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Contract
+     */
+    omit?: ContractOmit<ExtArgs> | null
+    /**
+     * The data used to create many Contracts.
+     */
+    data: ContractCreateManyInput | ContractCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Contract update
+   */
+  export type ContractUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Contract
+     */
+    select?: ContractSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Contract
+     */
+    omit?: ContractOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Contract.
+     */
+    data: XOR<ContractUpdateInput, ContractUncheckedUpdateInput>
+    /**
+     * Choose, which Contract to update.
+     */
+    where: ContractWhereUniqueInput
+  }
+
+  /**
+   * Contract updateMany
+   */
+  export type ContractUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Contracts.
+     */
+    data: XOR<ContractUpdateManyMutationInput, ContractUncheckedUpdateManyInput>
+    /**
+     * Filter which Contracts to update
+     */
+    where?: ContractWhereInput
+    /**
+     * Limit how many Contracts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Contract updateManyAndReturn
+   */
+  export type ContractUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Contract
+     */
+    select?: ContractSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Contract
+     */
+    omit?: ContractOmit<ExtArgs> | null
+    /**
+     * The data used to update Contracts.
+     */
+    data: XOR<ContractUpdateManyMutationInput, ContractUncheckedUpdateManyInput>
+    /**
+     * Filter which Contracts to update
+     */
+    where?: ContractWhereInput
+    /**
+     * Limit how many Contracts to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Contract upsert
+   */
+  export type ContractUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Contract
+     */
+    select?: ContractSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Contract
+     */
+    omit?: ContractOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Contract to update in case it exists.
+     */
+    where: ContractWhereUniqueInput
+    /**
+     * In case the Contract found by the `where` argument doesn't exist, create a new Contract with this data.
+     */
+    create: XOR<ContractCreateInput, ContractUncheckedCreateInput>
+    /**
+     * In case the Contract was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ContractUpdateInput, ContractUncheckedUpdateInput>
+  }
+
+  /**
+   * Contract delete
+   */
+  export type ContractDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Contract
+     */
+    select?: ContractSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Contract
+     */
+    omit?: ContractOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractInclude<ExtArgs> | null
+    /**
+     * Filter which Contract to delete.
+     */
+    where: ContractWhereUniqueInput
+  }
+
+  /**
+   * Contract deleteMany
+   */
+  export type ContractDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Contracts to delete
+     */
+    where?: ContractWhereInput
+    /**
+     * Limit how many Contracts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Contract.application
+   */
+  export type Contract$applicationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Application
+     */
+    select?: ApplicationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Application
+     */
+    omit?: ApplicationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationInclude<ExtArgs> | null
+    where?: ApplicationWhereInput
+  }
+
+  /**
+   * Contract without action
+   */
+  export type ContractDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Contract
+     */
+    select?: ContractSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Contract
+     */
+    omit?: ContractOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model FosterOnboarding
+   */
+
+  export type AggregateFosterOnboarding = {
+    _count: FosterOnboardingCountAggregateOutputType | null
+    _avg: FosterOnboardingAvgAggregateOutputType | null
+    _sum: FosterOnboardingSumAggregateOutputType | null
+    _min: FosterOnboardingMinAggregateOutputType | null
+    _max: FosterOnboardingMaxAggregateOutputType | null
+  }
+
+  export type FosterOnboardingAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type FosterOnboardingSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type FosterOnboardingMinAggregateOutputType = {
+    id: number | null
+    applicantName: string | null
+    applicantEmail: string | null
+    status: $Enums.FosterOnboardingStatus | null
+    notes: string | null
+    createdAt: Date | null
+  }
+
+  export type FosterOnboardingMaxAggregateOutputType = {
+    id: number | null
+    applicantName: string | null
+    applicantEmail: string | null
+    status: $Enums.FosterOnboardingStatus | null
+    notes: string | null
+    createdAt: Date | null
+  }
+
+  export type FosterOnboardingCountAggregateOutputType = {
+    id: number
+    applicantName: number
+    applicantEmail: number
+    status: number
+    notes: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type FosterOnboardingAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type FosterOnboardingSumAggregateInputType = {
+    id?: true
+  }
+
+  export type FosterOnboardingMinAggregateInputType = {
+    id?: true
+    applicantName?: true
+    applicantEmail?: true
+    status?: true
+    notes?: true
+    createdAt?: true
+  }
+
+  export type FosterOnboardingMaxAggregateInputType = {
+    id?: true
+    applicantName?: true
+    applicantEmail?: true
+    status?: true
+    notes?: true
+    createdAt?: true
+  }
+
+  export type FosterOnboardingCountAggregateInputType = {
+    id?: true
+    applicantName?: true
+    applicantEmail?: true
+    status?: true
+    notes?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type FosterOnboardingAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FosterOnboarding to aggregate.
+     */
+    where?: FosterOnboardingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FosterOnboardings to fetch.
+     */
+    orderBy?: FosterOnboardingOrderByWithRelationInput | FosterOnboardingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FosterOnboardingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FosterOnboardings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FosterOnboardings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FosterOnboardings
+    **/
+    _count?: true | FosterOnboardingCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: FosterOnboardingAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: FosterOnboardingSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FosterOnboardingMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FosterOnboardingMaxAggregateInputType
+  }
+
+  export type GetFosterOnboardingAggregateType<T extends FosterOnboardingAggregateArgs> = {
+        [P in keyof T & keyof AggregateFosterOnboarding]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFosterOnboarding[P]>
+      : GetScalarType<T[P], AggregateFosterOnboarding[P]>
+  }
+
+
+
+
+  export type FosterOnboardingGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FosterOnboardingWhereInput
+    orderBy?: FosterOnboardingOrderByWithAggregationInput | FosterOnboardingOrderByWithAggregationInput[]
+    by: FosterOnboardingScalarFieldEnum[] | FosterOnboardingScalarFieldEnum
+    having?: FosterOnboardingScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FosterOnboardingCountAggregateInputType | true
+    _avg?: FosterOnboardingAvgAggregateInputType
+    _sum?: FosterOnboardingSumAggregateInputType
+    _min?: FosterOnboardingMinAggregateInputType
+    _max?: FosterOnboardingMaxAggregateInputType
+  }
+
+  export type FosterOnboardingGroupByOutputType = {
+    id: number
+    applicantName: string
+    applicantEmail: string
+    status: $Enums.FosterOnboardingStatus
+    notes: string
+    createdAt: Date
+    _count: FosterOnboardingCountAggregateOutputType | null
+    _avg: FosterOnboardingAvgAggregateOutputType | null
+    _sum: FosterOnboardingSumAggregateOutputType | null
+    _min: FosterOnboardingMinAggregateOutputType | null
+    _max: FosterOnboardingMaxAggregateOutputType | null
+  }
+
+  type GetFosterOnboardingGroupByPayload<T extends FosterOnboardingGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FosterOnboardingGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FosterOnboardingGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FosterOnboardingGroupByOutputType[P]>
+            : GetScalarType<T[P], FosterOnboardingGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FosterOnboardingSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    applicantName?: boolean
+    applicantEmail?: boolean
+    status?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    checklistItems?: boolean | FosterOnboarding$checklistItemsArgs<ExtArgs>
+    _count?: boolean | FosterOnboardingCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["fosterOnboarding"]>
+
+  export type FosterOnboardingSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    applicantName?: boolean
+    applicantEmail?: boolean
+    status?: boolean
+    notes?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["fosterOnboarding"]>
+
+  export type FosterOnboardingSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    applicantName?: boolean
+    applicantEmail?: boolean
+    status?: boolean
+    notes?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["fosterOnboarding"]>
+
+  export type FosterOnboardingSelectScalar = {
+    id?: boolean
+    applicantName?: boolean
+    applicantEmail?: boolean
+    status?: boolean
+    notes?: boolean
+    createdAt?: boolean
+  }
+
+  export type FosterOnboardingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "applicantName" | "applicantEmail" | "status" | "notes" | "createdAt", ExtArgs["result"]["fosterOnboarding"]>
+  export type FosterOnboardingInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    checklistItems?: boolean | FosterOnboarding$checklistItemsArgs<ExtArgs>
+    _count?: boolean | FosterOnboardingCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type FosterOnboardingIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type FosterOnboardingIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $FosterOnboardingPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FosterOnboarding"
+    objects: {
+      checklistItems: Prisma.$OnboardingChecklistPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      applicantName: string
+      applicantEmail: string
+      status: $Enums.FosterOnboardingStatus
+      notes: string
+      createdAt: Date
+    }, ExtArgs["result"]["fosterOnboarding"]>
+    composites: {}
+  }
+
+  type FosterOnboardingGetPayload<S extends boolean | null | undefined | FosterOnboardingDefaultArgs> = $Result.GetResult<Prisma.$FosterOnboardingPayload, S>
+
+  type FosterOnboardingCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FosterOnboardingFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FosterOnboardingCountAggregateInputType | true
+    }
+
+  export interface FosterOnboardingDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FosterOnboarding'], meta: { name: 'FosterOnboarding' } }
+    /**
+     * Find zero or one FosterOnboarding that matches the filter.
+     * @param {FosterOnboardingFindUniqueArgs} args - Arguments to find a FosterOnboarding
+     * @example
+     * // Get one FosterOnboarding
+     * const fosterOnboarding = await prisma.fosterOnboarding.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FosterOnboardingFindUniqueArgs>(args: SelectSubset<T, FosterOnboardingFindUniqueArgs<ExtArgs>>): Prisma__FosterOnboardingClient<$Result.GetResult<Prisma.$FosterOnboardingPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FosterOnboarding that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FosterOnboardingFindUniqueOrThrowArgs} args - Arguments to find a FosterOnboarding
+     * @example
+     * // Get one FosterOnboarding
+     * const fosterOnboarding = await prisma.fosterOnboarding.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FosterOnboardingFindUniqueOrThrowArgs>(args: SelectSubset<T, FosterOnboardingFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FosterOnboardingClient<$Result.GetResult<Prisma.$FosterOnboardingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FosterOnboarding that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FosterOnboardingFindFirstArgs} args - Arguments to find a FosterOnboarding
+     * @example
+     * // Get one FosterOnboarding
+     * const fosterOnboarding = await prisma.fosterOnboarding.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FosterOnboardingFindFirstArgs>(args?: SelectSubset<T, FosterOnboardingFindFirstArgs<ExtArgs>>): Prisma__FosterOnboardingClient<$Result.GetResult<Prisma.$FosterOnboardingPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FosterOnboarding that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FosterOnboardingFindFirstOrThrowArgs} args - Arguments to find a FosterOnboarding
+     * @example
+     * // Get one FosterOnboarding
+     * const fosterOnboarding = await prisma.fosterOnboarding.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FosterOnboardingFindFirstOrThrowArgs>(args?: SelectSubset<T, FosterOnboardingFindFirstOrThrowArgs<ExtArgs>>): Prisma__FosterOnboardingClient<$Result.GetResult<Prisma.$FosterOnboardingPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FosterOnboardings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FosterOnboardingFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FosterOnboardings
+     * const fosterOnboardings = await prisma.fosterOnboarding.findMany()
+     * 
+     * // Get first 10 FosterOnboardings
+     * const fosterOnboardings = await prisma.fosterOnboarding.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const fosterOnboardingWithIdOnly = await prisma.fosterOnboarding.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FosterOnboardingFindManyArgs>(args?: SelectSubset<T, FosterOnboardingFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FosterOnboardingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FosterOnboarding.
+     * @param {FosterOnboardingCreateArgs} args - Arguments to create a FosterOnboarding.
+     * @example
+     * // Create one FosterOnboarding
+     * const FosterOnboarding = await prisma.fosterOnboarding.create({
+     *   data: {
+     *     // ... data to create a FosterOnboarding
+     *   }
+     * })
+     * 
+     */
+    create<T extends FosterOnboardingCreateArgs>(args: SelectSubset<T, FosterOnboardingCreateArgs<ExtArgs>>): Prisma__FosterOnboardingClient<$Result.GetResult<Prisma.$FosterOnboardingPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FosterOnboardings.
+     * @param {FosterOnboardingCreateManyArgs} args - Arguments to create many FosterOnboardings.
+     * @example
+     * // Create many FosterOnboardings
+     * const fosterOnboarding = await prisma.fosterOnboarding.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FosterOnboardingCreateManyArgs>(args?: SelectSubset<T, FosterOnboardingCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FosterOnboardings and returns the data saved in the database.
+     * @param {FosterOnboardingCreateManyAndReturnArgs} args - Arguments to create many FosterOnboardings.
+     * @example
+     * // Create many FosterOnboardings
+     * const fosterOnboarding = await prisma.fosterOnboarding.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FosterOnboardings and only return the `id`
+     * const fosterOnboardingWithIdOnly = await prisma.fosterOnboarding.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FosterOnboardingCreateManyAndReturnArgs>(args?: SelectSubset<T, FosterOnboardingCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FosterOnboardingPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FosterOnboarding.
+     * @param {FosterOnboardingDeleteArgs} args - Arguments to delete one FosterOnboarding.
+     * @example
+     * // Delete one FosterOnboarding
+     * const FosterOnboarding = await prisma.fosterOnboarding.delete({
+     *   where: {
+     *     // ... filter to delete one FosterOnboarding
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FosterOnboardingDeleteArgs>(args: SelectSubset<T, FosterOnboardingDeleteArgs<ExtArgs>>): Prisma__FosterOnboardingClient<$Result.GetResult<Prisma.$FosterOnboardingPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FosterOnboarding.
+     * @param {FosterOnboardingUpdateArgs} args - Arguments to update one FosterOnboarding.
+     * @example
+     * // Update one FosterOnboarding
+     * const fosterOnboarding = await prisma.fosterOnboarding.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FosterOnboardingUpdateArgs>(args: SelectSubset<T, FosterOnboardingUpdateArgs<ExtArgs>>): Prisma__FosterOnboardingClient<$Result.GetResult<Prisma.$FosterOnboardingPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FosterOnboardings.
+     * @param {FosterOnboardingDeleteManyArgs} args - Arguments to filter FosterOnboardings to delete.
+     * @example
+     * // Delete a few FosterOnboardings
+     * const { count } = await prisma.fosterOnboarding.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FosterOnboardingDeleteManyArgs>(args?: SelectSubset<T, FosterOnboardingDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FosterOnboardings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FosterOnboardingUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FosterOnboardings
+     * const fosterOnboarding = await prisma.fosterOnboarding.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FosterOnboardingUpdateManyArgs>(args: SelectSubset<T, FosterOnboardingUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FosterOnboardings and returns the data updated in the database.
+     * @param {FosterOnboardingUpdateManyAndReturnArgs} args - Arguments to update many FosterOnboardings.
+     * @example
+     * // Update many FosterOnboardings
+     * const fosterOnboarding = await prisma.fosterOnboarding.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FosterOnboardings and only return the `id`
+     * const fosterOnboardingWithIdOnly = await prisma.fosterOnboarding.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FosterOnboardingUpdateManyAndReturnArgs>(args: SelectSubset<T, FosterOnboardingUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FosterOnboardingPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FosterOnboarding.
+     * @param {FosterOnboardingUpsertArgs} args - Arguments to update or create a FosterOnboarding.
+     * @example
+     * // Update or create a FosterOnboarding
+     * const fosterOnboarding = await prisma.fosterOnboarding.upsert({
+     *   create: {
+     *     // ... data to create a FosterOnboarding
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FosterOnboarding we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FosterOnboardingUpsertArgs>(args: SelectSubset<T, FosterOnboardingUpsertArgs<ExtArgs>>): Prisma__FosterOnboardingClient<$Result.GetResult<Prisma.$FosterOnboardingPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FosterOnboardings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FosterOnboardingCountArgs} args - Arguments to filter FosterOnboardings to count.
+     * @example
+     * // Count the number of FosterOnboardings
+     * const count = await prisma.fosterOnboarding.count({
+     *   where: {
+     *     // ... the filter for the FosterOnboardings we want to count
+     *   }
+     * })
+    **/
+    count<T extends FosterOnboardingCountArgs>(
+      args?: Subset<T, FosterOnboardingCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FosterOnboardingCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FosterOnboarding.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FosterOnboardingAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FosterOnboardingAggregateArgs>(args: Subset<T, FosterOnboardingAggregateArgs>): Prisma.PrismaPromise<GetFosterOnboardingAggregateType<T>>
+
+    /**
+     * Group by FosterOnboarding.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FosterOnboardingGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FosterOnboardingGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FosterOnboardingGroupByArgs['orderBy'] }
+        : { orderBy?: FosterOnboardingGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FosterOnboardingGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFosterOnboardingGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FosterOnboarding model
+   */
+  readonly fields: FosterOnboardingFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FosterOnboarding.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FosterOnboardingClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    checklistItems<T extends FosterOnboarding$checklistItemsArgs<ExtArgs> = {}>(args?: Subset<T, FosterOnboarding$checklistItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OnboardingChecklistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FosterOnboarding model
+   */
+  interface FosterOnboardingFieldRefs {
+    readonly id: FieldRef<"FosterOnboarding", 'Int'>
+    readonly applicantName: FieldRef<"FosterOnboarding", 'String'>
+    readonly applicantEmail: FieldRef<"FosterOnboarding", 'String'>
+    readonly status: FieldRef<"FosterOnboarding", 'FosterOnboardingStatus'>
+    readonly notes: FieldRef<"FosterOnboarding", 'String'>
+    readonly createdAt: FieldRef<"FosterOnboarding", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FosterOnboarding findUnique
+   */
+  export type FosterOnboardingFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FosterOnboarding
+     */
+    select?: FosterOnboardingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FosterOnboarding
+     */
+    omit?: FosterOnboardingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FosterOnboardingInclude<ExtArgs> | null
+    /**
+     * Filter, which FosterOnboarding to fetch.
+     */
+    where: FosterOnboardingWhereUniqueInput
+  }
+
+  /**
+   * FosterOnboarding findUniqueOrThrow
+   */
+  export type FosterOnboardingFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FosterOnboarding
+     */
+    select?: FosterOnboardingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FosterOnboarding
+     */
+    omit?: FosterOnboardingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FosterOnboardingInclude<ExtArgs> | null
+    /**
+     * Filter, which FosterOnboarding to fetch.
+     */
+    where: FosterOnboardingWhereUniqueInput
+  }
+
+  /**
+   * FosterOnboarding findFirst
+   */
+  export type FosterOnboardingFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FosterOnboarding
+     */
+    select?: FosterOnboardingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FosterOnboarding
+     */
+    omit?: FosterOnboardingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FosterOnboardingInclude<ExtArgs> | null
+    /**
+     * Filter, which FosterOnboarding to fetch.
+     */
+    where?: FosterOnboardingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FosterOnboardings to fetch.
+     */
+    orderBy?: FosterOnboardingOrderByWithRelationInput | FosterOnboardingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FosterOnboardings.
+     */
+    cursor?: FosterOnboardingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FosterOnboardings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FosterOnboardings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FosterOnboardings.
+     */
+    distinct?: FosterOnboardingScalarFieldEnum | FosterOnboardingScalarFieldEnum[]
+  }
+
+  /**
+   * FosterOnboarding findFirstOrThrow
+   */
+  export type FosterOnboardingFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FosterOnboarding
+     */
+    select?: FosterOnboardingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FosterOnboarding
+     */
+    omit?: FosterOnboardingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FosterOnboardingInclude<ExtArgs> | null
+    /**
+     * Filter, which FosterOnboarding to fetch.
+     */
+    where?: FosterOnboardingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FosterOnboardings to fetch.
+     */
+    orderBy?: FosterOnboardingOrderByWithRelationInput | FosterOnboardingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FosterOnboardings.
+     */
+    cursor?: FosterOnboardingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FosterOnboardings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FosterOnboardings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FosterOnboardings.
+     */
+    distinct?: FosterOnboardingScalarFieldEnum | FosterOnboardingScalarFieldEnum[]
+  }
+
+  /**
+   * FosterOnboarding findMany
+   */
+  export type FosterOnboardingFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FosterOnboarding
+     */
+    select?: FosterOnboardingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FosterOnboarding
+     */
+    omit?: FosterOnboardingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FosterOnboardingInclude<ExtArgs> | null
+    /**
+     * Filter, which FosterOnboardings to fetch.
+     */
+    where?: FosterOnboardingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FosterOnboardings to fetch.
+     */
+    orderBy?: FosterOnboardingOrderByWithRelationInput | FosterOnboardingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FosterOnboardings.
+     */
+    cursor?: FosterOnboardingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FosterOnboardings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FosterOnboardings.
+     */
+    skip?: number
+    distinct?: FosterOnboardingScalarFieldEnum | FosterOnboardingScalarFieldEnum[]
+  }
+
+  /**
+   * FosterOnboarding create
+   */
+  export type FosterOnboardingCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FosterOnboarding
+     */
+    select?: FosterOnboardingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FosterOnboarding
+     */
+    omit?: FosterOnboardingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FosterOnboardingInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FosterOnboarding.
+     */
+    data: XOR<FosterOnboardingCreateInput, FosterOnboardingUncheckedCreateInput>
+  }
+
+  /**
+   * FosterOnboarding createMany
+   */
+  export type FosterOnboardingCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FosterOnboardings.
+     */
+    data: FosterOnboardingCreateManyInput | FosterOnboardingCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FosterOnboarding createManyAndReturn
+   */
+  export type FosterOnboardingCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FosterOnboarding
+     */
+    select?: FosterOnboardingSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FosterOnboarding
+     */
+    omit?: FosterOnboardingOmit<ExtArgs> | null
+    /**
+     * The data used to create many FosterOnboardings.
+     */
+    data: FosterOnboardingCreateManyInput | FosterOnboardingCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FosterOnboarding update
+   */
+  export type FosterOnboardingUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FosterOnboarding
+     */
+    select?: FosterOnboardingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FosterOnboarding
+     */
+    omit?: FosterOnboardingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FosterOnboardingInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FosterOnboarding.
+     */
+    data: XOR<FosterOnboardingUpdateInput, FosterOnboardingUncheckedUpdateInput>
+    /**
+     * Choose, which FosterOnboarding to update.
+     */
+    where: FosterOnboardingWhereUniqueInput
+  }
+
+  /**
+   * FosterOnboarding updateMany
+   */
+  export type FosterOnboardingUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FosterOnboardings.
+     */
+    data: XOR<FosterOnboardingUpdateManyMutationInput, FosterOnboardingUncheckedUpdateManyInput>
+    /**
+     * Filter which FosterOnboardings to update
+     */
+    where?: FosterOnboardingWhereInput
+    /**
+     * Limit how many FosterOnboardings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FosterOnboarding updateManyAndReturn
+   */
+  export type FosterOnboardingUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FosterOnboarding
+     */
+    select?: FosterOnboardingSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FosterOnboarding
+     */
+    omit?: FosterOnboardingOmit<ExtArgs> | null
+    /**
+     * The data used to update FosterOnboardings.
+     */
+    data: XOR<FosterOnboardingUpdateManyMutationInput, FosterOnboardingUncheckedUpdateManyInput>
+    /**
+     * Filter which FosterOnboardings to update
+     */
+    where?: FosterOnboardingWhereInput
+    /**
+     * Limit how many FosterOnboardings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FosterOnboarding upsert
+   */
+  export type FosterOnboardingUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FosterOnboarding
+     */
+    select?: FosterOnboardingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FosterOnboarding
+     */
+    omit?: FosterOnboardingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FosterOnboardingInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FosterOnboarding to update in case it exists.
+     */
+    where: FosterOnboardingWhereUniqueInput
+    /**
+     * In case the FosterOnboarding found by the `where` argument doesn't exist, create a new FosterOnboarding with this data.
+     */
+    create: XOR<FosterOnboardingCreateInput, FosterOnboardingUncheckedCreateInput>
+    /**
+     * In case the FosterOnboarding was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FosterOnboardingUpdateInput, FosterOnboardingUncheckedUpdateInput>
+  }
+
+  /**
+   * FosterOnboarding delete
+   */
+  export type FosterOnboardingDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FosterOnboarding
+     */
+    select?: FosterOnboardingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FosterOnboarding
+     */
+    omit?: FosterOnboardingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FosterOnboardingInclude<ExtArgs> | null
+    /**
+     * Filter which FosterOnboarding to delete.
+     */
+    where: FosterOnboardingWhereUniqueInput
+  }
+
+  /**
+   * FosterOnboarding deleteMany
+   */
+  export type FosterOnboardingDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FosterOnboardings to delete
+     */
+    where?: FosterOnboardingWhereInput
+    /**
+     * Limit how many FosterOnboardings to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FosterOnboarding.checklistItems
+   */
+  export type FosterOnboarding$checklistItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OnboardingChecklist
+     */
+    select?: OnboardingChecklistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OnboardingChecklist
+     */
+    omit?: OnboardingChecklistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OnboardingChecklistInclude<ExtArgs> | null
+    where?: OnboardingChecklistWhereInput
+    orderBy?: OnboardingChecklistOrderByWithRelationInput | OnboardingChecklistOrderByWithRelationInput[]
+    cursor?: OnboardingChecklistWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: OnboardingChecklistScalarFieldEnum | OnboardingChecklistScalarFieldEnum[]
+  }
+
+  /**
+   * FosterOnboarding without action
+   */
+  export type FosterOnboardingDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FosterOnboarding
+     */
+    select?: FosterOnboardingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FosterOnboarding
+     */
+    omit?: FosterOnboardingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FosterOnboardingInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model OnboardingChecklist
+   */
+
+  export type AggregateOnboardingChecklist = {
+    _count: OnboardingChecklistCountAggregateOutputType | null
+    _avg: OnboardingChecklistAvgAggregateOutputType | null
+    _sum: OnboardingChecklistSumAggregateOutputType | null
+    _min: OnboardingChecklistMinAggregateOutputType | null
+    _max: OnboardingChecklistMaxAggregateOutputType | null
+  }
+
+  export type OnboardingChecklistAvgAggregateOutputType = {
+    id: number | null
+    onboardingId: number | null
+    completedBy: number | null
+  }
+
+  export type OnboardingChecklistSumAggregateOutputType = {
+    id: number | null
+    onboardingId: number | null
+    completedBy: number | null
+  }
+
+  export type OnboardingChecklistMinAggregateOutputType = {
+    id: number | null
+    onboardingId: number | null
+    stepKey: string | null
+    label: string | null
+    isComplete: boolean | null
+    completedAt: Date | null
+    completedBy: number | null
+  }
+
+  export type OnboardingChecklistMaxAggregateOutputType = {
+    id: number | null
+    onboardingId: number | null
+    stepKey: string | null
+    label: string | null
+    isComplete: boolean | null
+    completedAt: Date | null
+    completedBy: number | null
+  }
+
+  export type OnboardingChecklistCountAggregateOutputType = {
+    id: number
+    onboardingId: number
+    stepKey: number
+    label: number
+    isComplete: number
+    completedAt: number
+    completedBy: number
+    _all: number
+  }
+
+
+  export type OnboardingChecklistAvgAggregateInputType = {
+    id?: true
+    onboardingId?: true
+    completedBy?: true
+  }
+
+  export type OnboardingChecklistSumAggregateInputType = {
+    id?: true
+    onboardingId?: true
+    completedBy?: true
+  }
+
+  export type OnboardingChecklistMinAggregateInputType = {
+    id?: true
+    onboardingId?: true
+    stepKey?: true
+    label?: true
+    isComplete?: true
+    completedAt?: true
+    completedBy?: true
+  }
+
+  export type OnboardingChecklistMaxAggregateInputType = {
+    id?: true
+    onboardingId?: true
+    stepKey?: true
+    label?: true
+    isComplete?: true
+    completedAt?: true
+    completedBy?: true
+  }
+
+  export type OnboardingChecklistCountAggregateInputType = {
+    id?: true
+    onboardingId?: true
+    stepKey?: true
+    label?: true
+    isComplete?: true
+    completedAt?: true
+    completedBy?: true
+    _all?: true
+  }
+
+  export type OnboardingChecklistAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which OnboardingChecklist to aggregate.
+     */
+    where?: OnboardingChecklistWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OnboardingChecklists to fetch.
+     */
+    orderBy?: OnboardingChecklistOrderByWithRelationInput | OnboardingChecklistOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: OnboardingChecklistWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OnboardingChecklists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OnboardingChecklists.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned OnboardingChecklists
+    **/
+    _count?: true | OnboardingChecklistCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: OnboardingChecklistAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: OnboardingChecklistSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: OnboardingChecklistMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: OnboardingChecklistMaxAggregateInputType
+  }
+
+  export type GetOnboardingChecklistAggregateType<T extends OnboardingChecklistAggregateArgs> = {
+        [P in keyof T & keyof AggregateOnboardingChecklist]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateOnboardingChecklist[P]>
+      : GetScalarType<T[P], AggregateOnboardingChecklist[P]>
+  }
+
+
+
+
+  export type OnboardingChecklistGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OnboardingChecklistWhereInput
+    orderBy?: OnboardingChecklistOrderByWithAggregationInput | OnboardingChecklistOrderByWithAggregationInput[]
+    by: OnboardingChecklistScalarFieldEnum[] | OnboardingChecklistScalarFieldEnum
+    having?: OnboardingChecklistScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: OnboardingChecklistCountAggregateInputType | true
+    _avg?: OnboardingChecklistAvgAggregateInputType
+    _sum?: OnboardingChecklistSumAggregateInputType
+    _min?: OnboardingChecklistMinAggregateInputType
+    _max?: OnboardingChecklistMaxAggregateInputType
+  }
+
+  export type OnboardingChecklistGroupByOutputType = {
+    id: number
+    onboardingId: number
+    stepKey: string
+    label: string
+    isComplete: boolean
+    completedAt: Date | null
+    completedBy: number | null
+    _count: OnboardingChecklistCountAggregateOutputType | null
+    _avg: OnboardingChecklistAvgAggregateOutputType | null
+    _sum: OnboardingChecklistSumAggregateOutputType | null
+    _min: OnboardingChecklistMinAggregateOutputType | null
+    _max: OnboardingChecklistMaxAggregateOutputType | null
+  }
+
+  type GetOnboardingChecklistGroupByPayload<T extends OnboardingChecklistGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<OnboardingChecklistGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof OnboardingChecklistGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], OnboardingChecklistGroupByOutputType[P]>
+            : GetScalarType<T[P], OnboardingChecklistGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type OnboardingChecklistSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    onboardingId?: boolean
+    stepKey?: boolean
+    label?: boolean
+    isComplete?: boolean
+    completedAt?: boolean
+    completedBy?: boolean
+    onboarding?: boolean | FosterOnboardingDefaultArgs<ExtArgs>
+    completedByUser?: boolean | OnboardingChecklist$completedByUserArgs<ExtArgs>
+  }, ExtArgs["result"]["onboardingChecklist"]>
+
+  export type OnboardingChecklistSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    onboardingId?: boolean
+    stepKey?: boolean
+    label?: boolean
+    isComplete?: boolean
+    completedAt?: boolean
+    completedBy?: boolean
+    onboarding?: boolean | FosterOnboardingDefaultArgs<ExtArgs>
+    completedByUser?: boolean | OnboardingChecklist$completedByUserArgs<ExtArgs>
+  }, ExtArgs["result"]["onboardingChecklist"]>
+
+  export type OnboardingChecklistSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    onboardingId?: boolean
+    stepKey?: boolean
+    label?: boolean
+    isComplete?: boolean
+    completedAt?: boolean
+    completedBy?: boolean
+    onboarding?: boolean | FosterOnboardingDefaultArgs<ExtArgs>
+    completedByUser?: boolean | OnboardingChecklist$completedByUserArgs<ExtArgs>
+  }, ExtArgs["result"]["onboardingChecklist"]>
+
+  export type OnboardingChecklistSelectScalar = {
+    id?: boolean
+    onboardingId?: boolean
+    stepKey?: boolean
+    label?: boolean
+    isComplete?: boolean
+    completedAt?: boolean
+    completedBy?: boolean
+  }
+
+  export type OnboardingChecklistOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "onboardingId" | "stepKey" | "label" | "isComplete" | "completedAt" | "completedBy", ExtArgs["result"]["onboardingChecklist"]>
+  export type OnboardingChecklistInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    onboarding?: boolean | FosterOnboardingDefaultArgs<ExtArgs>
+    completedByUser?: boolean | OnboardingChecklist$completedByUserArgs<ExtArgs>
+  }
+  export type OnboardingChecklistIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    onboarding?: boolean | FosterOnboardingDefaultArgs<ExtArgs>
+    completedByUser?: boolean | OnboardingChecklist$completedByUserArgs<ExtArgs>
+  }
+  export type OnboardingChecklistIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    onboarding?: boolean | FosterOnboardingDefaultArgs<ExtArgs>
+    completedByUser?: boolean | OnboardingChecklist$completedByUserArgs<ExtArgs>
+  }
+
+  export type $OnboardingChecklistPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "OnboardingChecklist"
+    objects: {
+      onboarding: Prisma.$FosterOnboardingPayload<ExtArgs>
+      completedByUser: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      onboardingId: number
+      stepKey: string
+      label: string
+      isComplete: boolean
+      completedAt: Date | null
+      completedBy: number | null
+    }, ExtArgs["result"]["onboardingChecklist"]>
+    composites: {}
+  }
+
+  type OnboardingChecklistGetPayload<S extends boolean | null | undefined | OnboardingChecklistDefaultArgs> = $Result.GetResult<Prisma.$OnboardingChecklistPayload, S>
+
+  type OnboardingChecklistCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<OnboardingChecklistFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: OnboardingChecklistCountAggregateInputType | true
+    }
+
+  export interface OnboardingChecklistDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['OnboardingChecklist'], meta: { name: 'OnboardingChecklist' } }
+    /**
+     * Find zero or one OnboardingChecklist that matches the filter.
+     * @param {OnboardingChecklistFindUniqueArgs} args - Arguments to find a OnboardingChecklist
+     * @example
+     * // Get one OnboardingChecklist
+     * const onboardingChecklist = await prisma.onboardingChecklist.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends OnboardingChecklistFindUniqueArgs>(args: SelectSubset<T, OnboardingChecklistFindUniqueArgs<ExtArgs>>): Prisma__OnboardingChecklistClient<$Result.GetResult<Prisma.$OnboardingChecklistPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one OnboardingChecklist that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {OnboardingChecklistFindUniqueOrThrowArgs} args - Arguments to find a OnboardingChecklist
+     * @example
+     * // Get one OnboardingChecklist
+     * const onboardingChecklist = await prisma.onboardingChecklist.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends OnboardingChecklistFindUniqueOrThrowArgs>(args: SelectSubset<T, OnboardingChecklistFindUniqueOrThrowArgs<ExtArgs>>): Prisma__OnboardingChecklistClient<$Result.GetResult<Prisma.$OnboardingChecklistPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first OnboardingChecklist that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OnboardingChecklistFindFirstArgs} args - Arguments to find a OnboardingChecklist
+     * @example
+     * // Get one OnboardingChecklist
+     * const onboardingChecklist = await prisma.onboardingChecklist.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends OnboardingChecklistFindFirstArgs>(args?: SelectSubset<T, OnboardingChecklistFindFirstArgs<ExtArgs>>): Prisma__OnboardingChecklistClient<$Result.GetResult<Prisma.$OnboardingChecklistPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first OnboardingChecklist that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OnboardingChecklistFindFirstOrThrowArgs} args - Arguments to find a OnboardingChecklist
+     * @example
+     * // Get one OnboardingChecklist
+     * const onboardingChecklist = await prisma.onboardingChecklist.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends OnboardingChecklistFindFirstOrThrowArgs>(args?: SelectSubset<T, OnboardingChecklistFindFirstOrThrowArgs<ExtArgs>>): Prisma__OnboardingChecklistClient<$Result.GetResult<Prisma.$OnboardingChecklistPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more OnboardingChecklists that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OnboardingChecklistFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all OnboardingChecklists
+     * const onboardingChecklists = await prisma.onboardingChecklist.findMany()
+     * 
+     * // Get first 10 OnboardingChecklists
+     * const onboardingChecklists = await prisma.onboardingChecklist.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const onboardingChecklistWithIdOnly = await prisma.onboardingChecklist.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends OnboardingChecklistFindManyArgs>(args?: SelectSubset<T, OnboardingChecklistFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OnboardingChecklistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a OnboardingChecklist.
+     * @param {OnboardingChecklistCreateArgs} args - Arguments to create a OnboardingChecklist.
+     * @example
+     * // Create one OnboardingChecklist
+     * const OnboardingChecklist = await prisma.onboardingChecklist.create({
+     *   data: {
+     *     // ... data to create a OnboardingChecklist
+     *   }
+     * })
+     * 
+     */
+    create<T extends OnboardingChecklistCreateArgs>(args: SelectSubset<T, OnboardingChecklistCreateArgs<ExtArgs>>): Prisma__OnboardingChecklistClient<$Result.GetResult<Prisma.$OnboardingChecklistPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many OnboardingChecklists.
+     * @param {OnboardingChecklistCreateManyArgs} args - Arguments to create many OnboardingChecklists.
+     * @example
+     * // Create many OnboardingChecklists
+     * const onboardingChecklist = await prisma.onboardingChecklist.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends OnboardingChecklistCreateManyArgs>(args?: SelectSubset<T, OnboardingChecklistCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many OnboardingChecklists and returns the data saved in the database.
+     * @param {OnboardingChecklistCreateManyAndReturnArgs} args - Arguments to create many OnboardingChecklists.
+     * @example
+     * // Create many OnboardingChecklists
+     * const onboardingChecklist = await prisma.onboardingChecklist.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many OnboardingChecklists and only return the `id`
+     * const onboardingChecklistWithIdOnly = await prisma.onboardingChecklist.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends OnboardingChecklistCreateManyAndReturnArgs>(args?: SelectSubset<T, OnboardingChecklistCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OnboardingChecklistPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a OnboardingChecklist.
+     * @param {OnboardingChecklistDeleteArgs} args - Arguments to delete one OnboardingChecklist.
+     * @example
+     * // Delete one OnboardingChecklist
+     * const OnboardingChecklist = await prisma.onboardingChecklist.delete({
+     *   where: {
+     *     // ... filter to delete one OnboardingChecklist
+     *   }
+     * })
+     * 
+     */
+    delete<T extends OnboardingChecklistDeleteArgs>(args: SelectSubset<T, OnboardingChecklistDeleteArgs<ExtArgs>>): Prisma__OnboardingChecklistClient<$Result.GetResult<Prisma.$OnboardingChecklistPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one OnboardingChecklist.
+     * @param {OnboardingChecklistUpdateArgs} args - Arguments to update one OnboardingChecklist.
+     * @example
+     * // Update one OnboardingChecklist
+     * const onboardingChecklist = await prisma.onboardingChecklist.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends OnboardingChecklistUpdateArgs>(args: SelectSubset<T, OnboardingChecklistUpdateArgs<ExtArgs>>): Prisma__OnboardingChecklistClient<$Result.GetResult<Prisma.$OnboardingChecklistPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more OnboardingChecklists.
+     * @param {OnboardingChecklistDeleteManyArgs} args - Arguments to filter OnboardingChecklists to delete.
+     * @example
+     * // Delete a few OnboardingChecklists
+     * const { count } = await prisma.onboardingChecklist.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends OnboardingChecklistDeleteManyArgs>(args?: SelectSubset<T, OnboardingChecklistDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more OnboardingChecklists.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OnboardingChecklistUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many OnboardingChecklists
+     * const onboardingChecklist = await prisma.onboardingChecklist.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends OnboardingChecklistUpdateManyArgs>(args: SelectSubset<T, OnboardingChecklistUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more OnboardingChecklists and returns the data updated in the database.
+     * @param {OnboardingChecklistUpdateManyAndReturnArgs} args - Arguments to update many OnboardingChecklists.
+     * @example
+     * // Update many OnboardingChecklists
+     * const onboardingChecklist = await prisma.onboardingChecklist.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more OnboardingChecklists and only return the `id`
+     * const onboardingChecklistWithIdOnly = await prisma.onboardingChecklist.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends OnboardingChecklistUpdateManyAndReturnArgs>(args: SelectSubset<T, OnboardingChecklistUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OnboardingChecklistPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one OnboardingChecklist.
+     * @param {OnboardingChecklistUpsertArgs} args - Arguments to update or create a OnboardingChecklist.
+     * @example
+     * // Update or create a OnboardingChecklist
+     * const onboardingChecklist = await prisma.onboardingChecklist.upsert({
+     *   create: {
+     *     // ... data to create a OnboardingChecklist
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the OnboardingChecklist we want to update
+     *   }
+     * })
+     */
+    upsert<T extends OnboardingChecklistUpsertArgs>(args: SelectSubset<T, OnboardingChecklistUpsertArgs<ExtArgs>>): Prisma__OnboardingChecklistClient<$Result.GetResult<Prisma.$OnboardingChecklistPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of OnboardingChecklists.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OnboardingChecklistCountArgs} args - Arguments to filter OnboardingChecklists to count.
+     * @example
+     * // Count the number of OnboardingChecklists
+     * const count = await prisma.onboardingChecklist.count({
+     *   where: {
+     *     // ... the filter for the OnboardingChecklists we want to count
+     *   }
+     * })
+    **/
+    count<T extends OnboardingChecklistCountArgs>(
+      args?: Subset<T, OnboardingChecklistCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], OnboardingChecklistCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a OnboardingChecklist.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OnboardingChecklistAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends OnboardingChecklistAggregateArgs>(args: Subset<T, OnboardingChecklistAggregateArgs>): Prisma.PrismaPromise<GetOnboardingChecklistAggregateType<T>>
+
+    /**
+     * Group by OnboardingChecklist.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OnboardingChecklistGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends OnboardingChecklistGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: OnboardingChecklistGroupByArgs['orderBy'] }
+        : { orderBy?: OnboardingChecklistGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, OnboardingChecklistGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetOnboardingChecklistGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the OnboardingChecklist model
+   */
+  readonly fields: OnboardingChecklistFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for OnboardingChecklist.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__OnboardingChecklistClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    onboarding<T extends FosterOnboardingDefaultArgs<ExtArgs> = {}>(args?: Subset<T, FosterOnboardingDefaultArgs<ExtArgs>>): Prisma__FosterOnboardingClient<$Result.GetResult<Prisma.$FosterOnboardingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    completedByUser<T extends OnboardingChecklist$completedByUserArgs<ExtArgs> = {}>(args?: Subset<T, OnboardingChecklist$completedByUserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the OnboardingChecklist model
+   */
+  interface OnboardingChecklistFieldRefs {
+    readonly id: FieldRef<"OnboardingChecklist", 'Int'>
+    readonly onboardingId: FieldRef<"OnboardingChecklist", 'Int'>
+    readonly stepKey: FieldRef<"OnboardingChecklist", 'String'>
+    readonly label: FieldRef<"OnboardingChecklist", 'String'>
+    readonly isComplete: FieldRef<"OnboardingChecklist", 'Boolean'>
+    readonly completedAt: FieldRef<"OnboardingChecklist", 'DateTime'>
+    readonly completedBy: FieldRef<"OnboardingChecklist", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * OnboardingChecklist findUnique
+   */
+  export type OnboardingChecklistFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OnboardingChecklist
+     */
+    select?: OnboardingChecklistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OnboardingChecklist
+     */
+    omit?: OnboardingChecklistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OnboardingChecklistInclude<ExtArgs> | null
+    /**
+     * Filter, which OnboardingChecklist to fetch.
+     */
+    where: OnboardingChecklistWhereUniqueInput
+  }
+
+  /**
+   * OnboardingChecklist findUniqueOrThrow
+   */
+  export type OnboardingChecklistFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OnboardingChecklist
+     */
+    select?: OnboardingChecklistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OnboardingChecklist
+     */
+    omit?: OnboardingChecklistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OnboardingChecklistInclude<ExtArgs> | null
+    /**
+     * Filter, which OnboardingChecklist to fetch.
+     */
+    where: OnboardingChecklistWhereUniqueInput
+  }
+
+  /**
+   * OnboardingChecklist findFirst
+   */
+  export type OnboardingChecklistFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OnboardingChecklist
+     */
+    select?: OnboardingChecklistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OnboardingChecklist
+     */
+    omit?: OnboardingChecklistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OnboardingChecklistInclude<ExtArgs> | null
+    /**
+     * Filter, which OnboardingChecklist to fetch.
+     */
+    where?: OnboardingChecklistWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OnboardingChecklists to fetch.
+     */
+    orderBy?: OnboardingChecklistOrderByWithRelationInput | OnboardingChecklistOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for OnboardingChecklists.
+     */
+    cursor?: OnboardingChecklistWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OnboardingChecklists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OnboardingChecklists.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of OnboardingChecklists.
+     */
+    distinct?: OnboardingChecklistScalarFieldEnum | OnboardingChecklistScalarFieldEnum[]
+  }
+
+  /**
+   * OnboardingChecklist findFirstOrThrow
+   */
+  export type OnboardingChecklistFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OnboardingChecklist
+     */
+    select?: OnboardingChecklistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OnboardingChecklist
+     */
+    omit?: OnboardingChecklistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OnboardingChecklistInclude<ExtArgs> | null
+    /**
+     * Filter, which OnboardingChecklist to fetch.
+     */
+    where?: OnboardingChecklistWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OnboardingChecklists to fetch.
+     */
+    orderBy?: OnboardingChecklistOrderByWithRelationInput | OnboardingChecklistOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for OnboardingChecklists.
+     */
+    cursor?: OnboardingChecklistWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OnboardingChecklists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OnboardingChecklists.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of OnboardingChecklists.
+     */
+    distinct?: OnboardingChecklistScalarFieldEnum | OnboardingChecklistScalarFieldEnum[]
+  }
+
+  /**
+   * OnboardingChecklist findMany
+   */
+  export type OnboardingChecklistFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OnboardingChecklist
+     */
+    select?: OnboardingChecklistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OnboardingChecklist
+     */
+    omit?: OnboardingChecklistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OnboardingChecklistInclude<ExtArgs> | null
+    /**
+     * Filter, which OnboardingChecklists to fetch.
+     */
+    where?: OnboardingChecklistWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OnboardingChecklists to fetch.
+     */
+    orderBy?: OnboardingChecklistOrderByWithRelationInput | OnboardingChecklistOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing OnboardingChecklists.
+     */
+    cursor?: OnboardingChecklistWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OnboardingChecklists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OnboardingChecklists.
+     */
+    skip?: number
+    distinct?: OnboardingChecklistScalarFieldEnum | OnboardingChecklistScalarFieldEnum[]
+  }
+
+  /**
+   * OnboardingChecklist create
+   */
+  export type OnboardingChecklistCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OnboardingChecklist
+     */
+    select?: OnboardingChecklistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OnboardingChecklist
+     */
+    omit?: OnboardingChecklistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OnboardingChecklistInclude<ExtArgs> | null
+    /**
+     * The data needed to create a OnboardingChecklist.
+     */
+    data: XOR<OnboardingChecklistCreateInput, OnboardingChecklistUncheckedCreateInput>
+  }
+
+  /**
+   * OnboardingChecklist createMany
+   */
+  export type OnboardingChecklistCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many OnboardingChecklists.
+     */
+    data: OnboardingChecklistCreateManyInput | OnboardingChecklistCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * OnboardingChecklist createManyAndReturn
+   */
+  export type OnboardingChecklistCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OnboardingChecklist
+     */
+    select?: OnboardingChecklistSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the OnboardingChecklist
+     */
+    omit?: OnboardingChecklistOmit<ExtArgs> | null
+    /**
+     * The data used to create many OnboardingChecklists.
+     */
+    data: OnboardingChecklistCreateManyInput | OnboardingChecklistCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OnboardingChecklistIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * OnboardingChecklist update
+   */
+  export type OnboardingChecklistUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OnboardingChecklist
+     */
+    select?: OnboardingChecklistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OnboardingChecklist
+     */
+    omit?: OnboardingChecklistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OnboardingChecklistInclude<ExtArgs> | null
+    /**
+     * The data needed to update a OnboardingChecklist.
+     */
+    data: XOR<OnboardingChecklistUpdateInput, OnboardingChecklistUncheckedUpdateInput>
+    /**
+     * Choose, which OnboardingChecklist to update.
+     */
+    where: OnboardingChecklistWhereUniqueInput
+  }
+
+  /**
+   * OnboardingChecklist updateMany
+   */
+  export type OnboardingChecklistUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update OnboardingChecklists.
+     */
+    data: XOR<OnboardingChecklistUpdateManyMutationInput, OnboardingChecklistUncheckedUpdateManyInput>
+    /**
+     * Filter which OnboardingChecklists to update
+     */
+    where?: OnboardingChecklistWhereInput
+    /**
+     * Limit how many OnboardingChecklists to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * OnboardingChecklist updateManyAndReturn
+   */
+  export type OnboardingChecklistUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OnboardingChecklist
+     */
+    select?: OnboardingChecklistSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the OnboardingChecklist
+     */
+    omit?: OnboardingChecklistOmit<ExtArgs> | null
+    /**
+     * The data used to update OnboardingChecklists.
+     */
+    data: XOR<OnboardingChecklistUpdateManyMutationInput, OnboardingChecklistUncheckedUpdateManyInput>
+    /**
+     * Filter which OnboardingChecklists to update
+     */
+    where?: OnboardingChecklistWhereInput
+    /**
+     * Limit how many OnboardingChecklists to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OnboardingChecklistIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * OnboardingChecklist upsert
+   */
+  export type OnboardingChecklistUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OnboardingChecklist
+     */
+    select?: OnboardingChecklistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OnboardingChecklist
+     */
+    omit?: OnboardingChecklistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OnboardingChecklistInclude<ExtArgs> | null
+    /**
+     * The filter to search for the OnboardingChecklist to update in case it exists.
+     */
+    where: OnboardingChecklistWhereUniqueInput
+    /**
+     * In case the OnboardingChecklist found by the `where` argument doesn't exist, create a new OnboardingChecklist with this data.
+     */
+    create: XOR<OnboardingChecklistCreateInput, OnboardingChecklistUncheckedCreateInput>
+    /**
+     * In case the OnboardingChecklist was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<OnboardingChecklistUpdateInput, OnboardingChecklistUncheckedUpdateInput>
+  }
+
+  /**
+   * OnboardingChecklist delete
+   */
+  export type OnboardingChecklistDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OnboardingChecklist
+     */
+    select?: OnboardingChecklistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OnboardingChecklist
+     */
+    omit?: OnboardingChecklistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OnboardingChecklistInclude<ExtArgs> | null
+    /**
+     * Filter which OnboardingChecklist to delete.
+     */
+    where: OnboardingChecklistWhereUniqueInput
+  }
+
+  /**
+   * OnboardingChecklist deleteMany
+   */
+  export type OnboardingChecklistDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which OnboardingChecklists to delete
+     */
+    where?: OnboardingChecklistWhereInput
+    /**
+     * Limit how many OnboardingChecklists to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * OnboardingChecklist.completedByUser
+   */
+  export type OnboardingChecklist$completedByUserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * OnboardingChecklist without action
+   */
+  export type OnboardingChecklistDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OnboardingChecklist
+     */
+    select?: OnboardingChecklistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OnboardingChecklist
+     */
+    omit?: OnboardingChecklistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OnboardingChecklistInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ApplicationUpload
+   */
+
+  export type AggregateApplicationUpload = {
+    _count: ApplicationUploadCountAggregateOutputType | null
+    _avg: ApplicationUploadAvgAggregateOutputType | null
+    _sum: ApplicationUploadSumAggregateOutputType | null
+    _min: ApplicationUploadMinAggregateOutputType | null
+    _max: ApplicationUploadMaxAggregateOutputType | null
+  }
+
+  export type ApplicationUploadAvgAggregateOutputType = {
+    id: number | null
+    applicationId: number | null
+  }
+
+  export type ApplicationUploadSumAggregateOutputType = {
+    id: number | null
+    applicationId: number | null
+  }
+
+  export type ApplicationUploadMinAggregateOutputType = {
+    id: number | null
+    applicationId: number | null
+    fileUrl: string | null
+    fileType: string | null
+    createdAt: Date | null
+  }
+
+  export type ApplicationUploadMaxAggregateOutputType = {
+    id: number | null
+    applicationId: number | null
+    fileUrl: string | null
+    fileType: string | null
+    createdAt: Date | null
+  }
+
+  export type ApplicationUploadCountAggregateOutputType = {
+    id: number
+    applicationId: number
+    fileUrl: number
+    fileType: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type ApplicationUploadAvgAggregateInputType = {
+    id?: true
+    applicationId?: true
+  }
+
+  export type ApplicationUploadSumAggregateInputType = {
+    id?: true
+    applicationId?: true
+  }
+
+  export type ApplicationUploadMinAggregateInputType = {
+    id?: true
+    applicationId?: true
+    fileUrl?: true
+    fileType?: true
+    createdAt?: true
+  }
+
+  export type ApplicationUploadMaxAggregateInputType = {
+    id?: true
+    applicationId?: true
+    fileUrl?: true
+    fileType?: true
+    createdAt?: true
+  }
+
+  export type ApplicationUploadCountAggregateInputType = {
+    id?: true
+    applicationId?: true
+    fileUrl?: true
+    fileType?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type ApplicationUploadAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ApplicationUpload to aggregate.
+     */
+    where?: ApplicationUploadWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ApplicationUploads to fetch.
+     */
+    orderBy?: ApplicationUploadOrderByWithRelationInput | ApplicationUploadOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ApplicationUploadWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ApplicationUploads from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ApplicationUploads.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ApplicationUploads
+    **/
+    _count?: true | ApplicationUploadCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ApplicationUploadAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ApplicationUploadSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ApplicationUploadMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ApplicationUploadMaxAggregateInputType
+  }
+
+  export type GetApplicationUploadAggregateType<T extends ApplicationUploadAggregateArgs> = {
+        [P in keyof T & keyof AggregateApplicationUpload]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateApplicationUpload[P]>
+      : GetScalarType<T[P], AggregateApplicationUpload[P]>
+  }
+
+
+
+
+  export type ApplicationUploadGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ApplicationUploadWhereInput
+    orderBy?: ApplicationUploadOrderByWithAggregationInput | ApplicationUploadOrderByWithAggregationInput[]
+    by: ApplicationUploadScalarFieldEnum[] | ApplicationUploadScalarFieldEnum
+    having?: ApplicationUploadScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ApplicationUploadCountAggregateInputType | true
+    _avg?: ApplicationUploadAvgAggregateInputType
+    _sum?: ApplicationUploadSumAggregateInputType
+    _min?: ApplicationUploadMinAggregateInputType
+    _max?: ApplicationUploadMaxAggregateInputType
+  }
+
+  export type ApplicationUploadGroupByOutputType = {
+    id: number
+    applicationId: number
+    fileUrl: string
+    fileType: string
+    createdAt: Date
+    _count: ApplicationUploadCountAggregateOutputType | null
+    _avg: ApplicationUploadAvgAggregateOutputType | null
+    _sum: ApplicationUploadSumAggregateOutputType | null
+    _min: ApplicationUploadMinAggregateOutputType | null
+    _max: ApplicationUploadMaxAggregateOutputType | null
+  }
+
+  type GetApplicationUploadGroupByPayload<T extends ApplicationUploadGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ApplicationUploadGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ApplicationUploadGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ApplicationUploadGroupByOutputType[P]>
+            : GetScalarType<T[P], ApplicationUploadGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ApplicationUploadSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    applicationId?: boolean
+    fileUrl?: boolean
+    fileType?: boolean
+    createdAt?: boolean
+    application?: boolean | ApplicationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["applicationUpload"]>
+
+  export type ApplicationUploadSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    applicationId?: boolean
+    fileUrl?: boolean
+    fileType?: boolean
+    createdAt?: boolean
+    application?: boolean | ApplicationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["applicationUpload"]>
+
+  export type ApplicationUploadSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    applicationId?: boolean
+    fileUrl?: boolean
+    fileType?: boolean
+    createdAt?: boolean
+    application?: boolean | ApplicationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["applicationUpload"]>
+
+  export type ApplicationUploadSelectScalar = {
+    id?: boolean
+    applicationId?: boolean
+    fileUrl?: boolean
+    fileType?: boolean
+    createdAt?: boolean
+  }
+
+  export type ApplicationUploadOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "applicationId" | "fileUrl" | "fileType" | "createdAt", ExtArgs["result"]["applicationUpload"]>
+  export type ApplicationUploadInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    application?: boolean | ApplicationDefaultArgs<ExtArgs>
+  }
+  export type ApplicationUploadIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    application?: boolean | ApplicationDefaultArgs<ExtArgs>
+  }
+  export type ApplicationUploadIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    application?: boolean | ApplicationDefaultArgs<ExtArgs>
+  }
+
+  export type $ApplicationUploadPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ApplicationUpload"
+    objects: {
+      application: Prisma.$ApplicationPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      applicationId: number
+      fileUrl: string
+      fileType: string
+      createdAt: Date
+    }, ExtArgs["result"]["applicationUpload"]>
+    composites: {}
+  }
+
+  type ApplicationUploadGetPayload<S extends boolean | null | undefined | ApplicationUploadDefaultArgs> = $Result.GetResult<Prisma.$ApplicationUploadPayload, S>
+
+  type ApplicationUploadCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ApplicationUploadFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ApplicationUploadCountAggregateInputType | true
+    }
+
+  export interface ApplicationUploadDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ApplicationUpload'], meta: { name: 'ApplicationUpload' } }
+    /**
+     * Find zero or one ApplicationUpload that matches the filter.
+     * @param {ApplicationUploadFindUniqueArgs} args - Arguments to find a ApplicationUpload
+     * @example
+     * // Get one ApplicationUpload
+     * const applicationUpload = await prisma.applicationUpload.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ApplicationUploadFindUniqueArgs>(args: SelectSubset<T, ApplicationUploadFindUniqueArgs<ExtArgs>>): Prisma__ApplicationUploadClient<$Result.GetResult<Prisma.$ApplicationUploadPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ApplicationUpload that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ApplicationUploadFindUniqueOrThrowArgs} args - Arguments to find a ApplicationUpload
+     * @example
+     * // Get one ApplicationUpload
+     * const applicationUpload = await prisma.applicationUpload.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ApplicationUploadFindUniqueOrThrowArgs>(args: SelectSubset<T, ApplicationUploadFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ApplicationUploadClient<$Result.GetResult<Prisma.$ApplicationUploadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ApplicationUpload that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ApplicationUploadFindFirstArgs} args - Arguments to find a ApplicationUpload
+     * @example
+     * // Get one ApplicationUpload
+     * const applicationUpload = await prisma.applicationUpload.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ApplicationUploadFindFirstArgs>(args?: SelectSubset<T, ApplicationUploadFindFirstArgs<ExtArgs>>): Prisma__ApplicationUploadClient<$Result.GetResult<Prisma.$ApplicationUploadPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ApplicationUpload that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ApplicationUploadFindFirstOrThrowArgs} args - Arguments to find a ApplicationUpload
+     * @example
+     * // Get one ApplicationUpload
+     * const applicationUpload = await prisma.applicationUpload.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ApplicationUploadFindFirstOrThrowArgs>(args?: SelectSubset<T, ApplicationUploadFindFirstOrThrowArgs<ExtArgs>>): Prisma__ApplicationUploadClient<$Result.GetResult<Prisma.$ApplicationUploadPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ApplicationUploads that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ApplicationUploadFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ApplicationUploads
+     * const applicationUploads = await prisma.applicationUpload.findMany()
+     * 
+     * // Get first 10 ApplicationUploads
+     * const applicationUploads = await prisma.applicationUpload.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const applicationUploadWithIdOnly = await prisma.applicationUpload.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ApplicationUploadFindManyArgs>(args?: SelectSubset<T, ApplicationUploadFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ApplicationUploadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ApplicationUpload.
+     * @param {ApplicationUploadCreateArgs} args - Arguments to create a ApplicationUpload.
+     * @example
+     * // Create one ApplicationUpload
+     * const ApplicationUpload = await prisma.applicationUpload.create({
+     *   data: {
+     *     // ... data to create a ApplicationUpload
+     *   }
+     * })
+     * 
+     */
+    create<T extends ApplicationUploadCreateArgs>(args: SelectSubset<T, ApplicationUploadCreateArgs<ExtArgs>>): Prisma__ApplicationUploadClient<$Result.GetResult<Prisma.$ApplicationUploadPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ApplicationUploads.
+     * @param {ApplicationUploadCreateManyArgs} args - Arguments to create many ApplicationUploads.
+     * @example
+     * // Create many ApplicationUploads
+     * const applicationUpload = await prisma.applicationUpload.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ApplicationUploadCreateManyArgs>(args?: SelectSubset<T, ApplicationUploadCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ApplicationUploads and returns the data saved in the database.
+     * @param {ApplicationUploadCreateManyAndReturnArgs} args - Arguments to create many ApplicationUploads.
+     * @example
+     * // Create many ApplicationUploads
+     * const applicationUpload = await prisma.applicationUpload.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ApplicationUploads and only return the `id`
+     * const applicationUploadWithIdOnly = await prisma.applicationUpload.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ApplicationUploadCreateManyAndReturnArgs>(args?: SelectSubset<T, ApplicationUploadCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ApplicationUploadPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ApplicationUpload.
+     * @param {ApplicationUploadDeleteArgs} args - Arguments to delete one ApplicationUpload.
+     * @example
+     * // Delete one ApplicationUpload
+     * const ApplicationUpload = await prisma.applicationUpload.delete({
+     *   where: {
+     *     // ... filter to delete one ApplicationUpload
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ApplicationUploadDeleteArgs>(args: SelectSubset<T, ApplicationUploadDeleteArgs<ExtArgs>>): Prisma__ApplicationUploadClient<$Result.GetResult<Prisma.$ApplicationUploadPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ApplicationUpload.
+     * @param {ApplicationUploadUpdateArgs} args - Arguments to update one ApplicationUpload.
+     * @example
+     * // Update one ApplicationUpload
+     * const applicationUpload = await prisma.applicationUpload.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ApplicationUploadUpdateArgs>(args: SelectSubset<T, ApplicationUploadUpdateArgs<ExtArgs>>): Prisma__ApplicationUploadClient<$Result.GetResult<Prisma.$ApplicationUploadPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ApplicationUploads.
+     * @param {ApplicationUploadDeleteManyArgs} args - Arguments to filter ApplicationUploads to delete.
+     * @example
+     * // Delete a few ApplicationUploads
+     * const { count } = await prisma.applicationUpload.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ApplicationUploadDeleteManyArgs>(args?: SelectSubset<T, ApplicationUploadDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ApplicationUploads.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ApplicationUploadUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ApplicationUploads
+     * const applicationUpload = await prisma.applicationUpload.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ApplicationUploadUpdateManyArgs>(args: SelectSubset<T, ApplicationUploadUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ApplicationUploads and returns the data updated in the database.
+     * @param {ApplicationUploadUpdateManyAndReturnArgs} args - Arguments to update many ApplicationUploads.
+     * @example
+     * // Update many ApplicationUploads
+     * const applicationUpload = await prisma.applicationUpload.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ApplicationUploads and only return the `id`
+     * const applicationUploadWithIdOnly = await prisma.applicationUpload.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ApplicationUploadUpdateManyAndReturnArgs>(args: SelectSubset<T, ApplicationUploadUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ApplicationUploadPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ApplicationUpload.
+     * @param {ApplicationUploadUpsertArgs} args - Arguments to update or create a ApplicationUpload.
+     * @example
+     * // Update or create a ApplicationUpload
+     * const applicationUpload = await prisma.applicationUpload.upsert({
+     *   create: {
+     *     // ... data to create a ApplicationUpload
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ApplicationUpload we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ApplicationUploadUpsertArgs>(args: SelectSubset<T, ApplicationUploadUpsertArgs<ExtArgs>>): Prisma__ApplicationUploadClient<$Result.GetResult<Prisma.$ApplicationUploadPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ApplicationUploads.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ApplicationUploadCountArgs} args - Arguments to filter ApplicationUploads to count.
+     * @example
+     * // Count the number of ApplicationUploads
+     * const count = await prisma.applicationUpload.count({
+     *   where: {
+     *     // ... the filter for the ApplicationUploads we want to count
+     *   }
+     * })
+    **/
+    count<T extends ApplicationUploadCountArgs>(
+      args?: Subset<T, ApplicationUploadCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ApplicationUploadCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ApplicationUpload.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ApplicationUploadAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ApplicationUploadAggregateArgs>(args: Subset<T, ApplicationUploadAggregateArgs>): Prisma.PrismaPromise<GetApplicationUploadAggregateType<T>>
+
+    /**
+     * Group by ApplicationUpload.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ApplicationUploadGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ApplicationUploadGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ApplicationUploadGroupByArgs['orderBy'] }
+        : { orderBy?: ApplicationUploadGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ApplicationUploadGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetApplicationUploadGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ApplicationUpload model
+   */
+  readonly fields: ApplicationUploadFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ApplicationUpload.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ApplicationUploadClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    application<T extends ApplicationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ApplicationDefaultArgs<ExtArgs>>): Prisma__ApplicationClient<$Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ApplicationUpload model
+   */
+  interface ApplicationUploadFieldRefs {
+    readonly id: FieldRef<"ApplicationUpload", 'Int'>
+    readonly applicationId: FieldRef<"ApplicationUpload", 'Int'>
+    readonly fileUrl: FieldRef<"ApplicationUpload", 'String'>
+    readonly fileType: FieldRef<"ApplicationUpload", 'String'>
+    readonly createdAt: FieldRef<"ApplicationUpload", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ApplicationUpload findUnique
+   */
+  export type ApplicationUploadFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ApplicationUpload
+     */
+    select?: ApplicationUploadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ApplicationUpload
+     */
+    omit?: ApplicationUploadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationUploadInclude<ExtArgs> | null
+    /**
+     * Filter, which ApplicationUpload to fetch.
+     */
+    where: ApplicationUploadWhereUniqueInput
+  }
+
+  /**
+   * ApplicationUpload findUniqueOrThrow
+   */
+  export type ApplicationUploadFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ApplicationUpload
+     */
+    select?: ApplicationUploadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ApplicationUpload
+     */
+    omit?: ApplicationUploadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationUploadInclude<ExtArgs> | null
+    /**
+     * Filter, which ApplicationUpload to fetch.
+     */
+    where: ApplicationUploadWhereUniqueInput
+  }
+
+  /**
+   * ApplicationUpload findFirst
+   */
+  export type ApplicationUploadFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ApplicationUpload
+     */
+    select?: ApplicationUploadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ApplicationUpload
+     */
+    omit?: ApplicationUploadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationUploadInclude<ExtArgs> | null
+    /**
+     * Filter, which ApplicationUpload to fetch.
+     */
+    where?: ApplicationUploadWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ApplicationUploads to fetch.
+     */
+    orderBy?: ApplicationUploadOrderByWithRelationInput | ApplicationUploadOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ApplicationUploads.
+     */
+    cursor?: ApplicationUploadWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ApplicationUploads from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ApplicationUploads.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ApplicationUploads.
+     */
+    distinct?: ApplicationUploadScalarFieldEnum | ApplicationUploadScalarFieldEnum[]
+  }
+
+  /**
+   * ApplicationUpload findFirstOrThrow
+   */
+  export type ApplicationUploadFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ApplicationUpload
+     */
+    select?: ApplicationUploadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ApplicationUpload
+     */
+    omit?: ApplicationUploadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationUploadInclude<ExtArgs> | null
+    /**
+     * Filter, which ApplicationUpload to fetch.
+     */
+    where?: ApplicationUploadWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ApplicationUploads to fetch.
+     */
+    orderBy?: ApplicationUploadOrderByWithRelationInput | ApplicationUploadOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ApplicationUploads.
+     */
+    cursor?: ApplicationUploadWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ApplicationUploads from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ApplicationUploads.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ApplicationUploads.
+     */
+    distinct?: ApplicationUploadScalarFieldEnum | ApplicationUploadScalarFieldEnum[]
+  }
+
+  /**
+   * ApplicationUpload findMany
+   */
+  export type ApplicationUploadFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ApplicationUpload
+     */
+    select?: ApplicationUploadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ApplicationUpload
+     */
+    omit?: ApplicationUploadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationUploadInclude<ExtArgs> | null
+    /**
+     * Filter, which ApplicationUploads to fetch.
+     */
+    where?: ApplicationUploadWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ApplicationUploads to fetch.
+     */
+    orderBy?: ApplicationUploadOrderByWithRelationInput | ApplicationUploadOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ApplicationUploads.
+     */
+    cursor?: ApplicationUploadWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ApplicationUploads from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ApplicationUploads.
+     */
+    skip?: number
+    distinct?: ApplicationUploadScalarFieldEnum | ApplicationUploadScalarFieldEnum[]
+  }
+
+  /**
+   * ApplicationUpload create
+   */
+  export type ApplicationUploadCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ApplicationUpload
+     */
+    select?: ApplicationUploadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ApplicationUpload
+     */
+    omit?: ApplicationUploadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationUploadInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ApplicationUpload.
+     */
+    data: XOR<ApplicationUploadCreateInput, ApplicationUploadUncheckedCreateInput>
+  }
+
+  /**
+   * ApplicationUpload createMany
+   */
+  export type ApplicationUploadCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ApplicationUploads.
+     */
+    data: ApplicationUploadCreateManyInput | ApplicationUploadCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ApplicationUpload createManyAndReturn
+   */
+  export type ApplicationUploadCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ApplicationUpload
+     */
+    select?: ApplicationUploadSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ApplicationUpload
+     */
+    omit?: ApplicationUploadOmit<ExtArgs> | null
+    /**
+     * The data used to create many ApplicationUploads.
+     */
+    data: ApplicationUploadCreateManyInput | ApplicationUploadCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationUploadIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ApplicationUpload update
+   */
+  export type ApplicationUploadUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ApplicationUpload
+     */
+    select?: ApplicationUploadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ApplicationUpload
+     */
+    omit?: ApplicationUploadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationUploadInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ApplicationUpload.
+     */
+    data: XOR<ApplicationUploadUpdateInput, ApplicationUploadUncheckedUpdateInput>
+    /**
+     * Choose, which ApplicationUpload to update.
+     */
+    where: ApplicationUploadWhereUniqueInput
+  }
+
+  /**
+   * ApplicationUpload updateMany
+   */
+  export type ApplicationUploadUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ApplicationUploads.
+     */
+    data: XOR<ApplicationUploadUpdateManyMutationInput, ApplicationUploadUncheckedUpdateManyInput>
+    /**
+     * Filter which ApplicationUploads to update
+     */
+    where?: ApplicationUploadWhereInput
+    /**
+     * Limit how many ApplicationUploads to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ApplicationUpload updateManyAndReturn
+   */
+  export type ApplicationUploadUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ApplicationUpload
+     */
+    select?: ApplicationUploadSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ApplicationUpload
+     */
+    omit?: ApplicationUploadOmit<ExtArgs> | null
+    /**
+     * The data used to update ApplicationUploads.
+     */
+    data: XOR<ApplicationUploadUpdateManyMutationInput, ApplicationUploadUncheckedUpdateManyInput>
+    /**
+     * Filter which ApplicationUploads to update
+     */
+    where?: ApplicationUploadWhereInput
+    /**
+     * Limit how many ApplicationUploads to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationUploadIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ApplicationUpload upsert
+   */
+  export type ApplicationUploadUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ApplicationUpload
+     */
+    select?: ApplicationUploadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ApplicationUpload
+     */
+    omit?: ApplicationUploadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationUploadInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ApplicationUpload to update in case it exists.
+     */
+    where: ApplicationUploadWhereUniqueInput
+    /**
+     * In case the ApplicationUpload found by the `where` argument doesn't exist, create a new ApplicationUpload with this data.
+     */
+    create: XOR<ApplicationUploadCreateInput, ApplicationUploadUncheckedCreateInput>
+    /**
+     * In case the ApplicationUpload was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ApplicationUploadUpdateInput, ApplicationUploadUncheckedUpdateInput>
+  }
+
+  /**
+   * ApplicationUpload delete
+   */
+  export type ApplicationUploadDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ApplicationUpload
+     */
+    select?: ApplicationUploadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ApplicationUpload
+     */
+    omit?: ApplicationUploadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationUploadInclude<ExtArgs> | null
+    /**
+     * Filter which ApplicationUpload to delete.
+     */
+    where: ApplicationUploadWhereUniqueInput
+  }
+
+  /**
+   * ApplicationUpload deleteMany
+   */
+  export type ApplicationUploadDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ApplicationUploads to delete
+     */
+    where?: ApplicationUploadWhereInput
+    /**
+     * Limit how many ApplicationUploads to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ApplicationUpload without action
+   */
+  export type ApplicationUploadDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ApplicationUpload
+     */
+    select?: ApplicationUploadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ApplicationUpload
+     */
+    omit?: ApplicationUploadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationUploadInclude<ExtArgs> | null
   }
 
 
@@ -17253,6 +22660,7 @@ export namespace Prisma {
     slug: string | null
     body: string | null
     category: string | null
+    isRequired: boolean | null
     createdAt: Date | null
   }
 
@@ -17262,6 +22670,7 @@ export namespace Prisma {
     slug: string | null
     body: string | null
     category: string | null
+    isRequired: boolean | null
     createdAt: Date | null
   }
 
@@ -17271,6 +22680,7 @@ export namespace Prisma {
     slug: number
     body: number
     category: number
+    isRequired: number
     publishTargets: number
     createdAt: number
     _all: number
@@ -17291,6 +22701,7 @@ export namespace Prisma {
     slug?: true
     body?: true
     category?: true
+    isRequired?: true
     createdAt?: true
   }
 
@@ -17300,6 +22711,7 @@ export namespace Prisma {
     slug?: true
     body?: true
     category?: true
+    isRequired?: true
     createdAt?: true
   }
 
@@ -17309,6 +22721,7 @@ export namespace Prisma {
     slug?: true
     body?: true
     category?: true
+    isRequired?: true
     publishTargets?: true
     createdAt?: true
     _all?: true
@@ -17406,6 +22819,7 @@ export namespace Prisma {
     slug: string
     body: string
     category: string
+    isRequired: boolean
     publishTargets: string[]
     createdAt: Date
     _count: ContentCountAggregateOutputType | null
@@ -17435,8 +22849,11 @@ export namespace Prisma {
     slug?: boolean
     body?: boolean
     category?: boolean
+    isRequired?: boolean
     publishTargets?: boolean
     createdAt?: boolean
+    completions?: boolean | Content$completionsArgs<ExtArgs>
+    _count?: boolean | ContentCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["content"]>
 
   export type ContentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -17445,6 +22862,7 @@ export namespace Prisma {
     slug?: boolean
     body?: boolean
     category?: boolean
+    isRequired?: boolean
     publishTargets?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["content"]>
@@ -17455,6 +22873,7 @@ export namespace Prisma {
     slug?: boolean
     body?: boolean
     category?: boolean
+    isRequired?: boolean
     publishTargets?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["content"]>
@@ -17465,21 +22884,31 @@ export namespace Prisma {
     slug?: boolean
     body?: boolean
     category?: boolean
+    isRequired?: boolean
     publishTargets?: boolean
     createdAt?: boolean
   }
 
-  export type ContentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "slug" | "body" | "category" | "publishTargets" | "createdAt", ExtArgs["result"]["content"]>
+  export type ContentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "slug" | "body" | "category" | "isRequired" | "publishTargets" | "createdAt", ExtArgs["result"]["content"]>
+  export type ContentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    completions?: boolean | Content$completionsArgs<ExtArgs>
+    _count?: boolean | ContentCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ContentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type ContentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $ContentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Content"
-    objects: {}
+    objects: {
+      completions: Prisma.$ContentCompletionPayload<ExtArgs>[]
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       title: string
       slug: string
       body: string
       category: string
+      isRequired: boolean
       publishTargets: string[]
       createdAt: Date
     }, ExtArgs["result"]["content"]>
@@ -17876,6 +23305,7 @@ export namespace Prisma {
    */
   export interface Prisma__ContentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    completions<T extends Content$completionsArgs<ExtArgs> = {}>(args?: Subset<T, Content$completionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContentCompletionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -17910,6 +23340,7 @@ export namespace Prisma {
     readonly slug: FieldRef<"Content", 'String'>
     readonly body: FieldRef<"Content", 'String'>
     readonly category: FieldRef<"Content", 'String'>
+    readonly isRequired: FieldRef<"Content", 'Boolean'>
     readonly publishTargets: FieldRef<"Content", 'String[]'>
     readonly createdAt: FieldRef<"Content", 'DateTime'>
   }
@@ -17929,6 +23360,10 @@ export namespace Prisma {
      */
     omit?: ContentOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContentInclude<ExtArgs> | null
+    /**
      * Filter, which Content to fetch.
      */
     where: ContentWhereUniqueInput
@@ -17947,6 +23382,10 @@ export namespace Prisma {
      */
     omit?: ContentOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContentInclude<ExtArgs> | null
+    /**
      * Filter, which Content to fetch.
      */
     where: ContentWhereUniqueInput
@@ -17964,6 +23403,10 @@ export namespace Prisma {
      * Omit specific fields from the Content
      */
     omit?: ContentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContentInclude<ExtArgs> | null
     /**
      * Filter, which Content to fetch.
      */
@@ -18013,6 +23456,10 @@ export namespace Prisma {
      */
     omit?: ContentOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContentInclude<ExtArgs> | null
+    /**
      * Filter, which Content to fetch.
      */
     where?: ContentWhereInput
@@ -18061,6 +23508,10 @@ export namespace Prisma {
      */
     omit?: ContentOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContentInclude<ExtArgs> | null
+    /**
      * Filter, which Contents to fetch.
      */
     where?: ContentWhereInput
@@ -18103,6 +23554,10 @@ export namespace Prisma {
      * Omit specific fields from the Content
      */
     omit?: ContentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContentInclude<ExtArgs> | null
     /**
      * The data needed to create a Content.
      */
@@ -18151,6 +23606,10 @@ export namespace Prisma {
      * Omit specific fields from the Content
      */
     omit?: ContentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContentInclude<ExtArgs> | null
     /**
      * The data needed to update a Content.
      */
@@ -18218,6 +23677,10 @@ export namespace Prisma {
      */
     omit?: ContentOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContentInclude<ExtArgs> | null
+    /**
      * The filter to search for the Content to update in case it exists.
      */
     where: ContentWhereUniqueInput
@@ -18244,6 +23707,10 @@ export namespace Prisma {
      */
     omit?: ContentOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContentInclude<ExtArgs> | null
+    /**
      * Filter which Content to delete.
      */
     where: ContentWhereUniqueInput
@@ -18264,6 +23731,30 @@ export namespace Prisma {
   }
 
   /**
+   * Content.completions
+   */
+  export type Content$completionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContentCompletion
+     */
+    select?: ContentCompletionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContentCompletion
+     */
+    omit?: ContentCompletionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContentCompletionInclude<ExtArgs> | null
+    where?: ContentCompletionWhereInput
+    orderBy?: ContentCompletionOrderByWithRelationInput | ContentCompletionOrderByWithRelationInput[]
+    cursor?: ContentCompletionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ContentCompletionScalarFieldEnum | ContentCompletionScalarFieldEnum[]
+  }
+
+  /**
    * Content without action
    */
   export type ContentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -18275,6 +23766,1105 @@ export namespace Prisma {
      * Omit specific fields from the Content
      */
     omit?: ContentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContentInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ContentCompletion
+   */
+
+  export type AggregateContentCompletion = {
+    _count: ContentCompletionCountAggregateOutputType | null
+    _avg: ContentCompletionAvgAggregateOutputType | null
+    _sum: ContentCompletionSumAggregateOutputType | null
+    _min: ContentCompletionMinAggregateOutputType | null
+    _max: ContentCompletionMaxAggregateOutputType | null
+  }
+
+  export type ContentCompletionAvgAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    contentId: number | null
+  }
+
+  export type ContentCompletionSumAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    contentId: number | null
+  }
+
+  export type ContentCompletionMinAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    contentId: number | null
+    completedAt: Date | null
+  }
+
+  export type ContentCompletionMaxAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    contentId: number | null
+    completedAt: Date | null
+  }
+
+  export type ContentCompletionCountAggregateOutputType = {
+    id: number
+    userId: number
+    contentId: number
+    completedAt: number
+    _all: number
+  }
+
+
+  export type ContentCompletionAvgAggregateInputType = {
+    id?: true
+    userId?: true
+    contentId?: true
+  }
+
+  export type ContentCompletionSumAggregateInputType = {
+    id?: true
+    userId?: true
+    contentId?: true
+  }
+
+  export type ContentCompletionMinAggregateInputType = {
+    id?: true
+    userId?: true
+    contentId?: true
+    completedAt?: true
+  }
+
+  export type ContentCompletionMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    contentId?: true
+    completedAt?: true
+  }
+
+  export type ContentCompletionCountAggregateInputType = {
+    id?: true
+    userId?: true
+    contentId?: true
+    completedAt?: true
+    _all?: true
+  }
+
+  export type ContentCompletionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ContentCompletion to aggregate.
+     */
+    where?: ContentCompletionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ContentCompletions to fetch.
+     */
+    orderBy?: ContentCompletionOrderByWithRelationInput | ContentCompletionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ContentCompletionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ContentCompletions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ContentCompletions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ContentCompletions
+    **/
+    _count?: true | ContentCompletionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ContentCompletionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ContentCompletionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ContentCompletionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ContentCompletionMaxAggregateInputType
+  }
+
+  export type GetContentCompletionAggregateType<T extends ContentCompletionAggregateArgs> = {
+        [P in keyof T & keyof AggregateContentCompletion]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateContentCompletion[P]>
+      : GetScalarType<T[P], AggregateContentCompletion[P]>
+  }
+
+
+
+
+  export type ContentCompletionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ContentCompletionWhereInput
+    orderBy?: ContentCompletionOrderByWithAggregationInput | ContentCompletionOrderByWithAggregationInput[]
+    by: ContentCompletionScalarFieldEnum[] | ContentCompletionScalarFieldEnum
+    having?: ContentCompletionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ContentCompletionCountAggregateInputType | true
+    _avg?: ContentCompletionAvgAggregateInputType
+    _sum?: ContentCompletionSumAggregateInputType
+    _min?: ContentCompletionMinAggregateInputType
+    _max?: ContentCompletionMaxAggregateInputType
+  }
+
+  export type ContentCompletionGroupByOutputType = {
+    id: number
+    userId: number
+    contentId: number
+    completedAt: Date
+    _count: ContentCompletionCountAggregateOutputType | null
+    _avg: ContentCompletionAvgAggregateOutputType | null
+    _sum: ContentCompletionSumAggregateOutputType | null
+    _min: ContentCompletionMinAggregateOutputType | null
+    _max: ContentCompletionMaxAggregateOutputType | null
+  }
+
+  type GetContentCompletionGroupByPayload<T extends ContentCompletionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ContentCompletionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ContentCompletionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ContentCompletionGroupByOutputType[P]>
+            : GetScalarType<T[P], ContentCompletionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ContentCompletionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    contentId?: boolean
+    completedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    content?: boolean | ContentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["contentCompletion"]>
+
+  export type ContentCompletionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    contentId?: boolean
+    completedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    content?: boolean | ContentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["contentCompletion"]>
+
+  export type ContentCompletionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    contentId?: boolean
+    completedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    content?: boolean | ContentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["contentCompletion"]>
+
+  export type ContentCompletionSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    contentId?: boolean
+    completedAt?: boolean
+  }
+
+  export type ContentCompletionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "contentId" | "completedAt", ExtArgs["result"]["contentCompletion"]>
+  export type ContentCompletionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    content?: boolean | ContentDefaultArgs<ExtArgs>
+  }
+  export type ContentCompletionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    content?: boolean | ContentDefaultArgs<ExtArgs>
+  }
+  export type ContentCompletionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    content?: boolean | ContentDefaultArgs<ExtArgs>
+  }
+
+  export type $ContentCompletionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ContentCompletion"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      content: Prisma.$ContentPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      userId: number
+      contentId: number
+      completedAt: Date
+    }, ExtArgs["result"]["contentCompletion"]>
+    composites: {}
+  }
+
+  type ContentCompletionGetPayload<S extends boolean | null | undefined | ContentCompletionDefaultArgs> = $Result.GetResult<Prisma.$ContentCompletionPayload, S>
+
+  type ContentCompletionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ContentCompletionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ContentCompletionCountAggregateInputType | true
+    }
+
+  export interface ContentCompletionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ContentCompletion'], meta: { name: 'ContentCompletion' } }
+    /**
+     * Find zero or one ContentCompletion that matches the filter.
+     * @param {ContentCompletionFindUniqueArgs} args - Arguments to find a ContentCompletion
+     * @example
+     * // Get one ContentCompletion
+     * const contentCompletion = await prisma.contentCompletion.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ContentCompletionFindUniqueArgs>(args: SelectSubset<T, ContentCompletionFindUniqueArgs<ExtArgs>>): Prisma__ContentCompletionClient<$Result.GetResult<Prisma.$ContentCompletionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ContentCompletion that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ContentCompletionFindUniqueOrThrowArgs} args - Arguments to find a ContentCompletion
+     * @example
+     * // Get one ContentCompletion
+     * const contentCompletion = await prisma.contentCompletion.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ContentCompletionFindUniqueOrThrowArgs>(args: SelectSubset<T, ContentCompletionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ContentCompletionClient<$Result.GetResult<Prisma.$ContentCompletionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ContentCompletion that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContentCompletionFindFirstArgs} args - Arguments to find a ContentCompletion
+     * @example
+     * // Get one ContentCompletion
+     * const contentCompletion = await prisma.contentCompletion.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ContentCompletionFindFirstArgs>(args?: SelectSubset<T, ContentCompletionFindFirstArgs<ExtArgs>>): Prisma__ContentCompletionClient<$Result.GetResult<Prisma.$ContentCompletionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ContentCompletion that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContentCompletionFindFirstOrThrowArgs} args - Arguments to find a ContentCompletion
+     * @example
+     * // Get one ContentCompletion
+     * const contentCompletion = await prisma.contentCompletion.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ContentCompletionFindFirstOrThrowArgs>(args?: SelectSubset<T, ContentCompletionFindFirstOrThrowArgs<ExtArgs>>): Prisma__ContentCompletionClient<$Result.GetResult<Prisma.$ContentCompletionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ContentCompletions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContentCompletionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ContentCompletions
+     * const contentCompletions = await prisma.contentCompletion.findMany()
+     * 
+     * // Get first 10 ContentCompletions
+     * const contentCompletions = await prisma.contentCompletion.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const contentCompletionWithIdOnly = await prisma.contentCompletion.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ContentCompletionFindManyArgs>(args?: SelectSubset<T, ContentCompletionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContentCompletionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ContentCompletion.
+     * @param {ContentCompletionCreateArgs} args - Arguments to create a ContentCompletion.
+     * @example
+     * // Create one ContentCompletion
+     * const ContentCompletion = await prisma.contentCompletion.create({
+     *   data: {
+     *     // ... data to create a ContentCompletion
+     *   }
+     * })
+     * 
+     */
+    create<T extends ContentCompletionCreateArgs>(args: SelectSubset<T, ContentCompletionCreateArgs<ExtArgs>>): Prisma__ContentCompletionClient<$Result.GetResult<Prisma.$ContentCompletionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ContentCompletions.
+     * @param {ContentCompletionCreateManyArgs} args - Arguments to create many ContentCompletions.
+     * @example
+     * // Create many ContentCompletions
+     * const contentCompletion = await prisma.contentCompletion.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ContentCompletionCreateManyArgs>(args?: SelectSubset<T, ContentCompletionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ContentCompletions and returns the data saved in the database.
+     * @param {ContentCompletionCreateManyAndReturnArgs} args - Arguments to create many ContentCompletions.
+     * @example
+     * // Create many ContentCompletions
+     * const contentCompletion = await prisma.contentCompletion.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ContentCompletions and only return the `id`
+     * const contentCompletionWithIdOnly = await prisma.contentCompletion.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ContentCompletionCreateManyAndReturnArgs>(args?: SelectSubset<T, ContentCompletionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContentCompletionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ContentCompletion.
+     * @param {ContentCompletionDeleteArgs} args - Arguments to delete one ContentCompletion.
+     * @example
+     * // Delete one ContentCompletion
+     * const ContentCompletion = await prisma.contentCompletion.delete({
+     *   where: {
+     *     // ... filter to delete one ContentCompletion
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ContentCompletionDeleteArgs>(args: SelectSubset<T, ContentCompletionDeleteArgs<ExtArgs>>): Prisma__ContentCompletionClient<$Result.GetResult<Prisma.$ContentCompletionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ContentCompletion.
+     * @param {ContentCompletionUpdateArgs} args - Arguments to update one ContentCompletion.
+     * @example
+     * // Update one ContentCompletion
+     * const contentCompletion = await prisma.contentCompletion.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ContentCompletionUpdateArgs>(args: SelectSubset<T, ContentCompletionUpdateArgs<ExtArgs>>): Prisma__ContentCompletionClient<$Result.GetResult<Prisma.$ContentCompletionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ContentCompletions.
+     * @param {ContentCompletionDeleteManyArgs} args - Arguments to filter ContentCompletions to delete.
+     * @example
+     * // Delete a few ContentCompletions
+     * const { count } = await prisma.contentCompletion.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ContentCompletionDeleteManyArgs>(args?: SelectSubset<T, ContentCompletionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ContentCompletions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContentCompletionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ContentCompletions
+     * const contentCompletion = await prisma.contentCompletion.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ContentCompletionUpdateManyArgs>(args: SelectSubset<T, ContentCompletionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ContentCompletions and returns the data updated in the database.
+     * @param {ContentCompletionUpdateManyAndReturnArgs} args - Arguments to update many ContentCompletions.
+     * @example
+     * // Update many ContentCompletions
+     * const contentCompletion = await prisma.contentCompletion.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ContentCompletions and only return the `id`
+     * const contentCompletionWithIdOnly = await prisma.contentCompletion.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ContentCompletionUpdateManyAndReturnArgs>(args: SelectSubset<T, ContentCompletionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContentCompletionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ContentCompletion.
+     * @param {ContentCompletionUpsertArgs} args - Arguments to update or create a ContentCompletion.
+     * @example
+     * // Update or create a ContentCompletion
+     * const contentCompletion = await prisma.contentCompletion.upsert({
+     *   create: {
+     *     // ... data to create a ContentCompletion
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ContentCompletion we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ContentCompletionUpsertArgs>(args: SelectSubset<T, ContentCompletionUpsertArgs<ExtArgs>>): Prisma__ContentCompletionClient<$Result.GetResult<Prisma.$ContentCompletionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ContentCompletions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContentCompletionCountArgs} args - Arguments to filter ContentCompletions to count.
+     * @example
+     * // Count the number of ContentCompletions
+     * const count = await prisma.contentCompletion.count({
+     *   where: {
+     *     // ... the filter for the ContentCompletions we want to count
+     *   }
+     * })
+    **/
+    count<T extends ContentCompletionCountArgs>(
+      args?: Subset<T, ContentCompletionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ContentCompletionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ContentCompletion.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContentCompletionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ContentCompletionAggregateArgs>(args: Subset<T, ContentCompletionAggregateArgs>): Prisma.PrismaPromise<GetContentCompletionAggregateType<T>>
+
+    /**
+     * Group by ContentCompletion.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContentCompletionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ContentCompletionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ContentCompletionGroupByArgs['orderBy'] }
+        : { orderBy?: ContentCompletionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ContentCompletionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetContentCompletionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ContentCompletion model
+   */
+  readonly fields: ContentCompletionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ContentCompletion.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ContentCompletionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    content<T extends ContentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ContentDefaultArgs<ExtArgs>>): Prisma__ContentClient<$Result.GetResult<Prisma.$ContentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ContentCompletion model
+   */
+  interface ContentCompletionFieldRefs {
+    readonly id: FieldRef<"ContentCompletion", 'Int'>
+    readonly userId: FieldRef<"ContentCompletion", 'Int'>
+    readonly contentId: FieldRef<"ContentCompletion", 'Int'>
+    readonly completedAt: FieldRef<"ContentCompletion", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ContentCompletion findUnique
+   */
+  export type ContentCompletionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContentCompletion
+     */
+    select?: ContentCompletionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContentCompletion
+     */
+    omit?: ContentCompletionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContentCompletionInclude<ExtArgs> | null
+    /**
+     * Filter, which ContentCompletion to fetch.
+     */
+    where: ContentCompletionWhereUniqueInput
+  }
+
+  /**
+   * ContentCompletion findUniqueOrThrow
+   */
+  export type ContentCompletionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContentCompletion
+     */
+    select?: ContentCompletionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContentCompletion
+     */
+    omit?: ContentCompletionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContentCompletionInclude<ExtArgs> | null
+    /**
+     * Filter, which ContentCompletion to fetch.
+     */
+    where: ContentCompletionWhereUniqueInput
+  }
+
+  /**
+   * ContentCompletion findFirst
+   */
+  export type ContentCompletionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContentCompletion
+     */
+    select?: ContentCompletionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContentCompletion
+     */
+    omit?: ContentCompletionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContentCompletionInclude<ExtArgs> | null
+    /**
+     * Filter, which ContentCompletion to fetch.
+     */
+    where?: ContentCompletionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ContentCompletions to fetch.
+     */
+    orderBy?: ContentCompletionOrderByWithRelationInput | ContentCompletionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ContentCompletions.
+     */
+    cursor?: ContentCompletionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ContentCompletions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ContentCompletions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ContentCompletions.
+     */
+    distinct?: ContentCompletionScalarFieldEnum | ContentCompletionScalarFieldEnum[]
+  }
+
+  /**
+   * ContentCompletion findFirstOrThrow
+   */
+  export type ContentCompletionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContentCompletion
+     */
+    select?: ContentCompletionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContentCompletion
+     */
+    omit?: ContentCompletionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContentCompletionInclude<ExtArgs> | null
+    /**
+     * Filter, which ContentCompletion to fetch.
+     */
+    where?: ContentCompletionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ContentCompletions to fetch.
+     */
+    orderBy?: ContentCompletionOrderByWithRelationInput | ContentCompletionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ContentCompletions.
+     */
+    cursor?: ContentCompletionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ContentCompletions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ContentCompletions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ContentCompletions.
+     */
+    distinct?: ContentCompletionScalarFieldEnum | ContentCompletionScalarFieldEnum[]
+  }
+
+  /**
+   * ContentCompletion findMany
+   */
+  export type ContentCompletionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContentCompletion
+     */
+    select?: ContentCompletionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContentCompletion
+     */
+    omit?: ContentCompletionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContentCompletionInclude<ExtArgs> | null
+    /**
+     * Filter, which ContentCompletions to fetch.
+     */
+    where?: ContentCompletionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ContentCompletions to fetch.
+     */
+    orderBy?: ContentCompletionOrderByWithRelationInput | ContentCompletionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ContentCompletions.
+     */
+    cursor?: ContentCompletionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ContentCompletions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ContentCompletions.
+     */
+    skip?: number
+    distinct?: ContentCompletionScalarFieldEnum | ContentCompletionScalarFieldEnum[]
+  }
+
+  /**
+   * ContentCompletion create
+   */
+  export type ContentCompletionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContentCompletion
+     */
+    select?: ContentCompletionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContentCompletion
+     */
+    omit?: ContentCompletionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContentCompletionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ContentCompletion.
+     */
+    data: XOR<ContentCompletionCreateInput, ContentCompletionUncheckedCreateInput>
+  }
+
+  /**
+   * ContentCompletion createMany
+   */
+  export type ContentCompletionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ContentCompletions.
+     */
+    data: ContentCompletionCreateManyInput | ContentCompletionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ContentCompletion createManyAndReturn
+   */
+  export type ContentCompletionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContentCompletion
+     */
+    select?: ContentCompletionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContentCompletion
+     */
+    omit?: ContentCompletionOmit<ExtArgs> | null
+    /**
+     * The data used to create many ContentCompletions.
+     */
+    data: ContentCompletionCreateManyInput | ContentCompletionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContentCompletionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ContentCompletion update
+   */
+  export type ContentCompletionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContentCompletion
+     */
+    select?: ContentCompletionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContentCompletion
+     */
+    omit?: ContentCompletionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContentCompletionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ContentCompletion.
+     */
+    data: XOR<ContentCompletionUpdateInput, ContentCompletionUncheckedUpdateInput>
+    /**
+     * Choose, which ContentCompletion to update.
+     */
+    where: ContentCompletionWhereUniqueInput
+  }
+
+  /**
+   * ContentCompletion updateMany
+   */
+  export type ContentCompletionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ContentCompletions.
+     */
+    data: XOR<ContentCompletionUpdateManyMutationInput, ContentCompletionUncheckedUpdateManyInput>
+    /**
+     * Filter which ContentCompletions to update
+     */
+    where?: ContentCompletionWhereInput
+    /**
+     * Limit how many ContentCompletions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ContentCompletion updateManyAndReturn
+   */
+  export type ContentCompletionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContentCompletion
+     */
+    select?: ContentCompletionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContentCompletion
+     */
+    omit?: ContentCompletionOmit<ExtArgs> | null
+    /**
+     * The data used to update ContentCompletions.
+     */
+    data: XOR<ContentCompletionUpdateManyMutationInput, ContentCompletionUncheckedUpdateManyInput>
+    /**
+     * Filter which ContentCompletions to update
+     */
+    where?: ContentCompletionWhereInput
+    /**
+     * Limit how many ContentCompletions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContentCompletionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ContentCompletion upsert
+   */
+  export type ContentCompletionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContentCompletion
+     */
+    select?: ContentCompletionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContentCompletion
+     */
+    omit?: ContentCompletionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContentCompletionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ContentCompletion to update in case it exists.
+     */
+    where: ContentCompletionWhereUniqueInput
+    /**
+     * In case the ContentCompletion found by the `where` argument doesn't exist, create a new ContentCompletion with this data.
+     */
+    create: XOR<ContentCompletionCreateInput, ContentCompletionUncheckedCreateInput>
+    /**
+     * In case the ContentCompletion was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ContentCompletionUpdateInput, ContentCompletionUncheckedUpdateInput>
+  }
+
+  /**
+   * ContentCompletion delete
+   */
+  export type ContentCompletionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContentCompletion
+     */
+    select?: ContentCompletionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContentCompletion
+     */
+    omit?: ContentCompletionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContentCompletionInclude<ExtArgs> | null
+    /**
+     * Filter which ContentCompletion to delete.
+     */
+    where: ContentCompletionWhereUniqueInput
+  }
+
+  /**
+   * ContentCompletion deleteMany
+   */
+  export type ContentCompletionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ContentCompletions to delete
+     */
+    where?: ContentCompletionWhereInput
+    /**
+     * Limit how many ContentCompletions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ContentCompletion without action
+   */
+  export type ContentCompletionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContentCompletion
+     */
+    select?: ContentCompletionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContentCompletion
+     */
+    omit?: ContentCompletionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContentCompletionInclude<ExtArgs> | null
   }
 
 
@@ -22872,6 +29462,10 @@ export namespace Prisma {
     updatedAt?: boolean
     lastLoginAt?: boolean
     role?: boolean | RoleDefaultArgs<ExtArgs>
+    rejectedApplications?: boolean | User$rejectedApplicationsArgs<ExtArgs>
+    completedChecklistItems?: boolean | User$completedChecklistItemsArgs<ExtArgs>
+    contentCompletions?: boolean | User$contentCompletionsArgs<ExtArgs>
+    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -22921,6 +29515,10 @@ export namespace Prisma {
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "passwordHash" | "firstName" | "lastName" | "isActive" | "roleId" | "fosterId" | "createdAt" | "updatedAt" | "lastLoginAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     role?: boolean | RoleDefaultArgs<ExtArgs>
+    rejectedApplications?: boolean | User$rejectedApplicationsArgs<ExtArgs>
+    completedChecklistItems?: boolean | User$completedChecklistItemsArgs<ExtArgs>
+    contentCompletions?: boolean | User$contentCompletionsArgs<ExtArgs>
+    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     role?: boolean | RoleDefaultArgs<ExtArgs>
@@ -22933,6 +29531,9 @@ export namespace Prisma {
     name: "User"
     objects: {
       role: Prisma.$RolePayload<ExtArgs>
+      rejectedApplications: Prisma.$ApplicationPayload<ExtArgs>[]
+      completedChecklistItems: Prisma.$OnboardingChecklistPayload<ExtArgs>[]
+      contentCompletions: Prisma.$ContentCompletionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -23341,6 +29942,9 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     role<T extends RoleDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RoleDefaultArgs<ExtArgs>>): Prisma__RoleClient<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    rejectedApplications<T extends User$rejectedApplicationsArgs<ExtArgs> = {}>(args?: Subset<T, User$rejectedApplicationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    completedChecklistItems<T extends User$completedChecklistItemsArgs<ExtArgs> = {}>(args?: Subset<T, User$completedChecklistItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OnboardingChecklistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    contentCompletions<T extends User$contentCompletionsArgs<ExtArgs> = {}>(args?: Subset<T, User$contentCompletionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContentCompletionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -23774,6 +30378,78 @@ export namespace Prisma {
      * Limit how many Users to delete.
      */
     limit?: number
+  }
+
+  /**
+   * User.rejectedApplications
+   */
+  export type User$rejectedApplicationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Application
+     */
+    select?: ApplicationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Application
+     */
+    omit?: ApplicationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationInclude<ExtArgs> | null
+    where?: ApplicationWhereInput
+    orderBy?: ApplicationOrderByWithRelationInput | ApplicationOrderByWithRelationInput[]
+    cursor?: ApplicationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ApplicationScalarFieldEnum | ApplicationScalarFieldEnum[]
+  }
+
+  /**
+   * User.completedChecklistItems
+   */
+  export type User$completedChecklistItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OnboardingChecklist
+     */
+    select?: OnboardingChecklistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OnboardingChecklist
+     */
+    omit?: OnboardingChecklistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OnboardingChecklistInclude<ExtArgs> | null
+    where?: OnboardingChecklistWhereInput
+    orderBy?: OnboardingChecklistOrderByWithRelationInput | OnboardingChecklistOrderByWithRelationInput[]
+    cursor?: OnboardingChecklistWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: OnboardingChecklistScalarFieldEnum | OnboardingChecklistScalarFieldEnum[]
+  }
+
+  /**
+   * User.contentCompletions
+   */
+  export type User$contentCompletionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContentCompletion
+     */
+    select?: ContentCompletionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContentCompletion
+     */
+    omit?: ContentCompletionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContentCompletionInclude<ExtArgs> | null
+    where?: ContentCompletionWhereInput
+    orderBy?: ContentCompletionOrderByWithRelationInput | ContentCompletionOrderByWithRelationInput[]
+    cursor?: ContentCompletionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ContentCompletionScalarFieldEnum | ContentCompletionScalarFieldEnum[]
   }
 
   /**
@@ -28679,10 +35355,67 @@ export namespace Prisma {
     statusUpdatedAt: 'statusUpdatedAt',
     kittenOfInterest: 'kittenOfInterest',
     formData: 'formData',
+    rejectionReason: 'rejectionReason',
+    rejectionNotes: 'rejectionNotes',
+    rejectedById: 'rejectedById',
+    rejectedAt: 'rejectedAt',
     createdAt: 'createdAt'
   };
 
   export type ApplicationScalarFieldEnum = (typeof ApplicationScalarFieldEnum)[keyof typeof ApplicationScalarFieldEnum]
+
+
+  export const ContractScalarFieldEnum: {
+    id: 'id',
+    type: 'type',
+    signerName: 'signerName',
+    signerEmail: 'signerEmail',
+    applicationId: 'applicationId',
+    documentVersion: 'documentVersion',
+    signedPdfUrl: 'signedPdfUrl',
+    signatureAudit: 'signatureAudit',
+    status: 'status',
+    signedAt: 'signedAt',
+    createdAt: 'createdAt'
+  };
+
+  export type ContractScalarFieldEnum = (typeof ContractScalarFieldEnum)[keyof typeof ContractScalarFieldEnum]
+
+
+  export const FosterOnboardingScalarFieldEnum: {
+    id: 'id',
+    applicantName: 'applicantName',
+    applicantEmail: 'applicantEmail',
+    status: 'status',
+    notes: 'notes',
+    createdAt: 'createdAt'
+  };
+
+  export type FosterOnboardingScalarFieldEnum = (typeof FosterOnboardingScalarFieldEnum)[keyof typeof FosterOnboardingScalarFieldEnum]
+
+
+  export const OnboardingChecklistScalarFieldEnum: {
+    id: 'id',
+    onboardingId: 'onboardingId',
+    stepKey: 'stepKey',
+    label: 'label',
+    isComplete: 'isComplete',
+    completedAt: 'completedAt',
+    completedBy: 'completedBy'
+  };
+
+  export type OnboardingChecklistScalarFieldEnum = (typeof OnboardingChecklistScalarFieldEnum)[keyof typeof OnboardingChecklistScalarFieldEnum]
+
+
+  export const ApplicationUploadScalarFieldEnum: {
+    id: 'id',
+    applicationId: 'applicationId',
+    fileUrl: 'fileUrl',
+    fileType: 'fileType',
+    createdAt: 'createdAt'
+  };
+
+  export type ApplicationUploadScalarFieldEnum = (typeof ApplicationUploadScalarFieldEnum)[keyof typeof ApplicationUploadScalarFieldEnum]
 
 
   export const ContentScalarFieldEnum: {
@@ -28691,11 +35424,22 @@ export namespace Prisma {
     slug: 'slug',
     body: 'body',
     category: 'category',
+    isRequired: 'isRequired',
     publishTargets: 'publishTargets',
     createdAt: 'createdAt'
   };
 
   export type ContentScalarFieldEnum = (typeof ContentScalarFieldEnum)[keyof typeof ContentScalarFieldEnum]
+
+
+  export const ContentCompletionScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    contentId: 'contentId',
+    completedAt: 'completedAt'
+  };
+
+  export type ContentCompletionScalarFieldEnum = (typeof ContentCompletionScalarFieldEnum)[keyof typeof ContentCompletionScalarFieldEnum]
 
 
   export const EventScalarFieldEnum: {
@@ -28926,6 +35670,48 @@ export namespace Prisma {
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ContractType'
+   */
+  export type EnumContractTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ContractType'>
+    
+
+
+  /**
+   * Reference to a field of type 'ContractType[]'
+   */
+  export type ListEnumContractTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ContractType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ContractStatus'
+   */
+  export type EnumContractStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ContractStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'ContractStatus[]'
+   */
+  export type ListEnumContractStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ContractStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'FosterOnboardingStatus'
+   */
+  export type EnumFosterOnboardingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FosterOnboardingStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'FosterOnboardingStatus[]'
+   */
+  export type ListEnumFosterOnboardingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FosterOnboardingStatus[]'>
     
   /**
    * Deep Input Types
@@ -29881,7 +36667,14 @@ export namespace Prisma {
     statusUpdatedAt?: DateTimeNullableFilter<"Application"> | Date | string | null
     kittenOfInterest?: StringNullableFilter<"Application"> | string | null
     formData?: StringFilter<"Application"> | string
+    rejectionReason?: StringNullableFilter<"Application"> | string | null
+    rejectionNotes?: StringNullableFilter<"Application"> | string | null
+    rejectedById?: IntNullableFilter<"Application"> | number | null
+    rejectedAt?: DateTimeNullableFilter<"Application"> | Date | string | null
     createdAt?: DateTimeFilter<"Application"> | Date | string
+    rejectedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    contracts?: ContractListRelationFilter
+    uploads?: ApplicationUploadListRelationFilter
   }
 
   export type ApplicationOrderByWithRelationInput = {
@@ -29892,7 +36685,14 @@ export namespace Prisma {
     statusUpdatedAt?: SortOrderInput | SortOrder
     kittenOfInterest?: SortOrderInput | SortOrder
     formData?: SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
+    rejectionNotes?: SortOrderInput | SortOrder
+    rejectedById?: SortOrderInput | SortOrder
+    rejectedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
+    rejectedBy?: UserOrderByWithRelationInput
+    contracts?: ContractOrderByRelationAggregateInput
+    uploads?: ApplicationUploadOrderByRelationAggregateInput
   }
 
   export type ApplicationWhereUniqueInput = Prisma.AtLeast<{
@@ -29906,7 +36706,14 @@ export namespace Prisma {
     statusUpdatedAt?: DateTimeNullableFilter<"Application"> | Date | string | null
     kittenOfInterest?: StringNullableFilter<"Application"> | string | null
     formData?: StringFilter<"Application"> | string
+    rejectionReason?: StringNullableFilter<"Application"> | string | null
+    rejectionNotes?: StringNullableFilter<"Application"> | string | null
+    rejectedById?: IntNullableFilter<"Application"> | number | null
+    rejectedAt?: DateTimeNullableFilter<"Application"> | Date | string | null
     createdAt?: DateTimeFilter<"Application"> | Date | string
+    rejectedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    contracts?: ContractListRelationFilter
+    uploads?: ApplicationUploadListRelationFilter
   }, "id">
 
   export type ApplicationOrderByWithAggregationInput = {
@@ -29917,6 +36724,10 @@ export namespace Prisma {
     statusUpdatedAt?: SortOrderInput | SortOrder
     kittenOfInterest?: SortOrderInput | SortOrder
     formData?: SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
+    rejectionNotes?: SortOrderInput | SortOrder
+    rejectedById?: SortOrderInput | SortOrder
+    rejectedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: ApplicationCountOrderByAggregateInput
     _avg?: ApplicationAvgOrderByAggregateInput
@@ -29936,7 +36747,288 @@ export namespace Prisma {
     statusUpdatedAt?: DateTimeNullableWithAggregatesFilter<"Application"> | Date | string | null
     kittenOfInterest?: StringNullableWithAggregatesFilter<"Application"> | string | null
     formData?: StringWithAggregatesFilter<"Application"> | string
+    rejectionReason?: StringNullableWithAggregatesFilter<"Application"> | string | null
+    rejectionNotes?: StringNullableWithAggregatesFilter<"Application"> | string | null
+    rejectedById?: IntNullableWithAggregatesFilter<"Application"> | number | null
+    rejectedAt?: DateTimeNullableWithAggregatesFilter<"Application"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Application"> | Date | string
+  }
+
+  export type ContractWhereInput = {
+    AND?: ContractWhereInput | ContractWhereInput[]
+    OR?: ContractWhereInput[]
+    NOT?: ContractWhereInput | ContractWhereInput[]
+    id?: IntFilter<"Contract"> | number
+    type?: EnumContractTypeFilter<"Contract"> | $Enums.ContractType
+    signerName?: StringFilter<"Contract"> | string
+    signerEmail?: StringFilter<"Contract"> | string
+    applicationId?: IntNullableFilter<"Contract"> | number | null
+    documentVersion?: StringFilter<"Contract"> | string
+    signedPdfUrl?: StringFilter<"Contract"> | string
+    signatureAudit?: StringFilter<"Contract"> | string
+    status?: EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
+    signedAt?: DateTimeNullableFilter<"Contract"> | Date | string | null
+    createdAt?: DateTimeFilter<"Contract"> | Date | string
+    application?: XOR<ApplicationNullableScalarRelationFilter, ApplicationWhereInput> | null
+  }
+
+  export type ContractOrderByWithRelationInput = {
+    id?: SortOrder
+    type?: SortOrder
+    signerName?: SortOrder
+    signerEmail?: SortOrder
+    applicationId?: SortOrderInput | SortOrder
+    documentVersion?: SortOrder
+    signedPdfUrl?: SortOrder
+    signatureAudit?: SortOrder
+    status?: SortOrder
+    signedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    application?: ApplicationOrderByWithRelationInput
+  }
+
+  export type ContractWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: ContractWhereInput | ContractWhereInput[]
+    OR?: ContractWhereInput[]
+    NOT?: ContractWhereInput | ContractWhereInput[]
+    type?: EnumContractTypeFilter<"Contract"> | $Enums.ContractType
+    signerName?: StringFilter<"Contract"> | string
+    signerEmail?: StringFilter<"Contract"> | string
+    applicationId?: IntNullableFilter<"Contract"> | number | null
+    documentVersion?: StringFilter<"Contract"> | string
+    signedPdfUrl?: StringFilter<"Contract"> | string
+    signatureAudit?: StringFilter<"Contract"> | string
+    status?: EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
+    signedAt?: DateTimeNullableFilter<"Contract"> | Date | string | null
+    createdAt?: DateTimeFilter<"Contract"> | Date | string
+    application?: XOR<ApplicationNullableScalarRelationFilter, ApplicationWhereInput> | null
+  }, "id">
+
+  export type ContractOrderByWithAggregationInput = {
+    id?: SortOrder
+    type?: SortOrder
+    signerName?: SortOrder
+    signerEmail?: SortOrder
+    applicationId?: SortOrderInput | SortOrder
+    documentVersion?: SortOrder
+    signedPdfUrl?: SortOrder
+    signatureAudit?: SortOrder
+    status?: SortOrder
+    signedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: ContractCountOrderByAggregateInput
+    _avg?: ContractAvgOrderByAggregateInput
+    _max?: ContractMaxOrderByAggregateInput
+    _min?: ContractMinOrderByAggregateInput
+    _sum?: ContractSumOrderByAggregateInput
+  }
+
+  export type ContractScalarWhereWithAggregatesInput = {
+    AND?: ContractScalarWhereWithAggregatesInput | ContractScalarWhereWithAggregatesInput[]
+    OR?: ContractScalarWhereWithAggregatesInput[]
+    NOT?: ContractScalarWhereWithAggregatesInput | ContractScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Contract"> | number
+    type?: EnumContractTypeWithAggregatesFilter<"Contract"> | $Enums.ContractType
+    signerName?: StringWithAggregatesFilter<"Contract"> | string
+    signerEmail?: StringWithAggregatesFilter<"Contract"> | string
+    applicationId?: IntNullableWithAggregatesFilter<"Contract"> | number | null
+    documentVersion?: StringWithAggregatesFilter<"Contract"> | string
+    signedPdfUrl?: StringWithAggregatesFilter<"Contract"> | string
+    signatureAudit?: StringWithAggregatesFilter<"Contract"> | string
+    status?: EnumContractStatusWithAggregatesFilter<"Contract"> | $Enums.ContractStatus
+    signedAt?: DateTimeNullableWithAggregatesFilter<"Contract"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Contract"> | Date | string
+  }
+
+  export type FosterOnboardingWhereInput = {
+    AND?: FosterOnboardingWhereInput | FosterOnboardingWhereInput[]
+    OR?: FosterOnboardingWhereInput[]
+    NOT?: FosterOnboardingWhereInput | FosterOnboardingWhereInput[]
+    id?: IntFilter<"FosterOnboarding"> | number
+    applicantName?: StringFilter<"FosterOnboarding"> | string
+    applicantEmail?: StringFilter<"FosterOnboarding"> | string
+    status?: EnumFosterOnboardingStatusFilter<"FosterOnboarding"> | $Enums.FosterOnboardingStatus
+    notes?: StringFilter<"FosterOnboarding"> | string
+    createdAt?: DateTimeFilter<"FosterOnboarding"> | Date | string
+    checklistItems?: OnboardingChecklistListRelationFilter
+  }
+
+  export type FosterOnboardingOrderByWithRelationInput = {
+    id?: SortOrder
+    applicantName?: SortOrder
+    applicantEmail?: SortOrder
+    status?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    checklistItems?: OnboardingChecklistOrderByRelationAggregateInput
+  }
+
+  export type FosterOnboardingWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: FosterOnboardingWhereInput | FosterOnboardingWhereInput[]
+    OR?: FosterOnboardingWhereInput[]
+    NOT?: FosterOnboardingWhereInput | FosterOnboardingWhereInput[]
+    applicantName?: StringFilter<"FosterOnboarding"> | string
+    applicantEmail?: StringFilter<"FosterOnboarding"> | string
+    status?: EnumFosterOnboardingStatusFilter<"FosterOnboarding"> | $Enums.FosterOnboardingStatus
+    notes?: StringFilter<"FosterOnboarding"> | string
+    createdAt?: DateTimeFilter<"FosterOnboarding"> | Date | string
+    checklistItems?: OnboardingChecklistListRelationFilter
+  }, "id">
+
+  export type FosterOnboardingOrderByWithAggregationInput = {
+    id?: SortOrder
+    applicantName?: SortOrder
+    applicantEmail?: SortOrder
+    status?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    _count?: FosterOnboardingCountOrderByAggregateInput
+    _avg?: FosterOnboardingAvgOrderByAggregateInput
+    _max?: FosterOnboardingMaxOrderByAggregateInput
+    _min?: FosterOnboardingMinOrderByAggregateInput
+    _sum?: FosterOnboardingSumOrderByAggregateInput
+  }
+
+  export type FosterOnboardingScalarWhereWithAggregatesInput = {
+    AND?: FosterOnboardingScalarWhereWithAggregatesInput | FosterOnboardingScalarWhereWithAggregatesInput[]
+    OR?: FosterOnboardingScalarWhereWithAggregatesInput[]
+    NOT?: FosterOnboardingScalarWhereWithAggregatesInput | FosterOnboardingScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"FosterOnboarding"> | number
+    applicantName?: StringWithAggregatesFilter<"FosterOnboarding"> | string
+    applicantEmail?: StringWithAggregatesFilter<"FosterOnboarding"> | string
+    status?: EnumFosterOnboardingStatusWithAggregatesFilter<"FosterOnboarding"> | $Enums.FosterOnboardingStatus
+    notes?: StringWithAggregatesFilter<"FosterOnboarding"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"FosterOnboarding"> | Date | string
+  }
+
+  export type OnboardingChecklistWhereInput = {
+    AND?: OnboardingChecklistWhereInput | OnboardingChecklistWhereInput[]
+    OR?: OnboardingChecklistWhereInput[]
+    NOT?: OnboardingChecklistWhereInput | OnboardingChecklistWhereInput[]
+    id?: IntFilter<"OnboardingChecklist"> | number
+    onboardingId?: IntFilter<"OnboardingChecklist"> | number
+    stepKey?: StringFilter<"OnboardingChecklist"> | string
+    label?: StringFilter<"OnboardingChecklist"> | string
+    isComplete?: BoolFilter<"OnboardingChecklist"> | boolean
+    completedAt?: DateTimeNullableFilter<"OnboardingChecklist"> | Date | string | null
+    completedBy?: IntNullableFilter<"OnboardingChecklist"> | number | null
+    onboarding?: XOR<FosterOnboardingScalarRelationFilter, FosterOnboardingWhereInput>
+    completedByUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type OnboardingChecklistOrderByWithRelationInput = {
+    id?: SortOrder
+    onboardingId?: SortOrder
+    stepKey?: SortOrder
+    label?: SortOrder
+    isComplete?: SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    completedBy?: SortOrderInput | SortOrder
+    onboarding?: FosterOnboardingOrderByWithRelationInput
+    completedByUser?: UserOrderByWithRelationInput
+  }
+
+  export type OnboardingChecklistWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    onboardingId_stepKey?: OnboardingChecklistOnboardingIdStepKeyCompoundUniqueInput
+    AND?: OnboardingChecklistWhereInput | OnboardingChecklistWhereInput[]
+    OR?: OnboardingChecklistWhereInput[]
+    NOT?: OnboardingChecklistWhereInput | OnboardingChecklistWhereInput[]
+    onboardingId?: IntFilter<"OnboardingChecklist"> | number
+    stepKey?: StringFilter<"OnboardingChecklist"> | string
+    label?: StringFilter<"OnboardingChecklist"> | string
+    isComplete?: BoolFilter<"OnboardingChecklist"> | boolean
+    completedAt?: DateTimeNullableFilter<"OnboardingChecklist"> | Date | string | null
+    completedBy?: IntNullableFilter<"OnboardingChecklist"> | number | null
+    onboarding?: XOR<FosterOnboardingScalarRelationFilter, FosterOnboardingWhereInput>
+    completedByUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id" | "onboardingId_stepKey">
+
+  export type OnboardingChecklistOrderByWithAggregationInput = {
+    id?: SortOrder
+    onboardingId?: SortOrder
+    stepKey?: SortOrder
+    label?: SortOrder
+    isComplete?: SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    completedBy?: SortOrderInput | SortOrder
+    _count?: OnboardingChecklistCountOrderByAggregateInput
+    _avg?: OnboardingChecklistAvgOrderByAggregateInput
+    _max?: OnboardingChecklistMaxOrderByAggregateInput
+    _min?: OnboardingChecklistMinOrderByAggregateInput
+    _sum?: OnboardingChecklistSumOrderByAggregateInput
+  }
+
+  export type OnboardingChecklistScalarWhereWithAggregatesInput = {
+    AND?: OnboardingChecklistScalarWhereWithAggregatesInput | OnboardingChecklistScalarWhereWithAggregatesInput[]
+    OR?: OnboardingChecklistScalarWhereWithAggregatesInput[]
+    NOT?: OnboardingChecklistScalarWhereWithAggregatesInput | OnboardingChecklistScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"OnboardingChecklist"> | number
+    onboardingId?: IntWithAggregatesFilter<"OnboardingChecklist"> | number
+    stepKey?: StringWithAggregatesFilter<"OnboardingChecklist"> | string
+    label?: StringWithAggregatesFilter<"OnboardingChecklist"> | string
+    isComplete?: BoolWithAggregatesFilter<"OnboardingChecklist"> | boolean
+    completedAt?: DateTimeNullableWithAggregatesFilter<"OnboardingChecklist"> | Date | string | null
+    completedBy?: IntNullableWithAggregatesFilter<"OnboardingChecklist"> | number | null
+  }
+
+  export type ApplicationUploadWhereInput = {
+    AND?: ApplicationUploadWhereInput | ApplicationUploadWhereInput[]
+    OR?: ApplicationUploadWhereInput[]
+    NOT?: ApplicationUploadWhereInput | ApplicationUploadWhereInput[]
+    id?: IntFilter<"ApplicationUpload"> | number
+    applicationId?: IntFilter<"ApplicationUpload"> | number
+    fileUrl?: StringFilter<"ApplicationUpload"> | string
+    fileType?: StringFilter<"ApplicationUpload"> | string
+    createdAt?: DateTimeFilter<"ApplicationUpload"> | Date | string
+    application?: XOR<ApplicationScalarRelationFilter, ApplicationWhereInput>
+  }
+
+  export type ApplicationUploadOrderByWithRelationInput = {
+    id?: SortOrder
+    applicationId?: SortOrder
+    fileUrl?: SortOrder
+    fileType?: SortOrder
+    createdAt?: SortOrder
+    application?: ApplicationOrderByWithRelationInput
+  }
+
+  export type ApplicationUploadWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: ApplicationUploadWhereInput | ApplicationUploadWhereInput[]
+    OR?: ApplicationUploadWhereInput[]
+    NOT?: ApplicationUploadWhereInput | ApplicationUploadWhereInput[]
+    applicationId?: IntFilter<"ApplicationUpload"> | number
+    fileUrl?: StringFilter<"ApplicationUpload"> | string
+    fileType?: StringFilter<"ApplicationUpload"> | string
+    createdAt?: DateTimeFilter<"ApplicationUpload"> | Date | string
+    application?: XOR<ApplicationScalarRelationFilter, ApplicationWhereInput>
+  }, "id">
+
+  export type ApplicationUploadOrderByWithAggregationInput = {
+    id?: SortOrder
+    applicationId?: SortOrder
+    fileUrl?: SortOrder
+    fileType?: SortOrder
+    createdAt?: SortOrder
+    _count?: ApplicationUploadCountOrderByAggregateInput
+    _avg?: ApplicationUploadAvgOrderByAggregateInput
+    _max?: ApplicationUploadMaxOrderByAggregateInput
+    _min?: ApplicationUploadMinOrderByAggregateInput
+    _sum?: ApplicationUploadSumOrderByAggregateInput
+  }
+
+  export type ApplicationUploadScalarWhereWithAggregatesInput = {
+    AND?: ApplicationUploadScalarWhereWithAggregatesInput | ApplicationUploadScalarWhereWithAggregatesInput[]
+    OR?: ApplicationUploadScalarWhereWithAggregatesInput[]
+    NOT?: ApplicationUploadScalarWhereWithAggregatesInput | ApplicationUploadScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"ApplicationUpload"> | number
+    applicationId?: IntWithAggregatesFilter<"ApplicationUpload"> | number
+    fileUrl?: StringWithAggregatesFilter<"ApplicationUpload"> | string
+    fileType?: StringWithAggregatesFilter<"ApplicationUpload"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"ApplicationUpload"> | Date | string
   }
 
   export type ContentWhereInput = {
@@ -29948,8 +37040,10 @@ export namespace Prisma {
     slug?: StringFilter<"Content"> | string
     body?: StringFilter<"Content"> | string
     category?: StringFilter<"Content"> | string
+    isRequired?: BoolFilter<"Content"> | boolean
     publishTargets?: StringNullableListFilter<"Content">
     createdAt?: DateTimeFilter<"Content"> | Date | string
+    completions?: ContentCompletionListRelationFilter
   }
 
   export type ContentOrderByWithRelationInput = {
@@ -29958,8 +37052,10 @@ export namespace Prisma {
     slug?: SortOrder
     body?: SortOrder
     category?: SortOrder
+    isRequired?: SortOrder
     publishTargets?: SortOrder
     createdAt?: SortOrder
+    completions?: ContentCompletionOrderByRelationAggregateInput
   }
 
   export type ContentWhereUniqueInput = Prisma.AtLeast<{
@@ -29971,8 +37067,10 @@ export namespace Prisma {
     title?: StringFilter<"Content"> | string
     body?: StringFilter<"Content"> | string
     category?: StringFilter<"Content"> | string
+    isRequired?: BoolFilter<"Content"> | boolean
     publishTargets?: StringNullableListFilter<"Content">
     createdAt?: DateTimeFilter<"Content"> | Date | string
+    completions?: ContentCompletionListRelationFilter
   }, "id" | "slug">
 
   export type ContentOrderByWithAggregationInput = {
@@ -29981,6 +37079,7 @@ export namespace Prisma {
     slug?: SortOrder
     body?: SortOrder
     category?: SortOrder
+    isRequired?: SortOrder
     publishTargets?: SortOrder
     createdAt?: SortOrder
     _count?: ContentCountOrderByAggregateInput
@@ -29999,8 +37098,65 @@ export namespace Prisma {
     slug?: StringWithAggregatesFilter<"Content"> | string
     body?: StringWithAggregatesFilter<"Content"> | string
     category?: StringWithAggregatesFilter<"Content"> | string
+    isRequired?: BoolWithAggregatesFilter<"Content"> | boolean
     publishTargets?: StringNullableListFilter<"Content">
     createdAt?: DateTimeWithAggregatesFilter<"Content"> | Date | string
+  }
+
+  export type ContentCompletionWhereInput = {
+    AND?: ContentCompletionWhereInput | ContentCompletionWhereInput[]
+    OR?: ContentCompletionWhereInput[]
+    NOT?: ContentCompletionWhereInput | ContentCompletionWhereInput[]
+    id?: IntFilter<"ContentCompletion"> | number
+    userId?: IntFilter<"ContentCompletion"> | number
+    contentId?: IntFilter<"ContentCompletion"> | number
+    completedAt?: DateTimeFilter<"ContentCompletion"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    content?: XOR<ContentScalarRelationFilter, ContentWhereInput>
+  }
+
+  export type ContentCompletionOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    contentId?: SortOrder
+    completedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    content?: ContentOrderByWithRelationInput
+  }
+
+  export type ContentCompletionWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    userId_contentId?: ContentCompletionUserIdContentIdCompoundUniqueInput
+    AND?: ContentCompletionWhereInput | ContentCompletionWhereInput[]
+    OR?: ContentCompletionWhereInput[]
+    NOT?: ContentCompletionWhereInput | ContentCompletionWhereInput[]
+    userId?: IntFilter<"ContentCompletion"> | number
+    contentId?: IntFilter<"ContentCompletion"> | number
+    completedAt?: DateTimeFilter<"ContentCompletion"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    content?: XOR<ContentScalarRelationFilter, ContentWhereInput>
+  }, "id" | "userId_contentId">
+
+  export type ContentCompletionOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    contentId?: SortOrder
+    completedAt?: SortOrder
+    _count?: ContentCompletionCountOrderByAggregateInput
+    _avg?: ContentCompletionAvgOrderByAggregateInput
+    _max?: ContentCompletionMaxOrderByAggregateInput
+    _min?: ContentCompletionMinOrderByAggregateInput
+    _sum?: ContentCompletionSumOrderByAggregateInput
+  }
+
+  export type ContentCompletionScalarWhereWithAggregatesInput = {
+    AND?: ContentCompletionScalarWhereWithAggregatesInput | ContentCompletionScalarWhereWithAggregatesInput[]
+    OR?: ContentCompletionScalarWhereWithAggregatesInput[]
+    NOT?: ContentCompletionScalarWhereWithAggregatesInput | ContentCompletionScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"ContentCompletion"> | number
+    userId?: IntWithAggregatesFilter<"ContentCompletion"> | number
+    contentId?: IntWithAggregatesFilter<"ContentCompletion"> | number
+    completedAt?: DateTimeWithAggregatesFilter<"ContentCompletion"> | Date | string
   }
 
   export type EventWhereInput = {
@@ -30241,6 +37397,9 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
     lastLoginAt?: DateTimeNullableFilter<"User"> | Date | string | null
     role?: XOR<RoleScalarRelationFilter, RoleWhereInput>
+    rejectedApplications?: ApplicationListRelationFilter
+    completedChecklistItems?: OnboardingChecklistListRelationFilter
+    contentCompletions?: ContentCompletionListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -30256,6 +37415,9 @@ export namespace Prisma {
     updatedAt?: SortOrder
     lastLoginAt?: SortOrderInput | SortOrder
     role?: RoleOrderByWithRelationInput
+    rejectedApplications?: ApplicationOrderByRelationAggregateInput
+    completedChecklistItems?: OnboardingChecklistOrderByRelationAggregateInput
+    contentCompletions?: ContentCompletionOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -30274,6 +37436,9 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
     lastLoginAt?: DateTimeNullableFilter<"User"> | Date | string | null
     role?: XOR<RoleScalarRelationFilter, RoleWhereInput>
+    rejectedApplications?: ApplicationListRelationFilter
+    completedChecklistItems?: OnboardingChecklistListRelationFilter
+    contentCompletions?: ContentCompletionListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -31723,7 +38888,13 @@ export namespace Prisma {
     statusUpdatedAt?: Date | string | null
     kittenOfInterest?: string | null
     formData?: string
+    rejectionReason?: string | null
+    rejectionNotes?: string | null
+    rejectedAt?: Date | string | null
     createdAt?: Date | string
+    rejectedBy?: UserCreateNestedOneWithoutRejectedApplicationsInput
+    contracts?: ContractCreateNestedManyWithoutApplicationInput
+    uploads?: ApplicationUploadCreateNestedManyWithoutApplicationInput
   }
 
   export type ApplicationUncheckedCreateInput = {
@@ -31734,7 +38905,13 @@ export namespace Prisma {
     statusUpdatedAt?: Date | string | null
     kittenOfInterest?: string | null
     formData?: string
+    rejectionReason?: string | null
+    rejectionNotes?: string | null
+    rejectedById?: number | null
+    rejectedAt?: Date | string | null
     createdAt?: Date | string
+    contracts?: ContractUncheckedCreateNestedManyWithoutApplicationInput
+    uploads?: ApplicationUploadUncheckedCreateNestedManyWithoutApplicationInput
   }
 
   export type ApplicationUpdateInput = {
@@ -31744,7 +38921,13 @@ export namespace Prisma {
     statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
     formData?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedBy?: UserUpdateOneWithoutRejectedApplicationsNestedInput
+    contracts?: ContractUpdateManyWithoutApplicationNestedInput
+    uploads?: ApplicationUploadUpdateManyWithoutApplicationNestedInput
   }
 
   export type ApplicationUncheckedUpdateInput = {
@@ -31755,7 +38938,13 @@ export namespace Prisma {
     statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
     formData?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectedById?: NullableIntFieldUpdateOperationsInput | number | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contracts?: ContractUncheckedUpdateManyWithoutApplicationNestedInput
+    uploads?: ApplicationUploadUncheckedUpdateManyWithoutApplicationNestedInput
   }
 
   export type ApplicationCreateManyInput = {
@@ -31766,6 +38955,10 @@ export namespace Prisma {
     statusUpdatedAt?: Date | string | null
     kittenOfInterest?: string | null
     formData?: string
+    rejectionReason?: string | null
+    rejectionNotes?: string | null
+    rejectedById?: number | null
+    rejectedAt?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -31776,6 +38969,9 @@ export namespace Prisma {
     statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
     formData?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -31787,6 +38983,285 @@ export namespace Prisma {
     statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
     formData?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectedById?: NullableIntFieldUpdateOperationsInput | number | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContractCreateInput = {
+    type: $Enums.ContractType
+    signerName: string
+    signerEmail: string
+    documentVersion: string
+    signedPdfUrl?: string
+    signatureAudit?: string
+    status?: $Enums.ContractStatus
+    signedAt?: Date | string | null
+    createdAt?: Date | string
+    application?: ApplicationCreateNestedOneWithoutContractsInput
+  }
+
+  export type ContractUncheckedCreateInput = {
+    id?: number
+    type: $Enums.ContractType
+    signerName: string
+    signerEmail: string
+    applicationId?: number | null
+    documentVersion: string
+    signedPdfUrl?: string
+    signatureAudit?: string
+    status?: $Enums.ContractStatus
+    signedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type ContractUpdateInput = {
+    type?: EnumContractTypeFieldUpdateOperationsInput | $Enums.ContractType
+    signerName?: StringFieldUpdateOperationsInput | string
+    signerEmail?: StringFieldUpdateOperationsInput | string
+    documentVersion?: StringFieldUpdateOperationsInput | string
+    signedPdfUrl?: StringFieldUpdateOperationsInput | string
+    signatureAudit?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    application?: ApplicationUpdateOneWithoutContractsNestedInput
+  }
+
+  export type ContractUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumContractTypeFieldUpdateOperationsInput | $Enums.ContractType
+    signerName?: StringFieldUpdateOperationsInput | string
+    signerEmail?: StringFieldUpdateOperationsInput | string
+    applicationId?: NullableIntFieldUpdateOperationsInput | number | null
+    documentVersion?: StringFieldUpdateOperationsInput | string
+    signedPdfUrl?: StringFieldUpdateOperationsInput | string
+    signatureAudit?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContractCreateManyInput = {
+    id?: number
+    type: $Enums.ContractType
+    signerName: string
+    signerEmail: string
+    applicationId?: number | null
+    documentVersion: string
+    signedPdfUrl?: string
+    signatureAudit?: string
+    status?: $Enums.ContractStatus
+    signedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type ContractUpdateManyMutationInput = {
+    type?: EnumContractTypeFieldUpdateOperationsInput | $Enums.ContractType
+    signerName?: StringFieldUpdateOperationsInput | string
+    signerEmail?: StringFieldUpdateOperationsInput | string
+    documentVersion?: StringFieldUpdateOperationsInput | string
+    signedPdfUrl?: StringFieldUpdateOperationsInput | string
+    signatureAudit?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContractUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumContractTypeFieldUpdateOperationsInput | $Enums.ContractType
+    signerName?: StringFieldUpdateOperationsInput | string
+    signerEmail?: StringFieldUpdateOperationsInput | string
+    applicationId?: NullableIntFieldUpdateOperationsInput | number | null
+    documentVersion?: StringFieldUpdateOperationsInput | string
+    signedPdfUrl?: StringFieldUpdateOperationsInput | string
+    signatureAudit?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FosterOnboardingCreateInput = {
+    applicantName: string
+    applicantEmail: string
+    status?: $Enums.FosterOnboardingStatus
+    notes?: string
+    createdAt?: Date | string
+    checklistItems?: OnboardingChecklistCreateNestedManyWithoutOnboardingInput
+  }
+
+  export type FosterOnboardingUncheckedCreateInput = {
+    id?: number
+    applicantName: string
+    applicantEmail: string
+    status?: $Enums.FosterOnboardingStatus
+    notes?: string
+    createdAt?: Date | string
+    checklistItems?: OnboardingChecklistUncheckedCreateNestedManyWithoutOnboardingInput
+  }
+
+  export type FosterOnboardingUpdateInput = {
+    applicantName?: StringFieldUpdateOperationsInput | string
+    applicantEmail?: StringFieldUpdateOperationsInput | string
+    status?: EnumFosterOnboardingStatusFieldUpdateOperationsInput | $Enums.FosterOnboardingStatus
+    notes?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    checklistItems?: OnboardingChecklistUpdateManyWithoutOnboardingNestedInput
+  }
+
+  export type FosterOnboardingUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    applicantName?: StringFieldUpdateOperationsInput | string
+    applicantEmail?: StringFieldUpdateOperationsInput | string
+    status?: EnumFosterOnboardingStatusFieldUpdateOperationsInput | $Enums.FosterOnboardingStatus
+    notes?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    checklistItems?: OnboardingChecklistUncheckedUpdateManyWithoutOnboardingNestedInput
+  }
+
+  export type FosterOnboardingCreateManyInput = {
+    id?: number
+    applicantName: string
+    applicantEmail: string
+    status?: $Enums.FosterOnboardingStatus
+    notes?: string
+    createdAt?: Date | string
+  }
+
+  export type FosterOnboardingUpdateManyMutationInput = {
+    applicantName?: StringFieldUpdateOperationsInput | string
+    applicantEmail?: StringFieldUpdateOperationsInput | string
+    status?: EnumFosterOnboardingStatusFieldUpdateOperationsInput | $Enums.FosterOnboardingStatus
+    notes?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FosterOnboardingUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    applicantName?: StringFieldUpdateOperationsInput | string
+    applicantEmail?: StringFieldUpdateOperationsInput | string
+    status?: EnumFosterOnboardingStatusFieldUpdateOperationsInput | $Enums.FosterOnboardingStatus
+    notes?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OnboardingChecklistCreateInput = {
+    stepKey: string
+    label: string
+    isComplete?: boolean
+    completedAt?: Date | string | null
+    onboarding: FosterOnboardingCreateNestedOneWithoutChecklistItemsInput
+    completedByUser?: UserCreateNestedOneWithoutCompletedChecklistItemsInput
+  }
+
+  export type OnboardingChecklistUncheckedCreateInput = {
+    id?: number
+    onboardingId: number
+    stepKey: string
+    label: string
+    isComplete?: boolean
+    completedAt?: Date | string | null
+    completedBy?: number | null
+  }
+
+  export type OnboardingChecklistUpdateInput = {
+    stepKey?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    isComplete?: BoolFieldUpdateOperationsInput | boolean
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    onboarding?: FosterOnboardingUpdateOneRequiredWithoutChecklistItemsNestedInput
+    completedByUser?: UserUpdateOneWithoutCompletedChecklistItemsNestedInput
+  }
+
+  export type OnboardingChecklistUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    onboardingId?: IntFieldUpdateOperationsInput | number
+    stepKey?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    isComplete?: BoolFieldUpdateOperationsInput | boolean
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedBy?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type OnboardingChecklistCreateManyInput = {
+    id?: number
+    onboardingId: number
+    stepKey: string
+    label: string
+    isComplete?: boolean
+    completedAt?: Date | string | null
+    completedBy?: number | null
+  }
+
+  export type OnboardingChecklistUpdateManyMutationInput = {
+    stepKey?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    isComplete?: BoolFieldUpdateOperationsInput | boolean
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type OnboardingChecklistUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    onboardingId?: IntFieldUpdateOperationsInput | number
+    stepKey?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    isComplete?: BoolFieldUpdateOperationsInput | boolean
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedBy?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type ApplicationUploadCreateInput = {
+    fileUrl: string
+    fileType: string
+    createdAt?: Date | string
+    application: ApplicationCreateNestedOneWithoutUploadsInput
+  }
+
+  export type ApplicationUploadUncheckedCreateInput = {
+    id?: number
+    applicationId: number
+    fileUrl: string
+    fileType: string
+    createdAt?: Date | string
+  }
+
+  export type ApplicationUploadUpdateInput = {
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    fileType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    application?: ApplicationUpdateOneRequiredWithoutUploadsNestedInput
+  }
+
+  export type ApplicationUploadUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    applicationId?: IntFieldUpdateOperationsInput | number
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    fileType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ApplicationUploadCreateManyInput = {
+    id?: number
+    applicationId: number
+    fileUrl: string
+    fileType: string
+    createdAt?: Date | string
+  }
+
+  export type ApplicationUploadUpdateManyMutationInput = {
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    fileType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ApplicationUploadUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    applicationId?: IntFieldUpdateOperationsInput | number
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    fileType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -31795,8 +39270,10 @@ export namespace Prisma {
     slug: string
     body?: string
     category?: string
+    isRequired?: boolean
     publishTargets?: ContentCreatepublishTargetsInput | string[]
     createdAt?: Date | string
+    completions?: ContentCompletionCreateNestedManyWithoutContentInput
   }
 
   export type ContentUncheckedCreateInput = {
@@ -31805,8 +39282,10 @@ export namespace Prisma {
     slug: string
     body?: string
     category?: string
+    isRequired?: boolean
     publishTargets?: ContentCreatepublishTargetsInput | string[]
     createdAt?: Date | string
+    completions?: ContentCompletionUncheckedCreateNestedManyWithoutContentInput
   }
 
   export type ContentUpdateInput = {
@@ -31814,8 +39293,10 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
+    isRequired?: BoolFieldUpdateOperationsInput | boolean
     publishTargets?: ContentUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completions?: ContentCompletionUpdateManyWithoutContentNestedInput
   }
 
   export type ContentUncheckedUpdateInput = {
@@ -31824,8 +39305,10 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
+    isRequired?: BoolFieldUpdateOperationsInput | boolean
     publishTargets?: ContentUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completions?: ContentCompletionUncheckedUpdateManyWithoutContentNestedInput
   }
 
   export type ContentCreateManyInput = {
@@ -31834,6 +39317,7 @@ export namespace Prisma {
     slug: string
     body?: string
     category?: string
+    isRequired?: boolean
     publishTargets?: ContentCreatepublishTargetsInput | string[]
     createdAt?: Date | string
   }
@@ -31843,6 +39327,7 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
+    isRequired?: BoolFieldUpdateOperationsInput | boolean
     publishTargets?: ContentUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -31853,8 +39338,53 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
+    isRequired?: BoolFieldUpdateOperationsInput | boolean
     publishTargets?: ContentUpdatepublishTargetsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContentCompletionCreateInput = {
+    completedAt?: Date | string
+    user: UserCreateNestedOneWithoutContentCompletionsInput
+    content: ContentCreateNestedOneWithoutCompletionsInput
+  }
+
+  export type ContentCompletionUncheckedCreateInput = {
+    id?: number
+    userId: number
+    contentId: number
+    completedAt?: Date | string
+  }
+
+  export type ContentCompletionUpdateInput = {
+    completedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutContentCompletionsNestedInput
+    content?: ContentUpdateOneRequiredWithoutCompletionsNestedInput
+  }
+
+  export type ContentCompletionUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    contentId?: IntFieldUpdateOperationsInput | number
+    completedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContentCompletionCreateManyInput = {
+    id?: number
+    userId: number
+    contentId: number
+    completedAt?: Date | string
+  }
+
+  export type ContentCompletionUpdateManyMutationInput = {
+    completedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContentCompletionUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    contentId?: IntFieldUpdateOperationsInput | number
+    completedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EventCreateInput = {
@@ -32080,6 +39610,9 @@ export namespace Prisma {
     updatedAt?: Date | string
     lastLoginAt?: Date | string | null
     role: RoleCreateNestedOneWithoutUsersInput
+    rejectedApplications?: ApplicationCreateNestedManyWithoutRejectedByInput
+    completedChecklistItems?: OnboardingChecklistCreateNestedManyWithoutCompletedByUserInput
+    contentCompletions?: ContentCompletionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -32094,6 +39627,9 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     lastLoginAt?: Date | string | null
+    rejectedApplications?: ApplicationUncheckedCreateNestedManyWithoutRejectedByInput
+    completedChecklistItems?: OnboardingChecklistUncheckedCreateNestedManyWithoutCompletedByUserInput
+    contentCompletions?: ContentCompletionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -32107,6 +39643,9 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: RoleUpdateOneRequiredWithoutUsersNestedInput
+    rejectedApplications?: ApplicationUpdateManyWithoutRejectedByNestedInput
+    completedChecklistItems?: OnboardingChecklistUpdateManyWithoutCompletedByUserNestedInput
+    contentCompletions?: ContentCompletionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -32121,6 +39660,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedApplications?: ApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
+    completedChecklistItems?: OnboardingChecklistUncheckedUpdateManyWithoutCompletedByUserNestedInput
+    contentCompletions?: ContentCompletionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -33517,6 +41059,31 @@ export namespace Prisma {
     sortOrder?: SortOrder
   }
 
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
+  export type ContractListRelationFilter = {
+    every?: ContractWhereInput
+    some?: ContractWhereInput
+    none?: ContractWhereInput
+  }
+
+  export type ApplicationUploadListRelationFilter = {
+    every?: ApplicationUploadWhereInput
+    some?: ApplicationUploadWhereInput
+    none?: ApplicationUploadWhereInput
+  }
+
+  export type ContractOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ApplicationUploadOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type ApplicationCountOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
@@ -33525,11 +41092,16 @@ export namespace Prisma {
     statusUpdatedAt?: SortOrder
     kittenOfInterest?: SortOrder
     formData?: SortOrder
+    rejectionReason?: SortOrder
+    rejectionNotes?: SortOrder
+    rejectedById?: SortOrder
+    rejectedAt?: SortOrder
     createdAt?: SortOrder
   }
 
   export type ApplicationAvgOrderByAggregateInput = {
     id?: SortOrder
+    rejectedById?: SortOrder
   }
 
   export type ApplicationMaxOrderByAggregateInput = {
@@ -33540,6 +41112,10 @@ export namespace Prisma {
     statusUpdatedAt?: SortOrder
     kittenOfInterest?: SortOrder
     formData?: SortOrder
+    rejectionReason?: SortOrder
+    rejectionNotes?: SortOrder
+    rejectedById?: SortOrder
+    rejectedAt?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -33551,11 +41127,270 @@ export namespace Prisma {
     statusUpdatedAt?: SortOrder
     kittenOfInterest?: SortOrder
     formData?: SortOrder
+    rejectionReason?: SortOrder
+    rejectionNotes?: SortOrder
+    rejectedById?: SortOrder
+    rejectedAt?: SortOrder
     createdAt?: SortOrder
   }
 
   export type ApplicationSumOrderByAggregateInput = {
     id?: SortOrder
+    rejectedById?: SortOrder
+  }
+
+  export type EnumContractTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ContractType | EnumContractTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ContractType[] | ListEnumContractTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ContractType[] | ListEnumContractTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumContractTypeFilter<$PrismaModel> | $Enums.ContractType
+  }
+
+  export type EnumContractStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ContractStatus | EnumContractStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ContractStatus[] | ListEnumContractStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ContractStatus[] | ListEnumContractStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumContractStatusFilter<$PrismaModel> | $Enums.ContractStatus
+  }
+
+  export type ApplicationNullableScalarRelationFilter = {
+    is?: ApplicationWhereInput | null
+    isNot?: ApplicationWhereInput | null
+  }
+
+  export type ContractCountOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    signerName?: SortOrder
+    signerEmail?: SortOrder
+    applicationId?: SortOrder
+    documentVersion?: SortOrder
+    signedPdfUrl?: SortOrder
+    signatureAudit?: SortOrder
+    status?: SortOrder
+    signedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ContractAvgOrderByAggregateInput = {
+    id?: SortOrder
+    applicationId?: SortOrder
+  }
+
+  export type ContractMaxOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    signerName?: SortOrder
+    signerEmail?: SortOrder
+    applicationId?: SortOrder
+    documentVersion?: SortOrder
+    signedPdfUrl?: SortOrder
+    signatureAudit?: SortOrder
+    status?: SortOrder
+    signedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ContractMinOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    signerName?: SortOrder
+    signerEmail?: SortOrder
+    applicationId?: SortOrder
+    documentVersion?: SortOrder
+    signedPdfUrl?: SortOrder
+    signatureAudit?: SortOrder
+    status?: SortOrder
+    signedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ContractSumOrderByAggregateInput = {
+    id?: SortOrder
+    applicationId?: SortOrder
+  }
+
+  export type EnumContractTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ContractType | EnumContractTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ContractType[] | ListEnumContractTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ContractType[] | ListEnumContractTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumContractTypeWithAggregatesFilter<$PrismaModel> | $Enums.ContractType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumContractTypeFilter<$PrismaModel>
+    _max?: NestedEnumContractTypeFilter<$PrismaModel>
+  }
+
+  export type EnumContractStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ContractStatus | EnumContractStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ContractStatus[] | ListEnumContractStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ContractStatus[] | ListEnumContractStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumContractStatusWithAggregatesFilter<$PrismaModel> | $Enums.ContractStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumContractStatusFilter<$PrismaModel>
+    _max?: NestedEnumContractStatusFilter<$PrismaModel>
+  }
+
+  export type EnumFosterOnboardingStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.FosterOnboardingStatus | EnumFosterOnboardingStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.FosterOnboardingStatus[] | ListEnumFosterOnboardingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.FosterOnboardingStatus[] | ListEnumFosterOnboardingStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumFosterOnboardingStatusFilter<$PrismaModel> | $Enums.FosterOnboardingStatus
+  }
+
+  export type OnboardingChecklistListRelationFilter = {
+    every?: OnboardingChecklistWhereInput
+    some?: OnboardingChecklistWhereInput
+    none?: OnboardingChecklistWhereInput
+  }
+
+  export type OnboardingChecklistOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FosterOnboardingCountOrderByAggregateInput = {
+    id?: SortOrder
+    applicantName?: SortOrder
+    applicantEmail?: SortOrder
+    status?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type FosterOnboardingAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type FosterOnboardingMaxOrderByAggregateInput = {
+    id?: SortOrder
+    applicantName?: SortOrder
+    applicantEmail?: SortOrder
+    status?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type FosterOnboardingMinOrderByAggregateInput = {
+    id?: SortOrder
+    applicantName?: SortOrder
+    applicantEmail?: SortOrder
+    status?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type FosterOnboardingSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type EnumFosterOnboardingStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.FosterOnboardingStatus | EnumFosterOnboardingStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.FosterOnboardingStatus[] | ListEnumFosterOnboardingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.FosterOnboardingStatus[] | ListEnumFosterOnboardingStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumFosterOnboardingStatusWithAggregatesFilter<$PrismaModel> | $Enums.FosterOnboardingStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumFosterOnboardingStatusFilter<$PrismaModel>
+    _max?: NestedEnumFosterOnboardingStatusFilter<$PrismaModel>
+  }
+
+  export type FosterOnboardingScalarRelationFilter = {
+    is?: FosterOnboardingWhereInput
+    isNot?: FosterOnboardingWhereInput
+  }
+
+  export type OnboardingChecklistOnboardingIdStepKeyCompoundUniqueInput = {
+    onboardingId: number
+    stepKey: string
+  }
+
+  export type OnboardingChecklistCountOrderByAggregateInput = {
+    id?: SortOrder
+    onboardingId?: SortOrder
+    stepKey?: SortOrder
+    label?: SortOrder
+    isComplete?: SortOrder
+    completedAt?: SortOrder
+    completedBy?: SortOrder
+  }
+
+  export type OnboardingChecklistAvgOrderByAggregateInput = {
+    id?: SortOrder
+    onboardingId?: SortOrder
+    completedBy?: SortOrder
+  }
+
+  export type OnboardingChecklistMaxOrderByAggregateInput = {
+    id?: SortOrder
+    onboardingId?: SortOrder
+    stepKey?: SortOrder
+    label?: SortOrder
+    isComplete?: SortOrder
+    completedAt?: SortOrder
+    completedBy?: SortOrder
+  }
+
+  export type OnboardingChecklistMinOrderByAggregateInput = {
+    id?: SortOrder
+    onboardingId?: SortOrder
+    stepKey?: SortOrder
+    label?: SortOrder
+    isComplete?: SortOrder
+    completedAt?: SortOrder
+    completedBy?: SortOrder
+  }
+
+  export type OnboardingChecklistSumOrderByAggregateInput = {
+    id?: SortOrder
+    onboardingId?: SortOrder
+    completedBy?: SortOrder
+  }
+
+  export type ApplicationScalarRelationFilter = {
+    is?: ApplicationWhereInput
+    isNot?: ApplicationWhereInput
+  }
+
+  export type ApplicationUploadCountOrderByAggregateInput = {
+    id?: SortOrder
+    applicationId?: SortOrder
+    fileUrl?: SortOrder
+    fileType?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ApplicationUploadAvgOrderByAggregateInput = {
+    id?: SortOrder
+    applicationId?: SortOrder
+  }
+
+  export type ApplicationUploadMaxOrderByAggregateInput = {
+    id?: SortOrder
+    applicationId?: SortOrder
+    fileUrl?: SortOrder
+    fileType?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ApplicationUploadMinOrderByAggregateInput = {
+    id?: SortOrder
+    applicationId?: SortOrder
+    fileUrl?: SortOrder
+    fileType?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ApplicationUploadSumOrderByAggregateInput = {
+    id?: SortOrder
+    applicationId?: SortOrder
+  }
+
+  export type ContentCompletionListRelationFilter = {
+    every?: ContentCompletionWhereInput
+    some?: ContentCompletionWhereInput
+    none?: ContentCompletionWhereInput
+  }
+
+  export type ContentCompletionOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type ContentCountOrderByAggregateInput = {
@@ -33564,6 +41399,7 @@ export namespace Prisma {
     slug?: SortOrder
     body?: SortOrder
     category?: SortOrder
+    isRequired?: SortOrder
     publishTargets?: SortOrder
     createdAt?: SortOrder
   }
@@ -33578,6 +41414,7 @@ export namespace Prisma {
     slug?: SortOrder
     body?: SortOrder
     category?: SortOrder
+    isRequired?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -33587,11 +41424,60 @@ export namespace Prisma {
     slug?: SortOrder
     body?: SortOrder
     category?: SortOrder
+    isRequired?: SortOrder
     createdAt?: SortOrder
   }
 
   export type ContentSumOrderByAggregateInput = {
     id?: SortOrder
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type ContentScalarRelationFilter = {
+    is?: ContentWhereInput
+    isNot?: ContentWhereInput
+  }
+
+  export type ContentCompletionUserIdContentIdCompoundUniqueInput = {
+    userId: number
+    contentId: number
+  }
+
+  export type ContentCompletionCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    contentId?: SortOrder
+    completedAt?: SortOrder
+  }
+
+  export type ContentCompletionAvgOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    contentId?: SortOrder
+  }
+
+  export type ContentCompletionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    contentId?: SortOrder
+    completedAt?: SortOrder
+  }
+
+  export type ContentCompletionMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    contentId?: SortOrder
+    completedAt?: SortOrder
+  }
+
+  export type ContentCompletionSumOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    contentId?: SortOrder
   }
 
   export type EventCountOrderByAggregateInput = {
@@ -33749,6 +41635,16 @@ export namespace Prisma {
   export type RolePermissionSumOrderByAggregateInput = {
     roleId?: SortOrder
     permissionId?: SortOrder
+  }
+
+  export type ApplicationListRelationFilter = {
+    every?: ApplicationWhereInput
+    some?: ApplicationWhereInput
+    none?: ApplicationWhereInput
+  }
+
+  export type ApplicationOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type UserCountOrderByAggregateInput = {
@@ -34780,13 +42676,297 @@ export namespace Prisma {
     update?: XOR<XOR<KittenUpdateToOneWithWhereWithoutDocumentsInput, KittenUpdateWithoutDocumentsInput>, KittenUncheckedUpdateWithoutDocumentsInput>
   }
 
+  export type UserCreateNestedOneWithoutRejectedApplicationsInput = {
+    create?: XOR<UserCreateWithoutRejectedApplicationsInput, UserUncheckedCreateWithoutRejectedApplicationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRejectedApplicationsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type ContractCreateNestedManyWithoutApplicationInput = {
+    create?: XOR<ContractCreateWithoutApplicationInput, ContractUncheckedCreateWithoutApplicationInput> | ContractCreateWithoutApplicationInput[] | ContractUncheckedCreateWithoutApplicationInput[]
+    connectOrCreate?: ContractCreateOrConnectWithoutApplicationInput | ContractCreateOrConnectWithoutApplicationInput[]
+    createMany?: ContractCreateManyApplicationInputEnvelope
+    connect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+  }
+
+  export type ApplicationUploadCreateNestedManyWithoutApplicationInput = {
+    create?: XOR<ApplicationUploadCreateWithoutApplicationInput, ApplicationUploadUncheckedCreateWithoutApplicationInput> | ApplicationUploadCreateWithoutApplicationInput[] | ApplicationUploadUncheckedCreateWithoutApplicationInput[]
+    connectOrCreate?: ApplicationUploadCreateOrConnectWithoutApplicationInput | ApplicationUploadCreateOrConnectWithoutApplicationInput[]
+    createMany?: ApplicationUploadCreateManyApplicationInputEnvelope
+    connect?: ApplicationUploadWhereUniqueInput | ApplicationUploadWhereUniqueInput[]
+  }
+
+  export type ContractUncheckedCreateNestedManyWithoutApplicationInput = {
+    create?: XOR<ContractCreateWithoutApplicationInput, ContractUncheckedCreateWithoutApplicationInput> | ContractCreateWithoutApplicationInput[] | ContractUncheckedCreateWithoutApplicationInput[]
+    connectOrCreate?: ContractCreateOrConnectWithoutApplicationInput | ContractCreateOrConnectWithoutApplicationInput[]
+    createMany?: ContractCreateManyApplicationInputEnvelope
+    connect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+  }
+
+  export type ApplicationUploadUncheckedCreateNestedManyWithoutApplicationInput = {
+    create?: XOR<ApplicationUploadCreateWithoutApplicationInput, ApplicationUploadUncheckedCreateWithoutApplicationInput> | ApplicationUploadCreateWithoutApplicationInput[] | ApplicationUploadUncheckedCreateWithoutApplicationInput[]
+    connectOrCreate?: ApplicationUploadCreateOrConnectWithoutApplicationInput | ApplicationUploadCreateOrConnectWithoutApplicationInput[]
+    createMany?: ApplicationUploadCreateManyApplicationInputEnvelope
+    connect?: ApplicationUploadWhereUniqueInput | ApplicationUploadWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneWithoutRejectedApplicationsNestedInput = {
+    create?: XOR<UserCreateWithoutRejectedApplicationsInput, UserUncheckedCreateWithoutRejectedApplicationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRejectedApplicationsInput
+    upsert?: UserUpsertWithoutRejectedApplicationsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRejectedApplicationsInput, UserUpdateWithoutRejectedApplicationsInput>, UserUncheckedUpdateWithoutRejectedApplicationsInput>
+  }
+
+  export type ContractUpdateManyWithoutApplicationNestedInput = {
+    create?: XOR<ContractCreateWithoutApplicationInput, ContractUncheckedCreateWithoutApplicationInput> | ContractCreateWithoutApplicationInput[] | ContractUncheckedCreateWithoutApplicationInput[]
+    connectOrCreate?: ContractCreateOrConnectWithoutApplicationInput | ContractCreateOrConnectWithoutApplicationInput[]
+    upsert?: ContractUpsertWithWhereUniqueWithoutApplicationInput | ContractUpsertWithWhereUniqueWithoutApplicationInput[]
+    createMany?: ContractCreateManyApplicationInputEnvelope
+    set?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    disconnect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    delete?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    connect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    update?: ContractUpdateWithWhereUniqueWithoutApplicationInput | ContractUpdateWithWhereUniqueWithoutApplicationInput[]
+    updateMany?: ContractUpdateManyWithWhereWithoutApplicationInput | ContractUpdateManyWithWhereWithoutApplicationInput[]
+    deleteMany?: ContractScalarWhereInput | ContractScalarWhereInput[]
+  }
+
+  export type ApplicationUploadUpdateManyWithoutApplicationNestedInput = {
+    create?: XOR<ApplicationUploadCreateWithoutApplicationInput, ApplicationUploadUncheckedCreateWithoutApplicationInput> | ApplicationUploadCreateWithoutApplicationInput[] | ApplicationUploadUncheckedCreateWithoutApplicationInput[]
+    connectOrCreate?: ApplicationUploadCreateOrConnectWithoutApplicationInput | ApplicationUploadCreateOrConnectWithoutApplicationInput[]
+    upsert?: ApplicationUploadUpsertWithWhereUniqueWithoutApplicationInput | ApplicationUploadUpsertWithWhereUniqueWithoutApplicationInput[]
+    createMany?: ApplicationUploadCreateManyApplicationInputEnvelope
+    set?: ApplicationUploadWhereUniqueInput | ApplicationUploadWhereUniqueInput[]
+    disconnect?: ApplicationUploadWhereUniqueInput | ApplicationUploadWhereUniqueInput[]
+    delete?: ApplicationUploadWhereUniqueInput | ApplicationUploadWhereUniqueInput[]
+    connect?: ApplicationUploadWhereUniqueInput | ApplicationUploadWhereUniqueInput[]
+    update?: ApplicationUploadUpdateWithWhereUniqueWithoutApplicationInput | ApplicationUploadUpdateWithWhereUniqueWithoutApplicationInput[]
+    updateMany?: ApplicationUploadUpdateManyWithWhereWithoutApplicationInput | ApplicationUploadUpdateManyWithWhereWithoutApplicationInput[]
+    deleteMany?: ApplicationUploadScalarWhereInput | ApplicationUploadScalarWhereInput[]
+  }
+
+  export type ContractUncheckedUpdateManyWithoutApplicationNestedInput = {
+    create?: XOR<ContractCreateWithoutApplicationInput, ContractUncheckedCreateWithoutApplicationInput> | ContractCreateWithoutApplicationInput[] | ContractUncheckedCreateWithoutApplicationInput[]
+    connectOrCreate?: ContractCreateOrConnectWithoutApplicationInput | ContractCreateOrConnectWithoutApplicationInput[]
+    upsert?: ContractUpsertWithWhereUniqueWithoutApplicationInput | ContractUpsertWithWhereUniqueWithoutApplicationInput[]
+    createMany?: ContractCreateManyApplicationInputEnvelope
+    set?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    disconnect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    delete?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    connect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    update?: ContractUpdateWithWhereUniqueWithoutApplicationInput | ContractUpdateWithWhereUniqueWithoutApplicationInput[]
+    updateMany?: ContractUpdateManyWithWhereWithoutApplicationInput | ContractUpdateManyWithWhereWithoutApplicationInput[]
+    deleteMany?: ContractScalarWhereInput | ContractScalarWhereInput[]
+  }
+
+  export type ApplicationUploadUncheckedUpdateManyWithoutApplicationNestedInput = {
+    create?: XOR<ApplicationUploadCreateWithoutApplicationInput, ApplicationUploadUncheckedCreateWithoutApplicationInput> | ApplicationUploadCreateWithoutApplicationInput[] | ApplicationUploadUncheckedCreateWithoutApplicationInput[]
+    connectOrCreate?: ApplicationUploadCreateOrConnectWithoutApplicationInput | ApplicationUploadCreateOrConnectWithoutApplicationInput[]
+    upsert?: ApplicationUploadUpsertWithWhereUniqueWithoutApplicationInput | ApplicationUploadUpsertWithWhereUniqueWithoutApplicationInput[]
+    createMany?: ApplicationUploadCreateManyApplicationInputEnvelope
+    set?: ApplicationUploadWhereUniqueInput | ApplicationUploadWhereUniqueInput[]
+    disconnect?: ApplicationUploadWhereUniqueInput | ApplicationUploadWhereUniqueInput[]
+    delete?: ApplicationUploadWhereUniqueInput | ApplicationUploadWhereUniqueInput[]
+    connect?: ApplicationUploadWhereUniqueInput | ApplicationUploadWhereUniqueInput[]
+    update?: ApplicationUploadUpdateWithWhereUniqueWithoutApplicationInput | ApplicationUploadUpdateWithWhereUniqueWithoutApplicationInput[]
+    updateMany?: ApplicationUploadUpdateManyWithWhereWithoutApplicationInput | ApplicationUploadUpdateManyWithWhereWithoutApplicationInput[]
+    deleteMany?: ApplicationUploadScalarWhereInput | ApplicationUploadScalarWhereInput[]
+  }
+
+  export type ApplicationCreateNestedOneWithoutContractsInput = {
+    create?: XOR<ApplicationCreateWithoutContractsInput, ApplicationUncheckedCreateWithoutContractsInput>
+    connectOrCreate?: ApplicationCreateOrConnectWithoutContractsInput
+    connect?: ApplicationWhereUniqueInput
+  }
+
+  export type EnumContractTypeFieldUpdateOperationsInput = {
+    set?: $Enums.ContractType
+  }
+
+  export type EnumContractStatusFieldUpdateOperationsInput = {
+    set?: $Enums.ContractStatus
+  }
+
+  export type ApplicationUpdateOneWithoutContractsNestedInput = {
+    create?: XOR<ApplicationCreateWithoutContractsInput, ApplicationUncheckedCreateWithoutContractsInput>
+    connectOrCreate?: ApplicationCreateOrConnectWithoutContractsInput
+    upsert?: ApplicationUpsertWithoutContractsInput
+    disconnect?: ApplicationWhereInput | boolean
+    delete?: ApplicationWhereInput | boolean
+    connect?: ApplicationWhereUniqueInput
+    update?: XOR<XOR<ApplicationUpdateToOneWithWhereWithoutContractsInput, ApplicationUpdateWithoutContractsInput>, ApplicationUncheckedUpdateWithoutContractsInput>
+  }
+
+  export type OnboardingChecklistCreateNestedManyWithoutOnboardingInput = {
+    create?: XOR<OnboardingChecklistCreateWithoutOnboardingInput, OnboardingChecklistUncheckedCreateWithoutOnboardingInput> | OnboardingChecklistCreateWithoutOnboardingInput[] | OnboardingChecklistUncheckedCreateWithoutOnboardingInput[]
+    connectOrCreate?: OnboardingChecklistCreateOrConnectWithoutOnboardingInput | OnboardingChecklistCreateOrConnectWithoutOnboardingInput[]
+    createMany?: OnboardingChecklistCreateManyOnboardingInputEnvelope
+    connect?: OnboardingChecklistWhereUniqueInput | OnboardingChecklistWhereUniqueInput[]
+  }
+
+  export type OnboardingChecklistUncheckedCreateNestedManyWithoutOnboardingInput = {
+    create?: XOR<OnboardingChecklistCreateWithoutOnboardingInput, OnboardingChecklistUncheckedCreateWithoutOnboardingInput> | OnboardingChecklistCreateWithoutOnboardingInput[] | OnboardingChecklistUncheckedCreateWithoutOnboardingInput[]
+    connectOrCreate?: OnboardingChecklistCreateOrConnectWithoutOnboardingInput | OnboardingChecklistCreateOrConnectWithoutOnboardingInput[]
+    createMany?: OnboardingChecklistCreateManyOnboardingInputEnvelope
+    connect?: OnboardingChecklistWhereUniqueInput | OnboardingChecklistWhereUniqueInput[]
+  }
+
+  export type EnumFosterOnboardingStatusFieldUpdateOperationsInput = {
+    set?: $Enums.FosterOnboardingStatus
+  }
+
+  export type OnboardingChecklistUpdateManyWithoutOnboardingNestedInput = {
+    create?: XOR<OnboardingChecklistCreateWithoutOnboardingInput, OnboardingChecklistUncheckedCreateWithoutOnboardingInput> | OnboardingChecklistCreateWithoutOnboardingInput[] | OnboardingChecklistUncheckedCreateWithoutOnboardingInput[]
+    connectOrCreate?: OnboardingChecklistCreateOrConnectWithoutOnboardingInput | OnboardingChecklistCreateOrConnectWithoutOnboardingInput[]
+    upsert?: OnboardingChecklistUpsertWithWhereUniqueWithoutOnboardingInput | OnboardingChecklistUpsertWithWhereUniqueWithoutOnboardingInput[]
+    createMany?: OnboardingChecklistCreateManyOnboardingInputEnvelope
+    set?: OnboardingChecklistWhereUniqueInput | OnboardingChecklistWhereUniqueInput[]
+    disconnect?: OnboardingChecklistWhereUniqueInput | OnboardingChecklistWhereUniqueInput[]
+    delete?: OnboardingChecklistWhereUniqueInput | OnboardingChecklistWhereUniqueInput[]
+    connect?: OnboardingChecklistWhereUniqueInput | OnboardingChecklistWhereUniqueInput[]
+    update?: OnboardingChecklistUpdateWithWhereUniqueWithoutOnboardingInput | OnboardingChecklistUpdateWithWhereUniqueWithoutOnboardingInput[]
+    updateMany?: OnboardingChecklistUpdateManyWithWhereWithoutOnboardingInput | OnboardingChecklistUpdateManyWithWhereWithoutOnboardingInput[]
+    deleteMany?: OnboardingChecklistScalarWhereInput | OnboardingChecklistScalarWhereInput[]
+  }
+
+  export type OnboardingChecklistUncheckedUpdateManyWithoutOnboardingNestedInput = {
+    create?: XOR<OnboardingChecklistCreateWithoutOnboardingInput, OnboardingChecklistUncheckedCreateWithoutOnboardingInput> | OnboardingChecklistCreateWithoutOnboardingInput[] | OnboardingChecklistUncheckedCreateWithoutOnboardingInput[]
+    connectOrCreate?: OnboardingChecklistCreateOrConnectWithoutOnboardingInput | OnboardingChecklistCreateOrConnectWithoutOnboardingInput[]
+    upsert?: OnboardingChecklistUpsertWithWhereUniqueWithoutOnboardingInput | OnboardingChecklistUpsertWithWhereUniqueWithoutOnboardingInput[]
+    createMany?: OnboardingChecklistCreateManyOnboardingInputEnvelope
+    set?: OnboardingChecklistWhereUniqueInput | OnboardingChecklistWhereUniqueInput[]
+    disconnect?: OnboardingChecklistWhereUniqueInput | OnboardingChecklistWhereUniqueInput[]
+    delete?: OnboardingChecklistWhereUniqueInput | OnboardingChecklistWhereUniqueInput[]
+    connect?: OnboardingChecklistWhereUniqueInput | OnboardingChecklistWhereUniqueInput[]
+    update?: OnboardingChecklistUpdateWithWhereUniqueWithoutOnboardingInput | OnboardingChecklistUpdateWithWhereUniqueWithoutOnboardingInput[]
+    updateMany?: OnboardingChecklistUpdateManyWithWhereWithoutOnboardingInput | OnboardingChecklistUpdateManyWithWhereWithoutOnboardingInput[]
+    deleteMany?: OnboardingChecklistScalarWhereInput | OnboardingChecklistScalarWhereInput[]
+  }
+
+  export type FosterOnboardingCreateNestedOneWithoutChecklistItemsInput = {
+    create?: XOR<FosterOnboardingCreateWithoutChecklistItemsInput, FosterOnboardingUncheckedCreateWithoutChecklistItemsInput>
+    connectOrCreate?: FosterOnboardingCreateOrConnectWithoutChecklistItemsInput
+    connect?: FosterOnboardingWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutCompletedChecklistItemsInput = {
+    create?: XOR<UserCreateWithoutCompletedChecklistItemsInput, UserUncheckedCreateWithoutCompletedChecklistItemsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCompletedChecklistItemsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type FosterOnboardingUpdateOneRequiredWithoutChecklistItemsNestedInput = {
+    create?: XOR<FosterOnboardingCreateWithoutChecklistItemsInput, FosterOnboardingUncheckedCreateWithoutChecklistItemsInput>
+    connectOrCreate?: FosterOnboardingCreateOrConnectWithoutChecklistItemsInput
+    upsert?: FosterOnboardingUpsertWithoutChecklistItemsInput
+    connect?: FosterOnboardingWhereUniqueInput
+    update?: XOR<XOR<FosterOnboardingUpdateToOneWithWhereWithoutChecklistItemsInput, FosterOnboardingUpdateWithoutChecklistItemsInput>, FosterOnboardingUncheckedUpdateWithoutChecklistItemsInput>
+  }
+
+  export type UserUpdateOneWithoutCompletedChecklistItemsNestedInput = {
+    create?: XOR<UserCreateWithoutCompletedChecklistItemsInput, UserUncheckedCreateWithoutCompletedChecklistItemsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCompletedChecklistItemsInput
+    upsert?: UserUpsertWithoutCompletedChecklistItemsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCompletedChecklistItemsInput, UserUpdateWithoutCompletedChecklistItemsInput>, UserUncheckedUpdateWithoutCompletedChecklistItemsInput>
+  }
+
+  export type ApplicationCreateNestedOneWithoutUploadsInput = {
+    create?: XOR<ApplicationCreateWithoutUploadsInput, ApplicationUncheckedCreateWithoutUploadsInput>
+    connectOrCreate?: ApplicationCreateOrConnectWithoutUploadsInput
+    connect?: ApplicationWhereUniqueInput
+  }
+
+  export type ApplicationUpdateOneRequiredWithoutUploadsNestedInput = {
+    create?: XOR<ApplicationCreateWithoutUploadsInput, ApplicationUncheckedCreateWithoutUploadsInput>
+    connectOrCreate?: ApplicationCreateOrConnectWithoutUploadsInput
+    upsert?: ApplicationUpsertWithoutUploadsInput
+    connect?: ApplicationWhereUniqueInput
+    update?: XOR<XOR<ApplicationUpdateToOneWithWhereWithoutUploadsInput, ApplicationUpdateWithoutUploadsInput>, ApplicationUncheckedUpdateWithoutUploadsInput>
+  }
+
   export type ContentCreatepublishTargetsInput = {
     set: string[]
+  }
+
+  export type ContentCompletionCreateNestedManyWithoutContentInput = {
+    create?: XOR<ContentCompletionCreateWithoutContentInput, ContentCompletionUncheckedCreateWithoutContentInput> | ContentCompletionCreateWithoutContentInput[] | ContentCompletionUncheckedCreateWithoutContentInput[]
+    connectOrCreate?: ContentCompletionCreateOrConnectWithoutContentInput | ContentCompletionCreateOrConnectWithoutContentInput[]
+    createMany?: ContentCompletionCreateManyContentInputEnvelope
+    connect?: ContentCompletionWhereUniqueInput | ContentCompletionWhereUniqueInput[]
+  }
+
+  export type ContentCompletionUncheckedCreateNestedManyWithoutContentInput = {
+    create?: XOR<ContentCompletionCreateWithoutContentInput, ContentCompletionUncheckedCreateWithoutContentInput> | ContentCompletionCreateWithoutContentInput[] | ContentCompletionUncheckedCreateWithoutContentInput[]
+    connectOrCreate?: ContentCompletionCreateOrConnectWithoutContentInput | ContentCompletionCreateOrConnectWithoutContentInput[]
+    createMany?: ContentCompletionCreateManyContentInputEnvelope
+    connect?: ContentCompletionWhereUniqueInput | ContentCompletionWhereUniqueInput[]
   }
 
   export type ContentUpdatepublishTargetsInput = {
     set?: string[]
     push?: string | string[]
+  }
+
+  export type ContentCompletionUpdateManyWithoutContentNestedInput = {
+    create?: XOR<ContentCompletionCreateWithoutContentInput, ContentCompletionUncheckedCreateWithoutContentInput> | ContentCompletionCreateWithoutContentInput[] | ContentCompletionUncheckedCreateWithoutContentInput[]
+    connectOrCreate?: ContentCompletionCreateOrConnectWithoutContentInput | ContentCompletionCreateOrConnectWithoutContentInput[]
+    upsert?: ContentCompletionUpsertWithWhereUniqueWithoutContentInput | ContentCompletionUpsertWithWhereUniqueWithoutContentInput[]
+    createMany?: ContentCompletionCreateManyContentInputEnvelope
+    set?: ContentCompletionWhereUniqueInput | ContentCompletionWhereUniqueInput[]
+    disconnect?: ContentCompletionWhereUniqueInput | ContentCompletionWhereUniqueInput[]
+    delete?: ContentCompletionWhereUniqueInput | ContentCompletionWhereUniqueInput[]
+    connect?: ContentCompletionWhereUniqueInput | ContentCompletionWhereUniqueInput[]
+    update?: ContentCompletionUpdateWithWhereUniqueWithoutContentInput | ContentCompletionUpdateWithWhereUniqueWithoutContentInput[]
+    updateMany?: ContentCompletionUpdateManyWithWhereWithoutContentInput | ContentCompletionUpdateManyWithWhereWithoutContentInput[]
+    deleteMany?: ContentCompletionScalarWhereInput | ContentCompletionScalarWhereInput[]
+  }
+
+  export type ContentCompletionUncheckedUpdateManyWithoutContentNestedInput = {
+    create?: XOR<ContentCompletionCreateWithoutContentInput, ContentCompletionUncheckedCreateWithoutContentInput> | ContentCompletionCreateWithoutContentInput[] | ContentCompletionUncheckedCreateWithoutContentInput[]
+    connectOrCreate?: ContentCompletionCreateOrConnectWithoutContentInput | ContentCompletionCreateOrConnectWithoutContentInput[]
+    upsert?: ContentCompletionUpsertWithWhereUniqueWithoutContentInput | ContentCompletionUpsertWithWhereUniqueWithoutContentInput[]
+    createMany?: ContentCompletionCreateManyContentInputEnvelope
+    set?: ContentCompletionWhereUniqueInput | ContentCompletionWhereUniqueInput[]
+    disconnect?: ContentCompletionWhereUniqueInput | ContentCompletionWhereUniqueInput[]
+    delete?: ContentCompletionWhereUniqueInput | ContentCompletionWhereUniqueInput[]
+    connect?: ContentCompletionWhereUniqueInput | ContentCompletionWhereUniqueInput[]
+    update?: ContentCompletionUpdateWithWhereUniqueWithoutContentInput | ContentCompletionUpdateWithWhereUniqueWithoutContentInput[]
+    updateMany?: ContentCompletionUpdateManyWithWhereWithoutContentInput | ContentCompletionUpdateManyWithWhereWithoutContentInput[]
+    deleteMany?: ContentCompletionScalarWhereInput | ContentCompletionScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutContentCompletionsInput = {
+    create?: XOR<UserCreateWithoutContentCompletionsInput, UserUncheckedCreateWithoutContentCompletionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutContentCompletionsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type ContentCreateNestedOneWithoutCompletionsInput = {
+    create?: XOR<ContentCreateWithoutCompletionsInput, ContentUncheckedCreateWithoutCompletionsInput>
+    connectOrCreate?: ContentCreateOrConnectWithoutCompletionsInput
+    connect?: ContentWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutContentCompletionsNestedInput = {
+    create?: XOR<UserCreateWithoutContentCompletionsInput, UserUncheckedCreateWithoutContentCompletionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutContentCompletionsInput
+    upsert?: UserUpsertWithoutContentCompletionsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutContentCompletionsInput, UserUpdateWithoutContentCompletionsInput>, UserUncheckedUpdateWithoutContentCompletionsInput>
+  }
+
+  export type ContentUpdateOneRequiredWithoutCompletionsNestedInput = {
+    create?: XOR<ContentCreateWithoutCompletionsInput, ContentUncheckedCreateWithoutCompletionsInput>
+    connectOrCreate?: ContentCreateOrConnectWithoutCompletionsInput
+    upsert?: ContentUpsertWithoutCompletionsInput
+    connect?: ContentWhereUniqueInput
+    update?: XOR<XOR<ContentUpdateToOneWithWhereWithoutCompletionsInput, ContentUpdateWithoutCompletionsInput>, ContentUncheckedUpdateWithoutCompletionsInput>
   }
 
   export type EventCreatepublishTargetsInput = {
@@ -34958,12 +43138,138 @@ export namespace Prisma {
     connect?: RoleWhereUniqueInput
   }
 
+  export type ApplicationCreateNestedManyWithoutRejectedByInput = {
+    create?: XOR<ApplicationCreateWithoutRejectedByInput, ApplicationUncheckedCreateWithoutRejectedByInput> | ApplicationCreateWithoutRejectedByInput[] | ApplicationUncheckedCreateWithoutRejectedByInput[]
+    connectOrCreate?: ApplicationCreateOrConnectWithoutRejectedByInput | ApplicationCreateOrConnectWithoutRejectedByInput[]
+    createMany?: ApplicationCreateManyRejectedByInputEnvelope
+    connect?: ApplicationWhereUniqueInput | ApplicationWhereUniqueInput[]
+  }
+
+  export type OnboardingChecklistCreateNestedManyWithoutCompletedByUserInput = {
+    create?: XOR<OnboardingChecklistCreateWithoutCompletedByUserInput, OnboardingChecklistUncheckedCreateWithoutCompletedByUserInput> | OnboardingChecklistCreateWithoutCompletedByUserInput[] | OnboardingChecklistUncheckedCreateWithoutCompletedByUserInput[]
+    connectOrCreate?: OnboardingChecklistCreateOrConnectWithoutCompletedByUserInput | OnboardingChecklistCreateOrConnectWithoutCompletedByUserInput[]
+    createMany?: OnboardingChecklistCreateManyCompletedByUserInputEnvelope
+    connect?: OnboardingChecklistWhereUniqueInput | OnboardingChecklistWhereUniqueInput[]
+  }
+
+  export type ContentCompletionCreateNestedManyWithoutUserInput = {
+    create?: XOR<ContentCompletionCreateWithoutUserInput, ContentCompletionUncheckedCreateWithoutUserInput> | ContentCompletionCreateWithoutUserInput[] | ContentCompletionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ContentCompletionCreateOrConnectWithoutUserInput | ContentCompletionCreateOrConnectWithoutUserInput[]
+    createMany?: ContentCompletionCreateManyUserInputEnvelope
+    connect?: ContentCompletionWhereUniqueInput | ContentCompletionWhereUniqueInput[]
+  }
+
+  export type ApplicationUncheckedCreateNestedManyWithoutRejectedByInput = {
+    create?: XOR<ApplicationCreateWithoutRejectedByInput, ApplicationUncheckedCreateWithoutRejectedByInput> | ApplicationCreateWithoutRejectedByInput[] | ApplicationUncheckedCreateWithoutRejectedByInput[]
+    connectOrCreate?: ApplicationCreateOrConnectWithoutRejectedByInput | ApplicationCreateOrConnectWithoutRejectedByInput[]
+    createMany?: ApplicationCreateManyRejectedByInputEnvelope
+    connect?: ApplicationWhereUniqueInput | ApplicationWhereUniqueInput[]
+  }
+
+  export type OnboardingChecklistUncheckedCreateNestedManyWithoutCompletedByUserInput = {
+    create?: XOR<OnboardingChecklistCreateWithoutCompletedByUserInput, OnboardingChecklistUncheckedCreateWithoutCompletedByUserInput> | OnboardingChecklistCreateWithoutCompletedByUserInput[] | OnboardingChecklistUncheckedCreateWithoutCompletedByUserInput[]
+    connectOrCreate?: OnboardingChecklistCreateOrConnectWithoutCompletedByUserInput | OnboardingChecklistCreateOrConnectWithoutCompletedByUserInput[]
+    createMany?: OnboardingChecklistCreateManyCompletedByUserInputEnvelope
+    connect?: OnboardingChecklistWhereUniqueInput | OnboardingChecklistWhereUniqueInput[]
+  }
+
+  export type ContentCompletionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ContentCompletionCreateWithoutUserInput, ContentCompletionUncheckedCreateWithoutUserInput> | ContentCompletionCreateWithoutUserInput[] | ContentCompletionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ContentCompletionCreateOrConnectWithoutUserInput | ContentCompletionCreateOrConnectWithoutUserInput[]
+    createMany?: ContentCompletionCreateManyUserInputEnvelope
+    connect?: ContentCompletionWhereUniqueInput | ContentCompletionWhereUniqueInput[]
+  }
+
   export type RoleUpdateOneRequiredWithoutUsersNestedInput = {
     create?: XOR<RoleCreateWithoutUsersInput, RoleUncheckedCreateWithoutUsersInput>
     connectOrCreate?: RoleCreateOrConnectWithoutUsersInput
     upsert?: RoleUpsertWithoutUsersInput
     connect?: RoleWhereUniqueInput
     update?: XOR<XOR<RoleUpdateToOneWithWhereWithoutUsersInput, RoleUpdateWithoutUsersInput>, RoleUncheckedUpdateWithoutUsersInput>
+  }
+
+  export type ApplicationUpdateManyWithoutRejectedByNestedInput = {
+    create?: XOR<ApplicationCreateWithoutRejectedByInput, ApplicationUncheckedCreateWithoutRejectedByInput> | ApplicationCreateWithoutRejectedByInput[] | ApplicationUncheckedCreateWithoutRejectedByInput[]
+    connectOrCreate?: ApplicationCreateOrConnectWithoutRejectedByInput | ApplicationCreateOrConnectWithoutRejectedByInput[]
+    upsert?: ApplicationUpsertWithWhereUniqueWithoutRejectedByInput | ApplicationUpsertWithWhereUniqueWithoutRejectedByInput[]
+    createMany?: ApplicationCreateManyRejectedByInputEnvelope
+    set?: ApplicationWhereUniqueInput | ApplicationWhereUniqueInput[]
+    disconnect?: ApplicationWhereUniqueInput | ApplicationWhereUniqueInput[]
+    delete?: ApplicationWhereUniqueInput | ApplicationWhereUniqueInput[]
+    connect?: ApplicationWhereUniqueInput | ApplicationWhereUniqueInput[]
+    update?: ApplicationUpdateWithWhereUniqueWithoutRejectedByInput | ApplicationUpdateWithWhereUniqueWithoutRejectedByInput[]
+    updateMany?: ApplicationUpdateManyWithWhereWithoutRejectedByInput | ApplicationUpdateManyWithWhereWithoutRejectedByInput[]
+    deleteMany?: ApplicationScalarWhereInput | ApplicationScalarWhereInput[]
+  }
+
+  export type OnboardingChecklistUpdateManyWithoutCompletedByUserNestedInput = {
+    create?: XOR<OnboardingChecklistCreateWithoutCompletedByUserInput, OnboardingChecklistUncheckedCreateWithoutCompletedByUserInput> | OnboardingChecklistCreateWithoutCompletedByUserInput[] | OnboardingChecklistUncheckedCreateWithoutCompletedByUserInput[]
+    connectOrCreate?: OnboardingChecklistCreateOrConnectWithoutCompletedByUserInput | OnboardingChecklistCreateOrConnectWithoutCompletedByUserInput[]
+    upsert?: OnboardingChecklistUpsertWithWhereUniqueWithoutCompletedByUserInput | OnboardingChecklistUpsertWithWhereUniqueWithoutCompletedByUserInput[]
+    createMany?: OnboardingChecklistCreateManyCompletedByUserInputEnvelope
+    set?: OnboardingChecklistWhereUniqueInput | OnboardingChecklistWhereUniqueInput[]
+    disconnect?: OnboardingChecklistWhereUniqueInput | OnboardingChecklistWhereUniqueInput[]
+    delete?: OnboardingChecklistWhereUniqueInput | OnboardingChecklistWhereUniqueInput[]
+    connect?: OnboardingChecklistWhereUniqueInput | OnboardingChecklistWhereUniqueInput[]
+    update?: OnboardingChecklistUpdateWithWhereUniqueWithoutCompletedByUserInput | OnboardingChecklistUpdateWithWhereUniqueWithoutCompletedByUserInput[]
+    updateMany?: OnboardingChecklistUpdateManyWithWhereWithoutCompletedByUserInput | OnboardingChecklistUpdateManyWithWhereWithoutCompletedByUserInput[]
+    deleteMany?: OnboardingChecklistScalarWhereInput | OnboardingChecklistScalarWhereInput[]
+  }
+
+  export type ContentCompletionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ContentCompletionCreateWithoutUserInput, ContentCompletionUncheckedCreateWithoutUserInput> | ContentCompletionCreateWithoutUserInput[] | ContentCompletionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ContentCompletionCreateOrConnectWithoutUserInput | ContentCompletionCreateOrConnectWithoutUserInput[]
+    upsert?: ContentCompletionUpsertWithWhereUniqueWithoutUserInput | ContentCompletionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ContentCompletionCreateManyUserInputEnvelope
+    set?: ContentCompletionWhereUniqueInput | ContentCompletionWhereUniqueInput[]
+    disconnect?: ContentCompletionWhereUniqueInput | ContentCompletionWhereUniqueInput[]
+    delete?: ContentCompletionWhereUniqueInput | ContentCompletionWhereUniqueInput[]
+    connect?: ContentCompletionWhereUniqueInput | ContentCompletionWhereUniqueInput[]
+    update?: ContentCompletionUpdateWithWhereUniqueWithoutUserInput | ContentCompletionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ContentCompletionUpdateManyWithWhereWithoutUserInput | ContentCompletionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ContentCompletionScalarWhereInput | ContentCompletionScalarWhereInput[]
+  }
+
+  export type ApplicationUncheckedUpdateManyWithoutRejectedByNestedInput = {
+    create?: XOR<ApplicationCreateWithoutRejectedByInput, ApplicationUncheckedCreateWithoutRejectedByInput> | ApplicationCreateWithoutRejectedByInput[] | ApplicationUncheckedCreateWithoutRejectedByInput[]
+    connectOrCreate?: ApplicationCreateOrConnectWithoutRejectedByInput | ApplicationCreateOrConnectWithoutRejectedByInput[]
+    upsert?: ApplicationUpsertWithWhereUniqueWithoutRejectedByInput | ApplicationUpsertWithWhereUniqueWithoutRejectedByInput[]
+    createMany?: ApplicationCreateManyRejectedByInputEnvelope
+    set?: ApplicationWhereUniqueInput | ApplicationWhereUniqueInput[]
+    disconnect?: ApplicationWhereUniqueInput | ApplicationWhereUniqueInput[]
+    delete?: ApplicationWhereUniqueInput | ApplicationWhereUniqueInput[]
+    connect?: ApplicationWhereUniqueInput | ApplicationWhereUniqueInput[]
+    update?: ApplicationUpdateWithWhereUniqueWithoutRejectedByInput | ApplicationUpdateWithWhereUniqueWithoutRejectedByInput[]
+    updateMany?: ApplicationUpdateManyWithWhereWithoutRejectedByInput | ApplicationUpdateManyWithWhereWithoutRejectedByInput[]
+    deleteMany?: ApplicationScalarWhereInput | ApplicationScalarWhereInput[]
+  }
+
+  export type OnboardingChecklistUncheckedUpdateManyWithoutCompletedByUserNestedInput = {
+    create?: XOR<OnboardingChecklistCreateWithoutCompletedByUserInput, OnboardingChecklistUncheckedCreateWithoutCompletedByUserInput> | OnboardingChecklistCreateWithoutCompletedByUserInput[] | OnboardingChecklistUncheckedCreateWithoutCompletedByUserInput[]
+    connectOrCreate?: OnboardingChecklistCreateOrConnectWithoutCompletedByUserInput | OnboardingChecklistCreateOrConnectWithoutCompletedByUserInput[]
+    upsert?: OnboardingChecklistUpsertWithWhereUniqueWithoutCompletedByUserInput | OnboardingChecklistUpsertWithWhereUniqueWithoutCompletedByUserInput[]
+    createMany?: OnboardingChecklistCreateManyCompletedByUserInputEnvelope
+    set?: OnboardingChecklistWhereUniqueInput | OnboardingChecklistWhereUniqueInput[]
+    disconnect?: OnboardingChecklistWhereUniqueInput | OnboardingChecklistWhereUniqueInput[]
+    delete?: OnboardingChecklistWhereUniqueInput | OnboardingChecklistWhereUniqueInput[]
+    connect?: OnboardingChecklistWhereUniqueInput | OnboardingChecklistWhereUniqueInput[]
+    update?: OnboardingChecklistUpdateWithWhereUniqueWithoutCompletedByUserInput | OnboardingChecklistUpdateWithWhereUniqueWithoutCompletedByUserInput[]
+    updateMany?: OnboardingChecklistUpdateManyWithWhereWithoutCompletedByUserInput | OnboardingChecklistUpdateManyWithWhereWithoutCompletedByUserInput[]
+    deleteMany?: OnboardingChecklistScalarWhereInput | OnboardingChecklistScalarWhereInput[]
+  }
+
+  export type ContentCompletionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ContentCompletionCreateWithoutUserInput, ContentCompletionUncheckedCreateWithoutUserInput> | ContentCompletionCreateWithoutUserInput[] | ContentCompletionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ContentCompletionCreateOrConnectWithoutUserInput | ContentCompletionCreateOrConnectWithoutUserInput[]
+    upsert?: ContentCompletionUpsertWithWhereUniqueWithoutUserInput | ContentCompletionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ContentCompletionCreateManyUserInputEnvelope
+    set?: ContentCompletionWhereUniqueInput | ContentCompletionWhereUniqueInput[]
+    disconnect?: ContentCompletionWhereUniqueInput | ContentCompletionWhereUniqueInput[]
+    delete?: ContentCompletionWhereUniqueInput | ContentCompletionWhereUniqueInput[]
+    connect?: ContentCompletionWhereUniqueInput | ContentCompletionWhereUniqueInput[]
+    update?: ContentCompletionUpdateWithWhereUniqueWithoutUserInput | ContentCompletionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ContentCompletionUpdateManyWithWhereWithoutUserInput | ContentCompletionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ContentCompletionScalarWhereInput | ContentCompletionScalarWhereInput[]
   }
 
   export type KittenCreateNestedOneWithoutTransactionsInput = {
@@ -35197,6 +43503,57 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type NestedEnumContractTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ContractType | EnumContractTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ContractType[] | ListEnumContractTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ContractType[] | ListEnumContractTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumContractTypeFilter<$PrismaModel> | $Enums.ContractType
+  }
+
+  export type NestedEnumContractStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ContractStatus | EnumContractStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ContractStatus[] | ListEnumContractStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ContractStatus[] | ListEnumContractStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumContractStatusFilter<$PrismaModel> | $Enums.ContractStatus
+  }
+
+  export type NestedEnumContractTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ContractType | EnumContractTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ContractType[] | ListEnumContractTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ContractType[] | ListEnumContractTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumContractTypeWithAggregatesFilter<$PrismaModel> | $Enums.ContractType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumContractTypeFilter<$PrismaModel>
+    _max?: NestedEnumContractTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumContractStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ContractStatus | EnumContractStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ContractStatus[] | ListEnumContractStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ContractStatus[] | ListEnumContractStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumContractStatusWithAggregatesFilter<$PrismaModel> | $Enums.ContractStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumContractStatusFilter<$PrismaModel>
+    _max?: NestedEnumContractStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumFosterOnboardingStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.FosterOnboardingStatus | EnumFosterOnboardingStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.FosterOnboardingStatus[] | ListEnumFosterOnboardingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.FosterOnboardingStatus[] | ListEnumFosterOnboardingStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumFosterOnboardingStatusFilter<$PrismaModel> | $Enums.FosterOnboardingStatus
+  }
+
+  export type NestedEnumFosterOnboardingStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.FosterOnboardingStatus | EnumFosterOnboardingStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.FosterOnboardingStatus[] | ListEnumFosterOnboardingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.FosterOnboardingStatus[] | ListEnumFosterOnboardingStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumFosterOnboardingStatusWithAggregatesFilter<$PrismaModel> | $Enums.FosterOnboardingStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumFosterOnboardingStatusFilter<$PrismaModel>
+    _max?: NestedEnumFosterOnboardingStatusFilter<$PrismaModel>
   }
 
   export type KittenCreateWithoutLitterInput = {
@@ -37515,6 +45872,725 @@ export namespace Prisma {
     transactions?: TransactionUncheckedUpdateManyWithoutKittenNestedInput
   }
 
+  export type UserCreateWithoutRejectedApplicationsInput = {
+    email: string
+    passwordHash: string
+    firstName: string
+    lastName: string
+    isActive?: boolean
+    fosterId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastLoginAt?: Date | string | null
+    role: RoleCreateNestedOneWithoutUsersInput
+    completedChecklistItems?: OnboardingChecklistCreateNestedManyWithoutCompletedByUserInput
+    contentCompletions?: ContentCompletionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutRejectedApplicationsInput = {
+    id?: number
+    email: string
+    passwordHash: string
+    firstName: string
+    lastName: string
+    isActive?: boolean
+    roleId: number
+    fosterId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastLoginAt?: Date | string | null
+    completedChecklistItems?: OnboardingChecklistUncheckedCreateNestedManyWithoutCompletedByUserInput
+    contentCompletions?: ContentCompletionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutRejectedApplicationsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutRejectedApplicationsInput, UserUncheckedCreateWithoutRejectedApplicationsInput>
+  }
+
+  export type ContractCreateWithoutApplicationInput = {
+    type: $Enums.ContractType
+    signerName: string
+    signerEmail: string
+    documentVersion: string
+    signedPdfUrl?: string
+    signatureAudit?: string
+    status?: $Enums.ContractStatus
+    signedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type ContractUncheckedCreateWithoutApplicationInput = {
+    id?: number
+    type: $Enums.ContractType
+    signerName: string
+    signerEmail: string
+    documentVersion: string
+    signedPdfUrl?: string
+    signatureAudit?: string
+    status?: $Enums.ContractStatus
+    signedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type ContractCreateOrConnectWithoutApplicationInput = {
+    where: ContractWhereUniqueInput
+    create: XOR<ContractCreateWithoutApplicationInput, ContractUncheckedCreateWithoutApplicationInput>
+  }
+
+  export type ContractCreateManyApplicationInputEnvelope = {
+    data: ContractCreateManyApplicationInput | ContractCreateManyApplicationInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ApplicationUploadCreateWithoutApplicationInput = {
+    fileUrl: string
+    fileType: string
+    createdAt?: Date | string
+  }
+
+  export type ApplicationUploadUncheckedCreateWithoutApplicationInput = {
+    id?: number
+    fileUrl: string
+    fileType: string
+    createdAt?: Date | string
+  }
+
+  export type ApplicationUploadCreateOrConnectWithoutApplicationInput = {
+    where: ApplicationUploadWhereUniqueInput
+    create: XOR<ApplicationUploadCreateWithoutApplicationInput, ApplicationUploadUncheckedCreateWithoutApplicationInput>
+  }
+
+  export type ApplicationUploadCreateManyApplicationInputEnvelope = {
+    data: ApplicationUploadCreateManyApplicationInput | ApplicationUploadCreateManyApplicationInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutRejectedApplicationsInput = {
+    update: XOR<UserUpdateWithoutRejectedApplicationsInput, UserUncheckedUpdateWithoutRejectedApplicationsInput>
+    create: XOR<UserCreateWithoutRejectedApplicationsInput, UserUncheckedCreateWithoutRejectedApplicationsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutRejectedApplicationsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutRejectedApplicationsInput, UserUncheckedUpdateWithoutRejectedApplicationsInput>
+  }
+
+  export type UserUpdateWithoutRejectedApplicationsInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    fosterId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: RoleUpdateOneRequiredWithoutUsersNestedInput
+    completedChecklistItems?: OnboardingChecklistUpdateManyWithoutCompletedByUserNestedInput
+    contentCompletions?: ContentCompletionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutRejectedApplicationsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    roleId?: IntFieldUpdateOperationsInput | number
+    fosterId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedChecklistItems?: OnboardingChecklistUncheckedUpdateManyWithoutCompletedByUserNestedInput
+    contentCompletions?: ContentCompletionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type ContractUpsertWithWhereUniqueWithoutApplicationInput = {
+    where: ContractWhereUniqueInput
+    update: XOR<ContractUpdateWithoutApplicationInput, ContractUncheckedUpdateWithoutApplicationInput>
+    create: XOR<ContractCreateWithoutApplicationInput, ContractUncheckedCreateWithoutApplicationInput>
+  }
+
+  export type ContractUpdateWithWhereUniqueWithoutApplicationInput = {
+    where: ContractWhereUniqueInput
+    data: XOR<ContractUpdateWithoutApplicationInput, ContractUncheckedUpdateWithoutApplicationInput>
+  }
+
+  export type ContractUpdateManyWithWhereWithoutApplicationInput = {
+    where: ContractScalarWhereInput
+    data: XOR<ContractUpdateManyMutationInput, ContractUncheckedUpdateManyWithoutApplicationInput>
+  }
+
+  export type ContractScalarWhereInput = {
+    AND?: ContractScalarWhereInput | ContractScalarWhereInput[]
+    OR?: ContractScalarWhereInput[]
+    NOT?: ContractScalarWhereInput | ContractScalarWhereInput[]
+    id?: IntFilter<"Contract"> | number
+    type?: EnumContractTypeFilter<"Contract"> | $Enums.ContractType
+    signerName?: StringFilter<"Contract"> | string
+    signerEmail?: StringFilter<"Contract"> | string
+    applicationId?: IntNullableFilter<"Contract"> | number | null
+    documentVersion?: StringFilter<"Contract"> | string
+    signedPdfUrl?: StringFilter<"Contract"> | string
+    signatureAudit?: StringFilter<"Contract"> | string
+    status?: EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
+    signedAt?: DateTimeNullableFilter<"Contract"> | Date | string | null
+    createdAt?: DateTimeFilter<"Contract"> | Date | string
+  }
+
+  export type ApplicationUploadUpsertWithWhereUniqueWithoutApplicationInput = {
+    where: ApplicationUploadWhereUniqueInput
+    update: XOR<ApplicationUploadUpdateWithoutApplicationInput, ApplicationUploadUncheckedUpdateWithoutApplicationInput>
+    create: XOR<ApplicationUploadCreateWithoutApplicationInput, ApplicationUploadUncheckedCreateWithoutApplicationInput>
+  }
+
+  export type ApplicationUploadUpdateWithWhereUniqueWithoutApplicationInput = {
+    where: ApplicationUploadWhereUniqueInput
+    data: XOR<ApplicationUploadUpdateWithoutApplicationInput, ApplicationUploadUncheckedUpdateWithoutApplicationInput>
+  }
+
+  export type ApplicationUploadUpdateManyWithWhereWithoutApplicationInput = {
+    where: ApplicationUploadScalarWhereInput
+    data: XOR<ApplicationUploadUpdateManyMutationInput, ApplicationUploadUncheckedUpdateManyWithoutApplicationInput>
+  }
+
+  export type ApplicationUploadScalarWhereInput = {
+    AND?: ApplicationUploadScalarWhereInput | ApplicationUploadScalarWhereInput[]
+    OR?: ApplicationUploadScalarWhereInput[]
+    NOT?: ApplicationUploadScalarWhereInput | ApplicationUploadScalarWhereInput[]
+    id?: IntFilter<"ApplicationUpload"> | number
+    applicationId?: IntFilter<"ApplicationUpload"> | number
+    fileUrl?: StringFilter<"ApplicationUpload"> | string
+    fileType?: StringFilter<"ApplicationUpload"> | string
+    createdAt?: DateTimeFilter<"ApplicationUpload"> | Date | string
+  }
+
+  export type ApplicationCreateWithoutContractsInput = {
+    type: string
+    status?: string
+    statusNotes?: string
+    statusUpdatedAt?: Date | string | null
+    kittenOfInterest?: string | null
+    formData?: string
+    rejectionReason?: string | null
+    rejectionNotes?: string | null
+    rejectedAt?: Date | string | null
+    createdAt?: Date | string
+    rejectedBy?: UserCreateNestedOneWithoutRejectedApplicationsInput
+    uploads?: ApplicationUploadCreateNestedManyWithoutApplicationInput
+  }
+
+  export type ApplicationUncheckedCreateWithoutContractsInput = {
+    id?: number
+    type: string
+    status?: string
+    statusNotes?: string
+    statusUpdatedAt?: Date | string | null
+    kittenOfInterest?: string | null
+    formData?: string
+    rejectionReason?: string | null
+    rejectionNotes?: string | null
+    rejectedById?: number | null
+    rejectedAt?: Date | string | null
+    createdAt?: Date | string
+    uploads?: ApplicationUploadUncheckedCreateNestedManyWithoutApplicationInput
+  }
+
+  export type ApplicationCreateOrConnectWithoutContractsInput = {
+    where: ApplicationWhereUniqueInput
+    create: XOR<ApplicationCreateWithoutContractsInput, ApplicationUncheckedCreateWithoutContractsInput>
+  }
+
+  export type ApplicationUpsertWithoutContractsInput = {
+    update: XOR<ApplicationUpdateWithoutContractsInput, ApplicationUncheckedUpdateWithoutContractsInput>
+    create: XOR<ApplicationCreateWithoutContractsInput, ApplicationUncheckedCreateWithoutContractsInput>
+    where?: ApplicationWhereInput
+  }
+
+  export type ApplicationUpdateToOneWithWhereWithoutContractsInput = {
+    where?: ApplicationWhereInput
+    data: XOR<ApplicationUpdateWithoutContractsInput, ApplicationUncheckedUpdateWithoutContractsInput>
+  }
+
+  export type ApplicationUpdateWithoutContractsInput = {
+    type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    statusNotes?: StringFieldUpdateOperationsInput | string
+    statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
+    formData?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedBy?: UserUpdateOneWithoutRejectedApplicationsNestedInput
+    uploads?: ApplicationUploadUpdateManyWithoutApplicationNestedInput
+  }
+
+  export type ApplicationUncheckedUpdateWithoutContractsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    statusNotes?: StringFieldUpdateOperationsInput | string
+    statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
+    formData?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectedById?: NullableIntFieldUpdateOperationsInput | number | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    uploads?: ApplicationUploadUncheckedUpdateManyWithoutApplicationNestedInput
+  }
+
+  export type OnboardingChecklistCreateWithoutOnboardingInput = {
+    stepKey: string
+    label: string
+    isComplete?: boolean
+    completedAt?: Date | string | null
+    completedByUser?: UserCreateNestedOneWithoutCompletedChecklistItemsInput
+  }
+
+  export type OnboardingChecklistUncheckedCreateWithoutOnboardingInput = {
+    id?: number
+    stepKey: string
+    label: string
+    isComplete?: boolean
+    completedAt?: Date | string | null
+    completedBy?: number | null
+  }
+
+  export type OnboardingChecklistCreateOrConnectWithoutOnboardingInput = {
+    where: OnboardingChecklistWhereUniqueInput
+    create: XOR<OnboardingChecklistCreateWithoutOnboardingInput, OnboardingChecklistUncheckedCreateWithoutOnboardingInput>
+  }
+
+  export type OnboardingChecklistCreateManyOnboardingInputEnvelope = {
+    data: OnboardingChecklistCreateManyOnboardingInput | OnboardingChecklistCreateManyOnboardingInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type OnboardingChecklistUpsertWithWhereUniqueWithoutOnboardingInput = {
+    where: OnboardingChecklistWhereUniqueInput
+    update: XOR<OnboardingChecklistUpdateWithoutOnboardingInput, OnboardingChecklistUncheckedUpdateWithoutOnboardingInput>
+    create: XOR<OnboardingChecklistCreateWithoutOnboardingInput, OnboardingChecklistUncheckedCreateWithoutOnboardingInput>
+  }
+
+  export type OnboardingChecklistUpdateWithWhereUniqueWithoutOnboardingInput = {
+    where: OnboardingChecklistWhereUniqueInput
+    data: XOR<OnboardingChecklistUpdateWithoutOnboardingInput, OnboardingChecklistUncheckedUpdateWithoutOnboardingInput>
+  }
+
+  export type OnboardingChecklistUpdateManyWithWhereWithoutOnboardingInput = {
+    where: OnboardingChecklistScalarWhereInput
+    data: XOR<OnboardingChecklistUpdateManyMutationInput, OnboardingChecklistUncheckedUpdateManyWithoutOnboardingInput>
+  }
+
+  export type OnboardingChecklistScalarWhereInput = {
+    AND?: OnboardingChecklistScalarWhereInput | OnboardingChecklistScalarWhereInput[]
+    OR?: OnboardingChecklistScalarWhereInput[]
+    NOT?: OnboardingChecklistScalarWhereInput | OnboardingChecklistScalarWhereInput[]
+    id?: IntFilter<"OnboardingChecklist"> | number
+    onboardingId?: IntFilter<"OnboardingChecklist"> | number
+    stepKey?: StringFilter<"OnboardingChecklist"> | string
+    label?: StringFilter<"OnboardingChecklist"> | string
+    isComplete?: BoolFilter<"OnboardingChecklist"> | boolean
+    completedAt?: DateTimeNullableFilter<"OnboardingChecklist"> | Date | string | null
+    completedBy?: IntNullableFilter<"OnboardingChecklist"> | number | null
+  }
+
+  export type FosterOnboardingCreateWithoutChecklistItemsInput = {
+    applicantName: string
+    applicantEmail: string
+    status?: $Enums.FosterOnboardingStatus
+    notes?: string
+    createdAt?: Date | string
+  }
+
+  export type FosterOnboardingUncheckedCreateWithoutChecklistItemsInput = {
+    id?: number
+    applicantName: string
+    applicantEmail: string
+    status?: $Enums.FosterOnboardingStatus
+    notes?: string
+    createdAt?: Date | string
+  }
+
+  export type FosterOnboardingCreateOrConnectWithoutChecklistItemsInput = {
+    where: FosterOnboardingWhereUniqueInput
+    create: XOR<FosterOnboardingCreateWithoutChecklistItemsInput, FosterOnboardingUncheckedCreateWithoutChecklistItemsInput>
+  }
+
+  export type UserCreateWithoutCompletedChecklistItemsInput = {
+    email: string
+    passwordHash: string
+    firstName: string
+    lastName: string
+    isActive?: boolean
+    fosterId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastLoginAt?: Date | string | null
+    role: RoleCreateNestedOneWithoutUsersInput
+    rejectedApplications?: ApplicationCreateNestedManyWithoutRejectedByInput
+    contentCompletions?: ContentCompletionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutCompletedChecklistItemsInput = {
+    id?: number
+    email: string
+    passwordHash: string
+    firstName: string
+    lastName: string
+    isActive?: boolean
+    roleId: number
+    fosterId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastLoginAt?: Date | string | null
+    rejectedApplications?: ApplicationUncheckedCreateNestedManyWithoutRejectedByInput
+    contentCompletions?: ContentCompletionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutCompletedChecklistItemsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCompletedChecklistItemsInput, UserUncheckedCreateWithoutCompletedChecklistItemsInput>
+  }
+
+  export type FosterOnboardingUpsertWithoutChecklistItemsInput = {
+    update: XOR<FosterOnboardingUpdateWithoutChecklistItemsInput, FosterOnboardingUncheckedUpdateWithoutChecklistItemsInput>
+    create: XOR<FosterOnboardingCreateWithoutChecklistItemsInput, FosterOnboardingUncheckedCreateWithoutChecklistItemsInput>
+    where?: FosterOnboardingWhereInput
+  }
+
+  export type FosterOnboardingUpdateToOneWithWhereWithoutChecklistItemsInput = {
+    where?: FosterOnboardingWhereInput
+    data: XOR<FosterOnboardingUpdateWithoutChecklistItemsInput, FosterOnboardingUncheckedUpdateWithoutChecklistItemsInput>
+  }
+
+  export type FosterOnboardingUpdateWithoutChecklistItemsInput = {
+    applicantName?: StringFieldUpdateOperationsInput | string
+    applicantEmail?: StringFieldUpdateOperationsInput | string
+    status?: EnumFosterOnboardingStatusFieldUpdateOperationsInput | $Enums.FosterOnboardingStatus
+    notes?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FosterOnboardingUncheckedUpdateWithoutChecklistItemsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    applicantName?: StringFieldUpdateOperationsInput | string
+    applicantEmail?: StringFieldUpdateOperationsInput | string
+    status?: EnumFosterOnboardingStatusFieldUpdateOperationsInput | $Enums.FosterOnboardingStatus
+    notes?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserUpsertWithoutCompletedChecklistItemsInput = {
+    update: XOR<UserUpdateWithoutCompletedChecklistItemsInput, UserUncheckedUpdateWithoutCompletedChecklistItemsInput>
+    create: XOR<UserCreateWithoutCompletedChecklistItemsInput, UserUncheckedCreateWithoutCompletedChecklistItemsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCompletedChecklistItemsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCompletedChecklistItemsInput, UserUncheckedUpdateWithoutCompletedChecklistItemsInput>
+  }
+
+  export type UserUpdateWithoutCompletedChecklistItemsInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    fosterId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: RoleUpdateOneRequiredWithoutUsersNestedInput
+    rejectedApplications?: ApplicationUpdateManyWithoutRejectedByNestedInput
+    contentCompletions?: ContentCompletionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCompletedChecklistItemsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    roleId?: IntFieldUpdateOperationsInput | number
+    fosterId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedApplications?: ApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
+    contentCompletions?: ContentCompletionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type ApplicationCreateWithoutUploadsInput = {
+    type: string
+    status?: string
+    statusNotes?: string
+    statusUpdatedAt?: Date | string | null
+    kittenOfInterest?: string | null
+    formData?: string
+    rejectionReason?: string | null
+    rejectionNotes?: string | null
+    rejectedAt?: Date | string | null
+    createdAt?: Date | string
+    rejectedBy?: UserCreateNestedOneWithoutRejectedApplicationsInput
+    contracts?: ContractCreateNestedManyWithoutApplicationInput
+  }
+
+  export type ApplicationUncheckedCreateWithoutUploadsInput = {
+    id?: number
+    type: string
+    status?: string
+    statusNotes?: string
+    statusUpdatedAt?: Date | string | null
+    kittenOfInterest?: string | null
+    formData?: string
+    rejectionReason?: string | null
+    rejectionNotes?: string | null
+    rejectedById?: number | null
+    rejectedAt?: Date | string | null
+    createdAt?: Date | string
+    contracts?: ContractUncheckedCreateNestedManyWithoutApplicationInput
+  }
+
+  export type ApplicationCreateOrConnectWithoutUploadsInput = {
+    where: ApplicationWhereUniqueInput
+    create: XOR<ApplicationCreateWithoutUploadsInput, ApplicationUncheckedCreateWithoutUploadsInput>
+  }
+
+  export type ApplicationUpsertWithoutUploadsInput = {
+    update: XOR<ApplicationUpdateWithoutUploadsInput, ApplicationUncheckedUpdateWithoutUploadsInput>
+    create: XOR<ApplicationCreateWithoutUploadsInput, ApplicationUncheckedCreateWithoutUploadsInput>
+    where?: ApplicationWhereInput
+  }
+
+  export type ApplicationUpdateToOneWithWhereWithoutUploadsInput = {
+    where?: ApplicationWhereInput
+    data: XOR<ApplicationUpdateWithoutUploadsInput, ApplicationUncheckedUpdateWithoutUploadsInput>
+  }
+
+  export type ApplicationUpdateWithoutUploadsInput = {
+    type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    statusNotes?: StringFieldUpdateOperationsInput | string
+    statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
+    formData?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedBy?: UserUpdateOneWithoutRejectedApplicationsNestedInput
+    contracts?: ContractUpdateManyWithoutApplicationNestedInput
+  }
+
+  export type ApplicationUncheckedUpdateWithoutUploadsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    statusNotes?: StringFieldUpdateOperationsInput | string
+    statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
+    formData?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectedById?: NullableIntFieldUpdateOperationsInput | number | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contracts?: ContractUncheckedUpdateManyWithoutApplicationNestedInput
+  }
+
+  export type ContentCompletionCreateWithoutContentInput = {
+    completedAt?: Date | string
+    user: UserCreateNestedOneWithoutContentCompletionsInput
+  }
+
+  export type ContentCompletionUncheckedCreateWithoutContentInput = {
+    id?: number
+    userId: number
+    completedAt?: Date | string
+  }
+
+  export type ContentCompletionCreateOrConnectWithoutContentInput = {
+    where: ContentCompletionWhereUniqueInput
+    create: XOR<ContentCompletionCreateWithoutContentInput, ContentCompletionUncheckedCreateWithoutContentInput>
+  }
+
+  export type ContentCompletionCreateManyContentInputEnvelope = {
+    data: ContentCompletionCreateManyContentInput | ContentCompletionCreateManyContentInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ContentCompletionUpsertWithWhereUniqueWithoutContentInput = {
+    where: ContentCompletionWhereUniqueInput
+    update: XOR<ContentCompletionUpdateWithoutContentInput, ContentCompletionUncheckedUpdateWithoutContentInput>
+    create: XOR<ContentCompletionCreateWithoutContentInput, ContentCompletionUncheckedCreateWithoutContentInput>
+  }
+
+  export type ContentCompletionUpdateWithWhereUniqueWithoutContentInput = {
+    where: ContentCompletionWhereUniqueInput
+    data: XOR<ContentCompletionUpdateWithoutContentInput, ContentCompletionUncheckedUpdateWithoutContentInput>
+  }
+
+  export type ContentCompletionUpdateManyWithWhereWithoutContentInput = {
+    where: ContentCompletionScalarWhereInput
+    data: XOR<ContentCompletionUpdateManyMutationInput, ContentCompletionUncheckedUpdateManyWithoutContentInput>
+  }
+
+  export type ContentCompletionScalarWhereInput = {
+    AND?: ContentCompletionScalarWhereInput | ContentCompletionScalarWhereInput[]
+    OR?: ContentCompletionScalarWhereInput[]
+    NOT?: ContentCompletionScalarWhereInput | ContentCompletionScalarWhereInput[]
+    id?: IntFilter<"ContentCompletion"> | number
+    userId?: IntFilter<"ContentCompletion"> | number
+    contentId?: IntFilter<"ContentCompletion"> | number
+    completedAt?: DateTimeFilter<"ContentCompletion"> | Date | string
+  }
+
+  export type UserCreateWithoutContentCompletionsInput = {
+    email: string
+    passwordHash: string
+    firstName: string
+    lastName: string
+    isActive?: boolean
+    fosterId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastLoginAt?: Date | string | null
+    role: RoleCreateNestedOneWithoutUsersInput
+    rejectedApplications?: ApplicationCreateNestedManyWithoutRejectedByInput
+    completedChecklistItems?: OnboardingChecklistCreateNestedManyWithoutCompletedByUserInput
+  }
+
+  export type UserUncheckedCreateWithoutContentCompletionsInput = {
+    id?: number
+    email: string
+    passwordHash: string
+    firstName: string
+    lastName: string
+    isActive?: boolean
+    roleId: number
+    fosterId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastLoginAt?: Date | string | null
+    rejectedApplications?: ApplicationUncheckedCreateNestedManyWithoutRejectedByInput
+    completedChecklistItems?: OnboardingChecklistUncheckedCreateNestedManyWithoutCompletedByUserInput
+  }
+
+  export type UserCreateOrConnectWithoutContentCompletionsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutContentCompletionsInput, UserUncheckedCreateWithoutContentCompletionsInput>
+  }
+
+  export type ContentCreateWithoutCompletionsInput = {
+    title: string
+    slug: string
+    body?: string
+    category?: string
+    isRequired?: boolean
+    publishTargets?: ContentCreatepublishTargetsInput | string[]
+    createdAt?: Date | string
+  }
+
+  export type ContentUncheckedCreateWithoutCompletionsInput = {
+    id?: number
+    title: string
+    slug: string
+    body?: string
+    category?: string
+    isRequired?: boolean
+    publishTargets?: ContentCreatepublishTargetsInput | string[]
+    createdAt?: Date | string
+  }
+
+  export type ContentCreateOrConnectWithoutCompletionsInput = {
+    where: ContentWhereUniqueInput
+    create: XOR<ContentCreateWithoutCompletionsInput, ContentUncheckedCreateWithoutCompletionsInput>
+  }
+
+  export type UserUpsertWithoutContentCompletionsInput = {
+    update: XOR<UserUpdateWithoutContentCompletionsInput, UserUncheckedUpdateWithoutContentCompletionsInput>
+    create: XOR<UserCreateWithoutContentCompletionsInput, UserUncheckedCreateWithoutContentCompletionsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutContentCompletionsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutContentCompletionsInput, UserUncheckedUpdateWithoutContentCompletionsInput>
+  }
+
+  export type UserUpdateWithoutContentCompletionsInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    fosterId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: RoleUpdateOneRequiredWithoutUsersNestedInput
+    rejectedApplications?: ApplicationUpdateManyWithoutRejectedByNestedInput
+    completedChecklistItems?: OnboardingChecklistUpdateManyWithoutCompletedByUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutContentCompletionsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    roleId?: IntFieldUpdateOperationsInput | number
+    fosterId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedApplications?: ApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
+    completedChecklistItems?: OnboardingChecklistUncheckedUpdateManyWithoutCompletedByUserNestedInput
+  }
+
+  export type ContentUpsertWithoutCompletionsInput = {
+    update: XOR<ContentUpdateWithoutCompletionsInput, ContentUncheckedUpdateWithoutCompletionsInput>
+    create: XOR<ContentCreateWithoutCompletionsInput, ContentUncheckedCreateWithoutCompletionsInput>
+    where?: ContentWhereInput
+  }
+
+  export type ContentUpdateToOneWithWhereWithoutCompletionsInput = {
+    where?: ContentWhereInput
+    data: XOR<ContentUpdateWithoutCompletionsInput, ContentUncheckedUpdateWithoutCompletionsInput>
+  }
+
+  export type ContentUpdateWithoutCompletionsInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    isRequired?: BoolFieldUpdateOperationsInput | boolean
+    publishTargets?: ContentUpdatepublishTargetsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContentUncheckedUpdateWithoutCompletionsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    body?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    isRequired?: BoolFieldUpdateOperationsInput | boolean
+    publishTargets?: ContentUpdatepublishTargetsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserCreateWithoutRoleInput = {
     email: string
     passwordHash: string
@@ -37525,6 +46601,9 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     lastLoginAt?: Date | string | null
+    rejectedApplications?: ApplicationCreateNestedManyWithoutRejectedByInput
+    completedChecklistItems?: OnboardingChecklistCreateNestedManyWithoutCompletedByUserInput
+    contentCompletions?: ContentCompletionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRoleInput = {
@@ -37538,6 +46617,9 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     lastLoginAt?: Date | string | null
+    rejectedApplications?: ApplicationUncheckedCreateNestedManyWithoutRejectedByInput
+    completedChecklistItems?: OnboardingChecklistUncheckedCreateNestedManyWithoutCompletedByUserInput
+    contentCompletions?: ContentCompletionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRoleInput = {
@@ -37773,6 +46855,95 @@ export namespace Prisma {
     create: XOR<RoleCreateWithoutUsersInput, RoleUncheckedCreateWithoutUsersInput>
   }
 
+  export type ApplicationCreateWithoutRejectedByInput = {
+    type: string
+    status?: string
+    statusNotes?: string
+    statusUpdatedAt?: Date | string | null
+    kittenOfInterest?: string | null
+    formData?: string
+    rejectionReason?: string | null
+    rejectionNotes?: string | null
+    rejectedAt?: Date | string | null
+    createdAt?: Date | string
+    contracts?: ContractCreateNestedManyWithoutApplicationInput
+    uploads?: ApplicationUploadCreateNestedManyWithoutApplicationInput
+  }
+
+  export type ApplicationUncheckedCreateWithoutRejectedByInput = {
+    id?: number
+    type: string
+    status?: string
+    statusNotes?: string
+    statusUpdatedAt?: Date | string | null
+    kittenOfInterest?: string | null
+    formData?: string
+    rejectionReason?: string | null
+    rejectionNotes?: string | null
+    rejectedAt?: Date | string | null
+    createdAt?: Date | string
+    contracts?: ContractUncheckedCreateNestedManyWithoutApplicationInput
+    uploads?: ApplicationUploadUncheckedCreateNestedManyWithoutApplicationInput
+  }
+
+  export type ApplicationCreateOrConnectWithoutRejectedByInput = {
+    where: ApplicationWhereUniqueInput
+    create: XOR<ApplicationCreateWithoutRejectedByInput, ApplicationUncheckedCreateWithoutRejectedByInput>
+  }
+
+  export type ApplicationCreateManyRejectedByInputEnvelope = {
+    data: ApplicationCreateManyRejectedByInput | ApplicationCreateManyRejectedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type OnboardingChecklistCreateWithoutCompletedByUserInput = {
+    stepKey: string
+    label: string
+    isComplete?: boolean
+    completedAt?: Date | string | null
+    onboarding: FosterOnboardingCreateNestedOneWithoutChecklistItemsInput
+  }
+
+  export type OnboardingChecklistUncheckedCreateWithoutCompletedByUserInput = {
+    id?: number
+    onboardingId: number
+    stepKey: string
+    label: string
+    isComplete?: boolean
+    completedAt?: Date | string | null
+  }
+
+  export type OnboardingChecklistCreateOrConnectWithoutCompletedByUserInput = {
+    where: OnboardingChecklistWhereUniqueInput
+    create: XOR<OnboardingChecklistCreateWithoutCompletedByUserInput, OnboardingChecklistUncheckedCreateWithoutCompletedByUserInput>
+  }
+
+  export type OnboardingChecklistCreateManyCompletedByUserInputEnvelope = {
+    data: OnboardingChecklistCreateManyCompletedByUserInput | OnboardingChecklistCreateManyCompletedByUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ContentCompletionCreateWithoutUserInput = {
+    completedAt?: Date | string
+    content: ContentCreateNestedOneWithoutCompletionsInput
+  }
+
+  export type ContentCompletionUncheckedCreateWithoutUserInput = {
+    id?: number
+    contentId: number
+    completedAt?: Date | string
+  }
+
+  export type ContentCompletionCreateOrConnectWithoutUserInput = {
+    where: ContentCompletionWhereUniqueInput
+    create: XOR<ContentCompletionCreateWithoutUserInput, ContentCompletionUncheckedCreateWithoutUserInput>
+  }
+
+  export type ContentCompletionCreateManyUserInputEnvelope = {
+    data: ContentCompletionCreateManyUserInput | ContentCompletionCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type RoleUpsertWithoutUsersInput = {
     update: XOR<RoleUpdateWithoutUsersInput, RoleUncheckedUpdateWithoutUsersInput>
     create: XOR<RoleCreateWithoutUsersInput, RoleUncheckedCreateWithoutUsersInput>
@@ -37799,6 +46970,72 @@ export namespace Prisma {
     isSystem?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     permissions?: RolePermissionUncheckedUpdateManyWithoutRoleNestedInput
+  }
+
+  export type ApplicationUpsertWithWhereUniqueWithoutRejectedByInput = {
+    where: ApplicationWhereUniqueInput
+    update: XOR<ApplicationUpdateWithoutRejectedByInput, ApplicationUncheckedUpdateWithoutRejectedByInput>
+    create: XOR<ApplicationCreateWithoutRejectedByInput, ApplicationUncheckedCreateWithoutRejectedByInput>
+  }
+
+  export type ApplicationUpdateWithWhereUniqueWithoutRejectedByInput = {
+    where: ApplicationWhereUniqueInput
+    data: XOR<ApplicationUpdateWithoutRejectedByInput, ApplicationUncheckedUpdateWithoutRejectedByInput>
+  }
+
+  export type ApplicationUpdateManyWithWhereWithoutRejectedByInput = {
+    where: ApplicationScalarWhereInput
+    data: XOR<ApplicationUpdateManyMutationInput, ApplicationUncheckedUpdateManyWithoutRejectedByInput>
+  }
+
+  export type ApplicationScalarWhereInput = {
+    AND?: ApplicationScalarWhereInput | ApplicationScalarWhereInput[]
+    OR?: ApplicationScalarWhereInput[]
+    NOT?: ApplicationScalarWhereInput | ApplicationScalarWhereInput[]
+    id?: IntFilter<"Application"> | number
+    type?: StringFilter<"Application"> | string
+    status?: StringFilter<"Application"> | string
+    statusNotes?: StringFilter<"Application"> | string
+    statusUpdatedAt?: DateTimeNullableFilter<"Application"> | Date | string | null
+    kittenOfInterest?: StringNullableFilter<"Application"> | string | null
+    formData?: StringFilter<"Application"> | string
+    rejectionReason?: StringNullableFilter<"Application"> | string | null
+    rejectionNotes?: StringNullableFilter<"Application"> | string | null
+    rejectedById?: IntNullableFilter<"Application"> | number | null
+    rejectedAt?: DateTimeNullableFilter<"Application"> | Date | string | null
+    createdAt?: DateTimeFilter<"Application"> | Date | string
+  }
+
+  export type OnboardingChecklistUpsertWithWhereUniqueWithoutCompletedByUserInput = {
+    where: OnboardingChecklistWhereUniqueInput
+    update: XOR<OnboardingChecklistUpdateWithoutCompletedByUserInput, OnboardingChecklistUncheckedUpdateWithoutCompletedByUserInput>
+    create: XOR<OnboardingChecklistCreateWithoutCompletedByUserInput, OnboardingChecklistUncheckedCreateWithoutCompletedByUserInput>
+  }
+
+  export type OnboardingChecklistUpdateWithWhereUniqueWithoutCompletedByUserInput = {
+    where: OnboardingChecklistWhereUniqueInput
+    data: XOR<OnboardingChecklistUpdateWithoutCompletedByUserInput, OnboardingChecklistUncheckedUpdateWithoutCompletedByUserInput>
+  }
+
+  export type OnboardingChecklistUpdateManyWithWhereWithoutCompletedByUserInput = {
+    where: OnboardingChecklistScalarWhereInput
+    data: XOR<OnboardingChecklistUpdateManyMutationInput, OnboardingChecklistUncheckedUpdateManyWithoutCompletedByUserInput>
+  }
+
+  export type ContentCompletionUpsertWithWhereUniqueWithoutUserInput = {
+    where: ContentCompletionWhereUniqueInput
+    update: XOR<ContentCompletionUpdateWithoutUserInput, ContentCompletionUncheckedUpdateWithoutUserInput>
+    create: XOR<ContentCompletionCreateWithoutUserInput, ContentCompletionUncheckedCreateWithoutUserInput>
+  }
+
+  export type ContentCompletionUpdateWithWhereUniqueWithoutUserInput = {
+    where: ContentCompletionWhereUniqueInput
+    data: XOR<ContentCompletionUpdateWithoutUserInput, ContentCompletionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ContentCompletionUpdateManyWithWhereWithoutUserInput = {
+    where: ContentCompletionScalarWhereInput
+    data: XOR<ContentCompletionUpdateManyMutationInput, ContentCompletionUncheckedUpdateManyWithoutUserInput>
   }
 
   export type KittenCreateWithoutTransactionsInput = {
@@ -38631,6 +47868,142 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ContractCreateManyApplicationInput = {
+    id?: number
+    type: $Enums.ContractType
+    signerName: string
+    signerEmail: string
+    documentVersion: string
+    signedPdfUrl?: string
+    signatureAudit?: string
+    status?: $Enums.ContractStatus
+    signedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type ApplicationUploadCreateManyApplicationInput = {
+    id?: number
+    fileUrl: string
+    fileType: string
+    createdAt?: Date | string
+  }
+
+  export type ContractUpdateWithoutApplicationInput = {
+    type?: EnumContractTypeFieldUpdateOperationsInput | $Enums.ContractType
+    signerName?: StringFieldUpdateOperationsInput | string
+    signerEmail?: StringFieldUpdateOperationsInput | string
+    documentVersion?: StringFieldUpdateOperationsInput | string
+    signedPdfUrl?: StringFieldUpdateOperationsInput | string
+    signatureAudit?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContractUncheckedUpdateWithoutApplicationInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumContractTypeFieldUpdateOperationsInput | $Enums.ContractType
+    signerName?: StringFieldUpdateOperationsInput | string
+    signerEmail?: StringFieldUpdateOperationsInput | string
+    documentVersion?: StringFieldUpdateOperationsInput | string
+    signedPdfUrl?: StringFieldUpdateOperationsInput | string
+    signatureAudit?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContractUncheckedUpdateManyWithoutApplicationInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumContractTypeFieldUpdateOperationsInput | $Enums.ContractType
+    signerName?: StringFieldUpdateOperationsInput | string
+    signerEmail?: StringFieldUpdateOperationsInput | string
+    documentVersion?: StringFieldUpdateOperationsInput | string
+    signedPdfUrl?: StringFieldUpdateOperationsInput | string
+    signatureAudit?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ApplicationUploadUpdateWithoutApplicationInput = {
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    fileType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ApplicationUploadUncheckedUpdateWithoutApplicationInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    fileType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ApplicationUploadUncheckedUpdateManyWithoutApplicationInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    fileType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OnboardingChecklistCreateManyOnboardingInput = {
+    id?: number
+    stepKey: string
+    label: string
+    isComplete?: boolean
+    completedAt?: Date | string | null
+    completedBy?: number | null
+  }
+
+  export type OnboardingChecklistUpdateWithoutOnboardingInput = {
+    stepKey?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    isComplete?: BoolFieldUpdateOperationsInput | boolean
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUser?: UserUpdateOneWithoutCompletedChecklistItemsNestedInput
+  }
+
+  export type OnboardingChecklistUncheckedUpdateWithoutOnboardingInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    stepKey?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    isComplete?: BoolFieldUpdateOperationsInput | boolean
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedBy?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type OnboardingChecklistUncheckedUpdateManyWithoutOnboardingInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    stepKey?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    isComplete?: BoolFieldUpdateOperationsInput | boolean
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedBy?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type ContentCompletionCreateManyContentInput = {
+    id?: number
+    userId: number
+    completedAt?: Date | string
+  }
+
+  export type ContentCompletionUpdateWithoutContentInput = {
+    completedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutContentCompletionsNestedInput
+  }
+
+  export type ContentCompletionUncheckedUpdateWithoutContentInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    completedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContentCompletionUncheckedUpdateManyWithoutContentInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    completedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserCreateManyRoleInput = {
     id?: number
     email: string
@@ -38658,6 +48031,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedApplications?: ApplicationUpdateManyWithoutRejectedByNestedInput
+    completedChecklistItems?: OnboardingChecklistUpdateManyWithoutCompletedByUserNestedInput
+    contentCompletions?: ContentCompletionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRoleInput = {
@@ -38671,6 +48047,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedApplications?: ApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
+    completedChecklistItems?: OnboardingChecklistUncheckedUpdateManyWithoutCompletedByUserNestedInput
+    contentCompletions?: ContentCompletionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutRoleInput = {
@@ -38712,6 +48091,123 @@ export namespace Prisma {
 
   export type RolePermissionUncheckedUpdateManyWithoutPermissionInput = {
     roleId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ApplicationCreateManyRejectedByInput = {
+    id?: number
+    type: string
+    status?: string
+    statusNotes?: string
+    statusUpdatedAt?: Date | string | null
+    kittenOfInterest?: string | null
+    formData?: string
+    rejectionReason?: string | null
+    rejectionNotes?: string | null
+    rejectedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type OnboardingChecklistCreateManyCompletedByUserInput = {
+    id?: number
+    onboardingId: number
+    stepKey: string
+    label: string
+    isComplete?: boolean
+    completedAt?: Date | string | null
+  }
+
+  export type ContentCompletionCreateManyUserInput = {
+    id?: number
+    contentId: number
+    completedAt?: Date | string
+  }
+
+  export type ApplicationUpdateWithoutRejectedByInput = {
+    type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    statusNotes?: StringFieldUpdateOperationsInput | string
+    statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
+    formData?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contracts?: ContractUpdateManyWithoutApplicationNestedInput
+    uploads?: ApplicationUploadUpdateManyWithoutApplicationNestedInput
+  }
+
+  export type ApplicationUncheckedUpdateWithoutRejectedByInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    statusNotes?: StringFieldUpdateOperationsInput | string
+    statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
+    formData?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contracts?: ContractUncheckedUpdateManyWithoutApplicationNestedInput
+    uploads?: ApplicationUploadUncheckedUpdateManyWithoutApplicationNestedInput
+  }
+
+  export type ApplicationUncheckedUpdateManyWithoutRejectedByInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    statusNotes?: StringFieldUpdateOperationsInput | string
+    statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
+    formData?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OnboardingChecklistUpdateWithoutCompletedByUserInput = {
+    stepKey?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    isComplete?: BoolFieldUpdateOperationsInput | boolean
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    onboarding?: FosterOnboardingUpdateOneRequiredWithoutChecklistItemsNestedInput
+  }
+
+  export type OnboardingChecklistUncheckedUpdateWithoutCompletedByUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    onboardingId?: IntFieldUpdateOperationsInput | number
+    stepKey?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    isComplete?: BoolFieldUpdateOperationsInput | boolean
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type OnboardingChecklistUncheckedUpdateManyWithoutCompletedByUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    onboardingId?: IntFieldUpdateOperationsInput | number
+    stepKey?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    isComplete?: BoolFieldUpdateOperationsInput | boolean
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ContentCompletionUpdateWithoutUserInput = {
+    completedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    content?: ContentUpdateOneRequiredWithoutCompletionsNestedInput
+  }
+
+  export type ContentCompletionUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    contentId?: IntFieldUpdateOperationsInput | number
+    completedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContentCompletionUncheckedUpdateManyWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    contentId?: IntFieldUpdateOperationsInput | number
+    completedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

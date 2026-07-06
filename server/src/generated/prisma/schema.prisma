@@ -57,6 +57,9 @@ model Kitten {
   isListedOnWebsite      Boolean          @default(false)
   websiteFeaturedComment String           @default("")
   publishTargets         String[]         @default([])
+  amazonWishlistUrl      String?
+  walmartWishlistUrl     String?
+  chewyWishlistUrl       String?
   currentFosterId        Int?
   currentFoster          Foster?          @relation("CurrentFoster", fields: [currentFosterId], references: [id], onDelete: SetNull)
   createdAt              DateTime         @default(now())
@@ -69,17 +72,26 @@ model Kitten {
   sponsorships           Sponsorship[]
   updates                Update[]
   transactions           Transaction[]
+
+  @@index([status])
+  @@index([litterId])
+  @@index([currentFosterId])
+  @@index([status, createdAt])
 }
 
 model Update {
-  id             Int      @id @default(autoincrement())
-  kittenId       Int
-  kitten         Kitten   @relation(fields: [kittenId], references: [id], onDelete: Cascade)
-  content        String
-  isPublic       Boolean  @default(false)
-  platformList   String   @default("")
-  publishTargets String[] @default([])
-  createdAt      DateTime @default(now())
+  id                Int      @id @default(autoincrement())
+  kittenId          Int
+  kitten            Kitten   @relation(fields: [kittenId], references: [id], onDelete: Cascade)
+  content           String
+  isPublic          Boolean  @default(false)
+  platformList      String   @default("")
+  publishTargets    String[] @default([])
+  socialDeliveryLog String   @default("")
+  createdAt         DateTime @default(now())
+
+  @@index([kittenId])
+  @@index([kittenId, createdAt])
 }
 
 model Sponsorship {
@@ -90,6 +102,8 @@ model Sponsorship {
   amount      Float
   tier        String
   createdAt   DateTime @default(now())
+
+  @@index([kittenId])
 }
 
 model Placement {
@@ -102,6 +116,9 @@ model Placement {
   dischargeDate DateTime?
   dischargeType String?
   notes         String    @default("")
+
+  @@index([kittenId])
+  @@index([fosterId])
 }
 
 model WeightLog {
@@ -113,6 +130,8 @@ model WeightLog {
   weightGrams Float    @default(0)
   loggedBy    String   @default("")
   notes       String   @default("")
+
+  @@index([kittenId, date])
 }
 
 model Vaccine {
@@ -126,6 +145,8 @@ model Vaccine {
   manufacturer   String    @default("")
   administeredBy String    @default("")
   notes          String    @default("")
+
+  @@index([kittenId])
 }
 
 model Medication {
@@ -141,6 +162,8 @@ model Medication {
   endDate   DateTime?
   status    String    @default("Active")
   notes     String    @default("")
+
+  @@index([kittenId])
 }
 
 model VetAppointment {
@@ -156,6 +179,8 @@ model VetAppointment {
   treatment    String    @default("")
   followUpDate DateTime?
   notes        String    @default("")
+
+  @@index([kittenId])
 }
 
 model Document {
@@ -169,25 +194,133 @@ model Document {
   isPrimaryPhoto Boolean  @default(false)
   sortOrder      Int      @default(0)
   uploadedAt     DateTime @default(now())
+
+  @@index([kittenId])
+  @@index([kittenId, isPrimaryPhoto])
 }
 
 model Application {
-  id               Int      @id @default(autoincrement())
+  id               Int                 @id @default(autoincrement())
   type             String
-  status           String   @default("New")
+  status           String              @default("New")
+  statusNotes      String              @default("")
+  statusUpdatedAt  DateTime?
   kittenOfInterest String?
-  formData         String   @default("{}")
-  createdAt        DateTime @default(now())
+  formData         String              @default("{}")
+  rejectionReason  String?
+  rejectionNotes   String?
+  rejectedById     Int?
+  rejectedAt       DateTime?
+  rejectedBy       User?               @relation("ApplicationRejectedBy", fields: [rejectedById], references: [id], onDelete: SetNull)
+  createdAt        DateTime            @default(now())
+  contracts        Contract[]
+  uploads          ApplicationUpload[]
+
+  @@index([rejectedById])
+}
+
+enum ContractType {
+  FOSTER
+  ADOPTION
+}
+
+enum ContractStatus {
+  SENT
+  SIGNED
+  VOID
+}
+
+model Contract {
+  id              Int            @id @default(autoincrement())
+  type            ContractType
+  signerName      String
+  signerEmail     String
+  applicationId   Int?
+  application     Application?   @relation(fields: [applicationId], references: [id], onDelete: SetNull)
+  documentVersion String
+  signedPdfUrl    String         @default("")
+  signatureAudit  String         @default("{}")
+  status          ContractStatus @default(SENT)
+  signedAt        DateTime?
+  createdAt       DateTime       @default(now())
+
+  @@index([applicationId])
+  @@index([status])
+  @@index([signerEmail])
+}
+
+enum FosterOnboardingStatus {
+  APPLIED
+  SCREENING
+  APPROVED
+  ACTIVE
+  DECLINED
+  WITHDRAWN
+}
+
+model FosterOnboarding {
+  id             Int                    @id @default(autoincrement())
+  applicantName  String
+  applicantEmail String
+  status         FosterOnboardingStatus @default(APPLIED)
+  notes          String                 @default("")
+  createdAt      DateTime               @default(now())
+  checklistItems OnboardingChecklist[]
+
+  @@index([status])
+  @@index([applicantEmail])
+}
+
+model OnboardingChecklist {
+  id              Int              @id @default(autoincrement())
+  onboardingId    Int
+  onboarding      FosterOnboarding @relation(fields: [onboardingId], references: [id], onDelete: Cascade)
+  stepKey         String
+  label           String
+  isComplete      Boolean          @default(false)
+  completedAt     DateTime?
+  completedBy     Int?
+  completedByUser User?            @relation("ChecklistCompletedBy", fields: [completedBy], references: [id], onDelete: SetNull)
+
+  @@unique([onboardingId, stepKey])
+  @@index([onboardingId])
+  @@index([completedBy])
+}
+
+model ApplicationUpload {
+  id            Int         @id @default(autoincrement())
+  applicationId Int
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  fileUrl       String
+  fileType      String
+  createdAt     DateTime    @default(now())
+
+  @@index([applicationId])
 }
 
 model Content {
-  id             Int      @id @default(autoincrement())
+  id             Int                 @id @default(autoincrement())
   title          String
-  slug           String   @unique
-  body           String   @default("")
-  category       String   @default("")
-  publishTargets String[] @default([])
-  createdAt      DateTime @default(now())
+  slug           String              @unique
+  body           String              @default("")
+  category       String              @default("")
+  isRequired     Boolean             @default(false)
+  publishTargets String[]            @default([])
+  createdAt      DateTime            @default(now())
+  completions    ContentCompletion[]
+}
+
+model ContentCompletion {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contentId   Int
+  content     Content  @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  completedAt DateTime @default(now())
+
+  @@unique([userId, contentId])
+  @@index([userId])
+  @@index([contentId])
 }
 
 model Event {
@@ -228,29 +361,76 @@ model RolePermission {
 }
 
 model User {
-  id           Int       @id @default(autoincrement())
-  email        String    @unique
-  passwordHash String
-  firstName    String
-  lastName     String
-  isActive     Boolean   @default(true)
-  roleId       Int
-  role         Role      @relation(fields: [roleId], references: [id], onDelete: Restrict)
-  fosterId     Int?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  lastLoginAt  DateTime?
+  id                      Int                   @id @default(autoincrement())
+  email                   String                @unique
+  passwordHash            String
+  firstName               String
+  lastName                String
+  isActive                Boolean               @default(true)
+  roleId                  Int
+  role                    Role                  @relation(fields: [roleId], references: [id], onDelete: Restrict)
+  fosterId                Int?
+  createdAt               DateTime              @default(now())
+  updatedAt               DateTime              @updatedAt
+  lastLoginAt             DateTime?
+  rejectedApplications    Application[]         @relation("ApplicationRejectedBy")
+  completedChecklistItems OnboardingChecklist[] @relation("ChecklistCompletedBy")
+  contentCompletions      ContentCompletion[]
 }
 
 model Settings {
-  id                    Int    @id @default(1)
-  orgName               String @default("Pawsitive Transformations")
-  missionStatement      String @default("")
-  defaultDonationAmount Int    @default(50)
-  amazonWishlistUrl     String @default("")
-  chewyWishlistUrl      String @default("")
-  facebookUrl           String @default("")
-  instagramUrl          String @default("")
+  id                         Int     @id @default(1)
+  orgName                    String  @default("Pawsitive Transformations")
+  missionStatement           String  @default("")
+  defaultDonationAmount      Int     @default(50)
+  amazonWishlistUrl          String  @default("")
+  chewyWishlistUrl           String  @default("")
+  facebookUrl                String  @default("")
+  instagramUrl               String  @default("")
+  socialPostingEnabled       Boolean @default(false)
+  facebookPageId             String  @default("")
+  facebookPageAccessToken    String  @default("")
+  instagramBusinessAccountId String  @default("")
+  groqApiKey                 String  @default("") @map("xaiApiKey")
+  groqModel                  String  @default("llama-3.3-70b-versatile") @map("grokModel")
+  emailsEnabled              Boolean @default(false)
+  smtpHost                   String  @default("")
+  smtpPort                   Int     @default(587)
+  smtpSecure                 Boolean @default(false)
+  smtpUser                   String  @default("")
+  smtpPass                   String  @default("")
+  fromEmail                  String  @default("")
+  fromName                   String  @default("")
+  adminNotifyEmail           String  @default("")
+}
+
+model EmailTemplate {
+  id          Int      @id @default(autoincrement())
+  key         String   @unique
+  name        String
+  category    String   @default("General")
+  subject     String
+  bodyHtml    String   @default("")
+  bodyText    String   @default("")
+  description String   @default("")
+  isSystem    Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model EmailLog {
+  id                Int      @id @default(autoincrement())
+  templateKey       String
+  toEmail           String
+  subject           String
+  status            String
+  provider          String   @default("smtp")
+  externalMessageId String   @default("")
+  errorMessage      String   @default("")
+  relatedType       String   @default("")
+  relatedId         Int?
+  createdAt         DateTime @default(now())
 }
 
 model Transaction {
@@ -259,6 +439,8 @@ model Transaction {
   category    String
   amount      Float
   description String   @default("")
+  donorName   String   @default("")
+  donorEmail  String   @default("")
   date        DateTime
   kittenId    Int?
   kitten      Kitten?  @relation(fields: [kittenId], references: [id], onDelete: SetNull)

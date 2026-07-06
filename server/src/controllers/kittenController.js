@@ -11,6 +11,7 @@ import {
   serializeKittenForDetail,
   serializeKittenForList,
 } from '../utils/kittenSerialization.js';
+import { evaluateKittenFlags } from '../services/medicalAutomation.js';
 
 const kittenIncludes = {
   litter: { select: { id: true, name: true } },
@@ -101,16 +102,31 @@ export async function getKittenById(req, res, next) {
   try {
     const id = Number.parseInt(req.params.id, 10);
 
-    const kitten = await prisma.kitten.findUnique({
-      where: { id },
-      include: kittenIncludes,
-    });
+    const [kitten, vaccines, weightLogs] = await Promise.all([
+      prisma.kitten.findUnique({
+        where: { id },
+        include: kittenIncludes,
+      }),
+      prisma.vaccine.findMany({
+        where: { kittenId: id },
+        orderBy: { dateGiven: 'desc' },
+      }),
+      prisma.weightLog.findMany({
+        where: { kittenId: id },
+        orderBy: { date: 'desc' },
+      }),
+    ]);
 
     if (!kitten) {
       return res.status(404).json({ error: 'Kitten not found' });
     }
 
-    res.json(serializeKittenForDetail(kitten));
+    const flags = await evaluateKittenFlags(kitten, vaccines, weightLogs);
+
+    res.json({
+      ...serializeKittenForDetail(kitten),
+      flags,
+    });
   } catch (error) {
     next(error);
   }

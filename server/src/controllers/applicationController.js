@@ -6,8 +6,42 @@ import {
 } from '../validations/applicationValidation.js';
 import { sendApplicationReceivedEmails, sendApplicationStatusChangedEmail } from '../services/emailService.js';
 import { APPLICATION_REVIEW_STATUSES } from '../constants/emailTemplates.js';
+import { validateUploadedFile } from '../utils/fileValidation.js';
 
 const VALID_STATUSES = ['New', 'Under Review', 'Approved', 'Denied'];
+const MAX_APPLICATION_PHOTOS = 3;
+
+function fileToDataUrl(file) {
+  return `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
+}
+
+async function saveApplicationUploads(applicationId, files = []) {
+  const uploads = [];
+
+  for (const file of files.slice(0, MAX_APPLICATION_PHOTOS)) {
+    const fileCheck = validateUploadedFile(file);
+    if (!fileCheck.ok) {
+      throw Object.assign(new Error(fileCheck.error), { status: fileCheck.status });
+    }
+
+    if (!file.mimetype?.startsWith('image/')) {
+      throw Object.assign(new Error('Only image uploads are allowed for application photos.'), { status: 400 });
+    }
+
+    uploads.push(
+      prisma.applicationUpload.create({
+        data: {
+          applicationId,
+          fileUrl: fileToDataUrl(file),
+          fileType: file.mimetype,
+        },
+      }),
+    );
+  }
+
+  if (uploads.length === 0) return [];
+  return Promise.all(uploads);
+}
 
 export async function getApplications(req, res, next) {
   try {
@@ -15,6 +49,12 @@ export async function getApplications(req, res, next) {
     const applications = await prisma.application.findMany({
       where: status ? { status } : undefined,
       orderBy: { createdAt: 'desc' },
+      include: {
+        uploads: { orderBy: { createdAt: 'asc' } },
+        rejectedBy: {
+          select: { id: true, firstName: true, lastName: true },
+        },
+      },
     });
     res.json(applications);
   } catch (error) {
@@ -33,6 +73,11 @@ export async function createApplication(req, res, next) {
     const { type, formData, kittenOfInterest } = parsed.data;
     const serializedFormData = typeof formData === 'string' ? formData : JSON.stringify(formData);
     const resolvedKittenOfInterest = extractKittenOfInterest(formData, kittenOfInterest);
+    const photoFiles = Array.isArray(req.files) ? req.files : [];
+
+    if (photoFiles.length > MAX_APPLICATION_PHOTOS) {
+      return res.status(400).json({ error: `Maximum ${MAX_APPLICATION_PHOTOS} photos allowed.` });
+    }
 
     const application = await prisma.application.create({
       data: {
@@ -42,11 +87,21 @@ export async function createApplication(req, res, next) {
       },
     });
 
+    let uploads = [];
+    if (photoFiles.length > 0) {
+      try {
+        uploads = await saveApplicationUploads(application.id, photoFiles);
+      } catch (uploadError) {
+        await prisma.application.delete({ where: { id: application.id } }).catch(() => {});
+        return res.status(uploadError.status || 400).json({ error: uploadError.message });
+      }
+    }
+
     sendApplicationReceivedEmails(application).catch((error) => {
       console.error('Application email trigger failed:', error.message);
     });
 
-    res.status(201).json(application);
+    res.status(201).json({ ...application, uploads });
   } catch (error) {
     next(error);
   }
@@ -55,7 +110,7 @@ export async function createApplication(req, res, next) {
 export async function updateApplicationStatus(req, res, next) {
   try {
     const id = Number.parseInt(req.params.id, 10);
-    const { status, statusNotes } = req.body;
+    const { status, statusNotes, rejectionReason, rejectionNotes } = req.body;
 
     if (!status) {
       return res.status(400).json({ error: 'status is required' });
@@ -70,13 +125,29 @@ export async function updateApplicationStatus(req, res, next) {
 
     const statusChanged = existing.status !== status;
     const normalizedNotes = typeof statusNotes === 'string' ? statusNotes.trim() : existing.statusNotes;
+    const updateData = {
+      status,
+      statusNotes: normalizedNotes,
+      statusUpdatedAt: statusChanged ? new Date() : existing.statusUpdatedAt,
+    };
+
+    if (status === 'Denied') {
+      updateData.rejectionReason = typeof rejectionReason === 'string' ? rejectionReason.trim() : existing.rejectionReason;
+      updateData.rejectionNotes = typeof rejectionNotes === 'string'
+        ? rejectionNotes.trim()
+        : normalizedNotes || existing.rejectionNotes;
+      updateData.rejectedById = req.user?.id ?? null;
+      updateData.rejectedAt = statusChanged ? new Date() : existing.rejectedAt;
+    }
 
     const application = await prisma.application.update({
       where: { id },
-      data: {
-        status,
-        statusNotes: normalizedNotes,
-        statusUpdatedAt: statusChanged ? new Date() : existing.statusUpdatedAt,
+      data: updateData,
+      include: {
+        uploads: { orderBy: { createdAt: 'asc' } },
+        rejectedBy: {
+          select: { id: true, firstName: true, lastName: true },
+        },
       },
     });
 

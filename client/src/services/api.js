@@ -502,3 +502,71 @@ export async function updateEmailSettings(data) {
   if (!response.ok) throw new Error(await readApiError(response, 'Failed to update email settings'));
   return response.json();
 }
+
+export async function fetchContracts() {
+  const response = await adminFetch('/contracts');
+  if (!response.ok) throw new Error('Failed to load contracts');
+  return response.json();
+}
+
+export async function fetchContractById(id) {
+  const response = await adminFetch(`/contracts/${id}`);
+  if (!response.ok) throw new Error('Failed to load contract');
+  return response.json();
+}
+
+export async function createContractDraft(data) {
+  const response = await adminFetch('/contracts', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to create contract'));
+  return response.json();
+}
+
+export async function markContractSigned(id, data) {
+  const response = await adminFetch(`/contracts/${id}/sign`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to mark contract signed'));
+  return response.json();
+}
+
+export async function fetchOnboardingList() {
+  const response = await adminFetch('/onboarding');
+  if (!response.ok) throw new Error('Failed to load onboarding records');
+  return response.json();
+}
+
+export async function fetchOnboardingById(id) {
+  const response = await adminFetch(`/onboarding/${id}`);
+  if (!response.ok) throw new Error('Failed to load onboarding record');
+  return response.json();
+}
+
+export async function createOnboardingRecord(data) {
+  const response = await adminFetch('/onboarding', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to create onboarding record'));
+  return response.json();
+}
+
+export async function updateOnboardingChecklistItem(onboardingId, itemId, data) {
+  const response = await adminFetch(`/onboarding/${onboardingId}/checklist/${itemId}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to update checklist item'));
+  return response.json();
+}
+
+export async function markContentComplete(contentId) {
+  const response = await adminFetch(`/content/${contentId}/complete`, {
+    method: 'POST',
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to mark content complete'));
+  return response.json();
+}

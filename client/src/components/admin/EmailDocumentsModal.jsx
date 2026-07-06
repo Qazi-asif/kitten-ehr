@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Mail, X } from 'lucide-react';
-import { sendKittenDocumentsEmail } from '../services/api';
+import { sendKittenDocumentsEmail } from '../../services/api';
 
 function EmailDocumentsModal({ open, onClose, kittenId, documents, onSuccess }) {
   const [to, setTo] = useState('');

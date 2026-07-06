@@ -27,6 +27,8 @@ import financeRoutes from './routes/financeRoutes.js';
 import emailTemplateRoutes from './routes/emailTemplateRoutes.js';
 import emailRoutes from './routes/emailRoutes.js';
 import aiRoutes from './routes/aiRoutes.js';
+import contractRoutes from './routes/contractRoutes.js';
+import onboardingRoutes from './routes/onboardingRoutes.js';
 import { requireAuth } from './middleware/authMiddleware.js';
 import { createOriginValidator } from './utils/corsOrigins.js';
 
@@ -105,6 +107,15 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
 app.use('/api/auth', authRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/public', publicRoutes);
+
+app.get('/api/health', (_req, res) => {
+  res.json({
+    status: 'ok',
+    vercel: Boolean(process.env.VERCEL),
+    databaseConfigured: Boolean(process.env.DATABASE_URL),
+  });
+});
+
 app.use('/api/users', userRoutes);
 app.use('/api/roles', roleRoutes);
 app.use('/api/kittens', requireAuth, kittenRoutes);
@@ -117,19 +128,13 @@ app.use('/api/litters', requireAuth, litterRoutes);
 app.use('/api/medical', requireAuth, medicalRoutes);
 app.use('/api/weights', requireAuth, weightRoutes);
 app.use('/api/applications', requireAuth, applicationRoutes);
+app.use('/api/contracts', requireAuth, contractRoutes);
+app.use('/api/onboarding', requireAuth, onboardingRoutes);
 app.use('/api/content', requireAuth, contentRoutes);
 app.use('/api/events', requireAuth, eventRoutes);
 app.use('/api/transactions', requireAuth, financeRoutes);
 app.use('/api/email-templates', emailTemplateRoutes);
 app.use('/api', requireAuth, aiRoutes);
-
-app.get('/api/health', (_req, res) => {
-  res.json({
-    status: 'ok',
-    vercel: Boolean(process.env.VERCEL),
-    databaseConfigured: Boolean(process.env.DATABASE_URL),
-  });
-});
 
 app.use((err, _req, res, _next) => {
   console.error(err.stack || err.message || err);

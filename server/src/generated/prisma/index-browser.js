@@ -272,6 +272,51 @@ exports.Prisma.ApplicationScalarFieldEnum = {
   statusUpdatedAt: 'statusUpdatedAt',
   kittenOfInterest: 'kittenOfInterest',
   formData: 'formData',
+  rejectionReason: 'rejectionReason',
+  rejectionNotes: 'rejectionNotes',
+  rejectedById: 'rejectedById',
+  rejectedAt: 'rejectedAt',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ContractScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  signerName: 'signerName',
+  signerEmail: 'signerEmail',
+  applicationId: 'applicationId',
+  documentVersion: 'documentVersion',
+  signedPdfUrl: 'signedPdfUrl',
+  signatureAudit: 'signatureAudit',
+  status: 'status',
+  signedAt: 'signedAt',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.FosterOnboardingScalarFieldEnum = {
+  id: 'id',
+  applicantName: 'applicantName',
+  applicantEmail: 'applicantEmail',
+  status: 'status',
+  notes: 'notes',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.OnboardingChecklistScalarFieldEnum = {
+  id: 'id',
+  onboardingId: 'onboardingId',
+  stepKey: 'stepKey',
+  label: 'label',
+  isComplete: 'isComplete',
+  completedAt: 'completedAt',
+  completedBy: 'completedBy'
+};
+
+exports.Prisma.ApplicationUploadScalarFieldEnum = {
+  id: 'id',
+  applicationId: 'applicationId',
+  fileUrl: 'fileUrl',
+  fileType: 'fileType',
   createdAt: 'createdAt'
 };
 
@@ -281,8 +326,16 @@ exports.Prisma.ContentScalarFieldEnum = {
   slug: 'slug',
   body: 'body',
   category: 'category',
+  isRequired: 'isRequired',
   publishTargets: 'publishTargets',
   createdAt: 'createdAt'
+};
+
+exports.Prisma.ContentCompletionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  contentId: 'contentId',
+  completedAt: 'completedAt'
 };
 
 exports.Prisma.EventScalarFieldEnum = {
@@ -411,7 +464,25 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.ContractType = exports.$Enums.ContractType = {
+  FOSTER: 'FOSTER',
+  ADOPTION: 'ADOPTION'
+};
 
+exports.ContractStatus = exports.$Enums.ContractStatus = {
+  SENT: 'SENT',
+  SIGNED: 'SIGNED',
+  VOID: 'VOID'
+};
+
+exports.FosterOnboardingStatus = exports.$Enums.FosterOnboardingStatus = {
+  APPLIED: 'APPLIED',
+  SCREENING: 'SCREENING',
+  APPROVED: 'APPROVED',
+  ACTIVE: 'ACTIVE',
+  DECLINED: 'DECLINED',
+  WITHDRAWN: 'WITHDRAWN'
+};
 
 exports.Prisma.ModelName = {
   Litter: 'Litter',
@@ -426,7 +497,12 @@ exports.Prisma.ModelName = {
   VetAppointment: 'VetAppointment',
   Document: 'Document',
   Application: 'Application',
+  Contract: 'Contract',
+  FosterOnboarding: 'FosterOnboarding',
+  OnboardingChecklist: 'OnboardingChecklist',
+  ApplicationUpload: 'ApplicationUpload',
   Content: 'Content',
+  ContentCompletion: 'ContentCompletion',
   Event: 'Event',
   Role: 'Role',
   Permission: 'Permission',
