@@ -527,7 +527,18 @@ export async function createContractDraft(data) {
 export async function markContractSigned(id, data) {
   const response = await adminFetch(`/contracts/${id}/sign`, {
     method: 'POST',
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      signatureImage: data.signatureImage,
+      signedAt: data.signedAt,
+      ipAddress: data.ipAddress,
+      signedPdfUrl: data.signatureImage,
+      signatureAudit: {
+        signatureImage: data.signatureImage,
+        signedAt: data.signedAt,
+        ipAddress: data.ipAddress,
+        signedVia: 'ContractSigningPad',
+      },
+    }),
   });
   if (!response.ok) throw new Error(await readApiError(response, 'Failed to mark contract signed'));
   return response.json();

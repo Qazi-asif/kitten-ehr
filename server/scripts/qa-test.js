@@ -200,6 +200,33 @@ async function run() {
     fail('POST /api/contracts', e.message);
   }
 
+  if (createdContractId) {
+    const qaSignatureImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
+    try {
+      const { data, response } = await api(`/api/contracts/${createdContractId}/sign`, {
+        method: 'POST',
+        body: {
+          signatureImage: qaSignatureImage,
+          signedAt: new Date().toISOString(),
+          ipAddress: '192.0.2.1',
+          signatureAudit: {
+            signatureImage: qaSignatureImage,
+            signedAt: new Date().toISOString(),
+            ipAddress: '192.0.2.1',
+            signedVia: 'qa-test',
+          },
+        },
+      });
+      if (response.ok && data.status === 'SIGNED' && data.signedAt) {
+        pass(`POST /api/contracts/${createdContractId}/sign`);
+      } else {
+        fail(`POST /api/contracts/${createdContractId}/sign`, JSON.stringify(data));
+      }
+    } catch (e) {
+      fail(`POST /api/contracts/${createdContractId}/sign`, e.message);
+    }
+  }
+
   try {
     const { data } = await api('/api/onboarding');
     if (Array.isArray(data)) pass(`GET /api/onboarding (${data.length} records)`);
