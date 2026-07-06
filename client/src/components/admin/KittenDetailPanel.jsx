@@ -7,6 +7,7 @@ import LitterSelect from './LitterSelect';
 import KittenPlacementTable from './KittenPlacementTable';
 import StatusBadge from './StatusBadge';
 import KittenDocumentsTab from './KittenDocumentsTab';
+import MedicalAlertsBanner from './MedicalAlertsBanner';
 import FaceSheet from '../FaceSheet';
 import KittenPhoto from '../KittenPhoto';
 import MedicationForm from '../MedicationForm';
@@ -414,25 +415,11 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
   return (
     <>
       <div className={`rounded-lg border border-gray-200 bg-white shadow-sm ${embedded ? '' : 'print:hidden'}`}>
-        {!alertsDismissed && medicalFlags.length > 0 && (
-          <div className="flex flex-wrap items-start justify-between gap-3 border-b border-red-200 bg-red-50 px-5 py-3">
-            <div>
-              <p className="text-sm font-bold text-red-800">Medical Alerts</p>
-              <ul className="mt-1 list-inside list-disc text-sm text-red-700">
-                {medicalFlags.map((flag) => (
-                  <li key={`${flag.type}-${flag.label}`}>{flag.label}</li>
-                ))}
-              </ul>
-            </div>
-            <button
-              type="button"
-              onClick={() => setAlertsDismissed(true)}
-              className="rounded-lg border border-red-200 bg-white px-3 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-100"
-            >
-              Dismiss
-            </button>
-          </div>
-        )}
+        <MedicalAlertsBanner
+          flags={medicalFlags}
+          dismissed={alertsDismissed}
+          onDismiss={() => setAlertsDismissed(true)}
+        />
 
         {!embedded && (
           <div className="flex items-center justify-end gap-2 border-b border-gray-100 px-4 py-3">

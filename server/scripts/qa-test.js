@@ -12,6 +12,8 @@ let token = '';
 let createdTxId = null;
 let createdSocialUpdateId = null;
 let qaKittenId = null;
+let createdContractId = null;
+let createdOnboardingId = null;
 
 function pass(name) {
   results.push({ name, ok: true });
@@ -171,14 +173,71 @@ async function run() {
     fail('PATCH /api/settings normalizes social URLs', e.message);
   }
 
+  // Phase 2: contracts & onboarding
+  try {
+    const { data } = await api('/api/contracts');
+    if (Array.isArray(data)) pass(`GET /api/contracts (${data.length} records)`);
+    else fail('GET /api/contracts', 'not array');
+  } catch (e) {
+    fail('GET /api/contracts', e.message);
+  }
+
+  try {
+    const { data, response } = await api('/api/contracts', {
+      method: 'POST',
+      body: {
+        type: 'FOSTER',
+        signerName: 'QA Tester',
+        signerEmail: 'qa-contract@test.com',
+        documentVersion: '1.0',
+      },
+      expectStatus: 201,
+    });
+    createdContractId = data?.id ?? null;
+    if (response.status === 201 && createdContractId) pass(`POST /api/contracts created id=${createdContractId}`);
+    else fail('POST /api/contracts', JSON.stringify(data));
+  } catch (e) {
+    fail('POST /api/contracts', e.message);
+  }
+
+  try {
+    const { data } = await api('/api/onboarding');
+    if (Array.isArray(data)) pass(`GET /api/onboarding (${data.length} records)`);
+    else fail('GET /api/onboarding', 'not array');
+  } catch (e) {
+    fail('GET /api/onboarding', e.message);
+  }
+
+  try {
+    const { data, response } = await api('/api/onboarding', {
+      method: 'POST',
+      body: {
+        applicantName: 'QA Foster',
+        applicantEmail: 'qa-onboarding@test.com',
+        notes: 'QA onboarding record',
+      },
+      expectStatus: 201,
+    });
+    createdOnboardingId = data?.id ?? null;
+    if (response.status === 201 && createdOnboardingId && Array.isArray(data.checklistItems)) {
+      pass(`POST /api/onboarding created id=${createdOnboardingId} (${data.checklistItems.length} checklist items)`);
+    } else {
+      fail('POST /api/onboarding', JSON.stringify(data));
+    }
+  } catch (e) {
+    fail('POST /api/onboarding', e.message);
+  }
+
   if (qaKittenId) {
     try {
       const { data } = await api(`/api/kittens/${qaKittenId}`);
       if (data?.id === qaKittenId) {
         if (data.hasPrimaryPhoto && !data.primaryPhotoUrl) {
           fail(`GET /api/kittens/${qaKittenId} detail photo`, 'hasPrimaryPhoto true but primaryPhotoUrl missing');
+        } else if (!Array.isArray(data.flags)) {
+          fail(`GET /api/kittens/${qaKittenId} medical flags`, 'flags array missing from detail response');
         } else {
-          pass(`GET /api/kittens/${qaKittenId} detail (photo=${data.hasPrimaryPhoto ? 'yes' : 'none'})`);
+          pass(`GET /api/kittens/${qaKittenId} detail (photo=${data.hasPrimaryPhoto ? 'yes' : 'none'}, flags=${data.flags.length})`);
         }
       } else {
         fail(`GET /api/kittens/${qaKittenId}`, JSON.stringify(data));

@@ -15,6 +15,7 @@ import VetVisitsTable from '../components/VetVisitsTable';
 import WeightLogForm from '../components/WeightLogForm';
 import WeightLogsTable from '../components/WeightLogsTable';
 import LitterSelect from '../components/admin/LitterSelect';
+import MedicalAlertsBanner from '../components/admin/MedicalAlertsBanner';
 import {
   createMedication,
   createVaccine,
@@ -101,6 +102,7 @@ function KittenDetailPage() {
   const [litterId, setLitterId] = useState('');
   const [savingLitter, setSavingLitter] = useState(false);
   const [error, setError] = useState(null);
+  const [alertsDismissed, setAlertsDismissed] = useState(false);
   const actionsRef = useRef(null);
 
   const loadKitten = useCallback(async () => {
@@ -154,6 +156,7 @@ function KittenDetailPage() {
     setLoading(true);
     setPhotosLoading(true);
     setError(null);
+    setAlertsDismissed(false);
     setLoadedTabs(new Set(['overview']));
     setActiveTab('overview');
     setGalleryPhotos([]);
@@ -396,6 +399,7 @@ function KittenDetailPage() {
 
   const latestWeight = weightLogs[0];
   const age = formatKittenAge(kitten.dateOfBirth);
+  const medicalFlags = kitten.flags || [];
 
   return (
     <>
@@ -451,7 +455,13 @@ function KittenDetailPage() {
 
         {error && <div className="mb-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}
 
-        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+          <MedicalAlertsBanner
+            flags={medicalFlags}
+            dismissed={alertsDismissed}
+            onDismiss={() => setAlertsDismissed(true)}
+          />
+          <div className="p-6">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[280px_1fr]">
             <div>
               <KittenPhotoManager
@@ -507,6 +517,7 @@ function KittenDetailPage() {
                 </div>
               </dl>
             </div>
+          </div>
           </div>
         </div>
 
