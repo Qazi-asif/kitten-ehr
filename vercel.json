@@ -1,8 +1,16 @@
 {
   "version": 2,
-  "installCommand": "npm install --prefix server && npm install --prefix client",
+  "installCommand": "npm install --prefix server && npm run vercel:prepare --prefix server && npm install --prefix client",
   "buildCommand": "npm run build --prefix server && npm run build --prefix client",
   "outputDirectory": "client/dist",
+  "headers": [
+    {
+      "source": "/index.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+      ]
+    }
+  ],
   "functions": {
     "api/index.js": {
       "memory": 1024,

@@ -206,13 +206,7 @@ function ContractsPage() {
 
   return (
     <div>
-      <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Contracts</h1>
-          <p className="mt-1 text-sm text-gray-500">
-            E-signature contracts for foster and adoption agreements. Search by kitten name, signer, or contract date.
-          </p>
-        </div>
+      <div className="mb-6 flex flex-wrap items-center justify-end gap-4">
         <button
           type="button"
           onClick={() => setShowDraftForm((open) => !open)}
