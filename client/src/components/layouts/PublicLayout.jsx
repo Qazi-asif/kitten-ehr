@@ -297,6 +297,15 @@ function PublicLayout() {
             </a>
           </div>
         </div>
+        <div className="border-t border-white/10 px-6 py-3 text-center lg:px-8">
+          <Link
+            to="/privacy#our-use-of-technology"
+            className="text-xs text-gray-400 transition-colors hover:text-gray-300"
+          >
+            This platform utilizes AI-assisted tools to help our staff manage operations and share rescue
+            stories more efficiently.
+          </Link>
+        </div>
       </footer>
     </div>
   );

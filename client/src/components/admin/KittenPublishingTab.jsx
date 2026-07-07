@@ -5,6 +5,7 @@ import PublishingMatrix from '../PublishingMatrix';
 import {
   createSocialMediaPost,
   fetchKittenUpdates,
+  fetchSettings,
   generateAiCaption,
   getFileUrl,
   updateKitten,
@@ -66,6 +67,8 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [generatingCaption, setGeneratingCaption] = useState(false);
   const [captionError, setCaptionError] = useState('');
+  const [aiEnabled, setAiEnabled] = useState(true);
+  const [aiSettingsLoaded, setAiSettingsLoaded] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const uploadInputRef = useRef(null);
@@ -86,6 +89,13 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
   useEffect(() => {
     loadPostHistory().catch(() => setPostHistory([]));
   }, [loadPostHistory]);
+
+  useEffect(() => {
+    fetchSettings()
+      .then((settings) => setAiEnabled(settings.aiEnabled !== false))
+      .catch(() => setAiEnabled(true))
+      .finally(() => setAiSettingsLoaded(true));
+  }, []);
 
   const photoOptions = useMemo(() => {
     const seen = new Set();
@@ -158,7 +168,8 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
     try {
       const result = await generateAiCaption({
         name: kitten.name || '',
-        story: kitten.rescueStory || publishingForm.websiteFeaturedComment || '',
+        story: kitten.rescueStory || '',
+        breed: kitten.breed || '',
         status: kitten.status || '',
       });
       setSocialCaption(result.caption);
@@ -316,16 +327,23 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
           <div>
             <div className="flex flex-wrap items-center justify-between gap-3">
               <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">Caption</label>
-              <button
-                type="button"
-                onClick={handleGenerateCaption}
-                disabled={generatingCaption}
-                className="inline-flex items-center gap-2 rounded-lg border border-brand/20 bg-brand-light px-4 py-2 text-sm font-semibold text-brand hover:bg-brand/10 disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                <Sparkles className="h-4 w-4" />
-                {generatingCaption ? 'Generating...' : '✨ Generate AI Caption'}
-              </button>
+              {aiSettingsLoaded && aiEnabled && (
+                <button
+                  type="button"
+                  onClick={handleGenerateCaption}
+                  disabled={generatingCaption}
+                  className="inline-flex items-center gap-2 rounded-lg border border-brand/20 bg-brand-light px-4 py-2 text-sm font-semibold text-brand hover:bg-brand/10 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  <Sparkles className="h-4 w-4" />
+                  {generatingCaption ? 'Generating...' : '✨ Generate AI Caption'}
+                </button>
+              )}
             </div>
+            {aiSettingsLoaded && !aiEnabled && (
+              <p className="mt-2 text-xs text-slate-500">
+                AI features are currently disabled by the administrator.
+              </p>
+            )}
             {captionError && (
               <p className="mt-2 text-xs text-red-600">{captionError}</p>
             )}

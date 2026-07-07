@@ -27,6 +27,7 @@ const DEFAULTS = {
   instagramBusinessAccountId: '',
   groqApiKey: '',
   groqModel: 'llama-3.3-70b-versatile',
+  aiEnabled: true,
   emailsEnabled: false,
   smtpHost: '',
   smtpPort: 587,
@@ -82,6 +83,7 @@ export async function updateSettings(req, res, next) {
       instagramBusinessAccountId,
       groqApiKey,
       groqModel,
+      aiEnabled,
       xaiApiKey,
       grokModel,
       emailsEnabled,
@@ -132,6 +134,7 @@ export async function updateSettings(req, res, next) {
       const model = String(modelInput).trim();
       data.groqModel = model || 'llama-3.3-70b-versatile';
     }
+    if (aiEnabled !== undefined) data.aiEnabled = Boolean(aiEnabled);
     if (emailsEnabled !== undefined) data.emailsEnabled = Boolean(emailsEnabled);
     if (smtpHost !== undefined) data.smtpHost = String(smtpHost).trim();
     if (smtpPort !== undefined) {

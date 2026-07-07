@@ -19,6 +19,7 @@ import OnboardingPage from './pages/admin/OnboardingPage';
 import SettingsPage from './pages/admin/SettingsPage';
 import EmailTemplatesPage from './pages/admin/EmailTemplatesPage';
 import AboutPage from './pages/public/AboutPage';
+import PrivacyPolicyPage from './pages/public/PrivacyPolicyPage';
 import AdoptionFormPage from './pages/public/AdoptionFormPage';
 import ArticlePage from './pages/public/ArticlePage';
 import AvailableKittensPage from './pages/public/AvailableKittensPage';
@@ -53,6 +54,7 @@ function App() {
             <Route path="/donate" element={<DonatePage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/privacy" element={<PrivacyPolicyPage />} />
           </Route>
 
           <Route element={<ProtectedRoute />}>

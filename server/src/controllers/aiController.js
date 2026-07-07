@@ -1,6 +1,9 @@
+import prisma from '../lib/prisma.js';
 import { getMissingKeyHint, resolveAiProvider } from '../utils/aiProvider.js';
 import { createChatCompletion } from '../utils/aiChat.js';
-import { buildSafeAiKittenPayload } from '../utils/piiSanitizer.js';
+import { buildSafeAiContext } from '../utils/piiSanitizer.js';
+
+const SETTINGS_ID = 1;
 
 const SYSTEM_PROMPT =
   'You are an expert social media manager for a cat rescue. Write a highly engaging, emotional, and optimized Facebook/Instagram caption for this kitten. Follow 2026 Meta best practices: start with a hook, use emojis, keep it under 200 words, include 3-5 relevant hashtags. Do not use banned or overly aggressive language. CRITICAL: You must end every caption with a call to action including the donation link. Format it exactly like this at the end: "Support our rescue and donate here: [DONATE_LINK]"';
@@ -15,28 +18,43 @@ function getDonationUrl() {
   return 'https://buy.stripe.com/test_placeholder';
 }
 
+async function assertAiGenerationEnabled() {
+  const settings = await prisma.settings.findUnique({ where: { id: SETTINGS_ID } });
+  if (settings?.aiEnabled === false) {
+    throw Object.assign(
+      new Error('AI content generation is disabled by your organization administrator.'),
+      { status: 403 },
+    );
+  }
+}
+
+function buildUserPrompt(safeContext, donationUrl) {
+  return [
+    `Kitten name: ${safeContext.name.trim()}`,
+    `Breed: ${safeContext.breed?.trim() || 'Unknown'}`,
+    `Status: ${safeContext.status?.trim() || 'Unknown'}`,
+    `Rescue story: ${safeContext.story?.trim() || 'No public story provided yet.'}`,
+    `Donation URL (use as [DONATE_LINK] in the closing call to action): ${donationUrl}`,
+  ].join('\n');
+}
+
 export async function generateCaption(req, res, next) {
   try {
+    await assertAiGenerationEnabled();
+
     const provider = await resolveAiProvider();
     if (!provider) {
       return res.status(503).json({ error: `AI API key is not configured. ${getMissingKeyHint()}` });
     }
 
-    const safePayload = buildSafeAiKittenPayload(req.body);
-    const { name, story, status } = safePayload;
+    const safeContext = buildSafeAiContext(req.body);
 
-    if (!name?.trim()) {
+    if (!safeContext.name?.trim()) {
       return res.status(400).json({ error: 'Kitten name is required' });
     }
 
     const donationUrl = getDonationUrl();
-
-    const userPrompt = [
-      `Kitten name: ${name.trim()}`,
-      `Status: ${status?.trim() || 'Unknown'}`,
-      `Story: ${story?.trim() || 'No story provided yet.'}`,
-      `Donation URL (use as [DONATE_LINK] in the closing call to action): ${donationUrl}`,
-    ].join('\n');
+    const userPrompt = buildUserPrompt(safeContext, donationUrl);
 
     const { payload } = await createChatCompletion(provider, [
       { role: 'system', content: SYSTEM_PROMPT },
@@ -55,8 +73,8 @@ export async function generateCaption(req, res, next) {
 
     res.json({ caption, aiGenerated: true });
   } catch (error) {
-    if (error.status === 400) {
-      return res.status(400).json({ error: error.message });
+    if (error.status === 400 || error.status === 403) {
+      return res.status(error.status).json({ error: error.message });
     }
 
     if (error.status) {

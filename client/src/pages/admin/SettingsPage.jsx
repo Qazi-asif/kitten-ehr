@@ -35,6 +35,7 @@ const EMPTY_ORG = {
   groqApiKey: '',
   groqModel: 'llama-3.3-70b-versatile',
   groqApiKeyConfigured: false,
+  aiEnabled: true,
 };
 
 const EMPTY_USER = {
@@ -106,6 +107,7 @@ function SettingsPage() {
         groqApiKey: '',
         groqModel: settingsData.groqModel || settingsData.grokModel || 'llama-3.3-70b-versatile',
         groqApiKeyConfigured: Boolean(settingsData.groqApiKeyConfigured ?? settingsData.xaiApiKeyConfigured),
+        aiEnabled: settingsData.aiEnabled !== false,
       });
 
       const tasks = [];
@@ -156,6 +158,7 @@ function SettingsPage() {
         groqApiKey: '',
         groqModel: updated.groqModel || updated.grokModel || 'llama-3.3-70b-versatile',
         groqApiKeyConfigured: Boolean(updated.groqApiKeyConfigured ?? updated.xaiApiKeyConfigured),
+        aiEnabled: updated.aiEnabled !== false,
       });
     } catch (err) {
       setError(err.message);
@@ -444,9 +447,32 @@ function SettingsPage() {
           </div>
 
           <div className="rounded-xl border border-brand/20 bg-brand-light/30 p-5">
-            <h3 className="text-sm font-bold text-slate-900">AI Copywriter (Groq)</h3>
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <h3 className="text-sm font-bold text-slate-900">AI Content Generation</h3>
+                <p className="mt-1 text-sm text-slate-600">
+                  Organization-wide control for AI-assisted social captions (NIST GOVERN / opt-out).
+                </p>
+              </div>
+              <label className="flex cursor-pointer items-center gap-3">
+                <span className="text-sm font-semibold text-slate-700">Enable AI Content Generation</span>
+                <span className="relative inline-flex h-6 w-11 shrink-0">
+                  <input
+                    type="checkbox"
+                    checked={orgSettings.aiEnabled}
+                    onChange={(e) => handleOrgFieldChange('aiEnabled', e.target.checked)}
+                    disabled={!canManageOrg}
+                    className="peer sr-only"
+                  />
+                  <span className="absolute inset-0 rounded-full bg-slate-300 transition peer-checked:bg-emerald-600 peer-disabled:opacity-50" />
+                  <span className="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-5" />
+                </span>
+              </label>
+            </div>
+
+            <h4 className="mt-5 text-sm font-bold text-slate-900">AI Copywriter (Groq)</h4>
             <p className="mt-1 text-sm text-slate-600">
-              Powers the Generate AI Caption button on the Publishing tab. Save your Groq key here, or set{' '}
+              Powers the Generate AI Caption button on the Publishing tab when AI is enabled. Save your Groq key here, or set{' '}
               <code className="rounded bg-white px-1 py-0.5 text-xs">GROQ_API_KEY</code> in Vercel environment
               variables.
             </p>

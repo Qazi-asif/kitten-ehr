@@ -6,6 +6,10 @@ const STREET_ADDRESS_PATTERN =
   /\b\d{1,6}\s+(?:[A-Za-z0-9#]+\s+){0,4}(?:Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Drive|Dr|Lane|Ln|Court|Ct|Way|Place|Pl|Circle|Cir)\.?\b/gi;
 const ZIP_PLUS_ADDRESS_PATTERN = /\b\d{5}(?:-\d{4})?\b/g;
 
+/** Only these request keys may be present on AI caption requests. */
+const ALLOWED_INPUT_KEYS = new Set(['name', 'story', 'rescueStory', 'breed', 'status']);
+
+/** Sensitive fields that must never be sent to external AI providers. */
 const BLOCKED_FIELD_KEYS = new Set([
   'microchipNumber',
   'internalNotes',
@@ -29,6 +33,21 @@ const BLOCKED_FIELD_KEYS = new Set([
   'signatureAudit',
   'primaryPhotoUrl',
   'photoUrl',
+  'fivFelvStatus',
+  'specialNeeds',
+  'fixedStatus',
+  'color',
+  'sex',
+  'dateOfBirth',
+  'intakeDate',
+  'weightLogs',
+  'vaccines',
+  'medications',
+  'vetAppointments',
+  'medicalRecords',
+  'placements',
+  'documents',
+  'websiteFeaturedComment',
 ]);
 
 const REDACTED = '[redacted]';
@@ -53,20 +72,33 @@ export function sanitizeTextForAi(text, maxLength = 1200) {
   return `${redacted.slice(0, maxLength).trim()}…`;
 }
 
-export function buildSafeAiKittenPayload(body = {}) {
+/**
+ * Build a minimal public-facing context object for AI providers (CCPA / NIST MAP).
+ * Only non-sensitive adoption-marketing fields are included.
+ */
+export function buildSafeAiContext(body = {}) {
   if (!body || typeof body !== 'object') {
-    return { name: '', story: '', status: '' };
+    return { name: '', story: '', breed: '', status: '' };
   }
 
   for (const key of Object.keys(body)) {
     if (BLOCKED_FIELD_KEYS.has(key)) {
       throw Object.assign(new Error(`Field "${key}" cannot be sent to AI services`), { status: 400 });
     }
+    if (!ALLOWED_INPUT_KEYS.has(key)) {
+      throw Object.assign(new Error(`Field "${key}" is not permitted for AI services`), { status: 400 });
+    }
   }
 
-  const name = sanitizeTextForAi(String(body.name || ''), 80);
-  const story = sanitizeTextForAi(String(body.story || ''), 1200);
-  const status = sanitizeTextForAi(String(body.status || ''), 80);
+  const storySource = body.story ?? body.rescueStory ?? '';
 
-  return { name, story, status };
+  return {
+    name: sanitizeTextForAi(String(body.name || ''), 80),
+    story: sanitizeTextForAi(String(storySource), 1200),
+    breed: sanitizeTextForAi(String(body.breed || ''), 80),
+    status: sanitizeTextForAi(String(body.status || ''), 80),
+  };
 }
+
+/** @deprecated Use buildSafeAiContext */
+export const buildSafeAiKittenPayload = buildSafeAiContext;
