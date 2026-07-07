@@ -401,6 +401,7 @@ model Settings {
   instagramBusinessAccountId String  @default("")
   groqApiKey                 String  @default("") @map("xaiApiKey")
   groqModel                  String  @default("llama-3.3-70b-versatile") @map("grokModel")
+  aiEnabled                  Boolean @default(true)
   emailsEnabled              Boolean @default(false)
   smtpHost                   String  @default("")
   smtpPort                   Int     @default(587)

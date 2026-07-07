@@ -30604,6 +30604,7 @@ export namespace Prisma {
     instagramBusinessAccountId: string | null
     groqApiKey: string | null
     groqModel: string | null
+    aiEnabled: boolean | null
     emailsEnabled: boolean | null
     smtpHost: string | null
     smtpPort: number | null
@@ -30630,6 +30631,7 @@ export namespace Prisma {
     instagramBusinessAccountId: string | null
     groqApiKey: string | null
     groqModel: string | null
+    aiEnabled: boolean | null
     emailsEnabled: boolean | null
     smtpHost: string | null
     smtpPort: number | null
@@ -30656,6 +30658,7 @@ export namespace Prisma {
     instagramBusinessAccountId: number
     groqApiKey: number
     groqModel: number
+    aiEnabled: number
     emailsEnabled: number
     smtpHost: number
     smtpPort: number
@@ -30696,6 +30699,7 @@ export namespace Prisma {
     instagramBusinessAccountId?: true
     groqApiKey?: true
     groqModel?: true
+    aiEnabled?: true
     emailsEnabled?: true
     smtpHost?: true
     smtpPort?: true
@@ -30722,6 +30726,7 @@ export namespace Prisma {
     instagramBusinessAccountId?: true
     groqApiKey?: true
     groqModel?: true
+    aiEnabled?: true
     emailsEnabled?: true
     smtpHost?: true
     smtpPort?: true
@@ -30748,6 +30753,7 @@ export namespace Prisma {
     instagramBusinessAccountId?: true
     groqApiKey?: true
     groqModel?: true
+    aiEnabled?: true
     emailsEnabled?: true
     smtpHost?: true
     smtpPort?: true
@@ -30861,6 +30867,7 @@ export namespace Prisma {
     instagramBusinessAccountId: string
     groqApiKey: string
     groqModel: string
+    aiEnabled: boolean
     emailsEnabled: boolean
     smtpHost: string
     smtpPort: number
@@ -30906,6 +30913,7 @@ export namespace Prisma {
     instagramBusinessAccountId?: boolean
     groqApiKey?: boolean
     groqModel?: boolean
+    aiEnabled?: boolean
     emailsEnabled?: boolean
     smtpHost?: boolean
     smtpPort?: boolean
@@ -30932,6 +30940,7 @@ export namespace Prisma {
     instagramBusinessAccountId?: boolean
     groqApiKey?: boolean
     groqModel?: boolean
+    aiEnabled?: boolean
     emailsEnabled?: boolean
     smtpHost?: boolean
     smtpPort?: boolean
@@ -30958,6 +30967,7 @@ export namespace Prisma {
     instagramBusinessAccountId?: boolean
     groqApiKey?: boolean
     groqModel?: boolean
+    aiEnabled?: boolean
     emailsEnabled?: boolean
     smtpHost?: boolean
     smtpPort?: boolean
@@ -30984,6 +30994,7 @@ export namespace Prisma {
     instagramBusinessAccountId?: boolean
     groqApiKey?: boolean
     groqModel?: boolean
+    aiEnabled?: boolean
     emailsEnabled?: boolean
     smtpHost?: boolean
     smtpPort?: boolean
@@ -30995,7 +31006,7 @@ export namespace Prisma {
     adminNotifyEmail?: boolean
   }
 
-  export type SettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orgName" | "missionStatement" | "defaultDonationAmount" | "amazonWishlistUrl" | "chewyWishlistUrl" | "facebookUrl" | "instagramUrl" | "socialPostingEnabled" | "facebookPageId" | "facebookPageAccessToken" | "instagramBusinessAccountId" | "groqApiKey" | "groqModel" | "emailsEnabled" | "smtpHost" | "smtpPort" | "smtpSecure" | "smtpUser" | "smtpPass" | "fromEmail" | "fromName" | "adminNotifyEmail", ExtArgs["result"]["settings"]>
+  export type SettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orgName" | "missionStatement" | "defaultDonationAmount" | "amazonWishlistUrl" | "chewyWishlistUrl" | "facebookUrl" | "instagramUrl" | "socialPostingEnabled" | "facebookPageId" | "facebookPageAccessToken" | "instagramBusinessAccountId" | "groqApiKey" | "groqModel" | "aiEnabled" | "emailsEnabled" | "smtpHost" | "smtpPort" | "smtpSecure" | "smtpUser" | "smtpPass" | "fromEmail" | "fromName" | "adminNotifyEmail", ExtArgs["result"]["settings"]>
 
   export type $SettingsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Settings"
@@ -31015,6 +31026,7 @@ export namespace Prisma {
       instagramBusinessAccountId: string
       groqApiKey: string
       groqModel: string
+      aiEnabled: boolean
       emailsEnabled: boolean
       smtpHost: string
       smtpPort: number
@@ -31461,6 +31473,7 @@ export namespace Prisma {
     readonly instagramBusinessAccountId: FieldRef<"Settings", 'String'>
     readonly groqApiKey: FieldRef<"Settings", 'String'>
     readonly groqModel: FieldRef<"Settings", 'String'>
+    readonly aiEnabled: FieldRef<"Settings", 'Boolean'>
     readonly emailsEnabled: FieldRef<"Settings", 'Boolean'>
     readonly smtpHost: FieldRef<"Settings", 'String'>
     readonly smtpPort: FieldRef<"Settings", 'Int'>
@@ -35612,6 +35625,7 @@ export namespace Prisma {
     instagramBusinessAccountId: 'instagramBusinessAccountId',
     groqApiKey: 'groqApiKey',
     groqModel: 'groqModel',
+    aiEnabled: 'aiEnabled',
     emailsEnabled: 'emailsEnabled',
     smtpHost: 'smtpHost',
     smtpPort: 'smtpPort',
@@ -37607,6 +37621,7 @@ export namespace Prisma {
     instagramBusinessAccountId?: StringFilter<"Settings"> | string
     groqApiKey?: StringFilter<"Settings"> | string
     groqModel?: StringFilter<"Settings"> | string
+    aiEnabled?: BoolFilter<"Settings"> | boolean
     emailsEnabled?: BoolFilter<"Settings"> | boolean
     smtpHost?: StringFilter<"Settings"> | string
     smtpPort?: IntFilter<"Settings"> | number
@@ -37633,6 +37648,7 @@ export namespace Prisma {
     instagramBusinessAccountId?: SortOrder
     groqApiKey?: SortOrder
     groqModel?: SortOrder
+    aiEnabled?: SortOrder
     emailsEnabled?: SortOrder
     smtpHost?: SortOrder
     smtpPort?: SortOrder
@@ -37662,6 +37678,7 @@ export namespace Prisma {
     instagramBusinessAccountId?: StringFilter<"Settings"> | string
     groqApiKey?: StringFilter<"Settings"> | string
     groqModel?: StringFilter<"Settings"> | string
+    aiEnabled?: BoolFilter<"Settings"> | boolean
     emailsEnabled?: BoolFilter<"Settings"> | boolean
     smtpHost?: StringFilter<"Settings"> | string
     smtpPort?: IntFilter<"Settings"> | number
@@ -37688,6 +37705,7 @@ export namespace Prisma {
     instagramBusinessAccountId?: SortOrder
     groqApiKey?: SortOrder
     groqModel?: SortOrder
+    aiEnabled?: SortOrder
     emailsEnabled?: SortOrder
     smtpHost?: SortOrder
     smtpPort?: SortOrder
@@ -37722,6 +37740,7 @@ export namespace Prisma {
     instagramBusinessAccountId?: StringWithAggregatesFilter<"Settings"> | string
     groqApiKey?: StringWithAggregatesFilter<"Settings"> | string
     groqModel?: StringWithAggregatesFilter<"Settings"> | string
+    aiEnabled?: BoolWithAggregatesFilter<"Settings"> | boolean
     emailsEnabled?: BoolWithAggregatesFilter<"Settings"> | boolean
     smtpHost?: StringWithAggregatesFilter<"Settings"> | string
     smtpPort?: IntWithAggregatesFilter<"Settings"> | number
@@ -39849,6 +39868,7 @@ export namespace Prisma {
     instagramBusinessAccountId?: string
     groqApiKey?: string
     groqModel?: string
+    aiEnabled?: boolean
     emailsEnabled?: boolean
     smtpHost?: string
     smtpPort?: number
@@ -39875,6 +39895,7 @@ export namespace Prisma {
     instagramBusinessAccountId?: string
     groqApiKey?: string
     groqModel?: string
+    aiEnabled?: boolean
     emailsEnabled?: boolean
     smtpHost?: string
     smtpPort?: number
@@ -39901,6 +39922,7 @@ export namespace Prisma {
     instagramBusinessAccountId?: StringFieldUpdateOperationsInput | string
     groqApiKey?: StringFieldUpdateOperationsInput | string
     groqModel?: StringFieldUpdateOperationsInput | string
+    aiEnabled?: BoolFieldUpdateOperationsInput | boolean
     emailsEnabled?: BoolFieldUpdateOperationsInput | boolean
     smtpHost?: StringFieldUpdateOperationsInput | string
     smtpPort?: IntFieldUpdateOperationsInput | number
@@ -39927,6 +39949,7 @@ export namespace Prisma {
     instagramBusinessAccountId?: StringFieldUpdateOperationsInput | string
     groqApiKey?: StringFieldUpdateOperationsInput | string
     groqModel?: StringFieldUpdateOperationsInput | string
+    aiEnabled?: BoolFieldUpdateOperationsInput | boolean
     emailsEnabled?: BoolFieldUpdateOperationsInput | boolean
     smtpHost?: StringFieldUpdateOperationsInput | string
     smtpPort?: IntFieldUpdateOperationsInput | number
@@ -39953,6 +39976,7 @@ export namespace Prisma {
     instagramBusinessAccountId?: string
     groqApiKey?: string
     groqModel?: string
+    aiEnabled?: boolean
     emailsEnabled?: boolean
     smtpHost?: string
     smtpPort?: number
@@ -39979,6 +40003,7 @@ export namespace Prisma {
     instagramBusinessAccountId?: StringFieldUpdateOperationsInput | string
     groqApiKey?: StringFieldUpdateOperationsInput | string
     groqModel?: StringFieldUpdateOperationsInput | string
+    aiEnabled?: BoolFieldUpdateOperationsInput | boolean
     emailsEnabled?: BoolFieldUpdateOperationsInput | boolean
     smtpHost?: StringFieldUpdateOperationsInput | string
     smtpPort?: IntFieldUpdateOperationsInput | number
@@ -40005,6 +40030,7 @@ export namespace Prisma {
     instagramBusinessAccountId?: StringFieldUpdateOperationsInput | string
     groqApiKey?: StringFieldUpdateOperationsInput | string
     groqModel?: StringFieldUpdateOperationsInput | string
+    aiEnabled?: BoolFieldUpdateOperationsInput | boolean
     emailsEnabled?: BoolFieldUpdateOperationsInput | boolean
     smtpHost?: StringFieldUpdateOperationsInput | string
     smtpPort?: IntFieldUpdateOperationsInput | number
@@ -41858,6 +41884,7 @@ export namespace Prisma {
     instagramBusinessAccountId?: SortOrder
     groqApiKey?: SortOrder
     groqModel?: SortOrder
+    aiEnabled?: SortOrder
     emailsEnabled?: SortOrder
     smtpHost?: SortOrder
     smtpPort?: SortOrder
@@ -41890,6 +41917,7 @@ export namespace Prisma {
     instagramBusinessAccountId?: SortOrder
     groqApiKey?: SortOrder
     groqModel?: SortOrder
+    aiEnabled?: SortOrder
     emailsEnabled?: SortOrder
     smtpHost?: SortOrder
     smtpPort?: SortOrder
@@ -41916,6 +41944,7 @@ export namespace Prisma {
     instagramBusinessAccountId?: SortOrder
     groqApiKey?: SortOrder
     groqModel?: SortOrder
+    aiEnabled?: SortOrder
     emailsEnabled?: SortOrder
     smtpHost?: SortOrder
     smtpPort?: SortOrder

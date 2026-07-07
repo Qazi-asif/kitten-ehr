@@ -399,6 +399,7 @@ exports.Prisma.SettingsScalarFieldEnum = {
   instagramBusinessAccountId: 'instagramBusinessAccountId',
   groqApiKey: 'groqApiKey',
   groqModel: 'groqModel',
+  aiEnabled: 'aiEnabled',
   emailsEnabled: 'emailsEnabled',
   smtpHost: 'smtpHost',
   smtpPort: 'smtpPort',
