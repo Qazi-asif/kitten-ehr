@@ -1,5 +1,6 @@
 import { getMissingKeyHint, resolveAiProvider } from '../utils/aiProvider.js';
 import { createChatCompletion } from '../utils/aiChat.js';
+import { buildSafeAiKittenPayload } from '../utils/piiSanitizer.js';
 
 const SYSTEM_PROMPT =
   'You are an expert social media manager for a cat rescue. Write a highly engaging, emotional, and optimized Facebook/Instagram caption for this kitten. Follow 2026 Meta best practices: start with a hook, use emojis, keep it under 200 words, include 3-5 relevant hashtags. Do not use banned or overly aggressive language. CRITICAL: You must end every caption with a call to action including the donation link. Format it exactly like this at the end: "Support our rescue and donate here: [DONATE_LINK]"';
@@ -21,7 +22,8 @@ export async function generateCaption(req, res, next) {
       return res.status(503).json({ error: `AI API key is not configured. ${getMissingKeyHint()}` });
     }
 
-    const { name, story, status } = req.body;
+    const safePayload = buildSafeAiKittenPayload(req.body);
+    const { name, story, status } = safePayload;
 
     if (!name?.trim()) {
       return res.status(400).json({ error: 'Kitten name is required' });
@@ -51,8 +53,12 @@ export async function generateCaption(req, res, next) {
       caption = `${caption}\n\nSupport our rescue and donate here: ${donationUrl}`;
     }
 
-    res.json({ caption });
+    res.json({ caption, aiGenerated: true });
   } catch (error) {
+    if (error.status === 400) {
+      return res.status(400).json({ error: error.message });
+    }
+
     if (error.status) {
       const status = error.status >= 500 ? 502 : error.status;
       return res.status(status).json({ error: error.message });

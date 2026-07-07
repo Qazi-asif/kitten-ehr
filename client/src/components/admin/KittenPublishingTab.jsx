@@ -57,6 +57,7 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
     websiteFeaturedComment: '',
   });
   const [socialCaption, setSocialCaption] = useState('');
+  const [isAiGeneratedCaption, setIsAiGeneratedCaption] = useState(false);
   const [selectedPhotoKey, setSelectedPhotoKey] = useState('');
   const [extraSocialPhotos, setExtraSocialPhotos] = useState([]);
   const [postHistory, setPostHistory] = useState([]);
@@ -161,6 +162,7 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
         status: kitten.status || '',
       });
       setSocialCaption(result.caption);
+      setIsAiGeneratedCaption(Boolean(result.aiGenerated ?? true));
     } catch (err) {
       setCaptionError(err.message || 'Could not generate caption. Check your AI API key in Vercel or server .env.');
     } finally {
@@ -327,13 +329,26 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
             {captionError && (
               <p className="mt-2 text-xs text-red-600">{captionError}</p>
             )}
-            <textarea
-              rows={5}
-              value={socialCaption}
-              onChange={(e) => setSocialCaption(e.target.value)}
-              placeholder="Write a catchy caption for your social post..."
-              className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-800 shadow-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
-            />
+            <div className="mt-2 overflow-hidden rounded-xl border border-slate-200 shadow-sm focus-within:border-brand focus-within:ring-2 focus-within:ring-brand/20">
+              {isAiGeneratedCaption && (
+                <div className="border-b border-slate-100 bg-slate-50 px-3 py-1.5">
+                  <span className="inline-flex items-center gap-1 text-[11px] font-medium text-slate-500">
+                    ✨ AI Generated
+                  </span>
+                </div>
+              )}
+              <textarea
+                rows={5}
+                value={socialCaption}
+                onChange={(e) => {
+                  const next = e.target.value;
+                  setSocialCaption(next);
+                  if (!next.trim()) setIsAiGeneratedCaption(false);
+                }}
+                placeholder="Write a catchy caption for your social post..."
+                className="w-full resize-y border-0 px-4 py-3 text-sm text-slate-800 outline-none"
+              />
+            </div>
           </div>
 
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_220px]">
