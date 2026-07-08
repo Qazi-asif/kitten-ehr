@@ -9,6 +9,7 @@ import {
   LayoutDashboard,
   LogOut,
   Mail,
+  Package,
   Settings,
   UserCheck,
   Users,
@@ -18,6 +19,7 @@ import { useAuth } from '../../context/AuthContext';
 const navItems = [
   { label: 'Dashboard', icon: LayoutDashboard, path: '/admin', permission: 'dashboard.view' },
   { label: 'Kittens', icon: Cat, path: '/admin/kittens', permission: 'kittens.view' },
+  { label: 'Litters', icon: Package, path: '/admin/litters', permission: 'litters.view' },
   { label: 'Fosters', icon: Users, path: '/admin/fosters', permission: 'fosters.view' },
   { label: 'Applications', icon: ClipboardList, path: '/admin/applications', permission: 'applications.view' },
   { label: 'Onboarding', icon: UserCheck, path: '/admin/onboarding', permission: 'applications.view' },
@@ -33,6 +35,8 @@ const pageMeta = [
   { match: (p) => p === '/admin', title: 'Dashboard' },
   { match: (p) => p.startsWith('/admin/kittens/'), title: 'Kitten Profile', subtitle: 'Medical records, publishing, and adoption details.' },
   { match: (p) => p === '/admin/kittens', title: 'Kittens', subtitle: 'Manage kittens and link them to litter intake groups.' },
+  { match: (p) => p.startsWith('/admin/litters/'), title: 'Litter Group', subtitle: 'View kittens linked to this intake group.' },
+  { match: (p) => p === '/admin/litters', title: 'Litters', subtitle: 'Create and manage litter intake groups.' },
   { match: (p) => p.startsWith('/admin/fosters'), title: 'Fosters', subtitle: 'Foster home contacts and placements.' },
   { match: (p) => p.startsWith('/admin/applications'), title: 'Applications', subtitle: 'Review adoption and foster applications.' },
   { match: (p) => p.startsWith('/admin/onboarding'), title: 'Onboarding', subtitle: 'Foster intake checklist and screening progress.' },
@@ -76,6 +80,9 @@ function AdminLayout() {
     if (path === '/admin') return location.pathname === '/admin';
     if (path === '/admin/kittens') {
       return location.pathname === '/admin/kittens' || location.pathname.startsWith('/admin/kittens/');
+    }
+    if (path === '/admin/litters') {
+      return location.pathname === '/admin/litters' || location.pathname.startsWith('/admin/litters/');
     }
     return location.pathname.startsWith(path);
   }
