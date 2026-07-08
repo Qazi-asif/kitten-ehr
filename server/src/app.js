@@ -29,6 +29,7 @@ import emailRoutes from './routes/emailRoutes.js';
 import aiRoutes from './routes/aiRoutes.js';
 import contractRoutes from './routes/contractRoutes.js';
 import onboardingRoutes from './routes/onboardingRoutes.js';
+import protocolRoutes from './routes/protocolRoutes.js';
 import { requireAuth } from './middleware/authMiddleware.js';
 import { createOriginValidator } from './utils/corsOrigins.js';
 
@@ -123,6 +124,7 @@ app.use('/api/kittens', requireAuth, emailRoutes);
 app.use('/api/kittens/:kittenId/documents', requireAuth, documentRoutes);
 app.use('/api/kittens/:kittenId/updates', requireAuth, updateRoutes);
 app.use('/api/kittens/:kittenId/sponsorships', requireAuth, sponsorshipRoutes);
+app.use('/api/kittens/:kittenId/protocols', requireAuth, protocolRoutes);
 app.use('/api/fosters', requireAuth, fosterRoutes);
 app.use('/api/litters', requireAuth, litterRoutes);
 app.use('/api/medical', requireAuth, medicalRoutes);

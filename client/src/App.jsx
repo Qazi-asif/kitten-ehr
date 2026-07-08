@@ -28,8 +28,8 @@ import ContactPage from './pages/public/ContactPage';
 import DonatePage from './pages/public/DonatePage';
 import EducationHubPage from './pages/public/EducationHubPage';
 import EventsPage from './pages/public/EventsPage';
+import FosterPage from './pages/public/FosterPage';
 import FosterFormPage from './pages/public/FosterFormPage';
-import GetInvolvedPage from './pages/public/GetInvolvedPage';
 import HomePage from './pages/public/HomePage';
 import CheckPage from './pages/public/CheckPage';
 import PublicKittenProfile from './pages/public/PublicKittenProfile';
@@ -48,7 +48,7 @@ function App() {
             <Route path="/kittens/:id" element={<PublicKittenProfile />} />
             <Route path="/adopt" element={<AdoptionFormPage />} />
             <Route path="/foster" element={<FosterFormPage />} />
-            <Route path="/get-involved" element={<GetInvolvedPage />} />
+            <Route path="/get-involved" element={<FosterPage />} />
             <Route path="/education" element={<EducationHubPage />} />
             <Route path="/education/:slug" element={<ArticlePage />} />
             <Route path="/events" element={<EventsPage />} />

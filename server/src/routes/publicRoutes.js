@@ -13,6 +13,7 @@ import {
   getPublicSettings,
   getPublicStats,
 } from '../controllers/publicController.js';
+import { getPublicEventBySlug, rsvpForEvent } from '../controllers/eventController.js';
 
 const router = Router();
 
@@ -25,6 +26,8 @@ router.get('/settings', getPublicSettings);
 router.get('/content', getPublicContent);
 router.get('/content/:slug', getPublicContentBySlug);
 router.get('/events', getPublicEvents);
+router.get('/events/:slug', getPublicEventBySlug);
+router.post('/events/:slug/rsvp', rsvpForEvent);
 router.post('/applications', upload.array('photos', 3), createApplication);
 router.post('/donations', createPublicDonation);
 

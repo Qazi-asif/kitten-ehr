@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { fetchPublicKittenById, fetchPublicKittenPhotos, fetchPublicKittenUpdates } from '../../services/publicApi';
-import { getFileUrl } from '../../services/api';
 import KittenPhoto from '../../components/KittenPhoto';
 import { formatKittenAge } from '../../utils/kittenImages';
 
@@ -37,22 +36,26 @@ const KITTEN_WISHLISTS = [
 
 function PublicKittenProfile() {
   const { id } = useParams();
+  const sponsorRef = useRef(null);
+  const wishlistRef = useRef(null);
   const [kitten, setKitten] = useState(null);
-  const [photos, setPhotos] = useState([]);
   const [updates, setUpdates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    Promise.all([fetchPublicKittenById(id), fetchPublicKittenPhotos(id), fetchPublicKittenUpdates(id)])
-      .then(([kittenData, photoData, updateData]) => {
+    Promise.all([fetchPublicKittenById(id), fetchPublicKittenUpdates(id)])
+      .then(([kittenData, updateData]) => {
         setKitten(kittenData);
-        setPhotos(photoData);
         setUpdates(updateData);
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, [id]);
+
+  function scrollToRef(ref) {
+    ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 
   if (loading) return <div className="flex min-h-[50vh] items-center justify-center text-slate-500">Loading...</div>;
   if (error) return <div className="px-6 py-12 text-red-600">{error}</div>;
@@ -60,6 +63,7 @@ function PublicKittenProfile() {
   const age = formatKittenAge(kitten.dateOfBirth);
   const meta = [age?.replace(' old', ''), kitten.sex, kitten.breed].filter(Boolean).join(' · ');
   const activeWishlists = KITTEN_WISHLISTS.filter((store) => kitten[store.field]);
+  const primaryWishlistUrl = activeWishlists[0]?.field ? kitten[activeWishlists[0].field] : null;
 
   return (
     <div className="bg-white">
@@ -80,14 +84,13 @@ function PublicKittenProfile() {
             >
               Donate Now
             </Link>
-            <a
-              href={DONATE_STRIPE_URL}
-              target="_blank"
-              rel="noreferrer"
+            <button
+              type="button"
+              onClick={() => scrollToRef(sponsorRef)}
               className="rounded-md border-2 border-brand bg-white px-6 py-3 text-center text-sm font-bold uppercase tracking-wide text-brand hover:bg-brand-light"
             >
               Sponsor This Kitten
-            </a>
+            </button>
           </div>
         </div>
       </div>
@@ -106,35 +109,27 @@ function PublicKittenProfile() {
           <Link to={`/adopt?kitten=${kitten.name}`} className="rounded-md bg-brand py-3.5 text-center text-sm font-bold uppercase tracking-wide text-white hover:bg-brand-dark">
             Adopt Me
           </Link>
-          <a href={DONATE_STRIPE_URL} target="_blank" rel="noreferrer" className="rounded-md border-2 border-brand py-3.5 text-center text-sm font-bold uppercase tracking-wide text-brand hover:bg-brand-light">
+          <button
+            type="button"
+            onClick={() => scrollToRef(sponsorRef)}
+            className="rounded-md border-2 border-brand py-3.5 text-center text-sm font-bold uppercase tracking-wide text-brand hover:bg-brand-light"
+          >
             Sponsor Me
-          </a>
-          <Link to="/donate" className="rounded-md border border-slate-300 py-3.5 text-center text-sm font-bold uppercase tracking-wide text-slate-700 hover:bg-slate-50">
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              if (primaryWishlistUrl) {
+                window.open(primaryWishlistUrl, '_blank', 'noopener,noreferrer');
+                return;
+              }
+              scrollToRef(wishlistRef);
+            }}
+            className="rounded-md border border-slate-300 py-3.5 text-center text-sm font-bold uppercase tracking-wide text-slate-700 hover:bg-slate-50"
+          >
             Wishlist
-          </Link>
+          </button>
         </div>
-
-        {photos.length > 1 && (
-          <section className="mt-10">
-            <h2 className="text-lg font-bold text-slate-900">Photo Gallery</h2>
-            <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {photos.map((photo) => (
-                <div
-                  key={photo.id}
-                  className={`overflow-hidden rounded-xl border ${
-                    photo.isPrimaryPhoto ? 'border-brand ring-2 ring-brand/30' : 'border-slate-100'
-                  }`}
-                >
-                  <img
-                    src={getFileUrl(photo.fileUrl)}
-                    alt=""
-                    className="aspect-square w-full object-cover"
-                  />
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
 
         {kitten.rescueStory && (
           <section className="mt-10">
@@ -143,28 +138,38 @@ function PublicKittenProfile() {
           </section>
         )}
 
-        {activeWishlists.length > 0 && (
-          <section className="mt-10">
-            <h2 className="text-lg font-bold text-slate-900">Sponsor This Kitten&apos;s Needs</h2>
+        <section ref={wishlistRef} id="wishlist" className="mt-10 scroll-mt-24">
+          <h2 className="text-lg font-bold text-slate-900">Wishlist</h2>
+          {activeWishlists.length > 0 ? (
+            <>
+              <p className="mt-2 text-sm text-slate-600">
+                Send supplies directly to support {kitten.name}&apos;s care through these store wishlists.
+              </p>
+              <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                {activeWishlists.map((store) => (
+                  <a
+                    key={store.field}
+                    href={kitten[store.field]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`flex flex-col rounded-xl border p-4 text-center transition-colors ${store.buttonClass}`}
+                  >
+                    <span className="text-sm font-bold">{store.label}</span>
+                    <span className="mt-1 text-xs opacity-80">{store.description}</span>
+                  </a>
+                ))}
+              </div>
+            </>
+          ) : (
             <p className="mt-2 text-sm text-slate-600">
-              Send supplies directly to support {kitten.name}&apos;s care through these store wishlists.
+              Wishlist links for {kitten.name} are coming soon.{' '}
+              <Link to="/donate" className="font-semibold text-brand hover:underline">
+                Visit our donation page
+              </Link>{' '}
+              to support their care today.
             </p>
-            <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
-              {activeWishlists.map((store) => (
-                <a
-                  key={store.field}
-                  href={kitten[store.field]}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`flex flex-col rounded-xl border p-4 text-center transition-colors ${store.buttonClass}`}
-                >
-                  <span className="text-sm font-bold">{store.label}</span>
-                  <span className="mt-1 text-xs opacity-80">{store.description}</span>
-                </a>
-              ))}
-            </div>
-          </section>
-        )}
+          )}
+        </section>
 
         {updates.length > 0 && (
           <section className="mt-10">
@@ -186,17 +191,7 @@ function PublicKittenProfile() {
           </section>
         )}
 
-        <section className="mt-10 rounded-xl border border-slate-100 bg-brand-muted p-6">
-          <div className="flex items-center justify-between">
-            <h2 className="font-bold text-slate-900">Care Goal</h2>
-            <span className="text-sm font-semibold text-brand">$425 of $500</span>
-          </div>
-          <div className="mt-3 h-3 overflow-hidden rounded-full bg-white">
-            <div className="h-full w-[85%] rounded-full bg-brand" />
-          </div>
-        </section>
-
-        <section className="mt-10">
+        <section ref={sponsorRef} id="sponsor" className="mt-10 scroll-mt-24">
           <h2 className="text-lg font-bold text-slate-900">Sponsorship Tiers</h2>
           <div className="mt-4 grid grid-cols-2 gap-3">
             {SPONSOR_TIERS.map((tier) => (
@@ -212,7 +207,7 @@ function PublicKittenProfile() {
             rel="noreferrer"
             className="mt-6 block w-full rounded-md bg-brand py-3.5 text-center text-sm font-bold uppercase tracking-wide text-white hover:bg-brand-dark"
           >
-            Donate Now
+            Sponsor {kitten.name}
           </a>
         </section>
       </div>

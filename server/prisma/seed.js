@@ -281,24 +281,30 @@ async function main() {
     data: [
       {
         title: 'Spring Adoption Fair',
+        slug: 'spring-adoption-fair',
         date: new Date('2026-07-15T11:00:00'),
         location: 'Community Pet Supply Store',
         description: 'Meet adoptable kittens and talk with our foster team.',
         isPublic: true,
+        status: 'PUBLISHED',
       },
       {
         title: 'Foster Orientation',
+        slug: 'foster-orientation',
         date: new Date('2026-07-22T18:30:00'),
         location: 'Pawsitive HQ',
         description: 'Learn how to become a bottle-baby foster.',
         isPublic: true,
+        status: 'PUBLISHED',
       },
       {
         title: 'Staff Medical Review',
+        slug: 'staff-medical-review',
         date: new Date('2026-07-10T09:00:00'),
         location: 'Internal',
         description: 'Weekly kitten medical check-in.',
         isPublic: false,
+        status: 'DRAFT',
       },
     ],
   });

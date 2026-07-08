@@ -1,21 +1,47 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PublicKittenCard from '../../components/PublicKittenCard';
-import PublicPageHeader from '../../components/PublicPageHeader';
 import { fetchPublicKittens } from '../../services/publicApi';
 
 const TABS = [
   { id: 'cats', label: 'Available Cats' },
-  { id: 'faq', label: 'Adoption FAQ' },
   { id: 'stories', label: 'Success Stories' },
   { id: 'gallery', label: 'Gallery' },
 ];
 
 const FAQ_ITEMS = [
-  { q: 'What is the adoption process?', a: 'Submit an application, meet your kitten, complete a home check, and sign adoption paperwork.' },
-  { q: 'What is the adoption fee?', a: 'Fees cover spay/neuter, vaccines, and microchip. Contact us for current rates.' },
-  { q: 'Can I adopt if I rent?', a: 'Yes, with landlord approval. We are happy to provide documentation for your lease.' },
-  { q: 'Do you adopt out of state?', a: 'We prioritize local adopters but consider out-of-area homes on a case-by-case basis.' },
+  {
+    q: 'What is the adoption process?',
+    a: 'Submit an online adoption application. Our team reviews your application, schedules a meet-and-greet with the cat you are interested in, completes a home check when needed, and finalizes adoption paperwork once approved.',
+  },
+  {
+    q: 'What is the adoption fee?',
+    a: 'Our adoption fee is $150. This fee helps cover spay/neuter surgery, vaccinations, microchip, flea treatment, and the medical care each cat received while in our foster program.',
+  },
+  {
+    q: 'Do I have to keep my cat indoors?',
+    a: 'Yes. Every adoption is indoor-only. Catios and supervised harness time are wonderful; free roaming is not. Indoor cats live longer, healthier lives, and it\'s a condition of every adoption.',
+  },
+  {
+    q: 'Do you ever allow declawing?',
+    a: 'Never. We do not adopt to homes that plan to declaw, and declawing is prohibited in our adoption contract. We are committed to humane, claw-friendly care for every cat.',
+  },
+  {
+    q: 'What if it doesn\'t work out?',
+    a: 'Bring the cat back to us. Every adoption comes with a lifetime return promise: any reason, any time, no judgment. Please never rehome a Pawsitive cat on your own, and never surrender one to a shelter. They always have a home with us.',
+  },
+  {
+    q: 'Can I adopt if I rent?',
+    a: 'Yes, with written landlord approval. We are happy to provide documentation for your lease and answer any questions your property manager may have.',
+  },
+  {
+    q: 'Do you adopt out of state?',
+    a: 'We prioritize adopters in Southern California but consider out-of-area homes on a case-by-case basis when we can ensure a safe, responsible placement.',
+  },
+  {
+    q: 'Are cats spayed or neutered before adoption?',
+    a: 'Yes. All adoptable cats are spayed or neutered, vaccinated, and microchipped before going to their forever homes.',
+  },
 ];
 
 const SUCCESS_STORIES = [
@@ -46,12 +72,10 @@ function AvailableKittensPage() {
 
   return (
     <div>
-      {/* Hero Section */}
-      <section className="relative z-0 bg-white border-b border-slate-100 overflow-hidden h-[200px] lg:h-[350px]">
-        {/* Left Content */}
+      <section className="relative z-0 h-[200px] overflow-hidden border-b border-slate-100 bg-white lg:h-[350px]">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="relative z-10 py-12 lg:py-14 max-w-sm">
-            <h1 className="text-6xl font-extrabold tracking-tight text-brand lg:text-7xl flex items-center gap-3">
+          <div className="relative z-10 max-w-sm py-12 lg:py-14">
+            <h1 className="flex items-center gap-3 text-6xl font-extrabold tracking-tight text-brand lg:text-7xl">
               Adopt
               <svg viewBox="0 0 100 100" fill="currentColor" className="h-12 w-12 text-brand">
                 <circle cx="25" cy="30" r="9" />
@@ -65,13 +89,11 @@ function AvailableKittensPage() {
           </div>
         </div>
 
-        {/* Right Image — pinned to right edge, no border, no shadow, pill-left clipped */}
-        <div className="hidden lg:block absolute inset-y-0 right-0 w-[58%] pointer-events-none">
+        <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[58%] lg:block">
           <img
             src="/images/about-hero.png"
             alt="Adopt a cat"
             className="h-full w-full object-cover object-left"
-
           />
         </div>
       </section>
@@ -83,10 +105,11 @@ function AvailableKittensPage() {
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id)}
-              className={`rounded-full px-5 py-2 text-sm font-semibold transition-colors ${activeTab === tab.id
+              className={`rounded-full px-5 py-2 text-sm font-semibold transition-colors ${
+                activeTab === tab.id
                   ? 'bg-brand text-white shadow-sm'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                }`}
+              }`}
             >
               {tab.label}
             </button>
@@ -114,17 +137,6 @@ function AvailableKittensPage() {
           </>
         )}
 
-        {activeTab === 'faq' && (
-          <div className="mx-auto max-w-3xl space-y-6">
-            {FAQ_ITEMS.map((item) => (
-              <div key={item.q} className="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
-                <h3 className="font-bold text-brand">{item.q}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">{item.a}</p>
-              </div>
-            ))}
-          </div>
-        )}
-
         {activeTab === 'stories' && (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {SUCCESS_STORIES.map((story) => (
@@ -147,10 +159,9 @@ function AvailableKittensPage() {
         )}
       </div>
 
-      <section className="py-10 px-6 lg:px-8">
+      <section className="px-6 py-10 lg:px-8">
         <div className="mx-auto max-w-4xl">
-          <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-6 rounded-2xl border border-brand/40 bg-white px-8 py-6">
-            {/* Heart + Paw Icon */}
+          <div className="flex flex-col items-center gap-6 rounded-2xl border border-brand/40 bg-white px-8 py-6 text-center sm:flex-row sm:items-start sm:text-left">
             <div className="shrink-0">
               <svg viewBox="0 0 64 64" fill="none" className="h-16 w-16 text-brand" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M32 56 C32 56 8 40 8 22 C8 14 14 8 22 8 C26.5 8 30.5 10.5 32 14 C33.5 10.5 37.5 8 42 8 C50 8 56 14 56 22 C56 40 32 56 32 56Z" />
@@ -160,24 +171,34 @@ function AvailableKittensPage() {
                 <path d="M24 31 C24 27 40 27 40 31 C40 36 35 39 32 39 C29 39 24 36 24 31Z" fill="currentColor" stroke="none" />
               </svg>
             </div>
-
-            {/* Text Content */}
-            <div className="flex-1 min-w-0">
+            <div className="min-w-0 flex-1">
               <h2 className="text-xl font-bold text-brand">Adoption Application</h2>
               <p className="mt-1.5 text-sm leading-relaxed text-slate-600">
                 Ready to adopt? Submit an application and our team will be in touch to help you meet your new best friend.
               </p>
             </div>
-
-            {/* CTA Button */}
-            <div className="shrink-0 w-full sm:w-auto mt-2 sm:mt-0">
+            <div className="mt-2 w-full shrink-0 sm:mt-0 sm:w-auto">
               <Link
                 to="/adopt"
-                className="inline-flex items-center justify-center w-full rounded-xl bg-brand px-7 py-4 text-base font-semibold text-white shadow-sm transition hover:bg-brand-dark whitespace-nowrap"
+                className="inline-flex w-full items-center justify-center whitespace-nowrap rounded-xl bg-brand px-7 py-4 text-base font-semibold text-white shadow-sm transition hover:bg-brand-dark sm:w-auto"
               >
                 Apply to Adopt
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="adoption-faq" className="border-t border-slate-100 bg-slate-50 px-6 py-14 lg:px-8">
+        <div className="mx-auto max-w-3xl">
+          <h2 className="text-2xl font-bold text-brand">Adoption FAQ</h2>
+          <div className="mt-8 space-y-6">
+            {FAQ_ITEMS.map((item) => (
+              <div key={item.q} className="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
+                <h3 className="font-bold text-slate-900">{item.q}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600">{item.a}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

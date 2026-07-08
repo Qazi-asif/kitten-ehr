@@ -20,19 +20,18 @@ const navItems = [
     ],
   },
   {
-    label: 'Get Involved',
+    label: 'Support Us',
     children: [
       { label: 'Donate', path: '/donate' },
-      { label: 'Volunteer', path: '/contact' },
       { label: 'Events', path: '/events' },
     ],
   },
   { label: 'Education Hub', path: '/education' },
+  { label: 'Contact', path: '/contact' },
   {
     label: 'About',
     children: [
       { label: 'Our Mission', path: '/about' },
-      { label: 'Contact', path: '/contact' },
     ],
   },
 ];
@@ -59,10 +58,9 @@ const FOOTER_LINK_COLUMNS = [
     ],
   },
   {
-    title: 'Get Involved',
+    title: 'Support Us',
     links: [
       { label: 'Donate', path: '/donate' },
-      { label: 'Volunteer', path: '/contact' },
       { label: 'Events', path: '/events' },
     ],
   },
@@ -242,9 +240,6 @@ function PublicLayout() {
     setMobileOpen(false);
   }
 
-  const orgName = settings.orgName || 'Pawsitive Transformations';
-  const currentYear = new Date().getFullYear();
-
   return (
     <div className="flex min-h-screen flex-col bg-white text-slate-700">
       <header className="sticky top-0 z-50 border-b border-slate-100 bg-white/95 backdrop-blur-md">
@@ -334,7 +329,7 @@ function PublicLayout() {
         <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
           <div className="mb-10 flex flex-col items-start justify-between gap-6 border-b border-white/15 pb-10 sm:flex-row sm:items-center">
             <div>
-              <p className="text-lg font-semibold text-white">{orgName}</p>
+              <p className="text-lg font-semibold text-white">Pawsitive Transformations</p>
               <p className="mt-1 text-sm text-brand-light/90">Cat Rescue &amp; Human Wellness</p>
             </div>
             <SocialLinks settings={settings} />
@@ -365,26 +360,14 @@ function PublicLayout() {
         <div className="border-t border-white/10 bg-brand px-6 py-4 lg:px-8">
           <div className="mx-auto max-w-7xl space-y-2 text-center text-xs text-white/80">
             <p>
-              &copy; {currentYear} {orgName}. All rights reserved.
+              &copy; 2026 Pawsitive Transformations. All rights reserved. Pawsitive Transformations is a 501(c)(3) non-profit organization. EIN [PENDING].
             </p>
             <p>
-              {orgName} is a 501(c)(3) non-profit organization. EIN: 46-4005576.
-            </p>
-            <p>
+              This site uses AI-assisted tools to support our operations.{' '}
               <Link to="/privacy" className="text-brand-light underline-offset-2 transition-colors hover:text-white hover:underline">
-                Privacy Policy
+                Learn more in our Privacy Policy
               </Link>
-              {' · '}
-              <span>
-                This platform utilizes AI-assisted tools to support our operations.{' '}
-                <Link
-                  to="/privacy#our-use-of-technology"
-                  className="text-brand-light underline-offset-2 transition-colors hover:text-white hover:underline"
-                >
-                  Learn more in our Privacy Policy
-                </Link>
-                .
-              </span>
+              .
             </p>
           </div>
         </div>

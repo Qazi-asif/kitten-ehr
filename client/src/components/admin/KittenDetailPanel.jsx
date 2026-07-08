@@ -495,6 +495,16 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
                 onDeletePhoto={handleDeletePhoto}
               />
             <form className="space-y-5" onSubmit={handleSaveProfile}>
+              <div className="flex items-center justify-between gap-3 rounded-lg border border-emerald-100 bg-emerald-50/60 px-4 py-3">
+                <p className="text-sm font-medium text-emerald-900">Update this kitten&apos;s profile details.</p>
+                <button
+                  type="submit"
+                  disabled={savingProfile}
+                  className="shrink-0 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-60"
+                >
+                  {savingProfile ? 'Saving...' : 'Save Profile'}
+                </button>
+              </div>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {[
                   ['name', 'Name', 'text'],
@@ -598,13 +608,6 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
                   ))}
                 </div>
               </section>
-              <button
-                type="submit"
-                disabled={savingProfile}
-                className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-60"
-              >
-                {savingProfile ? 'Saving...' : 'Save Profile'}
-              </button>
             </form>
             </div>
           )}

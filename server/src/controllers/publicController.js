@@ -153,12 +153,17 @@ export async function getPublicContentBySlug(req, res, next) {
 export async function getPublicEvents(_req, res, next) {
   try {
     const events = await prisma.event.findMany({
-      where: publicWebsiteFilter,
+      where: {
+        ...publicWebsiteFilter,
+        status: 'PUBLISHED',
+      },
       orderBy: { date: 'asc' },
       select: {
         id: true,
         title: true,
+        slug: true,
         date: true,
+        endDate: true,
         location: true,
         description: true,
       },
