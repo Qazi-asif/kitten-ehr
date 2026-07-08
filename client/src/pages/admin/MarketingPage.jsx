@@ -6,6 +6,7 @@ const PLATFORM_OPTIONS = [
   { id: 'FACEBOOK', label: 'Facebook' },
   { id: 'INSTAGRAM', label: 'Instagram' },
   { id: 'X', label: 'X' },
+  { id: 'TIKTOK', label: 'TikTok' },
 ];
 
 const STATUS_TABS = [
@@ -118,7 +119,7 @@ function MarketingPage() {
       <div className="mb-6">
         <h2 className="text-xl font-bold text-slate-900">Marketing</h2>
         <p className="mt-1 text-sm text-slate-600">
-          Draft and schedule social posts across Facebook, Instagram, and X.
+          Draft and schedule social posts across Facebook, Instagram, X, and TikTok.
         </p>
       </div>
 

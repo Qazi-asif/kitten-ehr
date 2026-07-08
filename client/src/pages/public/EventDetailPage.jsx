@@ -53,18 +53,20 @@ function EventDetailPage() {
 
       {kittens.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-bold text-slate-900">Cats at This Event</h2>
+          <h2 className="text-xl font-bold text-slate-900">Photo Gallery</h2>
           <p className="mt-1 text-sm text-slate-600">
             Meet the kittens and cats featured at this event.
           </p>
-          <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-            {kittens.map((kitten) => (
+          <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+            {kittens.map((kitten, index) => (
               <Link
                 key={kitten.id}
                 to={`/kittens/${kitten.id}`}
-                className="group overflow-hidden rounded-xl border border-slate-100 bg-white shadow-sm transition hover:shadow-md"
+                className={`group overflow-hidden rounded-xl border border-slate-100 bg-white shadow-sm transition hover:shadow-md ${
+                  index === 0 ? 'sm:col-span-2 sm:row-span-2' : ''
+                }`}
               >
-                <div className="aspect-square overflow-hidden bg-slate-100">
+                <div className={`overflow-hidden bg-slate-100 ${index === 0 ? 'aspect-[4/3]' : 'aspect-square'}`}>
                   <KittenPhoto
                     kitten={kitten}
                     allowFallback

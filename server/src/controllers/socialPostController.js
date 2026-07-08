@@ -6,7 +6,7 @@ const STATUS_MAP = {
   posted: 'POSTED',
 };
 
-const ALLOWED_PLATFORMS = new Set(['FACEBOOK', 'INSTAGRAM', 'X']);
+const ALLOWED_PLATFORMS = new Set(['FACEBOOK', 'INSTAGRAM', 'X', 'TIKTOK']);
 
 function normalizePlatforms(platforms) {
   if (!Array.isArray(platforms)) return [];
