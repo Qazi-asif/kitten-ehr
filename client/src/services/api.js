@@ -299,6 +299,11 @@ export async function updateKitten(id, data) {
   return response.json();
 }
 
+export async function deleteKitten(id) {
+  const response = await adminFetch(`/kittens/${id}`, { method: 'DELETE' });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to delete kitten'));
+}
+
 export async function deleteDocument(kittenId, documentId) {
   await adminFetch(`/kittens/${kittenId}/documents/${documentId}`, { method: 'DELETE' });
 }

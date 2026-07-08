@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Printer } from 'lucide-react';
+import { Printer, Trash2 } from 'lucide-react';
 import KittenPublishingTab from './KittenPublishingTab';
 import KittenPhotoManager from './KittenPhotoManager';
 import LitterSelect from './LitterSelect';
@@ -39,7 +39,9 @@ import {
   fetchKittenUpdates,
   createKittenUpdate,
   deleteKittenUpdate,
+  deleteKitten,
 } from '../../services/api';
+import { useAuth } from '../../context/AuthContext';
 import { formatKittenAgeShort } from '../../utils/kittenAge';
 import { formatKittenAge, resolvePrimaryPhotoUrl } from '../../utils/kittenImages';
 
@@ -75,7 +77,9 @@ function normalizeFixedStatus(value) {
   return '';
 }
 
-function KittenDetailPanel({ kittenId, embedded = false }) {
+function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
+  const { hasPermission } = useAuth();
+  const canDelete = hasPermission('kittens.delete');
   const [kitten, setKitten] = useState(null);
   const [medical, setMedical] = useState({ vaccines: [], medications: [], vetAppointments: [] });
   const [weightLogs, setWeightLogs] = useState([]);
@@ -100,6 +104,7 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
   const [litters, setLitters] = useState([]);
   const [error, setError] = useState(null);
   const [alertsDismissed, setAlertsDismissed] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const loadKitten = useCallback(async () => {
     const data = await fetchKittenById(kittenId);
@@ -397,6 +402,26 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
     await loadDocuments();
   }
 
+  async function handleDeleteKitten() {
+    if (!kitten) return;
+
+    const confirmed = window.confirm(
+      `Delete ${kitten.name}? This permanently removes the kitten profile and all related medical records, documents, and updates. This cannot be undone.`,
+    );
+
+    if (!confirmed) return;
+
+    setDeleting(true);
+    setError(null);
+    try {
+      await deleteKitten(kittenId);
+      onKittenDeleted?.(kittenId);
+    } catch (err) {
+      setError(err.message);
+      setDeleting(false);
+    }
+  }
+
   if (!kittenId) {
     return (
       <div className="flex h-full min-h-[480px] flex-col items-center justify-center rounded-lg border border-dashed border-gray-300 bg-white p-8 text-center shadow-sm">
@@ -423,9 +448,34 @@ function KittenDetailPanel({ kittenId, embedded = false }) {
 
         {!embedded && (
           <div className="flex items-center justify-end gap-2 border-b border-gray-100 px-4 py-3">
+            {canDelete && (
+              <button
+                type="button"
+                onClick={handleDeleteKitten}
+                disabled={deleting}
+                className="inline-flex items-center gap-1 rounded-lg border border-red-200 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 disabled:opacity-50"
+              >
+                <Trash2 className="h-3.5 w-3.5" />
+                {deleting ? 'Deleting...' : 'Delete Kitten'}
+              </button>
+            )}
             <button type="button" onClick={() => window.print()} className="inline-flex items-center gap-1 rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50">
               <Printer className="h-3.5 w-3.5" />
               Print
+            </button>
+          </div>
+        )}
+
+        {embedded && canDelete && (
+          <div className="flex items-center justify-end border-b border-gray-100 px-4 py-3">
+            <button
+              type="button"
+              onClick={handleDeleteKitten}
+              disabled={deleting}
+              className="inline-flex items-center gap-1 rounded-lg border border-red-200 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 disabled:opacity-50"
+            >
+              <Trash2 className="h-3.5 w-3.5" />
+              {deleting ? 'Deleting...' : 'Delete Kitten'}
             </button>
           </div>
         )}

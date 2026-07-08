@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { ChevronDown, Printer } from 'lucide-react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { ChevronDown, Printer, Trash2 } from 'lucide-react';
 import StatusBadge from '../components/admin/StatusBadge';
 import KittenPublishingTab from '../components/admin/KittenPublishingTab';
 import KittenPhotoManager from '../components/admin/KittenPhotoManager';
@@ -22,6 +22,7 @@ import {
   createVetAppointment,
   createWeightLog,
   deleteDocument,
+  deleteKitten,
   fetchDocuments,
   fetchLitters,
   fetchKittenById,
@@ -35,6 +36,7 @@ import {
 } from '../services/api';
 import { formatKittenAgeShort } from '../utils/kittenAge';
 import { formatKittenAge, resolvePrimaryPhotoUrl } from '../utils/kittenImages';
+import { useAuth } from '../context/AuthContext';
 
 const TABS = [
   { id: 'overview', label: 'Overview' },
@@ -80,6 +82,9 @@ function normalizeFixedStatus(value) {
 
 function KittenDetailPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { hasPermission } = useAuth();
+  const canDelete = hasPermission('kittens.delete');
   const [kitten, setKitten] = useState(null);
   const [medical, setMedical] = useState({ vaccines: [], medications: [], vetAppointments: [] });
   const [weightLogs, setWeightLogs] = useState([]);
@@ -103,6 +108,7 @@ function KittenDetailPage() {
   const [savingLitter, setSavingLitter] = useState(false);
   const [error, setError] = useState(null);
   const [alertsDismissed, setAlertsDismissed] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const actionsRef = useRef(null);
 
   const loadKitten = useCallback(async () => {
@@ -386,6 +392,26 @@ function KittenDetailPage() {
     await loadDocuments();
   }
 
+  async function handleDeleteKitten() {
+    if (!kitten) return;
+
+    const confirmed = window.confirm(
+      `Delete ${kitten.name}? This permanently removes the kitten profile and all related medical records, documents, and updates. This cannot be undone.`,
+    );
+
+    if (!confirmed) return;
+
+    setDeleting(true);
+    setError(null);
+    try {
+      await deleteKitten(id);
+      navigate('/admin/kittens');
+    } catch (err) {
+      setError(err.message);
+      setDeleting(false);
+    }
+  }
+
   if (loading) return <p className="text-slate-500">Loading kitten profile...</p>;
 
   if (error) {
@@ -450,6 +476,17 @@ function KittenDetailPage() {
               <Printer className="h-4 w-4" />
               Print
             </button>
+            {canDelete && (
+              <button
+                type="button"
+                onClick={handleDeleteKitten}
+                disabled={deleting}
+                className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-white px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 disabled:opacity-50"
+              >
+                <Trash2 className="h-4 w-4" />
+                {deleting ? 'Deleting...' : 'Delete Kitten'}
+              </button>
+            )}
           </div>
         </div>
 

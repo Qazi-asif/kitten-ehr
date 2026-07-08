@@ -203,6 +203,34 @@ export async function updateKitten(req, res, next) {
   }
 }
 
+export async function deleteKitten(req, res, next) {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({ error: 'Valid kitten id is required' });
+    }
+
+    const existing = await prisma.kitten.findUnique({
+      where: { id },
+      select: { id: true, name: true },
+    });
+
+    if (!existing) {
+      return res.status(404).json({ error: 'Kitten not found' });
+    }
+
+    await prisma.kitten.delete({ where: { id } });
+
+    res.status(204).send();
+  } catch (error) {
+    if (error.code === 'P2003') {
+      return res.status(409).json({ error: 'Kitten cannot be deleted because related records still reference it' });
+    }
+    next(error);
+  }
+}
+
 export async function getDashboardStats(_req, res, next) {
   try {
     const yearStart = new Date(new Date().getFullYear(), 0, 1);

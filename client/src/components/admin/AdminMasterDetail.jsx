@@ -21,6 +21,7 @@ function AdminMasterDetail({
   kittens,
   selectedKittenId,
   onSelectKitten,
+  onKittenDeleted,
   showStats = true,
 }) {
   const recentAdoptions = kittens.filter((k) => k.status === 'Adopted').slice(0, 5);
@@ -108,7 +109,7 @@ function AdminMasterDetail({
       </div>
 
       <div className="lg:col-span-3">
-        <KittenDetailPanel kittenId={selectedKittenId} embedded />
+        <KittenDetailPanel kittenId={selectedKittenId} embedded onKittenDeleted={onKittenDeleted} />
       </div>
     </div>
   );

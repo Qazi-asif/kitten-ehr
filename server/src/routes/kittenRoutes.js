@@ -1,6 +1,14 @@
 import { Router } from 'express';
-import { getAllKittens, createKitten, getKittenById, getDashboardStats, updateKitten } from '../controllers/kittenController.js';
+import {
+  getAllKittens,
+  createKitten,
+  getKittenById,
+  getDashboardStats,
+  updateKitten,
+  deleteKitten,
+} from '../controllers/kittenController.js';
 import { getKittenPlacements } from '../controllers/placementController.js';
+import { requirePermission } from '../middleware/authMiddleware.js';
 
 const router = Router();
 
@@ -144,5 +152,6 @@ router.get('/:id/placements', getKittenPlacements);
 router.get('/:id', getKittenById);
 
 router.patch('/:id', updateKitten);
+router.delete('/:id', requirePermission('kittens.delete'), deleteKitten);
 
 export default router;
