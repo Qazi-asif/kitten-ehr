@@ -410,7 +410,12 @@ exports.Prisma.SettingsScalarFieldEnum = {
   smtpPass: 'smtpPass',
   fromEmail: 'fromEmail',
   fromName: 'fromName',
-  adminNotifyEmail: 'adminNotifyEmail'
+  adminNotifyEmail: 'adminNotifyEmail',
+  donationWidgetCode: 'donationWidgetCode',
+  paypalLink: 'paypalLink',
+  stripeLink: 'stripeLink',
+  venmoQrCodeUrl: 'venmoQrCodeUrl',
+  venmoHandle: 'venmoHandle'
 };
 
 exports.Prisma.EmailTemplateScalarFieldEnum = {

@@ -36,6 +36,11 @@ const EMPTY_ORG = {
   groqModel: 'llama-3.3-70b-versatile',
   groqApiKeyConfigured: false,
   aiEnabled: true,
+  donationWidgetCode: '',
+  paypalLink: '',
+  stripeLink: '',
+  venmoQrCodeUrl: '',
+  venmoHandle: '',
 };
 
 const EMPTY_USER = {
@@ -108,6 +113,11 @@ function SettingsPage() {
         groqModel: settingsData.groqModel || settingsData.grokModel || 'llama-3.3-70b-versatile',
         groqApiKeyConfigured: Boolean(settingsData.groqApiKeyConfigured ?? settingsData.xaiApiKeyConfigured),
         aiEnabled: settingsData.aiEnabled !== false,
+        donationWidgetCode: settingsData.donationWidgetCode || '',
+        paypalLink: settingsData.paypalLink || '',
+        stripeLink: settingsData.stripeLink || '',
+        venmoQrCodeUrl: settingsData.venmoQrCodeUrl || '',
+        venmoHandle: settingsData.venmoHandle || '',
       });
 
       const tasks = [];
@@ -159,6 +169,11 @@ function SettingsPage() {
         groqModel: updated.groqModel || updated.grokModel || 'llama-3.3-70b-versatile',
         groqApiKeyConfigured: Boolean(updated.groqApiKeyConfigured ?? updated.xaiApiKeyConfigured),
         aiEnabled: updated.aiEnabled !== false,
+        donationWidgetCode: updated.donationWidgetCode || '',
+        paypalLink: updated.paypalLink || '',
+        stripeLink: updated.stripeLink || '',
+        venmoQrCodeUrl: updated.venmoQrCodeUrl || '',
+        venmoHandle: updated.venmoHandle || '',
       });
     } catch (err) {
       setError(err.message);
@@ -169,6 +184,29 @@ function SettingsPage() {
 
   function handleOrgFieldChange(field, value) {
     setOrgSettings((prev) => ({ ...prev, [field]: value }));
+  }
+
+  function handleVenmoQrUpload(event) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      setError('Venmo QR code must be an image file.');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Venmo QR code must be 5MB or smaller.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      handleOrgFieldChange('venmoQrCodeUrl', reader.result);
+      setError('');
+    };
+    reader.onerror = () => setError('Could not read the Venmo QR image.');
+    reader.readAsDataURL(file);
+    event.target.value = '';
   }
 
   async function handleTestSocialConnection() {
@@ -444,6 +482,89 @@ function SettingsPage() {
                 className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-slate-50"
               />
             </label>
+          </div>
+
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
+            <h3 className="text-sm font-bold text-slate-900">Payment &amp; Donation Links</h3>
+            <p className="mt-1 text-sm text-slate-600">
+              Configure the public donate page: GiveButter embed, Stripe/PayPal links, and Venmo QR details.
+            </p>
+
+            <label className="mt-4 block">
+              <span className="mb-1 block text-xs font-medium text-slate-600">GiveButter Embed Code</span>
+              <textarea
+                rows={5}
+                value={orgSettings.donationWidgetCode}
+                onChange={(e) => handleOrgFieldChange('donationWidgetCode', e.target.value)}
+                disabled={!canManageOrg}
+                placeholder={'<script src="https://widgets.givebutter.com/..."></script>\n<givebutter-widget id="..."></givebutter-widget>'}
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 font-mono text-xs disabled:bg-white"
+              />
+            </label>
+
+            <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+              <label className="block">
+                <span className="mb-1 block text-xs font-medium text-slate-600">Stripe Donation Link</span>
+                <input
+                  type="url"
+                  value={orgSettings.stripeLink}
+                  onChange={(e) => handleOrgFieldChange('stripeLink', e.target.value)}
+                  disabled={!canManageOrg}
+                  placeholder="https://buy.stripe.com/..."
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-white"
+                />
+              </label>
+              <label className="block">
+                <span className="mb-1 block text-xs font-medium text-slate-600">PayPal Donation Link</span>
+                <input
+                  type="url"
+                  value={orgSettings.paypalLink}
+                  onChange={(e) => handleOrgFieldChange('paypalLink', e.target.value)}
+                  disabled={!canManageOrg}
+                  placeholder="https://paypal.me/..."
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-white"
+                />
+              </label>
+              <label className="block">
+                <span className="mb-1 block text-xs font-medium text-slate-600">Venmo Handle</span>
+                <input
+                  type="text"
+                  value={orgSettings.venmoHandle}
+                  onChange={(e) => handleOrgFieldChange('venmoHandle', e.target.value)}
+                  disabled={!canManageOrg}
+                  placeholder="@Pawsitive-Rescue"
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-white"
+                />
+              </label>
+              <label className="block">
+                <span className="mb-1 block text-xs font-medium text-slate-600">Venmo QR Code</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleVenmoQrUpload}
+                  disabled={!canManageOrg}
+                  className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm disabled:bg-slate-50"
+                />
+                {orgSettings.venmoQrCodeUrl ? (
+                  <div className="mt-3 flex items-start gap-4">
+                    <img
+                      src={orgSettings.venmoQrCodeUrl}
+                      alt="Venmo QR code preview"
+                      className="h-28 w-28 rounded-lg border border-slate-200 bg-white object-contain p-2"
+                    />
+                    {canManageOrg ? (
+                      <button
+                        type="button"
+                        onClick={() => handleOrgFieldChange('venmoQrCodeUrl', '')}
+                        className="text-xs font-semibold text-red-600 hover:underline"
+                      >
+                        Remove QR image
+                      </button>
+                    ) : null}
+                  </div>
+                ) : null}
+              </label>
+            </div>
           </div>
 
           <div className="rounded-xl border border-brand/20 bg-brand-light/30 p-5">

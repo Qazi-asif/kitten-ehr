@@ -30640,6 +30640,11 @@ export namespace Prisma {
     fromEmail: string | null
     fromName: string | null
     adminNotifyEmail: string | null
+    donationWidgetCode: string | null
+    paypalLink: string | null
+    stripeLink: string | null
+    venmoQrCodeUrl: string | null
+    venmoHandle: string | null
   }
 
   export type SettingsMaxAggregateOutputType = {
@@ -30667,6 +30672,11 @@ export namespace Prisma {
     fromEmail: string | null
     fromName: string | null
     adminNotifyEmail: string | null
+    donationWidgetCode: string | null
+    paypalLink: string | null
+    stripeLink: string | null
+    venmoQrCodeUrl: string | null
+    venmoHandle: string | null
   }
 
   export type SettingsCountAggregateOutputType = {
@@ -30694,6 +30704,11 @@ export namespace Prisma {
     fromEmail: number
     fromName: number
     adminNotifyEmail: number
+    donationWidgetCode: number
+    paypalLink: number
+    stripeLink: number
+    venmoQrCodeUrl: number
+    venmoHandle: number
     _all: number
   }
 
@@ -30735,6 +30750,11 @@ export namespace Prisma {
     fromEmail?: true
     fromName?: true
     adminNotifyEmail?: true
+    donationWidgetCode?: true
+    paypalLink?: true
+    stripeLink?: true
+    venmoQrCodeUrl?: true
+    venmoHandle?: true
   }
 
   export type SettingsMaxAggregateInputType = {
@@ -30762,6 +30782,11 @@ export namespace Prisma {
     fromEmail?: true
     fromName?: true
     adminNotifyEmail?: true
+    donationWidgetCode?: true
+    paypalLink?: true
+    stripeLink?: true
+    venmoQrCodeUrl?: true
+    venmoHandle?: true
   }
 
   export type SettingsCountAggregateInputType = {
@@ -30789,6 +30814,11 @@ export namespace Prisma {
     fromEmail?: true
     fromName?: true
     adminNotifyEmail?: true
+    donationWidgetCode?: true
+    paypalLink?: true
+    stripeLink?: true
+    venmoQrCodeUrl?: true
+    venmoHandle?: true
     _all?: true
   }
 
@@ -30903,6 +30933,11 @@ export namespace Prisma {
     fromEmail: string
     fromName: string
     adminNotifyEmail: string
+    donationWidgetCode: string
+    paypalLink: string
+    stripeLink: string
+    venmoQrCodeUrl: string
+    venmoHandle: string
     _count: SettingsCountAggregateOutputType | null
     _avg: SettingsAvgAggregateOutputType | null
     _sum: SettingsSumAggregateOutputType | null
@@ -30949,6 +30984,11 @@ export namespace Prisma {
     fromEmail?: boolean
     fromName?: boolean
     adminNotifyEmail?: boolean
+    donationWidgetCode?: boolean
+    paypalLink?: boolean
+    stripeLink?: boolean
+    venmoQrCodeUrl?: boolean
+    venmoHandle?: boolean
   }, ExtArgs["result"]["settings"]>
 
   export type SettingsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -30976,6 +31016,11 @@ export namespace Prisma {
     fromEmail?: boolean
     fromName?: boolean
     adminNotifyEmail?: boolean
+    donationWidgetCode?: boolean
+    paypalLink?: boolean
+    stripeLink?: boolean
+    venmoQrCodeUrl?: boolean
+    venmoHandle?: boolean
   }, ExtArgs["result"]["settings"]>
 
   export type SettingsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -31003,6 +31048,11 @@ export namespace Prisma {
     fromEmail?: boolean
     fromName?: boolean
     adminNotifyEmail?: boolean
+    donationWidgetCode?: boolean
+    paypalLink?: boolean
+    stripeLink?: boolean
+    venmoQrCodeUrl?: boolean
+    venmoHandle?: boolean
   }, ExtArgs["result"]["settings"]>
 
   export type SettingsSelectScalar = {
@@ -31030,9 +31080,14 @@ export namespace Prisma {
     fromEmail?: boolean
     fromName?: boolean
     adminNotifyEmail?: boolean
+    donationWidgetCode?: boolean
+    paypalLink?: boolean
+    stripeLink?: boolean
+    venmoQrCodeUrl?: boolean
+    venmoHandle?: boolean
   }
 
-  export type SettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orgName" | "missionStatement" | "defaultDonationAmount" | "amazonWishlistUrl" | "chewyWishlistUrl" | "facebookUrl" | "instagramUrl" | "socialPostingEnabled" | "facebookPageId" | "facebookPageAccessToken" | "instagramBusinessAccountId" | "groqApiKey" | "groqModel" | "aiEnabled" | "emailsEnabled" | "smtpHost" | "smtpPort" | "smtpSecure" | "smtpUser" | "smtpPass" | "fromEmail" | "fromName" | "adminNotifyEmail", ExtArgs["result"]["settings"]>
+  export type SettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orgName" | "missionStatement" | "defaultDonationAmount" | "amazonWishlistUrl" | "chewyWishlistUrl" | "facebookUrl" | "instagramUrl" | "socialPostingEnabled" | "facebookPageId" | "facebookPageAccessToken" | "instagramBusinessAccountId" | "groqApiKey" | "groqModel" | "aiEnabled" | "emailsEnabled" | "smtpHost" | "smtpPort" | "smtpSecure" | "smtpUser" | "smtpPass" | "fromEmail" | "fromName" | "adminNotifyEmail" | "donationWidgetCode" | "paypalLink" | "stripeLink" | "venmoQrCodeUrl" | "venmoHandle", ExtArgs["result"]["settings"]>
 
   export type $SettingsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Settings"
@@ -31062,6 +31117,11 @@ export namespace Prisma {
       fromEmail: string
       fromName: string
       adminNotifyEmail: string
+      donationWidgetCode: string
+      paypalLink: string
+      stripeLink: string
+      venmoQrCodeUrl: string
+      venmoHandle: string
     }, ExtArgs["result"]["settings"]>
     composites: {}
   }
@@ -31509,6 +31569,11 @@ export namespace Prisma {
     readonly fromEmail: FieldRef<"Settings", 'String'>
     readonly fromName: FieldRef<"Settings", 'String'>
     readonly adminNotifyEmail: FieldRef<"Settings", 'String'>
+    readonly donationWidgetCode: FieldRef<"Settings", 'String'>
+    readonly paypalLink: FieldRef<"Settings", 'String'>
+    readonly stripeLink: FieldRef<"Settings", 'String'>
+    readonly venmoQrCodeUrl: FieldRef<"Settings", 'String'>
+    readonly venmoHandle: FieldRef<"Settings", 'String'>
   }
     
 
@@ -35662,7 +35727,12 @@ export namespace Prisma {
     smtpPass: 'smtpPass',
     fromEmail: 'fromEmail',
     fromName: 'fromName',
-    adminNotifyEmail: 'adminNotifyEmail'
+    adminNotifyEmail: 'adminNotifyEmail',
+    donationWidgetCode: 'donationWidgetCode',
+    paypalLink: 'paypalLink',
+    stripeLink: 'stripeLink',
+    venmoQrCodeUrl: 'venmoQrCodeUrl',
+    venmoHandle: 'venmoHandle'
   };
 
   export type SettingsScalarFieldEnum = (typeof SettingsScalarFieldEnum)[keyof typeof SettingsScalarFieldEnum]
@@ -37669,6 +37739,11 @@ export namespace Prisma {
     fromEmail?: StringFilter<"Settings"> | string
     fromName?: StringFilter<"Settings"> | string
     adminNotifyEmail?: StringFilter<"Settings"> | string
+    donationWidgetCode?: StringFilter<"Settings"> | string
+    paypalLink?: StringFilter<"Settings"> | string
+    stripeLink?: StringFilter<"Settings"> | string
+    venmoQrCodeUrl?: StringFilter<"Settings"> | string
+    venmoHandle?: StringFilter<"Settings"> | string
   }
 
   export type SettingsOrderByWithRelationInput = {
@@ -37696,6 +37771,11 @@ export namespace Prisma {
     fromEmail?: SortOrder
     fromName?: SortOrder
     adminNotifyEmail?: SortOrder
+    donationWidgetCode?: SortOrder
+    paypalLink?: SortOrder
+    stripeLink?: SortOrder
+    venmoQrCodeUrl?: SortOrder
+    venmoHandle?: SortOrder
   }
 
   export type SettingsWhereUniqueInput = Prisma.AtLeast<{
@@ -37726,6 +37806,11 @@ export namespace Prisma {
     fromEmail?: StringFilter<"Settings"> | string
     fromName?: StringFilter<"Settings"> | string
     adminNotifyEmail?: StringFilter<"Settings"> | string
+    donationWidgetCode?: StringFilter<"Settings"> | string
+    paypalLink?: StringFilter<"Settings"> | string
+    stripeLink?: StringFilter<"Settings"> | string
+    venmoQrCodeUrl?: StringFilter<"Settings"> | string
+    venmoHandle?: StringFilter<"Settings"> | string
   }, "id">
 
   export type SettingsOrderByWithAggregationInput = {
@@ -37753,6 +37838,11 @@ export namespace Prisma {
     fromEmail?: SortOrder
     fromName?: SortOrder
     adminNotifyEmail?: SortOrder
+    donationWidgetCode?: SortOrder
+    paypalLink?: SortOrder
+    stripeLink?: SortOrder
+    venmoQrCodeUrl?: SortOrder
+    venmoHandle?: SortOrder
     _count?: SettingsCountOrderByAggregateInput
     _avg?: SettingsAvgOrderByAggregateInput
     _max?: SettingsMaxOrderByAggregateInput
@@ -37788,6 +37878,11 @@ export namespace Prisma {
     fromEmail?: StringWithAggregatesFilter<"Settings"> | string
     fromName?: StringWithAggregatesFilter<"Settings"> | string
     adminNotifyEmail?: StringWithAggregatesFilter<"Settings"> | string
+    donationWidgetCode?: StringWithAggregatesFilter<"Settings"> | string
+    paypalLink?: StringWithAggregatesFilter<"Settings"> | string
+    stripeLink?: StringWithAggregatesFilter<"Settings"> | string
+    venmoQrCodeUrl?: StringWithAggregatesFilter<"Settings"> | string
+    venmoHandle?: StringWithAggregatesFilter<"Settings"> | string
   }
 
   export type EmailTemplateWhereInput = {
@@ -39930,6 +40025,11 @@ export namespace Prisma {
     fromEmail?: string
     fromName?: string
     adminNotifyEmail?: string
+    donationWidgetCode?: string
+    paypalLink?: string
+    stripeLink?: string
+    venmoQrCodeUrl?: string
+    venmoHandle?: string
   }
 
   export type SettingsUncheckedCreateInput = {
@@ -39957,6 +40057,11 @@ export namespace Prisma {
     fromEmail?: string
     fromName?: string
     adminNotifyEmail?: string
+    donationWidgetCode?: string
+    paypalLink?: string
+    stripeLink?: string
+    venmoQrCodeUrl?: string
+    venmoHandle?: string
   }
 
   export type SettingsUpdateInput = {
@@ -39984,6 +40089,11 @@ export namespace Prisma {
     fromEmail?: StringFieldUpdateOperationsInput | string
     fromName?: StringFieldUpdateOperationsInput | string
     adminNotifyEmail?: StringFieldUpdateOperationsInput | string
+    donationWidgetCode?: StringFieldUpdateOperationsInput | string
+    paypalLink?: StringFieldUpdateOperationsInput | string
+    stripeLink?: StringFieldUpdateOperationsInput | string
+    venmoQrCodeUrl?: StringFieldUpdateOperationsInput | string
+    venmoHandle?: StringFieldUpdateOperationsInput | string
   }
 
   export type SettingsUncheckedUpdateInput = {
@@ -40011,6 +40121,11 @@ export namespace Prisma {
     fromEmail?: StringFieldUpdateOperationsInput | string
     fromName?: StringFieldUpdateOperationsInput | string
     adminNotifyEmail?: StringFieldUpdateOperationsInput | string
+    donationWidgetCode?: StringFieldUpdateOperationsInput | string
+    paypalLink?: StringFieldUpdateOperationsInput | string
+    stripeLink?: StringFieldUpdateOperationsInput | string
+    venmoQrCodeUrl?: StringFieldUpdateOperationsInput | string
+    venmoHandle?: StringFieldUpdateOperationsInput | string
   }
 
   export type SettingsCreateManyInput = {
@@ -40038,6 +40153,11 @@ export namespace Prisma {
     fromEmail?: string
     fromName?: string
     adminNotifyEmail?: string
+    donationWidgetCode?: string
+    paypalLink?: string
+    stripeLink?: string
+    venmoQrCodeUrl?: string
+    venmoHandle?: string
   }
 
   export type SettingsUpdateManyMutationInput = {
@@ -40065,6 +40185,11 @@ export namespace Prisma {
     fromEmail?: StringFieldUpdateOperationsInput | string
     fromName?: StringFieldUpdateOperationsInput | string
     adminNotifyEmail?: StringFieldUpdateOperationsInput | string
+    donationWidgetCode?: StringFieldUpdateOperationsInput | string
+    paypalLink?: StringFieldUpdateOperationsInput | string
+    stripeLink?: StringFieldUpdateOperationsInput | string
+    venmoQrCodeUrl?: StringFieldUpdateOperationsInput | string
+    venmoHandle?: StringFieldUpdateOperationsInput | string
   }
 
   export type SettingsUncheckedUpdateManyInput = {
@@ -40092,6 +40217,11 @@ export namespace Prisma {
     fromEmail?: StringFieldUpdateOperationsInput | string
     fromName?: StringFieldUpdateOperationsInput | string
     adminNotifyEmail?: StringFieldUpdateOperationsInput | string
+    donationWidgetCode?: StringFieldUpdateOperationsInput | string
+    paypalLink?: StringFieldUpdateOperationsInput | string
+    stripeLink?: StringFieldUpdateOperationsInput | string
+    venmoQrCodeUrl?: StringFieldUpdateOperationsInput | string
+    venmoHandle?: StringFieldUpdateOperationsInput | string
   }
 
   export type EmailTemplateCreateInput = {
@@ -41952,6 +42082,11 @@ export namespace Prisma {
     fromEmail?: SortOrder
     fromName?: SortOrder
     adminNotifyEmail?: SortOrder
+    donationWidgetCode?: SortOrder
+    paypalLink?: SortOrder
+    stripeLink?: SortOrder
+    venmoQrCodeUrl?: SortOrder
+    venmoHandle?: SortOrder
   }
 
   export type SettingsAvgOrderByAggregateInput = {
@@ -41985,6 +42120,11 @@ export namespace Prisma {
     fromEmail?: SortOrder
     fromName?: SortOrder
     adminNotifyEmail?: SortOrder
+    donationWidgetCode?: SortOrder
+    paypalLink?: SortOrder
+    stripeLink?: SortOrder
+    venmoQrCodeUrl?: SortOrder
+    venmoHandle?: SortOrder
   }
 
   export type SettingsMinOrderByAggregateInput = {
@@ -42012,6 +42152,11 @@ export namespace Prisma {
     fromEmail?: SortOrder
     fromName?: SortOrder
     adminNotifyEmail?: SortOrder
+    donationWidgetCode?: SortOrder
+    paypalLink?: SortOrder
+    stripeLink?: SortOrder
+    venmoQrCodeUrl?: SortOrder
+    venmoHandle?: SortOrder
   }
 
   export type SettingsSumOrderByAggregateInput = {

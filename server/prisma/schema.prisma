@@ -413,6 +413,11 @@ model Settings {
   fromEmail             String  @default("")
   fromName              String  @default("")
   adminNotifyEmail      String  @default("")
+  donationWidgetCode    String  @default("")
+  paypalLink            String  @default("")
+  stripeLink            String  @default("")
+  venmoQrCodeUrl        String  @default("")
+  venmoHandle           String  @default("")
 }
 
 model EmailTemplate {

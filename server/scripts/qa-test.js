@@ -151,6 +151,44 @@ async function run() {
   }
 
   try {
+    const { data, response } = await api('/api/settings', {
+      method: 'PATCH',
+      body: {
+        stripeLink: 'https://buy.stripe.com/test',
+        paypalLink: 'https://paypal.me/pawsitive',
+        venmoHandle: '@Pawsitive-Rescue',
+      },
+    });
+    if (
+      response.ok
+      && data.stripeLink === 'https://buy.stripe.com/test'
+      && data.paypalLink === 'https://paypal.me/pawsitive'
+      && data.venmoHandle === '@Pawsitive-Rescue'
+    ) {
+      pass('PATCH /api/settings saves donation payment links');
+    } else {
+      fail('PATCH /api/settings saves donation payment links', JSON.stringify({
+        stripeLink: data?.stripeLink,
+        paypalLink: data?.paypalLink,
+        venmoHandle: data?.venmoHandle,
+      }));
+    }
+  } catch (e) {
+    fail('PATCH /api/settings saves donation payment links', e.message);
+  }
+
+  try {
+    const { data } = await api('/api/public/settings', { auth: false });
+    if (typeof data.stripeLink === 'string' && typeof data.paypalLink === 'string') {
+      pass('GET /api/public/settings exposes donation payment fields');
+    } else {
+      fail('GET /api/public/settings exposes donation payment fields', JSON.stringify(data));
+    }
+  } catch (e) {
+    fail('GET /api/public/settings exposes donation payment fields', e.message);
+  }
+
+  try {
     await api('/api/settings', { method: 'PATCH', body: { orgName: '' }, expectStatus: 400 });
     pass('PATCH /api/settings rejects empty orgName');
   } catch (e) {

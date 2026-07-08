@@ -37,6 +37,11 @@ const DEFAULTS = {
   fromEmail: '',
   fromName: '',
   adminNotifyEmail: '',
+  donationWidgetCode: '',
+  paypalLink: '',
+  stripeLink: '',
+  venmoQrCodeUrl: '',
+  venmoHandle: '',
 };
 
 function sanitizeSettings(settings) {
@@ -95,6 +100,11 @@ export async function updateSettings(req, res, next) {
       fromEmail,
       fromName,
       adminNotifyEmail,
+      donationWidgetCode,
+      paypalLink,
+      stripeLink,
+      venmoQrCodeUrl,
+      venmoHandle,
     } = req.body;
 
     const data = {};
@@ -150,6 +160,11 @@ export async function updateSettings(req, res, next) {
     if (fromEmail !== undefined) data.fromEmail = String(fromEmail).trim();
     if (fromName !== undefined) data.fromName = String(fromName).trim();
     if (adminNotifyEmail !== undefined) data.adminNotifyEmail = String(adminNotifyEmail).trim();
+    if (donationWidgetCode !== undefined) data.donationWidgetCode = String(donationWidgetCode);
+    if (paypalLink !== undefined) data.paypalLink = normalizeOptionalUrl(paypalLink);
+    if (stripeLink !== undefined) data.stripeLink = normalizeOptionalUrl(stripeLink);
+    if (venmoQrCodeUrl !== undefined) data.venmoQrCodeUrl = String(venmoQrCodeUrl).trim();
+    if (venmoHandle !== undefined) data.venmoHandle = String(venmoHandle).trim();
 
     const settings = await prisma.settings.upsert({
       where: { id: SETTINGS_ID },
