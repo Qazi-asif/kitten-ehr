@@ -33,6 +33,7 @@ import protocolRoutes from './routes/protocolRoutes.js';
 import protocolLibraryRoutes from './routes/protocolLibraryRoutes.js';
 import socialPostRoutes from './routes/socialPostRoutes.js';
 import wishlistRoutes from './routes/wishlistRoutes.js';
+import dashboardRoutes from './routes/dashboardRoutes.js';
 import { requireAuth } from './middleware/authMiddleware.js';
 import { createOriginValidator } from './utils/corsOrigins.js';
 
@@ -120,6 +121,7 @@ app.get('/api/health', (_req, res) => {
   });
 });
 
+app.use('/api/dashboard', requireAuth, dashboardRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/roles', roleRoutes);
 app.use('/api/kittens', requireAuth, kittenRoutes);

@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
-import { AlertCircle, AlertTriangle, CheckCircle2, FileSignature, Info, TrendingUp } from 'lucide-react';
+import { AlertCircle, AlertTriangle, CheckCircle2, ClipboardList, FileSignature, HeartHandshake, Info } from 'lucide-react';
 import { Cat, Heart, Users } from 'lucide-react';
 import KittenPhoto from '../../components/KittenPhoto';
 import {
   fetchApplications,
   fetchContractStats,
   fetchDashboardStats,
-  fetchFinanceStats,
   fetchKittens,
 } from '../../services/api';
+import { fetchDashboardMetrics } from '../../services/dashboardApi';
 import { resolveContractKittenName } from '../../utils/contractAudit';
 import { getApplicationSummary, resolveKittenOfInterest } from '../../utils/applicationFormData';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -21,10 +21,11 @@ function formatCurrency(amount) {
 }
 
 const statCards = [
-  { key: 'activeKittens', label: 'Active Kittens', icon: Cat, color: 'text-brand bg-brand-light', format: 'number' },
-  { key: 'availableForAdoption', label: 'Available for Adoption', icon: Heart, color: 'text-emerald-600 bg-emerald-50', format: 'number' },
+  { key: 'totalKittens', label: 'Active Kittens', icon: Cat, color: 'text-brand bg-brand-light', format: 'number' },
+  { key: 'availableKittens', label: 'Available Kittens', icon: Heart, color: 'text-emerald-600 bg-emerald-50', format: 'number' },
+  { key: 'totalAdopted', label: 'Total Adopted', icon: ClipboardList, color: 'text-amber-600 bg-amber-50', format: 'number' },
   { key: 'activeFosters', label: 'Active Fosters', icon: Users, color: 'text-purple-600 bg-purple-50', format: 'number' },
-  { key: 'donationsThisMonth', label: 'Donations This Month', icon: TrendingUp, color: 'text-emerald-600 bg-emerald-50', format: 'currency' },
+  { key: 'euthanasiaPulls', label: 'Euthanasia-Pull Rescues', icon: HeartHandshake, color: 'text-rose-600 bg-rose-50', format: 'number' },
 ];
 
 const STATUS_COLORS = {
@@ -91,11 +92,9 @@ function StatusDonut({ kittens }) {
 }
 
 function DashboardPage() {
+  const [metrics, setMetrics] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({
-    activeKittens: 0,
-    availableForAdoption: 0,
-    activeFosters: 0,
-    donationsThisMonth: 0,
     alerts: [],
     medicalConcerns: [],
   });
@@ -110,16 +109,15 @@ function DashboardPage() {
   });
 
   const load = useCallback(async () => {
-    const [statsData, kittensData, financeData, applicationsData, contractsData] = await Promise.all([
+    const [metricsData, statsData, kittensData, applicationsData, contractsData] = await Promise.all([
+      fetchDashboardMetrics(),
       fetchDashboardStats(),
       fetchKittens(),
-      fetchFinanceStats().catch(() => ({ donations: { month: 0 } })),
       fetchApplications().catch(() => []),
       fetchContractStats().catch(() => ({ total: 0, sent: 0, signed: 0, void: 0, recentSigned: [] })),
     ]);
+    setMetrics(metricsData);
     setStats({
-      ...statsData,
-      donationsThisMonth: financeData.donations?.month ?? 0,
       alerts: statsData.alerts ?? [],
       medicalConcerns: statsData.medicalConcerns ?? [],
     });
@@ -129,7 +127,10 @@ function DashboardPage() {
   }, []);
 
   useEffect(() => {
-    load().catch(() => {});
+    setLoading(true);
+    load()
+      .catch(() => setMetrics(null))
+      .finally(() => setLoading(false));
   }, [load]);
 
   const recentIntakes = [...kittens]
@@ -153,21 +154,19 @@ function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-5">
         {statCards.map(({ key, label, icon: Icon, color, format }) => (
           <div key={key} className="rounded-xl border border-slate-100 bg-white p-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-500">{label}</p>
                 <p className="mt-2 text-3xl font-bold text-slate-900">
-                  {format === 'currency' ? formatCurrency(stats[key]) : (stats[key] ?? 0)}
+                  {loading
+                    ? '—'
+                    : format === 'currency'
+                      ? formatCurrency(metrics?.[key])
+                      : (metrics?.[key] ?? 0)}
                 </p>
-                {key === 'donationsThisMonth' && (
-                  <p className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-emerald-600">
-                    <TrendingUp className="h-3.5 w-3.5" />
-                    Monthly income
-                  </p>
-                )}
               </div>
               <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${color}`}>
                 <Icon className="h-5 w-5" />
