@@ -1,3 +1,6 @@
+export const CONTENT_CATEGORY_EDUCATION = 'education';
+export const CONTENT_CATEGORY_SUCCESS_STORY = 'success-story';
+
 export const EDUCATION_CATEGORIES = [
   {
     name: 'Kitten Care 101',

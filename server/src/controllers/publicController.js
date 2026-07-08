@@ -125,10 +125,15 @@ export async function getPublicStats(_req, res, next) {
   }
 }
 
-export async function getPublicContent(_req, res, next) {
+export async function getPublicContent(req, res, next) {
   try {
+    const category = typeof req.query.category === 'string' ? req.query.category.trim() : '';
+
     const articles = await prisma.content.findMany({
-      where: publicWebsiteFilter,
+      where: {
+        ...publicWebsiteFilter,
+        ...(category ? { category } : {}),
+      },
       orderBy: { createdAt: 'desc' },
       select: { id: true, title: true, slug: true, category: true, body: true, createdAt: true },
     });

@@ -327,7 +327,7 @@ model Content {
   title          String
   slug           String              @unique
   body           String              @default("")
-  category       String              @default("")
+  category       String              @default("education")
   isRequired     Boolean             @default(false)
   publishTargets String[]            @default([])
   createdAt      DateTime            @default(now())

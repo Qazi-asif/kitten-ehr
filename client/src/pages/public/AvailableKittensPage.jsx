@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PublicKittenCard from '../../components/PublicKittenCard';
-import { fetchPublicKittens } from '../../services/publicApi';
+import {
+  CONTENT_CATEGORY_SUCCESS_STORY,
+  articleExcerpt,
+} from '../../constants/educationCategories';
+import { fetchPublicContent, fetchPublicKittens } from '../../services/publicApi';
 
 const TABS = [
   { id: 'cats', label: 'Available Cats' },
   { id: 'stories', label: 'Success Stories' },
-  { id: 'gallery', label: 'Gallery' },
 ];
 
 const FAQ_ITEMS = [
@@ -44,30 +47,22 @@ const FAQ_ITEMS = [
   },
 ];
 
-const SUCCESS_STORIES = [
-  { name: 'Mochi', text: 'Found her forever home after 3 weeks in foster care. Now rules the couch!' },
-  { name: 'Pepper', text: 'A shy tabby who blossomed with patience — adopted by a wonderful family with two kids.' },
-  { name: 'Whiskers', text: 'Bottle baby turned cuddle bug. His adopters send us updates every month.' },
-];
-
-const GALLERY = [
-  '/images/kittens/cute.png',
-  '/images/kittens/vect.jpg',
-  '/images/kittens/cato.png',
-  '/images/21.png',
-  '/images/22.png',
-  '/images/18.png',
-];
-
 function AvailableKittensPage() {
   const [kittens, setKittens] = useState([]);
+  const [successStories, setSuccessStories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [storiesLoading, setStoriesLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('cats');
 
   useEffect(() => {
     fetchPublicKittens()
       .then(setKittens)
       .finally(() => setLoading(false));
+
+    fetchPublicContent(CONTENT_CATEGORY_SUCCESS_STORY)
+      .then((data) => setSuccessStories(Array.isArray(data) ? data : []))
+      .catch(() => setSuccessStories([]))
+      .finally(() => setStoriesLoading(false));
   }, []);
 
   return (
@@ -138,24 +133,27 @@ function AvailableKittensPage() {
         )}
 
         {activeTab === 'stories' && (
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            {SUCCESS_STORIES.map((story) => (
-              <div key={story.name} className="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
-                <h3 className="text-lg font-bold text-brand">{story.name}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">{story.text}</p>
+          <>
+            {storiesLoading ? (
+              <p className="text-slate-500">Loading success stories...</p>
+            ) : successStories.length === 0 ? (
+              <div className="rounded-xl border border-slate-200 bg-white p-12 text-center">
+                <p className="text-lg font-medium text-slate-700">No success stories yet</p>
+                <p className="mt-2 text-sm text-slate-500">Check back soon for adoption updates from our community.</p>
               </div>
-            ))}
-          </div>
-        )}
-
-        {activeTab === 'gallery' && (
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-            {GALLERY.map((src) => (
-              <div key={src} className="aspect-square overflow-hidden rounded-xl shadow-sm ring-1 ring-black/5">
-                <img src={src} alt="Rescue kitten" className="h-full w-full object-cover" />
+            ) : (
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+                {successStories.map((story) => (
+                  <div key={story.id} className="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
+                    <h3 className="text-lg font-bold text-brand">{story.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                      {articleExcerpt(story.body, 500)}
+                    </p>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            )}
+          </>
         )}
       </div>
 

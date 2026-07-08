@@ -26,8 +26,9 @@ export function fetchPublicStats() {
   return publicRequest('/stats');
 }
 
-export function fetchPublicContent() {
-  return publicRequest('/content');
+export function fetchPublicContent(category) {
+  const query = category ? `?category=${encodeURIComponent(category)}` : '';
+  return publicRequest(`/content${query}`);
 }
 
 export function fetchPublicArticle(slug) {

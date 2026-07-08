@@ -3,14 +3,25 @@ import PublishingMatrix, { PublishTargetBadges } from '../../components/Publishi
 import { useAuth } from '../../context/AuthContext';
 import { createContentItem, deleteContentItem, fetchContent, updateContentItem } from '../../services/api';
 import { resolvePublishTargets } from '../../utils/publishTargets';
-import { EDUCATION_CATEGORIES } from '../../constants/educationCategories';
+import {
+  CONTENT_CATEGORY_EDUCATION,
+  CONTENT_CATEGORY_SUCCESS_STORY,
+  EDUCATION_CATEGORIES,
+} from '../../constants/educationCategories';
 
-const CATEGORY_OPTIONS = EDUCATION_CATEGORIES.map((category) => category.name);
+const CATEGORY_OPTIONS = [
+  { value: CONTENT_CATEGORY_SUCCESS_STORY, label: 'Success Story' },
+  { value: CONTENT_CATEGORY_EDUCATION, label: 'Education (general)' },
+  ...EDUCATION_CATEGORIES.map((category) => ({
+    value: category.name,
+    label: category.name,
+  })),
+];
 
 const emptyForm = {
   title: '',
   slug: '',
-  category: '',
+  category: CONTENT_CATEGORY_EDUCATION,
   body: '',
   publishTargets: [],
 };
@@ -174,11 +185,11 @@ function ContentManagerPage() {
           >
             <option value="">Select category</option>
             {CATEGORY_OPTIONS.map((option) => (
-              <option key={option} value={option}>
-                {option}
+              <option key={option.value} value={option.value}>
+                {option.label}
               </option>
             ))}
-            {form.category && !CATEGORY_OPTIONS.includes(form.category) && (
+            {form.category && !CATEGORY_OPTIONS.some((option) => option.value === form.category) && (
               <option value={form.category}>{form.category} (legacy)</option>
             )}
           </select>

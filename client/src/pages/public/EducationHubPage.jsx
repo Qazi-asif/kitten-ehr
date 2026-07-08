@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchPublicContent } from '../../services/publicApi';
 import {
+  CONTENT_CATEGORY_SUCCESS_STORY,
   EDUCATION_CATEGORIES,
   articleExcerpt,
   normalizeEducationCategory,
@@ -57,6 +58,8 @@ function EducationHubPage() {
     );
 
     articles.forEach((article) => {
+      if (article.category === CONTENT_CATEGORY_SUCCESS_STORY) return;
+
       const categoryName = normalizeEducationCategory(article.category);
       if (grouped[categoryName]) {
         grouped[categoryName].push(article);

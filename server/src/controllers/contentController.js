@@ -1,4 +1,8 @@
 import prisma from '../lib/prisma.js';
+import {
+  isAllowedContentCategory,
+  normalizeContentCategory,
+} from '../utils/contentCategories.js';
 import { normalizePublishTargets } from '../utils/publishTargets.js';
 
 function slugify(text) {
@@ -55,12 +59,17 @@ export async function createContent(req, res, next) {
     const { title, slug, body, category, publishTargets } = req.body;
     if (!title) return res.status(400).json({ error: 'title is required' });
 
+    const normalizedCategory = normalizeContentCategory(category);
+    if (!isAllowedContentCategory(normalizedCategory)) {
+      return res.status(400).json({ error: 'Invalid content category' });
+    }
+
     const item = await prisma.content.create({
       data: {
         title,
         slug: slug || slugify(title),
         body: body ?? '',
-        category: category ?? '',
+        category: normalizedCategory,
         publishTargets: normalizePublishTargets(publishTargets),
       },
     });
@@ -76,13 +85,20 @@ export async function updateContent(req, res, next) {
     const id = Number.parseInt(req.params.id, 10);
     const { title, slug, body, category, publishTargets } = req.body;
 
+    if (category !== undefined) {
+      const normalizedCategory = normalizeContentCategory(category);
+      if (!isAllowedContentCategory(normalizedCategory)) {
+        return res.status(400).json({ error: 'Invalid content category' });
+      }
+    }
+
     const item = await prisma.content.update({
       where: { id },
       data: {
         ...(title !== undefined && { title }),
         ...(slug !== undefined && { slug }),
         ...(body !== undefined && { body }),
-        ...(category !== undefined && { category }),
+        ...(category !== undefined && { category: normalizeContentCategory(category) }),
         ...(publishTargets !== undefined && { publishTargets: normalizePublishTargets(publishTargets) }),
       },
     });
