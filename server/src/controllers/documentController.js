@@ -7,6 +7,8 @@ import {
   photoDocumentSelect,
 } from '../utils/photoDocuments.js';
 
+const PHOTO_TRANSACTION_OPTIONS = { maxWait: 10000, timeout: 30000 };
+
 async function findKitten(kittenId) {
   return prisma.kitten.findUnique({
     where: { id: kittenId },
@@ -161,7 +163,7 @@ export async function uploadPhoto(req, res, next) {
         },
         select: photoDocumentSelect(),
       });
-    });
+    }, PHOTO_TRANSACTION_OPTIONS);
 
     const kittenAfter = await findKitten(kittenId);
     res.status(201).json({ photo: document, primaryPhotoUrl: kittenAfter.primaryPhotoUrl });
@@ -199,7 +201,7 @@ export async function setPrimaryPhoto(req, res, next) {
         where: { id: kittenId },
         data: { primaryPhotoUrl: document.fileUrl },
       });
-    });
+    }, PHOTO_TRANSACTION_OPTIONS);
 
     const kitten = await findKitten(kittenId);
     res.json({ primaryPhotoUrl: kitten.primaryPhotoUrl, photoId: id });
@@ -252,7 +254,7 @@ export async function deleteDocument(req, res, next) {
             data: { primaryPhotoUrl: null },
           });
         }
-      });
+      }, PHOTO_TRANSACTION_OPTIONS);
     }
 
     res.status(204).send();
