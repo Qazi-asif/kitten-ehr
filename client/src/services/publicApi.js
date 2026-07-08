@@ -47,6 +47,10 @@ export function fetchPublicEvents() {
   return publicRequest('/events');
 }
 
+export function fetchPublicEventBySlug(slug) {
+  return publicRequest(`/events/${slug}`);
+}
+
 export async function fetchPublicSettings() {
   const response = await publicFetch('/public/settings', { cache: 'no-store' });
   if (!response.ok) throw new Error('Request failed');

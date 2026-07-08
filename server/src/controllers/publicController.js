@@ -163,11 +163,13 @@ export async function getPublicEvents(_req, res, next) {
       where: {
         ...publicWebsiteFilter,
         isPublic: true,
+        status: 'PUBLISHED',
       },
       orderBy: { date: 'asc' },
       select: {
         id: true,
         title: true,
+        slug: true,
         date: true,
         location: true,
         description: true,

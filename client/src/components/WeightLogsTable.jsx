@@ -1,6 +1,9 @@
-function formatDate(value) {
+function formatDateTime(value) {
   if (!value) return '—';
-  return new Date(value).toLocaleDateString();
+  return new Date(value).toLocaleString(undefined, {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  });
 }
 
 function WeightLogsTable({ logs }) {
@@ -12,7 +15,7 @@ function WeightLogsTable({ logs }) {
     <table className="min-w-full divide-y divide-gray-200">
       <thead className="bg-gray-50">
         <tr>
-          <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Date</th>
+          <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Date &amp; Time</th>
           <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Weight (g)</th>
           <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Weight (oz)</th>
           <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Change</th>
@@ -26,7 +29,7 @@ function WeightLogsTable({ logs }) {
 
           return (
             <tr key={log.id} className="hover:bg-gray-50">
-              <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-600">{formatDate(log.date)}</td>
+              <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-600">{formatDateTime(log.date)}</td>
               <td className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-gray-900">{Math.round(log.weightGrams)}g</td>
               <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-600">{log.weightOz.toFixed(1)}oz</td>
               <td className="whitespace-nowrap px-4 py-3 text-sm">

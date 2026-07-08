@@ -1,8 +1,14 @@
 import { useState } from 'react';
 
+function toDateTimeLocalValue(date = new Date()) {
+  const offset = date.getTimezoneOffset();
+  const local = new Date(date.getTime() - offset * 60 * 1000);
+  return local.toISOString().slice(0, 16);
+}
+
 const initialFormState = {
   weightGrams: '',
-  date: '',
+  date: toDateTimeLocalValue(),
   notes: '',
 };
 
@@ -20,7 +26,10 @@ function WeightLogForm({ onSubmit }) {
       ...form,
       weightGrams: Number.parseFloat(form.weightGrams),
     });
-    setForm(initialFormState);
+    setForm({
+      ...initialFormState,
+      date: toDateTimeLocalValue(),
+    });
   }
 
   return (
@@ -32,8 +41,8 @@ function WeightLogForm({ onSubmit }) {
           <input type="number" name="weightGrams" value={form.weightGrams} onChange={handleChange} required min="1" step="1" className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
         </label>
         <label className="block">
-          <span className="mb-1 block text-xs font-medium text-gray-700">Date</span>
-          <input type="date" name="date" value={form.date} onChange={handleChange} required className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+          <span className="mb-1 block text-xs font-medium text-gray-700">Date &amp; Time</span>
+          <input type="datetime-local" name="date" value={form.date} onChange={handleChange} required className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
         </label>
         <label className="block">
           <span className="mb-1 block text-xs font-medium text-gray-700">Notes</span>

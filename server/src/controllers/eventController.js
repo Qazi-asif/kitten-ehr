@@ -1,5 +1,11 @@
 import prisma from '../lib/prisma.js';
 import { normalizePublishTargets, targetsIncludeWebsite } from '../utils/publishTargets.js';
+import { isPhotoDocument, photoDocumentOrderBy } from '../utils/photoDocuments.js';
+import {
+  GENERIC_KITTEN_PHOTO_FALLBACK,
+  isResolvablePhotoUrl,
+  normalizeKittenPhotoUrl,
+} from '../utils/resolveKittenPhotoUrl.js';
 
 function slugify(text) {
   return text
@@ -34,6 +40,96 @@ const publicKittenSelect = {
   name: true,
   primaryPhotoUrl: true,
 };
+
+function parseKittenIds(kittenIds) {
+  if (!Array.isArray(kittenIds)) return [];
+  return [...new Set(
+    kittenIds
+      .map((value) => Number.parseInt(value, 10))
+      .filter((value) => Number.isInteger(value) && value > 0),
+  )];
+}
+
+async function enrichEventKittens(kittens) {
+  if (kittens.length === 0) return kittens;
+
+  const needsDocLookup = kittens.filter((kitten) => !isResolvablePhotoUrl(kitten.primaryPhotoUrl));
+  const photoByKittenId = new Map();
+
+  if (needsDocLookup.length > 0) {
+    const documents = await prisma.document.findMany({
+      where: { kittenId: { in: needsDocLookup.map((kitten) => kitten.id) } },
+      orderBy: photoDocumentOrderBy(),
+      select: { kittenId: true, fileUrl: true, docType: true, isPrimaryPhoto: true },
+    });
+
+    for (const document of documents) {
+      if (!isPhotoDocument(document)) continue;
+      if (!photoByKittenId.has(document.kittenId)) {
+        photoByKittenId.set(document.kittenId, document.fileUrl);
+      }
+    }
+  }
+
+  return kittens.map((kitten) => {
+    const normalized = normalizeKittenPhotoUrl(kitten.primaryPhotoUrl, kitten.name);
+    if (normalized) {
+      return { ...kitten, primaryPhotoUrl: normalized };
+    }
+
+    const documentPhoto = photoByKittenId.get(kitten.id);
+    if (documentPhoto) {
+      return { ...kitten, primaryPhotoUrl: documentPhoto };
+    }
+
+    const nameFallback = normalizeKittenPhotoUrl(null, kitten.name);
+    return { ...kitten, primaryPhotoUrl: nameFallback || GENERIC_KITTEN_PHOTO_FALLBACK };
+  });
+}
+
+async function syncEventCats(eventId, kittenIds = []) {
+  const uniqueIds = parseKittenIds(kittenIds);
+
+  if (uniqueIds.length > 0) {
+    const existingCount = await prisma.kitten.count({
+      where: { id: { in: uniqueIds } },
+    });
+
+    if (existingCount !== uniqueIds.length) {
+      const error = new Error('One or more selected kittens were not found');
+      error.statusCode = 400;
+      throw error;
+    }
+  }
+
+  await prisma.$transaction([
+    prisma.eventCats.deleteMany({ where: { eventId } }),
+    ...(uniqueIds.length > 0
+      ? [
+        prisma.eventCats.createMany({
+          data: uniqueIds.map((kittenId) => ({ eventId, kittenId })),
+          skipDuplicates: true,
+        }),
+      ]
+      : []),
+  ]);
+}
+
+async function fetchEventWithCats(eventId) {
+  return prisma.event.findUnique({
+    where: { id: eventId },
+    include: {
+      eventCats: {
+        orderBy: { addedAt: 'asc' },
+        include: {
+          kitten: {
+            select: { id: true, name: true },
+          },
+        },
+      },
+    },
+  });
+}
 
 export async function getAllEvents(_req, res, next) {
   try {
@@ -113,10 +209,13 @@ export async function getPublicEventBySlug(req, res, next) {
     }
 
     const { eventCats, ...eventData } = event;
+    const kittens = await enrichEventKittens(
+      eventCats.map(({ kitten }) => kitten),
+    );
 
     res.json({
       ...eventData,
-      kittens: eventCats.map(({ kitten }) => ({
+      kittens: kittens.map((kitten) => ({
         id: kitten.id,
         name: kitten.name,
         slug: String(kitten.id),
@@ -140,6 +239,7 @@ export async function createEvent(req, res, next) {
       publishTargets,
       status,
       slug,
+      kittenIds,
     } = req.body;
 
     if (!title || !date) {
@@ -160,12 +260,18 @@ export async function createEvent(req, res, next) {
         description: description ?? '',
         publishTargets: normalizedTargets,
         isPublic: targetsIncludeWebsite(normalizedTargets),
-        status: status ?? 'DRAFT',
+        status: status ?? (targetsIncludeWebsite(normalizedTargets) ? 'PUBLISHED' : 'DRAFT'),
       },
     });
 
-    res.status(201).json(event);
+    if (kittenIds !== undefined) {
+      await syncEventCats(event.id, kittenIds);
+    }
+
+    const hydrated = await fetchEventWithCats(event.id);
+    res.status(201).json(hydrated);
   } catch (error) {
+    if (error.statusCode === 400) return res.status(400).json({ error: error.message });
     next(error);
   }
 }
@@ -183,6 +289,7 @@ export async function updateEvent(req, res, next) {
       publishTargets,
       status,
       slug,
+      kittenIds,
     } = req.body;
 
     const data = {
@@ -203,6 +310,9 @@ export async function updateEvent(req, res, next) {
     if (publishTargets !== undefined) {
       data.publishTargets = normalizePublishTargets(publishTargets);
       data.isPublic = targetsIncludeWebsite(data.publishTargets);
+      if (status === undefined && data.isPublic) {
+        data.status = 'PUBLISHED';
+      }
     } else if (isPublic !== undefined) {
       data.isPublic = Boolean(isPublic);
     }
@@ -212,8 +322,14 @@ export async function updateEvent(req, res, next) {
       data,
     });
 
-    res.json(event);
+    if (kittenIds !== undefined) {
+      await syncEventCats(event.id, kittenIds);
+    }
+
+    const hydrated = await fetchEventWithCats(event.id);
+    res.json(hydrated);
   } catch (error) {
+    if (error.statusCode === 400) return res.status(400).json({ error: error.message });
     if (error.code === 'P2025') return res.status(404).json({ error: 'Event not found' });
     next(error);
   }

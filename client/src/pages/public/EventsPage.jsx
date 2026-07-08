@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { fetchPublicEvents } from '../../services/publicApi';
 
 function formatEventDate(value) {
@@ -48,12 +49,28 @@ function EventsPage() {
               <p className="text-sm font-semibold uppercase tracking-wide text-brand">
                 {formatEventDate(event.date)}
               </p>
-              <h2 className="mt-2 text-xl font-bold text-slate-900">{event.title}</h2>
+              <h2 className="mt-2 text-xl font-bold text-slate-900">
+                {event.slug ? (
+                  <Link to={`/events/${event.slug}`} className="hover:text-brand">
+                    {event.title}
+                  </Link>
+                ) : (
+                  event.title
+                )}
+              </h2>
               {event.location && (
                 <p className="mt-2 text-sm font-medium text-slate-600">{event.location}</p>
               )}
               {event.description && (
                 <p className="mt-3 text-sm leading-relaxed text-slate-600">{event.description}</p>
+              )}
+              {event.slug && (
+                <Link
+                  to={`/events/${event.slug}`}
+                  className="mt-4 inline-flex text-sm font-semibold text-brand hover:underline"
+                >
+                  View event details →
+                </Link>
               )}
             </li>
           ))}

@@ -18,6 +18,7 @@ import DashboardPage from './pages/admin/DashboardPage';
 import FinancePage from './pages/admin/FinancePage';
 import OnboardingPage from './pages/admin/OnboardingPage';
 import ProtocolLibrary from './pages/admin/ProtocolLibrary';
+import MarketingPage from './pages/admin/MarketingPage';
 import SettingsPage from './pages/admin/SettingsPage';
 import EmailTemplatesPage from './pages/admin/EmailTemplatesPage';
 import AboutPage from './pages/public/AboutPage';
@@ -29,6 +30,7 @@ import ContactPage from './pages/public/ContactPage';
 import DonatePage from './pages/public/DonatePage';
 import EducationHubPage from './pages/public/EducationHubPage';
 import EventsPage from './pages/public/EventsPage';
+import EventDetailPage from './pages/public/EventDetailPage';
 import FosterPage from './pages/public/FosterPage';
 import FosterFormPage from './pages/public/FosterFormPage';
 import HomePage from './pages/public/HomePage';
@@ -53,6 +55,7 @@ function App() {
             <Route path="/education" element={<EducationHubPage />} />
             <Route path="/education/:slug" element={<ArticlePage />} />
             <Route path="/events" element={<EventsPage />} />
+            <Route path="/events/:slug" element={<EventDetailPage />} />
             <Route path="/donate" element={<DonatePage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/about" element={<AboutPage />} />
@@ -72,6 +75,9 @@ function App() {
               <Route path="onboarding" element={<OnboardingPage />} />
               <Route path="contracts" element={<ContractsPage />} />
               <Route path="calendar" element={<CalendarPage />} />
+              <Route element={<ProtectedRoute permission="events.view" />}>
+                <Route path="marketing" element={<MarketingPage />} />
+              </Route>
               <Route element={<ProtectedRoute permission="content.view" />}>
                 <Route path="content" element={<ContentManagerPage />} />
               </Route>

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import PublishingMatrix, { PublishTargetBadges } from '../../components/PublishingMatrix';
-import { createEvent, deleteEvent, fetchEvents, updateEvent } from '../../services/api';
+import KittenSearchMultiSelect from '../../components/admin/KittenSearchMultiSelect';
+import { createEvent, deleteEvent, fetchEvents, fetchKittens, updateEvent } from '../../services/api';
 import { resolvePublishTargets } from '../../utils/publishTargets';
 
 const initialForm = {
@@ -9,6 +10,7 @@ const initialForm = {
   location: '',
   description: '',
   publishTargets: [],
+  kittenIds: [],
 };
 
 function formatEventDate(value) {
@@ -28,14 +30,19 @@ function toDateTimeLocalValue(value) {
 
 function CalendarPage() {
   const [events, setEvents] = useState([]);
+  const [kittens, setKittens] = useState([]);
   const [form, setForm] = useState(initialForm);
   const [editingId, setEditingId] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const load = useCallback(async () => {
     setLoading(true);
-    const data = await fetchEvents();
-    setEvents(data);
+    const [eventData, kittenData] = await Promise.all([
+      fetchEvents(),
+      fetchKittens(),
+    ]);
+    setEvents(eventData);
+    setKittens(Array.isArray(kittenData) ? kittenData : []);
     setLoading(false);
   }, []);
 
@@ -68,6 +75,7 @@ function CalendarPage() {
       location: item.location,
       description: item.description,
       publishTargets: resolvePublishTargets(item),
+      kittenIds: (item.eventCats || []).map((entry) => entry.kitten?.id || entry.kittenId).filter(Boolean),
     });
   }
 
@@ -128,6 +136,14 @@ function CalendarPage() {
         </div>
 
         <div className="mt-5">
+          <KittenSearchMultiSelect
+            kittens={kittens}
+            selectedIds={form.kittenIds}
+            onChange={(kittenIds) => setForm((prev) => ({ ...prev, kittenIds }))}
+          />
+        </div>
+
+        <div className="mt-5">
           <PublishingMatrix
             currentTargets={form.publishTargets}
             onChange={(publishTargets) => setForm((prev) => ({ ...prev, publishTargets }))}
@@ -169,6 +185,7 @@ function CalendarPage() {
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Title</th>
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Date</th>
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Location</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Cats</th>
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Publish Targets</th>
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Actions</th>
               </tr>
@@ -176,7 +193,7 @@ function CalendarPage() {
             <tbody className="divide-y divide-slate-200">
               {events.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-4 py-8 text-center text-sm text-slate-500">
+                  <td colSpan={6} className="px-4 py-8 text-center text-sm text-slate-500">
                     No events scheduled yet.
                   </td>
                 </tr>
@@ -186,6 +203,7 @@ function CalendarPage() {
                     <td className="px-4 py-3 text-sm font-medium text-slate-900">{item.title}</td>
                     <td className="px-4 py-3 text-sm text-slate-600">{formatEventDate(item.date)}</td>
                     <td className="px-4 py-3 text-sm text-slate-600">{item.location || '—'}</td>
+                    <td className="px-4 py-3 text-sm text-slate-600">{item.eventCats?.length || 0}</td>
                     <td className="px-4 py-3 text-sm">
                       <PublishTargetBadges targets={resolvePublishTargets(item)} />
                     </td>

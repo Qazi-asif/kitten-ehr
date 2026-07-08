@@ -27,6 +27,12 @@ enum WishlistRetailer {
   WALMART
 }
 
+enum SocialPostStatus {
+  DRAFT
+  SCHEDULED
+  POSTED
+}
+
 enum DoseStatus {
   SCHEDULED
   MISSED
@@ -602,4 +608,17 @@ model Wishlist {
 
   @@unique([ownerType, ownerId, retailer])
   @@index([ownerType, ownerId])
+}
+
+model SocialPost {
+  id           Int              @id @default(autoincrement())
+  body         String           @default("")
+  imageUrl     String           @default("")
+  platforms    String[]         @default([])
+  scheduledFor DateTime?
+  status       SocialPostStatus @default(DRAFT)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  @@map("social_posts")
 }
