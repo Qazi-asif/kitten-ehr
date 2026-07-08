@@ -206,6 +206,25 @@ export async function updateApplicationStatus(id, payload) {
   return response.json();
 }
 
+export async function uploadApplicationDocument(applicationId, { file, docLabel }) {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('docLabel', docLabel);
+  const response = await adminFetch(`/applications/${applicationId}/documents`, {
+    method: 'POST',
+    body: formData,
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to upload application document'));
+  return response.json();
+}
+
+export async function deleteApplicationDocument(applicationId, uploadId) {
+  const response = await adminFetch(`/applications/${applicationId}/documents/${uploadId}`, {
+    method: 'DELETE',
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to delete application document'));
+}
+
 export function fetchDocuments(kittenId) {
   return adminRequest(`/kittens/${kittenId}/documents`);
 }

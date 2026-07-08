@@ -8,3 +8,19 @@ export function normalizePublishTargets(targets) {
 export function targetsIncludeWebsite(targets) {
   return normalizePublishTargets(targets).includes('WEBSITE');
 }
+
+export function buildPublicWebsiteWhereClause() {
+  return {
+    OR: [
+      { publishTargets: { isEmpty: true } },
+      { publishTargets: { has: 'WEBSITE' } },
+    ],
+  };
+}
+
+export function buildPublicAvailableKittenWhereClause() {
+  return {
+    status: 'Available for Adoption',
+    ...buildPublicWebsiteWhereClause(),
+  };
+}

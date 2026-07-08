@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import ApplicationDetailPanel from '../../components/admin/ApplicationDetailPanel';
-import { fetchApplications, updateApplicationStatus } from '../../services/api';
+import {
+  deleteApplicationDocument,
+  fetchApplications,
+  updateApplicationStatus,
+  uploadApplicationDocument,
+} from '../../services/api';
 import {
   getApplicationSummary,
   resolveKittenOfInterest,
@@ -68,6 +73,8 @@ function ApplicationsPage() {
   const [filter, setFilter] = useState('');
   const [loading, setLoading] = useState(true);
   const [savingStatus, setSavingStatus] = useState(false);
+  const [uploadingDocument, setUploadingDocument] = useState(false);
+  const [deletingDocumentId, setDeletingDocumentId] = useState(null);
   const [error, setError] = useState('');
 
   const load = useCallback(async () => {
@@ -135,6 +142,59 @@ function ApplicationsPage() {
     }
   }
 
+  function mergeApplicationUploads(applicationId, upload) {
+    setApplications((prev) => prev.map((app) => (
+      app.id === applicationId
+        ? { ...app, uploads: [...(app.uploads || []), upload] }
+        : app
+    )));
+    setSelected((prev) => (
+      prev?.id === applicationId
+        ? { ...prev, uploads: [...(prev.uploads || []), upload] }
+        : prev
+    ));
+  }
+
+  function removeApplicationUpload(applicationId, uploadId) {
+    setApplications((prev) => prev.map((app) => (
+      app.id === applicationId
+        ? { ...app, uploads: (app.uploads || []).filter((upload) => upload.id !== uploadId) }
+        : app
+    )));
+    setSelected((prev) => (
+      prev?.id === applicationId
+        ? { ...prev, uploads: (prev.uploads || []).filter((upload) => upload.id !== uploadId) }
+        : prev
+    ));
+  }
+
+  async function handleUploadDocument(applicationId, payload) {
+    setUploadingDocument(true);
+    setError('');
+    try {
+      const upload = await uploadApplicationDocument(applicationId, payload);
+      mergeApplicationUploads(applicationId, upload);
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setUploadingDocument(false);
+    }
+  }
+
+  async function handleDeleteDocument(applicationId, uploadId) {
+    setDeletingDocumentId(uploadId);
+    setError('');
+    try {
+      await deleteApplicationDocument(applicationId, uploadId);
+      removeApplicationUpload(applicationId, uploadId);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setDeletingDocumentId(null);
+    }
+  }
+
   return (
     <div>
       <h1 className="mb-6 text-2xl font-bold text-gray-900">Applications</h1>
@@ -175,7 +235,11 @@ function ApplicationsPage() {
                 application={selected}
                 onClose={closeApplication}
                 onStatusUpdate={handleStatusUpdate}
+                onUploadDocument={handleUploadDocument}
+                onDeleteDocument={handleDeleteDocument}
                 saving={savingStatus}
+                uploadingDocument={uploadingDocument}
+                deletingDocumentId={deletingDocumentId}
               />
             ) : (
               <div className="flex min-h-[180px] items-center justify-center rounded-xl border border-dashed border-gray-200 bg-gray-50 p-6 text-sm text-gray-500">

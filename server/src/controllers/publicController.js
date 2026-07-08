@@ -1,4 +1,8 @@
 import prisma from '../lib/prisma.js';
+import {
+  buildPublicAvailableKittenWhereClause,
+  buildPublicWebsiteWhereClause,
+} from '../utils/publishTargets.js';
 
 const publicKittenSelect = {
   id: true,
@@ -19,12 +23,13 @@ const publicKittenSelect = {
   chewyWishlistUrl: true,
 };
 
-const publicWebsiteFilter = { publishTargets: { has: 'WEBSITE' } };
+const publicWebsiteFilter = buildPublicWebsiteWhereClause();
+const publicAvailableKittenFilter = buildPublicAvailableKittenWhereClause();
 
 export async function getPublicKittens(_req, res, next) {
   try {
     const kittens = await prisma.kitten.findMany({
-      where: publicWebsiteFilter,
+      where: publicAvailableKittenFilter,
       select: publicKittenSelect,
       orderBy: { id: 'asc' },
     });
@@ -39,7 +44,7 @@ export async function getPublicKittenById(req, res, next) {
     const id = Number.parseInt(req.params.id, 10);
 
     const kitten = await prisma.kitten.findFirst({
-      where: { id, ...publicWebsiteFilter },
+      where: { id, ...publicAvailableKittenFilter },
       select: publicKittenSelect,
     });
 
@@ -56,7 +61,7 @@ export async function getPublicKittenById(req, res, next) {
 export async function getPublicStats(_req, res, next) {
   try {
     const [availableKittens, adoptedKittens, activeFosters] = await Promise.all([
-      prisma.kitten.count({ where: publicWebsiteFilter }),
+      prisma.kitten.count({ where: publicAvailableKittenFilter }),
       prisma.kitten.count({ where: { status: 'Adopted' } }),
       prisma.foster.count({ where: { currentKittens: { some: {} } } }),
     ]);
@@ -118,7 +123,7 @@ export async function getPublicKittenPhotos(req, res, next) {
     const id = Number.parseInt(req.params.id, 10);
 
     const kitten = await prisma.kitten.findFirst({
-      where: { id, ...publicWebsiteFilter },
+      where: { id, ...publicAvailableKittenFilter },
       select: { id: true, primaryPhotoUrl: true },
     });
 
@@ -175,7 +180,7 @@ export async function getPublicKittenUpdates(req, res, next) {
     const id = Number.parseInt(req.params.id, 10);
 
     const kitten = await prisma.kitten.findFirst({
-      where: { id, ...publicWebsiteFilter },
+      where: { id, ...publicAvailableKittenFilter },
       select: { id: true },
     });
 

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import ApplicationDocumentsSection from './ApplicationDocumentsSection';
 import {
   getApplicationDisplaySections,
   getApplicationSummary,
@@ -30,7 +31,16 @@ function FieldGrid({ fields }) {
   );
 }
 
-function ApplicationDetailPanel({ application, onClose, onStatusUpdate, saving = false }) {
+function ApplicationDetailPanel({
+  application,
+  onClose,
+  onStatusUpdate,
+  onUploadDocument,
+  onDeleteDocument,
+  saving = false,
+  uploadingDocument = false,
+  deletingDocumentId = null,
+}) {
   const [pendingStatus, setPendingStatus] = useState(application?.status || 'New');
   const [statusNotes, setStatusNotes] = useState(application?.statusNotes || '');
   const [rejectionReason, setRejectionReason] = useState(application?.rejectionReason || '');
@@ -196,6 +206,15 @@ function ApplicationDetailPanel({ application, onClose, onStatusUpdate, saving =
             </div>
           )}
         </div>
+
+        <ApplicationDocumentsSection
+          uploads={application.uploads || []}
+          applicationType={application.type}
+          onUpload={(payload) => onUploadDocument(application.id, payload)}
+          onDelete={(uploadId) => onDeleteDocument(application.id, uploadId)}
+          uploading={uploadingDocument}
+          deletingId={deletingDocumentId}
+        />
       </div>
     </section>
   );

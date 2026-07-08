@@ -32,6 +32,8 @@ async function saveApplicationUploads(applicationId, files = []) {
       prisma.applicationUpload.create({
         data: {
           applicationId,
+          fileName: file.originalname || 'upload',
+          docLabel: 'Applicant Photo',
           fileUrl: fileToDataUrl(file),
           fileType: file.mimetype,
         },
@@ -161,6 +163,59 @@ export async function updateApplicationStatus(req, res, next) {
   } catch (error) {
     if (error.code === 'P2025') {
       return res.status(404).json({ error: 'Application not found' });
+    }
+    next(error);
+  }
+}
+
+export async function uploadApplicationDocument(req, res, next) {
+  try {
+    const applicationId = Number.parseInt(req.params.id, 10);
+    const fileCheck = validateUploadedFile(req.file);
+    if (!fileCheck.ok) {
+      return res.status(fileCheck.status).json({ error: fileCheck.error });
+    }
+
+    const application = await prisma.application.findUnique({ where: { id: applicationId } });
+    if (!application) return res.status(404).json({ error: 'Application not found' });
+
+    const docLabel = typeof req.body.docLabel === 'string' ? req.body.docLabel.trim() : '';
+    if (!docLabel) {
+      return res.status(400).json({ error: 'docLabel is required' });
+    }
+
+    const upload = await prisma.applicationUpload.create({
+      data: {
+        applicationId,
+        fileName: req.file.originalname || 'document',
+        docLabel,
+        fileUrl: fileToDataUrl(req.file),
+        fileType: req.file.mimetype,
+      },
+    });
+
+    res.status(201).json(upload);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function deleteApplicationDocument(req, res, next) {
+  try {
+    const applicationId = Number.parseInt(req.params.id, 10);
+    const uploadId = Number.parseInt(req.params.uploadId, 10);
+
+    const upload = await prisma.applicationUpload.findFirst({
+      where: { id: uploadId, applicationId },
+    });
+
+    if (!upload) return res.status(404).json({ error: 'Document not found' });
+
+    await prisma.applicationUpload.delete({ where: { id: uploadId } });
+    res.status(204).send();
+  } catch (error) {
+    if (error.code === 'P2025') {
+      return res.status(404).json({ error: 'Document not found' });
     }
     next(error);
   }
