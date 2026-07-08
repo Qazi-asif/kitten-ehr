@@ -345,11 +345,31 @@ exports.Prisma.ContentCompletionScalarFieldEnum = {
 exports.Prisma.EventScalarFieldEnum = {
   id: 'id',
   title: 'title',
+  slug: 'slug',
   date: 'date',
+  endDate: 'endDate',
   location: 'location',
   description: 'description',
   isPublic: 'isPublic',
+  status: 'status',
+  internalNotes: 'internalNotes',
   publishTargets: 'publishTargets'
+};
+
+exports.Prisma.EventRSVPScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  name: 'name',
+  email: 'email',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.EventCatsScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  kittenId: 'kittenId',
+  addedAt: 'addedAt',
+  notes: 'notes'
 };
 
 exports.Prisma.RoleScalarFieldEnum = {
@@ -384,6 +404,49 @@ exports.Prisma.UserScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   lastLoginAt: 'lastLoginAt'
+};
+
+exports.Prisma.ProtocolScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ProtocolDrugScalarFieldEnum = {
+  id: 'id',
+  protocolId: 'protocolId',
+  drugName: 'drugName',
+  dosage: 'dosage',
+  route: 'route',
+  startDayOffset: 'startDayOffset',
+  endDayOffset: 'endDayOffset',
+  frequencyPerDay: 'frequencyPerDay',
+  instructions: 'instructions',
+  sortOrder: 'sortOrder'
+};
+
+exports.Prisma.ActiveProtocolScalarFieldEnum = {
+  id: 'id',
+  protocolId: 'protocolId',
+  kittenId: 'kittenId',
+  activatedById: 'activatedById',
+  activationDate: 'activationDate',
+  status: 'status'
+};
+
+exports.Prisma.ProtocolDoseScalarFieldEnum = {
+  id: 'id',
+  activeProtocolId: 'activeProtocolId',
+  protocolDrugId: 'protocolDrugId',
+  scheduledDate: 'scheduledDate',
+  doseNumberInDay: 'doseNumberInDay',
+  status: 'status',
+  administeredAt: 'administeredAt',
+  administeredById: 'administeredById',
+  notes: 'notes'
 };
 
 exports.Prisma.SettingsScalarFieldEnum = {
@@ -494,6 +557,18 @@ exports.FosterOnboardingStatus = exports.$Enums.FosterOnboardingStatus = {
   WITHDRAWN: 'WITHDRAWN'
 };
 
+exports.ActiveProtocolStatus = exports.$Enums.ActiveProtocolStatus = {
+  ACTIVE: 'ACTIVE',
+  COMPLETED: 'COMPLETED',
+  DISCONTINUED: 'DISCONTINUED'
+};
+
+exports.DoseStatus = exports.$Enums.DoseStatus = {
+  SCHEDULED: 'SCHEDULED',
+  MISSED: 'MISSED',
+  GIVEN: 'GIVEN'
+};
+
 exports.Prisma.ModelName = {
   Litter: 'Litter',
   Foster: 'Foster',
@@ -514,10 +589,16 @@ exports.Prisma.ModelName = {
   Content: 'Content',
   ContentCompletion: 'ContentCompletion',
   Event: 'Event',
+  EventRSVP: 'EventRSVP',
+  EventCats: 'EventCats',
   Role: 'Role',
   Permission: 'Permission',
   RolePermission: 'RolePermission',
   User: 'User',
+  Protocol: 'Protocol',
+  ProtocolDrug: 'ProtocolDrug',
+  ActiveProtocol: 'ActiveProtocol',
+  ProtocolDose: 'ProtocolDose',
   Settings: 'Settings',
   EmailTemplate: 'EmailTemplate',
   EmailLog: 'EmailLog',

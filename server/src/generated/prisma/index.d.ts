@@ -109,6 +109,16 @@ export type ContentCompletion = $Result.DefaultSelection<Prisma.$ContentCompleti
  */
 export type Event = $Result.DefaultSelection<Prisma.$EventPayload>
 /**
+ * Model EventRSVP
+ * 
+ */
+export type EventRSVP = $Result.DefaultSelection<Prisma.$EventRSVPPayload>
+/**
+ * Model EventCats
+ * 
+ */
+export type EventCats = $Result.DefaultSelection<Prisma.$EventCatsPayload>
+/**
  * Model Role
  * 
  */
@@ -128,6 +138,26 @@ export type RolePermission = $Result.DefaultSelection<Prisma.$RolePermissionPayl
  * 
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
+/**
+ * Model Protocol
+ * 
+ */
+export type Protocol = $Result.DefaultSelection<Prisma.$ProtocolPayload>
+/**
+ * Model ProtocolDrug
+ * 
+ */
+export type ProtocolDrug = $Result.DefaultSelection<Prisma.$ProtocolDrugPayload>
+/**
+ * Model ActiveProtocol
+ * 
+ */
+export type ActiveProtocol = $Result.DefaultSelection<Prisma.$ActiveProtocolPayload>
+/**
+ * Model ProtocolDose
+ * 
+ */
+export type ProtocolDose = $Result.DefaultSelection<Prisma.$ProtocolDosePayload>
 /**
  * Model Settings
  * 
@@ -153,7 +183,25 @@ export type Transaction = $Result.DefaultSelection<Prisma.$TransactionPayload>
  * Enums
  */
 export namespace $Enums {
-  export const ContractType: {
+  export const ActiveProtocolStatus: {
+  ACTIVE: 'ACTIVE',
+  COMPLETED: 'COMPLETED',
+  DISCONTINUED: 'DISCONTINUED'
+};
+
+export type ActiveProtocolStatus = (typeof ActiveProtocolStatus)[keyof typeof ActiveProtocolStatus]
+
+
+export const DoseStatus: {
+  SCHEDULED: 'SCHEDULED',
+  MISSED: 'MISSED',
+  GIVEN: 'GIVEN'
+};
+
+export type DoseStatus = (typeof DoseStatus)[keyof typeof DoseStatus]
+
+
+export const ContractType: {
   FOSTER: 'FOSTER',
   ADOPTION: 'ADOPTION'
 };
@@ -182,6 +230,14 @@ export const FosterOnboardingStatus: {
 export type FosterOnboardingStatus = (typeof FosterOnboardingStatus)[keyof typeof FosterOnboardingStatus]
 
 }
+
+export type ActiveProtocolStatus = $Enums.ActiveProtocolStatus
+
+export const ActiveProtocolStatus: typeof $Enums.ActiveProtocolStatus
+
+export type DoseStatus = $Enums.DoseStatus
+
+export const DoseStatus: typeof $Enums.DoseStatus
 
 export type ContractType = $Enums.ContractType
 
@@ -504,6 +560,26 @@ export class PrismaClient<
   get event(): Prisma.EventDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.eventRSVP`: Exposes CRUD operations for the **EventRSVP** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EventRSVPS
+    * const eventRSVPS = await prisma.eventRSVP.findMany()
+    * ```
+    */
+  get eventRSVP(): Prisma.EventRSVPDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.eventCats`: Exposes CRUD operations for the **EventCats** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EventCats
+    * const eventCats = await prisma.eventCats.findMany()
+    * ```
+    */
+  get eventCats(): Prisma.EventCatsDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.role`: Exposes CRUD operations for the **Role** model.
     * Example usage:
     * ```ts
@@ -542,6 +618,46 @@ export class PrismaClient<
     * ```
     */
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.protocol`: Exposes CRUD operations for the **Protocol** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Protocols
+    * const protocols = await prisma.protocol.findMany()
+    * ```
+    */
+  get protocol(): Prisma.ProtocolDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.protocolDrug`: Exposes CRUD operations for the **ProtocolDrug** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ProtocolDrugs
+    * const protocolDrugs = await prisma.protocolDrug.findMany()
+    * ```
+    */
+  get protocolDrug(): Prisma.ProtocolDrugDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.activeProtocol`: Exposes CRUD operations for the **ActiveProtocol** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ActiveProtocols
+    * const activeProtocols = await prisma.activeProtocol.findMany()
+    * ```
+    */
+  get activeProtocol(): Prisma.ActiveProtocolDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.protocolDose`: Exposes CRUD operations for the **ProtocolDose** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ProtocolDoses
+    * const protocolDoses = await prisma.protocolDose.findMany()
+    * ```
+    */
+  get protocolDose(): Prisma.ProtocolDoseDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.settings`: Exposes CRUD operations for the **Settings** model.
@@ -1042,10 +1158,16 @@ export namespace Prisma {
     Content: 'Content',
     ContentCompletion: 'ContentCompletion',
     Event: 'Event',
+    EventRSVP: 'EventRSVP',
+    EventCats: 'EventCats',
     Role: 'Role',
     Permission: 'Permission',
     RolePermission: 'RolePermission',
     User: 'User',
+    Protocol: 'Protocol',
+    ProtocolDrug: 'ProtocolDrug',
+    ActiveProtocol: 'ActiveProtocol',
+    ProtocolDose: 'ProtocolDose',
     Settings: 'Settings',
     EmailTemplate: 'EmailTemplate',
     EmailLog: 'EmailLog',
@@ -1068,7 +1190,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "litter" | "foster" | "kitten" | "update" | "sponsorship" | "placement" | "weightLog" | "vaccine" | "medication" | "vetAppointment" | "document" | "application" | "contract" | "fosterOnboarding" | "onboardingChecklist" | "applicationUpload" | "content" | "contentCompletion" | "event" | "role" | "permission" | "rolePermission" | "user" | "settings" | "emailTemplate" | "emailLog" | "transaction"
+      modelProps: "litter" | "foster" | "kitten" | "update" | "sponsorship" | "placement" | "weightLog" | "vaccine" | "medication" | "vetAppointment" | "document" | "application" | "contract" | "fosterOnboarding" | "onboardingChecklist" | "applicationUpload" | "content" | "contentCompletion" | "event" | "eventRSVP" | "eventCats" | "role" | "permission" | "rolePermission" | "user" | "protocol" | "protocolDrug" | "activeProtocol" | "protocolDose" | "settings" | "emailTemplate" | "emailLog" | "transaction"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2478,6 +2600,154 @@ export namespace Prisma {
           }
         }
       }
+      EventRSVP: {
+        payload: Prisma.$EventRSVPPayload<ExtArgs>
+        fields: Prisma.EventRSVPFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EventRSVPFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventRSVPPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EventRSVPFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventRSVPPayload>
+          }
+          findFirst: {
+            args: Prisma.EventRSVPFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventRSVPPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EventRSVPFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventRSVPPayload>
+          }
+          findMany: {
+            args: Prisma.EventRSVPFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventRSVPPayload>[]
+          }
+          create: {
+            args: Prisma.EventRSVPCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventRSVPPayload>
+          }
+          createMany: {
+            args: Prisma.EventRSVPCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EventRSVPCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventRSVPPayload>[]
+          }
+          delete: {
+            args: Prisma.EventRSVPDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventRSVPPayload>
+          }
+          update: {
+            args: Prisma.EventRSVPUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventRSVPPayload>
+          }
+          deleteMany: {
+            args: Prisma.EventRSVPDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EventRSVPUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.EventRSVPUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventRSVPPayload>[]
+          }
+          upsert: {
+            args: Prisma.EventRSVPUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventRSVPPayload>
+          }
+          aggregate: {
+            args: Prisma.EventRSVPAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEventRSVP>
+          }
+          groupBy: {
+            args: Prisma.EventRSVPGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EventRSVPGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EventRSVPCountArgs<ExtArgs>
+            result: $Utils.Optional<EventRSVPCountAggregateOutputType> | number
+          }
+        }
+      }
+      EventCats: {
+        payload: Prisma.$EventCatsPayload<ExtArgs>
+        fields: Prisma.EventCatsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EventCatsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventCatsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EventCatsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventCatsPayload>
+          }
+          findFirst: {
+            args: Prisma.EventCatsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventCatsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EventCatsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventCatsPayload>
+          }
+          findMany: {
+            args: Prisma.EventCatsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventCatsPayload>[]
+          }
+          create: {
+            args: Prisma.EventCatsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventCatsPayload>
+          }
+          createMany: {
+            args: Prisma.EventCatsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EventCatsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventCatsPayload>[]
+          }
+          delete: {
+            args: Prisma.EventCatsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventCatsPayload>
+          }
+          update: {
+            args: Prisma.EventCatsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventCatsPayload>
+          }
+          deleteMany: {
+            args: Prisma.EventCatsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EventCatsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.EventCatsUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventCatsPayload>[]
+          }
+          upsert: {
+            args: Prisma.EventCatsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventCatsPayload>
+          }
+          aggregate: {
+            args: Prisma.EventCatsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEventCats>
+          }
+          groupBy: {
+            args: Prisma.EventCatsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EventCatsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EventCatsCountArgs<ExtArgs>
+            result: $Utils.Optional<EventCatsCountAggregateOutputType> | number
+          }
+        }
+      }
       Role: {
         payload: Prisma.$RolePayload<ExtArgs>
         fields: Prisma.RoleFieldRefs
@@ -2771,6 +3041,302 @@ export namespace Prisma {
           count: {
             args: Prisma.UserCountArgs<ExtArgs>
             result: $Utils.Optional<UserCountAggregateOutputType> | number
+          }
+        }
+      }
+      Protocol: {
+        payload: Prisma.$ProtocolPayload<ExtArgs>
+        fields: Prisma.ProtocolFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ProtocolFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ProtocolFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolPayload>
+          }
+          findFirst: {
+            args: Prisma.ProtocolFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ProtocolFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolPayload>
+          }
+          findMany: {
+            args: Prisma.ProtocolFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolPayload>[]
+          }
+          create: {
+            args: Prisma.ProtocolCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolPayload>
+          }
+          createMany: {
+            args: Prisma.ProtocolCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ProtocolCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolPayload>[]
+          }
+          delete: {
+            args: Prisma.ProtocolDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolPayload>
+          }
+          update: {
+            args: Prisma.ProtocolUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolPayload>
+          }
+          deleteMany: {
+            args: Prisma.ProtocolDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ProtocolUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ProtocolUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolPayload>[]
+          }
+          upsert: {
+            args: Prisma.ProtocolUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolPayload>
+          }
+          aggregate: {
+            args: Prisma.ProtocolAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateProtocol>
+          }
+          groupBy: {
+            args: Prisma.ProtocolGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ProtocolGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ProtocolCountArgs<ExtArgs>
+            result: $Utils.Optional<ProtocolCountAggregateOutputType> | number
+          }
+        }
+      }
+      ProtocolDrug: {
+        payload: Prisma.$ProtocolDrugPayload<ExtArgs>
+        fields: Prisma.ProtocolDrugFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ProtocolDrugFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolDrugPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ProtocolDrugFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolDrugPayload>
+          }
+          findFirst: {
+            args: Prisma.ProtocolDrugFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolDrugPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ProtocolDrugFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolDrugPayload>
+          }
+          findMany: {
+            args: Prisma.ProtocolDrugFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolDrugPayload>[]
+          }
+          create: {
+            args: Prisma.ProtocolDrugCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolDrugPayload>
+          }
+          createMany: {
+            args: Prisma.ProtocolDrugCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ProtocolDrugCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolDrugPayload>[]
+          }
+          delete: {
+            args: Prisma.ProtocolDrugDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolDrugPayload>
+          }
+          update: {
+            args: Prisma.ProtocolDrugUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolDrugPayload>
+          }
+          deleteMany: {
+            args: Prisma.ProtocolDrugDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ProtocolDrugUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ProtocolDrugUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolDrugPayload>[]
+          }
+          upsert: {
+            args: Prisma.ProtocolDrugUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolDrugPayload>
+          }
+          aggregate: {
+            args: Prisma.ProtocolDrugAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateProtocolDrug>
+          }
+          groupBy: {
+            args: Prisma.ProtocolDrugGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ProtocolDrugGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ProtocolDrugCountArgs<ExtArgs>
+            result: $Utils.Optional<ProtocolDrugCountAggregateOutputType> | number
+          }
+        }
+      }
+      ActiveProtocol: {
+        payload: Prisma.$ActiveProtocolPayload<ExtArgs>
+        fields: Prisma.ActiveProtocolFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ActiveProtocolFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveProtocolPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ActiveProtocolFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveProtocolPayload>
+          }
+          findFirst: {
+            args: Prisma.ActiveProtocolFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveProtocolPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ActiveProtocolFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveProtocolPayload>
+          }
+          findMany: {
+            args: Prisma.ActiveProtocolFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveProtocolPayload>[]
+          }
+          create: {
+            args: Prisma.ActiveProtocolCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveProtocolPayload>
+          }
+          createMany: {
+            args: Prisma.ActiveProtocolCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ActiveProtocolCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveProtocolPayload>[]
+          }
+          delete: {
+            args: Prisma.ActiveProtocolDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveProtocolPayload>
+          }
+          update: {
+            args: Prisma.ActiveProtocolUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveProtocolPayload>
+          }
+          deleteMany: {
+            args: Prisma.ActiveProtocolDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ActiveProtocolUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ActiveProtocolUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveProtocolPayload>[]
+          }
+          upsert: {
+            args: Prisma.ActiveProtocolUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveProtocolPayload>
+          }
+          aggregate: {
+            args: Prisma.ActiveProtocolAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateActiveProtocol>
+          }
+          groupBy: {
+            args: Prisma.ActiveProtocolGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ActiveProtocolGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ActiveProtocolCountArgs<ExtArgs>
+            result: $Utils.Optional<ActiveProtocolCountAggregateOutputType> | number
+          }
+        }
+      }
+      ProtocolDose: {
+        payload: Prisma.$ProtocolDosePayload<ExtArgs>
+        fields: Prisma.ProtocolDoseFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ProtocolDoseFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolDosePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ProtocolDoseFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolDosePayload>
+          }
+          findFirst: {
+            args: Prisma.ProtocolDoseFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolDosePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ProtocolDoseFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolDosePayload>
+          }
+          findMany: {
+            args: Prisma.ProtocolDoseFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolDosePayload>[]
+          }
+          create: {
+            args: Prisma.ProtocolDoseCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolDosePayload>
+          }
+          createMany: {
+            args: Prisma.ProtocolDoseCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ProtocolDoseCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolDosePayload>[]
+          }
+          delete: {
+            args: Prisma.ProtocolDoseDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolDosePayload>
+          }
+          update: {
+            args: Prisma.ProtocolDoseUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolDosePayload>
+          }
+          deleteMany: {
+            args: Prisma.ProtocolDoseDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ProtocolDoseUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ProtocolDoseUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolDosePayload>[]
+          }
+          upsert: {
+            args: Prisma.ProtocolDoseUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProtocolDosePayload>
+          }
+          aggregate: {
+            args: Prisma.ProtocolDoseAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateProtocolDose>
+          }
+          groupBy: {
+            args: Prisma.ProtocolDoseGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ProtocolDoseGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ProtocolDoseCountArgs<ExtArgs>
+            result: $Utils.Optional<ProtocolDoseCountAggregateOutputType> | number
           }
         }
       }
@@ -3185,10 +3751,16 @@ export namespace Prisma {
     content?: ContentOmit
     contentCompletion?: ContentCompletionOmit
     event?: EventOmit
+    eventRSVP?: EventRSVPOmit
+    eventCats?: EventCatsOmit
     role?: RoleOmit
     permission?: PermissionOmit
     rolePermission?: RolePermissionOmit
     user?: UserOmit
+    protocol?: ProtocolOmit
+    protocolDrug?: ProtocolDrugOmit
+    activeProtocol?: ActiveProtocolOmit
+    protocolDose?: ProtocolDoseOmit
     settings?: SettingsOmit
     emailTemplate?: EmailTemplateOmit
     emailLog?: EmailLogOmit
@@ -3354,6 +3926,8 @@ export namespace Prisma {
     updates: number
     transactions: number
     contracts: number
+    activeProtocols: number
+    eventCats: number
   }
 
   export type KittenCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3367,6 +3941,8 @@ export namespace Prisma {
     updates?: boolean | KittenCountOutputTypeCountUpdatesArgs
     transactions?: boolean | KittenCountOutputTypeCountTransactionsArgs
     contracts?: boolean | KittenCountOutputTypeCountContractsArgs
+    activeProtocols?: boolean | KittenCountOutputTypeCountActiveProtocolsArgs
+    eventCats?: boolean | KittenCountOutputTypeCountEventCatsArgs
   }
 
   // Custom InputTypes
@@ -3448,6 +4024,20 @@ export namespace Prisma {
    */
   export type KittenCountOutputTypeCountContractsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ContractWhereInput
+  }
+
+  /**
+   * KittenCountOutputType without action
+   */
+  export type KittenCountOutputTypeCountActiveProtocolsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ActiveProtocolWhereInput
+  }
+
+  /**
+   * KittenCountOutputType without action
+   */
+  export type KittenCountOutputTypeCountEventCatsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventCatsWhereInput
   }
 
 
@@ -3554,6 +4144,46 @@ export namespace Prisma {
 
 
   /**
+   * Count Type EventCountOutputType
+   */
+
+  export type EventCountOutputType = {
+    eventCats: number
+    rsvps: number
+  }
+
+  export type EventCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    eventCats?: boolean | EventCountOutputTypeCountEventCatsArgs
+    rsvps?: boolean | EventCountOutputTypeCountRsvpsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * EventCountOutputType without action
+   */
+  export type EventCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventCountOutputType
+     */
+    select?: EventCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * EventCountOutputType without action
+   */
+  export type EventCountOutputTypeCountEventCatsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventCatsWhereInput
+  }
+
+  /**
+   * EventCountOutputType without action
+   */
+  export type EventCountOutputTypeCountRsvpsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventRSVPWhereInput
+  }
+
+
+  /**
    * Count Type RoleCountOutputType
    */
 
@@ -3632,12 +4262,16 @@ export namespace Prisma {
     rejectedApplications: number
     completedChecklistItems: number
     contentCompletions: number
+    activatedProtocols: number
+    administeredProtocolDoses: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     rejectedApplications?: boolean | UserCountOutputTypeCountRejectedApplicationsArgs
     completedChecklistItems?: boolean | UserCountOutputTypeCountCompletedChecklistItemsArgs
     contentCompletions?: boolean | UserCountOutputTypeCountContentCompletionsArgs
+    activatedProtocols?: boolean | UserCountOutputTypeCountActivatedProtocolsArgs
+    administeredProtocolDoses?: boolean | UserCountOutputTypeCountAdministeredProtocolDosesArgs
   }
 
   // Custom InputTypes
@@ -3670,6 +4304,122 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountContentCompletionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ContentCompletionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountActivatedProtocolsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ActiveProtocolWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAdministeredProtocolDosesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProtocolDoseWhereInput
+  }
+
+
+  /**
+   * Count Type ProtocolCountOutputType
+   */
+
+  export type ProtocolCountOutputType = {
+    drugs: number
+    activeProtocols: number
+  }
+
+  export type ProtocolCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    drugs?: boolean | ProtocolCountOutputTypeCountDrugsArgs
+    activeProtocols?: boolean | ProtocolCountOutputTypeCountActiveProtocolsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ProtocolCountOutputType without action
+   */
+  export type ProtocolCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolCountOutputType
+     */
+    select?: ProtocolCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ProtocolCountOutputType without action
+   */
+  export type ProtocolCountOutputTypeCountDrugsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProtocolDrugWhereInput
+  }
+
+  /**
+   * ProtocolCountOutputType without action
+   */
+  export type ProtocolCountOutputTypeCountActiveProtocolsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ActiveProtocolWhereInput
+  }
+
+
+  /**
+   * Count Type ProtocolDrugCountOutputType
+   */
+
+  export type ProtocolDrugCountOutputType = {
+    doses: number
+  }
+
+  export type ProtocolDrugCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doses?: boolean | ProtocolDrugCountOutputTypeCountDosesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ProtocolDrugCountOutputType without action
+   */
+  export type ProtocolDrugCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDrugCountOutputType
+     */
+    select?: ProtocolDrugCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ProtocolDrugCountOutputType without action
+   */
+  export type ProtocolDrugCountOutputTypeCountDosesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProtocolDoseWhereInput
+  }
+
+
+  /**
+   * Count Type ActiveProtocolCountOutputType
+   */
+
+  export type ActiveProtocolCountOutputType = {
+    doses: number
+  }
+
+  export type ActiveProtocolCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doses?: boolean | ActiveProtocolCountOutputTypeCountDosesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ActiveProtocolCountOutputType without action
+   */
+  export type ActiveProtocolCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocolCountOutputType
+     */
+    select?: ActiveProtocolCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ActiveProtocolCountOutputType without action
+   */
+  export type ActiveProtocolCountOutputTypeCountDosesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProtocolDoseWhereInput
   }
 
 
@@ -6377,6 +7127,8 @@ export namespace Prisma {
     updates?: boolean | Kitten$updatesArgs<ExtArgs>
     transactions?: boolean | Kitten$transactionsArgs<ExtArgs>
     contracts?: boolean | Kitten$contractsArgs<ExtArgs>
+    activeProtocols?: boolean | Kitten$activeProtocolsArgs<ExtArgs>
+    eventCats?: boolean | Kitten$eventCatsArgs<ExtArgs>
     _count?: boolean | KittenCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["kitten"]>
 
@@ -6485,6 +7237,8 @@ export namespace Prisma {
     updates?: boolean | Kitten$updatesArgs<ExtArgs>
     transactions?: boolean | Kitten$transactionsArgs<ExtArgs>
     contracts?: boolean | Kitten$contractsArgs<ExtArgs>
+    activeProtocols?: boolean | Kitten$activeProtocolsArgs<ExtArgs>
+    eventCats?: boolean | Kitten$eventCatsArgs<ExtArgs>
     _count?: boolean | KittenCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type KittenIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6511,6 +7265,8 @@ export namespace Prisma {
       updates: Prisma.$UpdatePayload<ExtArgs>[]
       transactions: Prisma.$TransactionPayload<ExtArgs>[]
       contracts: Prisma.$ContractPayload<ExtArgs>[]
+      activeProtocols: Prisma.$ActiveProtocolPayload<ExtArgs>[]
+      eventCats: Prisma.$EventCatsPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -6945,6 +7701,8 @@ export namespace Prisma {
     updates<T extends Kitten$updatesArgs<ExtArgs> = {}>(args?: Subset<T, Kitten$updatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UpdatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     transactions<T extends Kitten$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, Kitten$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     contracts<T extends Kitten$contractsArgs<ExtArgs> = {}>(args?: Subset<T, Kitten$contractsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    activeProtocols<T extends Kitten$activeProtocolsArgs<ExtArgs> = {}>(args?: Subset<T, Kitten$activeProtocolsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActiveProtocolPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    eventCats<T extends Kitten$eventCatsArgs<ExtArgs> = {}>(args?: Subset<T, Kitten$eventCatsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventCatsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7671,6 +8429,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ContractScalarFieldEnum | ContractScalarFieldEnum[]
+  }
+
+  /**
+   * Kitten.activeProtocols
+   */
+  export type Kitten$activeProtocolsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocol
+     */
+    select?: ActiveProtocolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocol
+     */
+    omit?: ActiveProtocolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolInclude<ExtArgs> | null
+    where?: ActiveProtocolWhereInput
+    orderBy?: ActiveProtocolOrderByWithRelationInput | ActiveProtocolOrderByWithRelationInput[]
+    cursor?: ActiveProtocolWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ActiveProtocolScalarFieldEnum | ActiveProtocolScalarFieldEnum[]
+  }
+
+  /**
+   * Kitten.eventCats
+   */
+  export type Kitten$eventCatsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventCats
+     */
+    select?: EventCatsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventCats
+     */
+    omit?: EventCatsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventCatsInclude<ExtArgs> | null
+    where?: EventCatsWhereInput
+    orderBy?: EventCatsOrderByWithRelationInput | EventCatsOrderByWithRelationInput[]
+    cursor?: EventCatsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EventCatsScalarFieldEnum | EventCatsScalarFieldEnum[]
   }
 
   /**
@@ -25011,28 +25817,40 @@ export namespace Prisma {
   export type EventMinAggregateOutputType = {
     id: number | null
     title: string | null
+    slug: string | null
     date: Date | null
+    endDate: Date | null
     location: string | null
     description: string | null
     isPublic: boolean | null
+    status: string | null
+    internalNotes: string | null
   }
 
   export type EventMaxAggregateOutputType = {
     id: number | null
     title: string | null
+    slug: string | null
     date: Date | null
+    endDate: Date | null
     location: string | null
     description: string | null
     isPublic: boolean | null
+    status: string | null
+    internalNotes: string | null
   }
 
   export type EventCountAggregateOutputType = {
     id: number
     title: number
+    slug: number
     date: number
+    endDate: number
     location: number
     description: number
     isPublic: number
+    status: number
+    internalNotes: number
     publishTargets: number
     _all: number
   }
@@ -25049,28 +25867,40 @@ export namespace Prisma {
   export type EventMinAggregateInputType = {
     id?: true
     title?: true
+    slug?: true
     date?: true
+    endDate?: true
     location?: true
     description?: true
     isPublic?: true
+    status?: true
+    internalNotes?: true
   }
 
   export type EventMaxAggregateInputType = {
     id?: true
     title?: true
+    slug?: true
     date?: true
+    endDate?: true
     location?: true
     description?: true
     isPublic?: true
+    status?: true
+    internalNotes?: true
   }
 
   export type EventCountAggregateInputType = {
     id?: true
     title?: true
+    slug?: true
     date?: true
+    endDate?: true
     location?: true
     description?: true
     isPublic?: true
+    status?: true
+    internalNotes?: true
     publishTargets?: true
     _all?: true
   }
@@ -25164,10 +25994,14 @@ export namespace Prisma {
   export type EventGroupByOutputType = {
     id: number
     title: string
+    slug: string
     date: Date
+    endDate: Date | null
     location: string
     description: string
     isPublic: boolean
+    status: string
+    internalNotes: string | null
     publishTargets: string[]
     _count: EventCountAggregateOutputType | null
     _avg: EventAvgAggregateOutputType | null
@@ -25193,55 +26027,88 @@ export namespace Prisma {
   export type EventSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     title?: boolean
+    slug?: boolean
     date?: boolean
+    endDate?: boolean
     location?: boolean
     description?: boolean
     isPublic?: boolean
+    status?: boolean
+    internalNotes?: boolean
     publishTargets?: boolean
+    eventCats?: boolean | Event$eventCatsArgs<ExtArgs>
+    rsvps?: boolean | Event$rsvpsArgs<ExtArgs>
+    _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
   export type EventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     title?: boolean
+    slug?: boolean
     date?: boolean
+    endDate?: boolean
     location?: boolean
     description?: boolean
     isPublic?: boolean
+    status?: boolean
+    internalNotes?: boolean
     publishTargets?: boolean
   }, ExtArgs["result"]["event"]>
 
   export type EventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     title?: boolean
+    slug?: boolean
     date?: boolean
+    endDate?: boolean
     location?: boolean
     description?: boolean
     isPublic?: boolean
+    status?: boolean
+    internalNotes?: boolean
     publishTargets?: boolean
   }, ExtArgs["result"]["event"]>
 
   export type EventSelectScalar = {
     id?: boolean
     title?: boolean
+    slug?: boolean
     date?: boolean
+    endDate?: boolean
     location?: boolean
     description?: boolean
     isPublic?: boolean
+    status?: boolean
+    internalNotes?: boolean
     publishTargets?: boolean
   }
 
-  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "date" | "location" | "description" | "isPublic" | "publishTargets", ExtArgs["result"]["event"]>
+  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "slug" | "date" | "endDate" | "location" | "description" | "isPublic" | "status" | "internalNotes" | "publishTargets", ExtArgs["result"]["event"]>
+  export type EventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    eventCats?: boolean | Event$eventCatsArgs<ExtArgs>
+    rsvps?: boolean | Event$rsvpsArgs<ExtArgs>
+    _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type EventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type EventIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $EventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Event"
-    objects: {}
+    objects: {
+      eventCats: Prisma.$EventCatsPayload<ExtArgs>[]
+      rsvps: Prisma.$EventRSVPPayload<ExtArgs>[]
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       title: string
+      slug: string
       date: Date
+      endDate: Date | null
       location: string
       description: string
       isPublic: boolean
+      status: string
+      internalNotes: string | null
       publishTargets: string[]
     }, ExtArgs["result"]["event"]>
     composites: {}
@@ -25637,6 +26504,8 @@ export namespace Prisma {
    */
   export interface Prisma__EventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    eventCats<T extends Event$eventCatsArgs<ExtArgs> = {}>(args?: Subset<T, Event$eventCatsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventCatsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    rsvps<T extends Event$rsvpsArgs<ExtArgs> = {}>(args?: Subset<T, Event$rsvpsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventRSVPPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -25668,10 +26537,14 @@ export namespace Prisma {
   interface EventFieldRefs {
     readonly id: FieldRef<"Event", 'Int'>
     readonly title: FieldRef<"Event", 'String'>
+    readonly slug: FieldRef<"Event", 'String'>
     readonly date: FieldRef<"Event", 'DateTime'>
+    readonly endDate: FieldRef<"Event", 'DateTime'>
     readonly location: FieldRef<"Event", 'String'>
     readonly description: FieldRef<"Event", 'String'>
     readonly isPublic: FieldRef<"Event", 'Boolean'>
+    readonly status: FieldRef<"Event", 'String'>
+    readonly internalNotes: FieldRef<"Event", 'String'>
     readonly publishTargets: FieldRef<"Event", 'String[]'>
   }
     
@@ -25689,6 +26562,10 @@ export namespace Prisma {
      * Omit specific fields from the Event
      */
     omit?: EventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
     /**
      * Filter, which Event to fetch.
      */
@@ -25708,6 +26585,10 @@ export namespace Prisma {
      */
     omit?: EventOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
+    /**
      * Filter, which Event to fetch.
      */
     where: EventWhereUniqueInput
@@ -25725,6 +26606,10 @@ export namespace Prisma {
      * Omit specific fields from the Event
      */
     omit?: EventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
     /**
      * Filter, which Event to fetch.
      */
@@ -25774,6 +26659,10 @@ export namespace Prisma {
      */
     omit?: EventOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
+    /**
      * Filter, which Event to fetch.
      */
     where?: EventWhereInput
@@ -25822,6 +26711,10 @@ export namespace Prisma {
      */
     omit?: EventOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
+    /**
      * Filter, which Events to fetch.
      */
     where?: EventWhereInput
@@ -25864,6 +26757,10 @@ export namespace Prisma {
      * Omit specific fields from the Event
      */
     omit?: EventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
     /**
      * The data needed to create a Event.
      */
@@ -25912,6 +26809,10 @@ export namespace Prisma {
      * Omit specific fields from the Event
      */
     omit?: EventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
     /**
      * The data needed to update a Event.
      */
@@ -25979,6 +26880,10 @@ export namespace Prisma {
      */
     omit?: EventOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
+    /**
      * The filter to search for the Event to update in case it exists.
      */
     where: EventWhereUniqueInput
@@ -26005,6 +26910,10 @@ export namespace Prisma {
      */
     omit?: EventOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
+    /**
      * Filter which Event to delete.
      */
     where: EventWhereUniqueInput
@@ -26025,6 +26934,54 @@ export namespace Prisma {
   }
 
   /**
+   * Event.eventCats
+   */
+  export type Event$eventCatsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventCats
+     */
+    select?: EventCatsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventCats
+     */
+    omit?: EventCatsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventCatsInclude<ExtArgs> | null
+    where?: EventCatsWhereInput
+    orderBy?: EventCatsOrderByWithRelationInput | EventCatsOrderByWithRelationInput[]
+    cursor?: EventCatsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EventCatsScalarFieldEnum | EventCatsScalarFieldEnum[]
+  }
+
+  /**
+   * Event.rsvps
+   */
+  export type Event$rsvpsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventRSVP
+     */
+    select?: EventRSVPSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventRSVP
+     */
+    omit?: EventRSVPOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventRSVPInclude<ExtArgs> | null
+    where?: EventRSVPWhereInput
+    orderBy?: EventRSVPOrderByWithRelationInput | EventRSVPOrderByWithRelationInput[]
+    cursor?: EventRSVPWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EventRSVPScalarFieldEnum | EventRSVPScalarFieldEnum[]
+  }
+
+  /**
    * Event without action
    */
   export type EventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -26036,6 +26993,2214 @@ export namespace Prisma {
      * Omit specific fields from the Event
      */
     omit?: EventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EventRSVP
+   */
+
+  export type AggregateEventRSVP = {
+    _count: EventRSVPCountAggregateOutputType | null
+    _avg: EventRSVPAvgAggregateOutputType | null
+    _sum: EventRSVPSumAggregateOutputType | null
+    _min: EventRSVPMinAggregateOutputType | null
+    _max: EventRSVPMaxAggregateOutputType | null
+  }
+
+  export type EventRSVPAvgAggregateOutputType = {
+    id: number | null
+    eventId: number | null
+  }
+
+  export type EventRSVPSumAggregateOutputType = {
+    id: number | null
+    eventId: number | null
+  }
+
+  export type EventRSVPMinAggregateOutputType = {
+    id: number | null
+    eventId: number | null
+    name: string | null
+    email: string | null
+    createdAt: Date | null
+  }
+
+  export type EventRSVPMaxAggregateOutputType = {
+    id: number | null
+    eventId: number | null
+    name: string | null
+    email: string | null
+    createdAt: Date | null
+  }
+
+  export type EventRSVPCountAggregateOutputType = {
+    id: number
+    eventId: number
+    name: number
+    email: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type EventRSVPAvgAggregateInputType = {
+    id?: true
+    eventId?: true
+  }
+
+  export type EventRSVPSumAggregateInputType = {
+    id?: true
+    eventId?: true
+  }
+
+  export type EventRSVPMinAggregateInputType = {
+    id?: true
+    eventId?: true
+    name?: true
+    email?: true
+    createdAt?: true
+  }
+
+  export type EventRSVPMaxAggregateInputType = {
+    id?: true
+    eventId?: true
+    name?: true
+    email?: true
+    createdAt?: true
+  }
+
+  export type EventRSVPCountAggregateInputType = {
+    id?: true
+    eventId?: true
+    name?: true
+    email?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type EventRSVPAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EventRSVP to aggregate.
+     */
+    where?: EventRSVPWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventRSVPS to fetch.
+     */
+    orderBy?: EventRSVPOrderByWithRelationInput | EventRSVPOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EventRSVPWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventRSVPS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventRSVPS.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EventRSVPS
+    **/
+    _count?: true | EventRSVPCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: EventRSVPAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EventRSVPSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EventRSVPMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EventRSVPMaxAggregateInputType
+  }
+
+  export type GetEventRSVPAggregateType<T extends EventRSVPAggregateArgs> = {
+        [P in keyof T & keyof AggregateEventRSVP]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEventRSVP[P]>
+      : GetScalarType<T[P], AggregateEventRSVP[P]>
+  }
+
+
+
+
+  export type EventRSVPGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventRSVPWhereInput
+    orderBy?: EventRSVPOrderByWithAggregationInput | EventRSVPOrderByWithAggregationInput[]
+    by: EventRSVPScalarFieldEnum[] | EventRSVPScalarFieldEnum
+    having?: EventRSVPScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EventRSVPCountAggregateInputType | true
+    _avg?: EventRSVPAvgAggregateInputType
+    _sum?: EventRSVPSumAggregateInputType
+    _min?: EventRSVPMinAggregateInputType
+    _max?: EventRSVPMaxAggregateInputType
+  }
+
+  export type EventRSVPGroupByOutputType = {
+    id: number
+    eventId: number
+    name: string
+    email: string
+    createdAt: Date
+    _count: EventRSVPCountAggregateOutputType | null
+    _avg: EventRSVPAvgAggregateOutputType | null
+    _sum: EventRSVPSumAggregateOutputType | null
+    _min: EventRSVPMinAggregateOutputType | null
+    _max: EventRSVPMaxAggregateOutputType | null
+  }
+
+  type GetEventRSVPGroupByPayload<T extends EventRSVPGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EventRSVPGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EventRSVPGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EventRSVPGroupByOutputType[P]>
+            : GetScalarType<T[P], EventRSVPGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EventRSVPSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    name?: boolean
+    email?: boolean
+    createdAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["eventRSVP"]>
+
+  export type EventRSVPSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    name?: boolean
+    email?: boolean
+    createdAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["eventRSVP"]>
+
+  export type EventRSVPSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    name?: boolean
+    email?: boolean
+    createdAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["eventRSVP"]>
+
+  export type EventRSVPSelectScalar = {
+    id?: boolean
+    eventId?: boolean
+    name?: boolean
+    email?: boolean
+    createdAt?: boolean
+  }
+
+  export type EventRSVPOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventId" | "name" | "email" | "createdAt", ExtArgs["result"]["eventRSVP"]>
+  export type EventRSVPInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }
+  export type EventRSVPIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }
+  export type EventRSVPIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }
+
+  export type $EventRSVPPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EventRSVP"
+    objects: {
+      event: Prisma.$EventPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      eventId: number
+      name: string
+      email: string
+      createdAt: Date
+    }, ExtArgs["result"]["eventRSVP"]>
+    composites: {}
+  }
+
+  type EventRSVPGetPayload<S extends boolean | null | undefined | EventRSVPDefaultArgs> = $Result.GetResult<Prisma.$EventRSVPPayload, S>
+
+  type EventRSVPCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EventRSVPFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EventRSVPCountAggregateInputType | true
+    }
+
+  export interface EventRSVPDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EventRSVP'], meta: { name: 'EventRSVP' } }
+    /**
+     * Find zero or one EventRSVP that matches the filter.
+     * @param {EventRSVPFindUniqueArgs} args - Arguments to find a EventRSVP
+     * @example
+     * // Get one EventRSVP
+     * const eventRSVP = await prisma.eventRSVP.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EventRSVPFindUniqueArgs>(args: SelectSubset<T, EventRSVPFindUniqueArgs<ExtArgs>>): Prisma__EventRSVPClient<$Result.GetResult<Prisma.$EventRSVPPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EventRSVP that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EventRSVPFindUniqueOrThrowArgs} args - Arguments to find a EventRSVP
+     * @example
+     * // Get one EventRSVP
+     * const eventRSVP = await prisma.eventRSVP.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EventRSVPFindUniqueOrThrowArgs>(args: SelectSubset<T, EventRSVPFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EventRSVPClient<$Result.GetResult<Prisma.$EventRSVPPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EventRSVP that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventRSVPFindFirstArgs} args - Arguments to find a EventRSVP
+     * @example
+     * // Get one EventRSVP
+     * const eventRSVP = await prisma.eventRSVP.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EventRSVPFindFirstArgs>(args?: SelectSubset<T, EventRSVPFindFirstArgs<ExtArgs>>): Prisma__EventRSVPClient<$Result.GetResult<Prisma.$EventRSVPPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EventRSVP that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventRSVPFindFirstOrThrowArgs} args - Arguments to find a EventRSVP
+     * @example
+     * // Get one EventRSVP
+     * const eventRSVP = await prisma.eventRSVP.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EventRSVPFindFirstOrThrowArgs>(args?: SelectSubset<T, EventRSVPFindFirstOrThrowArgs<ExtArgs>>): Prisma__EventRSVPClient<$Result.GetResult<Prisma.$EventRSVPPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EventRSVPS that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventRSVPFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EventRSVPS
+     * const eventRSVPS = await prisma.eventRSVP.findMany()
+     * 
+     * // Get first 10 EventRSVPS
+     * const eventRSVPS = await prisma.eventRSVP.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const eventRSVPWithIdOnly = await prisma.eventRSVP.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EventRSVPFindManyArgs>(args?: SelectSubset<T, EventRSVPFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventRSVPPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EventRSVP.
+     * @param {EventRSVPCreateArgs} args - Arguments to create a EventRSVP.
+     * @example
+     * // Create one EventRSVP
+     * const EventRSVP = await prisma.eventRSVP.create({
+     *   data: {
+     *     // ... data to create a EventRSVP
+     *   }
+     * })
+     * 
+     */
+    create<T extends EventRSVPCreateArgs>(args: SelectSubset<T, EventRSVPCreateArgs<ExtArgs>>): Prisma__EventRSVPClient<$Result.GetResult<Prisma.$EventRSVPPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EventRSVPS.
+     * @param {EventRSVPCreateManyArgs} args - Arguments to create many EventRSVPS.
+     * @example
+     * // Create many EventRSVPS
+     * const eventRSVP = await prisma.eventRSVP.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EventRSVPCreateManyArgs>(args?: SelectSubset<T, EventRSVPCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many EventRSVPS and returns the data saved in the database.
+     * @param {EventRSVPCreateManyAndReturnArgs} args - Arguments to create many EventRSVPS.
+     * @example
+     * // Create many EventRSVPS
+     * const eventRSVP = await prisma.eventRSVP.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many EventRSVPS and only return the `id`
+     * const eventRSVPWithIdOnly = await prisma.eventRSVP.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EventRSVPCreateManyAndReturnArgs>(args?: SelectSubset<T, EventRSVPCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventRSVPPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a EventRSVP.
+     * @param {EventRSVPDeleteArgs} args - Arguments to delete one EventRSVP.
+     * @example
+     * // Delete one EventRSVP
+     * const EventRSVP = await prisma.eventRSVP.delete({
+     *   where: {
+     *     // ... filter to delete one EventRSVP
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EventRSVPDeleteArgs>(args: SelectSubset<T, EventRSVPDeleteArgs<ExtArgs>>): Prisma__EventRSVPClient<$Result.GetResult<Prisma.$EventRSVPPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EventRSVP.
+     * @param {EventRSVPUpdateArgs} args - Arguments to update one EventRSVP.
+     * @example
+     * // Update one EventRSVP
+     * const eventRSVP = await prisma.eventRSVP.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EventRSVPUpdateArgs>(args: SelectSubset<T, EventRSVPUpdateArgs<ExtArgs>>): Prisma__EventRSVPClient<$Result.GetResult<Prisma.$EventRSVPPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EventRSVPS.
+     * @param {EventRSVPDeleteManyArgs} args - Arguments to filter EventRSVPS to delete.
+     * @example
+     * // Delete a few EventRSVPS
+     * const { count } = await prisma.eventRSVP.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EventRSVPDeleteManyArgs>(args?: SelectSubset<T, EventRSVPDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EventRSVPS.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventRSVPUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EventRSVPS
+     * const eventRSVP = await prisma.eventRSVP.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EventRSVPUpdateManyArgs>(args: SelectSubset<T, EventRSVPUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EventRSVPS and returns the data updated in the database.
+     * @param {EventRSVPUpdateManyAndReturnArgs} args - Arguments to update many EventRSVPS.
+     * @example
+     * // Update many EventRSVPS
+     * const eventRSVP = await prisma.eventRSVP.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more EventRSVPS and only return the `id`
+     * const eventRSVPWithIdOnly = await prisma.eventRSVP.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends EventRSVPUpdateManyAndReturnArgs>(args: SelectSubset<T, EventRSVPUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventRSVPPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one EventRSVP.
+     * @param {EventRSVPUpsertArgs} args - Arguments to update or create a EventRSVP.
+     * @example
+     * // Update or create a EventRSVP
+     * const eventRSVP = await prisma.eventRSVP.upsert({
+     *   create: {
+     *     // ... data to create a EventRSVP
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EventRSVP we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EventRSVPUpsertArgs>(args: SelectSubset<T, EventRSVPUpsertArgs<ExtArgs>>): Prisma__EventRSVPClient<$Result.GetResult<Prisma.$EventRSVPPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EventRSVPS.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventRSVPCountArgs} args - Arguments to filter EventRSVPS to count.
+     * @example
+     * // Count the number of EventRSVPS
+     * const count = await prisma.eventRSVP.count({
+     *   where: {
+     *     // ... the filter for the EventRSVPS we want to count
+     *   }
+     * })
+    **/
+    count<T extends EventRSVPCountArgs>(
+      args?: Subset<T, EventRSVPCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EventRSVPCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EventRSVP.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventRSVPAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EventRSVPAggregateArgs>(args: Subset<T, EventRSVPAggregateArgs>): Prisma.PrismaPromise<GetEventRSVPAggregateType<T>>
+
+    /**
+     * Group by EventRSVP.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventRSVPGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EventRSVPGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EventRSVPGroupByArgs['orderBy'] }
+        : { orderBy?: EventRSVPGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EventRSVPGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEventRSVPGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EventRSVP model
+   */
+  readonly fields: EventRSVPFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EventRSVP.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EventRSVPClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EventRSVP model
+   */
+  interface EventRSVPFieldRefs {
+    readonly id: FieldRef<"EventRSVP", 'Int'>
+    readonly eventId: FieldRef<"EventRSVP", 'Int'>
+    readonly name: FieldRef<"EventRSVP", 'String'>
+    readonly email: FieldRef<"EventRSVP", 'String'>
+    readonly createdAt: FieldRef<"EventRSVP", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EventRSVP findUnique
+   */
+  export type EventRSVPFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventRSVP
+     */
+    select?: EventRSVPSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventRSVP
+     */
+    omit?: EventRSVPOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventRSVPInclude<ExtArgs> | null
+    /**
+     * Filter, which EventRSVP to fetch.
+     */
+    where: EventRSVPWhereUniqueInput
+  }
+
+  /**
+   * EventRSVP findUniqueOrThrow
+   */
+  export type EventRSVPFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventRSVP
+     */
+    select?: EventRSVPSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventRSVP
+     */
+    omit?: EventRSVPOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventRSVPInclude<ExtArgs> | null
+    /**
+     * Filter, which EventRSVP to fetch.
+     */
+    where: EventRSVPWhereUniqueInput
+  }
+
+  /**
+   * EventRSVP findFirst
+   */
+  export type EventRSVPFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventRSVP
+     */
+    select?: EventRSVPSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventRSVP
+     */
+    omit?: EventRSVPOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventRSVPInclude<ExtArgs> | null
+    /**
+     * Filter, which EventRSVP to fetch.
+     */
+    where?: EventRSVPWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventRSVPS to fetch.
+     */
+    orderBy?: EventRSVPOrderByWithRelationInput | EventRSVPOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EventRSVPS.
+     */
+    cursor?: EventRSVPWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventRSVPS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventRSVPS.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EventRSVPS.
+     */
+    distinct?: EventRSVPScalarFieldEnum | EventRSVPScalarFieldEnum[]
+  }
+
+  /**
+   * EventRSVP findFirstOrThrow
+   */
+  export type EventRSVPFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventRSVP
+     */
+    select?: EventRSVPSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventRSVP
+     */
+    omit?: EventRSVPOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventRSVPInclude<ExtArgs> | null
+    /**
+     * Filter, which EventRSVP to fetch.
+     */
+    where?: EventRSVPWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventRSVPS to fetch.
+     */
+    orderBy?: EventRSVPOrderByWithRelationInput | EventRSVPOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EventRSVPS.
+     */
+    cursor?: EventRSVPWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventRSVPS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventRSVPS.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EventRSVPS.
+     */
+    distinct?: EventRSVPScalarFieldEnum | EventRSVPScalarFieldEnum[]
+  }
+
+  /**
+   * EventRSVP findMany
+   */
+  export type EventRSVPFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventRSVP
+     */
+    select?: EventRSVPSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventRSVP
+     */
+    omit?: EventRSVPOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventRSVPInclude<ExtArgs> | null
+    /**
+     * Filter, which EventRSVPS to fetch.
+     */
+    where?: EventRSVPWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventRSVPS to fetch.
+     */
+    orderBy?: EventRSVPOrderByWithRelationInput | EventRSVPOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EventRSVPS.
+     */
+    cursor?: EventRSVPWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventRSVPS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventRSVPS.
+     */
+    skip?: number
+    distinct?: EventRSVPScalarFieldEnum | EventRSVPScalarFieldEnum[]
+  }
+
+  /**
+   * EventRSVP create
+   */
+  export type EventRSVPCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventRSVP
+     */
+    select?: EventRSVPSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventRSVP
+     */
+    omit?: EventRSVPOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventRSVPInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EventRSVP.
+     */
+    data: XOR<EventRSVPCreateInput, EventRSVPUncheckedCreateInput>
+  }
+
+  /**
+   * EventRSVP createMany
+   */
+  export type EventRSVPCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EventRSVPS.
+     */
+    data: EventRSVPCreateManyInput | EventRSVPCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EventRSVP createManyAndReturn
+   */
+  export type EventRSVPCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventRSVP
+     */
+    select?: EventRSVPSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventRSVP
+     */
+    omit?: EventRSVPOmit<ExtArgs> | null
+    /**
+     * The data used to create many EventRSVPS.
+     */
+    data: EventRSVPCreateManyInput | EventRSVPCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventRSVPIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EventRSVP update
+   */
+  export type EventRSVPUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventRSVP
+     */
+    select?: EventRSVPSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventRSVP
+     */
+    omit?: EventRSVPOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventRSVPInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EventRSVP.
+     */
+    data: XOR<EventRSVPUpdateInput, EventRSVPUncheckedUpdateInput>
+    /**
+     * Choose, which EventRSVP to update.
+     */
+    where: EventRSVPWhereUniqueInput
+  }
+
+  /**
+   * EventRSVP updateMany
+   */
+  export type EventRSVPUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EventRSVPS.
+     */
+    data: XOR<EventRSVPUpdateManyMutationInput, EventRSVPUncheckedUpdateManyInput>
+    /**
+     * Filter which EventRSVPS to update
+     */
+    where?: EventRSVPWhereInput
+    /**
+     * Limit how many EventRSVPS to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EventRSVP updateManyAndReturn
+   */
+  export type EventRSVPUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventRSVP
+     */
+    select?: EventRSVPSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventRSVP
+     */
+    omit?: EventRSVPOmit<ExtArgs> | null
+    /**
+     * The data used to update EventRSVPS.
+     */
+    data: XOR<EventRSVPUpdateManyMutationInput, EventRSVPUncheckedUpdateManyInput>
+    /**
+     * Filter which EventRSVPS to update
+     */
+    where?: EventRSVPWhereInput
+    /**
+     * Limit how many EventRSVPS to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventRSVPIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EventRSVP upsert
+   */
+  export type EventRSVPUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventRSVP
+     */
+    select?: EventRSVPSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventRSVP
+     */
+    omit?: EventRSVPOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventRSVPInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EventRSVP to update in case it exists.
+     */
+    where: EventRSVPWhereUniqueInput
+    /**
+     * In case the EventRSVP found by the `where` argument doesn't exist, create a new EventRSVP with this data.
+     */
+    create: XOR<EventRSVPCreateInput, EventRSVPUncheckedCreateInput>
+    /**
+     * In case the EventRSVP was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EventRSVPUpdateInput, EventRSVPUncheckedUpdateInput>
+  }
+
+  /**
+   * EventRSVP delete
+   */
+  export type EventRSVPDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventRSVP
+     */
+    select?: EventRSVPSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventRSVP
+     */
+    omit?: EventRSVPOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventRSVPInclude<ExtArgs> | null
+    /**
+     * Filter which EventRSVP to delete.
+     */
+    where: EventRSVPWhereUniqueInput
+  }
+
+  /**
+   * EventRSVP deleteMany
+   */
+  export type EventRSVPDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EventRSVPS to delete
+     */
+    where?: EventRSVPWhereInput
+    /**
+     * Limit how many EventRSVPS to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EventRSVP without action
+   */
+  export type EventRSVPDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventRSVP
+     */
+    select?: EventRSVPSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventRSVP
+     */
+    omit?: EventRSVPOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventRSVPInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EventCats
+   */
+
+  export type AggregateEventCats = {
+    _count: EventCatsCountAggregateOutputType | null
+    _avg: EventCatsAvgAggregateOutputType | null
+    _sum: EventCatsSumAggregateOutputType | null
+    _min: EventCatsMinAggregateOutputType | null
+    _max: EventCatsMaxAggregateOutputType | null
+  }
+
+  export type EventCatsAvgAggregateOutputType = {
+    id: number | null
+    eventId: number | null
+    kittenId: number | null
+  }
+
+  export type EventCatsSumAggregateOutputType = {
+    id: number | null
+    eventId: number | null
+    kittenId: number | null
+  }
+
+  export type EventCatsMinAggregateOutputType = {
+    id: number | null
+    eventId: number | null
+    kittenId: number | null
+    addedAt: Date | null
+    notes: string | null
+  }
+
+  export type EventCatsMaxAggregateOutputType = {
+    id: number | null
+    eventId: number | null
+    kittenId: number | null
+    addedAt: Date | null
+    notes: string | null
+  }
+
+  export type EventCatsCountAggregateOutputType = {
+    id: number
+    eventId: number
+    kittenId: number
+    addedAt: number
+    notes: number
+    _all: number
+  }
+
+
+  export type EventCatsAvgAggregateInputType = {
+    id?: true
+    eventId?: true
+    kittenId?: true
+  }
+
+  export type EventCatsSumAggregateInputType = {
+    id?: true
+    eventId?: true
+    kittenId?: true
+  }
+
+  export type EventCatsMinAggregateInputType = {
+    id?: true
+    eventId?: true
+    kittenId?: true
+    addedAt?: true
+    notes?: true
+  }
+
+  export type EventCatsMaxAggregateInputType = {
+    id?: true
+    eventId?: true
+    kittenId?: true
+    addedAt?: true
+    notes?: true
+  }
+
+  export type EventCatsCountAggregateInputType = {
+    id?: true
+    eventId?: true
+    kittenId?: true
+    addedAt?: true
+    notes?: true
+    _all?: true
+  }
+
+  export type EventCatsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EventCats to aggregate.
+     */
+    where?: EventCatsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventCats to fetch.
+     */
+    orderBy?: EventCatsOrderByWithRelationInput | EventCatsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EventCatsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventCats from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventCats.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EventCats
+    **/
+    _count?: true | EventCatsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: EventCatsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EventCatsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EventCatsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EventCatsMaxAggregateInputType
+  }
+
+  export type GetEventCatsAggregateType<T extends EventCatsAggregateArgs> = {
+        [P in keyof T & keyof AggregateEventCats]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEventCats[P]>
+      : GetScalarType<T[P], AggregateEventCats[P]>
+  }
+
+
+
+
+  export type EventCatsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventCatsWhereInput
+    orderBy?: EventCatsOrderByWithAggregationInput | EventCatsOrderByWithAggregationInput[]
+    by: EventCatsScalarFieldEnum[] | EventCatsScalarFieldEnum
+    having?: EventCatsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EventCatsCountAggregateInputType | true
+    _avg?: EventCatsAvgAggregateInputType
+    _sum?: EventCatsSumAggregateInputType
+    _min?: EventCatsMinAggregateInputType
+    _max?: EventCatsMaxAggregateInputType
+  }
+
+  export type EventCatsGroupByOutputType = {
+    id: number
+    eventId: number
+    kittenId: number
+    addedAt: Date
+    notes: string | null
+    _count: EventCatsCountAggregateOutputType | null
+    _avg: EventCatsAvgAggregateOutputType | null
+    _sum: EventCatsSumAggregateOutputType | null
+    _min: EventCatsMinAggregateOutputType | null
+    _max: EventCatsMaxAggregateOutputType | null
+  }
+
+  type GetEventCatsGroupByPayload<T extends EventCatsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EventCatsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EventCatsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EventCatsGroupByOutputType[P]>
+            : GetScalarType<T[P], EventCatsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EventCatsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    kittenId?: boolean
+    addedAt?: boolean
+    notes?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    kitten?: boolean | KittenDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["eventCats"]>
+
+  export type EventCatsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    kittenId?: boolean
+    addedAt?: boolean
+    notes?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    kitten?: boolean | KittenDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["eventCats"]>
+
+  export type EventCatsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    kittenId?: boolean
+    addedAt?: boolean
+    notes?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    kitten?: boolean | KittenDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["eventCats"]>
+
+  export type EventCatsSelectScalar = {
+    id?: boolean
+    eventId?: boolean
+    kittenId?: boolean
+    addedAt?: boolean
+    notes?: boolean
+  }
+
+  export type EventCatsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventId" | "kittenId" | "addedAt" | "notes", ExtArgs["result"]["eventCats"]>
+  export type EventCatsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    kitten?: boolean | KittenDefaultArgs<ExtArgs>
+  }
+  export type EventCatsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    kitten?: boolean | KittenDefaultArgs<ExtArgs>
+  }
+  export type EventCatsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    kitten?: boolean | KittenDefaultArgs<ExtArgs>
+  }
+
+  export type $EventCatsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EventCats"
+    objects: {
+      event: Prisma.$EventPayload<ExtArgs>
+      kitten: Prisma.$KittenPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      eventId: number
+      kittenId: number
+      addedAt: Date
+      notes: string | null
+    }, ExtArgs["result"]["eventCats"]>
+    composites: {}
+  }
+
+  type EventCatsGetPayload<S extends boolean | null | undefined | EventCatsDefaultArgs> = $Result.GetResult<Prisma.$EventCatsPayload, S>
+
+  type EventCatsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EventCatsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EventCatsCountAggregateInputType | true
+    }
+
+  export interface EventCatsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EventCats'], meta: { name: 'EventCats' } }
+    /**
+     * Find zero or one EventCats that matches the filter.
+     * @param {EventCatsFindUniqueArgs} args - Arguments to find a EventCats
+     * @example
+     * // Get one EventCats
+     * const eventCats = await prisma.eventCats.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EventCatsFindUniqueArgs>(args: SelectSubset<T, EventCatsFindUniqueArgs<ExtArgs>>): Prisma__EventCatsClient<$Result.GetResult<Prisma.$EventCatsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EventCats that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EventCatsFindUniqueOrThrowArgs} args - Arguments to find a EventCats
+     * @example
+     * // Get one EventCats
+     * const eventCats = await prisma.eventCats.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EventCatsFindUniqueOrThrowArgs>(args: SelectSubset<T, EventCatsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EventCatsClient<$Result.GetResult<Prisma.$EventCatsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EventCats that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventCatsFindFirstArgs} args - Arguments to find a EventCats
+     * @example
+     * // Get one EventCats
+     * const eventCats = await prisma.eventCats.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EventCatsFindFirstArgs>(args?: SelectSubset<T, EventCatsFindFirstArgs<ExtArgs>>): Prisma__EventCatsClient<$Result.GetResult<Prisma.$EventCatsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EventCats that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventCatsFindFirstOrThrowArgs} args - Arguments to find a EventCats
+     * @example
+     * // Get one EventCats
+     * const eventCats = await prisma.eventCats.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EventCatsFindFirstOrThrowArgs>(args?: SelectSubset<T, EventCatsFindFirstOrThrowArgs<ExtArgs>>): Prisma__EventCatsClient<$Result.GetResult<Prisma.$EventCatsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EventCats that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventCatsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EventCats
+     * const eventCats = await prisma.eventCats.findMany()
+     * 
+     * // Get first 10 EventCats
+     * const eventCats = await prisma.eventCats.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const eventCatsWithIdOnly = await prisma.eventCats.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EventCatsFindManyArgs>(args?: SelectSubset<T, EventCatsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventCatsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EventCats.
+     * @param {EventCatsCreateArgs} args - Arguments to create a EventCats.
+     * @example
+     * // Create one EventCats
+     * const EventCats = await prisma.eventCats.create({
+     *   data: {
+     *     // ... data to create a EventCats
+     *   }
+     * })
+     * 
+     */
+    create<T extends EventCatsCreateArgs>(args: SelectSubset<T, EventCatsCreateArgs<ExtArgs>>): Prisma__EventCatsClient<$Result.GetResult<Prisma.$EventCatsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EventCats.
+     * @param {EventCatsCreateManyArgs} args - Arguments to create many EventCats.
+     * @example
+     * // Create many EventCats
+     * const eventCats = await prisma.eventCats.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EventCatsCreateManyArgs>(args?: SelectSubset<T, EventCatsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many EventCats and returns the data saved in the database.
+     * @param {EventCatsCreateManyAndReturnArgs} args - Arguments to create many EventCats.
+     * @example
+     * // Create many EventCats
+     * const eventCats = await prisma.eventCats.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many EventCats and only return the `id`
+     * const eventCatsWithIdOnly = await prisma.eventCats.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EventCatsCreateManyAndReturnArgs>(args?: SelectSubset<T, EventCatsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventCatsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a EventCats.
+     * @param {EventCatsDeleteArgs} args - Arguments to delete one EventCats.
+     * @example
+     * // Delete one EventCats
+     * const EventCats = await prisma.eventCats.delete({
+     *   where: {
+     *     // ... filter to delete one EventCats
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EventCatsDeleteArgs>(args: SelectSubset<T, EventCatsDeleteArgs<ExtArgs>>): Prisma__EventCatsClient<$Result.GetResult<Prisma.$EventCatsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EventCats.
+     * @param {EventCatsUpdateArgs} args - Arguments to update one EventCats.
+     * @example
+     * // Update one EventCats
+     * const eventCats = await prisma.eventCats.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EventCatsUpdateArgs>(args: SelectSubset<T, EventCatsUpdateArgs<ExtArgs>>): Prisma__EventCatsClient<$Result.GetResult<Prisma.$EventCatsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EventCats.
+     * @param {EventCatsDeleteManyArgs} args - Arguments to filter EventCats to delete.
+     * @example
+     * // Delete a few EventCats
+     * const { count } = await prisma.eventCats.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EventCatsDeleteManyArgs>(args?: SelectSubset<T, EventCatsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EventCats.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventCatsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EventCats
+     * const eventCats = await prisma.eventCats.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EventCatsUpdateManyArgs>(args: SelectSubset<T, EventCatsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EventCats and returns the data updated in the database.
+     * @param {EventCatsUpdateManyAndReturnArgs} args - Arguments to update many EventCats.
+     * @example
+     * // Update many EventCats
+     * const eventCats = await prisma.eventCats.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more EventCats and only return the `id`
+     * const eventCatsWithIdOnly = await prisma.eventCats.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends EventCatsUpdateManyAndReturnArgs>(args: SelectSubset<T, EventCatsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventCatsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one EventCats.
+     * @param {EventCatsUpsertArgs} args - Arguments to update or create a EventCats.
+     * @example
+     * // Update or create a EventCats
+     * const eventCats = await prisma.eventCats.upsert({
+     *   create: {
+     *     // ... data to create a EventCats
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EventCats we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EventCatsUpsertArgs>(args: SelectSubset<T, EventCatsUpsertArgs<ExtArgs>>): Prisma__EventCatsClient<$Result.GetResult<Prisma.$EventCatsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EventCats.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventCatsCountArgs} args - Arguments to filter EventCats to count.
+     * @example
+     * // Count the number of EventCats
+     * const count = await prisma.eventCats.count({
+     *   where: {
+     *     // ... the filter for the EventCats we want to count
+     *   }
+     * })
+    **/
+    count<T extends EventCatsCountArgs>(
+      args?: Subset<T, EventCatsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EventCatsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EventCats.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventCatsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EventCatsAggregateArgs>(args: Subset<T, EventCatsAggregateArgs>): Prisma.PrismaPromise<GetEventCatsAggregateType<T>>
+
+    /**
+     * Group by EventCats.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventCatsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EventCatsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EventCatsGroupByArgs['orderBy'] }
+        : { orderBy?: EventCatsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EventCatsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEventCatsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EventCats model
+   */
+  readonly fields: EventCatsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EventCats.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EventCatsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    kitten<T extends KittenDefaultArgs<ExtArgs> = {}>(args?: Subset<T, KittenDefaultArgs<ExtArgs>>): Prisma__KittenClient<$Result.GetResult<Prisma.$KittenPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EventCats model
+   */
+  interface EventCatsFieldRefs {
+    readonly id: FieldRef<"EventCats", 'Int'>
+    readonly eventId: FieldRef<"EventCats", 'Int'>
+    readonly kittenId: FieldRef<"EventCats", 'Int'>
+    readonly addedAt: FieldRef<"EventCats", 'DateTime'>
+    readonly notes: FieldRef<"EventCats", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EventCats findUnique
+   */
+  export type EventCatsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventCats
+     */
+    select?: EventCatsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventCats
+     */
+    omit?: EventCatsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventCatsInclude<ExtArgs> | null
+    /**
+     * Filter, which EventCats to fetch.
+     */
+    where: EventCatsWhereUniqueInput
+  }
+
+  /**
+   * EventCats findUniqueOrThrow
+   */
+  export type EventCatsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventCats
+     */
+    select?: EventCatsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventCats
+     */
+    omit?: EventCatsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventCatsInclude<ExtArgs> | null
+    /**
+     * Filter, which EventCats to fetch.
+     */
+    where: EventCatsWhereUniqueInput
+  }
+
+  /**
+   * EventCats findFirst
+   */
+  export type EventCatsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventCats
+     */
+    select?: EventCatsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventCats
+     */
+    omit?: EventCatsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventCatsInclude<ExtArgs> | null
+    /**
+     * Filter, which EventCats to fetch.
+     */
+    where?: EventCatsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventCats to fetch.
+     */
+    orderBy?: EventCatsOrderByWithRelationInput | EventCatsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EventCats.
+     */
+    cursor?: EventCatsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventCats from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventCats.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EventCats.
+     */
+    distinct?: EventCatsScalarFieldEnum | EventCatsScalarFieldEnum[]
+  }
+
+  /**
+   * EventCats findFirstOrThrow
+   */
+  export type EventCatsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventCats
+     */
+    select?: EventCatsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventCats
+     */
+    omit?: EventCatsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventCatsInclude<ExtArgs> | null
+    /**
+     * Filter, which EventCats to fetch.
+     */
+    where?: EventCatsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventCats to fetch.
+     */
+    orderBy?: EventCatsOrderByWithRelationInput | EventCatsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EventCats.
+     */
+    cursor?: EventCatsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventCats from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventCats.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EventCats.
+     */
+    distinct?: EventCatsScalarFieldEnum | EventCatsScalarFieldEnum[]
+  }
+
+  /**
+   * EventCats findMany
+   */
+  export type EventCatsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventCats
+     */
+    select?: EventCatsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventCats
+     */
+    omit?: EventCatsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventCatsInclude<ExtArgs> | null
+    /**
+     * Filter, which EventCats to fetch.
+     */
+    where?: EventCatsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventCats to fetch.
+     */
+    orderBy?: EventCatsOrderByWithRelationInput | EventCatsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EventCats.
+     */
+    cursor?: EventCatsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventCats from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventCats.
+     */
+    skip?: number
+    distinct?: EventCatsScalarFieldEnum | EventCatsScalarFieldEnum[]
+  }
+
+  /**
+   * EventCats create
+   */
+  export type EventCatsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventCats
+     */
+    select?: EventCatsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventCats
+     */
+    omit?: EventCatsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventCatsInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EventCats.
+     */
+    data: XOR<EventCatsCreateInput, EventCatsUncheckedCreateInput>
+  }
+
+  /**
+   * EventCats createMany
+   */
+  export type EventCatsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EventCats.
+     */
+    data: EventCatsCreateManyInput | EventCatsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EventCats createManyAndReturn
+   */
+  export type EventCatsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventCats
+     */
+    select?: EventCatsSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventCats
+     */
+    omit?: EventCatsOmit<ExtArgs> | null
+    /**
+     * The data used to create many EventCats.
+     */
+    data: EventCatsCreateManyInput | EventCatsCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventCatsIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EventCats update
+   */
+  export type EventCatsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventCats
+     */
+    select?: EventCatsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventCats
+     */
+    omit?: EventCatsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventCatsInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EventCats.
+     */
+    data: XOR<EventCatsUpdateInput, EventCatsUncheckedUpdateInput>
+    /**
+     * Choose, which EventCats to update.
+     */
+    where: EventCatsWhereUniqueInput
+  }
+
+  /**
+   * EventCats updateMany
+   */
+  export type EventCatsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EventCats.
+     */
+    data: XOR<EventCatsUpdateManyMutationInput, EventCatsUncheckedUpdateManyInput>
+    /**
+     * Filter which EventCats to update
+     */
+    where?: EventCatsWhereInput
+    /**
+     * Limit how many EventCats to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EventCats updateManyAndReturn
+   */
+  export type EventCatsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventCats
+     */
+    select?: EventCatsSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventCats
+     */
+    omit?: EventCatsOmit<ExtArgs> | null
+    /**
+     * The data used to update EventCats.
+     */
+    data: XOR<EventCatsUpdateManyMutationInput, EventCatsUncheckedUpdateManyInput>
+    /**
+     * Filter which EventCats to update
+     */
+    where?: EventCatsWhereInput
+    /**
+     * Limit how many EventCats to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventCatsIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EventCats upsert
+   */
+  export type EventCatsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventCats
+     */
+    select?: EventCatsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventCats
+     */
+    omit?: EventCatsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventCatsInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EventCats to update in case it exists.
+     */
+    where: EventCatsWhereUniqueInput
+    /**
+     * In case the EventCats found by the `where` argument doesn't exist, create a new EventCats with this data.
+     */
+    create: XOR<EventCatsCreateInput, EventCatsUncheckedCreateInput>
+    /**
+     * In case the EventCats was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EventCatsUpdateInput, EventCatsUncheckedUpdateInput>
+  }
+
+  /**
+   * EventCats delete
+   */
+  export type EventCatsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventCats
+     */
+    select?: EventCatsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventCats
+     */
+    omit?: EventCatsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventCatsInclude<ExtArgs> | null
+    /**
+     * Filter which EventCats to delete.
+     */
+    where: EventCatsWhereUniqueInput
+  }
+
+  /**
+   * EventCats deleteMany
+   */
+  export type EventCatsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EventCats to delete
+     */
+    where?: EventCatsWhereInput
+    /**
+     * Limit how many EventCats to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EventCats without action
+   */
+  export type EventCatsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventCats
+     */
+    select?: EventCatsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventCats
+     */
+    omit?: EventCatsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventCatsInclude<ExtArgs> | null
   }
 
 
@@ -29585,6 +32750,8 @@ export namespace Prisma {
     rejectedApplications?: boolean | User$rejectedApplicationsArgs<ExtArgs>
     completedChecklistItems?: boolean | User$completedChecklistItemsArgs<ExtArgs>
     contentCompletions?: boolean | User$contentCompletionsArgs<ExtArgs>
+    activatedProtocols?: boolean | User$activatedProtocolsArgs<ExtArgs>
+    administeredProtocolDoses?: boolean | User$administeredProtocolDosesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -29638,6 +32805,8 @@ export namespace Prisma {
     rejectedApplications?: boolean | User$rejectedApplicationsArgs<ExtArgs>
     completedChecklistItems?: boolean | User$completedChecklistItemsArgs<ExtArgs>
     contentCompletions?: boolean | User$contentCompletionsArgs<ExtArgs>
+    activatedProtocols?: boolean | User$activatedProtocolsArgs<ExtArgs>
+    administeredProtocolDoses?: boolean | User$administeredProtocolDosesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -29654,6 +32823,8 @@ export namespace Prisma {
       rejectedApplications: Prisma.$ApplicationPayload<ExtArgs>[]
       completedChecklistItems: Prisma.$OnboardingChecklistPayload<ExtArgs>[]
       contentCompletions: Prisma.$ContentCompletionPayload<ExtArgs>[]
+      activatedProtocols: Prisma.$ActiveProtocolPayload<ExtArgs>[]
+      administeredProtocolDoses: Prisma.$ProtocolDosePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -30065,6 +33236,8 @@ export namespace Prisma {
     rejectedApplications<T extends User$rejectedApplicationsArgs<ExtArgs> = {}>(args?: Subset<T, User$rejectedApplicationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     completedChecklistItems<T extends User$completedChecklistItemsArgs<ExtArgs> = {}>(args?: Subset<T, User$completedChecklistItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OnboardingChecklistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     contentCompletions<T extends User$contentCompletionsArgs<ExtArgs> = {}>(args?: Subset<T, User$contentCompletionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContentCompletionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    activatedProtocols<T extends User$activatedProtocolsArgs<ExtArgs> = {}>(args?: Subset<T, User$activatedProtocolsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActiveProtocolPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    administeredProtocolDoses<T extends User$administeredProtocolDosesArgs<ExtArgs> = {}>(args?: Subset<T, User$administeredProtocolDosesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProtocolDosePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -30573,6 +33746,54 @@ export namespace Prisma {
   }
 
   /**
+   * User.activatedProtocols
+   */
+  export type User$activatedProtocolsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocol
+     */
+    select?: ActiveProtocolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocol
+     */
+    omit?: ActiveProtocolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolInclude<ExtArgs> | null
+    where?: ActiveProtocolWhereInput
+    orderBy?: ActiveProtocolOrderByWithRelationInput | ActiveProtocolOrderByWithRelationInput[]
+    cursor?: ActiveProtocolWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ActiveProtocolScalarFieldEnum | ActiveProtocolScalarFieldEnum[]
+  }
+
+  /**
+   * User.administeredProtocolDoses
+   */
+  export type User$administeredProtocolDosesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDose
+     */
+    select?: ProtocolDoseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDose
+     */
+    omit?: ProtocolDoseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDoseInclude<ExtArgs> | null
+    where?: ProtocolDoseWhereInput
+    orderBy?: ProtocolDoseOrderByWithRelationInput | ProtocolDoseOrderByWithRelationInput[]
+    cursor?: ProtocolDoseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProtocolDoseScalarFieldEnum | ProtocolDoseScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -30588,6 +33809,4716 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Protocol
+   */
+
+  export type AggregateProtocol = {
+    _count: ProtocolCountAggregateOutputType | null
+    _avg: ProtocolAvgAggregateOutputType | null
+    _sum: ProtocolSumAggregateOutputType | null
+    _min: ProtocolMinAggregateOutputType | null
+    _max: ProtocolMaxAggregateOutputType | null
+  }
+
+  export type ProtocolAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type ProtocolSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type ProtocolMinAggregateOutputType = {
+    id: number | null
+    name: string | null
+    description: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ProtocolMaxAggregateOutputType = {
+    id: number | null
+    name: string | null
+    description: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ProtocolCountAggregateOutputType = {
+    id: number
+    name: number
+    description: number
+    isActive: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ProtocolAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type ProtocolSumAggregateInputType = {
+    id?: true
+  }
+
+  export type ProtocolMinAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ProtocolMaxAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ProtocolCountAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ProtocolAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Protocol to aggregate.
+     */
+    where?: ProtocolWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Protocols to fetch.
+     */
+    orderBy?: ProtocolOrderByWithRelationInput | ProtocolOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ProtocolWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Protocols from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Protocols.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Protocols
+    **/
+    _count?: true | ProtocolCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ProtocolAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ProtocolSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ProtocolMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ProtocolMaxAggregateInputType
+  }
+
+  export type GetProtocolAggregateType<T extends ProtocolAggregateArgs> = {
+        [P in keyof T & keyof AggregateProtocol]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateProtocol[P]>
+      : GetScalarType<T[P], AggregateProtocol[P]>
+  }
+
+
+
+
+  export type ProtocolGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProtocolWhereInput
+    orderBy?: ProtocolOrderByWithAggregationInput | ProtocolOrderByWithAggregationInput[]
+    by: ProtocolScalarFieldEnum[] | ProtocolScalarFieldEnum
+    having?: ProtocolScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ProtocolCountAggregateInputType | true
+    _avg?: ProtocolAvgAggregateInputType
+    _sum?: ProtocolSumAggregateInputType
+    _min?: ProtocolMinAggregateInputType
+    _max?: ProtocolMaxAggregateInputType
+  }
+
+  export type ProtocolGroupByOutputType = {
+    id: number
+    name: string
+    description: string
+    isActive: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: ProtocolCountAggregateOutputType | null
+    _avg: ProtocolAvgAggregateOutputType | null
+    _sum: ProtocolSumAggregateOutputType | null
+    _min: ProtocolMinAggregateOutputType | null
+    _max: ProtocolMaxAggregateOutputType | null
+  }
+
+  type GetProtocolGroupByPayload<T extends ProtocolGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ProtocolGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ProtocolGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ProtocolGroupByOutputType[P]>
+            : GetScalarType<T[P], ProtocolGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ProtocolSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    drugs?: boolean | Protocol$drugsArgs<ExtArgs>
+    activeProtocols?: boolean | Protocol$activeProtocolsArgs<ExtArgs>
+    _count?: boolean | ProtocolCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["protocol"]>
+
+  export type ProtocolSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["protocol"]>
+
+  export type ProtocolSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["protocol"]>
+
+  export type ProtocolSelectScalar = {
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ProtocolOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["protocol"]>
+  export type ProtocolInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    drugs?: boolean | Protocol$drugsArgs<ExtArgs>
+    activeProtocols?: boolean | Protocol$activeProtocolsArgs<ExtArgs>
+    _count?: boolean | ProtocolCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ProtocolIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type ProtocolIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $ProtocolPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Protocol"
+    objects: {
+      drugs: Prisma.$ProtocolDrugPayload<ExtArgs>[]
+      activeProtocols: Prisma.$ActiveProtocolPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      name: string
+      description: string
+      isActive: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["protocol"]>
+    composites: {}
+  }
+
+  type ProtocolGetPayload<S extends boolean | null | undefined | ProtocolDefaultArgs> = $Result.GetResult<Prisma.$ProtocolPayload, S>
+
+  type ProtocolCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ProtocolFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ProtocolCountAggregateInputType | true
+    }
+
+  export interface ProtocolDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Protocol'], meta: { name: 'Protocol' } }
+    /**
+     * Find zero or one Protocol that matches the filter.
+     * @param {ProtocolFindUniqueArgs} args - Arguments to find a Protocol
+     * @example
+     * // Get one Protocol
+     * const protocol = await prisma.protocol.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ProtocolFindUniqueArgs>(args: SelectSubset<T, ProtocolFindUniqueArgs<ExtArgs>>): Prisma__ProtocolClient<$Result.GetResult<Prisma.$ProtocolPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Protocol that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ProtocolFindUniqueOrThrowArgs} args - Arguments to find a Protocol
+     * @example
+     * // Get one Protocol
+     * const protocol = await prisma.protocol.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ProtocolFindUniqueOrThrowArgs>(args: SelectSubset<T, ProtocolFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ProtocolClient<$Result.GetResult<Prisma.$ProtocolPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Protocol that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolFindFirstArgs} args - Arguments to find a Protocol
+     * @example
+     * // Get one Protocol
+     * const protocol = await prisma.protocol.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ProtocolFindFirstArgs>(args?: SelectSubset<T, ProtocolFindFirstArgs<ExtArgs>>): Prisma__ProtocolClient<$Result.GetResult<Prisma.$ProtocolPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Protocol that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolFindFirstOrThrowArgs} args - Arguments to find a Protocol
+     * @example
+     * // Get one Protocol
+     * const protocol = await prisma.protocol.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ProtocolFindFirstOrThrowArgs>(args?: SelectSubset<T, ProtocolFindFirstOrThrowArgs<ExtArgs>>): Prisma__ProtocolClient<$Result.GetResult<Prisma.$ProtocolPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Protocols that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Protocols
+     * const protocols = await prisma.protocol.findMany()
+     * 
+     * // Get first 10 Protocols
+     * const protocols = await prisma.protocol.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const protocolWithIdOnly = await prisma.protocol.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ProtocolFindManyArgs>(args?: SelectSubset<T, ProtocolFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProtocolPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Protocol.
+     * @param {ProtocolCreateArgs} args - Arguments to create a Protocol.
+     * @example
+     * // Create one Protocol
+     * const Protocol = await prisma.protocol.create({
+     *   data: {
+     *     // ... data to create a Protocol
+     *   }
+     * })
+     * 
+     */
+    create<T extends ProtocolCreateArgs>(args: SelectSubset<T, ProtocolCreateArgs<ExtArgs>>): Prisma__ProtocolClient<$Result.GetResult<Prisma.$ProtocolPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Protocols.
+     * @param {ProtocolCreateManyArgs} args - Arguments to create many Protocols.
+     * @example
+     * // Create many Protocols
+     * const protocol = await prisma.protocol.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ProtocolCreateManyArgs>(args?: SelectSubset<T, ProtocolCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Protocols and returns the data saved in the database.
+     * @param {ProtocolCreateManyAndReturnArgs} args - Arguments to create many Protocols.
+     * @example
+     * // Create many Protocols
+     * const protocol = await prisma.protocol.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Protocols and only return the `id`
+     * const protocolWithIdOnly = await prisma.protocol.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ProtocolCreateManyAndReturnArgs>(args?: SelectSubset<T, ProtocolCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProtocolPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Protocol.
+     * @param {ProtocolDeleteArgs} args - Arguments to delete one Protocol.
+     * @example
+     * // Delete one Protocol
+     * const Protocol = await prisma.protocol.delete({
+     *   where: {
+     *     // ... filter to delete one Protocol
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ProtocolDeleteArgs>(args: SelectSubset<T, ProtocolDeleteArgs<ExtArgs>>): Prisma__ProtocolClient<$Result.GetResult<Prisma.$ProtocolPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Protocol.
+     * @param {ProtocolUpdateArgs} args - Arguments to update one Protocol.
+     * @example
+     * // Update one Protocol
+     * const protocol = await prisma.protocol.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ProtocolUpdateArgs>(args: SelectSubset<T, ProtocolUpdateArgs<ExtArgs>>): Prisma__ProtocolClient<$Result.GetResult<Prisma.$ProtocolPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Protocols.
+     * @param {ProtocolDeleteManyArgs} args - Arguments to filter Protocols to delete.
+     * @example
+     * // Delete a few Protocols
+     * const { count } = await prisma.protocol.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ProtocolDeleteManyArgs>(args?: SelectSubset<T, ProtocolDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Protocols.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Protocols
+     * const protocol = await prisma.protocol.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ProtocolUpdateManyArgs>(args: SelectSubset<T, ProtocolUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Protocols and returns the data updated in the database.
+     * @param {ProtocolUpdateManyAndReturnArgs} args - Arguments to update many Protocols.
+     * @example
+     * // Update many Protocols
+     * const protocol = await prisma.protocol.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Protocols and only return the `id`
+     * const protocolWithIdOnly = await prisma.protocol.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ProtocolUpdateManyAndReturnArgs>(args: SelectSubset<T, ProtocolUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProtocolPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Protocol.
+     * @param {ProtocolUpsertArgs} args - Arguments to update or create a Protocol.
+     * @example
+     * // Update or create a Protocol
+     * const protocol = await prisma.protocol.upsert({
+     *   create: {
+     *     // ... data to create a Protocol
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Protocol we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ProtocolUpsertArgs>(args: SelectSubset<T, ProtocolUpsertArgs<ExtArgs>>): Prisma__ProtocolClient<$Result.GetResult<Prisma.$ProtocolPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Protocols.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolCountArgs} args - Arguments to filter Protocols to count.
+     * @example
+     * // Count the number of Protocols
+     * const count = await prisma.protocol.count({
+     *   where: {
+     *     // ... the filter for the Protocols we want to count
+     *   }
+     * })
+    **/
+    count<T extends ProtocolCountArgs>(
+      args?: Subset<T, ProtocolCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ProtocolCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Protocol.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ProtocolAggregateArgs>(args: Subset<T, ProtocolAggregateArgs>): Prisma.PrismaPromise<GetProtocolAggregateType<T>>
+
+    /**
+     * Group by Protocol.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ProtocolGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ProtocolGroupByArgs['orderBy'] }
+        : { orderBy?: ProtocolGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ProtocolGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProtocolGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Protocol model
+   */
+  readonly fields: ProtocolFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Protocol.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ProtocolClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    drugs<T extends Protocol$drugsArgs<ExtArgs> = {}>(args?: Subset<T, Protocol$drugsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProtocolDrugPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    activeProtocols<T extends Protocol$activeProtocolsArgs<ExtArgs> = {}>(args?: Subset<T, Protocol$activeProtocolsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActiveProtocolPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Protocol model
+   */
+  interface ProtocolFieldRefs {
+    readonly id: FieldRef<"Protocol", 'Int'>
+    readonly name: FieldRef<"Protocol", 'String'>
+    readonly description: FieldRef<"Protocol", 'String'>
+    readonly isActive: FieldRef<"Protocol", 'Boolean'>
+    readonly createdAt: FieldRef<"Protocol", 'DateTime'>
+    readonly updatedAt: FieldRef<"Protocol", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Protocol findUnique
+   */
+  export type ProtocolFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Protocol
+     */
+    select?: ProtocolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Protocol
+     */
+    omit?: ProtocolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolInclude<ExtArgs> | null
+    /**
+     * Filter, which Protocol to fetch.
+     */
+    where: ProtocolWhereUniqueInput
+  }
+
+  /**
+   * Protocol findUniqueOrThrow
+   */
+  export type ProtocolFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Protocol
+     */
+    select?: ProtocolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Protocol
+     */
+    omit?: ProtocolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolInclude<ExtArgs> | null
+    /**
+     * Filter, which Protocol to fetch.
+     */
+    where: ProtocolWhereUniqueInput
+  }
+
+  /**
+   * Protocol findFirst
+   */
+  export type ProtocolFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Protocol
+     */
+    select?: ProtocolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Protocol
+     */
+    omit?: ProtocolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolInclude<ExtArgs> | null
+    /**
+     * Filter, which Protocol to fetch.
+     */
+    where?: ProtocolWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Protocols to fetch.
+     */
+    orderBy?: ProtocolOrderByWithRelationInput | ProtocolOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Protocols.
+     */
+    cursor?: ProtocolWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Protocols from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Protocols.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Protocols.
+     */
+    distinct?: ProtocolScalarFieldEnum | ProtocolScalarFieldEnum[]
+  }
+
+  /**
+   * Protocol findFirstOrThrow
+   */
+  export type ProtocolFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Protocol
+     */
+    select?: ProtocolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Protocol
+     */
+    omit?: ProtocolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolInclude<ExtArgs> | null
+    /**
+     * Filter, which Protocol to fetch.
+     */
+    where?: ProtocolWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Protocols to fetch.
+     */
+    orderBy?: ProtocolOrderByWithRelationInput | ProtocolOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Protocols.
+     */
+    cursor?: ProtocolWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Protocols from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Protocols.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Protocols.
+     */
+    distinct?: ProtocolScalarFieldEnum | ProtocolScalarFieldEnum[]
+  }
+
+  /**
+   * Protocol findMany
+   */
+  export type ProtocolFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Protocol
+     */
+    select?: ProtocolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Protocol
+     */
+    omit?: ProtocolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolInclude<ExtArgs> | null
+    /**
+     * Filter, which Protocols to fetch.
+     */
+    where?: ProtocolWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Protocols to fetch.
+     */
+    orderBy?: ProtocolOrderByWithRelationInput | ProtocolOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Protocols.
+     */
+    cursor?: ProtocolWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Protocols from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Protocols.
+     */
+    skip?: number
+    distinct?: ProtocolScalarFieldEnum | ProtocolScalarFieldEnum[]
+  }
+
+  /**
+   * Protocol create
+   */
+  export type ProtocolCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Protocol
+     */
+    select?: ProtocolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Protocol
+     */
+    omit?: ProtocolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Protocol.
+     */
+    data: XOR<ProtocolCreateInput, ProtocolUncheckedCreateInput>
+  }
+
+  /**
+   * Protocol createMany
+   */
+  export type ProtocolCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Protocols.
+     */
+    data: ProtocolCreateManyInput | ProtocolCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Protocol createManyAndReturn
+   */
+  export type ProtocolCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Protocol
+     */
+    select?: ProtocolSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Protocol
+     */
+    omit?: ProtocolOmit<ExtArgs> | null
+    /**
+     * The data used to create many Protocols.
+     */
+    data: ProtocolCreateManyInput | ProtocolCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Protocol update
+   */
+  export type ProtocolUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Protocol
+     */
+    select?: ProtocolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Protocol
+     */
+    omit?: ProtocolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Protocol.
+     */
+    data: XOR<ProtocolUpdateInput, ProtocolUncheckedUpdateInput>
+    /**
+     * Choose, which Protocol to update.
+     */
+    where: ProtocolWhereUniqueInput
+  }
+
+  /**
+   * Protocol updateMany
+   */
+  export type ProtocolUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Protocols.
+     */
+    data: XOR<ProtocolUpdateManyMutationInput, ProtocolUncheckedUpdateManyInput>
+    /**
+     * Filter which Protocols to update
+     */
+    where?: ProtocolWhereInput
+    /**
+     * Limit how many Protocols to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Protocol updateManyAndReturn
+   */
+  export type ProtocolUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Protocol
+     */
+    select?: ProtocolSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Protocol
+     */
+    omit?: ProtocolOmit<ExtArgs> | null
+    /**
+     * The data used to update Protocols.
+     */
+    data: XOR<ProtocolUpdateManyMutationInput, ProtocolUncheckedUpdateManyInput>
+    /**
+     * Filter which Protocols to update
+     */
+    where?: ProtocolWhereInput
+    /**
+     * Limit how many Protocols to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Protocol upsert
+   */
+  export type ProtocolUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Protocol
+     */
+    select?: ProtocolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Protocol
+     */
+    omit?: ProtocolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Protocol to update in case it exists.
+     */
+    where: ProtocolWhereUniqueInput
+    /**
+     * In case the Protocol found by the `where` argument doesn't exist, create a new Protocol with this data.
+     */
+    create: XOR<ProtocolCreateInput, ProtocolUncheckedCreateInput>
+    /**
+     * In case the Protocol was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ProtocolUpdateInput, ProtocolUncheckedUpdateInput>
+  }
+
+  /**
+   * Protocol delete
+   */
+  export type ProtocolDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Protocol
+     */
+    select?: ProtocolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Protocol
+     */
+    omit?: ProtocolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolInclude<ExtArgs> | null
+    /**
+     * Filter which Protocol to delete.
+     */
+    where: ProtocolWhereUniqueInput
+  }
+
+  /**
+   * Protocol deleteMany
+   */
+  export type ProtocolDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Protocols to delete
+     */
+    where?: ProtocolWhereInput
+    /**
+     * Limit how many Protocols to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Protocol.drugs
+   */
+  export type Protocol$drugsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDrug
+     */
+    select?: ProtocolDrugSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDrug
+     */
+    omit?: ProtocolDrugOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDrugInclude<ExtArgs> | null
+    where?: ProtocolDrugWhereInput
+    orderBy?: ProtocolDrugOrderByWithRelationInput | ProtocolDrugOrderByWithRelationInput[]
+    cursor?: ProtocolDrugWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProtocolDrugScalarFieldEnum | ProtocolDrugScalarFieldEnum[]
+  }
+
+  /**
+   * Protocol.activeProtocols
+   */
+  export type Protocol$activeProtocolsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocol
+     */
+    select?: ActiveProtocolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocol
+     */
+    omit?: ActiveProtocolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolInclude<ExtArgs> | null
+    where?: ActiveProtocolWhereInput
+    orderBy?: ActiveProtocolOrderByWithRelationInput | ActiveProtocolOrderByWithRelationInput[]
+    cursor?: ActiveProtocolWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ActiveProtocolScalarFieldEnum | ActiveProtocolScalarFieldEnum[]
+  }
+
+  /**
+   * Protocol without action
+   */
+  export type ProtocolDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Protocol
+     */
+    select?: ProtocolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Protocol
+     */
+    omit?: ProtocolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ProtocolDrug
+   */
+
+  export type AggregateProtocolDrug = {
+    _count: ProtocolDrugCountAggregateOutputType | null
+    _avg: ProtocolDrugAvgAggregateOutputType | null
+    _sum: ProtocolDrugSumAggregateOutputType | null
+    _min: ProtocolDrugMinAggregateOutputType | null
+    _max: ProtocolDrugMaxAggregateOutputType | null
+  }
+
+  export type ProtocolDrugAvgAggregateOutputType = {
+    id: number | null
+    protocolId: number | null
+    startDayOffset: number | null
+    endDayOffset: number | null
+    frequencyPerDay: number | null
+    sortOrder: number | null
+  }
+
+  export type ProtocolDrugSumAggregateOutputType = {
+    id: number | null
+    protocolId: number | null
+    startDayOffset: number | null
+    endDayOffset: number | null
+    frequencyPerDay: number | null
+    sortOrder: number | null
+  }
+
+  export type ProtocolDrugMinAggregateOutputType = {
+    id: number | null
+    protocolId: number | null
+    drugName: string | null
+    dosage: string | null
+    route: string | null
+    startDayOffset: number | null
+    endDayOffset: number | null
+    frequencyPerDay: number | null
+    instructions: string | null
+    sortOrder: number | null
+  }
+
+  export type ProtocolDrugMaxAggregateOutputType = {
+    id: number | null
+    protocolId: number | null
+    drugName: string | null
+    dosage: string | null
+    route: string | null
+    startDayOffset: number | null
+    endDayOffset: number | null
+    frequencyPerDay: number | null
+    instructions: string | null
+    sortOrder: number | null
+  }
+
+  export type ProtocolDrugCountAggregateOutputType = {
+    id: number
+    protocolId: number
+    drugName: number
+    dosage: number
+    route: number
+    startDayOffset: number
+    endDayOffset: number
+    frequencyPerDay: number
+    instructions: number
+    sortOrder: number
+    _all: number
+  }
+
+
+  export type ProtocolDrugAvgAggregateInputType = {
+    id?: true
+    protocolId?: true
+    startDayOffset?: true
+    endDayOffset?: true
+    frequencyPerDay?: true
+    sortOrder?: true
+  }
+
+  export type ProtocolDrugSumAggregateInputType = {
+    id?: true
+    protocolId?: true
+    startDayOffset?: true
+    endDayOffset?: true
+    frequencyPerDay?: true
+    sortOrder?: true
+  }
+
+  export type ProtocolDrugMinAggregateInputType = {
+    id?: true
+    protocolId?: true
+    drugName?: true
+    dosage?: true
+    route?: true
+    startDayOffset?: true
+    endDayOffset?: true
+    frequencyPerDay?: true
+    instructions?: true
+    sortOrder?: true
+  }
+
+  export type ProtocolDrugMaxAggregateInputType = {
+    id?: true
+    protocolId?: true
+    drugName?: true
+    dosage?: true
+    route?: true
+    startDayOffset?: true
+    endDayOffset?: true
+    frequencyPerDay?: true
+    instructions?: true
+    sortOrder?: true
+  }
+
+  export type ProtocolDrugCountAggregateInputType = {
+    id?: true
+    protocolId?: true
+    drugName?: true
+    dosage?: true
+    route?: true
+    startDayOffset?: true
+    endDayOffset?: true
+    frequencyPerDay?: true
+    instructions?: true
+    sortOrder?: true
+    _all?: true
+  }
+
+  export type ProtocolDrugAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProtocolDrug to aggregate.
+     */
+    where?: ProtocolDrugWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProtocolDrugs to fetch.
+     */
+    orderBy?: ProtocolDrugOrderByWithRelationInput | ProtocolDrugOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ProtocolDrugWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProtocolDrugs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProtocolDrugs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ProtocolDrugs
+    **/
+    _count?: true | ProtocolDrugCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ProtocolDrugAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ProtocolDrugSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ProtocolDrugMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ProtocolDrugMaxAggregateInputType
+  }
+
+  export type GetProtocolDrugAggregateType<T extends ProtocolDrugAggregateArgs> = {
+        [P in keyof T & keyof AggregateProtocolDrug]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateProtocolDrug[P]>
+      : GetScalarType<T[P], AggregateProtocolDrug[P]>
+  }
+
+
+
+
+  export type ProtocolDrugGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProtocolDrugWhereInput
+    orderBy?: ProtocolDrugOrderByWithAggregationInput | ProtocolDrugOrderByWithAggregationInput[]
+    by: ProtocolDrugScalarFieldEnum[] | ProtocolDrugScalarFieldEnum
+    having?: ProtocolDrugScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ProtocolDrugCountAggregateInputType | true
+    _avg?: ProtocolDrugAvgAggregateInputType
+    _sum?: ProtocolDrugSumAggregateInputType
+    _min?: ProtocolDrugMinAggregateInputType
+    _max?: ProtocolDrugMaxAggregateInputType
+  }
+
+  export type ProtocolDrugGroupByOutputType = {
+    id: number
+    protocolId: number
+    drugName: string
+    dosage: string
+    route: string
+    startDayOffset: number
+    endDayOffset: number
+    frequencyPerDay: number
+    instructions: string
+    sortOrder: number
+    _count: ProtocolDrugCountAggregateOutputType | null
+    _avg: ProtocolDrugAvgAggregateOutputType | null
+    _sum: ProtocolDrugSumAggregateOutputType | null
+    _min: ProtocolDrugMinAggregateOutputType | null
+    _max: ProtocolDrugMaxAggregateOutputType | null
+  }
+
+  type GetProtocolDrugGroupByPayload<T extends ProtocolDrugGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ProtocolDrugGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ProtocolDrugGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ProtocolDrugGroupByOutputType[P]>
+            : GetScalarType<T[P], ProtocolDrugGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ProtocolDrugSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    protocolId?: boolean
+    drugName?: boolean
+    dosage?: boolean
+    route?: boolean
+    startDayOffset?: boolean
+    endDayOffset?: boolean
+    frequencyPerDay?: boolean
+    instructions?: boolean
+    sortOrder?: boolean
+    protocol?: boolean | ProtocolDefaultArgs<ExtArgs>
+    doses?: boolean | ProtocolDrug$dosesArgs<ExtArgs>
+    _count?: boolean | ProtocolDrugCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["protocolDrug"]>
+
+  export type ProtocolDrugSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    protocolId?: boolean
+    drugName?: boolean
+    dosage?: boolean
+    route?: boolean
+    startDayOffset?: boolean
+    endDayOffset?: boolean
+    frequencyPerDay?: boolean
+    instructions?: boolean
+    sortOrder?: boolean
+    protocol?: boolean | ProtocolDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["protocolDrug"]>
+
+  export type ProtocolDrugSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    protocolId?: boolean
+    drugName?: boolean
+    dosage?: boolean
+    route?: boolean
+    startDayOffset?: boolean
+    endDayOffset?: boolean
+    frequencyPerDay?: boolean
+    instructions?: boolean
+    sortOrder?: boolean
+    protocol?: boolean | ProtocolDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["protocolDrug"]>
+
+  export type ProtocolDrugSelectScalar = {
+    id?: boolean
+    protocolId?: boolean
+    drugName?: boolean
+    dosage?: boolean
+    route?: boolean
+    startDayOffset?: boolean
+    endDayOffset?: boolean
+    frequencyPerDay?: boolean
+    instructions?: boolean
+    sortOrder?: boolean
+  }
+
+  export type ProtocolDrugOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "protocolId" | "drugName" | "dosage" | "route" | "startDayOffset" | "endDayOffset" | "frequencyPerDay" | "instructions" | "sortOrder", ExtArgs["result"]["protocolDrug"]>
+  export type ProtocolDrugInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    protocol?: boolean | ProtocolDefaultArgs<ExtArgs>
+    doses?: boolean | ProtocolDrug$dosesArgs<ExtArgs>
+    _count?: boolean | ProtocolDrugCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ProtocolDrugIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    protocol?: boolean | ProtocolDefaultArgs<ExtArgs>
+  }
+  export type ProtocolDrugIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    protocol?: boolean | ProtocolDefaultArgs<ExtArgs>
+  }
+
+  export type $ProtocolDrugPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ProtocolDrug"
+    objects: {
+      protocol: Prisma.$ProtocolPayload<ExtArgs>
+      doses: Prisma.$ProtocolDosePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      protocolId: number
+      drugName: string
+      dosage: string
+      route: string
+      startDayOffset: number
+      endDayOffset: number
+      frequencyPerDay: number
+      instructions: string
+      sortOrder: number
+    }, ExtArgs["result"]["protocolDrug"]>
+    composites: {}
+  }
+
+  type ProtocolDrugGetPayload<S extends boolean | null | undefined | ProtocolDrugDefaultArgs> = $Result.GetResult<Prisma.$ProtocolDrugPayload, S>
+
+  type ProtocolDrugCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ProtocolDrugFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ProtocolDrugCountAggregateInputType | true
+    }
+
+  export interface ProtocolDrugDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ProtocolDrug'], meta: { name: 'ProtocolDrug' } }
+    /**
+     * Find zero or one ProtocolDrug that matches the filter.
+     * @param {ProtocolDrugFindUniqueArgs} args - Arguments to find a ProtocolDrug
+     * @example
+     * // Get one ProtocolDrug
+     * const protocolDrug = await prisma.protocolDrug.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ProtocolDrugFindUniqueArgs>(args: SelectSubset<T, ProtocolDrugFindUniqueArgs<ExtArgs>>): Prisma__ProtocolDrugClient<$Result.GetResult<Prisma.$ProtocolDrugPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ProtocolDrug that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ProtocolDrugFindUniqueOrThrowArgs} args - Arguments to find a ProtocolDrug
+     * @example
+     * // Get one ProtocolDrug
+     * const protocolDrug = await prisma.protocolDrug.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ProtocolDrugFindUniqueOrThrowArgs>(args: SelectSubset<T, ProtocolDrugFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ProtocolDrugClient<$Result.GetResult<Prisma.$ProtocolDrugPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProtocolDrug that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolDrugFindFirstArgs} args - Arguments to find a ProtocolDrug
+     * @example
+     * // Get one ProtocolDrug
+     * const protocolDrug = await prisma.protocolDrug.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ProtocolDrugFindFirstArgs>(args?: SelectSubset<T, ProtocolDrugFindFirstArgs<ExtArgs>>): Prisma__ProtocolDrugClient<$Result.GetResult<Prisma.$ProtocolDrugPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProtocolDrug that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolDrugFindFirstOrThrowArgs} args - Arguments to find a ProtocolDrug
+     * @example
+     * // Get one ProtocolDrug
+     * const protocolDrug = await prisma.protocolDrug.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ProtocolDrugFindFirstOrThrowArgs>(args?: SelectSubset<T, ProtocolDrugFindFirstOrThrowArgs<ExtArgs>>): Prisma__ProtocolDrugClient<$Result.GetResult<Prisma.$ProtocolDrugPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ProtocolDrugs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolDrugFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ProtocolDrugs
+     * const protocolDrugs = await prisma.protocolDrug.findMany()
+     * 
+     * // Get first 10 ProtocolDrugs
+     * const protocolDrugs = await prisma.protocolDrug.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const protocolDrugWithIdOnly = await prisma.protocolDrug.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ProtocolDrugFindManyArgs>(args?: SelectSubset<T, ProtocolDrugFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProtocolDrugPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ProtocolDrug.
+     * @param {ProtocolDrugCreateArgs} args - Arguments to create a ProtocolDrug.
+     * @example
+     * // Create one ProtocolDrug
+     * const ProtocolDrug = await prisma.protocolDrug.create({
+     *   data: {
+     *     // ... data to create a ProtocolDrug
+     *   }
+     * })
+     * 
+     */
+    create<T extends ProtocolDrugCreateArgs>(args: SelectSubset<T, ProtocolDrugCreateArgs<ExtArgs>>): Prisma__ProtocolDrugClient<$Result.GetResult<Prisma.$ProtocolDrugPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ProtocolDrugs.
+     * @param {ProtocolDrugCreateManyArgs} args - Arguments to create many ProtocolDrugs.
+     * @example
+     * // Create many ProtocolDrugs
+     * const protocolDrug = await prisma.protocolDrug.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ProtocolDrugCreateManyArgs>(args?: SelectSubset<T, ProtocolDrugCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ProtocolDrugs and returns the data saved in the database.
+     * @param {ProtocolDrugCreateManyAndReturnArgs} args - Arguments to create many ProtocolDrugs.
+     * @example
+     * // Create many ProtocolDrugs
+     * const protocolDrug = await prisma.protocolDrug.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ProtocolDrugs and only return the `id`
+     * const protocolDrugWithIdOnly = await prisma.protocolDrug.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ProtocolDrugCreateManyAndReturnArgs>(args?: SelectSubset<T, ProtocolDrugCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProtocolDrugPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ProtocolDrug.
+     * @param {ProtocolDrugDeleteArgs} args - Arguments to delete one ProtocolDrug.
+     * @example
+     * // Delete one ProtocolDrug
+     * const ProtocolDrug = await prisma.protocolDrug.delete({
+     *   where: {
+     *     // ... filter to delete one ProtocolDrug
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ProtocolDrugDeleteArgs>(args: SelectSubset<T, ProtocolDrugDeleteArgs<ExtArgs>>): Prisma__ProtocolDrugClient<$Result.GetResult<Prisma.$ProtocolDrugPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ProtocolDrug.
+     * @param {ProtocolDrugUpdateArgs} args - Arguments to update one ProtocolDrug.
+     * @example
+     * // Update one ProtocolDrug
+     * const protocolDrug = await prisma.protocolDrug.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ProtocolDrugUpdateArgs>(args: SelectSubset<T, ProtocolDrugUpdateArgs<ExtArgs>>): Prisma__ProtocolDrugClient<$Result.GetResult<Prisma.$ProtocolDrugPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ProtocolDrugs.
+     * @param {ProtocolDrugDeleteManyArgs} args - Arguments to filter ProtocolDrugs to delete.
+     * @example
+     * // Delete a few ProtocolDrugs
+     * const { count } = await prisma.protocolDrug.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ProtocolDrugDeleteManyArgs>(args?: SelectSubset<T, ProtocolDrugDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProtocolDrugs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolDrugUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ProtocolDrugs
+     * const protocolDrug = await prisma.protocolDrug.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ProtocolDrugUpdateManyArgs>(args: SelectSubset<T, ProtocolDrugUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProtocolDrugs and returns the data updated in the database.
+     * @param {ProtocolDrugUpdateManyAndReturnArgs} args - Arguments to update many ProtocolDrugs.
+     * @example
+     * // Update many ProtocolDrugs
+     * const protocolDrug = await prisma.protocolDrug.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ProtocolDrugs and only return the `id`
+     * const protocolDrugWithIdOnly = await prisma.protocolDrug.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ProtocolDrugUpdateManyAndReturnArgs>(args: SelectSubset<T, ProtocolDrugUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProtocolDrugPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ProtocolDrug.
+     * @param {ProtocolDrugUpsertArgs} args - Arguments to update or create a ProtocolDrug.
+     * @example
+     * // Update or create a ProtocolDrug
+     * const protocolDrug = await prisma.protocolDrug.upsert({
+     *   create: {
+     *     // ... data to create a ProtocolDrug
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ProtocolDrug we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ProtocolDrugUpsertArgs>(args: SelectSubset<T, ProtocolDrugUpsertArgs<ExtArgs>>): Prisma__ProtocolDrugClient<$Result.GetResult<Prisma.$ProtocolDrugPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ProtocolDrugs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolDrugCountArgs} args - Arguments to filter ProtocolDrugs to count.
+     * @example
+     * // Count the number of ProtocolDrugs
+     * const count = await prisma.protocolDrug.count({
+     *   where: {
+     *     // ... the filter for the ProtocolDrugs we want to count
+     *   }
+     * })
+    **/
+    count<T extends ProtocolDrugCountArgs>(
+      args?: Subset<T, ProtocolDrugCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ProtocolDrugCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ProtocolDrug.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolDrugAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ProtocolDrugAggregateArgs>(args: Subset<T, ProtocolDrugAggregateArgs>): Prisma.PrismaPromise<GetProtocolDrugAggregateType<T>>
+
+    /**
+     * Group by ProtocolDrug.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolDrugGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ProtocolDrugGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ProtocolDrugGroupByArgs['orderBy'] }
+        : { orderBy?: ProtocolDrugGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ProtocolDrugGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProtocolDrugGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ProtocolDrug model
+   */
+  readonly fields: ProtocolDrugFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ProtocolDrug.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ProtocolDrugClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    protocol<T extends ProtocolDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProtocolDefaultArgs<ExtArgs>>): Prisma__ProtocolClient<$Result.GetResult<Prisma.$ProtocolPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    doses<T extends ProtocolDrug$dosesArgs<ExtArgs> = {}>(args?: Subset<T, ProtocolDrug$dosesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProtocolDosePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ProtocolDrug model
+   */
+  interface ProtocolDrugFieldRefs {
+    readonly id: FieldRef<"ProtocolDrug", 'Int'>
+    readonly protocolId: FieldRef<"ProtocolDrug", 'Int'>
+    readonly drugName: FieldRef<"ProtocolDrug", 'String'>
+    readonly dosage: FieldRef<"ProtocolDrug", 'String'>
+    readonly route: FieldRef<"ProtocolDrug", 'String'>
+    readonly startDayOffset: FieldRef<"ProtocolDrug", 'Int'>
+    readonly endDayOffset: FieldRef<"ProtocolDrug", 'Int'>
+    readonly frequencyPerDay: FieldRef<"ProtocolDrug", 'Int'>
+    readonly instructions: FieldRef<"ProtocolDrug", 'String'>
+    readonly sortOrder: FieldRef<"ProtocolDrug", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ProtocolDrug findUnique
+   */
+  export type ProtocolDrugFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDrug
+     */
+    select?: ProtocolDrugSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDrug
+     */
+    omit?: ProtocolDrugOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDrugInclude<ExtArgs> | null
+    /**
+     * Filter, which ProtocolDrug to fetch.
+     */
+    where: ProtocolDrugWhereUniqueInput
+  }
+
+  /**
+   * ProtocolDrug findUniqueOrThrow
+   */
+  export type ProtocolDrugFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDrug
+     */
+    select?: ProtocolDrugSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDrug
+     */
+    omit?: ProtocolDrugOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDrugInclude<ExtArgs> | null
+    /**
+     * Filter, which ProtocolDrug to fetch.
+     */
+    where: ProtocolDrugWhereUniqueInput
+  }
+
+  /**
+   * ProtocolDrug findFirst
+   */
+  export type ProtocolDrugFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDrug
+     */
+    select?: ProtocolDrugSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDrug
+     */
+    omit?: ProtocolDrugOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDrugInclude<ExtArgs> | null
+    /**
+     * Filter, which ProtocolDrug to fetch.
+     */
+    where?: ProtocolDrugWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProtocolDrugs to fetch.
+     */
+    orderBy?: ProtocolDrugOrderByWithRelationInput | ProtocolDrugOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProtocolDrugs.
+     */
+    cursor?: ProtocolDrugWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProtocolDrugs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProtocolDrugs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProtocolDrugs.
+     */
+    distinct?: ProtocolDrugScalarFieldEnum | ProtocolDrugScalarFieldEnum[]
+  }
+
+  /**
+   * ProtocolDrug findFirstOrThrow
+   */
+  export type ProtocolDrugFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDrug
+     */
+    select?: ProtocolDrugSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDrug
+     */
+    omit?: ProtocolDrugOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDrugInclude<ExtArgs> | null
+    /**
+     * Filter, which ProtocolDrug to fetch.
+     */
+    where?: ProtocolDrugWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProtocolDrugs to fetch.
+     */
+    orderBy?: ProtocolDrugOrderByWithRelationInput | ProtocolDrugOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProtocolDrugs.
+     */
+    cursor?: ProtocolDrugWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProtocolDrugs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProtocolDrugs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProtocolDrugs.
+     */
+    distinct?: ProtocolDrugScalarFieldEnum | ProtocolDrugScalarFieldEnum[]
+  }
+
+  /**
+   * ProtocolDrug findMany
+   */
+  export type ProtocolDrugFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDrug
+     */
+    select?: ProtocolDrugSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDrug
+     */
+    omit?: ProtocolDrugOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDrugInclude<ExtArgs> | null
+    /**
+     * Filter, which ProtocolDrugs to fetch.
+     */
+    where?: ProtocolDrugWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProtocolDrugs to fetch.
+     */
+    orderBy?: ProtocolDrugOrderByWithRelationInput | ProtocolDrugOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ProtocolDrugs.
+     */
+    cursor?: ProtocolDrugWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProtocolDrugs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProtocolDrugs.
+     */
+    skip?: number
+    distinct?: ProtocolDrugScalarFieldEnum | ProtocolDrugScalarFieldEnum[]
+  }
+
+  /**
+   * ProtocolDrug create
+   */
+  export type ProtocolDrugCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDrug
+     */
+    select?: ProtocolDrugSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDrug
+     */
+    omit?: ProtocolDrugOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDrugInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ProtocolDrug.
+     */
+    data: XOR<ProtocolDrugCreateInput, ProtocolDrugUncheckedCreateInput>
+  }
+
+  /**
+   * ProtocolDrug createMany
+   */
+  export type ProtocolDrugCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ProtocolDrugs.
+     */
+    data: ProtocolDrugCreateManyInput | ProtocolDrugCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ProtocolDrug createManyAndReturn
+   */
+  export type ProtocolDrugCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDrug
+     */
+    select?: ProtocolDrugSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDrug
+     */
+    omit?: ProtocolDrugOmit<ExtArgs> | null
+    /**
+     * The data used to create many ProtocolDrugs.
+     */
+    data: ProtocolDrugCreateManyInput | ProtocolDrugCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDrugIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProtocolDrug update
+   */
+  export type ProtocolDrugUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDrug
+     */
+    select?: ProtocolDrugSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDrug
+     */
+    omit?: ProtocolDrugOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDrugInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ProtocolDrug.
+     */
+    data: XOR<ProtocolDrugUpdateInput, ProtocolDrugUncheckedUpdateInput>
+    /**
+     * Choose, which ProtocolDrug to update.
+     */
+    where: ProtocolDrugWhereUniqueInput
+  }
+
+  /**
+   * ProtocolDrug updateMany
+   */
+  export type ProtocolDrugUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ProtocolDrugs.
+     */
+    data: XOR<ProtocolDrugUpdateManyMutationInput, ProtocolDrugUncheckedUpdateManyInput>
+    /**
+     * Filter which ProtocolDrugs to update
+     */
+    where?: ProtocolDrugWhereInput
+    /**
+     * Limit how many ProtocolDrugs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProtocolDrug updateManyAndReturn
+   */
+  export type ProtocolDrugUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDrug
+     */
+    select?: ProtocolDrugSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDrug
+     */
+    omit?: ProtocolDrugOmit<ExtArgs> | null
+    /**
+     * The data used to update ProtocolDrugs.
+     */
+    data: XOR<ProtocolDrugUpdateManyMutationInput, ProtocolDrugUncheckedUpdateManyInput>
+    /**
+     * Filter which ProtocolDrugs to update
+     */
+    where?: ProtocolDrugWhereInput
+    /**
+     * Limit how many ProtocolDrugs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDrugIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProtocolDrug upsert
+   */
+  export type ProtocolDrugUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDrug
+     */
+    select?: ProtocolDrugSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDrug
+     */
+    omit?: ProtocolDrugOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDrugInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ProtocolDrug to update in case it exists.
+     */
+    where: ProtocolDrugWhereUniqueInput
+    /**
+     * In case the ProtocolDrug found by the `where` argument doesn't exist, create a new ProtocolDrug with this data.
+     */
+    create: XOR<ProtocolDrugCreateInput, ProtocolDrugUncheckedCreateInput>
+    /**
+     * In case the ProtocolDrug was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ProtocolDrugUpdateInput, ProtocolDrugUncheckedUpdateInput>
+  }
+
+  /**
+   * ProtocolDrug delete
+   */
+  export type ProtocolDrugDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDrug
+     */
+    select?: ProtocolDrugSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDrug
+     */
+    omit?: ProtocolDrugOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDrugInclude<ExtArgs> | null
+    /**
+     * Filter which ProtocolDrug to delete.
+     */
+    where: ProtocolDrugWhereUniqueInput
+  }
+
+  /**
+   * ProtocolDrug deleteMany
+   */
+  export type ProtocolDrugDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProtocolDrugs to delete
+     */
+    where?: ProtocolDrugWhereInput
+    /**
+     * Limit how many ProtocolDrugs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProtocolDrug.doses
+   */
+  export type ProtocolDrug$dosesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDose
+     */
+    select?: ProtocolDoseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDose
+     */
+    omit?: ProtocolDoseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDoseInclude<ExtArgs> | null
+    where?: ProtocolDoseWhereInput
+    orderBy?: ProtocolDoseOrderByWithRelationInput | ProtocolDoseOrderByWithRelationInput[]
+    cursor?: ProtocolDoseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProtocolDoseScalarFieldEnum | ProtocolDoseScalarFieldEnum[]
+  }
+
+  /**
+   * ProtocolDrug without action
+   */
+  export type ProtocolDrugDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDrug
+     */
+    select?: ProtocolDrugSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDrug
+     */
+    omit?: ProtocolDrugOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDrugInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ActiveProtocol
+   */
+
+  export type AggregateActiveProtocol = {
+    _count: ActiveProtocolCountAggregateOutputType | null
+    _avg: ActiveProtocolAvgAggregateOutputType | null
+    _sum: ActiveProtocolSumAggregateOutputType | null
+    _min: ActiveProtocolMinAggregateOutputType | null
+    _max: ActiveProtocolMaxAggregateOutputType | null
+  }
+
+  export type ActiveProtocolAvgAggregateOutputType = {
+    id: number | null
+    protocolId: number | null
+    kittenId: number | null
+    activatedById: number | null
+  }
+
+  export type ActiveProtocolSumAggregateOutputType = {
+    id: number | null
+    protocolId: number | null
+    kittenId: number | null
+    activatedById: number | null
+  }
+
+  export type ActiveProtocolMinAggregateOutputType = {
+    id: number | null
+    protocolId: number | null
+    kittenId: number | null
+    activatedById: number | null
+    activationDate: Date | null
+    status: $Enums.ActiveProtocolStatus | null
+  }
+
+  export type ActiveProtocolMaxAggregateOutputType = {
+    id: number | null
+    protocolId: number | null
+    kittenId: number | null
+    activatedById: number | null
+    activationDate: Date | null
+    status: $Enums.ActiveProtocolStatus | null
+  }
+
+  export type ActiveProtocolCountAggregateOutputType = {
+    id: number
+    protocolId: number
+    kittenId: number
+    activatedById: number
+    activationDate: number
+    status: number
+    _all: number
+  }
+
+
+  export type ActiveProtocolAvgAggregateInputType = {
+    id?: true
+    protocolId?: true
+    kittenId?: true
+    activatedById?: true
+  }
+
+  export type ActiveProtocolSumAggregateInputType = {
+    id?: true
+    protocolId?: true
+    kittenId?: true
+    activatedById?: true
+  }
+
+  export type ActiveProtocolMinAggregateInputType = {
+    id?: true
+    protocolId?: true
+    kittenId?: true
+    activatedById?: true
+    activationDate?: true
+    status?: true
+  }
+
+  export type ActiveProtocolMaxAggregateInputType = {
+    id?: true
+    protocolId?: true
+    kittenId?: true
+    activatedById?: true
+    activationDate?: true
+    status?: true
+  }
+
+  export type ActiveProtocolCountAggregateInputType = {
+    id?: true
+    protocolId?: true
+    kittenId?: true
+    activatedById?: true
+    activationDate?: true
+    status?: true
+    _all?: true
+  }
+
+  export type ActiveProtocolAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ActiveProtocol to aggregate.
+     */
+    where?: ActiveProtocolWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ActiveProtocols to fetch.
+     */
+    orderBy?: ActiveProtocolOrderByWithRelationInput | ActiveProtocolOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ActiveProtocolWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ActiveProtocols from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ActiveProtocols.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ActiveProtocols
+    **/
+    _count?: true | ActiveProtocolCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ActiveProtocolAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ActiveProtocolSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ActiveProtocolMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ActiveProtocolMaxAggregateInputType
+  }
+
+  export type GetActiveProtocolAggregateType<T extends ActiveProtocolAggregateArgs> = {
+        [P in keyof T & keyof AggregateActiveProtocol]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateActiveProtocol[P]>
+      : GetScalarType<T[P], AggregateActiveProtocol[P]>
+  }
+
+
+
+
+  export type ActiveProtocolGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ActiveProtocolWhereInput
+    orderBy?: ActiveProtocolOrderByWithAggregationInput | ActiveProtocolOrderByWithAggregationInput[]
+    by: ActiveProtocolScalarFieldEnum[] | ActiveProtocolScalarFieldEnum
+    having?: ActiveProtocolScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ActiveProtocolCountAggregateInputType | true
+    _avg?: ActiveProtocolAvgAggregateInputType
+    _sum?: ActiveProtocolSumAggregateInputType
+    _min?: ActiveProtocolMinAggregateInputType
+    _max?: ActiveProtocolMaxAggregateInputType
+  }
+
+  export type ActiveProtocolGroupByOutputType = {
+    id: number
+    protocolId: number
+    kittenId: number
+    activatedById: number
+    activationDate: Date
+    status: $Enums.ActiveProtocolStatus
+    _count: ActiveProtocolCountAggregateOutputType | null
+    _avg: ActiveProtocolAvgAggregateOutputType | null
+    _sum: ActiveProtocolSumAggregateOutputType | null
+    _min: ActiveProtocolMinAggregateOutputType | null
+    _max: ActiveProtocolMaxAggregateOutputType | null
+  }
+
+  type GetActiveProtocolGroupByPayload<T extends ActiveProtocolGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ActiveProtocolGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ActiveProtocolGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ActiveProtocolGroupByOutputType[P]>
+            : GetScalarType<T[P], ActiveProtocolGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ActiveProtocolSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    protocolId?: boolean
+    kittenId?: boolean
+    activatedById?: boolean
+    activationDate?: boolean
+    status?: boolean
+    protocol?: boolean | ProtocolDefaultArgs<ExtArgs>
+    kitten?: boolean | KittenDefaultArgs<ExtArgs>
+    activatedBy?: boolean | UserDefaultArgs<ExtArgs>
+    doses?: boolean | ActiveProtocol$dosesArgs<ExtArgs>
+    _count?: boolean | ActiveProtocolCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["activeProtocol"]>
+
+  export type ActiveProtocolSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    protocolId?: boolean
+    kittenId?: boolean
+    activatedById?: boolean
+    activationDate?: boolean
+    status?: boolean
+    protocol?: boolean | ProtocolDefaultArgs<ExtArgs>
+    kitten?: boolean | KittenDefaultArgs<ExtArgs>
+    activatedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["activeProtocol"]>
+
+  export type ActiveProtocolSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    protocolId?: boolean
+    kittenId?: boolean
+    activatedById?: boolean
+    activationDate?: boolean
+    status?: boolean
+    protocol?: boolean | ProtocolDefaultArgs<ExtArgs>
+    kitten?: boolean | KittenDefaultArgs<ExtArgs>
+    activatedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["activeProtocol"]>
+
+  export type ActiveProtocolSelectScalar = {
+    id?: boolean
+    protocolId?: boolean
+    kittenId?: boolean
+    activatedById?: boolean
+    activationDate?: boolean
+    status?: boolean
+  }
+
+  export type ActiveProtocolOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "protocolId" | "kittenId" | "activatedById" | "activationDate" | "status", ExtArgs["result"]["activeProtocol"]>
+  export type ActiveProtocolInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    protocol?: boolean | ProtocolDefaultArgs<ExtArgs>
+    kitten?: boolean | KittenDefaultArgs<ExtArgs>
+    activatedBy?: boolean | UserDefaultArgs<ExtArgs>
+    doses?: boolean | ActiveProtocol$dosesArgs<ExtArgs>
+    _count?: boolean | ActiveProtocolCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ActiveProtocolIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    protocol?: boolean | ProtocolDefaultArgs<ExtArgs>
+    kitten?: boolean | KittenDefaultArgs<ExtArgs>
+    activatedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ActiveProtocolIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    protocol?: boolean | ProtocolDefaultArgs<ExtArgs>
+    kitten?: boolean | KittenDefaultArgs<ExtArgs>
+    activatedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $ActiveProtocolPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ActiveProtocol"
+    objects: {
+      protocol: Prisma.$ProtocolPayload<ExtArgs>
+      kitten: Prisma.$KittenPayload<ExtArgs>
+      activatedBy: Prisma.$UserPayload<ExtArgs>
+      doses: Prisma.$ProtocolDosePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      protocolId: number
+      kittenId: number
+      activatedById: number
+      activationDate: Date
+      status: $Enums.ActiveProtocolStatus
+    }, ExtArgs["result"]["activeProtocol"]>
+    composites: {}
+  }
+
+  type ActiveProtocolGetPayload<S extends boolean | null | undefined | ActiveProtocolDefaultArgs> = $Result.GetResult<Prisma.$ActiveProtocolPayload, S>
+
+  type ActiveProtocolCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ActiveProtocolFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ActiveProtocolCountAggregateInputType | true
+    }
+
+  export interface ActiveProtocolDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ActiveProtocol'], meta: { name: 'ActiveProtocol' } }
+    /**
+     * Find zero or one ActiveProtocol that matches the filter.
+     * @param {ActiveProtocolFindUniqueArgs} args - Arguments to find a ActiveProtocol
+     * @example
+     * // Get one ActiveProtocol
+     * const activeProtocol = await prisma.activeProtocol.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ActiveProtocolFindUniqueArgs>(args: SelectSubset<T, ActiveProtocolFindUniqueArgs<ExtArgs>>): Prisma__ActiveProtocolClient<$Result.GetResult<Prisma.$ActiveProtocolPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ActiveProtocol that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ActiveProtocolFindUniqueOrThrowArgs} args - Arguments to find a ActiveProtocol
+     * @example
+     * // Get one ActiveProtocol
+     * const activeProtocol = await prisma.activeProtocol.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ActiveProtocolFindUniqueOrThrowArgs>(args: SelectSubset<T, ActiveProtocolFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ActiveProtocolClient<$Result.GetResult<Prisma.$ActiveProtocolPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ActiveProtocol that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActiveProtocolFindFirstArgs} args - Arguments to find a ActiveProtocol
+     * @example
+     * // Get one ActiveProtocol
+     * const activeProtocol = await prisma.activeProtocol.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ActiveProtocolFindFirstArgs>(args?: SelectSubset<T, ActiveProtocolFindFirstArgs<ExtArgs>>): Prisma__ActiveProtocolClient<$Result.GetResult<Prisma.$ActiveProtocolPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ActiveProtocol that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActiveProtocolFindFirstOrThrowArgs} args - Arguments to find a ActiveProtocol
+     * @example
+     * // Get one ActiveProtocol
+     * const activeProtocol = await prisma.activeProtocol.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ActiveProtocolFindFirstOrThrowArgs>(args?: SelectSubset<T, ActiveProtocolFindFirstOrThrowArgs<ExtArgs>>): Prisma__ActiveProtocolClient<$Result.GetResult<Prisma.$ActiveProtocolPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ActiveProtocols that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActiveProtocolFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ActiveProtocols
+     * const activeProtocols = await prisma.activeProtocol.findMany()
+     * 
+     * // Get first 10 ActiveProtocols
+     * const activeProtocols = await prisma.activeProtocol.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const activeProtocolWithIdOnly = await prisma.activeProtocol.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ActiveProtocolFindManyArgs>(args?: SelectSubset<T, ActiveProtocolFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActiveProtocolPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ActiveProtocol.
+     * @param {ActiveProtocolCreateArgs} args - Arguments to create a ActiveProtocol.
+     * @example
+     * // Create one ActiveProtocol
+     * const ActiveProtocol = await prisma.activeProtocol.create({
+     *   data: {
+     *     // ... data to create a ActiveProtocol
+     *   }
+     * })
+     * 
+     */
+    create<T extends ActiveProtocolCreateArgs>(args: SelectSubset<T, ActiveProtocolCreateArgs<ExtArgs>>): Prisma__ActiveProtocolClient<$Result.GetResult<Prisma.$ActiveProtocolPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ActiveProtocols.
+     * @param {ActiveProtocolCreateManyArgs} args - Arguments to create many ActiveProtocols.
+     * @example
+     * // Create many ActiveProtocols
+     * const activeProtocol = await prisma.activeProtocol.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ActiveProtocolCreateManyArgs>(args?: SelectSubset<T, ActiveProtocolCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ActiveProtocols and returns the data saved in the database.
+     * @param {ActiveProtocolCreateManyAndReturnArgs} args - Arguments to create many ActiveProtocols.
+     * @example
+     * // Create many ActiveProtocols
+     * const activeProtocol = await prisma.activeProtocol.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ActiveProtocols and only return the `id`
+     * const activeProtocolWithIdOnly = await prisma.activeProtocol.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ActiveProtocolCreateManyAndReturnArgs>(args?: SelectSubset<T, ActiveProtocolCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActiveProtocolPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ActiveProtocol.
+     * @param {ActiveProtocolDeleteArgs} args - Arguments to delete one ActiveProtocol.
+     * @example
+     * // Delete one ActiveProtocol
+     * const ActiveProtocol = await prisma.activeProtocol.delete({
+     *   where: {
+     *     // ... filter to delete one ActiveProtocol
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ActiveProtocolDeleteArgs>(args: SelectSubset<T, ActiveProtocolDeleteArgs<ExtArgs>>): Prisma__ActiveProtocolClient<$Result.GetResult<Prisma.$ActiveProtocolPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ActiveProtocol.
+     * @param {ActiveProtocolUpdateArgs} args - Arguments to update one ActiveProtocol.
+     * @example
+     * // Update one ActiveProtocol
+     * const activeProtocol = await prisma.activeProtocol.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ActiveProtocolUpdateArgs>(args: SelectSubset<T, ActiveProtocolUpdateArgs<ExtArgs>>): Prisma__ActiveProtocolClient<$Result.GetResult<Prisma.$ActiveProtocolPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ActiveProtocols.
+     * @param {ActiveProtocolDeleteManyArgs} args - Arguments to filter ActiveProtocols to delete.
+     * @example
+     * // Delete a few ActiveProtocols
+     * const { count } = await prisma.activeProtocol.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ActiveProtocolDeleteManyArgs>(args?: SelectSubset<T, ActiveProtocolDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ActiveProtocols.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActiveProtocolUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ActiveProtocols
+     * const activeProtocol = await prisma.activeProtocol.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ActiveProtocolUpdateManyArgs>(args: SelectSubset<T, ActiveProtocolUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ActiveProtocols and returns the data updated in the database.
+     * @param {ActiveProtocolUpdateManyAndReturnArgs} args - Arguments to update many ActiveProtocols.
+     * @example
+     * // Update many ActiveProtocols
+     * const activeProtocol = await prisma.activeProtocol.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ActiveProtocols and only return the `id`
+     * const activeProtocolWithIdOnly = await prisma.activeProtocol.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ActiveProtocolUpdateManyAndReturnArgs>(args: SelectSubset<T, ActiveProtocolUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActiveProtocolPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ActiveProtocol.
+     * @param {ActiveProtocolUpsertArgs} args - Arguments to update or create a ActiveProtocol.
+     * @example
+     * // Update or create a ActiveProtocol
+     * const activeProtocol = await prisma.activeProtocol.upsert({
+     *   create: {
+     *     // ... data to create a ActiveProtocol
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ActiveProtocol we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ActiveProtocolUpsertArgs>(args: SelectSubset<T, ActiveProtocolUpsertArgs<ExtArgs>>): Prisma__ActiveProtocolClient<$Result.GetResult<Prisma.$ActiveProtocolPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ActiveProtocols.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActiveProtocolCountArgs} args - Arguments to filter ActiveProtocols to count.
+     * @example
+     * // Count the number of ActiveProtocols
+     * const count = await prisma.activeProtocol.count({
+     *   where: {
+     *     // ... the filter for the ActiveProtocols we want to count
+     *   }
+     * })
+    **/
+    count<T extends ActiveProtocolCountArgs>(
+      args?: Subset<T, ActiveProtocolCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ActiveProtocolCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ActiveProtocol.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActiveProtocolAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ActiveProtocolAggregateArgs>(args: Subset<T, ActiveProtocolAggregateArgs>): Prisma.PrismaPromise<GetActiveProtocolAggregateType<T>>
+
+    /**
+     * Group by ActiveProtocol.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActiveProtocolGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ActiveProtocolGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ActiveProtocolGroupByArgs['orderBy'] }
+        : { orderBy?: ActiveProtocolGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ActiveProtocolGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetActiveProtocolGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ActiveProtocol model
+   */
+  readonly fields: ActiveProtocolFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ActiveProtocol.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ActiveProtocolClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    protocol<T extends ProtocolDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProtocolDefaultArgs<ExtArgs>>): Prisma__ProtocolClient<$Result.GetResult<Prisma.$ProtocolPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    kitten<T extends KittenDefaultArgs<ExtArgs> = {}>(args?: Subset<T, KittenDefaultArgs<ExtArgs>>): Prisma__KittenClient<$Result.GetResult<Prisma.$KittenPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    activatedBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    doses<T extends ActiveProtocol$dosesArgs<ExtArgs> = {}>(args?: Subset<T, ActiveProtocol$dosesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProtocolDosePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ActiveProtocol model
+   */
+  interface ActiveProtocolFieldRefs {
+    readonly id: FieldRef<"ActiveProtocol", 'Int'>
+    readonly protocolId: FieldRef<"ActiveProtocol", 'Int'>
+    readonly kittenId: FieldRef<"ActiveProtocol", 'Int'>
+    readonly activatedById: FieldRef<"ActiveProtocol", 'Int'>
+    readonly activationDate: FieldRef<"ActiveProtocol", 'DateTime'>
+    readonly status: FieldRef<"ActiveProtocol", 'ActiveProtocolStatus'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ActiveProtocol findUnique
+   */
+  export type ActiveProtocolFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocol
+     */
+    select?: ActiveProtocolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocol
+     */
+    omit?: ActiveProtocolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolInclude<ExtArgs> | null
+    /**
+     * Filter, which ActiveProtocol to fetch.
+     */
+    where: ActiveProtocolWhereUniqueInput
+  }
+
+  /**
+   * ActiveProtocol findUniqueOrThrow
+   */
+  export type ActiveProtocolFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocol
+     */
+    select?: ActiveProtocolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocol
+     */
+    omit?: ActiveProtocolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolInclude<ExtArgs> | null
+    /**
+     * Filter, which ActiveProtocol to fetch.
+     */
+    where: ActiveProtocolWhereUniqueInput
+  }
+
+  /**
+   * ActiveProtocol findFirst
+   */
+  export type ActiveProtocolFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocol
+     */
+    select?: ActiveProtocolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocol
+     */
+    omit?: ActiveProtocolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolInclude<ExtArgs> | null
+    /**
+     * Filter, which ActiveProtocol to fetch.
+     */
+    where?: ActiveProtocolWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ActiveProtocols to fetch.
+     */
+    orderBy?: ActiveProtocolOrderByWithRelationInput | ActiveProtocolOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ActiveProtocols.
+     */
+    cursor?: ActiveProtocolWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ActiveProtocols from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ActiveProtocols.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ActiveProtocols.
+     */
+    distinct?: ActiveProtocolScalarFieldEnum | ActiveProtocolScalarFieldEnum[]
+  }
+
+  /**
+   * ActiveProtocol findFirstOrThrow
+   */
+  export type ActiveProtocolFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocol
+     */
+    select?: ActiveProtocolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocol
+     */
+    omit?: ActiveProtocolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolInclude<ExtArgs> | null
+    /**
+     * Filter, which ActiveProtocol to fetch.
+     */
+    where?: ActiveProtocolWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ActiveProtocols to fetch.
+     */
+    orderBy?: ActiveProtocolOrderByWithRelationInput | ActiveProtocolOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ActiveProtocols.
+     */
+    cursor?: ActiveProtocolWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ActiveProtocols from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ActiveProtocols.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ActiveProtocols.
+     */
+    distinct?: ActiveProtocolScalarFieldEnum | ActiveProtocolScalarFieldEnum[]
+  }
+
+  /**
+   * ActiveProtocol findMany
+   */
+  export type ActiveProtocolFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocol
+     */
+    select?: ActiveProtocolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocol
+     */
+    omit?: ActiveProtocolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolInclude<ExtArgs> | null
+    /**
+     * Filter, which ActiveProtocols to fetch.
+     */
+    where?: ActiveProtocolWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ActiveProtocols to fetch.
+     */
+    orderBy?: ActiveProtocolOrderByWithRelationInput | ActiveProtocolOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ActiveProtocols.
+     */
+    cursor?: ActiveProtocolWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ActiveProtocols from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ActiveProtocols.
+     */
+    skip?: number
+    distinct?: ActiveProtocolScalarFieldEnum | ActiveProtocolScalarFieldEnum[]
+  }
+
+  /**
+   * ActiveProtocol create
+   */
+  export type ActiveProtocolCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocol
+     */
+    select?: ActiveProtocolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocol
+     */
+    omit?: ActiveProtocolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ActiveProtocol.
+     */
+    data: XOR<ActiveProtocolCreateInput, ActiveProtocolUncheckedCreateInput>
+  }
+
+  /**
+   * ActiveProtocol createMany
+   */
+  export type ActiveProtocolCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ActiveProtocols.
+     */
+    data: ActiveProtocolCreateManyInput | ActiveProtocolCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ActiveProtocol createManyAndReturn
+   */
+  export type ActiveProtocolCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocol
+     */
+    select?: ActiveProtocolSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocol
+     */
+    omit?: ActiveProtocolOmit<ExtArgs> | null
+    /**
+     * The data used to create many ActiveProtocols.
+     */
+    data: ActiveProtocolCreateManyInput | ActiveProtocolCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ActiveProtocol update
+   */
+  export type ActiveProtocolUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocol
+     */
+    select?: ActiveProtocolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocol
+     */
+    omit?: ActiveProtocolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ActiveProtocol.
+     */
+    data: XOR<ActiveProtocolUpdateInput, ActiveProtocolUncheckedUpdateInput>
+    /**
+     * Choose, which ActiveProtocol to update.
+     */
+    where: ActiveProtocolWhereUniqueInput
+  }
+
+  /**
+   * ActiveProtocol updateMany
+   */
+  export type ActiveProtocolUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ActiveProtocols.
+     */
+    data: XOR<ActiveProtocolUpdateManyMutationInput, ActiveProtocolUncheckedUpdateManyInput>
+    /**
+     * Filter which ActiveProtocols to update
+     */
+    where?: ActiveProtocolWhereInput
+    /**
+     * Limit how many ActiveProtocols to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ActiveProtocol updateManyAndReturn
+   */
+  export type ActiveProtocolUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocol
+     */
+    select?: ActiveProtocolSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocol
+     */
+    omit?: ActiveProtocolOmit<ExtArgs> | null
+    /**
+     * The data used to update ActiveProtocols.
+     */
+    data: XOR<ActiveProtocolUpdateManyMutationInput, ActiveProtocolUncheckedUpdateManyInput>
+    /**
+     * Filter which ActiveProtocols to update
+     */
+    where?: ActiveProtocolWhereInput
+    /**
+     * Limit how many ActiveProtocols to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ActiveProtocol upsert
+   */
+  export type ActiveProtocolUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocol
+     */
+    select?: ActiveProtocolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocol
+     */
+    omit?: ActiveProtocolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ActiveProtocol to update in case it exists.
+     */
+    where: ActiveProtocolWhereUniqueInput
+    /**
+     * In case the ActiveProtocol found by the `where` argument doesn't exist, create a new ActiveProtocol with this data.
+     */
+    create: XOR<ActiveProtocolCreateInput, ActiveProtocolUncheckedCreateInput>
+    /**
+     * In case the ActiveProtocol was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ActiveProtocolUpdateInput, ActiveProtocolUncheckedUpdateInput>
+  }
+
+  /**
+   * ActiveProtocol delete
+   */
+  export type ActiveProtocolDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocol
+     */
+    select?: ActiveProtocolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocol
+     */
+    omit?: ActiveProtocolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolInclude<ExtArgs> | null
+    /**
+     * Filter which ActiveProtocol to delete.
+     */
+    where: ActiveProtocolWhereUniqueInput
+  }
+
+  /**
+   * ActiveProtocol deleteMany
+   */
+  export type ActiveProtocolDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ActiveProtocols to delete
+     */
+    where?: ActiveProtocolWhereInput
+    /**
+     * Limit how many ActiveProtocols to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ActiveProtocol.doses
+   */
+  export type ActiveProtocol$dosesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDose
+     */
+    select?: ProtocolDoseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDose
+     */
+    omit?: ProtocolDoseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDoseInclude<ExtArgs> | null
+    where?: ProtocolDoseWhereInput
+    orderBy?: ProtocolDoseOrderByWithRelationInput | ProtocolDoseOrderByWithRelationInput[]
+    cursor?: ProtocolDoseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProtocolDoseScalarFieldEnum | ProtocolDoseScalarFieldEnum[]
+  }
+
+  /**
+   * ActiveProtocol without action
+   */
+  export type ActiveProtocolDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocol
+     */
+    select?: ActiveProtocolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocol
+     */
+    omit?: ActiveProtocolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ProtocolDose
+   */
+
+  export type AggregateProtocolDose = {
+    _count: ProtocolDoseCountAggregateOutputType | null
+    _avg: ProtocolDoseAvgAggregateOutputType | null
+    _sum: ProtocolDoseSumAggregateOutputType | null
+    _min: ProtocolDoseMinAggregateOutputType | null
+    _max: ProtocolDoseMaxAggregateOutputType | null
+  }
+
+  export type ProtocolDoseAvgAggregateOutputType = {
+    id: number | null
+    activeProtocolId: number | null
+    protocolDrugId: number | null
+    doseNumberInDay: number | null
+    administeredById: number | null
+  }
+
+  export type ProtocolDoseSumAggregateOutputType = {
+    id: number | null
+    activeProtocolId: number | null
+    protocolDrugId: number | null
+    doseNumberInDay: number | null
+    administeredById: number | null
+  }
+
+  export type ProtocolDoseMinAggregateOutputType = {
+    id: number | null
+    activeProtocolId: number | null
+    protocolDrugId: number | null
+    scheduledDate: Date | null
+    doseNumberInDay: number | null
+    status: $Enums.DoseStatus | null
+    administeredAt: Date | null
+    administeredById: number | null
+    notes: string | null
+  }
+
+  export type ProtocolDoseMaxAggregateOutputType = {
+    id: number | null
+    activeProtocolId: number | null
+    protocolDrugId: number | null
+    scheduledDate: Date | null
+    doseNumberInDay: number | null
+    status: $Enums.DoseStatus | null
+    administeredAt: Date | null
+    administeredById: number | null
+    notes: string | null
+  }
+
+  export type ProtocolDoseCountAggregateOutputType = {
+    id: number
+    activeProtocolId: number
+    protocolDrugId: number
+    scheduledDate: number
+    doseNumberInDay: number
+    status: number
+    administeredAt: number
+    administeredById: number
+    notes: number
+    _all: number
+  }
+
+
+  export type ProtocolDoseAvgAggregateInputType = {
+    id?: true
+    activeProtocolId?: true
+    protocolDrugId?: true
+    doseNumberInDay?: true
+    administeredById?: true
+  }
+
+  export type ProtocolDoseSumAggregateInputType = {
+    id?: true
+    activeProtocolId?: true
+    protocolDrugId?: true
+    doseNumberInDay?: true
+    administeredById?: true
+  }
+
+  export type ProtocolDoseMinAggregateInputType = {
+    id?: true
+    activeProtocolId?: true
+    protocolDrugId?: true
+    scheduledDate?: true
+    doseNumberInDay?: true
+    status?: true
+    administeredAt?: true
+    administeredById?: true
+    notes?: true
+  }
+
+  export type ProtocolDoseMaxAggregateInputType = {
+    id?: true
+    activeProtocolId?: true
+    protocolDrugId?: true
+    scheduledDate?: true
+    doseNumberInDay?: true
+    status?: true
+    administeredAt?: true
+    administeredById?: true
+    notes?: true
+  }
+
+  export type ProtocolDoseCountAggregateInputType = {
+    id?: true
+    activeProtocolId?: true
+    protocolDrugId?: true
+    scheduledDate?: true
+    doseNumberInDay?: true
+    status?: true
+    administeredAt?: true
+    administeredById?: true
+    notes?: true
+    _all?: true
+  }
+
+  export type ProtocolDoseAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProtocolDose to aggregate.
+     */
+    where?: ProtocolDoseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProtocolDoses to fetch.
+     */
+    orderBy?: ProtocolDoseOrderByWithRelationInput | ProtocolDoseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ProtocolDoseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProtocolDoses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProtocolDoses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ProtocolDoses
+    **/
+    _count?: true | ProtocolDoseCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ProtocolDoseAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ProtocolDoseSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ProtocolDoseMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ProtocolDoseMaxAggregateInputType
+  }
+
+  export type GetProtocolDoseAggregateType<T extends ProtocolDoseAggregateArgs> = {
+        [P in keyof T & keyof AggregateProtocolDose]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateProtocolDose[P]>
+      : GetScalarType<T[P], AggregateProtocolDose[P]>
+  }
+
+
+
+
+  export type ProtocolDoseGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProtocolDoseWhereInput
+    orderBy?: ProtocolDoseOrderByWithAggregationInput | ProtocolDoseOrderByWithAggregationInput[]
+    by: ProtocolDoseScalarFieldEnum[] | ProtocolDoseScalarFieldEnum
+    having?: ProtocolDoseScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ProtocolDoseCountAggregateInputType | true
+    _avg?: ProtocolDoseAvgAggregateInputType
+    _sum?: ProtocolDoseSumAggregateInputType
+    _min?: ProtocolDoseMinAggregateInputType
+    _max?: ProtocolDoseMaxAggregateInputType
+  }
+
+  export type ProtocolDoseGroupByOutputType = {
+    id: number
+    activeProtocolId: number
+    protocolDrugId: number
+    scheduledDate: Date
+    doseNumberInDay: number
+    status: $Enums.DoseStatus
+    administeredAt: Date | null
+    administeredById: number | null
+    notes: string
+    _count: ProtocolDoseCountAggregateOutputType | null
+    _avg: ProtocolDoseAvgAggregateOutputType | null
+    _sum: ProtocolDoseSumAggregateOutputType | null
+    _min: ProtocolDoseMinAggregateOutputType | null
+    _max: ProtocolDoseMaxAggregateOutputType | null
+  }
+
+  type GetProtocolDoseGroupByPayload<T extends ProtocolDoseGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ProtocolDoseGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ProtocolDoseGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ProtocolDoseGroupByOutputType[P]>
+            : GetScalarType<T[P], ProtocolDoseGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ProtocolDoseSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    activeProtocolId?: boolean
+    protocolDrugId?: boolean
+    scheduledDate?: boolean
+    doseNumberInDay?: boolean
+    status?: boolean
+    administeredAt?: boolean
+    administeredById?: boolean
+    notes?: boolean
+    activeProtocol?: boolean | ActiveProtocolDefaultArgs<ExtArgs>
+    protocolDrug?: boolean | ProtocolDrugDefaultArgs<ExtArgs>
+    administeredBy?: boolean | ProtocolDose$administeredByArgs<ExtArgs>
+  }, ExtArgs["result"]["protocolDose"]>
+
+  export type ProtocolDoseSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    activeProtocolId?: boolean
+    protocolDrugId?: boolean
+    scheduledDate?: boolean
+    doseNumberInDay?: boolean
+    status?: boolean
+    administeredAt?: boolean
+    administeredById?: boolean
+    notes?: boolean
+    activeProtocol?: boolean | ActiveProtocolDefaultArgs<ExtArgs>
+    protocolDrug?: boolean | ProtocolDrugDefaultArgs<ExtArgs>
+    administeredBy?: boolean | ProtocolDose$administeredByArgs<ExtArgs>
+  }, ExtArgs["result"]["protocolDose"]>
+
+  export type ProtocolDoseSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    activeProtocolId?: boolean
+    protocolDrugId?: boolean
+    scheduledDate?: boolean
+    doseNumberInDay?: boolean
+    status?: boolean
+    administeredAt?: boolean
+    administeredById?: boolean
+    notes?: boolean
+    activeProtocol?: boolean | ActiveProtocolDefaultArgs<ExtArgs>
+    protocolDrug?: boolean | ProtocolDrugDefaultArgs<ExtArgs>
+    administeredBy?: boolean | ProtocolDose$administeredByArgs<ExtArgs>
+  }, ExtArgs["result"]["protocolDose"]>
+
+  export type ProtocolDoseSelectScalar = {
+    id?: boolean
+    activeProtocolId?: boolean
+    protocolDrugId?: boolean
+    scheduledDate?: boolean
+    doseNumberInDay?: boolean
+    status?: boolean
+    administeredAt?: boolean
+    administeredById?: boolean
+    notes?: boolean
+  }
+
+  export type ProtocolDoseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "activeProtocolId" | "protocolDrugId" | "scheduledDate" | "doseNumberInDay" | "status" | "administeredAt" | "administeredById" | "notes", ExtArgs["result"]["protocolDose"]>
+  export type ProtocolDoseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    activeProtocol?: boolean | ActiveProtocolDefaultArgs<ExtArgs>
+    protocolDrug?: boolean | ProtocolDrugDefaultArgs<ExtArgs>
+    administeredBy?: boolean | ProtocolDose$administeredByArgs<ExtArgs>
+  }
+  export type ProtocolDoseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    activeProtocol?: boolean | ActiveProtocolDefaultArgs<ExtArgs>
+    protocolDrug?: boolean | ProtocolDrugDefaultArgs<ExtArgs>
+    administeredBy?: boolean | ProtocolDose$administeredByArgs<ExtArgs>
+  }
+  export type ProtocolDoseIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    activeProtocol?: boolean | ActiveProtocolDefaultArgs<ExtArgs>
+    protocolDrug?: boolean | ProtocolDrugDefaultArgs<ExtArgs>
+    administeredBy?: boolean | ProtocolDose$administeredByArgs<ExtArgs>
+  }
+
+  export type $ProtocolDosePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ProtocolDose"
+    objects: {
+      activeProtocol: Prisma.$ActiveProtocolPayload<ExtArgs>
+      protocolDrug: Prisma.$ProtocolDrugPayload<ExtArgs>
+      administeredBy: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      activeProtocolId: number
+      protocolDrugId: number
+      scheduledDate: Date
+      doseNumberInDay: number
+      status: $Enums.DoseStatus
+      administeredAt: Date | null
+      administeredById: number | null
+      notes: string
+    }, ExtArgs["result"]["protocolDose"]>
+    composites: {}
+  }
+
+  type ProtocolDoseGetPayload<S extends boolean | null | undefined | ProtocolDoseDefaultArgs> = $Result.GetResult<Prisma.$ProtocolDosePayload, S>
+
+  type ProtocolDoseCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ProtocolDoseFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ProtocolDoseCountAggregateInputType | true
+    }
+
+  export interface ProtocolDoseDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ProtocolDose'], meta: { name: 'ProtocolDose' } }
+    /**
+     * Find zero or one ProtocolDose that matches the filter.
+     * @param {ProtocolDoseFindUniqueArgs} args - Arguments to find a ProtocolDose
+     * @example
+     * // Get one ProtocolDose
+     * const protocolDose = await prisma.protocolDose.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ProtocolDoseFindUniqueArgs>(args: SelectSubset<T, ProtocolDoseFindUniqueArgs<ExtArgs>>): Prisma__ProtocolDoseClient<$Result.GetResult<Prisma.$ProtocolDosePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ProtocolDose that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ProtocolDoseFindUniqueOrThrowArgs} args - Arguments to find a ProtocolDose
+     * @example
+     * // Get one ProtocolDose
+     * const protocolDose = await prisma.protocolDose.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ProtocolDoseFindUniqueOrThrowArgs>(args: SelectSubset<T, ProtocolDoseFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ProtocolDoseClient<$Result.GetResult<Prisma.$ProtocolDosePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProtocolDose that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolDoseFindFirstArgs} args - Arguments to find a ProtocolDose
+     * @example
+     * // Get one ProtocolDose
+     * const protocolDose = await prisma.protocolDose.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ProtocolDoseFindFirstArgs>(args?: SelectSubset<T, ProtocolDoseFindFirstArgs<ExtArgs>>): Prisma__ProtocolDoseClient<$Result.GetResult<Prisma.$ProtocolDosePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProtocolDose that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolDoseFindFirstOrThrowArgs} args - Arguments to find a ProtocolDose
+     * @example
+     * // Get one ProtocolDose
+     * const protocolDose = await prisma.protocolDose.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ProtocolDoseFindFirstOrThrowArgs>(args?: SelectSubset<T, ProtocolDoseFindFirstOrThrowArgs<ExtArgs>>): Prisma__ProtocolDoseClient<$Result.GetResult<Prisma.$ProtocolDosePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ProtocolDoses that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolDoseFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ProtocolDoses
+     * const protocolDoses = await prisma.protocolDose.findMany()
+     * 
+     * // Get first 10 ProtocolDoses
+     * const protocolDoses = await prisma.protocolDose.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const protocolDoseWithIdOnly = await prisma.protocolDose.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ProtocolDoseFindManyArgs>(args?: SelectSubset<T, ProtocolDoseFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProtocolDosePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ProtocolDose.
+     * @param {ProtocolDoseCreateArgs} args - Arguments to create a ProtocolDose.
+     * @example
+     * // Create one ProtocolDose
+     * const ProtocolDose = await prisma.protocolDose.create({
+     *   data: {
+     *     // ... data to create a ProtocolDose
+     *   }
+     * })
+     * 
+     */
+    create<T extends ProtocolDoseCreateArgs>(args: SelectSubset<T, ProtocolDoseCreateArgs<ExtArgs>>): Prisma__ProtocolDoseClient<$Result.GetResult<Prisma.$ProtocolDosePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ProtocolDoses.
+     * @param {ProtocolDoseCreateManyArgs} args - Arguments to create many ProtocolDoses.
+     * @example
+     * // Create many ProtocolDoses
+     * const protocolDose = await prisma.protocolDose.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ProtocolDoseCreateManyArgs>(args?: SelectSubset<T, ProtocolDoseCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ProtocolDoses and returns the data saved in the database.
+     * @param {ProtocolDoseCreateManyAndReturnArgs} args - Arguments to create many ProtocolDoses.
+     * @example
+     * // Create many ProtocolDoses
+     * const protocolDose = await prisma.protocolDose.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ProtocolDoses and only return the `id`
+     * const protocolDoseWithIdOnly = await prisma.protocolDose.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ProtocolDoseCreateManyAndReturnArgs>(args?: SelectSubset<T, ProtocolDoseCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProtocolDosePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ProtocolDose.
+     * @param {ProtocolDoseDeleteArgs} args - Arguments to delete one ProtocolDose.
+     * @example
+     * // Delete one ProtocolDose
+     * const ProtocolDose = await prisma.protocolDose.delete({
+     *   where: {
+     *     // ... filter to delete one ProtocolDose
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ProtocolDoseDeleteArgs>(args: SelectSubset<T, ProtocolDoseDeleteArgs<ExtArgs>>): Prisma__ProtocolDoseClient<$Result.GetResult<Prisma.$ProtocolDosePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ProtocolDose.
+     * @param {ProtocolDoseUpdateArgs} args - Arguments to update one ProtocolDose.
+     * @example
+     * // Update one ProtocolDose
+     * const protocolDose = await prisma.protocolDose.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ProtocolDoseUpdateArgs>(args: SelectSubset<T, ProtocolDoseUpdateArgs<ExtArgs>>): Prisma__ProtocolDoseClient<$Result.GetResult<Prisma.$ProtocolDosePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ProtocolDoses.
+     * @param {ProtocolDoseDeleteManyArgs} args - Arguments to filter ProtocolDoses to delete.
+     * @example
+     * // Delete a few ProtocolDoses
+     * const { count } = await prisma.protocolDose.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ProtocolDoseDeleteManyArgs>(args?: SelectSubset<T, ProtocolDoseDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProtocolDoses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolDoseUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ProtocolDoses
+     * const protocolDose = await prisma.protocolDose.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ProtocolDoseUpdateManyArgs>(args: SelectSubset<T, ProtocolDoseUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProtocolDoses and returns the data updated in the database.
+     * @param {ProtocolDoseUpdateManyAndReturnArgs} args - Arguments to update many ProtocolDoses.
+     * @example
+     * // Update many ProtocolDoses
+     * const protocolDose = await prisma.protocolDose.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ProtocolDoses and only return the `id`
+     * const protocolDoseWithIdOnly = await prisma.protocolDose.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ProtocolDoseUpdateManyAndReturnArgs>(args: SelectSubset<T, ProtocolDoseUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProtocolDosePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ProtocolDose.
+     * @param {ProtocolDoseUpsertArgs} args - Arguments to update or create a ProtocolDose.
+     * @example
+     * // Update or create a ProtocolDose
+     * const protocolDose = await prisma.protocolDose.upsert({
+     *   create: {
+     *     // ... data to create a ProtocolDose
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ProtocolDose we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ProtocolDoseUpsertArgs>(args: SelectSubset<T, ProtocolDoseUpsertArgs<ExtArgs>>): Prisma__ProtocolDoseClient<$Result.GetResult<Prisma.$ProtocolDosePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ProtocolDoses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolDoseCountArgs} args - Arguments to filter ProtocolDoses to count.
+     * @example
+     * // Count the number of ProtocolDoses
+     * const count = await prisma.protocolDose.count({
+     *   where: {
+     *     // ... the filter for the ProtocolDoses we want to count
+     *   }
+     * })
+    **/
+    count<T extends ProtocolDoseCountArgs>(
+      args?: Subset<T, ProtocolDoseCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ProtocolDoseCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ProtocolDose.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolDoseAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ProtocolDoseAggregateArgs>(args: Subset<T, ProtocolDoseAggregateArgs>): Prisma.PrismaPromise<GetProtocolDoseAggregateType<T>>
+
+    /**
+     * Group by ProtocolDose.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProtocolDoseGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ProtocolDoseGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ProtocolDoseGroupByArgs['orderBy'] }
+        : { orderBy?: ProtocolDoseGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ProtocolDoseGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProtocolDoseGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ProtocolDose model
+   */
+  readonly fields: ProtocolDoseFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ProtocolDose.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ProtocolDoseClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    activeProtocol<T extends ActiveProtocolDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ActiveProtocolDefaultArgs<ExtArgs>>): Prisma__ActiveProtocolClient<$Result.GetResult<Prisma.$ActiveProtocolPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    protocolDrug<T extends ProtocolDrugDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProtocolDrugDefaultArgs<ExtArgs>>): Prisma__ProtocolDrugClient<$Result.GetResult<Prisma.$ProtocolDrugPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    administeredBy<T extends ProtocolDose$administeredByArgs<ExtArgs> = {}>(args?: Subset<T, ProtocolDose$administeredByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ProtocolDose model
+   */
+  interface ProtocolDoseFieldRefs {
+    readonly id: FieldRef<"ProtocolDose", 'Int'>
+    readonly activeProtocolId: FieldRef<"ProtocolDose", 'Int'>
+    readonly protocolDrugId: FieldRef<"ProtocolDose", 'Int'>
+    readonly scheduledDate: FieldRef<"ProtocolDose", 'DateTime'>
+    readonly doseNumberInDay: FieldRef<"ProtocolDose", 'Int'>
+    readonly status: FieldRef<"ProtocolDose", 'DoseStatus'>
+    readonly administeredAt: FieldRef<"ProtocolDose", 'DateTime'>
+    readonly administeredById: FieldRef<"ProtocolDose", 'Int'>
+    readonly notes: FieldRef<"ProtocolDose", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ProtocolDose findUnique
+   */
+  export type ProtocolDoseFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDose
+     */
+    select?: ProtocolDoseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDose
+     */
+    omit?: ProtocolDoseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDoseInclude<ExtArgs> | null
+    /**
+     * Filter, which ProtocolDose to fetch.
+     */
+    where: ProtocolDoseWhereUniqueInput
+  }
+
+  /**
+   * ProtocolDose findUniqueOrThrow
+   */
+  export type ProtocolDoseFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDose
+     */
+    select?: ProtocolDoseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDose
+     */
+    omit?: ProtocolDoseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDoseInclude<ExtArgs> | null
+    /**
+     * Filter, which ProtocolDose to fetch.
+     */
+    where: ProtocolDoseWhereUniqueInput
+  }
+
+  /**
+   * ProtocolDose findFirst
+   */
+  export type ProtocolDoseFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDose
+     */
+    select?: ProtocolDoseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDose
+     */
+    omit?: ProtocolDoseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDoseInclude<ExtArgs> | null
+    /**
+     * Filter, which ProtocolDose to fetch.
+     */
+    where?: ProtocolDoseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProtocolDoses to fetch.
+     */
+    orderBy?: ProtocolDoseOrderByWithRelationInput | ProtocolDoseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProtocolDoses.
+     */
+    cursor?: ProtocolDoseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProtocolDoses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProtocolDoses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProtocolDoses.
+     */
+    distinct?: ProtocolDoseScalarFieldEnum | ProtocolDoseScalarFieldEnum[]
+  }
+
+  /**
+   * ProtocolDose findFirstOrThrow
+   */
+  export type ProtocolDoseFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDose
+     */
+    select?: ProtocolDoseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDose
+     */
+    omit?: ProtocolDoseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDoseInclude<ExtArgs> | null
+    /**
+     * Filter, which ProtocolDose to fetch.
+     */
+    where?: ProtocolDoseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProtocolDoses to fetch.
+     */
+    orderBy?: ProtocolDoseOrderByWithRelationInput | ProtocolDoseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProtocolDoses.
+     */
+    cursor?: ProtocolDoseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProtocolDoses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProtocolDoses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProtocolDoses.
+     */
+    distinct?: ProtocolDoseScalarFieldEnum | ProtocolDoseScalarFieldEnum[]
+  }
+
+  /**
+   * ProtocolDose findMany
+   */
+  export type ProtocolDoseFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDose
+     */
+    select?: ProtocolDoseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDose
+     */
+    omit?: ProtocolDoseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDoseInclude<ExtArgs> | null
+    /**
+     * Filter, which ProtocolDoses to fetch.
+     */
+    where?: ProtocolDoseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProtocolDoses to fetch.
+     */
+    orderBy?: ProtocolDoseOrderByWithRelationInput | ProtocolDoseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ProtocolDoses.
+     */
+    cursor?: ProtocolDoseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProtocolDoses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProtocolDoses.
+     */
+    skip?: number
+    distinct?: ProtocolDoseScalarFieldEnum | ProtocolDoseScalarFieldEnum[]
+  }
+
+  /**
+   * ProtocolDose create
+   */
+  export type ProtocolDoseCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDose
+     */
+    select?: ProtocolDoseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDose
+     */
+    omit?: ProtocolDoseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDoseInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ProtocolDose.
+     */
+    data: XOR<ProtocolDoseCreateInput, ProtocolDoseUncheckedCreateInput>
+  }
+
+  /**
+   * ProtocolDose createMany
+   */
+  export type ProtocolDoseCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ProtocolDoses.
+     */
+    data: ProtocolDoseCreateManyInput | ProtocolDoseCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ProtocolDose createManyAndReturn
+   */
+  export type ProtocolDoseCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDose
+     */
+    select?: ProtocolDoseSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDose
+     */
+    omit?: ProtocolDoseOmit<ExtArgs> | null
+    /**
+     * The data used to create many ProtocolDoses.
+     */
+    data: ProtocolDoseCreateManyInput | ProtocolDoseCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDoseIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProtocolDose update
+   */
+  export type ProtocolDoseUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDose
+     */
+    select?: ProtocolDoseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDose
+     */
+    omit?: ProtocolDoseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDoseInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ProtocolDose.
+     */
+    data: XOR<ProtocolDoseUpdateInput, ProtocolDoseUncheckedUpdateInput>
+    /**
+     * Choose, which ProtocolDose to update.
+     */
+    where: ProtocolDoseWhereUniqueInput
+  }
+
+  /**
+   * ProtocolDose updateMany
+   */
+  export type ProtocolDoseUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ProtocolDoses.
+     */
+    data: XOR<ProtocolDoseUpdateManyMutationInput, ProtocolDoseUncheckedUpdateManyInput>
+    /**
+     * Filter which ProtocolDoses to update
+     */
+    where?: ProtocolDoseWhereInput
+    /**
+     * Limit how many ProtocolDoses to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProtocolDose updateManyAndReturn
+   */
+  export type ProtocolDoseUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDose
+     */
+    select?: ProtocolDoseSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDose
+     */
+    omit?: ProtocolDoseOmit<ExtArgs> | null
+    /**
+     * The data used to update ProtocolDoses.
+     */
+    data: XOR<ProtocolDoseUpdateManyMutationInput, ProtocolDoseUncheckedUpdateManyInput>
+    /**
+     * Filter which ProtocolDoses to update
+     */
+    where?: ProtocolDoseWhereInput
+    /**
+     * Limit how many ProtocolDoses to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDoseIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProtocolDose upsert
+   */
+  export type ProtocolDoseUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDose
+     */
+    select?: ProtocolDoseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDose
+     */
+    omit?: ProtocolDoseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDoseInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ProtocolDose to update in case it exists.
+     */
+    where: ProtocolDoseWhereUniqueInput
+    /**
+     * In case the ProtocolDose found by the `where` argument doesn't exist, create a new ProtocolDose with this data.
+     */
+    create: XOR<ProtocolDoseCreateInput, ProtocolDoseUncheckedCreateInput>
+    /**
+     * In case the ProtocolDose was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ProtocolDoseUpdateInput, ProtocolDoseUncheckedUpdateInput>
+  }
+
+  /**
+   * ProtocolDose delete
+   */
+  export type ProtocolDoseDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDose
+     */
+    select?: ProtocolDoseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDose
+     */
+    omit?: ProtocolDoseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDoseInclude<ExtArgs> | null
+    /**
+     * Filter which ProtocolDose to delete.
+     */
+    where: ProtocolDoseWhereUniqueInput
+  }
+
+  /**
+   * ProtocolDose deleteMany
+   */
+  export type ProtocolDoseDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProtocolDoses to delete
+     */
+    where?: ProtocolDoseWhereInput
+    /**
+     * Limit how many ProtocolDoses to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProtocolDose.administeredBy
+   */
+  export type ProtocolDose$administeredByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * ProtocolDose without action
+   */
+  export type ProtocolDoseDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDose
+     */
+    select?: ProtocolDoseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDose
+     */
+    omit?: ProtocolDoseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDoseInclude<ExtArgs> | null
   }
 
 
@@ -35647,14 +43578,40 @@ export namespace Prisma {
   export const EventScalarFieldEnum: {
     id: 'id',
     title: 'title',
+    slug: 'slug',
     date: 'date',
+    endDate: 'endDate',
     location: 'location',
     description: 'description',
     isPublic: 'isPublic',
+    status: 'status',
+    internalNotes: 'internalNotes',
     publishTargets: 'publishTargets'
   };
 
   export type EventScalarFieldEnum = (typeof EventScalarFieldEnum)[keyof typeof EventScalarFieldEnum]
+
+
+  export const EventRSVPScalarFieldEnum: {
+    id: 'id',
+    eventId: 'eventId',
+    name: 'name',
+    email: 'email',
+    createdAt: 'createdAt'
+  };
+
+  export type EventRSVPScalarFieldEnum = (typeof EventRSVPScalarFieldEnum)[keyof typeof EventRSVPScalarFieldEnum]
+
+
+  export const EventCatsScalarFieldEnum: {
+    id: 'id',
+    eventId: 'eventId',
+    kittenId: 'kittenId',
+    addedAt: 'addedAt',
+    notes: 'notes'
+  };
+
+  export type EventCatsScalarFieldEnum = (typeof EventCatsScalarFieldEnum)[keyof typeof EventCatsScalarFieldEnum]
 
 
   export const RoleScalarFieldEnum: {
@@ -35701,6 +43658,61 @@ export namespace Prisma {
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+  export const ProtocolScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    description: 'description',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ProtocolScalarFieldEnum = (typeof ProtocolScalarFieldEnum)[keyof typeof ProtocolScalarFieldEnum]
+
+
+  export const ProtocolDrugScalarFieldEnum: {
+    id: 'id',
+    protocolId: 'protocolId',
+    drugName: 'drugName',
+    dosage: 'dosage',
+    route: 'route',
+    startDayOffset: 'startDayOffset',
+    endDayOffset: 'endDayOffset',
+    frequencyPerDay: 'frequencyPerDay',
+    instructions: 'instructions',
+    sortOrder: 'sortOrder'
+  };
+
+  export type ProtocolDrugScalarFieldEnum = (typeof ProtocolDrugScalarFieldEnum)[keyof typeof ProtocolDrugScalarFieldEnum]
+
+
+  export const ActiveProtocolScalarFieldEnum: {
+    id: 'id',
+    protocolId: 'protocolId',
+    kittenId: 'kittenId',
+    activatedById: 'activatedById',
+    activationDate: 'activationDate',
+    status: 'status'
+  };
+
+  export type ActiveProtocolScalarFieldEnum = (typeof ActiveProtocolScalarFieldEnum)[keyof typeof ActiveProtocolScalarFieldEnum]
+
+
+  export const ProtocolDoseScalarFieldEnum: {
+    id: 'id',
+    activeProtocolId: 'activeProtocolId',
+    protocolDrugId: 'protocolDrugId',
+    scheduledDate: 'scheduledDate',
+    doseNumberInDay: 'doseNumberInDay',
+    status: 'status',
+    administeredAt: 'administeredAt',
+    administeredById: 'administeredById',
+    notes: 'notes'
+  };
+
+  export type ProtocolDoseScalarFieldEnum = (typeof ProtocolDoseScalarFieldEnum)[keyof typeof ProtocolDoseScalarFieldEnum]
 
 
   export const SettingsScalarFieldEnum: {
@@ -35921,6 +43933,34 @@ export namespace Prisma {
    */
   export type ListEnumFosterOnboardingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FosterOnboardingStatus[]'>
     
+
+
+  /**
+   * Reference to a field of type 'ActiveProtocolStatus'
+   */
+  export type EnumActiveProtocolStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ActiveProtocolStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'ActiveProtocolStatus[]'
+   */
+  export type ListEnumActiveProtocolStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ActiveProtocolStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DoseStatus'
+   */
+  export type EnumDoseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DoseStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'DoseStatus[]'
+   */
+  export type ListEnumDoseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DoseStatus[]'>
+    
   /**
    * Deep Input Types
    */
@@ -36115,6 +44155,8 @@ export namespace Prisma {
     updates?: UpdateListRelationFilter
     transactions?: TransactionListRelationFilter
     contracts?: ContractListRelationFilter
+    activeProtocols?: ActiveProtocolListRelationFilter
+    eventCats?: EventCatsListRelationFilter
   }
 
   export type KittenOrderByWithRelationInput = {
@@ -36156,6 +44198,8 @@ export namespace Prisma {
     updates?: UpdateOrderByRelationAggregateInput
     transactions?: TransactionOrderByRelationAggregateInput
     contracts?: ContractOrderByRelationAggregateInput
+    activeProtocols?: ActiveProtocolOrderByRelationAggregateInput
+    eventCats?: EventCatsOrderByRelationAggregateInput
   }
 
   export type KittenWhereUniqueInput = Prisma.AtLeast<{
@@ -36200,6 +44244,8 @@ export namespace Prisma {
     updates?: UpdateListRelationFilter
     transactions?: TransactionListRelationFilter
     contracts?: ContractListRelationFilter
+    activeProtocols?: ActiveProtocolListRelationFilter
+    eventCats?: EventCatsListRelationFilter
   }, "id">
 
   export type KittenOrderByWithAggregationInput = {
@@ -37399,43 +45445,65 @@ export namespace Prisma {
     NOT?: EventWhereInput | EventWhereInput[]
     id?: IntFilter<"Event"> | number
     title?: StringFilter<"Event"> | string
+    slug?: StringFilter<"Event"> | string
     date?: DateTimeFilter<"Event"> | Date | string
+    endDate?: DateTimeNullableFilter<"Event"> | Date | string | null
     location?: StringFilter<"Event"> | string
     description?: StringFilter<"Event"> | string
     isPublic?: BoolFilter<"Event"> | boolean
+    status?: StringFilter<"Event"> | string
+    internalNotes?: StringNullableFilter<"Event"> | string | null
     publishTargets?: StringNullableListFilter<"Event">
+    eventCats?: EventCatsListRelationFilter
+    rsvps?: EventRSVPListRelationFilter
   }
 
   export type EventOrderByWithRelationInput = {
     id?: SortOrder
     title?: SortOrder
+    slug?: SortOrder
     date?: SortOrder
+    endDate?: SortOrderInput | SortOrder
     location?: SortOrder
     description?: SortOrder
     isPublic?: SortOrder
+    status?: SortOrder
+    internalNotes?: SortOrderInput | SortOrder
     publishTargets?: SortOrder
+    eventCats?: EventCatsOrderByRelationAggregateInput
+    rsvps?: EventRSVPOrderByRelationAggregateInput
   }
 
   export type EventWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    slug?: string
     AND?: EventWhereInput | EventWhereInput[]
     OR?: EventWhereInput[]
     NOT?: EventWhereInput | EventWhereInput[]
     title?: StringFilter<"Event"> | string
     date?: DateTimeFilter<"Event"> | Date | string
+    endDate?: DateTimeNullableFilter<"Event"> | Date | string | null
     location?: StringFilter<"Event"> | string
     description?: StringFilter<"Event"> | string
     isPublic?: BoolFilter<"Event"> | boolean
+    status?: StringFilter<"Event"> | string
+    internalNotes?: StringNullableFilter<"Event"> | string | null
     publishTargets?: StringNullableListFilter<"Event">
-  }, "id">
+    eventCats?: EventCatsListRelationFilter
+    rsvps?: EventRSVPListRelationFilter
+  }, "id" | "slug">
 
   export type EventOrderByWithAggregationInput = {
     id?: SortOrder
     title?: SortOrder
+    slug?: SortOrder
     date?: SortOrder
+    endDate?: SortOrderInput | SortOrder
     location?: SortOrder
     description?: SortOrder
     isPublic?: SortOrder
+    status?: SortOrder
+    internalNotes?: SortOrderInput | SortOrder
     publishTargets?: SortOrder
     _count?: EventCountOrderByAggregateInput
     _avg?: EventAvgOrderByAggregateInput
@@ -37450,11 +45518,133 @@ export namespace Prisma {
     NOT?: EventScalarWhereWithAggregatesInput | EventScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Event"> | number
     title?: StringWithAggregatesFilter<"Event"> | string
+    slug?: StringWithAggregatesFilter<"Event"> | string
     date?: DateTimeWithAggregatesFilter<"Event"> | Date | string
+    endDate?: DateTimeNullableWithAggregatesFilter<"Event"> | Date | string | null
     location?: StringWithAggregatesFilter<"Event"> | string
     description?: StringWithAggregatesFilter<"Event"> | string
     isPublic?: BoolWithAggregatesFilter<"Event"> | boolean
+    status?: StringWithAggregatesFilter<"Event"> | string
+    internalNotes?: StringNullableWithAggregatesFilter<"Event"> | string | null
     publishTargets?: StringNullableListFilter<"Event">
+  }
+
+  export type EventRSVPWhereInput = {
+    AND?: EventRSVPWhereInput | EventRSVPWhereInput[]
+    OR?: EventRSVPWhereInput[]
+    NOT?: EventRSVPWhereInput | EventRSVPWhereInput[]
+    id?: IntFilter<"EventRSVP"> | number
+    eventId?: IntFilter<"EventRSVP"> | number
+    name?: StringFilter<"EventRSVP"> | string
+    email?: StringFilter<"EventRSVP"> | string
+    createdAt?: DateTimeFilter<"EventRSVP"> | Date | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+  }
+
+  export type EventRSVPOrderByWithRelationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    createdAt?: SortOrder
+    event?: EventOrderByWithRelationInput
+  }
+
+  export type EventRSVPWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: EventRSVPWhereInput | EventRSVPWhereInput[]
+    OR?: EventRSVPWhereInput[]
+    NOT?: EventRSVPWhereInput | EventRSVPWhereInput[]
+    eventId?: IntFilter<"EventRSVP"> | number
+    name?: StringFilter<"EventRSVP"> | string
+    email?: StringFilter<"EventRSVP"> | string
+    createdAt?: DateTimeFilter<"EventRSVP"> | Date | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+  }, "id">
+
+  export type EventRSVPOrderByWithAggregationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    createdAt?: SortOrder
+    _count?: EventRSVPCountOrderByAggregateInput
+    _avg?: EventRSVPAvgOrderByAggregateInput
+    _max?: EventRSVPMaxOrderByAggregateInput
+    _min?: EventRSVPMinOrderByAggregateInput
+    _sum?: EventRSVPSumOrderByAggregateInput
+  }
+
+  export type EventRSVPScalarWhereWithAggregatesInput = {
+    AND?: EventRSVPScalarWhereWithAggregatesInput | EventRSVPScalarWhereWithAggregatesInput[]
+    OR?: EventRSVPScalarWhereWithAggregatesInput[]
+    NOT?: EventRSVPScalarWhereWithAggregatesInput | EventRSVPScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"EventRSVP"> | number
+    eventId?: IntWithAggregatesFilter<"EventRSVP"> | number
+    name?: StringWithAggregatesFilter<"EventRSVP"> | string
+    email?: StringWithAggregatesFilter<"EventRSVP"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"EventRSVP"> | Date | string
+  }
+
+  export type EventCatsWhereInput = {
+    AND?: EventCatsWhereInput | EventCatsWhereInput[]
+    OR?: EventCatsWhereInput[]
+    NOT?: EventCatsWhereInput | EventCatsWhereInput[]
+    id?: IntFilter<"EventCats"> | number
+    eventId?: IntFilter<"EventCats"> | number
+    kittenId?: IntFilter<"EventCats"> | number
+    addedAt?: DateTimeFilter<"EventCats"> | Date | string
+    notes?: StringNullableFilter<"EventCats"> | string | null
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    kitten?: XOR<KittenScalarRelationFilter, KittenWhereInput>
+  }
+
+  export type EventCatsOrderByWithRelationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    kittenId?: SortOrder
+    addedAt?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    event?: EventOrderByWithRelationInput
+    kitten?: KittenOrderByWithRelationInput
+  }
+
+  export type EventCatsWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    eventId_kittenId?: EventCatsEventIdKittenIdCompoundUniqueInput
+    AND?: EventCatsWhereInput | EventCatsWhereInput[]
+    OR?: EventCatsWhereInput[]
+    NOT?: EventCatsWhereInput | EventCatsWhereInput[]
+    eventId?: IntFilter<"EventCats"> | number
+    kittenId?: IntFilter<"EventCats"> | number
+    addedAt?: DateTimeFilter<"EventCats"> | Date | string
+    notes?: StringNullableFilter<"EventCats"> | string | null
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    kitten?: XOR<KittenScalarRelationFilter, KittenWhereInput>
+  }, "id" | "eventId_kittenId">
+
+  export type EventCatsOrderByWithAggregationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    kittenId?: SortOrder
+    addedAt?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    _count?: EventCatsCountOrderByAggregateInput
+    _avg?: EventCatsAvgOrderByAggregateInput
+    _max?: EventCatsMaxOrderByAggregateInput
+    _min?: EventCatsMinOrderByAggregateInput
+    _sum?: EventCatsSumOrderByAggregateInput
+  }
+
+  export type EventCatsScalarWhereWithAggregatesInput = {
+    AND?: EventCatsScalarWhereWithAggregatesInput | EventCatsScalarWhereWithAggregatesInput[]
+    OR?: EventCatsScalarWhereWithAggregatesInput[]
+    NOT?: EventCatsScalarWhereWithAggregatesInput | EventCatsScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"EventCats"> | number
+    eventId?: IntWithAggregatesFilter<"EventCats"> | number
+    kittenId?: IntWithAggregatesFilter<"EventCats"> | number
+    addedAt?: DateTimeWithAggregatesFilter<"EventCats"> | Date | string
+    notes?: StringNullableWithAggregatesFilter<"EventCats"> | string | null
   }
 
   export type RoleWhereInput = {
@@ -37634,6 +45824,8 @@ export namespace Prisma {
     rejectedApplications?: ApplicationListRelationFilter
     completedChecklistItems?: OnboardingChecklistListRelationFilter
     contentCompletions?: ContentCompletionListRelationFilter
+    activatedProtocols?: ActiveProtocolListRelationFilter
+    administeredProtocolDoses?: ProtocolDoseListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -37652,6 +45844,8 @@ export namespace Prisma {
     rejectedApplications?: ApplicationOrderByRelationAggregateInput
     completedChecklistItems?: OnboardingChecklistOrderByRelationAggregateInput
     contentCompletions?: ContentCompletionOrderByRelationAggregateInput
+    activatedProtocols?: ActiveProtocolOrderByRelationAggregateInput
+    administeredProtocolDoses?: ProtocolDoseOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -37673,6 +45867,8 @@ export namespace Prisma {
     rejectedApplications?: ApplicationListRelationFilter
     completedChecklistItems?: OnboardingChecklistListRelationFilter
     contentCompletions?: ContentCompletionListRelationFilter
+    activatedProtocols?: ActiveProtocolListRelationFilter
+    administeredProtocolDoses?: ProtocolDoseListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -37709,6 +45905,311 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     lastLoginAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  }
+
+  export type ProtocolWhereInput = {
+    AND?: ProtocolWhereInput | ProtocolWhereInput[]
+    OR?: ProtocolWhereInput[]
+    NOT?: ProtocolWhereInput | ProtocolWhereInput[]
+    id?: IntFilter<"Protocol"> | number
+    name?: StringFilter<"Protocol"> | string
+    description?: StringFilter<"Protocol"> | string
+    isActive?: BoolFilter<"Protocol"> | boolean
+    createdAt?: DateTimeFilter<"Protocol"> | Date | string
+    updatedAt?: DateTimeFilter<"Protocol"> | Date | string
+    drugs?: ProtocolDrugListRelationFilter
+    activeProtocols?: ActiveProtocolListRelationFilter
+  }
+
+  export type ProtocolOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    drugs?: ProtocolDrugOrderByRelationAggregateInput
+    activeProtocols?: ActiveProtocolOrderByRelationAggregateInput
+  }
+
+  export type ProtocolWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: ProtocolWhereInput | ProtocolWhereInput[]
+    OR?: ProtocolWhereInput[]
+    NOT?: ProtocolWhereInput | ProtocolWhereInput[]
+    name?: StringFilter<"Protocol"> | string
+    description?: StringFilter<"Protocol"> | string
+    isActive?: BoolFilter<"Protocol"> | boolean
+    createdAt?: DateTimeFilter<"Protocol"> | Date | string
+    updatedAt?: DateTimeFilter<"Protocol"> | Date | string
+    drugs?: ProtocolDrugListRelationFilter
+    activeProtocols?: ActiveProtocolListRelationFilter
+  }, "id">
+
+  export type ProtocolOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ProtocolCountOrderByAggregateInput
+    _avg?: ProtocolAvgOrderByAggregateInput
+    _max?: ProtocolMaxOrderByAggregateInput
+    _min?: ProtocolMinOrderByAggregateInput
+    _sum?: ProtocolSumOrderByAggregateInput
+  }
+
+  export type ProtocolScalarWhereWithAggregatesInput = {
+    AND?: ProtocolScalarWhereWithAggregatesInput | ProtocolScalarWhereWithAggregatesInput[]
+    OR?: ProtocolScalarWhereWithAggregatesInput[]
+    NOT?: ProtocolScalarWhereWithAggregatesInput | ProtocolScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Protocol"> | number
+    name?: StringWithAggregatesFilter<"Protocol"> | string
+    description?: StringWithAggregatesFilter<"Protocol"> | string
+    isActive?: BoolWithAggregatesFilter<"Protocol"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"Protocol"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Protocol"> | Date | string
+  }
+
+  export type ProtocolDrugWhereInput = {
+    AND?: ProtocolDrugWhereInput | ProtocolDrugWhereInput[]
+    OR?: ProtocolDrugWhereInput[]
+    NOT?: ProtocolDrugWhereInput | ProtocolDrugWhereInput[]
+    id?: IntFilter<"ProtocolDrug"> | number
+    protocolId?: IntFilter<"ProtocolDrug"> | number
+    drugName?: StringFilter<"ProtocolDrug"> | string
+    dosage?: StringFilter<"ProtocolDrug"> | string
+    route?: StringFilter<"ProtocolDrug"> | string
+    startDayOffset?: IntFilter<"ProtocolDrug"> | number
+    endDayOffset?: IntFilter<"ProtocolDrug"> | number
+    frequencyPerDay?: IntFilter<"ProtocolDrug"> | number
+    instructions?: StringFilter<"ProtocolDrug"> | string
+    sortOrder?: IntFilter<"ProtocolDrug"> | number
+    protocol?: XOR<ProtocolScalarRelationFilter, ProtocolWhereInput>
+    doses?: ProtocolDoseListRelationFilter
+  }
+
+  export type ProtocolDrugOrderByWithRelationInput = {
+    id?: SortOrder
+    protocolId?: SortOrder
+    drugName?: SortOrder
+    dosage?: SortOrder
+    route?: SortOrder
+    startDayOffset?: SortOrder
+    endDayOffset?: SortOrder
+    frequencyPerDay?: SortOrder
+    instructions?: SortOrder
+    sortOrder?: SortOrder
+    protocol?: ProtocolOrderByWithRelationInput
+    doses?: ProtocolDoseOrderByRelationAggregateInput
+  }
+
+  export type ProtocolDrugWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: ProtocolDrugWhereInput | ProtocolDrugWhereInput[]
+    OR?: ProtocolDrugWhereInput[]
+    NOT?: ProtocolDrugWhereInput | ProtocolDrugWhereInput[]
+    protocolId?: IntFilter<"ProtocolDrug"> | number
+    drugName?: StringFilter<"ProtocolDrug"> | string
+    dosage?: StringFilter<"ProtocolDrug"> | string
+    route?: StringFilter<"ProtocolDrug"> | string
+    startDayOffset?: IntFilter<"ProtocolDrug"> | number
+    endDayOffset?: IntFilter<"ProtocolDrug"> | number
+    frequencyPerDay?: IntFilter<"ProtocolDrug"> | number
+    instructions?: StringFilter<"ProtocolDrug"> | string
+    sortOrder?: IntFilter<"ProtocolDrug"> | number
+    protocol?: XOR<ProtocolScalarRelationFilter, ProtocolWhereInput>
+    doses?: ProtocolDoseListRelationFilter
+  }, "id">
+
+  export type ProtocolDrugOrderByWithAggregationInput = {
+    id?: SortOrder
+    protocolId?: SortOrder
+    drugName?: SortOrder
+    dosage?: SortOrder
+    route?: SortOrder
+    startDayOffset?: SortOrder
+    endDayOffset?: SortOrder
+    frequencyPerDay?: SortOrder
+    instructions?: SortOrder
+    sortOrder?: SortOrder
+    _count?: ProtocolDrugCountOrderByAggregateInput
+    _avg?: ProtocolDrugAvgOrderByAggregateInput
+    _max?: ProtocolDrugMaxOrderByAggregateInput
+    _min?: ProtocolDrugMinOrderByAggregateInput
+    _sum?: ProtocolDrugSumOrderByAggregateInput
+  }
+
+  export type ProtocolDrugScalarWhereWithAggregatesInput = {
+    AND?: ProtocolDrugScalarWhereWithAggregatesInput | ProtocolDrugScalarWhereWithAggregatesInput[]
+    OR?: ProtocolDrugScalarWhereWithAggregatesInput[]
+    NOT?: ProtocolDrugScalarWhereWithAggregatesInput | ProtocolDrugScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"ProtocolDrug"> | number
+    protocolId?: IntWithAggregatesFilter<"ProtocolDrug"> | number
+    drugName?: StringWithAggregatesFilter<"ProtocolDrug"> | string
+    dosage?: StringWithAggregatesFilter<"ProtocolDrug"> | string
+    route?: StringWithAggregatesFilter<"ProtocolDrug"> | string
+    startDayOffset?: IntWithAggregatesFilter<"ProtocolDrug"> | number
+    endDayOffset?: IntWithAggregatesFilter<"ProtocolDrug"> | number
+    frequencyPerDay?: IntWithAggregatesFilter<"ProtocolDrug"> | number
+    instructions?: StringWithAggregatesFilter<"ProtocolDrug"> | string
+    sortOrder?: IntWithAggregatesFilter<"ProtocolDrug"> | number
+  }
+
+  export type ActiveProtocolWhereInput = {
+    AND?: ActiveProtocolWhereInput | ActiveProtocolWhereInput[]
+    OR?: ActiveProtocolWhereInput[]
+    NOT?: ActiveProtocolWhereInput | ActiveProtocolWhereInput[]
+    id?: IntFilter<"ActiveProtocol"> | number
+    protocolId?: IntFilter<"ActiveProtocol"> | number
+    kittenId?: IntFilter<"ActiveProtocol"> | number
+    activatedById?: IntFilter<"ActiveProtocol"> | number
+    activationDate?: DateTimeFilter<"ActiveProtocol"> | Date | string
+    status?: EnumActiveProtocolStatusFilter<"ActiveProtocol"> | $Enums.ActiveProtocolStatus
+    protocol?: XOR<ProtocolScalarRelationFilter, ProtocolWhereInput>
+    kitten?: XOR<KittenScalarRelationFilter, KittenWhereInput>
+    activatedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    doses?: ProtocolDoseListRelationFilter
+  }
+
+  export type ActiveProtocolOrderByWithRelationInput = {
+    id?: SortOrder
+    protocolId?: SortOrder
+    kittenId?: SortOrder
+    activatedById?: SortOrder
+    activationDate?: SortOrder
+    status?: SortOrder
+    protocol?: ProtocolOrderByWithRelationInput
+    kitten?: KittenOrderByWithRelationInput
+    activatedBy?: UserOrderByWithRelationInput
+    doses?: ProtocolDoseOrderByRelationAggregateInput
+  }
+
+  export type ActiveProtocolWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: ActiveProtocolWhereInput | ActiveProtocolWhereInput[]
+    OR?: ActiveProtocolWhereInput[]
+    NOT?: ActiveProtocolWhereInput | ActiveProtocolWhereInput[]
+    protocolId?: IntFilter<"ActiveProtocol"> | number
+    kittenId?: IntFilter<"ActiveProtocol"> | number
+    activatedById?: IntFilter<"ActiveProtocol"> | number
+    activationDate?: DateTimeFilter<"ActiveProtocol"> | Date | string
+    status?: EnumActiveProtocolStatusFilter<"ActiveProtocol"> | $Enums.ActiveProtocolStatus
+    protocol?: XOR<ProtocolScalarRelationFilter, ProtocolWhereInput>
+    kitten?: XOR<KittenScalarRelationFilter, KittenWhereInput>
+    activatedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    doses?: ProtocolDoseListRelationFilter
+  }, "id">
+
+  export type ActiveProtocolOrderByWithAggregationInput = {
+    id?: SortOrder
+    protocolId?: SortOrder
+    kittenId?: SortOrder
+    activatedById?: SortOrder
+    activationDate?: SortOrder
+    status?: SortOrder
+    _count?: ActiveProtocolCountOrderByAggregateInput
+    _avg?: ActiveProtocolAvgOrderByAggregateInput
+    _max?: ActiveProtocolMaxOrderByAggregateInput
+    _min?: ActiveProtocolMinOrderByAggregateInput
+    _sum?: ActiveProtocolSumOrderByAggregateInput
+  }
+
+  export type ActiveProtocolScalarWhereWithAggregatesInput = {
+    AND?: ActiveProtocolScalarWhereWithAggregatesInput | ActiveProtocolScalarWhereWithAggregatesInput[]
+    OR?: ActiveProtocolScalarWhereWithAggregatesInput[]
+    NOT?: ActiveProtocolScalarWhereWithAggregatesInput | ActiveProtocolScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"ActiveProtocol"> | number
+    protocolId?: IntWithAggregatesFilter<"ActiveProtocol"> | number
+    kittenId?: IntWithAggregatesFilter<"ActiveProtocol"> | number
+    activatedById?: IntWithAggregatesFilter<"ActiveProtocol"> | number
+    activationDate?: DateTimeWithAggregatesFilter<"ActiveProtocol"> | Date | string
+    status?: EnumActiveProtocolStatusWithAggregatesFilter<"ActiveProtocol"> | $Enums.ActiveProtocolStatus
+  }
+
+  export type ProtocolDoseWhereInput = {
+    AND?: ProtocolDoseWhereInput | ProtocolDoseWhereInput[]
+    OR?: ProtocolDoseWhereInput[]
+    NOT?: ProtocolDoseWhereInput | ProtocolDoseWhereInput[]
+    id?: IntFilter<"ProtocolDose"> | number
+    activeProtocolId?: IntFilter<"ProtocolDose"> | number
+    protocolDrugId?: IntFilter<"ProtocolDose"> | number
+    scheduledDate?: DateTimeFilter<"ProtocolDose"> | Date | string
+    doseNumberInDay?: IntFilter<"ProtocolDose"> | number
+    status?: EnumDoseStatusFilter<"ProtocolDose"> | $Enums.DoseStatus
+    administeredAt?: DateTimeNullableFilter<"ProtocolDose"> | Date | string | null
+    administeredById?: IntNullableFilter<"ProtocolDose"> | number | null
+    notes?: StringFilter<"ProtocolDose"> | string
+    activeProtocol?: XOR<ActiveProtocolScalarRelationFilter, ActiveProtocolWhereInput>
+    protocolDrug?: XOR<ProtocolDrugScalarRelationFilter, ProtocolDrugWhereInput>
+    administeredBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type ProtocolDoseOrderByWithRelationInput = {
+    id?: SortOrder
+    activeProtocolId?: SortOrder
+    protocolDrugId?: SortOrder
+    scheduledDate?: SortOrder
+    doseNumberInDay?: SortOrder
+    status?: SortOrder
+    administeredAt?: SortOrderInput | SortOrder
+    administeredById?: SortOrderInput | SortOrder
+    notes?: SortOrder
+    activeProtocol?: ActiveProtocolOrderByWithRelationInput
+    protocolDrug?: ProtocolDrugOrderByWithRelationInput
+    administeredBy?: UserOrderByWithRelationInput
+  }
+
+  export type ProtocolDoseWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    activeProtocolId_protocolDrugId_scheduledDate_doseNumberInDay?: ProtocolDoseActiveProtocolIdProtocolDrugIdScheduledDateDoseNumberInDayCompoundUniqueInput
+    AND?: ProtocolDoseWhereInput | ProtocolDoseWhereInput[]
+    OR?: ProtocolDoseWhereInput[]
+    NOT?: ProtocolDoseWhereInput | ProtocolDoseWhereInput[]
+    activeProtocolId?: IntFilter<"ProtocolDose"> | number
+    protocolDrugId?: IntFilter<"ProtocolDose"> | number
+    scheduledDate?: DateTimeFilter<"ProtocolDose"> | Date | string
+    doseNumberInDay?: IntFilter<"ProtocolDose"> | number
+    status?: EnumDoseStatusFilter<"ProtocolDose"> | $Enums.DoseStatus
+    administeredAt?: DateTimeNullableFilter<"ProtocolDose"> | Date | string | null
+    administeredById?: IntNullableFilter<"ProtocolDose"> | number | null
+    notes?: StringFilter<"ProtocolDose"> | string
+    activeProtocol?: XOR<ActiveProtocolScalarRelationFilter, ActiveProtocolWhereInput>
+    protocolDrug?: XOR<ProtocolDrugScalarRelationFilter, ProtocolDrugWhereInput>
+    administeredBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id" | "activeProtocolId_protocolDrugId_scheduledDate_doseNumberInDay">
+
+  export type ProtocolDoseOrderByWithAggregationInput = {
+    id?: SortOrder
+    activeProtocolId?: SortOrder
+    protocolDrugId?: SortOrder
+    scheduledDate?: SortOrder
+    doseNumberInDay?: SortOrder
+    status?: SortOrder
+    administeredAt?: SortOrderInput | SortOrder
+    administeredById?: SortOrderInput | SortOrder
+    notes?: SortOrder
+    _count?: ProtocolDoseCountOrderByAggregateInput
+    _avg?: ProtocolDoseAvgOrderByAggregateInput
+    _max?: ProtocolDoseMaxOrderByAggregateInput
+    _min?: ProtocolDoseMinOrderByAggregateInput
+    _sum?: ProtocolDoseSumOrderByAggregateInput
+  }
+
+  export type ProtocolDoseScalarWhereWithAggregatesInput = {
+    AND?: ProtocolDoseScalarWhereWithAggregatesInput | ProtocolDoseScalarWhereWithAggregatesInput[]
+    OR?: ProtocolDoseScalarWhereWithAggregatesInput[]
+    NOT?: ProtocolDoseScalarWhereWithAggregatesInput | ProtocolDoseScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"ProtocolDose"> | number
+    activeProtocolId?: IntWithAggregatesFilter<"ProtocolDose"> | number
+    protocolDrugId?: IntWithAggregatesFilter<"ProtocolDose"> | number
+    scheduledDate?: DateTimeWithAggregatesFilter<"ProtocolDose"> | Date | string
+    doseNumberInDay?: IntWithAggregatesFilter<"ProtocolDose"> | number
+    status?: EnumDoseStatusWithAggregatesFilter<"ProtocolDose"> | $Enums.DoseStatus
+    administeredAt?: DateTimeNullableWithAggregatesFilter<"ProtocolDose"> | Date | string | null
+    administeredById?: IntNullableWithAggregatesFilter<"ProtocolDose"> | number | null
+    notes?: StringWithAggregatesFilter<"ProtocolDose"> | string
   }
 
   export type SettingsWhereInput = {
@@ -38336,6 +46837,8 @@ export namespace Prisma {
     updates?: UpdateCreateNestedManyWithoutKittenInput
     transactions?: TransactionCreateNestedManyWithoutKittenInput
     contracts?: ContractCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsCreateNestedManyWithoutKittenInput
   }
 
   export type KittenUncheckedCreateInput = {
@@ -38375,6 +46878,8 @@ export namespace Prisma {
     updates?: UpdateUncheckedCreateNestedManyWithoutKittenInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutKittenInput
     contracts?: ContractUncheckedCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsUncheckedCreateNestedManyWithoutKittenInput
   }
 
   export type KittenUpdateInput = {
@@ -38413,6 +46918,8 @@ export namespace Prisma {
     updates?: UpdateUpdateManyWithoutKittenNestedInput
     transactions?: TransactionUpdateManyWithoutKittenNestedInput
     contracts?: ContractUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUpdateManyWithoutKittenNestedInput
   }
 
   export type KittenUncheckedUpdateInput = {
@@ -38452,6 +46959,8 @@ export namespace Prisma {
     updates?: UpdateUncheckedUpdateManyWithoutKittenNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutKittenNestedInput
     contracts?: ContractUncheckedUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUncheckedUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUncheckedUpdateManyWithoutKittenNestedInput
   }
 
   export type KittenCreateManyInput = {
@@ -39684,69 +48193,208 @@ export namespace Prisma {
 
   export type EventCreateInput = {
     title: string
+    slug: string
     date: Date | string
+    endDate?: Date | string | null
     location?: string
     description?: string
     isPublic?: boolean
+    status?: string
+    internalNotes?: string | null
     publishTargets?: EventCreatepublishTargetsInput | string[]
+    eventCats?: EventCatsCreateNestedManyWithoutEventInput
+    rsvps?: EventRSVPCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateInput = {
     id?: number
     title: string
+    slug: string
     date: Date | string
+    endDate?: Date | string | null
     location?: string
     description?: string
     isPublic?: boolean
+    status?: string
+    internalNotes?: string | null
     publishTargets?: EventCreatepublishTargetsInput | string[]
+    eventCats?: EventCatsUncheckedCreateNestedManyWithoutEventInput
+    rsvps?: EventRSVPUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventUpdateInput = {
     title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     isPublic?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
+    internalNotes?: NullableStringFieldUpdateOperationsInput | string | null
     publishTargets?: EventUpdatepublishTargetsInput | string[]
+    eventCats?: EventCatsUpdateManyWithoutEventNestedInput
+    rsvps?: EventRSVPUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     isPublic?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
+    internalNotes?: NullableStringFieldUpdateOperationsInput | string | null
     publishTargets?: EventUpdatepublishTargetsInput | string[]
+    eventCats?: EventCatsUncheckedUpdateManyWithoutEventNestedInput
+    rsvps?: EventRSVPUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventCreateManyInput = {
     id?: number
     title: string
+    slug: string
     date: Date | string
+    endDate?: Date | string | null
     location?: string
     description?: string
     isPublic?: boolean
+    status?: string
+    internalNotes?: string | null
     publishTargets?: EventCreatepublishTargetsInput | string[]
   }
 
   export type EventUpdateManyMutationInput = {
     title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     isPublic?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
+    internalNotes?: NullableStringFieldUpdateOperationsInput | string | null
     publishTargets?: EventUpdatepublishTargetsInput | string[]
   }
 
   export type EventUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     isPublic?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
+    internalNotes?: NullableStringFieldUpdateOperationsInput | string | null
     publishTargets?: EventUpdatepublishTargetsInput | string[]
+  }
+
+  export type EventRSVPCreateInput = {
+    name: string
+    email: string
+    createdAt?: Date | string
+    event: EventCreateNestedOneWithoutRsvpsInput
+  }
+
+  export type EventRSVPUncheckedCreateInput = {
+    id?: number
+    eventId: number
+    name: string
+    email: string
+    createdAt?: Date | string
+  }
+
+  export type EventRSVPUpdateInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutRsvpsNestedInput
+  }
+
+  export type EventRSVPUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    eventId?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventRSVPCreateManyInput = {
+    id?: number
+    eventId: number
+    name: string
+    email: string
+    createdAt?: Date | string
+  }
+
+  export type EventRSVPUpdateManyMutationInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventRSVPUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    eventId?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventCatsCreateInput = {
+    addedAt?: Date | string
+    notes?: string | null
+    event: EventCreateNestedOneWithoutEventCatsInput
+    kitten: KittenCreateNestedOneWithoutEventCatsInput
+  }
+
+  export type EventCatsUncheckedCreateInput = {
+    id?: number
+    eventId: number
+    kittenId: number
+    addedAt?: Date | string
+    notes?: string | null
+  }
+
+  export type EventCatsUpdateInput = {
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    event?: EventUpdateOneRequiredWithoutEventCatsNestedInput
+    kitten?: KittenUpdateOneRequiredWithoutEventCatsNestedInput
+  }
+
+  export type EventCatsUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    eventId?: IntFieldUpdateOperationsInput | number
+    kittenId?: IntFieldUpdateOperationsInput | number
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type EventCatsCreateManyInput = {
+    id?: number
+    eventId: number
+    kittenId: number
+    addedAt?: Date | string
+    notes?: string | null
+  }
+
+  export type EventCatsUpdateManyMutationInput = {
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type EventCatsUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    eventId?: IntFieldUpdateOperationsInput | number
+    kittenId?: IntFieldUpdateOperationsInput | number
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type RoleCreateInput = {
@@ -39908,6 +48556,8 @@ export namespace Prisma {
     rejectedApplications?: ApplicationCreateNestedManyWithoutRejectedByInput
     completedChecklistItems?: OnboardingChecklistCreateNestedManyWithoutCompletedByUserInput
     contentCompletions?: ContentCompletionCreateNestedManyWithoutUserInput
+    activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
+    administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -39925,6 +48575,8 @@ export namespace Prisma {
     rejectedApplications?: ApplicationUncheckedCreateNestedManyWithoutRejectedByInput
     completedChecklistItems?: OnboardingChecklistUncheckedCreateNestedManyWithoutCompletedByUserInput
     contentCompletions?: ContentCompletionUncheckedCreateNestedManyWithoutUserInput
+    activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
+    administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
   }
 
   export type UserUpdateInput = {
@@ -39941,6 +48593,8 @@ export namespace Prisma {
     rejectedApplications?: ApplicationUpdateManyWithoutRejectedByNestedInput
     completedChecklistItems?: OnboardingChecklistUpdateManyWithoutCompletedByUserNestedInput
     contentCompletions?: ContentCompletionUpdateManyWithoutUserNestedInput
+    activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
+    administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -39958,6 +48612,8 @@ export namespace Prisma {
     rejectedApplications?: ApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
     completedChecklistItems?: OnboardingChecklistUncheckedUpdateManyWithoutCompletedByUserNestedInput
     contentCompletions?: ContentCompletionUncheckedUpdateManyWithoutUserNestedInput
+    activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
+    administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -39998,6 +48654,304 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ProtocolCreateInput = {
+    name: string
+    description?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    drugs?: ProtocolDrugCreateNestedManyWithoutProtocolInput
+    activeProtocols?: ActiveProtocolCreateNestedManyWithoutProtocolInput
+  }
+
+  export type ProtocolUncheckedCreateInput = {
+    id?: number
+    name: string
+    description?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    drugs?: ProtocolDrugUncheckedCreateNestedManyWithoutProtocolInput
+    activeProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutProtocolInput
+  }
+
+  export type ProtocolUpdateInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    drugs?: ProtocolDrugUpdateManyWithoutProtocolNestedInput
+    activeProtocols?: ActiveProtocolUpdateManyWithoutProtocolNestedInput
+  }
+
+  export type ProtocolUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    drugs?: ProtocolDrugUncheckedUpdateManyWithoutProtocolNestedInput
+    activeProtocols?: ActiveProtocolUncheckedUpdateManyWithoutProtocolNestedInput
+  }
+
+  export type ProtocolCreateManyInput = {
+    id?: number
+    name: string
+    description?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProtocolUpdateManyMutationInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProtocolUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProtocolDrugCreateInput = {
+    drugName: string
+    dosage?: string
+    route?: string
+    startDayOffset: number
+    endDayOffset: number
+    frequencyPerDay: number
+    instructions?: string
+    sortOrder?: number
+    protocol: ProtocolCreateNestedOneWithoutDrugsInput
+    doses?: ProtocolDoseCreateNestedManyWithoutProtocolDrugInput
+  }
+
+  export type ProtocolDrugUncheckedCreateInput = {
+    id?: number
+    protocolId: number
+    drugName: string
+    dosage?: string
+    route?: string
+    startDayOffset: number
+    endDayOffset: number
+    frequencyPerDay: number
+    instructions?: string
+    sortOrder?: number
+    doses?: ProtocolDoseUncheckedCreateNestedManyWithoutProtocolDrugInput
+  }
+
+  export type ProtocolDrugUpdateInput = {
+    drugName?: StringFieldUpdateOperationsInput | string
+    dosage?: StringFieldUpdateOperationsInput | string
+    route?: StringFieldUpdateOperationsInput | string
+    startDayOffset?: IntFieldUpdateOperationsInput | number
+    endDayOffset?: IntFieldUpdateOperationsInput | number
+    frequencyPerDay?: IntFieldUpdateOperationsInput | number
+    instructions?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    protocol?: ProtocolUpdateOneRequiredWithoutDrugsNestedInput
+    doses?: ProtocolDoseUpdateManyWithoutProtocolDrugNestedInput
+  }
+
+  export type ProtocolDrugUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolId?: IntFieldUpdateOperationsInput | number
+    drugName?: StringFieldUpdateOperationsInput | string
+    dosage?: StringFieldUpdateOperationsInput | string
+    route?: StringFieldUpdateOperationsInput | string
+    startDayOffset?: IntFieldUpdateOperationsInput | number
+    endDayOffset?: IntFieldUpdateOperationsInput | number
+    frequencyPerDay?: IntFieldUpdateOperationsInput | number
+    instructions?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    doses?: ProtocolDoseUncheckedUpdateManyWithoutProtocolDrugNestedInput
+  }
+
+  export type ProtocolDrugCreateManyInput = {
+    id?: number
+    protocolId: number
+    drugName: string
+    dosage?: string
+    route?: string
+    startDayOffset: number
+    endDayOffset: number
+    frequencyPerDay: number
+    instructions?: string
+    sortOrder?: number
+  }
+
+  export type ProtocolDrugUpdateManyMutationInput = {
+    drugName?: StringFieldUpdateOperationsInput | string
+    dosage?: StringFieldUpdateOperationsInput | string
+    route?: StringFieldUpdateOperationsInput | string
+    startDayOffset?: IntFieldUpdateOperationsInput | number
+    endDayOffset?: IntFieldUpdateOperationsInput | number
+    frequencyPerDay?: IntFieldUpdateOperationsInput | number
+    instructions?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ProtocolDrugUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolId?: IntFieldUpdateOperationsInput | number
+    drugName?: StringFieldUpdateOperationsInput | string
+    dosage?: StringFieldUpdateOperationsInput | string
+    route?: StringFieldUpdateOperationsInput | string
+    startDayOffset?: IntFieldUpdateOperationsInput | number
+    endDayOffset?: IntFieldUpdateOperationsInput | number
+    frequencyPerDay?: IntFieldUpdateOperationsInput | number
+    instructions?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ActiveProtocolCreateInput = {
+    activationDate: Date | string
+    status?: $Enums.ActiveProtocolStatus
+    protocol: ProtocolCreateNestedOneWithoutActiveProtocolsInput
+    kitten: KittenCreateNestedOneWithoutActiveProtocolsInput
+    activatedBy: UserCreateNestedOneWithoutActivatedProtocolsInput
+    doses?: ProtocolDoseCreateNestedManyWithoutActiveProtocolInput
+  }
+
+  export type ActiveProtocolUncheckedCreateInput = {
+    id?: number
+    protocolId: number
+    kittenId: number
+    activatedById: number
+    activationDate: Date | string
+    status?: $Enums.ActiveProtocolStatus
+    doses?: ProtocolDoseUncheckedCreateNestedManyWithoutActiveProtocolInput
+  }
+
+  export type ActiveProtocolUpdateInput = {
+    activationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumActiveProtocolStatusFieldUpdateOperationsInput | $Enums.ActiveProtocolStatus
+    protocol?: ProtocolUpdateOneRequiredWithoutActiveProtocolsNestedInput
+    kitten?: KittenUpdateOneRequiredWithoutActiveProtocolsNestedInput
+    activatedBy?: UserUpdateOneRequiredWithoutActivatedProtocolsNestedInput
+    doses?: ProtocolDoseUpdateManyWithoutActiveProtocolNestedInput
+  }
+
+  export type ActiveProtocolUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolId?: IntFieldUpdateOperationsInput | number
+    kittenId?: IntFieldUpdateOperationsInput | number
+    activatedById?: IntFieldUpdateOperationsInput | number
+    activationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumActiveProtocolStatusFieldUpdateOperationsInput | $Enums.ActiveProtocolStatus
+    doses?: ProtocolDoseUncheckedUpdateManyWithoutActiveProtocolNestedInput
+  }
+
+  export type ActiveProtocolCreateManyInput = {
+    id?: number
+    protocolId: number
+    kittenId: number
+    activatedById: number
+    activationDate: Date | string
+    status?: $Enums.ActiveProtocolStatus
+  }
+
+  export type ActiveProtocolUpdateManyMutationInput = {
+    activationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumActiveProtocolStatusFieldUpdateOperationsInput | $Enums.ActiveProtocolStatus
+  }
+
+  export type ActiveProtocolUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolId?: IntFieldUpdateOperationsInput | number
+    kittenId?: IntFieldUpdateOperationsInput | number
+    activatedById?: IntFieldUpdateOperationsInput | number
+    activationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumActiveProtocolStatusFieldUpdateOperationsInput | $Enums.ActiveProtocolStatus
+  }
+
+  export type ProtocolDoseCreateInput = {
+    scheduledDate: Date | string
+    doseNumberInDay: number
+    status?: $Enums.DoseStatus
+    administeredAt?: Date | string | null
+    notes?: string
+    activeProtocol: ActiveProtocolCreateNestedOneWithoutDosesInput
+    protocolDrug: ProtocolDrugCreateNestedOneWithoutDosesInput
+    administeredBy?: UserCreateNestedOneWithoutAdministeredProtocolDosesInput
+  }
+
+  export type ProtocolDoseUncheckedCreateInput = {
+    id?: number
+    activeProtocolId: number
+    protocolDrugId: number
+    scheduledDate: Date | string
+    doseNumberInDay: number
+    status?: $Enums.DoseStatus
+    administeredAt?: Date | string | null
+    administeredById?: number | null
+    notes?: string
+  }
+
+  export type ProtocolDoseUpdateInput = {
+    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    doseNumberInDay?: IntFieldUpdateOperationsInput | number
+    status?: EnumDoseStatusFieldUpdateOperationsInput | $Enums.DoseStatus
+    administeredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: StringFieldUpdateOperationsInput | string
+    activeProtocol?: ActiveProtocolUpdateOneRequiredWithoutDosesNestedInput
+    protocolDrug?: ProtocolDrugUpdateOneRequiredWithoutDosesNestedInput
+    administeredBy?: UserUpdateOneWithoutAdministeredProtocolDosesNestedInput
+  }
+
+  export type ProtocolDoseUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    activeProtocolId?: IntFieldUpdateOperationsInput | number
+    protocolDrugId?: IntFieldUpdateOperationsInput | number
+    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    doseNumberInDay?: IntFieldUpdateOperationsInput | number
+    status?: EnumDoseStatusFieldUpdateOperationsInput | $Enums.DoseStatus
+    administeredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    administeredById?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ProtocolDoseCreateManyInput = {
+    id?: number
+    activeProtocolId: number
+    protocolDrugId: number
+    scheduledDate: Date | string
+    doseNumberInDay: number
+    status?: $Enums.DoseStatus
+    administeredAt?: Date | string | null
+    administeredById?: number | null
+    notes?: string
+  }
+
+  export type ProtocolDoseUpdateManyMutationInput = {
+    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    doseNumberInDay?: IntFieldUpdateOperationsInput | number
+    status?: EnumDoseStatusFieldUpdateOperationsInput | $Enums.DoseStatus
+    administeredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ProtocolDoseUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    activeProtocolId?: IntFieldUpdateOperationsInput | number
+    protocolDrugId?: IntFieldUpdateOperationsInput | number
+    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    doseNumberInDay?: IntFieldUpdateOperationsInput | number
+    status?: EnumDoseStatusFieldUpdateOperationsInput | $Enums.DoseStatus
+    administeredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    administeredById?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: StringFieldUpdateOperationsInput | string
   }
 
   export type SettingsCreateInput = {
@@ -40834,6 +49788,18 @@ export namespace Prisma {
     none?: ContractWhereInput
   }
 
+  export type ActiveProtocolListRelationFilter = {
+    every?: ActiveProtocolWhereInput
+    some?: ActiveProtocolWhereInput
+    none?: ActiveProtocolWhereInput
+  }
+
+  export type EventCatsListRelationFilter = {
+    every?: EventCatsWhereInput
+    some?: EventCatsWhereInput
+    none?: EventCatsWhereInput
+  }
+
   export type WeightLogOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -40867,6 +49833,14 @@ export namespace Prisma {
   }
 
   export type ContractOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ActiveProtocolOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EventCatsOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -41836,13 +50810,27 @@ export namespace Prisma {
     contentId?: SortOrder
   }
 
+  export type EventRSVPListRelationFilter = {
+    every?: EventRSVPWhereInput
+    some?: EventRSVPWhereInput
+    none?: EventRSVPWhereInput
+  }
+
+  export type EventRSVPOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type EventCountOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
+    slug?: SortOrder
     date?: SortOrder
+    endDate?: SortOrder
     location?: SortOrder
     description?: SortOrder
     isPublic?: SortOrder
+    status?: SortOrder
+    internalNotes?: SortOrder
     publishTargets?: SortOrder
   }
 
@@ -41853,23 +50841,111 @@ export namespace Prisma {
   export type EventMaxOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
+    slug?: SortOrder
     date?: SortOrder
+    endDate?: SortOrder
     location?: SortOrder
     description?: SortOrder
     isPublic?: SortOrder
+    status?: SortOrder
+    internalNotes?: SortOrder
   }
 
   export type EventMinOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
+    slug?: SortOrder
     date?: SortOrder
+    endDate?: SortOrder
     location?: SortOrder
     description?: SortOrder
     isPublic?: SortOrder
+    status?: SortOrder
+    internalNotes?: SortOrder
   }
 
   export type EventSumOrderByAggregateInput = {
     id?: SortOrder
+  }
+
+  export type EventScalarRelationFilter = {
+    is?: EventWhereInput
+    isNot?: EventWhereInput
+  }
+
+  export type EventRSVPCountOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EventRSVPAvgOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+  }
+
+  export type EventRSVPMaxOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EventRSVPMinOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EventRSVPSumOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+  }
+
+  export type EventCatsEventIdKittenIdCompoundUniqueInput = {
+    eventId: number
+    kittenId: number
+  }
+
+  export type EventCatsCountOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    kittenId?: SortOrder
+    addedAt?: SortOrder
+    notes?: SortOrder
+  }
+
+  export type EventCatsAvgOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    kittenId?: SortOrder
+  }
+
+  export type EventCatsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    kittenId?: SortOrder
+    addedAt?: SortOrder
+    notes?: SortOrder
+  }
+
+  export type EventCatsMinOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    kittenId?: SortOrder
+    addedAt?: SortOrder
+    notes?: SortOrder
+  }
+
+  export type EventCatsSumOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    kittenId?: SortOrder
   }
 
   export type UserListRelationFilter = {
@@ -41999,7 +51075,17 @@ export namespace Prisma {
     none?: ApplicationWhereInput
   }
 
+  export type ProtocolDoseListRelationFilter = {
+    every?: ProtocolDoseWhereInput
+    some?: ProtocolDoseWhereInput
+    none?: ProtocolDoseWhereInput
+  }
+
   export type ApplicationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ProtocolDoseOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -42055,6 +51141,257 @@ export namespace Prisma {
     id?: SortOrder
     roleId?: SortOrder
     fosterId?: SortOrder
+  }
+
+  export type ProtocolDrugListRelationFilter = {
+    every?: ProtocolDrugWhereInput
+    some?: ProtocolDrugWhereInput
+    none?: ProtocolDrugWhereInput
+  }
+
+  export type ProtocolDrugOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ProtocolCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProtocolAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type ProtocolMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProtocolMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProtocolSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type ProtocolScalarRelationFilter = {
+    is?: ProtocolWhereInput
+    isNot?: ProtocolWhereInput
+  }
+
+  export type ProtocolDrugCountOrderByAggregateInput = {
+    id?: SortOrder
+    protocolId?: SortOrder
+    drugName?: SortOrder
+    dosage?: SortOrder
+    route?: SortOrder
+    startDayOffset?: SortOrder
+    endDayOffset?: SortOrder
+    frequencyPerDay?: SortOrder
+    instructions?: SortOrder
+    sortOrder?: SortOrder
+  }
+
+  export type ProtocolDrugAvgOrderByAggregateInput = {
+    id?: SortOrder
+    protocolId?: SortOrder
+    startDayOffset?: SortOrder
+    endDayOffset?: SortOrder
+    frequencyPerDay?: SortOrder
+    sortOrder?: SortOrder
+  }
+
+  export type ProtocolDrugMaxOrderByAggregateInput = {
+    id?: SortOrder
+    protocolId?: SortOrder
+    drugName?: SortOrder
+    dosage?: SortOrder
+    route?: SortOrder
+    startDayOffset?: SortOrder
+    endDayOffset?: SortOrder
+    frequencyPerDay?: SortOrder
+    instructions?: SortOrder
+    sortOrder?: SortOrder
+  }
+
+  export type ProtocolDrugMinOrderByAggregateInput = {
+    id?: SortOrder
+    protocolId?: SortOrder
+    drugName?: SortOrder
+    dosage?: SortOrder
+    route?: SortOrder
+    startDayOffset?: SortOrder
+    endDayOffset?: SortOrder
+    frequencyPerDay?: SortOrder
+    instructions?: SortOrder
+    sortOrder?: SortOrder
+  }
+
+  export type ProtocolDrugSumOrderByAggregateInput = {
+    id?: SortOrder
+    protocolId?: SortOrder
+    startDayOffset?: SortOrder
+    endDayOffset?: SortOrder
+    frequencyPerDay?: SortOrder
+    sortOrder?: SortOrder
+  }
+
+  export type EnumActiveProtocolStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ActiveProtocolStatus | EnumActiveProtocolStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ActiveProtocolStatus[] | ListEnumActiveProtocolStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ActiveProtocolStatus[] | ListEnumActiveProtocolStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumActiveProtocolStatusFilter<$PrismaModel> | $Enums.ActiveProtocolStatus
+  }
+
+  export type ActiveProtocolCountOrderByAggregateInput = {
+    id?: SortOrder
+    protocolId?: SortOrder
+    kittenId?: SortOrder
+    activatedById?: SortOrder
+    activationDate?: SortOrder
+    status?: SortOrder
+  }
+
+  export type ActiveProtocolAvgOrderByAggregateInput = {
+    id?: SortOrder
+    protocolId?: SortOrder
+    kittenId?: SortOrder
+    activatedById?: SortOrder
+  }
+
+  export type ActiveProtocolMaxOrderByAggregateInput = {
+    id?: SortOrder
+    protocolId?: SortOrder
+    kittenId?: SortOrder
+    activatedById?: SortOrder
+    activationDate?: SortOrder
+    status?: SortOrder
+  }
+
+  export type ActiveProtocolMinOrderByAggregateInput = {
+    id?: SortOrder
+    protocolId?: SortOrder
+    kittenId?: SortOrder
+    activatedById?: SortOrder
+    activationDate?: SortOrder
+    status?: SortOrder
+  }
+
+  export type ActiveProtocolSumOrderByAggregateInput = {
+    id?: SortOrder
+    protocolId?: SortOrder
+    kittenId?: SortOrder
+    activatedById?: SortOrder
+  }
+
+  export type EnumActiveProtocolStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ActiveProtocolStatus | EnumActiveProtocolStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ActiveProtocolStatus[] | ListEnumActiveProtocolStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ActiveProtocolStatus[] | ListEnumActiveProtocolStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumActiveProtocolStatusWithAggregatesFilter<$PrismaModel> | $Enums.ActiveProtocolStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumActiveProtocolStatusFilter<$PrismaModel>
+    _max?: NestedEnumActiveProtocolStatusFilter<$PrismaModel>
+  }
+
+  export type EnumDoseStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DoseStatus | EnumDoseStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DoseStatus[] | ListEnumDoseStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DoseStatus[] | ListEnumDoseStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDoseStatusFilter<$PrismaModel> | $Enums.DoseStatus
+  }
+
+  export type ActiveProtocolScalarRelationFilter = {
+    is?: ActiveProtocolWhereInput
+    isNot?: ActiveProtocolWhereInput
+  }
+
+  export type ProtocolDrugScalarRelationFilter = {
+    is?: ProtocolDrugWhereInput
+    isNot?: ProtocolDrugWhereInput
+  }
+
+  export type ProtocolDoseActiveProtocolIdProtocolDrugIdScheduledDateDoseNumberInDayCompoundUniqueInput = {
+    activeProtocolId: number
+    protocolDrugId: number
+    scheduledDate: Date | string
+    doseNumberInDay: number
+  }
+
+  export type ProtocolDoseCountOrderByAggregateInput = {
+    id?: SortOrder
+    activeProtocolId?: SortOrder
+    protocolDrugId?: SortOrder
+    scheduledDate?: SortOrder
+    doseNumberInDay?: SortOrder
+    status?: SortOrder
+    administeredAt?: SortOrder
+    administeredById?: SortOrder
+    notes?: SortOrder
+  }
+
+  export type ProtocolDoseAvgOrderByAggregateInput = {
+    id?: SortOrder
+    activeProtocolId?: SortOrder
+    protocolDrugId?: SortOrder
+    doseNumberInDay?: SortOrder
+    administeredById?: SortOrder
+  }
+
+  export type ProtocolDoseMaxOrderByAggregateInput = {
+    id?: SortOrder
+    activeProtocolId?: SortOrder
+    protocolDrugId?: SortOrder
+    scheduledDate?: SortOrder
+    doseNumberInDay?: SortOrder
+    status?: SortOrder
+    administeredAt?: SortOrder
+    administeredById?: SortOrder
+    notes?: SortOrder
+  }
+
+  export type ProtocolDoseMinOrderByAggregateInput = {
+    id?: SortOrder
+    activeProtocolId?: SortOrder
+    protocolDrugId?: SortOrder
+    scheduledDate?: SortOrder
+    doseNumberInDay?: SortOrder
+    status?: SortOrder
+    administeredAt?: SortOrder
+    administeredById?: SortOrder
+    notes?: SortOrder
+  }
+
+  export type ProtocolDoseSumOrderByAggregateInput = {
+    id?: SortOrder
+    activeProtocolId?: SortOrder
+    protocolDrugId?: SortOrder
+    doseNumberInDay?: SortOrder
+    administeredById?: SortOrder
+  }
+
+  export type EnumDoseStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DoseStatus | EnumDoseStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DoseStatus[] | ListEnumDoseStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DoseStatus[] | ListEnumDoseStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDoseStatusWithAggregatesFilter<$PrismaModel> | $Enums.DoseStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDoseStatusFilter<$PrismaModel>
+    _max?: NestedEnumDoseStatusFilter<$PrismaModel>
   }
 
   export type SettingsCountOrderByAggregateInput = {
@@ -42553,6 +51890,20 @@ export namespace Prisma {
     connect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
   }
 
+  export type ActiveProtocolCreateNestedManyWithoutKittenInput = {
+    create?: XOR<ActiveProtocolCreateWithoutKittenInput, ActiveProtocolUncheckedCreateWithoutKittenInput> | ActiveProtocolCreateWithoutKittenInput[] | ActiveProtocolUncheckedCreateWithoutKittenInput[]
+    connectOrCreate?: ActiveProtocolCreateOrConnectWithoutKittenInput | ActiveProtocolCreateOrConnectWithoutKittenInput[]
+    createMany?: ActiveProtocolCreateManyKittenInputEnvelope
+    connect?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+  }
+
+  export type EventCatsCreateNestedManyWithoutKittenInput = {
+    create?: XOR<EventCatsCreateWithoutKittenInput, EventCatsUncheckedCreateWithoutKittenInput> | EventCatsCreateWithoutKittenInput[] | EventCatsUncheckedCreateWithoutKittenInput[]
+    connectOrCreate?: EventCatsCreateOrConnectWithoutKittenInput | EventCatsCreateOrConnectWithoutKittenInput[]
+    createMany?: EventCatsCreateManyKittenInputEnvelope
+    connect?: EventCatsWhereUniqueInput | EventCatsWhereUniqueInput[]
+  }
+
   export type PlacementUncheckedCreateNestedManyWithoutKittenInput = {
     create?: XOR<PlacementCreateWithoutKittenInput, PlacementUncheckedCreateWithoutKittenInput> | PlacementCreateWithoutKittenInput[] | PlacementUncheckedCreateWithoutKittenInput[]
     connectOrCreate?: PlacementCreateOrConnectWithoutKittenInput | PlacementCreateOrConnectWithoutKittenInput[]
@@ -42621,6 +51972,20 @@ export namespace Prisma {
     connectOrCreate?: ContractCreateOrConnectWithoutKittenInput | ContractCreateOrConnectWithoutKittenInput[]
     createMany?: ContractCreateManyKittenInputEnvelope
     connect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+  }
+
+  export type ActiveProtocolUncheckedCreateNestedManyWithoutKittenInput = {
+    create?: XOR<ActiveProtocolCreateWithoutKittenInput, ActiveProtocolUncheckedCreateWithoutKittenInput> | ActiveProtocolCreateWithoutKittenInput[] | ActiveProtocolUncheckedCreateWithoutKittenInput[]
+    connectOrCreate?: ActiveProtocolCreateOrConnectWithoutKittenInput | ActiveProtocolCreateOrConnectWithoutKittenInput[]
+    createMany?: ActiveProtocolCreateManyKittenInputEnvelope
+    connect?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+  }
+
+  export type EventCatsUncheckedCreateNestedManyWithoutKittenInput = {
+    create?: XOR<EventCatsCreateWithoutKittenInput, EventCatsUncheckedCreateWithoutKittenInput> | EventCatsCreateWithoutKittenInput[] | EventCatsUncheckedCreateWithoutKittenInput[]
+    connectOrCreate?: EventCatsCreateOrConnectWithoutKittenInput | EventCatsCreateOrConnectWithoutKittenInput[]
+    createMany?: EventCatsCreateManyKittenInputEnvelope
+    connect?: EventCatsWhereUniqueInput | EventCatsWhereUniqueInput[]
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -42796,6 +52161,34 @@ export namespace Prisma {
     deleteMany?: ContractScalarWhereInput | ContractScalarWhereInput[]
   }
 
+  export type ActiveProtocolUpdateManyWithoutKittenNestedInput = {
+    create?: XOR<ActiveProtocolCreateWithoutKittenInput, ActiveProtocolUncheckedCreateWithoutKittenInput> | ActiveProtocolCreateWithoutKittenInput[] | ActiveProtocolUncheckedCreateWithoutKittenInput[]
+    connectOrCreate?: ActiveProtocolCreateOrConnectWithoutKittenInput | ActiveProtocolCreateOrConnectWithoutKittenInput[]
+    upsert?: ActiveProtocolUpsertWithWhereUniqueWithoutKittenInput | ActiveProtocolUpsertWithWhereUniqueWithoutKittenInput[]
+    createMany?: ActiveProtocolCreateManyKittenInputEnvelope
+    set?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+    disconnect?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+    delete?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+    connect?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+    update?: ActiveProtocolUpdateWithWhereUniqueWithoutKittenInput | ActiveProtocolUpdateWithWhereUniqueWithoutKittenInput[]
+    updateMany?: ActiveProtocolUpdateManyWithWhereWithoutKittenInput | ActiveProtocolUpdateManyWithWhereWithoutKittenInput[]
+    deleteMany?: ActiveProtocolScalarWhereInput | ActiveProtocolScalarWhereInput[]
+  }
+
+  export type EventCatsUpdateManyWithoutKittenNestedInput = {
+    create?: XOR<EventCatsCreateWithoutKittenInput, EventCatsUncheckedCreateWithoutKittenInput> | EventCatsCreateWithoutKittenInput[] | EventCatsUncheckedCreateWithoutKittenInput[]
+    connectOrCreate?: EventCatsCreateOrConnectWithoutKittenInput | EventCatsCreateOrConnectWithoutKittenInput[]
+    upsert?: EventCatsUpsertWithWhereUniqueWithoutKittenInput | EventCatsUpsertWithWhereUniqueWithoutKittenInput[]
+    createMany?: EventCatsCreateManyKittenInputEnvelope
+    set?: EventCatsWhereUniqueInput | EventCatsWhereUniqueInput[]
+    disconnect?: EventCatsWhereUniqueInput | EventCatsWhereUniqueInput[]
+    delete?: EventCatsWhereUniqueInput | EventCatsWhereUniqueInput[]
+    connect?: EventCatsWhereUniqueInput | EventCatsWhereUniqueInput[]
+    update?: EventCatsUpdateWithWhereUniqueWithoutKittenInput | EventCatsUpdateWithWhereUniqueWithoutKittenInput[]
+    updateMany?: EventCatsUpdateManyWithWhereWithoutKittenInput | EventCatsUpdateManyWithWhereWithoutKittenInput[]
+    deleteMany?: EventCatsScalarWhereInput | EventCatsScalarWhereInput[]
+  }
+
   export type NullableIntFieldUpdateOperationsInput = {
     set?: number | null
     increment?: number
@@ -42942,6 +52335,34 @@ export namespace Prisma {
     update?: ContractUpdateWithWhereUniqueWithoutKittenInput | ContractUpdateWithWhereUniqueWithoutKittenInput[]
     updateMany?: ContractUpdateManyWithWhereWithoutKittenInput | ContractUpdateManyWithWhereWithoutKittenInput[]
     deleteMany?: ContractScalarWhereInput | ContractScalarWhereInput[]
+  }
+
+  export type ActiveProtocolUncheckedUpdateManyWithoutKittenNestedInput = {
+    create?: XOR<ActiveProtocolCreateWithoutKittenInput, ActiveProtocolUncheckedCreateWithoutKittenInput> | ActiveProtocolCreateWithoutKittenInput[] | ActiveProtocolUncheckedCreateWithoutKittenInput[]
+    connectOrCreate?: ActiveProtocolCreateOrConnectWithoutKittenInput | ActiveProtocolCreateOrConnectWithoutKittenInput[]
+    upsert?: ActiveProtocolUpsertWithWhereUniqueWithoutKittenInput | ActiveProtocolUpsertWithWhereUniqueWithoutKittenInput[]
+    createMany?: ActiveProtocolCreateManyKittenInputEnvelope
+    set?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+    disconnect?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+    delete?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+    connect?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+    update?: ActiveProtocolUpdateWithWhereUniqueWithoutKittenInput | ActiveProtocolUpdateWithWhereUniqueWithoutKittenInput[]
+    updateMany?: ActiveProtocolUpdateManyWithWhereWithoutKittenInput | ActiveProtocolUpdateManyWithWhereWithoutKittenInput[]
+    deleteMany?: ActiveProtocolScalarWhereInput | ActiveProtocolScalarWhereInput[]
+  }
+
+  export type EventCatsUncheckedUpdateManyWithoutKittenNestedInput = {
+    create?: XOR<EventCatsCreateWithoutKittenInput, EventCatsUncheckedCreateWithoutKittenInput> | EventCatsCreateWithoutKittenInput[] | EventCatsUncheckedCreateWithoutKittenInput[]
+    connectOrCreate?: EventCatsCreateOrConnectWithoutKittenInput | EventCatsCreateOrConnectWithoutKittenInput[]
+    upsert?: EventCatsUpsertWithWhereUniqueWithoutKittenInput | EventCatsUpsertWithWhereUniqueWithoutKittenInput[]
+    createMany?: EventCatsCreateManyKittenInputEnvelope
+    set?: EventCatsWhereUniqueInput | EventCatsWhereUniqueInput[]
+    disconnect?: EventCatsWhereUniqueInput | EventCatsWhereUniqueInput[]
+    delete?: EventCatsWhereUniqueInput | EventCatsWhereUniqueInput[]
+    connect?: EventCatsWhereUniqueInput | EventCatsWhereUniqueInput[]
+    update?: EventCatsUpdateWithWhereUniqueWithoutKittenInput | EventCatsUpdateWithWhereUniqueWithoutKittenInput[]
+    updateMany?: EventCatsUpdateManyWithWhereWithoutKittenInput | EventCatsUpdateManyWithWhereWithoutKittenInput[]
+    deleteMany?: EventCatsScalarWhereInput | EventCatsScalarWhereInput[]
   }
 
   export type UpdateCreatepublishTargetsInput = {
@@ -43400,9 +52821,135 @@ export namespace Prisma {
     set: string[]
   }
 
+  export type EventCatsCreateNestedManyWithoutEventInput = {
+    create?: XOR<EventCatsCreateWithoutEventInput, EventCatsUncheckedCreateWithoutEventInput> | EventCatsCreateWithoutEventInput[] | EventCatsUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventCatsCreateOrConnectWithoutEventInput | EventCatsCreateOrConnectWithoutEventInput[]
+    createMany?: EventCatsCreateManyEventInputEnvelope
+    connect?: EventCatsWhereUniqueInput | EventCatsWhereUniqueInput[]
+  }
+
+  export type EventRSVPCreateNestedManyWithoutEventInput = {
+    create?: XOR<EventRSVPCreateWithoutEventInput, EventRSVPUncheckedCreateWithoutEventInput> | EventRSVPCreateWithoutEventInput[] | EventRSVPUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventRSVPCreateOrConnectWithoutEventInput | EventRSVPCreateOrConnectWithoutEventInput[]
+    createMany?: EventRSVPCreateManyEventInputEnvelope
+    connect?: EventRSVPWhereUniqueInput | EventRSVPWhereUniqueInput[]
+  }
+
+  export type EventCatsUncheckedCreateNestedManyWithoutEventInput = {
+    create?: XOR<EventCatsCreateWithoutEventInput, EventCatsUncheckedCreateWithoutEventInput> | EventCatsCreateWithoutEventInput[] | EventCatsUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventCatsCreateOrConnectWithoutEventInput | EventCatsCreateOrConnectWithoutEventInput[]
+    createMany?: EventCatsCreateManyEventInputEnvelope
+    connect?: EventCatsWhereUniqueInput | EventCatsWhereUniqueInput[]
+  }
+
+  export type EventRSVPUncheckedCreateNestedManyWithoutEventInput = {
+    create?: XOR<EventRSVPCreateWithoutEventInput, EventRSVPUncheckedCreateWithoutEventInput> | EventRSVPCreateWithoutEventInput[] | EventRSVPUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventRSVPCreateOrConnectWithoutEventInput | EventRSVPCreateOrConnectWithoutEventInput[]
+    createMany?: EventRSVPCreateManyEventInputEnvelope
+    connect?: EventRSVPWhereUniqueInput | EventRSVPWhereUniqueInput[]
+  }
+
   export type EventUpdatepublishTargetsInput = {
     set?: string[]
     push?: string | string[]
+  }
+
+  export type EventCatsUpdateManyWithoutEventNestedInput = {
+    create?: XOR<EventCatsCreateWithoutEventInput, EventCatsUncheckedCreateWithoutEventInput> | EventCatsCreateWithoutEventInput[] | EventCatsUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventCatsCreateOrConnectWithoutEventInput | EventCatsCreateOrConnectWithoutEventInput[]
+    upsert?: EventCatsUpsertWithWhereUniqueWithoutEventInput | EventCatsUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: EventCatsCreateManyEventInputEnvelope
+    set?: EventCatsWhereUniqueInput | EventCatsWhereUniqueInput[]
+    disconnect?: EventCatsWhereUniqueInput | EventCatsWhereUniqueInput[]
+    delete?: EventCatsWhereUniqueInput | EventCatsWhereUniqueInput[]
+    connect?: EventCatsWhereUniqueInput | EventCatsWhereUniqueInput[]
+    update?: EventCatsUpdateWithWhereUniqueWithoutEventInput | EventCatsUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: EventCatsUpdateManyWithWhereWithoutEventInput | EventCatsUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: EventCatsScalarWhereInput | EventCatsScalarWhereInput[]
+  }
+
+  export type EventRSVPUpdateManyWithoutEventNestedInput = {
+    create?: XOR<EventRSVPCreateWithoutEventInput, EventRSVPUncheckedCreateWithoutEventInput> | EventRSVPCreateWithoutEventInput[] | EventRSVPUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventRSVPCreateOrConnectWithoutEventInput | EventRSVPCreateOrConnectWithoutEventInput[]
+    upsert?: EventRSVPUpsertWithWhereUniqueWithoutEventInput | EventRSVPUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: EventRSVPCreateManyEventInputEnvelope
+    set?: EventRSVPWhereUniqueInput | EventRSVPWhereUniqueInput[]
+    disconnect?: EventRSVPWhereUniqueInput | EventRSVPWhereUniqueInput[]
+    delete?: EventRSVPWhereUniqueInput | EventRSVPWhereUniqueInput[]
+    connect?: EventRSVPWhereUniqueInput | EventRSVPWhereUniqueInput[]
+    update?: EventRSVPUpdateWithWhereUniqueWithoutEventInput | EventRSVPUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: EventRSVPUpdateManyWithWhereWithoutEventInput | EventRSVPUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: EventRSVPScalarWhereInput | EventRSVPScalarWhereInput[]
+  }
+
+  export type EventCatsUncheckedUpdateManyWithoutEventNestedInput = {
+    create?: XOR<EventCatsCreateWithoutEventInput, EventCatsUncheckedCreateWithoutEventInput> | EventCatsCreateWithoutEventInput[] | EventCatsUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventCatsCreateOrConnectWithoutEventInput | EventCatsCreateOrConnectWithoutEventInput[]
+    upsert?: EventCatsUpsertWithWhereUniqueWithoutEventInput | EventCatsUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: EventCatsCreateManyEventInputEnvelope
+    set?: EventCatsWhereUniqueInput | EventCatsWhereUniqueInput[]
+    disconnect?: EventCatsWhereUniqueInput | EventCatsWhereUniqueInput[]
+    delete?: EventCatsWhereUniqueInput | EventCatsWhereUniqueInput[]
+    connect?: EventCatsWhereUniqueInput | EventCatsWhereUniqueInput[]
+    update?: EventCatsUpdateWithWhereUniqueWithoutEventInput | EventCatsUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: EventCatsUpdateManyWithWhereWithoutEventInput | EventCatsUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: EventCatsScalarWhereInput | EventCatsScalarWhereInput[]
+  }
+
+  export type EventRSVPUncheckedUpdateManyWithoutEventNestedInput = {
+    create?: XOR<EventRSVPCreateWithoutEventInput, EventRSVPUncheckedCreateWithoutEventInput> | EventRSVPCreateWithoutEventInput[] | EventRSVPUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventRSVPCreateOrConnectWithoutEventInput | EventRSVPCreateOrConnectWithoutEventInput[]
+    upsert?: EventRSVPUpsertWithWhereUniqueWithoutEventInput | EventRSVPUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: EventRSVPCreateManyEventInputEnvelope
+    set?: EventRSVPWhereUniqueInput | EventRSVPWhereUniqueInput[]
+    disconnect?: EventRSVPWhereUniqueInput | EventRSVPWhereUniqueInput[]
+    delete?: EventRSVPWhereUniqueInput | EventRSVPWhereUniqueInput[]
+    connect?: EventRSVPWhereUniqueInput | EventRSVPWhereUniqueInput[]
+    update?: EventRSVPUpdateWithWhereUniqueWithoutEventInput | EventRSVPUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: EventRSVPUpdateManyWithWhereWithoutEventInput | EventRSVPUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: EventRSVPScalarWhereInput | EventRSVPScalarWhereInput[]
+  }
+
+  export type EventCreateNestedOneWithoutRsvpsInput = {
+    create?: XOR<EventCreateWithoutRsvpsInput, EventUncheckedCreateWithoutRsvpsInput>
+    connectOrCreate?: EventCreateOrConnectWithoutRsvpsInput
+    connect?: EventWhereUniqueInput
+  }
+
+  export type EventUpdateOneRequiredWithoutRsvpsNestedInput = {
+    create?: XOR<EventCreateWithoutRsvpsInput, EventUncheckedCreateWithoutRsvpsInput>
+    connectOrCreate?: EventCreateOrConnectWithoutRsvpsInput
+    upsert?: EventUpsertWithoutRsvpsInput
+    connect?: EventWhereUniqueInput
+    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutRsvpsInput, EventUpdateWithoutRsvpsInput>, EventUncheckedUpdateWithoutRsvpsInput>
+  }
+
+  export type EventCreateNestedOneWithoutEventCatsInput = {
+    create?: XOR<EventCreateWithoutEventCatsInput, EventUncheckedCreateWithoutEventCatsInput>
+    connectOrCreate?: EventCreateOrConnectWithoutEventCatsInput
+    connect?: EventWhereUniqueInput
+  }
+
+  export type KittenCreateNestedOneWithoutEventCatsInput = {
+    create?: XOR<KittenCreateWithoutEventCatsInput, KittenUncheckedCreateWithoutEventCatsInput>
+    connectOrCreate?: KittenCreateOrConnectWithoutEventCatsInput
+    connect?: KittenWhereUniqueInput
+  }
+
+  export type EventUpdateOneRequiredWithoutEventCatsNestedInput = {
+    create?: XOR<EventCreateWithoutEventCatsInput, EventUncheckedCreateWithoutEventCatsInput>
+    connectOrCreate?: EventCreateOrConnectWithoutEventCatsInput
+    upsert?: EventUpsertWithoutEventCatsInput
+    connect?: EventWhereUniqueInput
+    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutEventCatsInput, EventUpdateWithoutEventCatsInput>, EventUncheckedUpdateWithoutEventCatsInput>
+  }
+
+  export type KittenUpdateOneRequiredWithoutEventCatsNestedInput = {
+    create?: XOR<KittenCreateWithoutEventCatsInput, KittenUncheckedCreateWithoutEventCatsInput>
+    connectOrCreate?: KittenCreateOrConnectWithoutEventCatsInput
+    upsert?: KittenUpsertWithoutEventCatsInput
+    connect?: KittenWhereUniqueInput
+    update?: XOR<XOR<KittenUpdateToOneWithWhereWithoutEventCatsInput, KittenUpdateWithoutEventCatsInput>, KittenUncheckedUpdateWithoutEventCatsInput>
   }
 
   export type UserCreateNestedManyWithoutRoleInput = {
@@ -43586,6 +53133,20 @@ export namespace Prisma {
     connect?: ContentCompletionWhereUniqueInput | ContentCompletionWhereUniqueInput[]
   }
 
+  export type ActiveProtocolCreateNestedManyWithoutActivatedByInput = {
+    create?: XOR<ActiveProtocolCreateWithoutActivatedByInput, ActiveProtocolUncheckedCreateWithoutActivatedByInput> | ActiveProtocolCreateWithoutActivatedByInput[] | ActiveProtocolUncheckedCreateWithoutActivatedByInput[]
+    connectOrCreate?: ActiveProtocolCreateOrConnectWithoutActivatedByInput | ActiveProtocolCreateOrConnectWithoutActivatedByInput[]
+    createMany?: ActiveProtocolCreateManyActivatedByInputEnvelope
+    connect?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+  }
+
+  export type ProtocolDoseCreateNestedManyWithoutAdministeredByInput = {
+    create?: XOR<ProtocolDoseCreateWithoutAdministeredByInput, ProtocolDoseUncheckedCreateWithoutAdministeredByInput> | ProtocolDoseCreateWithoutAdministeredByInput[] | ProtocolDoseUncheckedCreateWithoutAdministeredByInput[]
+    connectOrCreate?: ProtocolDoseCreateOrConnectWithoutAdministeredByInput | ProtocolDoseCreateOrConnectWithoutAdministeredByInput[]
+    createMany?: ProtocolDoseCreateManyAdministeredByInputEnvelope
+    connect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+  }
+
   export type ApplicationUncheckedCreateNestedManyWithoutRejectedByInput = {
     create?: XOR<ApplicationCreateWithoutRejectedByInput, ApplicationUncheckedCreateWithoutRejectedByInput> | ApplicationCreateWithoutRejectedByInput[] | ApplicationUncheckedCreateWithoutRejectedByInput[]
     connectOrCreate?: ApplicationCreateOrConnectWithoutRejectedByInput | ApplicationCreateOrConnectWithoutRejectedByInput[]
@@ -43605,6 +53166,20 @@ export namespace Prisma {
     connectOrCreate?: ContentCompletionCreateOrConnectWithoutUserInput | ContentCompletionCreateOrConnectWithoutUserInput[]
     createMany?: ContentCompletionCreateManyUserInputEnvelope
     connect?: ContentCompletionWhereUniqueInput | ContentCompletionWhereUniqueInput[]
+  }
+
+  export type ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput = {
+    create?: XOR<ActiveProtocolCreateWithoutActivatedByInput, ActiveProtocolUncheckedCreateWithoutActivatedByInput> | ActiveProtocolCreateWithoutActivatedByInput[] | ActiveProtocolUncheckedCreateWithoutActivatedByInput[]
+    connectOrCreate?: ActiveProtocolCreateOrConnectWithoutActivatedByInput | ActiveProtocolCreateOrConnectWithoutActivatedByInput[]
+    createMany?: ActiveProtocolCreateManyActivatedByInputEnvelope
+    connect?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+  }
+
+  export type ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput = {
+    create?: XOR<ProtocolDoseCreateWithoutAdministeredByInput, ProtocolDoseUncheckedCreateWithoutAdministeredByInput> | ProtocolDoseCreateWithoutAdministeredByInput[] | ProtocolDoseUncheckedCreateWithoutAdministeredByInput[]
+    connectOrCreate?: ProtocolDoseCreateOrConnectWithoutAdministeredByInput | ProtocolDoseCreateOrConnectWithoutAdministeredByInput[]
+    createMany?: ProtocolDoseCreateManyAdministeredByInputEnvelope
+    connect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
   }
 
   export type RoleUpdateOneRequiredWithoutUsersNestedInput = {
@@ -43657,6 +53232,34 @@ export namespace Prisma {
     deleteMany?: ContentCompletionScalarWhereInput | ContentCompletionScalarWhereInput[]
   }
 
+  export type ActiveProtocolUpdateManyWithoutActivatedByNestedInput = {
+    create?: XOR<ActiveProtocolCreateWithoutActivatedByInput, ActiveProtocolUncheckedCreateWithoutActivatedByInput> | ActiveProtocolCreateWithoutActivatedByInput[] | ActiveProtocolUncheckedCreateWithoutActivatedByInput[]
+    connectOrCreate?: ActiveProtocolCreateOrConnectWithoutActivatedByInput | ActiveProtocolCreateOrConnectWithoutActivatedByInput[]
+    upsert?: ActiveProtocolUpsertWithWhereUniqueWithoutActivatedByInput | ActiveProtocolUpsertWithWhereUniqueWithoutActivatedByInput[]
+    createMany?: ActiveProtocolCreateManyActivatedByInputEnvelope
+    set?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+    disconnect?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+    delete?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+    connect?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+    update?: ActiveProtocolUpdateWithWhereUniqueWithoutActivatedByInput | ActiveProtocolUpdateWithWhereUniqueWithoutActivatedByInput[]
+    updateMany?: ActiveProtocolUpdateManyWithWhereWithoutActivatedByInput | ActiveProtocolUpdateManyWithWhereWithoutActivatedByInput[]
+    deleteMany?: ActiveProtocolScalarWhereInput | ActiveProtocolScalarWhereInput[]
+  }
+
+  export type ProtocolDoseUpdateManyWithoutAdministeredByNestedInput = {
+    create?: XOR<ProtocolDoseCreateWithoutAdministeredByInput, ProtocolDoseUncheckedCreateWithoutAdministeredByInput> | ProtocolDoseCreateWithoutAdministeredByInput[] | ProtocolDoseUncheckedCreateWithoutAdministeredByInput[]
+    connectOrCreate?: ProtocolDoseCreateOrConnectWithoutAdministeredByInput | ProtocolDoseCreateOrConnectWithoutAdministeredByInput[]
+    upsert?: ProtocolDoseUpsertWithWhereUniqueWithoutAdministeredByInput | ProtocolDoseUpsertWithWhereUniqueWithoutAdministeredByInput[]
+    createMany?: ProtocolDoseCreateManyAdministeredByInputEnvelope
+    set?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    disconnect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    delete?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    connect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    update?: ProtocolDoseUpdateWithWhereUniqueWithoutAdministeredByInput | ProtocolDoseUpdateWithWhereUniqueWithoutAdministeredByInput[]
+    updateMany?: ProtocolDoseUpdateManyWithWhereWithoutAdministeredByInput | ProtocolDoseUpdateManyWithWhereWithoutAdministeredByInput[]
+    deleteMany?: ProtocolDoseScalarWhereInput | ProtocolDoseScalarWhereInput[]
+  }
+
   export type ApplicationUncheckedUpdateManyWithoutRejectedByNestedInput = {
     create?: XOR<ApplicationCreateWithoutRejectedByInput, ApplicationUncheckedCreateWithoutRejectedByInput> | ApplicationCreateWithoutRejectedByInput[] | ApplicationUncheckedCreateWithoutRejectedByInput[]
     connectOrCreate?: ApplicationCreateOrConnectWithoutRejectedByInput | ApplicationCreateOrConnectWithoutRejectedByInput[]
@@ -43697,6 +53300,310 @@ export namespace Prisma {
     update?: ContentCompletionUpdateWithWhereUniqueWithoutUserInput | ContentCompletionUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: ContentCompletionUpdateManyWithWhereWithoutUserInput | ContentCompletionUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: ContentCompletionScalarWhereInput | ContentCompletionScalarWhereInput[]
+  }
+
+  export type ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput = {
+    create?: XOR<ActiveProtocolCreateWithoutActivatedByInput, ActiveProtocolUncheckedCreateWithoutActivatedByInput> | ActiveProtocolCreateWithoutActivatedByInput[] | ActiveProtocolUncheckedCreateWithoutActivatedByInput[]
+    connectOrCreate?: ActiveProtocolCreateOrConnectWithoutActivatedByInput | ActiveProtocolCreateOrConnectWithoutActivatedByInput[]
+    upsert?: ActiveProtocolUpsertWithWhereUniqueWithoutActivatedByInput | ActiveProtocolUpsertWithWhereUniqueWithoutActivatedByInput[]
+    createMany?: ActiveProtocolCreateManyActivatedByInputEnvelope
+    set?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+    disconnect?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+    delete?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+    connect?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+    update?: ActiveProtocolUpdateWithWhereUniqueWithoutActivatedByInput | ActiveProtocolUpdateWithWhereUniqueWithoutActivatedByInput[]
+    updateMany?: ActiveProtocolUpdateManyWithWhereWithoutActivatedByInput | ActiveProtocolUpdateManyWithWhereWithoutActivatedByInput[]
+    deleteMany?: ActiveProtocolScalarWhereInput | ActiveProtocolScalarWhereInput[]
+  }
+
+  export type ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput = {
+    create?: XOR<ProtocolDoseCreateWithoutAdministeredByInput, ProtocolDoseUncheckedCreateWithoutAdministeredByInput> | ProtocolDoseCreateWithoutAdministeredByInput[] | ProtocolDoseUncheckedCreateWithoutAdministeredByInput[]
+    connectOrCreate?: ProtocolDoseCreateOrConnectWithoutAdministeredByInput | ProtocolDoseCreateOrConnectWithoutAdministeredByInput[]
+    upsert?: ProtocolDoseUpsertWithWhereUniqueWithoutAdministeredByInput | ProtocolDoseUpsertWithWhereUniqueWithoutAdministeredByInput[]
+    createMany?: ProtocolDoseCreateManyAdministeredByInputEnvelope
+    set?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    disconnect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    delete?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    connect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    update?: ProtocolDoseUpdateWithWhereUniqueWithoutAdministeredByInput | ProtocolDoseUpdateWithWhereUniqueWithoutAdministeredByInput[]
+    updateMany?: ProtocolDoseUpdateManyWithWhereWithoutAdministeredByInput | ProtocolDoseUpdateManyWithWhereWithoutAdministeredByInput[]
+    deleteMany?: ProtocolDoseScalarWhereInput | ProtocolDoseScalarWhereInput[]
+  }
+
+  export type ProtocolDrugCreateNestedManyWithoutProtocolInput = {
+    create?: XOR<ProtocolDrugCreateWithoutProtocolInput, ProtocolDrugUncheckedCreateWithoutProtocolInput> | ProtocolDrugCreateWithoutProtocolInput[] | ProtocolDrugUncheckedCreateWithoutProtocolInput[]
+    connectOrCreate?: ProtocolDrugCreateOrConnectWithoutProtocolInput | ProtocolDrugCreateOrConnectWithoutProtocolInput[]
+    createMany?: ProtocolDrugCreateManyProtocolInputEnvelope
+    connect?: ProtocolDrugWhereUniqueInput | ProtocolDrugWhereUniqueInput[]
+  }
+
+  export type ActiveProtocolCreateNestedManyWithoutProtocolInput = {
+    create?: XOR<ActiveProtocolCreateWithoutProtocolInput, ActiveProtocolUncheckedCreateWithoutProtocolInput> | ActiveProtocolCreateWithoutProtocolInput[] | ActiveProtocolUncheckedCreateWithoutProtocolInput[]
+    connectOrCreate?: ActiveProtocolCreateOrConnectWithoutProtocolInput | ActiveProtocolCreateOrConnectWithoutProtocolInput[]
+    createMany?: ActiveProtocolCreateManyProtocolInputEnvelope
+    connect?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+  }
+
+  export type ProtocolDrugUncheckedCreateNestedManyWithoutProtocolInput = {
+    create?: XOR<ProtocolDrugCreateWithoutProtocolInput, ProtocolDrugUncheckedCreateWithoutProtocolInput> | ProtocolDrugCreateWithoutProtocolInput[] | ProtocolDrugUncheckedCreateWithoutProtocolInput[]
+    connectOrCreate?: ProtocolDrugCreateOrConnectWithoutProtocolInput | ProtocolDrugCreateOrConnectWithoutProtocolInput[]
+    createMany?: ProtocolDrugCreateManyProtocolInputEnvelope
+    connect?: ProtocolDrugWhereUniqueInput | ProtocolDrugWhereUniqueInput[]
+  }
+
+  export type ActiveProtocolUncheckedCreateNestedManyWithoutProtocolInput = {
+    create?: XOR<ActiveProtocolCreateWithoutProtocolInput, ActiveProtocolUncheckedCreateWithoutProtocolInput> | ActiveProtocolCreateWithoutProtocolInput[] | ActiveProtocolUncheckedCreateWithoutProtocolInput[]
+    connectOrCreate?: ActiveProtocolCreateOrConnectWithoutProtocolInput | ActiveProtocolCreateOrConnectWithoutProtocolInput[]
+    createMany?: ActiveProtocolCreateManyProtocolInputEnvelope
+    connect?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+  }
+
+  export type ProtocolDrugUpdateManyWithoutProtocolNestedInput = {
+    create?: XOR<ProtocolDrugCreateWithoutProtocolInput, ProtocolDrugUncheckedCreateWithoutProtocolInput> | ProtocolDrugCreateWithoutProtocolInput[] | ProtocolDrugUncheckedCreateWithoutProtocolInput[]
+    connectOrCreate?: ProtocolDrugCreateOrConnectWithoutProtocolInput | ProtocolDrugCreateOrConnectWithoutProtocolInput[]
+    upsert?: ProtocolDrugUpsertWithWhereUniqueWithoutProtocolInput | ProtocolDrugUpsertWithWhereUniqueWithoutProtocolInput[]
+    createMany?: ProtocolDrugCreateManyProtocolInputEnvelope
+    set?: ProtocolDrugWhereUniqueInput | ProtocolDrugWhereUniqueInput[]
+    disconnect?: ProtocolDrugWhereUniqueInput | ProtocolDrugWhereUniqueInput[]
+    delete?: ProtocolDrugWhereUniqueInput | ProtocolDrugWhereUniqueInput[]
+    connect?: ProtocolDrugWhereUniqueInput | ProtocolDrugWhereUniqueInput[]
+    update?: ProtocolDrugUpdateWithWhereUniqueWithoutProtocolInput | ProtocolDrugUpdateWithWhereUniqueWithoutProtocolInput[]
+    updateMany?: ProtocolDrugUpdateManyWithWhereWithoutProtocolInput | ProtocolDrugUpdateManyWithWhereWithoutProtocolInput[]
+    deleteMany?: ProtocolDrugScalarWhereInput | ProtocolDrugScalarWhereInput[]
+  }
+
+  export type ActiveProtocolUpdateManyWithoutProtocolNestedInput = {
+    create?: XOR<ActiveProtocolCreateWithoutProtocolInput, ActiveProtocolUncheckedCreateWithoutProtocolInput> | ActiveProtocolCreateWithoutProtocolInput[] | ActiveProtocolUncheckedCreateWithoutProtocolInput[]
+    connectOrCreate?: ActiveProtocolCreateOrConnectWithoutProtocolInput | ActiveProtocolCreateOrConnectWithoutProtocolInput[]
+    upsert?: ActiveProtocolUpsertWithWhereUniqueWithoutProtocolInput | ActiveProtocolUpsertWithWhereUniqueWithoutProtocolInput[]
+    createMany?: ActiveProtocolCreateManyProtocolInputEnvelope
+    set?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+    disconnect?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+    delete?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+    connect?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+    update?: ActiveProtocolUpdateWithWhereUniqueWithoutProtocolInput | ActiveProtocolUpdateWithWhereUniqueWithoutProtocolInput[]
+    updateMany?: ActiveProtocolUpdateManyWithWhereWithoutProtocolInput | ActiveProtocolUpdateManyWithWhereWithoutProtocolInput[]
+    deleteMany?: ActiveProtocolScalarWhereInput | ActiveProtocolScalarWhereInput[]
+  }
+
+  export type ProtocolDrugUncheckedUpdateManyWithoutProtocolNestedInput = {
+    create?: XOR<ProtocolDrugCreateWithoutProtocolInput, ProtocolDrugUncheckedCreateWithoutProtocolInput> | ProtocolDrugCreateWithoutProtocolInput[] | ProtocolDrugUncheckedCreateWithoutProtocolInput[]
+    connectOrCreate?: ProtocolDrugCreateOrConnectWithoutProtocolInput | ProtocolDrugCreateOrConnectWithoutProtocolInput[]
+    upsert?: ProtocolDrugUpsertWithWhereUniqueWithoutProtocolInput | ProtocolDrugUpsertWithWhereUniqueWithoutProtocolInput[]
+    createMany?: ProtocolDrugCreateManyProtocolInputEnvelope
+    set?: ProtocolDrugWhereUniqueInput | ProtocolDrugWhereUniqueInput[]
+    disconnect?: ProtocolDrugWhereUniqueInput | ProtocolDrugWhereUniqueInput[]
+    delete?: ProtocolDrugWhereUniqueInput | ProtocolDrugWhereUniqueInput[]
+    connect?: ProtocolDrugWhereUniqueInput | ProtocolDrugWhereUniqueInput[]
+    update?: ProtocolDrugUpdateWithWhereUniqueWithoutProtocolInput | ProtocolDrugUpdateWithWhereUniqueWithoutProtocolInput[]
+    updateMany?: ProtocolDrugUpdateManyWithWhereWithoutProtocolInput | ProtocolDrugUpdateManyWithWhereWithoutProtocolInput[]
+    deleteMany?: ProtocolDrugScalarWhereInput | ProtocolDrugScalarWhereInput[]
+  }
+
+  export type ActiveProtocolUncheckedUpdateManyWithoutProtocolNestedInput = {
+    create?: XOR<ActiveProtocolCreateWithoutProtocolInput, ActiveProtocolUncheckedCreateWithoutProtocolInput> | ActiveProtocolCreateWithoutProtocolInput[] | ActiveProtocolUncheckedCreateWithoutProtocolInput[]
+    connectOrCreate?: ActiveProtocolCreateOrConnectWithoutProtocolInput | ActiveProtocolCreateOrConnectWithoutProtocolInput[]
+    upsert?: ActiveProtocolUpsertWithWhereUniqueWithoutProtocolInput | ActiveProtocolUpsertWithWhereUniqueWithoutProtocolInput[]
+    createMany?: ActiveProtocolCreateManyProtocolInputEnvelope
+    set?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+    disconnect?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+    delete?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+    connect?: ActiveProtocolWhereUniqueInput | ActiveProtocolWhereUniqueInput[]
+    update?: ActiveProtocolUpdateWithWhereUniqueWithoutProtocolInput | ActiveProtocolUpdateWithWhereUniqueWithoutProtocolInput[]
+    updateMany?: ActiveProtocolUpdateManyWithWhereWithoutProtocolInput | ActiveProtocolUpdateManyWithWhereWithoutProtocolInput[]
+    deleteMany?: ActiveProtocolScalarWhereInput | ActiveProtocolScalarWhereInput[]
+  }
+
+  export type ProtocolCreateNestedOneWithoutDrugsInput = {
+    create?: XOR<ProtocolCreateWithoutDrugsInput, ProtocolUncheckedCreateWithoutDrugsInput>
+    connectOrCreate?: ProtocolCreateOrConnectWithoutDrugsInput
+    connect?: ProtocolWhereUniqueInput
+  }
+
+  export type ProtocolDoseCreateNestedManyWithoutProtocolDrugInput = {
+    create?: XOR<ProtocolDoseCreateWithoutProtocolDrugInput, ProtocolDoseUncheckedCreateWithoutProtocolDrugInput> | ProtocolDoseCreateWithoutProtocolDrugInput[] | ProtocolDoseUncheckedCreateWithoutProtocolDrugInput[]
+    connectOrCreate?: ProtocolDoseCreateOrConnectWithoutProtocolDrugInput | ProtocolDoseCreateOrConnectWithoutProtocolDrugInput[]
+    createMany?: ProtocolDoseCreateManyProtocolDrugInputEnvelope
+    connect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+  }
+
+  export type ProtocolDoseUncheckedCreateNestedManyWithoutProtocolDrugInput = {
+    create?: XOR<ProtocolDoseCreateWithoutProtocolDrugInput, ProtocolDoseUncheckedCreateWithoutProtocolDrugInput> | ProtocolDoseCreateWithoutProtocolDrugInput[] | ProtocolDoseUncheckedCreateWithoutProtocolDrugInput[]
+    connectOrCreate?: ProtocolDoseCreateOrConnectWithoutProtocolDrugInput | ProtocolDoseCreateOrConnectWithoutProtocolDrugInput[]
+    createMany?: ProtocolDoseCreateManyProtocolDrugInputEnvelope
+    connect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+  }
+
+  export type ProtocolUpdateOneRequiredWithoutDrugsNestedInput = {
+    create?: XOR<ProtocolCreateWithoutDrugsInput, ProtocolUncheckedCreateWithoutDrugsInput>
+    connectOrCreate?: ProtocolCreateOrConnectWithoutDrugsInput
+    upsert?: ProtocolUpsertWithoutDrugsInput
+    connect?: ProtocolWhereUniqueInput
+    update?: XOR<XOR<ProtocolUpdateToOneWithWhereWithoutDrugsInput, ProtocolUpdateWithoutDrugsInput>, ProtocolUncheckedUpdateWithoutDrugsInput>
+  }
+
+  export type ProtocolDoseUpdateManyWithoutProtocolDrugNestedInput = {
+    create?: XOR<ProtocolDoseCreateWithoutProtocolDrugInput, ProtocolDoseUncheckedCreateWithoutProtocolDrugInput> | ProtocolDoseCreateWithoutProtocolDrugInput[] | ProtocolDoseUncheckedCreateWithoutProtocolDrugInput[]
+    connectOrCreate?: ProtocolDoseCreateOrConnectWithoutProtocolDrugInput | ProtocolDoseCreateOrConnectWithoutProtocolDrugInput[]
+    upsert?: ProtocolDoseUpsertWithWhereUniqueWithoutProtocolDrugInput | ProtocolDoseUpsertWithWhereUniqueWithoutProtocolDrugInput[]
+    createMany?: ProtocolDoseCreateManyProtocolDrugInputEnvelope
+    set?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    disconnect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    delete?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    connect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    update?: ProtocolDoseUpdateWithWhereUniqueWithoutProtocolDrugInput | ProtocolDoseUpdateWithWhereUniqueWithoutProtocolDrugInput[]
+    updateMany?: ProtocolDoseUpdateManyWithWhereWithoutProtocolDrugInput | ProtocolDoseUpdateManyWithWhereWithoutProtocolDrugInput[]
+    deleteMany?: ProtocolDoseScalarWhereInput | ProtocolDoseScalarWhereInput[]
+  }
+
+  export type ProtocolDoseUncheckedUpdateManyWithoutProtocolDrugNestedInput = {
+    create?: XOR<ProtocolDoseCreateWithoutProtocolDrugInput, ProtocolDoseUncheckedCreateWithoutProtocolDrugInput> | ProtocolDoseCreateWithoutProtocolDrugInput[] | ProtocolDoseUncheckedCreateWithoutProtocolDrugInput[]
+    connectOrCreate?: ProtocolDoseCreateOrConnectWithoutProtocolDrugInput | ProtocolDoseCreateOrConnectWithoutProtocolDrugInput[]
+    upsert?: ProtocolDoseUpsertWithWhereUniqueWithoutProtocolDrugInput | ProtocolDoseUpsertWithWhereUniqueWithoutProtocolDrugInput[]
+    createMany?: ProtocolDoseCreateManyProtocolDrugInputEnvelope
+    set?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    disconnect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    delete?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    connect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    update?: ProtocolDoseUpdateWithWhereUniqueWithoutProtocolDrugInput | ProtocolDoseUpdateWithWhereUniqueWithoutProtocolDrugInput[]
+    updateMany?: ProtocolDoseUpdateManyWithWhereWithoutProtocolDrugInput | ProtocolDoseUpdateManyWithWhereWithoutProtocolDrugInput[]
+    deleteMany?: ProtocolDoseScalarWhereInput | ProtocolDoseScalarWhereInput[]
+  }
+
+  export type ProtocolCreateNestedOneWithoutActiveProtocolsInput = {
+    create?: XOR<ProtocolCreateWithoutActiveProtocolsInput, ProtocolUncheckedCreateWithoutActiveProtocolsInput>
+    connectOrCreate?: ProtocolCreateOrConnectWithoutActiveProtocolsInput
+    connect?: ProtocolWhereUniqueInput
+  }
+
+  export type KittenCreateNestedOneWithoutActiveProtocolsInput = {
+    create?: XOR<KittenCreateWithoutActiveProtocolsInput, KittenUncheckedCreateWithoutActiveProtocolsInput>
+    connectOrCreate?: KittenCreateOrConnectWithoutActiveProtocolsInput
+    connect?: KittenWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutActivatedProtocolsInput = {
+    create?: XOR<UserCreateWithoutActivatedProtocolsInput, UserUncheckedCreateWithoutActivatedProtocolsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutActivatedProtocolsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type ProtocolDoseCreateNestedManyWithoutActiveProtocolInput = {
+    create?: XOR<ProtocolDoseCreateWithoutActiveProtocolInput, ProtocolDoseUncheckedCreateWithoutActiveProtocolInput> | ProtocolDoseCreateWithoutActiveProtocolInput[] | ProtocolDoseUncheckedCreateWithoutActiveProtocolInput[]
+    connectOrCreate?: ProtocolDoseCreateOrConnectWithoutActiveProtocolInput | ProtocolDoseCreateOrConnectWithoutActiveProtocolInput[]
+    createMany?: ProtocolDoseCreateManyActiveProtocolInputEnvelope
+    connect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+  }
+
+  export type ProtocolDoseUncheckedCreateNestedManyWithoutActiveProtocolInput = {
+    create?: XOR<ProtocolDoseCreateWithoutActiveProtocolInput, ProtocolDoseUncheckedCreateWithoutActiveProtocolInput> | ProtocolDoseCreateWithoutActiveProtocolInput[] | ProtocolDoseUncheckedCreateWithoutActiveProtocolInput[]
+    connectOrCreate?: ProtocolDoseCreateOrConnectWithoutActiveProtocolInput | ProtocolDoseCreateOrConnectWithoutActiveProtocolInput[]
+    createMany?: ProtocolDoseCreateManyActiveProtocolInputEnvelope
+    connect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+  }
+
+  export type EnumActiveProtocolStatusFieldUpdateOperationsInput = {
+    set?: $Enums.ActiveProtocolStatus
+  }
+
+  export type ProtocolUpdateOneRequiredWithoutActiveProtocolsNestedInput = {
+    create?: XOR<ProtocolCreateWithoutActiveProtocolsInput, ProtocolUncheckedCreateWithoutActiveProtocolsInput>
+    connectOrCreate?: ProtocolCreateOrConnectWithoutActiveProtocolsInput
+    upsert?: ProtocolUpsertWithoutActiveProtocolsInput
+    connect?: ProtocolWhereUniqueInput
+    update?: XOR<XOR<ProtocolUpdateToOneWithWhereWithoutActiveProtocolsInput, ProtocolUpdateWithoutActiveProtocolsInput>, ProtocolUncheckedUpdateWithoutActiveProtocolsInput>
+  }
+
+  export type KittenUpdateOneRequiredWithoutActiveProtocolsNestedInput = {
+    create?: XOR<KittenCreateWithoutActiveProtocolsInput, KittenUncheckedCreateWithoutActiveProtocolsInput>
+    connectOrCreate?: KittenCreateOrConnectWithoutActiveProtocolsInput
+    upsert?: KittenUpsertWithoutActiveProtocolsInput
+    connect?: KittenWhereUniqueInput
+    update?: XOR<XOR<KittenUpdateToOneWithWhereWithoutActiveProtocolsInput, KittenUpdateWithoutActiveProtocolsInput>, KittenUncheckedUpdateWithoutActiveProtocolsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutActivatedProtocolsNestedInput = {
+    create?: XOR<UserCreateWithoutActivatedProtocolsInput, UserUncheckedCreateWithoutActivatedProtocolsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutActivatedProtocolsInput
+    upsert?: UserUpsertWithoutActivatedProtocolsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutActivatedProtocolsInput, UserUpdateWithoutActivatedProtocolsInput>, UserUncheckedUpdateWithoutActivatedProtocolsInput>
+  }
+
+  export type ProtocolDoseUpdateManyWithoutActiveProtocolNestedInput = {
+    create?: XOR<ProtocolDoseCreateWithoutActiveProtocolInput, ProtocolDoseUncheckedCreateWithoutActiveProtocolInput> | ProtocolDoseCreateWithoutActiveProtocolInput[] | ProtocolDoseUncheckedCreateWithoutActiveProtocolInput[]
+    connectOrCreate?: ProtocolDoseCreateOrConnectWithoutActiveProtocolInput | ProtocolDoseCreateOrConnectWithoutActiveProtocolInput[]
+    upsert?: ProtocolDoseUpsertWithWhereUniqueWithoutActiveProtocolInput | ProtocolDoseUpsertWithWhereUniqueWithoutActiveProtocolInput[]
+    createMany?: ProtocolDoseCreateManyActiveProtocolInputEnvelope
+    set?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    disconnect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    delete?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    connect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    update?: ProtocolDoseUpdateWithWhereUniqueWithoutActiveProtocolInput | ProtocolDoseUpdateWithWhereUniqueWithoutActiveProtocolInput[]
+    updateMany?: ProtocolDoseUpdateManyWithWhereWithoutActiveProtocolInput | ProtocolDoseUpdateManyWithWhereWithoutActiveProtocolInput[]
+    deleteMany?: ProtocolDoseScalarWhereInput | ProtocolDoseScalarWhereInput[]
+  }
+
+  export type ProtocolDoseUncheckedUpdateManyWithoutActiveProtocolNestedInput = {
+    create?: XOR<ProtocolDoseCreateWithoutActiveProtocolInput, ProtocolDoseUncheckedCreateWithoutActiveProtocolInput> | ProtocolDoseCreateWithoutActiveProtocolInput[] | ProtocolDoseUncheckedCreateWithoutActiveProtocolInput[]
+    connectOrCreate?: ProtocolDoseCreateOrConnectWithoutActiveProtocolInput | ProtocolDoseCreateOrConnectWithoutActiveProtocolInput[]
+    upsert?: ProtocolDoseUpsertWithWhereUniqueWithoutActiveProtocolInput | ProtocolDoseUpsertWithWhereUniqueWithoutActiveProtocolInput[]
+    createMany?: ProtocolDoseCreateManyActiveProtocolInputEnvelope
+    set?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    disconnect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    delete?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    connect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    update?: ProtocolDoseUpdateWithWhereUniqueWithoutActiveProtocolInput | ProtocolDoseUpdateWithWhereUniqueWithoutActiveProtocolInput[]
+    updateMany?: ProtocolDoseUpdateManyWithWhereWithoutActiveProtocolInput | ProtocolDoseUpdateManyWithWhereWithoutActiveProtocolInput[]
+    deleteMany?: ProtocolDoseScalarWhereInput | ProtocolDoseScalarWhereInput[]
+  }
+
+  export type ActiveProtocolCreateNestedOneWithoutDosesInput = {
+    create?: XOR<ActiveProtocolCreateWithoutDosesInput, ActiveProtocolUncheckedCreateWithoutDosesInput>
+    connectOrCreate?: ActiveProtocolCreateOrConnectWithoutDosesInput
+    connect?: ActiveProtocolWhereUniqueInput
+  }
+
+  export type ProtocolDrugCreateNestedOneWithoutDosesInput = {
+    create?: XOR<ProtocolDrugCreateWithoutDosesInput, ProtocolDrugUncheckedCreateWithoutDosesInput>
+    connectOrCreate?: ProtocolDrugCreateOrConnectWithoutDosesInput
+    connect?: ProtocolDrugWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutAdministeredProtocolDosesInput = {
+    create?: XOR<UserCreateWithoutAdministeredProtocolDosesInput, UserUncheckedCreateWithoutAdministeredProtocolDosesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAdministeredProtocolDosesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumDoseStatusFieldUpdateOperationsInput = {
+    set?: $Enums.DoseStatus
+  }
+
+  export type ActiveProtocolUpdateOneRequiredWithoutDosesNestedInput = {
+    create?: XOR<ActiveProtocolCreateWithoutDosesInput, ActiveProtocolUncheckedCreateWithoutDosesInput>
+    connectOrCreate?: ActiveProtocolCreateOrConnectWithoutDosesInput
+    upsert?: ActiveProtocolUpsertWithoutDosesInput
+    connect?: ActiveProtocolWhereUniqueInput
+    update?: XOR<XOR<ActiveProtocolUpdateToOneWithWhereWithoutDosesInput, ActiveProtocolUpdateWithoutDosesInput>, ActiveProtocolUncheckedUpdateWithoutDosesInput>
+  }
+
+  export type ProtocolDrugUpdateOneRequiredWithoutDosesNestedInput = {
+    create?: XOR<ProtocolDrugCreateWithoutDosesInput, ProtocolDrugUncheckedCreateWithoutDosesInput>
+    connectOrCreate?: ProtocolDrugCreateOrConnectWithoutDosesInput
+    upsert?: ProtocolDrugUpsertWithoutDosesInput
+    connect?: ProtocolDrugWhereUniqueInput
+    update?: XOR<XOR<ProtocolDrugUpdateToOneWithWhereWithoutDosesInput, ProtocolDrugUpdateWithoutDosesInput>, ProtocolDrugUncheckedUpdateWithoutDosesInput>
+  }
+
+  export type UserUpdateOneWithoutAdministeredProtocolDosesNestedInput = {
+    create?: XOR<UserCreateWithoutAdministeredProtocolDosesInput, UserUncheckedCreateWithoutAdministeredProtocolDosesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAdministeredProtocolDosesInput
+    upsert?: UserUpsertWithoutAdministeredProtocolDosesInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAdministeredProtocolDosesInput, UserUpdateWithoutAdministeredProtocolDosesInput>, UserUncheckedUpdateWithoutAdministeredProtocolDosesInput>
   }
 
   export type KittenCreateNestedOneWithoutTransactionsInput = {
@@ -43983,6 +53890,40 @@ export namespace Prisma {
     _max?: NestedEnumFosterOnboardingStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumActiveProtocolStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ActiveProtocolStatus | EnumActiveProtocolStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ActiveProtocolStatus[] | ListEnumActiveProtocolStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ActiveProtocolStatus[] | ListEnumActiveProtocolStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumActiveProtocolStatusFilter<$PrismaModel> | $Enums.ActiveProtocolStatus
+  }
+
+  export type NestedEnumActiveProtocolStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ActiveProtocolStatus | EnumActiveProtocolStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ActiveProtocolStatus[] | ListEnumActiveProtocolStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ActiveProtocolStatus[] | ListEnumActiveProtocolStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumActiveProtocolStatusWithAggregatesFilter<$PrismaModel> | $Enums.ActiveProtocolStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumActiveProtocolStatusFilter<$PrismaModel>
+    _max?: NestedEnumActiveProtocolStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumDoseStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DoseStatus | EnumDoseStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DoseStatus[] | ListEnumDoseStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DoseStatus[] | ListEnumDoseStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDoseStatusFilter<$PrismaModel> | $Enums.DoseStatus
+  }
+
+  export type NestedEnumDoseStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DoseStatus | EnumDoseStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DoseStatus[] | ListEnumDoseStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DoseStatus[] | ListEnumDoseStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDoseStatusWithAggregatesFilter<$PrismaModel> | $Enums.DoseStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDoseStatusFilter<$PrismaModel>
+    _max?: NestedEnumDoseStatusFilter<$PrismaModel>
+  }
+
   export type KittenCreateWithoutLitterInput = {
     name: string
     status?: string
@@ -44018,6 +53959,8 @@ export namespace Prisma {
     updates?: UpdateCreateNestedManyWithoutKittenInput
     transactions?: TransactionCreateNestedManyWithoutKittenInput
     contracts?: ContractCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsCreateNestedManyWithoutKittenInput
   }
 
   export type KittenUncheckedCreateWithoutLitterInput = {
@@ -44056,6 +53999,8 @@ export namespace Prisma {
     updates?: UpdateUncheckedCreateNestedManyWithoutKittenInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutKittenInput
     contracts?: ContractUncheckedCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsUncheckedCreateNestedManyWithoutKittenInput
   }
 
   export type KittenCreateOrConnectWithoutLitterInput = {
@@ -44151,6 +54096,8 @@ export namespace Prisma {
     updates?: UpdateCreateNestedManyWithoutKittenInput
     transactions?: TransactionCreateNestedManyWithoutKittenInput
     contracts?: ContractCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsCreateNestedManyWithoutKittenInput
   }
 
   export type KittenUncheckedCreateWithoutCurrentFosterInput = {
@@ -44189,6 +54136,8 @@ export namespace Prisma {
     updates?: UpdateUncheckedCreateNestedManyWithoutKittenInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutKittenInput
     contracts?: ContractUncheckedCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsUncheckedCreateNestedManyWithoutKittenInput
   }
 
   export type KittenCreateOrConnectWithoutCurrentFosterInput = {
@@ -44639,6 +54588,56 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ActiveProtocolCreateWithoutKittenInput = {
+    activationDate: Date | string
+    status?: $Enums.ActiveProtocolStatus
+    protocol: ProtocolCreateNestedOneWithoutActiveProtocolsInput
+    activatedBy: UserCreateNestedOneWithoutActivatedProtocolsInput
+    doses?: ProtocolDoseCreateNestedManyWithoutActiveProtocolInput
+  }
+
+  export type ActiveProtocolUncheckedCreateWithoutKittenInput = {
+    id?: number
+    protocolId: number
+    activatedById: number
+    activationDate: Date | string
+    status?: $Enums.ActiveProtocolStatus
+    doses?: ProtocolDoseUncheckedCreateNestedManyWithoutActiveProtocolInput
+  }
+
+  export type ActiveProtocolCreateOrConnectWithoutKittenInput = {
+    where: ActiveProtocolWhereUniqueInput
+    create: XOR<ActiveProtocolCreateWithoutKittenInput, ActiveProtocolUncheckedCreateWithoutKittenInput>
+  }
+
+  export type ActiveProtocolCreateManyKittenInputEnvelope = {
+    data: ActiveProtocolCreateManyKittenInput | ActiveProtocolCreateManyKittenInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EventCatsCreateWithoutKittenInput = {
+    addedAt?: Date | string
+    notes?: string | null
+    event: EventCreateNestedOneWithoutEventCatsInput
+  }
+
+  export type EventCatsUncheckedCreateWithoutKittenInput = {
+    id?: number
+    eventId: number
+    addedAt?: Date | string
+    notes?: string | null
+  }
+
+  export type EventCatsCreateOrConnectWithoutKittenInput = {
+    where: EventCatsWhereUniqueInput
+    create: XOR<EventCatsCreateWithoutKittenInput, EventCatsUncheckedCreateWithoutKittenInput>
+  }
+
+  export type EventCatsCreateManyKittenInputEnvelope = {
+    data: EventCatsCreateManyKittenInput | EventCatsCreateManyKittenInput[]
+    skipDuplicates?: boolean
+  }
+
   export type LitterUpsertWithoutKittensInput = {
     update: XOR<LitterUpdateWithoutKittensInput, LitterUncheckedUpdateWithoutKittensInput>
     create: XOR<LitterCreateWithoutKittensInput, LitterUncheckedCreateWithoutKittensInput>
@@ -45003,6 +55002,61 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Contract"> | Date | string
   }
 
+  export type ActiveProtocolUpsertWithWhereUniqueWithoutKittenInput = {
+    where: ActiveProtocolWhereUniqueInput
+    update: XOR<ActiveProtocolUpdateWithoutKittenInput, ActiveProtocolUncheckedUpdateWithoutKittenInput>
+    create: XOR<ActiveProtocolCreateWithoutKittenInput, ActiveProtocolUncheckedCreateWithoutKittenInput>
+  }
+
+  export type ActiveProtocolUpdateWithWhereUniqueWithoutKittenInput = {
+    where: ActiveProtocolWhereUniqueInput
+    data: XOR<ActiveProtocolUpdateWithoutKittenInput, ActiveProtocolUncheckedUpdateWithoutKittenInput>
+  }
+
+  export type ActiveProtocolUpdateManyWithWhereWithoutKittenInput = {
+    where: ActiveProtocolScalarWhereInput
+    data: XOR<ActiveProtocolUpdateManyMutationInput, ActiveProtocolUncheckedUpdateManyWithoutKittenInput>
+  }
+
+  export type ActiveProtocolScalarWhereInput = {
+    AND?: ActiveProtocolScalarWhereInput | ActiveProtocolScalarWhereInput[]
+    OR?: ActiveProtocolScalarWhereInput[]
+    NOT?: ActiveProtocolScalarWhereInput | ActiveProtocolScalarWhereInput[]
+    id?: IntFilter<"ActiveProtocol"> | number
+    protocolId?: IntFilter<"ActiveProtocol"> | number
+    kittenId?: IntFilter<"ActiveProtocol"> | number
+    activatedById?: IntFilter<"ActiveProtocol"> | number
+    activationDate?: DateTimeFilter<"ActiveProtocol"> | Date | string
+    status?: EnumActiveProtocolStatusFilter<"ActiveProtocol"> | $Enums.ActiveProtocolStatus
+  }
+
+  export type EventCatsUpsertWithWhereUniqueWithoutKittenInput = {
+    where: EventCatsWhereUniqueInput
+    update: XOR<EventCatsUpdateWithoutKittenInput, EventCatsUncheckedUpdateWithoutKittenInput>
+    create: XOR<EventCatsCreateWithoutKittenInput, EventCatsUncheckedCreateWithoutKittenInput>
+  }
+
+  export type EventCatsUpdateWithWhereUniqueWithoutKittenInput = {
+    where: EventCatsWhereUniqueInput
+    data: XOR<EventCatsUpdateWithoutKittenInput, EventCatsUncheckedUpdateWithoutKittenInput>
+  }
+
+  export type EventCatsUpdateManyWithWhereWithoutKittenInput = {
+    where: EventCatsScalarWhereInput
+    data: XOR<EventCatsUpdateManyMutationInput, EventCatsUncheckedUpdateManyWithoutKittenInput>
+  }
+
+  export type EventCatsScalarWhereInput = {
+    AND?: EventCatsScalarWhereInput | EventCatsScalarWhereInput[]
+    OR?: EventCatsScalarWhereInput[]
+    NOT?: EventCatsScalarWhereInput | EventCatsScalarWhereInput[]
+    id?: IntFilter<"EventCats"> | number
+    eventId?: IntFilter<"EventCats"> | number
+    kittenId?: IntFilter<"EventCats"> | number
+    addedAt?: DateTimeFilter<"EventCats"> | Date | string
+    notes?: StringNullableFilter<"EventCats"> | string | null
+  }
+
   export type KittenCreateWithoutUpdatesInput = {
     name: string
     status?: string
@@ -45038,6 +55092,8 @@ export namespace Prisma {
     sponsorships?: SponsorshipCreateNestedManyWithoutKittenInput
     transactions?: TransactionCreateNestedManyWithoutKittenInput
     contracts?: ContractCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsCreateNestedManyWithoutKittenInput
   }
 
   export type KittenUncheckedCreateWithoutUpdatesInput = {
@@ -45076,6 +55132,8 @@ export namespace Prisma {
     sponsorships?: SponsorshipUncheckedCreateNestedManyWithoutKittenInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutKittenInput
     contracts?: ContractUncheckedCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsUncheckedCreateNestedManyWithoutKittenInput
   }
 
   export type KittenCreateOrConnectWithoutUpdatesInput = {
@@ -45129,6 +55187,8 @@ export namespace Prisma {
     sponsorships?: SponsorshipUpdateManyWithoutKittenNestedInput
     transactions?: TransactionUpdateManyWithoutKittenNestedInput
     contracts?: ContractUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUpdateManyWithoutKittenNestedInput
   }
 
   export type KittenUncheckedUpdateWithoutUpdatesInput = {
@@ -45167,6 +55227,8 @@ export namespace Prisma {
     sponsorships?: SponsorshipUncheckedUpdateManyWithoutKittenNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutKittenNestedInput
     contracts?: ContractUncheckedUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUncheckedUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUncheckedUpdateManyWithoutKittenNestedInput
   }
 
   export type KittenCreateWithoutSponsorshipsInput = {
@@ -45204,6 +55266,8 @@ export namespace Prisma {
     updates?: UpdateCreateNestedManyWithoutKittenInput
     transactions?: TransactionCreateNestedManyWithoutKittenInput
     contracts?: ContractCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsCreateNestedManyWithoutKittenInput
   }
 
   export type KittenUncheckedCreateWithoutSponsorshipsInput = {
@@ -45242,6 +55306,8 @@ export namespace Prisma {
     updates?: UpdateUncheckedCreateNestedManyWithoutKittenInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutKittenInput
     contracts?: ContractUncheckedCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsUncheckedCreateNestedManyWithoutKittenInput
   }
 
   export type KittenCreateOrConnectWithoutSponsorshipsInput = {
@@ -45295,6 +55361,8 @@ export namespace Prisma {
     updates?: UpdateUpdateManyWithoutKittenNestedInput
     transactions?: TransactionUpdateManyWithoutKittenNestedInput
     contracts?: ContractUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUpdateManyWithoutKittenNestedInput
   }
 
   export type KittenUncheckedUpdateWithoutSponsorshipsInput = {
@@ -45333,6 +55401,8 @@ export namespace Prisma {
     updates?: UpdateUncheckedUpdateManyWithoutKittenNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutKittenNestedInput
     contracts?: ContractUncheckedUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUncheckedUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUncheckedUpdateManyWithoutKittenNestedInput
   }
 
   export type KittenCreateWithoutPlacementsInput = {
@@ -45370,6 +55440,8 @@ export namespace Prisma {
     updates?: UpdateCreateNestedManyWithoutKittenInput
     transactions?: TransactionCreateNestedManyWithoutKittenInput
     contracts?: ContractCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsCreateNestedManyWithoutKittenInput
   }
 
   export type KittenUncheckedCreateWithoutPlacementsInput = {
@@ -45408,6 +55480,8 @@ export namespace Prisma {
     updates?: UpdateUncheckedCreateNestedManyWithoutKittenInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutKittenInput
     contracts?: ContractUncheckedCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsUncheckedCreateNestedManyWithoutKittenInput
   }
 
   export type KittenCreateOrConnectWithoutPlacementsInput = {
@@ -45497,6 +55571,8 @@ export namespace Prisma {
     updates?: UpdateUpdateManyWithoutKittenNestedInput
     transactions?: TransactionUpdateManyWithoutKittenNestedInput
     contracts?: ContractUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUpdateManyWithoutKittenNestedInput
   }
 
   export type KittenUncheckedUpdateWithoutPlacementsInput = {
@@ -45535,6 +55611,8 @@ export namespace Prisma {
     updates?: UpdateUncheckedUpdateManyWithoutKittenNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutKittenNestedInput
     contracts?: ContractUncheckedUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUncheckedUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUncheckedUpdateManyWithoutKittenNestedInput
   }
 
   export type FosterUpsertWithoutPlacementsInput = {
@@ -45614,6 +55692,8 @@ export namespace Prisma {
     updates?: UpdateCreateNestedManyWithoutKittenInput
     transactions?: TransactionCreateNestedManyWithoutKittenInput
     contracts?: ContractCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsCreateNestedManyWithoutKittenInput
   }
 
   export type KittenUncheckedCreateWithoutWeightLogsInput = {
@@ -45652,6 +55732,8 @@ export namespace Prisma {
     updates?: UpdateUncheckedCreateNestedManyWithoutKittenInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutKittenInput
     contracts?: ContractUncheckedCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsUncheckedCreateNestedManyWithoutKittenInput
   }
 
   export type KittenCreateOrConnectWithoutWeightLogsInput = {
@@ -45705,6 +55787,8 @@ export namespace Prisma {
     updates?: UpdateUpdateManyWithoutKittenNestedInput
     transactions?: TransactionUpdateManyWithoutKittenNestedInput
     contracts?: ContractUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUpdateManyWithoutKittenNestedInput
   }
 
   export type KittenUncheckedUpdateWithoutWeightLogsInput = {
@@ -45743,6 +55827,8 @@ export namespace Prisma {
     updates?: UpdateUncheckedUpdateManyWithoutKittenNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutKittenNestedInput
     contracts?: ContractUncheckedUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUncheckedUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUncheckedUpdateManyWithoutKittenNestedInput
   }
 
   export type KittenCreateWithoutVaccinesInput = {
@@ -45780,6 +55866,8 @@ export namespace Prisma {
     updates?: UpdateCreateNestedManyWithoutKittenInput
     transactions?: TransactionCreateNestedManyWithoutKittenInput
     contracts?: ContractCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsCreateNestedManyWithoutKittenInput
   }
 
   export type KittenUncheckedCreateWithoutVaccinesInput = {
@@ -45818,6 +55906,8 @@ export namespace Prisma {
     updates?: UpdateUncheckedCreateNestedManyWithoutKittenInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutKittenInput
     contracts?: ContractUncheckedCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsUncheckedCreateNestedManyWithoutKittenInput
   }
 
   export type KittenCreateOrConnectWithoutVaccinesInput = {
@@ -45871,6 +55961,8 @@ export namespace Prisma {
     updates?: UpdateUpdateManyWithoutKittenNestedInput
     transactions?: TransactionUpdateManyWithoutKittenNestedInput
     contracts?: ContractUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUpdateManyWithoutKittenNestedInput
   }
 
   export type KittenUncheckedUpdateWithoutVaccinesInput = {
@@ -45909,6 +56001,8 @@ export namespace Prisma {
     updates?: UpdateUncheckedUpdateManyWithoutKittenNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutKittenNestedInput
     contracts?: ContractUncheckedUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUncheckedUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUncheckedUpdateManyWithoutKittenNestedInput
   }
 
   export type KittenCreateWithoutMedicationsInput = {
@@ -45946,6 +56040,8 @@ export namespace Prisma {
     updates?: UpdateCreateNestedManyWithoutKittenInput
     transactions?: TransactionCreateNestedManyWithoutKittenInput
     contracts?: ContractCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsCreateNestedManyWithoutKittenInput
   }
 
   export type KittenUncheckedCreateWithoutMedicationsInput = {
@@ -45984,6 +56080,8 @@ export namespace Prisma {
     updates?: UpdateUncheckedCreateNestedManyWithoutKittenInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutKittenInput
     contracts?: ContractUncheckedCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsUncheckedCreateNestedManyWithoutKittenInput
   }
 
   export type KittenCreateOrConnectWithoutMedicationsInput = {
@@ -46037,6 +56135,8 @@ export namespace Prisma {
     updates?: UpdateUpdateManyWithoutKittenNestedInput
     transactions?: TransactionUpdateManyWithoutKittenNestedInput
     contracts?: ContractUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUpdateManyWithoutKittenNestedInput
   }
 
   export type KittenUncheckedUpdateWithoutMedicationsInput = {
@@ -46075,6 +56175,8 @@ export namespace Prisma {
     updates?: UpdateUncheckedUpdateManyWithoutKittenNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutKittenNestedInput
     contracts?: ContractUncheckedUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUncheckedUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUncheckedUpdateManyWithoutKittenNestedInput
   }
 
   export type KittenCreateWithoutVetAppointmentsInput = {
@@ -46112,6 +56214,8 @@ export namespace Prisma {
     updates?: UpdateCreateNestedManyWithoutKittenInput
     transactions?: TransactionCreateNestedManyWithoutKittenInput
     contracts?: ContractCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsCreateNestedManyWithoutKittenInput
   }
 
   export type KittenUncheckedCreateWithoutVetAppointmentsInput = {
@@ -46150,6 +56254,8 @@ export namespace Prisma {
     updates?: UpdateUncheckedCreateNestedManyWithoutKittenInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutKittenInput
     contracts?: ContractUncheckedCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsUncheckedCreateNestedManyWithoutKittenInput
   }
 
   export type KittenCreateOrConnectWithoutVetAppointmentsInput = {
@@ -46203,6 +56309,8 @@ export namespace Prisma {
     updates?: UpdateUpdateManyWithoutKittenNestedInput
     transactions?: TransactionUpdateManyWithoutKittenNestedInput
     contracts?: ContractUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUpdateManyWithoutKittenNestedInput
   }
 
   export type KittenUncheckedUpdateWithoutVetAppointmentsInput = {
@@ -46241,6 +56349,8 @@ export namespace Prisma {
     updates?: UpdateUncheckedUpdateManyWithoutKittenNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutKittenNestedInput
     contracts?: ContractUncheckedUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUncheckedUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUncheckedUpdateManyWithoutKittenNestedInput
   }
 
   export type KittenCreateWithoutDocumentsInput = {
@@ -46278,6 +56388,8 @@ export namespace Prisma {
     updates?: UpdateCreateNestedManyWithoutKittenInput
     transactions?: TransactionCreateNestedManyWithoutKittenInput
     contracts?: ContractCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsCreateNestedManyWithoutKittenInput
   }
 
   export type KittenUncheckedCreateWithoutDocumentsInput = {
@@ -46316,6 +56428,8 @@ export namespace Prisma {
     updates?: UpdateUncheckedCreateNestedManyWithoutKittenInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutKittenInput
     contracts?: ContractUncheckedCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsUncheckedCreateNestedManyWithoutKittenInput
   }
 
   export type KittenCreateOrConnectWithoutDocumentsInput = {
@@ -46369,6 +56483,8 @@ export namespace Prisma {
     updates?: UpdateUpdateManyWithoutKittenNestedInput
     transactions?: TransactionUpdateManyWithoutKittenNestedInput
     contracts?: ContractUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUpdateManyWithoutKittenNestedInput
   }
 
   export type KittenUncheckedUpdateWithoutDocumentsInput = {
@@ -46407,6 +56523,8 @@ export namespace Prisma {
     updates?: UpdateUncheckedUpdateManyWithoutKittenNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutKittenNestedInput
     contracts?: ContractUncheckedUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUncheckedUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUncheckedUpdateManyWithoutKittenNestedInput
   }
 
   export type UserCreateWithoutRejectedApplicationsInput = {
@@ -46422,6 +56540,8 @@ export namespace Prisma {
     role: RoleCreateNestedOneWithoutUsersInput
     completedChecklistItems?: OnboardingChecklistCreateNestedManyWithoutCompletedByUserInput
     contentCompletions?: ContentCompletionCreateNestedManyWithoutUserInput
+    activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
+    administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
   }
 
   export type UserUncheckedCreateWithoutRejectedApplicationsInput = {
@@ -46438,6 +56558,8 @@ export namespace Prisma {
     lastLoginAt?: Date | string | null
     completedChecklistItems?: OnboardingChecklistUncheckedCreateNestedManyWithoutCompletedByUserInput
     contentCompletions?: ContentCompletionUncheckedCreateNestedManyWithoutUserInput
+    activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
+    administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
   }
 
   export type UserCreateOrConnectWithoutRejectedApplicationsInput = {
@@ -46535,6 +56657,8 @@ export namespace Prisma {
     role?: RoleUpdateOneRequiredWithoutUsersNestedInput
     completedChecklistItems?: OnboardingChecklistUpdateManyWithoutCompletedByUserNestedInput
     contentCompletions?: ContentCompletionUpdateManyWithoutUserNestedInput
+    activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
+    administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRejectedApplicationsInput = {
@@ -46551,6 +56675,8 @@ export namespace Prisma {
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedChecklistItems?: OnboardingChecklistUncheckedUpdateManyWithoutCompletedByUserNestedInput
     contentCompletions?: ContentCompletionUncheckedUpdateManyWithoutUserNestedInput
+    activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
+    administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
   }
 
   export type ContractUpsertWithWhereUniqueWithoutApplicationInput = {
@@ -46633,6 +56759,8 @@ export namespace Prisma {
     sponsorships?: SponsorshipCreateNestedManyWithoutKittenInput
     updates?: UpdateCreateNestedManyWithoutKittenInput
     transactions?: TransactionCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsCreateNestedManyWithoutKittenInput
   }
 
   export type KittenUncheckedCreateWithoutContractsInput = {
@@ -46671,6 +56799,8 @@ export namespace Prisma {
     sponsorships?: SponsorshipUncheckedCreateNestedManyWithoutKittenInput
     updates?: UpdateUncheckedCreateNestedManyWithoutKittenInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsUncheckedCreateNestedManyWithoutKittenInput
   }
 
   export type KittenCreateOrConnectWithoutContractsInput = {
@@ -46760,6 +56890,8 @@ export namespace Prisma {
     sponsorships?: SponsorshipUpdateManyWithoutKittenNestedInput
     updates?: UpdateUpdateManyWithoutKittenNestedInput
     transactions?: TransactionUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUpdateManyWithoutKittenNestedInput
   }
 
   export type KittenUncheckedUpdateWithoutContractsInput = {
@@ -46798,6 +56930,8 @@ export namespace Prisma {
     sponsorships?: SponsorshipUncheckedUpdateManyWithoutKittenNestedInput
     updates?: UpdateUncheckedUpdateManyWithoutKittenNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUncheckedUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUncheckedUpdateManyWithoutKittenNestedInput
   }
 
   export type ApplicationUpsertWithoutContractsInput = {
@@ -46933,6 +57067,8 @@ export namespace Prisma {
     role: RoleCreateNestedOneWithoutUsersInput
     rejectedApplications?: ApplicationCreateNestedManyWithoutRejectedByInput
     contentCompletions?: ContentCompletionCreateNestedManyWithoutUserInput
+    activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
+    administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
   }
 
   export type UserUncheckedCreateWithoutCompletedChecklistItemsInput = {
@@ -46949,6 +57085,8 @@ export namespace Prisma {
     lastLoginAt?: Date | string | null
     rejectedApplications?: ApplicationUncheckedCreateNestedManyWithoutRejectedByInput
     contentCompletions?: ContentCompletionUncheckedCreateNestedManyWithoutUserInput
+    activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
+    administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
   }
 
   export type UserCreateOrConnectWithoutCompletedChecklistItemsInput = {
@@ -47008,6 +57146,8 @@ export namespace Prisma {
     role?: RoleUpdateOneRequiredWithoutUsersNestedInput
     rejectedApplications?: ApplicationUpdateManyWithoutRejectedByNestedInput
     contentCompletions?: ContentCompletionUpdateManyWithoutUserNestedInput
+    activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
+    administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCompletedChecklistItemsInput = {
@@ -47024,6 +57164,8 @@ export namespace Prisma {
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     rejectedApplications?: ApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
     contentCompletions?: ContentCompletionUncheckedUpdateManyWithoutUserNestedInput
+    activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
+    administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
   }
 
   export type ApplicationCreateWithoutUploadsInput = {
@@ -47164,6 +57306,8 @@ export namespace Prisma {
     role: RoleCreateNestedOneWithoutUsersInput
     rejectedApplications?: ApplicationCreateNestedManyWithoutRejectedByInput
     completedChecklistItems?: OnboardingChecklistCreateNestedManyWithoutCompletedByUserInput
+    activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
+    administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
   }
 
   export type UserUncheckedCreateWithoutContentCompletionsInput = {
@@ -47180,6 +57324,8 @@ export namespace Prisma {
     lastLoginAt?: Date | string | null
     rejectedApplications?: ApplicationUncheckedCreateNestedManyWithoutRejectedByInput
     completedChecklistItems?: OnboardingChecklistUncheckedCreateNestedManyWithoutCompletedByUserInput
+    activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
+    administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
   }
 
   export type UserCreateOrConnectWithoutContentCompletionsInput = {
@@ -47237,6 +57383,8 @@ export namespace Prisma {
     role?: RoleUpdateOneRequiredWithoutUsersNestedInput
     rejectedApplications?: ApplicationUpdateManyWithoutRejectedByNestedInput
     completedChecklistItems?: OnboardingChecklistUpdateManyWithoutCompletedByUserNestedInput
+    activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
+    administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutContentCompletionsInput = {
@@ -47253,6 +57401,8 @@ export namespace Prisma {
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     rejectedApplications?: ApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
     completedChecklistItems?: OnboardingChecklistUncheckedUpdateManyWithoutCompletedByUserNestedInput
+    activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
+    administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
   }
 
   export type ContentUpsertWithoutCompletionsInput = {
@@ -47287,6 +57437,417 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type EventCatsCreateWithoutEventInput = {
+    addedAt?: Date | string
+    notes?: string | null
+    kitten: KittenCreateNestedOneWithoutEventCatsInput
+  }
+
+  export type EventCatsUncheckedCreateWithoutEventInput = {
+    id?: number
+    kittenId: number
+    addedAt?: Date | string
+    notes?: string | null
+  }
+
+  export type EventCatsCreateOrConnectWithoutEventInput = {
+    where: EventCatsWhereUniqueInput
+    create: XOR<EventCatsCreateWithoutEventInput, EventCatsUncheckedCreateWithoutEventInput>
+  }
+
+  export type EventCatsCreateManyEventInputEnvelope = {
+    data: EventCatsCreateManyEventInput | EventCatsCreateManyEventInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EventRSVPCreateWithoutEventInput = {
+    name: string
+    email: string
+    createdAt?: Date | string
+  }
+
+  export type EventRSVPUncheckedCreateWithoutEventInput = {
+    id?: number
+    name: string
+    email: string
+    createdAt?: Date | string
+  }
+
+  export type EventRSVPCreateOrConnectWithoutEventInput = {
+    where: EventRSVPWhereUniqueInput
+    create: XOR<EventRSVPCreateWithoutEventInput, EventRSVPUncheckedCreateWithoutEventInput>
+  }
+
+  export type EventRSVPCreateManyEventInputEnvelope = {
+    data: EventRSVPCreateManyEventInput | EventRSVPCreateManyEventInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EventCatsUpsertWithWhereUniqueWithoutEventInput = {
+    where: EventCatsWhereUniqueInput
+    update: XOR<EventCatsUpdateWithoutEventInput, EventCatsUncheckedUpdateWithoutEventInput>
+    create: XOR<EventCatsCreateWithoutEventInput, EventCatsUncheckedCreateWithoutEventInput>
+  }
+
+  export type EventCatsUpdateWithWhereUniqueWithoutEventInput = {
+    where: EventCatsWhereUniqueInput
+    data: XOR<EventCatsUpdateWithoutEventInput, EventCatsUncheckedUpdateWithoutEventInput>
+  }
+
+  export type EventCatsUpdateManyWithWhereWithoutEventInput = {
+    where: EventCatsScalarWhereInput
+    data: XOR<EventCatsUpdateManyMutationInput, EventCatsUncheckedUpdateManyWithoutEventInput>
+  }
+
+  export type EventRSVPUpsertWithWhereUniqueWithoutEventInput = {
+    where: EventRSVPWhereUniqueInput
+    update: XOR<EventRSVPUpdateWithoutEventInput, EventRSVPUncheckedUpdateWithoutEventInput>
+    create: XOR<EventRSVPCreateWithoutEventInput, EventRSVPUncheckedCreateWithoutEventInput>
+  }
+
+  export type EventRSVPUpdateWithWhereUniqueWithoutEventInput = {
+    where: EventRSVPWhereUniqueInput
+    data: XOR<EventRSVPUpdateWithoutEventInput, EventRSVPUncheckedUpdateWithoutEventInput>
+  }
+
+  export type EventRSVPUpdateManyWithWhereWithoutEventInput = {
+    where: EventRSVPScalarWhereInput
+    data: XOR<EventRSVPUpdateManyMutationInput, EventRSVPUncheckedUpdateManyWithoutEventInput>
+  }
+
+  export type EventRSVPScalarWhereInput = {
+    AND?: EventRSVPScalarWhereInput | EventRSVPScalarWhereInput[]
+    OR?: EventRSVPScalarWhereInput[]
+    NOT?: EventRSVPScalarWhereInput | EventRSVPScalarWhereInput[]
+    id?: IntFilter<"EventRSVP"> | number
+    eventId?: IntFilter<"EventRSVP"> | number
+    name?: StringFilter<"EventRSVP"> | string
+    email?: StringFilter<"EventRSVP"> | string
+    createdAt?: DateTimeFilter<"EventRSVP"> | Date | string
+  }
+
+  export type EventCreateWithoutRsvpsInput = {
+    title: string
+    slug: string
+    date: Date | string
+    endDate?: Date | string | null
+    location?: string
+    description?: string
+    isPublic?: boolean
+    status?: string
+    internalNotes?: string | null
+    publishTargets?: EventCreatepublishTargetsInput | string[]
+    eventCats?: EventCatsCreateNestedManyWithoutEventInput
+  }
+
+  export type EventUncheckedCreateWithoutRsvpsInput = {
+    id?: number
+    title: string
+    slug: string
+    date: Date | string
+    endDate?: Date | string | null
+    location?: string
+    description?: string
+    isPublic?: boolean
+    status?: string
+    internalNotes?: string | null
+    publishTargets?: EventCreatepublishTargetsInput | string[]
+    eventCats?: EventCatsUncheckedCreateNestedManyWithoutEventInput
+  }
+
+  export type EventCreateOrConnectWithoutRsvpsInput = {
+    where: EventWhereUniqueInput
+    create: XOR<EventCreateWithoutRsvpsInput, EventUncheckedCreateWithoutRsvpsInput>
+  }
+
+  export type EventUpsertWithoutRsvpsInput = {
+    update: XOR<EventUpdateWithoutRsvpsInput, EventUncheckedUpdateWithoutRsvpsInput>
+    create: XOR<EventCreateWithoutRsvpsInput, EventUncheckedCreateWithoutRsvpsInput>
+    where?: EventWhereInput
+  }
+
+  export type EventUpdateToOneWithWhereWithoutRsvpsInput = {
+    where?: EventWhereInput
+    data: XOR<EventUpdateWithoutRsvpsInput, EventUncheckedUpdateWithoutRsvpsInput>
+  }
+
+  export type EventUpdateWithoutRsvpsInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
+    internalNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    publishTargets?: EventUpdatepublishTargetsInput | string[]
+    eventCats?: EventCatsUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventUncheckedUpdateWithoutRsvpsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
+    internalNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    publishTargets?: EventUpdatepublishTargetsInput | string[]
+    eventCats?: EventCatsUncheckedUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventCreateWithoutEventCatsInput = {
+    title: string
+    slug: string
+    date: Date | string
+    endDate?: Date | string | null
+    location?: string
+    description?: string
+    isPublic?: boolean
+    status?: string
+    internalNotes?: string | null
+    publishTargets?: EventCreatepublishTargetsInput | string[]
+    rsvps?: EventRSVPCreateNestedManyWithoutEventInput
+  }
+
+  export type EventUncheckedCreateWithoutEventCatsInput = {
+    id?: number
+    title: string
+    slug: string
+    date: Date | string
+    endDate?: Date | string | null
+    location?: string
+    description?: string
+    isPublic?: boolean
+    status?: string
+    internalNotes?: string | null
+    publishTargets?: EventCreatepublishTargetsInput | string[]
+    rsvps?: EventRSVPUncheckedCreateNestedManyWithoutEventInput
+  }
+
+  export type EventCreateOrConnectWithoutEventCatsInput = {
+    where: EventWhereUniqueInput
+    create: XOR<EventCreateWithoutEventCatsInput, EventUncheckedCreateWithoutEventCatsInput>
+  }
+
+  export type KittenCreateWithoutEventCatsInput = {
+    name: string
+    status?: string
+    rescueStory?: string
+    dateOfBirth?: Date | string | null
+    sex?: string
+    fixedStatus?: string
+    breed: string
+    color?: string
+    fivFelvStatus?: string | null
+    specialNeeds?: string | null
+    microchipNumber?: string
+    primaryPhotoUrl?: string | null
+    intakeDate?: Date | string | null
+    intakeSource?: string
+    notes?: string
+    internalNotes?: string
+    isListedOnWebsite?: boolean
+    websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
+    createdAt?: Date | string
+    litter?: LitterCreateNestedOneWithoutKittensInput
+    currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
+    placements?: PlacementCreateNestedManyWithoutKittenInput
+    weightLogs?: WeightLogCreateNestedManyWithoutKittenInput
+    vaccines?: VaccineCreateNestedManyWithoutKittenInput
+    medications?: MedicationCreateNestedManyWithoutKittenInput
+    vetAppointments?: VetAppointmentCreateNestedManyWithoutKittenInput
+    documents?: DocumentCreateNestedManyWithoutKittenInput
+    sponsorships?: SponsorshipCreateNestedManyWithoutKittenInput
+    updates?: UpdateCreateNestedManyWithoutKittenInput
+    transactions?: TransactionCreateNestedManyWithoutKittenInput
+    contracts?: ContractCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolCreateNestedManyWithoutKittenInput
+  }
+
+  export type KittenUncheckedCreateWithoutEventCatsInput = {
+    id?: number
+    name: string
+    litterId?: number | null
+    status?: string
+    rescueStory?: string
+    dateOfBirth?: Date | string | null
+    sex?: string
+    fixedStatus?: string
+    breed: string
+    color?: string
+    fivFelvStatus?: string | null
+    specialNeeds?: string | null
+    microchipNumber?: string
+    primaryPhotoUrl?: string | null
+    intakeDate?: Date | string | null
+    intakeSource?: string
+    notes?: string
+    internalNotes?: string
+    isListedOnWebsite?: boolean
+    websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
+    currentFosterId?: number | null
+    createdAt?: Date | string
+    placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
+    weightLogs?: WeightLogUncheckedCreateNestedManyWithoutKittenInput
+    vaccines?: VaccineUncheckedCreateNestedManyWithoutKittenInput
+    medications?: MedicationUncheckedCreateNestedManyWithoutKittenInput
+    vetAppointments?: VetAppointmentUncheckedCreateNestedManyWithoutKittenInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutKittenInput
+    sponsorships?: SponsorshipUncheckedCreateNestedManyWithoutKittenInput
+    updates?: UpdateUncheckedCreateNestedManyWithoutKittenInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutKittenInput
+    contracts?: ContractUncheckedCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutKittenInput
+  }
+
+  export type KittenCreateOrConnectWithoutEventCatsInput = {
+    where: KittenWhereUniqueInput
+    create: XOR<KittenCreateWithoutEventCatsInput, KittenUncheckedCreateWithoutEventCatsInput>
+  }
+
+  export type EventUpsertWithoutEventCatsInput = {
+    update: XOR<EventUpdateWithoutEventCatsInput, EventUncheckedUpdateWithoutEventCatsInput>
+    create: XOR<EventCreateWithoutEventCatsInput, EventUncheckedCreateWithoutEventCatsInput>
+    where?: EventWhereInput
+  }
+
+  export type EventUpdateToOneWithWhereWithoutEventCatsInput = {
+    where?: EventWhereInput
+    data: XOR<EventUpdateWithoutEventCatsInput, EventUncheckedUpdateWithoutEventCatsInput>
+  }
+
+  export type EventUpdateWithoutEventCatsInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
+    internalNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    publishTargets?: EventUpdatepublishTargetsInput | string[]
+    rsvps?: EventRSVPUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventUncheckedUpdateWithoutEventCatsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
+    internalNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    publishTargets?: EventUpdatepublishTargetsInput | string[]
+    rsvps?: EventRSVPUncheckedUpdateManyWithoutEventNestedInput
+  }
+
+  export type KittenUpsertWithoutEventCatsInput = {
+    update: XOR<KittenUpdateWithoutEventCatsInput, KittenUncheckedUpdateWithoutEventCatsInput>
+    create: XOR<KittenCreateWithoutEventCatsInput, KittenUncheckedCreateWithoutEventCatsInput>
+    where?: KittenWhereInput
+  }
+
+  export type KittenUpdateToOneWithWhereWithoutEventCatsInput = {
+    where?: KittenWhereInput
+    data: XOR<KittenUpdateWithoutEventCatsInput, KittenUncheckedUpdateWithoutEventCatsInput>
+  }
+
+  export type KittenUpdateWithoutEventCatsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rescueStory?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sex?: StringFieldUpdateOperationsInput | string
+    fixedStatus?: StringFieldUpdateOperationsInput | string
+    breed?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
+    microchipNumber?: StringFieldUpdateOperationsInput | string
+    primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    intakeSource?: StringFieldUpdateOperationsInput | string
+    notes?: StringFieldUpdateOperationsInput | string
+    internalNotes?: StringFieldUpdateOperationsInput | string
+    isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    litter?: LitterUpdateOneWithoutKittensNestedInput
+    currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
+    placements?: PlacementUpdateManyWithoutKittenNestedInput
+    weightLogs?: WeightLogUpdateManyWithoutKittenNestedInput
+    vaccines?: VaccineUpdateManyWithoutKittenNestedInput
+    medications?: MedicationUpdateManyWithoutKittenNestedInput
+    vetAppointments?: VetAppointmentUpdateManyWithoutKittenNestedInput
+    documents?: DocumentUpdateManyWithoutKittenNestedInput
+    sponsorships?: SponsorshipUpdateManyWithoutKittenNestedInput
+    updates?: UpdateUpdateManyWithoutKittenNestedInput
+    transactions?: TransactionUpdateManyWithoutKittenNestedInput
+    contracts?: ContractUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUpdateManyWithoutKittenNestedInput
+  }
+
+  export type KittenUncheckedUpdateWithoutEventCatsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    litterId?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    rescueStory?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sex?: StringFieldUpdateOperationsInput | string
+    fixedStatus?: StringFieldUpdateOperationsInput | string
+    breed?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
+    microchipNumber?: StringFieldUpdateOperationsInput | string
+    primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    intakeSource?: StringFieldUpdateOperationsInput | string
+    notes?: StringFieldUpdateOperationsInput | string
+    internalNotes?: StringFieldUpdateOperationsInput | string
+    isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
+    weightLogs?: WeightLogUncheckedUpdateManyWithoutKittenNestedInput
+    vaccines?: VaccineUncheckedUpdateManyWithoutKittenNestedInput
+    medications?: MedicationUncheckedUpdateManyWithoutKittenNestedInput
+    vetAppointments?: VetAppointmentUncheckedUpdateManyWithoutKittenNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutKittenNestedInput
+    sponsorships?: SponsorshipUncheckedUpdateManyWithoutKittenNestedInput
+    updates?: UpdateUncheckedUpdateManyWithoutKittenNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutKittenNestedInput
+    contracts?: ContractUncheckedUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUncheckedUpdateManyWithoutKittenNestedInput
+  }
+
   export type UserCreateWithoutRoleInput = {
     email: string
     passwordHash: string
@@ -47300,6 +57861,8 @@ export namespace Prisma {
     rejectedApplications?: ApplicationCreateNestedManyWithoutRejectedByInput
     completedChecklistItems?: OnboardingChecklistCreateNestedManyWithoutCompletedByUserInput
     contentCompletions?: ContentCompletionCreateNestedManyWithoutUserInput
+    activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
+    administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
   }
 
   export type UserUncheckedCreateWithoutRoleInput = {
@@ -47316,6 +57879,8 @@ export namespace Prisma {
     rejectedApplications?: ApplicationUncheckedCreateNestedManyWithoutRejectedByInput
     completedChecklistItems?: OnboardingChecklistUncheckedCreateNestedManyWithoutCompletedByUserInput
     contentCompletions?: ContentCompletionUncheckedCreateNestedManyWithoutUserInput
+    activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
+    administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
   }
 
   export type UserCreateOrConnectWithoutRoleInput = {
@@ -47640,6 +58205,64 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ActiveProtocolCreateWithoutActivatedByInput = {
+    activationDate: Date | string
+    status?: $Enums.ActiveProtocolStatus
+    protocol: ProtocolCreateNestedOneWithoutActiveProtocolsInput
+    kitten: KittenCreateNestedOneWithoutActiveProtocolsInput
+    doses?: ProtocolDoseCreateNestedManyWithoutActiveProtocolInput
+  }
+
+  export type ActiveProtocolUncheckedCreateWithoutActivatedByInput = {
+    id?: number
+    protocolId: number
+    kittenId: number
+    activationDate: Date | string
+    status?: $Enums.ActiveProtocolStatus
+    doses?: ProtocolDoseUncheckedCreateNestedManyWithoutActiveProtocolInput
+  }
+
+  export type ActiveProtocolCreateOrConnectWithoutActivatedByInput = {
+    where: ActiveProtocolWhereUniqueInput
+    create: XOR<ActiveProtocolCreateWithoutActivatedByInput, ActiveProtocolUncheckedCreateWithoutActivatedByInput>
+  }
+
+  export type ActiveProtocolCreateManyActivatedByInputEnvelope = {
+    data: ActiveProtocolCreateManyActivatedByInput | ActiveProtocolCreateManyActivatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ProtocolDoseCreateWithoutAdministeredByInput = {
+    scheduledDate: Date | string
+    doseNumberInDay: number
+    status?: $Enums.DoseStatus
+    administeredAt?: Date | string | null
+    notes?: string
+    activeProtocol: ActiveProtocolCreateNestedOneWithoutDosesInput
+    protocolDrug: ProtocolDrugCreateNestedOneWithoutDosesInput
+  }
+
+  export type ProtocolDoseUncheckedCreateWithoutAdministeredByInput = {
+    id?: number
+    activeProtocolId: number
+    protocolDrugId: number
+    scheduledDate: Date | string
+    doseNumberInDay: number
+    status?: $Enums.DoseStatus
+    administeredAt?: Date | string | null
+    notes?: string
+  }
+
+  export type ProtocolDoseCreateOrConnectWithoutAdministeredByInput = {
+    where: ProtocolDoseWhereUniqueInput
+    create: XOR<ProtocolDoseCreateWithoutAdministeredByInput, ProtocolDoseUncheckedCreateWithoutAdministeredByInput>
+  }
+
+  export type ProtocolDoseCreateManyAdministeredByInputEnvelope = {
+    data: ProtocolDoseCreateManyAdministeredByInput | ProtocolDoseCreateManyAdministeredByInput[]
+    skipDuplicates?: boolean
+  }
+
   export type RoleUpsertWithoutUsersInput = {
     update: XOR<RoleUpdateWithoutUsersInput, RoleUncheckedUpdateWithoutUsersInput>
     create: XOR<RoleCreateWithoutUsersInput, RoleUncheckedCreateWithoutUsersInput>
@@ -47734,6 +58357,827 @@ export namespace Prisma {
     data: XOR<ContentCompletionUpdateManyMutationInput, ContentCompletionUncheckedUpdateManyWithoutUserInput>
   }
 
+  export type ActiveProtocolUpsertWithWhereUniqueWithoutActivatedByInput = {
+    where: ActiveProtocolWhereUniqueInput
+    update: XOR<ActiveProtocolUpdateWithoutActivatedByInput, ActiveProtocolUncheckedUpdateWithoutActivatedByInput>
+    create: XOR<ActiveProtocolCreateWithoutActivatedByInput, ActiveProtocolUncheckedCreateWithoutActivatedByInput>
+  }
+
+  export type ActiveProtocolUpdateWithWhereUniqueWithoutActivatedByInput = {
+    where: ActiveProtocolWhereUniqueInput
+    data: XOR<ActiveProtocolUpdateWithoutActivatedByInput, ActiveProtocolUncheckedUpdateWithoutActivatedByInput>
+  }
+
+  export type ActiveProtocolUpdateManyWithWhereWithoutActivatedByInput = {
+    where: ActiveProtocolScalarWhereInput
+    data: XOR<ActiveProtocolUpdateManyMutationInput, ActiveProtocolUncheckedUpdateManyWithoutActivatedByInput>
+  }
+
+  export type ProtocolDoseUpsertWithWhereUniqueWithoutAdministeredByInput = {
+    where: ProtocolDoseWhereUniqueInput
+    update: XOR<ProtocolDoseUpdateWithoutAdministeredByInput, ProtocolDoseUncheckedUpdateWithoutAdministeredByInput>
+    create: XOR<ProtocolDoseCreateWithoutAdministeredByInput, ProtocolDoseUncheckedCreateWithoutAdministeredByInput>
+  }
+
+  export type ProtocolDoseUpdateWithWhereUniqueWithoutAdministeredByInput = {
+    where: ProtocolDoseWhereUniqueInput
+    data: XOR<ProtocolDoseUpdateWithoutAdministeredByInput, ProtocolDoseUncheckedUpdateWithoutAdministeredByInput>
+  }
+
+  export type ProtocolDoseUpdateManyWithWhereWithoutAdministeredByInput = {
+    where: ProtocolDoseScalarWhereInput
+    data: XOR<ProtocolDoseUpdateManyMutationInput, ProtocolDoseUncheckedUpdateManyWithoutAdministeredByInput>
+  }
+
+  export type ProtocolDoseScalarWhereInput = {
+    AND?: ProtocolDoseScalarWhereInput | ProtocolDoseScalarWhereInput[]
+    OR?: ProtocolDoseScalarWhereInput[]
+    NOT?: ProtocolDoseScalarWhereInput | ProtocolDoseScalarWhereInput[]
+    id?: IntFilter<"ProtocolDose"> | number
+    activeProtocolId?: IntFilter<"ProtocolDose"> | number
+    protocolDrugId?: IntFilter<"ProtocolDose"> | number
+    scheduledDate?: DateTimeFilter<"ProtocolDose"> | Date | string
+    doseNumberInDay?: IntFilter<"ProtocolDose"> | number
+    status?: EnumDoseStatusFilter<"ProtocolDose"> | $Enums.DoseStatus
+    administeredAt?: DateTimeNullableFilter<"ProtocolDose"> | Date | string | null
+    administeredById?: IntNullableFilter<"ProtocolDose"> | number | null
+    notes?: StringFilter<"ProtocolDose"> | string
+  }
+
+  export type ProtocolDrugCreateWithoutProtocolInput = {
+    drugName: string
+    dosage?: string
+    route?: string
+    startDayOffset: number
+    endDayOffset: number
+    frequencyPerDay: number
+    instructions?: string
+    sortOrder?: number
+    doses?: ProtocolDoseCreateNestedManyWithoutProtocolDrugInput
+  }
+
+  export type ProtocolDrugUncheckedCreateWithoutProtocolInput = {
+    id?: number
+    drugName: string
+    dosage?: string
+    route?: string
+    startDayOffset: number
+    endDayOffset: number
+    frequencyPerDay: number
+    instructions?: string
+    sortOrder?: number
+    doses?: ProtocolDoseUncheckedCreateNestedManyWithoutProtocolDrugInput
+  }
+
+  export type ProtocolDrugCreateOrConnectWithoutProtocolInput = {
+    where: ProtocolDrugWhereUniqueInput
+    create: XOR<ProtocolDrugCreateWithoutProtocolInput, ProtocolDrugUncheckedCreateWithoutProtocolInput>
+  }
+
+  export type ProtocolDrugCreateManyProtocolInputEnvelope = {
+    data: ProtocolDrugCreateManyProtocolInput | ProtocolDrugCreateManyProtocolInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ActiveProtocolCreateWithoutProtocolInput = {
+    activationDate: Date | string
+    status?: $Enums.ActiveProtocolStatus
+    kitten: KittenCreateNestedOneWithoutActiveProtocolsInput
+    activatedBy: UserCreateNestedOneWithoutActivatedProtocolsInput
+    doses?: ProtocolDoseCreateNestedManyWithoutActiveProtocolInput
+  }
+
+  export type ActiveProtocolUncheckedCreateWithoutProtocolInput = {
+    id?: number
+    kittenId: number
+    activatedById: number
+    activationDate: Date | string
+    status?: $Enums.ActiveProtocolStatus
+    doses?: ProtocolDoseUncheckedCreateNestedManyWithoutActiveProtocolInput
+  }
+
+  export type ActiveProtocolCreateOrConnectWithoutProtocolInput = {
+    where: ActiveProtocolWhereUniqueInput
+    create: XOR<ActiveProtocolCreateWithoutProtocolInput, ActiveProtocolUncheckedCreateWithoutProtocolInput>
+  }
+
+  export type ActiveProtocolCreateManyProtocolInputEnvelope = {
+    data: ActiveProtocolCreateManyProtocolInput | ActiveProtocolCreateManyProtocolInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ProtocolDrugUpsertWithWhereUniqueWithoutProtocolInput = {
+    where: ProtocolDrugWhereUniqueInput
+    update: XOR<ProtocolDrugUpdateWithoutProtocolInput, ProtocolDrugUncheckedUpdateWithoutProtocolInput>
+    create: XOR<ProtocolDrugCreateWithoutProtocolInput, ProtocolDrugUncheckedCreateWithoutProtocolInput>
+  }
+
+  export type ProtocolDrugUpdateWithWhereUniqueWithoutProtocolInput = {
+    where: ProtocolDrugWhereUniqueInput
+    data: XOR<ProtocolDrugUpdateWithoutProtocolInput, ProtocolDrugUncheckedUpdateWithoutProtocolInput>
+  }
+
+  export type ProtocolDrugUpdateManyWithWhereWithoutProtocolInput = {
+    where: ProtocolDrugScalarWhereInput
+    data: XOR<ProtocolDrugUpdateManyMutationInput, ProtocolDrugUncheckedUpdateManyWithoutProtocolInput>
+  }
+
+  export type ProtocolDrugScalarWhereInput = {
+    AND?: ProtocolDrugScalarWhereInput | ProtocolDrugScalarWhereInput[]
+    OR?: ProtocolDrugScalarWhereInput[]
+    NOT?: ProtocolDrugScalarWhereInput | ProtocolDrugScalarWhereInput[]
+    id?: IntFilter<"ProtocolDrug"> | number
+    protocolId?: IntFilter<"ProtocolDrug"> | number
+    drugName?: StringFilter<"ProtocolDrug"> | string
+    dosage?: StringFilter<"ProtocolDrug"> | string
+    route?: StringFilter<"ProtocolDrug"> | string
+    startDayOffset?: IntFilter<"ProtocolDrug"> | number
+    endDayOffset?: IntFilter<"ProtocolDrug"> | number
+    frequencyPerDay?: IntFilter<"ProtocolDrug"> | number
+    instructions?: StringFilter<"ProtocolDrug"> | string
+    sortOrder?: IntFilter<"ProtocolDrug"> | number
+  }
+
+  export type ActiveProtocolUpsertWithWhereUniqueWithoutProtocolInput = {
+    where: ActiveProtocolWhereUniqueInput
+    update: XOR<ActiveProtocolUpdateWithoutProtocolInput, ActiveProtocolUncheckedUpdateWithoutProtocolInput>
+    create: XOR<ActiveProtocolCreateWithoutProtocolInput, ActiveProtocolUncheckedCreateWithoutProtocolInput>
+  }
+
+  export type ActiveProtocolUpdateWithWhereUniqueWithoutProtocolInput = {
+    where: ActiveProtocolWhereUniqueInput
+    data: XOR<ActiveProtocolUpdateWithoutProtocolInput, ActiveProtocolUncheckedUpdateWithoutProtocolInput>
+  }
+
+  export type ActiveProtocolUpdateManyWithWhereWithoutProtocolInput = {
+    where: ActiveProtocolScalarWhereInput
+    data: XOR<ActiveProtocolUpdateManyMutationInput, ActiveProtocolUncheckedUpdateManyWithoutProtocolInput>
+  }
+
+  export type ProtocolCreateWithoutDrugsInput = {
+    name: string
+    description?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    activeProtocols?: ActiveProtocolCreateNestedManyWithoutProtocolInput
+  }
+
+  export type ProtocolUncheckedCreateWithoutDrugsInput = {
+    id?: number
+    name: string
+    description?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    activeProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutProtocolInput
+  }
+
+  export type ProtocolCreateOrConnectWithoutDrugsInput = {
+    where: ProtocolWhereUniqueInput
+    create: XOR<ProtocolCreateWithoutDrugsInput, ProtocolUncheckedCreateWithoutDrugsInput>
+  }
+
+  export type ProtocolDoseCreateWithoutProtocolDrugInput = {
+    scheduledDate: Date | string
+    doseNumberInDay: number
+    status?: $Enums.DoseStatus
+    administeredAt?: Date | string | null
+    notes?: string
+    activeProtocol: ActiveProtocolCreateNestedOneWithoutDosesInput
+    administeredBy?: UserCreateNestedOneWithoutAdministeredProtocolDosesInput
+  }
+
+  export type ProtocolDoseUncheckedCreateWithoutProtocolDrugInput = {
+    id?: number
+    activeProtocolId: number
+    scheduledDate: Date | string
+    doseNumberInDay: number
+    status?: $Enums.DoseStatus
+    administeredAt?: Date | string | null
+    administeredById?: number | null
+    notes?: string
+  }
+
+  export type ProtocolDoseCreateOrConnectWithoutProtocolDrugInput = {
+    where: ProtocolDoseWhereUniqueInput
+    create: XOR<ProtocolDoseCreateWithoutProtocolDrugInput, ProtocolDoseUncheckedCreateWithoutProtocolDrugInput>
+  }
+
+  export type ProtocolDoseCreateManyProtocolDrugInputEnvelope = {
+    data: ProtocolDoseCreateManyProtocolDrugInput | ProtocolDoseCreateManyProtocolDrugInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ProtocolUpsertWithoutDrugsInput = {
+    update: XOR<ProtocolUpdateWithoutDrugsInput, ProtocolUncheckedUpdateWithoutDrugsInput>
+    create: XOR<ProtocolCreateWithoutDrugsInput, ProtocolUncheckedCreateWithoutDrugsInput>
+    where?: ProtocolWhereInput
+  }
+
+  export type ProtocolUpdateToOneWithWhereWithoutDrugsInput = {
+    where?: ProtocolWhereInput
+    data: XOR<ProtocolUpdateWithoutDrugsInput, ProtocolUncheckedUpdateWithoutDrugsInput>
+  }
+
+  export type ProtocolUpdateWithoutDrugsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    activeProtocols?: ActiveProtocolUpdateManyWithoutProtocolNestedInput
+  }
+
+  export type ProtocolUncheckedUpdateWithoutDrugsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    activeProtocols?: ActiveProtocolUncheckedUpdateManyWithoutProtocolNestedInput
+  }
+
+  export type ProtocolDoseUpsertWithWhereUniqueWithoutProtocolDrugInput = {
+    where: ProtocolDoseWhereUniqueInput
+    update: XOR<ProtocolDoseUpdateWithoutProtocolDrugInput, ProtocolDoseUncheckedUpdateWithoutProtocolDrugInput>
+    create: XOR<ProtocolDoseCreateWithoutProtocolDrugInput, ProtocolDoseUncheckedCreateWithoutProtocolDrugInput>
+  }
+
+  export type ProtocolDoseUpdateWithWhereUniqueWithoutProtocolDrugInput = {
+    where: ProtocolDoseWhereUniqueInput
+    data: XOR<ProtocolDoseUpdateWithoutProtocolDrugInput, ProtocolDoseUncheckedUpdateWithoutProtocolDrugInput>
+  }
+
+  export type ProtocolDoseUpdateManyWithWhereWithoutProtocolDrugInput = {
+    where: ProtocolDoseScalarWhereInput
+    data: XOR<ProtocolDoseUpdateManyMutationInput, ProtocolDoseUncheckedUpdateManyWithoutProtocolDrugInput>
+  }
+
+  export type ProtocolCreateWithoutActiveProtocolsInput = {
+    name: string
+    description?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    drugs?: ProtocolDrugCreateNestedManyWithoutProtocolInput
+  }
+
+  export type ProtocolUncheckedCreateWithoutActiveProtocolsInput = {
+    id?: number
+    name: string
+    description?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    drugs?: ProtocolDrugUncheckedCreateNestedManyWithoutProtocolInput
+  }
+
+  export type ProtocolCreateOrConnectWithoutActiveProtocolsInput = {
+    where: ProtocolWhereUniqueInput
+    create: XOR<ProtocolCreateWithoutActiveProtocolsInput, ProtocolUncheckedCreateWithoutActiveProtocolsInput>
+  }
+
+  export type KittenCreateWithoutActiveProtocolsInput = {
+    name: string
+    status?: string
+    rescueStory?: string
+    dateOfBirth?: Date | string | null
+    sex?: string
+    fixedStatus?: string
+    breed: string
+    color?: string
+    fivFelvStatus?: string | null
+    specialNeeds?: string | null
+    microchipNumber?: string
+    primaryPhotoUrl?: string | null
+    intakeDate?: Date | string | null
+    intakeSource?: string
+    notes?: string
+    internalNotes?: string
+    isListedOnWebsite?: boolean
+    websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
+    createdAt?: Date | string
+    litter?: LitterCreateNestedOneWithoutKittensInput
+    currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
+    placements?: PlacementCreateNestedManyWithoutKittenInput
+    weightLogs?: WeightLogCreateNestedManyWithoutKittenInput
+    vaccines?: VaccineCreateNestedManyWithoutKittenInput
+    medications?: MedicationCreateNestedManyWithoutKittenInput
+    vetAppointments?: VetAppointmentCreateNestedManyWithoutKittenInput
+    documents?: DocumentCreateNestedManyWithoutKittenInput
+    sponsorships?: SponsorshipCreateNestedManyWithoutKittenInput
+    updates?: UpdateCreateNestedManyWithoutKittenInput
+    transactions?: TransactionCreateNestedManyWithoutKittenInput
+    contracts?: ContractCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsCreateNestedManyWithoutKittenInput
+  }
+
+  export type KittenUncheckedCreateWithoutActiveProtocolsInput = {
+    id?: number
+    name: string
+    litterId?: number | null
+    status?: string
+    rescueStory?: string
+    dateOfBirth?: Date | string | null
+    sex?: string
+    fixedStatus?: string
+    breed: string
+    color?: string
+    fivFelvStatus?: string | null
+    specialNeeds?: string | null
+    microchipNumber?: string
+    primaryPhotoUrl?: string | null
+    intakeDate?: Date | string | null
+    intakeSource?: string
+    notes?: string
+    internalNotes?: string
+    isListedOnWebsite?: boolean
+    websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
+    currentFosterId?: number | null
+    createdAt?: Date | string
+    placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
+    weightLogs?: WeightLogUncheckedCreateNestedManyWithoutKittenInput
+    vaccines?: VaccineUncheckedCreateNestedManyWithoutKittenInput
+    medications?: MedicationUncheckedCreateNestedManyWithoutKittenInput
+    vetAppointments?: VetAppointmentUncheckedCreateNestedManyWithoutKittenInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutKittenInput
+    sponsorships?: SponsorshipUncheckedCreateNestedManyWithoutKittenInput
+    updates?: UpdateUncheckedCreateNestedManyWithoutKittenInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutKittenInput
+    contracts?: ContractUncheckedCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsUncheckedCreateNestedManyWithoutKittenInput
+  }
+
+  export type KittenCreateOrConnectWithoutActiveProtocolsInput = {
+    where: KittenWhereUniqueInput
+    create: XOR<KittenCreateWithoutActiveProtocolsInput, KittenUncheckedCreateWithoutActiveProtocolsInput>
+  }
+
+  export type UserCreateWithoutActivatedProtocolsInput = {
+    email: string
+    passwordHash: string
+    firstName: string
+    lastName: string
+    isActive?: boolean
+    fosterId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastLoginAt?: Date | string | null
+    role: RoleCreateNestedOneWithoutUsersInput
+    rejectedApplications?: ApplicationCreateNestedManyWithoutRejectedByInput
+    completedChecklistItems?: OnboardingChecklistCreateNestedManyWithoutCompletedByUserInput
+    contentCompletions?: ContentCompletionCreateNestedManyWithoutUserInput
+    administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
+  }
+
+  export type UserUncheckedCreateWithoutActivatedProtocolsInput = {
+    id?: number
+    email: string
+    passwordHash: string
+    firstName: string
+    lastName: string
+    isActive?: boolean
+    roleId: number
+    fosterId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastLoginAt?: Date | string | null
+    rejectedApplications?: ApplicationUncheckedCreateNestedManyWithoutRejectedByInput
+    completedChecklistItems?: OnboardingChecklistUncheckedCreateNestedManyWithoutCompletedByUserInput
+    contentCompletions?: ContentCompletionUncheckedCreateNestedManyWithoutUserInput
+    administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
+  }
+
+  export type UserCreateOrConnectWithoutActivatedProtocolsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutActivatedProtocolsInput, UserUncheckedCreateWithoutActivatedProtocolsInput>
+  }
+
+  export type ProtocolDoseCreateWithoutActiveProtocolInput = {
+    scheduledDate: Date | string
+    doseNumberInDay: number
+    status?: $Enums.DoseStatus
+    administeredAt?: Date | string | null
+    notes?: string
+    protocolDrug: ProtocolDrugCreateNestedOneWithoutDosesInput
+    administeredBy?: UserCreateNestedOneWithoutAdministeredProtocolDosesInput
+  }
+
+  export type ProtocolDoseUncheckedCreateWithoutActiveProtocolInput = {
+    id?: number
+    protocolDrugId: number
+    scheduledDate: Date | string
+    doseNumberInDay: number
+    status?: $Enums.DoseStatus
+    administeredAt?: Date | string | null
+    administeredById?: number | null
+    notes?: string
+  }
+
+  export type ProtocolDoseCreateOrConnectWithoutActiveProtocolInput = {
+    where: ProtocolDoseWhereUniqueInput
+    create: XOR<ProtocolDoseCreateWithoutActiveProtocolInput, ProtocolDoseUncheckedCreateWithoutActiveProtocolInput>
+  }
+
+  export type ProtocolDoseCreateManyActiveProtocolInputEnvelope = {
+    data: ProtocolDoseCreateManyActiveProtocolInput | ProtocolDoseCreateManyActiveProtocolInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ProtocolUpsertWithoutActiveProtocolsInput = {
+    update: XOR<ProtocolUpdateWithoutActiveProtocolsInput, ProtocolUncheckedUpdateWithoutActiveProtocolsInput>
+    create: XOR<ProtocolCreateWithoutActiveProtocolsInput, ProtocolUncheckedCreateWithoutActiveProtocolsInput>
+    where?: ProtocolWhereInput
+  }
+
+  export type ProtocolUpdateToOneWithWhereWithoutActiveProtocolsInput = {
+    where?: ProtocolWhereInput
+    data: XOR<ProtocolUpdateWithoutActiveProtocolsInput, ProtocolUncheckedUpdateWithoutActiveProtocolsInput>
+  }
+
+  export type ProtocolUpdateWithoutActiveProtocolsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    drugs?: ProtocolDrugUpdateManyWithoutProtocolNestedInput
+  }
+
+  export type ProtocolUncheckedUpdateWithoutActiveProtocolsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    drugs?: ProtocolDrugUncheckedUpdateManyWithoutProtocolNestedInput
+  }
+
+  export type KittenUpsertWithoutActiveProtocolsInput = {
+    update: XOR<KittenUpdateWithoutActiveProtocolsInput, KittenUncheckedUpdateWithoutActiveProtocolsInput>
+    create: XOR<KittenCreateWithoutActiveProtocolsInput, KittenUncheckedCreateWithoutActiveProtocolsInput>
+    where?: KittenWhereInput
+  }
+
+  export type KittenUpdateToOneWithWhereWithoutActiveProtocolsInput = {
+    where?: KittenWhereInput
+    data: XOR<KittenUpdateWithoutActiveProtocolsInput, KittenUncheckedUpdateWithoutActiveProtocolsInput>
+  }
+
+  export type KittenUpdateWithoutActiveProtocolsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rescueStory?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sex?: StringFieldUpdateOperationsInput | string
+    fixedStatus?: StringFieldUpdateOperationsInput | string
+    breed?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
+    microchipNumber?: StringFieldUpdateOperationsInput | string
+    primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    intakeSource?: StringFieldUpdateOperationsInput | string
+    notes?: StringFieldUpdateOperationsInput | string
+    internalNotes?: StringFieldUpdateOperationsInput | string
+    isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    litter?: LitterUpdateOneWithoutKittensNestedInput
+    currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
+    placements?: PlacementUpdateManyWithoutKittenNestedInput
+    weightLogs?: WeightLogUpdateManyWithoutKittenNestedInput
+    vaccines?: VaccineUpdateManyWithoutKittenNestedInput
+    medications?: MedicationUpdateManyWithoutKittenNestedInput
+    vetAppointments?: VetAppointmentUpdateManyWithoutKittenNestedInput
+    documents?: DocumentUpdateManyWithoutKittenNestedInput
+    sponsorships?: SponsorshipUpdateManyWithoutKittenNestedInput
+    updates?: UpdateUpdateManyWithoutKittenNestedInput
+    transactions?: TransactionUpdateManyWithoutKittenNestedInput
+    contracts?: ContractUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUpdateManyWithoutKittenNestedInput
+  }
+
+  export type KittenUncheckedUpdateWithoutActiveProtocolsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    litterId?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    rescueStory?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sex?: StringFieldUpdateOperationsInput | string
+    fixedStatus?: StringFieldUpdateOperationsInput | string
+    breed?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
+    microchipNumber?: StringFieldUpdateOperationsInput | string
+    primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    intakeSource?: StringFieldUpdateOperationsInput | string
+    notes?: StringFieldUpdateOperationsInput | string
+    internalNotes?: StringFieldUpdateOperationsInput | string
+    isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
+    weightLogs?: WeightLogUncheckedUpdateManyWithoutKittenNestedInput
+    vaccines?: VaccineUncheckedUpdateManyWithoutKittenNestedInput
+    medications?: MedicationUncheckedUpdateManyWithoutKittenNestedInput
+    vetAppointments?: VetAppointmentUncheckedUpdateManyWithoutKittenNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutKittenNestedInput
+    sponsorships?: SponsorshipUncheckedUpdateManyWithoutKittenNestedInput
+    updates?: UpdateUncheckedUpdateManyWithoutKittenNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutKittenNestedInput
+    contracts?: ContractUncheckedUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUncheckedUpdateManyWithoutKittenNestedInput
+  }
+
+  export type UserUpsertWithoutActivatedProtocolsInput = {
+    update: XOR<UserUpdateWithoutActivatedProtocolsInput, UserUncheckedUpdateWithoutActivatedProtocolsInput>
+    create: XOR<UserCreateWithoutActivatedProtocolsInput, UserUncheckedCreateWithoutActivatedProtocolsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutActivatedProtocolsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutActivatedProtocolsInput, UserUncheckedUpdateWithoutActivatedProtocolsInput>
+  }
+
+  export type UserUpdateWithoutActivatedProtocolsInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    fosterId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: RoleUpdateOneRequiredWithoutUsersNestedInput
+    rejectedApplications?: ApplicationUpdateManyWithoutRejectedByNestedInput
+    completedChecklistItems?: OnboardingChecklistUpdateManyWithoutCompletedByUserNestedInput
+    contentCompletions?: ContentCompletionUpdateManyWithoutUserNestedInput
+    administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutActivatedProtocolsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    roleId?: IntFieldUpdateOperationsInput | number
+    fosterId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedApplications?: ApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
+    completedChecklistItems?: OnboardingChecklistUncheckedUpdateManyWithoutCompletedByUserNestedInput
+    contentCompletions?: ContentCompletionUncheckedUpdateManyWithoutUserNestedInput
+    administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
+  }
+
+  export type ProtocolDoseUpsertWithWhereUniqueWithoutActiveProtocolInput = {
+    where: ProtocolDoseWhereUniqueInput
+    update: XOR<ProtocolDoseUpdateWithoutActiveProtocolInput, ProtocolDoseUncheckedUpdateWithoutActiveProtocolInput>
+    create: XOR<ProtocolDoseCreateWithoutActiveProtocolInput, ProtocolDoseUncheckedCreateWithoutActiveProtocolInput>
+  }
+
+  export type ProtocolDoseUpdateWithWhereUniqueWithoutActiveProtocolInput = {
+    where: ProtocolDoseWhereUniqueInput
+    data: XOR<ProtocolDoseUpdateWithoutActiveProtocolInput, ProtocolDoseUncheckedUpdateWithoutActiveProtocolInput>
+  }
+
+  export type ProtocolDoseUpdateManyWithWhereWithoutActiveProtocolInput = {
+    where: ProtocolDoseScalarWhereInput
+    data: XOR<ProtocolDoseUpdateManyMutationInput, ProtocolDoseUncheckedUpdateManyWithoutActiveProtocolInput>
+  }
+
+  export type ActiveProtocolCreateWithoutDosesInput = {
+    activationDate: Date | string
+    status?: $Enums.ActiveProtocolStatus
+    protocol: ProtocolCreateNestedOneWithoutActiveProtocolsInput
+    kitten: KittenCreateNestedOneWithoutActiveProtocolsInput
+    activatedBy: UserCreateNestedOneWithoutActivatedProtocolsInput
+  }
+
+  export type ActiveProtocolUncheckedCreateWithoutDosesInput = {
+    id?: number
+    protocolId: number
+    kittenId: number
+    activatedById: number
+    activationDate: Date | string
+    status?: $Enums.ActiveProtocolStatus
+  }
+
+  export type ActiveProtocolCreateOrConnectWithoutDosesInput = {
+    where: ActiveProtocolWhereUniqueInput
+    create: XOR<ActiveProtocolCreateWithoutDosesInput, ActiveProtocolUncheckedCreateWithoutDosesInput>
+  }
+
+  export type ProtocolDrugCreateWithoutDosesInput = {
+    drugName: string
+    dosage?: string
+    route?: string
+    startDayOffset: number
+    endDayOffset: number
+    frequencyPerDay: number
+    instructions?: string
+    sortOrder?: number
+    protocol: ProtocolCreateNestedOneWithoutDrugsInput
+  }
+
+  export type ProtocolDrugUncheckedCreateWithoutDosesInput = {
+    id?: number
+    protocolId: number
+    drugName: string
+    dosage?: string
+    route?: string
+    startDayOffset: number
+    endDayOffset: number
+    frequencyPerDay: number
+    instructions?: string
+    sortOrder?: number
+  }
+
+  export type ProtocolDrugCreateOrConnectWithoutDosesInput = {
+    where: ProtocolDrugWhereUniqueInput
+    create: XOR<ProtocolDrugCreateWithoutDosesInput, ProtocolDrugUncheckedCreateWithoutDosesInput>
+  }
+
+  export type UserCreateWithoutAdministeredProtocolDosesInput = {
+    email: string
+    passwordHash: string
+    firstName: string
+    lastName: string
+    isActive?: boolean
+    fosterId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastLoginAt?: Date | string | null
+    role: RoleCreateNestedOneWithoutUsersInput
+    rejectedApplications?: ApplicationCreateNestedManyWithoutRejectedByInput
+    completedChecklistItems?: OnboardingChecklistCreateNestedManyWithoutCompletedByUserInput
+    contentCompletions?: ContentCompletionCreateNestedManyWithoutUserInput
+    activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutAdministeredProtocolDosesInput = {
+    id?: number
+    email: string
+    passwordHash: string
+    firstName: string
+    lastName: string
+    isActive?: boolean
+    roleId: number
+    fosterId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastLoginAt?: Date | string | null
+    rejectedApplications?: ApplicationUncheckedCreateNestedManyWithoutRejectedByInput
+    completedChecklistItems?: OnboardingChecklistUncheckedCreateNestedManyWithoutCompletedByUserInput
+    contentCompletions?: ContentCompletionUncheckedCreateNestedManyWithoutUserInput
+    activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutAdministeredProtocolDosesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAdministeredProtocolDosesInput, UserUncheckedCreateWithoutAdministeredProtocolDosesInput>
+  }
+
+  export type ActiveProtocolUpsertWithoutDosesInput = {
+    update: XOR<ActiveProtocolUpdateWithoutDosesInput, ActiveProtocolUncheckedUpdateWithoutDosesInput>
+    create: XOR<ActiveProtocolCreateWithoutDosesInput, ActiveProtocolUncheckedCreateWithoutDosesInput>
+    where?: ActiveProtocolWhereInput
+  }
+
+  export type ActiveProtocolUpdateToOneWithWhereWithoutDosesInput = {
+    where?: ActiveProtocolWhereInput
+    data: XOR<ActiveProtocolUpdateWithoutDosesInput, ActiveProtocolUncheckedUpdateWithoutDosesInput>
+  }
+
+  export type ActiveProtocolUpdateWithoutDosesInput = {
+    activationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumActiveProtocolStatusFieldUpdateOperationsInput | $Enums.ActiveProtocolStatus
+    protocol?: ProtocolUpdateOneRequiredWithoutActiveProtocolsNestedInput
+    kitten?: KittenUpdateOneRequiredWithoutActiveProtocolsNestedInput
+    activatedBy?: UserUpdateOneRequiredWithoutActivatedProtocolsNestedInput
+  }
+
+  export type ActiveProtocolUncheckedUpdateWithoutDosesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolId?: IntFieldUpdateOperationsInput | number
+    kittenId?: IntFieldUpdateOperationsInput | number
+    activatedById?: IntFieldUpdateOperationsInput | number
+    activationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumActiveProtocolStatusFieldUpdateOperationsInput | $Enums.ActiveProtocolStatus
+  }
+
+  export type ProtocolDrugUpsertWithoutDosesInput = {
+    update: XOR<ProtocolDrugUpdateWithoutDosesInput, ProtocolDrugUncheckedUpdateWithoutDosesInput>
+    create: XOR<ProtocolDrugCreateWithoutDosesInput, ProtocolDrugUncheckedCreateWithoutDosesInput>
+    where?: ProtocolDrugWhereInput
+  }
+
+  export type ProtocolDrugUpdateToOneWithWhereWithoutDosesInput = {
+    where?: ProtocolDrugWhereInput
+    data: XOR<ProtocolDrugUpdateWithoutDosesInput, ProtocolDrugUncheckedUpdateWithoutDosesInput>
+  }
+
+  export type ProtocolDrugUpdateWithoutDosesInput = {
+    drugName?: StringFieldUpdateOperationsInput | string
+    dosage?: StringFieldUpdateOperationsInput | string
+    route?: StringFieldUpdateOperationsInput | string
+    startDayOffset?: IntFieldUpdateOperationsInput | number
+    endDayOffset?: IntFieldUpdateOperationsInput | number
+    frequencyPerDay?: IntFieldUpdateOperationsInput | number
+    instructions?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    protocol?: ProtocolUpdateOneRequiredWithoutDrugsNestedInput
+  }
+
+  export type ProtocolDrugUncheckedUpdateWithoutDosesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolId?: IntFieldUpdateOperationsInput | number
+    drugName?: StringFieldUpdateOperationsInput | string
+    dosage?: StringFieldUpdateOperationsInput | string
+    route?: StringFieldUpdateOperationsInput | string
+    startDayOffset?: IntFieldUpdateOperationsInput | number
+    endDayOffset?: IntFieldUpdateOperationsInput | number
+    frequencyPerDay?: IntFieldUpdateOperationsInput | number
+    instructions?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type UserUpsertWithoutAdministeredProtocolDosesInput = {
+    update: XOR<UserUpdateWithoutAdministeredProtocolDosesInput, UserUncheckedUpdateWithoutAdministeredProtocolDosesInput>
+    create: XOR<UserCreateWithoutAdministeredProtocolDosesInput, UserUncheckedCreateWithoutAdministeredProtocolDosesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAdministeredProtocolDosesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAdministeredProtocolDosesInput, UserUncheckedUpdateWithoutAdministeredProtocolDosesInput>
+  }
+
+  export type UserUpdateWithoutAdministeredProtocolDosesInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    fosterId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: RoleUpdateOneRequiredWithoutUsersNestedInput
+    rejectedApplications?: ApplicationUpdateManyWithoutRejectedByNestedInput
+    completedChecklistItems?: OnboardingChecklistUpdateManyWithoutCompletedByUserNestedInput
+    contentCompletions?: ContentCompletionUpdateManyWithoutUserNestedInput
+    activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAdministeredProtocolDosesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    roleId?: IntFieldUpdateOperationsInput | number
+    fosterId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedApplications?: ApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
+    completedChecklistItems?: OnboardingChecklistUncheckedUpdateManyWithoutCompletedByUserNestedInput
+    contentCompletions?: ContentCompletionUncheckedUpdateManyWithoutUserNestedInput
+    activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
+  }
+
   export type KittenCreateWithoutTransactionsInput = {
     name: string
     status?: string
@@ -47769,6 +59213,8 @@ export namespace Prisma {
     sponsorships?: SponsorshipCreateNestedManyWithoutKittenInput
     updates?: UpdateCreateNestedManyWithoutKittenInput
     contracts?: ContractCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsCreateNestedManyWithoutKittenInput
   }
 
   export type KittenUncheckedCreateWithoutTransactionsInput = {
@@ -47807,6 +59253,8 @@ export namespace Prisma {
     sponsorships?: SponsorshipUncheckedCreateNestedManyWithoutKittenInput
     updates?: UpdateUncheckedCreateNestedManyWithoutKittenInput
     contracts?: ContractUncheckedCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsUncheckedCreateNestedManyWithoutKittenInput
   }
 
   export type KittenCreateOrConnectWithoutTransactionsInput = {
@@ -47860,6 +59308,8 @@ export namespace Prisma {
     sponsorships?: SponsorshipUpdateManyWithoutKittenNestedInput
     updates?: UpdateUpdateManyWithoutKittenNestedInput
     contracts?: ContractUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUpdateManyWithoutKittenNestedInput
   }
 
   export type KittenUncheckedUpdateWithoutTransactionsInput = {
@@ -47898,6 +59348,8 @@ export namespace Prisma {
     sponsorships?: SponsorshipUncheckedUpdateManyWithoutKittenNestedInput
     updates?: UpdateUncheckedUpdateManyWithoutKittenNestedInput
     contracts?: ContractUncheckedUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUncheckedUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUncheckedUpdateManyWithoutKittenNestedInput
   }
 
   export type KittenCreateManyLitterInput = {
@@ -47963,6 +59415,8 @@ export namespace Prisma {
     updates?: UpdateUpdateManyWithoutKittenNestedInput
     transactions?: TransactionUpdateManyWithoutKittenNestedInput
     contracts?: ContractUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUpdateManyWithoutKittenNestedInput
   }
 
   export type KittenUncheckedUpdateWithoutLitterInput = {
@@ -48001,6 +59455,8 @@ export namespace Prisma {
     updates?: UpdateUncheckedUpdateManyWithoutKittenNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutKittenNestedInput
     contracts?: ContractUncheckedUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUncheckedUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUncheckedUpdateManyWithoutKittenNestedInput
   }
 
   export type KittenUncheckedUpdateManyWithoutLitterInput = {
@@ -48103,6 +59559,8 @@ export namespace Prisma {
     updates?: UpdateUpdateManyWithoutKittenNestedInput
     transactions?: TransactionUpdateManyWithoutKittenNestedInput
     contracts?: ContractUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUpdateManyWithoutKittenNestedInput
   }
 
   export type KittenUncheckedUpdateWithoutCurrentFosterInput = {
@@ -48141,6 +59599,8 @@ export namespace Prisma {
     updates?: UpdateUncheckedUpdateManyWithoutKittenNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutKittenNestedInput
     contracts?: ContractUncheckedUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUncheckedUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUncheckedUpdateManyWithoutKittenNestedInput
   }
 
   export type KittenUncheckedUpdateManyWithoutCurrentFosterInput = {
@@ -48306,6 +59766,21 @@ export namespace Prisma {
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
     createdAt?: Date | string
+  }
+
+  export type ActiveProtocolCreateManyKittenInput = {
+    id?: number
+    protocolId: number
+    activatedById: number
+    activationDate: Date | string
+    status?: $Enums.ActiveProtocolStatus
+  }
+
+  export type EventCatsCreateManyKittenInput = {
+    id?: number
+    eventId: number
+    addedAt?: Date | string
+    notes?: string | null
   }
 
   export type PlacementUpdateWithoutKittenInput = {
@@ -48631,6 +60106,51 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ActiveProtocolUpdateWithoutKittenInput = {
+    activationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumActiveProtocolStatusFieldUpdateOperationsInput | $Enums.ActiveProtocolStatus
+    protocol?: ProtocolUpdateOneRequiredWithoutActiveProtocolsNestedInput
+    activatedBy?: UserUpdateOneRequiredWithoutActivatedProtocolsNestedInput
+    doses?: ProtocolDoseUpdateManyWithoutActiveProtocolNestedInput
+  }
+
+  export type ActiveProtocolUncheckedUpdateWithoutKittenInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolId?: IntFieldUpdateOperationsInput | number
+    activatedById?: IntFieldUpdateOperationsInput | number
+    activationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumActiveProtocolStatusFieldUpdateOperationsInput | $Enums.ActiveProtocolStatus
+    doses?: ProtocolDoseUncheckedUpdateManyWithoutActiveProtocolNestedInput
+  }
+
+  export type ActiveProtocolUncheckedUpdateManyWithoutKittenInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolId?: IntFieldUpdateOperationsInput | number
+    activatedById?: IntFieldUpdateOperationsInput | number
+    activationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumActiveProtocolStatusFieldUpdateOperationsInput | $Enums.ActiveProtocolStatus
+  }
+
+  export type EventCatsUpdateWithoutKittenInput = {
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    event?: EventUpdateOneRequiredWithoutEventCatsNestedInput
+  }
+
+  export type EventCatsUncheckedUpdateWithoutKittenInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    eventId?: IntFieldUpdateOperationsInput | number
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type EventCatsUncheckedUpdateManyWithoutKittenInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    eventId?: IntFieldUpdateOperationsInput | number
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type ContractCreateManyApplicationInput = {
     id?: number
     type: $Enums.ContractType
@@ -48783,6 +60303,60 @@ export namespace Prisma {
     completedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type EventCatsCreateManyEventInput = {
+    id?: number
+    kittenId: number
+    addedAt?: Date | string
+    notes?: string | null
+  }
+
+  export type EventRSVPCreateManyEventInput = {
+    id?: number
+    name: string
+    email: string
+    createdAt?: Date | string
+  }
+
+  export type EventCatsUpdateWithoutEventInput = {
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    kitten?: KittenUpdateOneRequiredWithoutEventCatsNestedInput
+  }
+
+  export type EventCatsUncheckedUpdateWithoutEventInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    kittenId?: IntFieldUpdateOperationsInput | number
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type EventCatsUncheckedUpdateManyWithoutEventInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    kittenId?: IntFieldUpdateOperationsInput | number
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type EventRSVPUpdateWithoutEventInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventRSVPUncheckedUpdateWithoutEventInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventRSVPUncheckedUpdateManyWithoutEventInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserCreateManyRoleInput = {
     id?: number
     email: string
@@ -48813,6 +60387,8 @@ export namespace Prisma {
     rejectedApplications?: ApplicationUpdateManyWithoutRejectedByNestedInput
     completedChecklistItems?: OnboardingChecklistUpdateManyWithoutCompletedByUserNestedInput
     contentCompletions?: ContentCompletionUpdateManyWithoutUserNestedInput
+    activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
+    administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRoleInput = {
@@ -48829,6 +60405,8 @@ export namespace Prisma {
     rejectedApplications?: ApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
     completedChecklistItems?: OnboardingChecklistUncheckedUpdateManyWithoutCompletedByUserNestedInput
     contentCompletions?: ContentCompletionUncheckedUpdateManyWithoutUserNestedInput
+    activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
+    administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutRoleInput = {
@@ -48899,6 +60477,25 @@ export namespace Prisma {
     id?: number
     contentId: number
     completedAt?: Date | string
+  }
+
+  export type ActiveProtocolCreateManyActivatedByInput = {
+    id?: number
+    protocolId: number
+    kittenId: number
+    activationDate: Date | string
+    status?: $Enums.ActiveProtocolStatus
+  }
+
+  export type ProtocolDoseCreateManyAdministeredByInput = {
+    id?: number
+    activeProtocolId: number
+    protocolDrugId: number
+    scheduledDate: Date | string
+    doseNumberInDay: number
+    status?: $Enums.DoseStatus
+    administeredAt?: Date | string | null
+    notes?: string
   }
 
   export type ApplicationUpdateWithoutRejectedByInput = {
@@ -48987,6 +60584,231 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     contentId?: IntFieldUpdateOperationsInput | number
     completedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ActiveProtocolUpdateWithoutActivatedByInput = {
+    activationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumActiveProtocolStatusFieldUpdateOperationsInput | $Enums.ActiveProtocolStatus
+    protocol?: ProtocolUpdateOneRequiredWithoutActiveProtocolsNestedInput
+    kitten?: KittenUpdateOneRequiredWithoutActiveProtocolsNestedInput
+    doses?: ProtocolDoseUpdateManyWithoutActiveProtocolNestedInput
+  }
+
+  export type ActiveProtocolUncheckedUpdateWithoutActivatedByInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolId?: IntFieldUpdateOperationsInput | number
+    kittenId?: IntFieldUpdateOperationsInput | number
+    activationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumActiveProtocolStatusFieldUpdateOperationsInput | $Enums.ActiveProtocolStatus
+    doses?: ProtocolDoseUncheckedUpdateManyWithoutActiveProtocolNestedInput
+  }
+
+  export type ActiveProtocolUncheckedUpdateManyWithoutActivatedByInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolId?: IntFieldUpdateOperationsInput | number
+    kittenId?: IntFieldUpdateOperationsInput | number
+    activationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumActiveProtocolStatusFieldUpdateOperationsInput | $Enums.ActiveProtocolStatus
+  }
+
+  export type ProtocolDoseUpdateWithoutAdministeredByInput = {
+    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    doseNumberInDay?: IntFieldUpdateOperationsInput | number
+    status?: EnumDoseStatusFieldUpdateOperationsInput | $Enums.DoseStatus
+    administeredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: StringFieldUpdateOperationsInput | string
+    activeProtocol?: ActiveProtocolUpdateOneRequiredWithoutDosesNestedInput
+    protocolDrug?: ProtocolDrugUpdateOneRequiredWithoutDosesNestedInput
+  }
+
+  export type ProtocolDoseUncheckedUpdateWithoutAdministeredByInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    activeProtocolId?: IntFieldUpdateOperationsInput | number
+    protocolDrugId?: IntFieldUpdateOperationsInput | number
+    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    doseNumberInDay?: IntFieldUpdateOperationsInput | number
+    status?: EnumDoseStatusFieldUpdateOperationsInput | $Enums.DoseStatus
+    administeredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ProtocolDoseUncheckedUpdateManyWithoutAdministeredByInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    activeProtocolId?: IntFieldUpdateOperationsInput | number
+    protocolDrugId?: IntFieldUpdateOperationsInput | number
+    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    doseNumberInDay?: IntFieldUpdateOperationsInput | number
+    status?: EnumDoseStatusFieldUpdateOperationsInput | $Enums.DoseStatus
+    administeredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ProtocolDrugCreateManyProtocolInput = {
+    id?: number
+    drugName: string
+    dosage?: string
+    route?: string
+    startDayOffset: number
+    endDayOffset: number
+    frequencyPerDay: number
+    instructions?: string
+    sortOrder?: number
+  }
+
+  export type ActiveProtocolCreateManyProtocolInput = {
+    id?: number
+    kittenId: number
+    activatedById: number
+    activationDate: Date | string
+    status?: $Enums.ActiveProtocolStatus
+  }
+
+  export type ProtocolDrugUpdateWithoutProtocolInput = {
+    drugName?: StringFieldUpdateOperationsInput | string
+    dosage?: StringFieldUpdateOperationsInput | string
+    route?: StringFieldUpdateOperationsInput | string
+    startDayOffset?: IntFieldUpdateOperationsInput | number
+    endDayOffset?: IntFieldUpdateOperationsInput | number
+    frequencyPerDay?: IntFieldUpdateOperationsInput | number
+    instructions?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    doses?: ProtocolDoseUpdateManyWithoutProtocolDrugNestedInput
+  }
+
+  export type ProtocolDrugUncheckedUpdateWithoutProtocolInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    drugName?: StringFieldUpdateOperationsInput | string
+    dosage?: StringFieldUpdateOperationsInput | string
+    route?: StringFieldUpdateOperationsInput | string
+    startDayOffset?: IntFieldUpdateOperationsInput | number
+    endDayOffset?: IntFieldUpdateOperationsInput | number
+    frequencyPerDay?: IntFieldUpdateOperationsInput | number
+    instructions?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    doses?: ProtocolDoseUncheckedUpdateManyWithoutProtocolDrugNestedInput
+  }
+
+  export type ProtocolDrugUncheckedUpdateManyWithoutProtocolInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    drugName?: StringFieldUpdateOperationsInput | string
+    dosage?: StringFieldUpdateOperationsInput | string
+    route?: StringFieldUpdateOperationsInput | string
+    startDayOffset?: IntFieldUpdateOperationsInput | number
+    endDayOffset?: IntFieldUpdateOperationsInput | number
+    frequencyPerDay?: IntFieldUpdateOperationsInput | number
+    instructions?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ActiveProtocolUpdateWithoutProtocolInput = {
+    activationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumActiveProtocolStatusFieldUpdateOperationsInput | $Enums.ActiveProtocolStatus
+    kitten?: KittenUpdateOneRequiredWithoutActiveProtocolsNestedInput
+    activatedBy?: UserUpdateOneRequiredWithoutActivatedProtocolsNestedInput
+    doses?: ProtocolDoseUpdateManyWithoutActiveProtocolNestedInput
+  }
+
+  export type ActiveProtocolUncheckedUpdateWithoutProtocolInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    kittenId?: IntFieldUpdateOperationsInput | number
+    activatedById?: IntFieldUpdateOperationsInput | number
+    activationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumActiveProtocolStatusFieldUpdateOperationsInput | $Enums.ActiveProtocolStatus
+    doses?: ProtocolDoseUncheckedUpdateManyWithoutActiveProtocolNestedInput
+  }
+
+  export type ActiveProtocolUncheckedUpdateManyWithoutProtocolInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    kittenId?: IntFieldUpdateOperationsInput | number
+    activatedById?: IntFieldUpdateOperationsInput | number
+    activationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumActiveProtocolStatusFieldUpdateOperationsInput | $Enums.ActiveProtocolStatus
+  }
+
+  export type ProtocolDoseCreateManyProtocolDrugInput = {
+    id?: number
+    activeProtocolId: number
+    scheduledDate: Date | string
+    doseNumberInDay: number
+    status?: $Enums.DoseStatus
+    administeredAt?: Date | string | null
+    administeredById?: number | null
+    notes?: string
+  }
+
+  export type ProtocolDoseUpdateWithoutProtocolDrugInput = {
+    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    doseNumberInDay?: IntFieldUpdateOperationsInput | number
+    status?: EnumDoseStatusFieldUpdateOperationsInput | $Enums.DoseStatus
+    administeredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: StringFieldUpdateOperationsInput | string
+    activeProtocol?: ActiveProtocolUpdateOneRequiredWithoutDosesNestedInput
+    administeredBy?: UserUpdateOneWithoutAdministeredProtocolDosesNestedInput
+  }
+
+  export type ProtocolDoseUncheckedUpdateWithoutProtocolDrugInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    activeProtocolId?: IntFieldUpdateOperationsInput | number
+    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    doseNumberInDay?: IntFieldUpdateOperationsInput | number
+    status?: EnumDoseStatusFieldUpdateOperationsInput | $Enums.DoseStatus
+    administeredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    administeredById?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ProtocolDoseUncheckedUpdateManyWithoutProtocolDrugInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    activeProtocolId?: IntFieldUpdateOperationsInput | number
+    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    doseNumberInDay?: IntFieldUpdateOperationsInput | number
+    status?: EnumDoseStatusFieldUpdateOperationsInput | $Enums.DoseStatus
+    administeredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    administeredById?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ProtocolDoseCreateManyActiveProtocolInput = {
+    id?: number
+    protocolDrugId: number
+    scheduledDate: Date | string
+    doseNumberInDay: number
+    status?: $Enums.DoseStatus
+    administeredAt?: Date | string | null
+    administeredById?: number | null
+    notes?: string
+  }
+
+  export type ProtocolDoseUpdateWithoutActiveProtocolInput = {
+    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    doseNumberInDay?: IntFieldUpdateOperationsInput | number
+    status?: EnumDoseStatusFieldUpdateOperationsInput | $Enums.DoseStatus
+    administeredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: StringFieldUpdateOperationsInput | string
+    protocolDrug?: ProtocolDrugUpdateOneRequiredWithoutDosesNestedInput
+    administeredBy?: UserUpdateOneWithoutAdministeredProtocolDosesNestedInput
+  }
+
+  export type ProtocolDoseUncheckedUpdateWithoutActiveProtocolInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolDrugId?: IntFieldUpdateOperationsInput | number
+    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    doseNumberInDay?: IntFieldUpdateOperationsInput | number
+    status?: EnumDoseStatusFieldUpdateOperationsInput | $Enums.DoseStatus
+    administeredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    administeredById?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ProtocolDoseUncheckedUpdateManyWithoutActiveProtocolInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolDrugId?: IntFieldUpdateOperationsInput | number
+    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    doseNumberInDay?: IntFieldUpdateOperationsInput | number
+    status?: EnumDoseStatusFieldUpdateOperationsInput | $Enums.DoseStatus
+    administeredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    administeredById?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: StringFieldUpdateOperationsInput | string
   }
 
 
