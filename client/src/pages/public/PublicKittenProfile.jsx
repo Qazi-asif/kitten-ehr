@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Heart, ShoppingBag } from 'lucide-react';
+import { Heart, PawPrint, ShoppingBag, Sparkles } from 'lucide-react';
 import { fetchPublicKittenById, fetchPublicKittenUpdates } from '../../services/publicApi';
 import KittenPhoto from '../../components/KittenPhoto';
 import { formatKittenAgeDetailed } from '../../utils/kittenAge';
@@ -64,6 +64,29 @@ function tierDescription(tier, kittenName) {
   return tier.description;
 }
 
+function extractImagesFromContent(content = '') {
+  const dataImages = content.match(/data:image\/[a-zA-Z+]+;base64,[A-Za-z0-9+/=]+/g) || [];
+  const urlImages = content.match(/https?:\/\/[^\s"'<>]+\.(?:jpg|jpeg|png|webp|gif)(?:\?[^\s"'<>]*)?/gi) || [];
+  return [...new Set([...dataImages, ...urlImages])];
+}
+
+function stripImagesFromContent(content = '') {
+  return content
+    .replace(/data:image\/[a-zA-Z+]+;base64,[A-Za-z0-9+/=]+/g, '')
+    .replace(/https?:\/\/[^\s"'<>]+\.(?:jpg|jpeg|png|webp|gif)(?:\?[^\s"'<>]*)?/gi, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function formatUpdateDate(value) {
+  return new Date(value).toLocaleDateString(undefined, {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
 function PublicKittenProfile() {
   const { id } = useParams();
   const sponsorRef = useRef(null);
@@ -89,7 +112,14 @@ function PublicKittenProfile() {
     ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  if (loading) return <div className="flex min-h-[50vh] items-center justify-center text-slate-500">Loading...</div>;
+  if (loading) {
+    return (
+      <div className="flex min-h-[50vh] items-center justify-center bg-gradient-to-b from-brand-light/40 to-white text-slate-500">
+        Loading profile...
+      </div>
+    );
+  }
+
   if (error) return <div className="px-6 py-12 text-red-600">{error}</div>;
 
   const activeWishlists = KITTEN_WISHLISTS.filter((store) => kitten[store.field]);
@@ -100,44 +130,64 @@ function PublicKittenProfile() {
     { label: 'Age', value: formatKittenAgeDetailed(kitten.dateOfBirth) },
     { label: 'Sex', value: kitten.sex || 'Unknown' },
     { label: 'Breed', value: kitten.breed || 'Mixed' },
-    { label: 'Fixed', value: kitten.fixedStatus || 'Pending' },
+    { label: 'Fixed Status', value: kitten.fixedStatus || 'Pending' },
   ];
 
+  const complianceText = `Sponsorships help cover ${kitten.name}'s care. Once ${kitten.name} is fully funded or finds a home, additional gifts support kittens just like them. Pawsitive Transformations directs all sponsorship funds where the cats need them most.`;
+
   return (
-    <div className="bg-gradient-to-b from-brand-light/30 to-white">
-      <div className="relative aspect-[16/9] max-h-[480px] w-full overflow-hidden bg-slate-100 sm:aspect-[21/8]">
+    <div className="min-h-screen bg-gradient-to-b from-brand-light/25 via-white to-slate-50">
+      {/* Cover photo banner */}
+      <div className="relative h-56 w-full overflow-hidden bg-slate-200 sm:h-72 md:h-80 lg:h-96">
         <KittenPhoto kitten={kitten} allowFallback className="h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 px-6 py-8 lg:px-10">
-          <Link to="/kittens" className="text-sm font-medium text-white/90 hover:text-white">← Back to Adopt</Link>
-          <h1 className="mt-3 text-4xl font-extrabold tracking-tight text-white sm:text-5xl">{kitten.name}</h1>
-          {kitten.websiteFeaturedComment && (
-            <p className="mt-2 max-w-2xl text-lg font-medium text-white/95">{kitten.websiteFeaturedComment}</p>
-          )}
-        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
       </div>
 
-      <div className="border-b border-brand/15 bg-white/90 px-6 py-4 backdrop-blur-sm lg:px-10">
-        <div className="mx-auto flex max-w-6xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm font-semibold text-brand">Ready to welcome {kitten.name} home?</p>
-          <div className="flex flex-wrap gap-2">
+      {/* Profile header — Facebook-style identity bar */}
+      <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        <div className="-mt-14 flex flex-col gap-4 sm:-mt-16 sm:flex-row sm:items-end sm:justify-between">
+          <div className="flex items-end gap-4">
+            <div className="h-28 w-28 shrink-0 overflow-hidden rounded-2xl border-4 border-white bg-white shadow-lg ring-2 ring-brand/20 sm:h-32 sm:w-32">
+              <KittenPhoto kitten={kitten} allowFallback className="h-full w-full object-cover" />
+            </div>
+            <div className="pb-1">
+              <Link to="/kittens" className="text-xs font-semibold text-brand hover:underline">
+                ← Back to Adopt
+              </Link>
+              <h1 className="mt-1 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+                {kitten.name}
+              </h1>
+              {kitten.websiteFeaturedComment ? (
+                <p className="mt-1 max-w-xl text-sm font-medium text-slate-600 sm:text-base">
+                  {kitten.websiteFeaturedComment}
+                </p>
+              ) : (
+                <p className="mt-1 flex items-center gap-1.5 text-sm text-slate-500">
+                  <Sparkles className="h-4 w-4 text-brand" />
+                  Looking for a forever home
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="flex flex-wrap gap-2 pb-1 sm:justify-end">
             <Link
               to={`/adopt?kitten=${encodeURIComponent(kitten.name)}`}
-              className="rounded-lg bg-brand px-5 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-brand-dark"
+              className="rounded-xl bg-brand px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-brand-dark"
             >
               Adopt Me
             </Link>
             <button
               type="button"
               onClick={() => scrollToRef(sponsorRef)}
-              className="rounded-lg border-2 border-brand bg-white px-5 py-2.5 text-sm font-bold text-brand hover:bg-brand-light"
+              className="rounded-xl border-2 border-brand bg-white px-4 py-2.5 text-sm font-bold text-brand transition hover:bg-brand-light"
             >
               Sponsor Me
             </button>
             <button
               type="button"
               onClick={() => scrollToRef(wishlistRef)}
-              className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-5 py-2.5 text-sm font-bold text-slate-700 hover:bg-slate-50"
+              className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-700 shadow-sm transition hover:bg-slate-50"
             >
               <ShoppingBag className="h-4 w-4" />
               Wishlist
@@ -146,99 +196,157 @@ function PublicKittenProfile() {
         </div>
       </div>
 
-      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-6 py-10 lg:grid-cols-5 lg:px-10">
-        <div className="space-y-8 lg:col-span-3">
-          <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="text-xl font-bold text-slate-900">About Me</h2>
-            <p className="mt-4 leading-relaxed text-slate-600">
-              {kitten.rescueStory || `${kitten.name} is waiting for a loving family. Ask us about their personality, care needs, and adoption process.`}
-            </p>
-            <div className="mt-6 flex flex-wrap gap-2">
-              {infoPills.map((pill) => (
-                <span
-                  key={pill.label}
-                  className="inline-flex items-center rounded-full border border-brand/20 bg-brand-light/50 px-3 py-1.5 text-xs font-semibold text-brand"
-                >
-                  {pill.label}: {pill.value}
-                </span>
-              ))}
+      {/* Main social feed layout */}
+      <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 px-4 py-8 sm:px-6 lg:grid-cols-3 lg:gap-8 lg:px-8">
+        {/* Left — About + Wishlist */}
+        <div className="space-y-6 lg:col-span-2">
+          <section className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm">
+            <div className="border-b border-slate-100 bg-gradient-to-r from-brand-light/60 to-white px-5 py-4">
+              <h2 className="flex items-center gap-2 text-lg font-bold text-slate-900">
+                <PawPrint className="h-5 w-5 text-brand" />
+                About Me
+              </h2>
+            </div>
+            <div className="px-5 py-5">
+              <p className="text-base leading-relaxed text-slate-700">
+                {kitten.rescueStory
+                  || `${kitten.name} is full of personality and ready to meet their person. Every rescue has a story — and ${kitten.name}'s is still being written with love in foster care.`}
+              </p>
+              <div className="mt-5 flex flex-wrap gap-2">
+                {infoPills.map((pill) => (
+                  <span
+                    key={pill.label}
+                    className="inline-flex items-center rounded-full border border-brand/25 bg-brand-light/40 px-3.5 py-1.5 text-xs font-bold text-brand"
+                  >
+                    {pill.label}: {pill.value}
+                  </span>
+                ))}
+              </div>
             </div>
           </section>
 
-          <section ref={wishlistRef} id="wishlist" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="text-xl font-bold text-slate-900">Wishlist</h2>
-            {activeWishlists.length > 0 ? (
-              <>
-                <p className="mt-2 text-sm text-slate-600">
-                  Send supplies directly to support {kitten.name}&apos;s care through these store wishlists.
+          <section
+            ref={wishlistRef}
+            id="wishlist"
+            className="scroll-mt-24 overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm"
+          >
+            <div className="border-b border-slate-100 px-5 py-4">
+              <h2 className="text-lg font-bold text-slate-900">Wishlist</h2>
+            </div>
+            <div className="px-5 py-5">
+              {activeWishlists.length > 0 ? (
+                <>
+                  <p className="text-sm text-slate-600">
+                    Send supplies directly to support {kitten.name}&apos;s care through these store wishlists.
+                  </p>
+                  <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                    {activeWishlists.map((store) => (
+                      <a
+                        key={store.field}
+                        href={kitten[store.field]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`flex flex-col rounded-xl border p-4 text-center transition-colors ${store.buttonClass}`}
+                      >
+                        <span className="text-sm font-bold">{store.label}</span>
+                        <span className="mt-1 text-xs opacity-80">{store.description}</span>
+                      </a>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <p className="text-sm text-slate-600">
+                  Wishlist links for {kitten.name} are coming soon.{' '}
+                  <Link to="/donate" className="font-semibold text-brand hover:underline">
+                    Visit our donation page
+                  </Link>{' '}
+                  to support their care today.
                 </p>
-                <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
-                  {activeWishlists.map((store) => (
-                    <a
-                      key={store.field}
-                      href={kitten[store.field]}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`flex flex-col rounded-xl border p-4 text-center transition-colors ${store.buttonClass}`}
-                    >
-                      <span className="text-sm font-bold">{store.label}</span>
-                      <span className="mt-1 text-xs opacity-80">{store.description}</span>
-                    </a>
-                  ))}
-                </div>
-              </>
-            ) : (
-              <p className="mt-2 text-sm text-slate-600">
-                Wishlist links for {kitten.name} are coming soon.{' '}
-                <Link to="/donate" className="font-semibold text-brand hover:underline">
-                  Visit our donation page
-                </Link>{' '}
-                to support their care today.
-              </p>
-            )}
+              )}
+            </div>
           </section>
         </div>
 
-        <section className="lg:col-span-2">
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:sticky lg:top-24">
-            <h2 className="text-xl font-bold text-slate-900">Recent Updates</h2>
-            {updates.length === 0 ? (
-              <p className="mt-4 text-sm text-slate-500">No public updates yet — check back soon for news from foster care.</p>
-            ) : (
-              <ol className="mt-5 space-y-5">
-                {updates.map((entry) => (
-                  <li key={entry.id} className="relative border-l-2 border-brand/30 pl-4">
-                    <time className="text-xs font-semibold uppercase tracking-wide text-brand">
-                      {new Date(entry.createdAt).toLocaleDateString(undefined, {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      })}
-                    </time>
-                    <p className="mt-2 text-sm leading-relaxed text-slate-700">{entry.content}</p>
-                  </li>
-                ))}
-              </ol>
-            )}
+        {/* Right — Recent Updates timeline */}
+        <aside className="lg:col-span-1">
+          <div className="rounded-2xl border border-slate-200/80 bg-white shadow-sm lg:sticky lg:top-24">
+            <div className="border-b border-slate-100 px-5 py-4">
+              <h2 className="text-lg font-bold text-slate-900">Recent Updates</h2>
+              <p className="mt-0.5 text-xs text-slate-500">News from foster care</p>
+            </div>
+            <div className="max-h-[32rem] overflow-y-auto px-4 py-4">
+              {updates.length === 0 ? (
+                <p className="px-1 py-6 text-center text-sm text-slate-500">
+                  No public updates yet — check back soon!
+                </p>
+              ) : (
+                <ol className="space-y-4">
+                  {updates.map((entry) => {
+                    const images = extractImagesFromContent(entry.content);
+                    const text = stripImagesFromContent(entry.content);
+                    return (
+                      <li
+                        key={entry.id}
+                        className="rounded-xl border border-slate-100 bg-slate-50/80 p-4 shadow-sm"
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full border-2 border-white shadow-sm">
+                            <KittenPhoto kitten={kitten} allowFallback className="h-full w-full object-cover" />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <p className="text-sm font-bold text-slate-900">{kitten.name}</p>
+                            <time className="text-xs font-medium text-slate-500">
+                              {formatUpdateDate(entry.createdAt)}
+                            </time>
+                            {text && (
+                              <p className="mt-2 text-sm leading-relaxed text-slate-700">{text}</p>
+                            )}
+                            {images.length > 0 && (
+                              <div className={`mt-3 grid gap-2 ${images.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}>
+                                {images.map((src) => (
+                                  <img
+                                    key={src.slice(0, 48)}
+                                    src={src}
+                                    alt=""
+                                    className="w-full rounded-lg border border-slate-200 object-cover"
+                                  />
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ol>
+              )}
+            </div>
           </div>
-        </section>
+        </aside>
       </div>
 
-      <section ref={sponsorRef} id="sponsor" className="scroll-mt-24 border-t border-brand/15 bg-white px-6 py-12 lg:px-10">
-        <div className="mx-auto max-w-6xl">
+      {/* Sponsorship section — canonical tiers */}
+      <section
+        ref={sponsorRef}
+        id="sponsor"
+        className="scroll-mt-24 border-t border-brand/15 bg-gradient-to-b from-white to-brand-light/20 px-4 py-12 sm:px-6 lg:px-8"
+      >
+        <div className="mx-auto max-w-5xl">
           <div className="flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand/10 text-brand">
               <Heart className="h-6 w-6" />
             </div>
             <div>
-              <h2 className="text-2xl font-extrabold text-slate-900">Sponsor {kitten.name}</h2>
-              <p className="mt-1 text-sm text-slate-600">Choose a care package or name your own amount.</p>
+              <h2 className="text-2xl font-extrabold text-slate-900">Sponsor This Kitten</h2>
+              <p className="mt-1 text-sm text-slate-600">
+                Choose a care package for {kitten.name} or name your own amount.
+              </p>
             </div>
           </div>
 
           <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {SPONSOR_TIERS.map((tier) => {
-              const selected = selectedTierId === tier.id;
+              const selected = selectedTierId === tier.id && !customAmount.trim();
               return (
                 <button
                   key={tier.id}
@@ -249,11 +357,11 @@ function PublicKittenProfile() {
                   }}
                   className={`rounded-2xl border p-5 text-left transition-all ${
                     selected
-                      ? 'border-brand bg-brand-light/40 shadow-md ring-2 ring-brand/30'
-                      : 'border-slate-200 bg-white hover:border-brand/40 hover:shadow-sm'
+                      ? 'border-brand bg-brand-light/50 shadow-md ring-2 ring-brand/30'
+                      : 'border-slate-200 bg-white hover:border-brand/40 hover:shadow-md'
                   }`}
                 >
-                  <p className="text-sm font-bold text-brand">{tier.name}</p>
+                  <p className="text-sm font-bold uppercase tracking-wide text-brand">{tier.name}</p>
                   <p className="mt-2 text-3xl font-extrabold text-slate-900">${tier.price}</p>
                   <p className="mt-2 text-sm leading-relaxed text-slate-600">
                     {tierDescription(tier, kitten.name)}
@@ -262,7 +370,13 @@ function PublicKittenProfile() {
               );
             })}
 
-            <label className="flex flex-col rounded-2xl border border-dashed border-brand/40 bg-brand-light/20 p-5">
+            <label
+              className={`flex flex-col rounded-2xl border p-5 transition-all ${
+                customAmount.trim()
+                  ? 'border-brand bg-brand-light/50 shadow-md ring-2 ring-brand/30'
+                  : 'border-dashed border-brand/40 bg-brand-light/20'
+              }`}
+            >
               <span className="text-sm font-bold text-brand">Name your own amount</span>
               <div className="mt-3 flex items-center gap-2">
                 <span className="text-2xl font-bold text-slate-500">$</span>
@@ -276,21 +390,21 @@ function PublicKittenProfile() {
                   className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-lg font-semibold text-slate-900 outline-none focus:border-brand focus:ring-1 focus:ring-brand"
                 />
               </div>
-              <span className="mt-2 text-xs text-slate-500">Enter any amount to sponsor {kitten.name}&apos;s care.</span>
+              <span className="mt-2 text-xs text-slate-500">
+                Enter any amount to sponsor {kitten.name}&apos;s care.
+              </span>
             </label>
           </div>
 
           <Link
             to={`/donate?kitten=${encodeURIComponent(kitten.name)}&amount=${encodeURIComponent(sponsorAmount)}`}
-            className="mt-8 block w-full rounded-xl bg-brand py-4 text-center text-sm font-bold uppercase tracking-wide text-white shadow-md transition hover:bg-brand-dark sm:max-w-md"
+            className="mt-8 inline-flex w-full items-center justify-center rounded-xl bg-brand px-6 py-4 text-sm font-bold uppercase tracking-wide text-white shadow-md transition hover:bg-brand-dark sm:max-w-md"
           >
             Sponsor {kitten.name} · ${sponsorAmount}
           </Link>
 
           <p className="mt-4 max-w-3xl text-xs leading-relaxed text-slate-500">
-            Sponsorships help cover {kitten.name}&apos;s care. Once {kitten.name} is fully funded or finds a home,
-            additional gifts support kittens just like them. Pawsitive Transformations directs all sponsorship
-            funds where the cats need them most.
+            {complianceText}
           </p>
         </div>
       </section>

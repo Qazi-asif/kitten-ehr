@@ -48,7 +48,7 @@ export async function fetchDashboardStats() {
     return response.json();
   } catch (error) {
     console.error('API request failed:', error);
-    return { activeKittens: 0, availableForAdoption: 0, pendingAdoptions: 0, activeFosters: 0, adoptionsThisYear: 0 };
+    return { activeKittens: 0, availableForAdoption: 0, pendingAdoptions: 0, activeFosters: 0, adoptionsThisYear: 0, alerts: [], medicalConcerns: [] };
   }
 }
 

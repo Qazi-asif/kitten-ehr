@@ -12,6 +12,7 @@
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:seed": "node prisma/seed.js",
+    "db:clear": "node prisma/clearTestData.js",
     "db:sync-email": "node scripts/sync-email-module.js",
     "db:studio": "prisma studio",
     "qa": "node scripts/qa-test.js"

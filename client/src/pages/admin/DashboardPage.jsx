@@ -36,12 +36,12 @@ const STATUS_COLORS = {
   Deceased: '#EF4444',
 };
 
-const MEDICAL_CONCERNS = [
-  { label: 'Upper Respiratory Infection', count: 8 },
-  { label: 'Diarrhea / GI Issues', count: 5 },
-  { label: 'Underweight', count: 4 },
-  { label: 'Eye Infection', count: 3 },
-];
+const ALERT_STYLES = {
+  error: { icon: AlertCircle, color: 'text-red-500 bg-red-50' },
+  warning: { icon: AlertTriangle, color: 'text-amber-500 bg-amber-50' },
+  success: { icon: CheckCircle2, color: 'text-emerald-500 bg-emerald-50' },
+  info: { icon: Info, color: 'text-blue-500 bg-blue-50' },
+};
 
 function StatusDonut({ kittens }) {
   const segments = useMemo(() => {
@@ -96,6 +96,8 @@ function DashboardPage() {
     availableForAdoption: 0,
     activeFosters: 0,
     donationsThisMonth: 0,
+    alerts: [],
+    medicalConcerns: [],
   });
   const [kittens, setKittens] = useState([]);
   const [applications, setApplications] = useState([]);
@@ -118,6 +120,8 @@ function DashboardPage() {
     setStats({
       ...statsData,
       donationsThisMonth: financeData.donations?.month ?? 0,
+      alerts: statsData.alerts ?? [],
+      medicalConcerns: statsData.medicalConcerns ?? [],
     });
     setKittens(kittensData);
     setApplications(applicationsData);
@@ -144,12 +148,8 @@ function DashboardPage() {
     [applications],
   );
 
-  const alerts = [
-    { icon: AlertCircle, color: 'text-red-500 bg-red-50', text: 'Vaccines overdue for 3 kittens' },
-    { icon: AlertTriangle, color: 'text-amber-500 bg-amber-50', text: 'Medications ending soon — review Panacur course' },
-    { icon: CheckCircle2, color: 'text-emerald-500 bg-emerald-50', text: 'Biscuit cleared for adoption listing' },
-    { icon: Info, color: 'text-blue-500 bg-blue-50', text: 'Spring Adoption Fair scheduled July 15' },
-  ];
+  const alerts = stats.alerts ?? [];
+  const medicalConcerns = stats.medicalConcerns ?? [];
 
   return (
     <div className="space-y-6">
@@ -246,16 +246,24 @@ function DashboardPage() {
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
         <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] xl:col-span-1">
           <h2 className="text-base font-bold text-slate-900">Upcoming Alerts</h2>
-          <ul className="mt-4 space-y-3">
-            {alerts.map(({ icon: Icon, color, text }) => (
-              <li key={text} className="flex items-start gap-3">
-                <span className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${color}`}>
-                  <Icon className="h-4 w-4" />
-                </span>
-                <p className="text-sm leading-snug text-slate-600">{text}</p>
-              </li>
-            ))}
-          </ul>
+          {alerts.length === 0 ? (
+            <p className="mt-4 text-sm text-slate-500">No alerts right now. Medical, adoption, and event updates will appear here.</p>
+          ) : (
+            <ul className="mt-4 space-y-3">
+              {alerts.map((alert) => {
+                const style = ALERT_STYLES[alert.severity] ?? ALERT_STYLES.info;
+                const Icon = style.icon;
+                return (
+                  <li key={alert.text} className="flex items-start gap-3">
+                    <span className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${style.color}`}>
+                      <Icon className="h-4 w-4" />
+                    </span>
+                    <p className="text-sm leading-snug text-slate-600">{alert.text}</p>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </div>
 
         <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] xl:col-span-1">
@@ -267,14 +275,18 @@ function DashboardPage() {
 
         <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] xl:col-span-1">
           <h2 className="text-base font-bold text-slate-900">Top Medical Concerns</h2>
-          <ul className="mt-4 space-y-3">
-            {MEDICAL_CONCERNS.map((item) => (
-              <li key={item.label} className="flex items-center justify-between text-sm">
-                <span className="text-slate-600">{item.label}</span>
-                <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-bold text-slate-700">{item.count}</span>
-              </li>
-            ))}
-          </ul>
+          {medicalConcerns.length === 0 ? (
+            <p className="mt-4 text-sm text-slate-500">No active medical concerns recorded.</p>
+          ) : (
+            <ul className="mt-4 space-y-3">
+              {medicalConcerns.map((item) => (
+                <li key={item.label} className="flex items-center justify-between text-sm">
+                  <span className="text-slate-600">{item.label}</span>
+                  <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-bold text-slate-700">{item.count}</span>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
 

@@ -12,6 +12,7 @@ import {
   serializeKittenForList,
 } from '../utils/kittenSerialization.js';
 import { evaluateKittenFlags } from '../services/medicalAutomation.js';
+import { buildDashboardInsights } from '../services/dashboardInsights.js';
 
 const kittenIncludes = {
   litter: { select: { id: true, name: true } },
@@ -240,6 +241,7 @@ export async function getDashboardStats(_req, res, next) {
       pendingAdoptions,
       activeFosters,
       adoptionsThisYear,
+      insights,
     ] = await Promise.all([
       prisma.kitten.count({
         where: { status: { in: ['In Foster Care', 'Medical Hold'] } },
@@ -250,6 +252,7 @@ export async function getDashboardStats(_req, res, next) {
       prisma.kitten.count({
         where: { status: 'Adopted', createdAt: { gte: yearStart } },
       }),
+      buildDashboardInsights(prisma),
     ]);
 
     res.json({
@@ -258,6 +261,8 @@ export async function getDashboardStats(_req, res, next) {
       pendingAdoptions,
       activeFosters,
       adoptionsThisYear,
+      alerts: insights.alerts,
+      medicalConcerns: insights.medicalConcerns,
     });
   } catch (error) {
     next(error);
