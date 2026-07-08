@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { fetchPublicArticle } from '../../services/publicApi';
+import { formatArticleBody } from '../../utils/articleFormatting';
 
 function ArticlePage() {
   const { slug } = useParams();
@@ -21,7 +22,10 @@ function ArticlePage() {
       <Link to="/education" className="text-sm font-medium text-emerald-700 hover:underline">← Back to Education</Link>
       <span className="mt-4 block text-xs font-medium uppercase text-emerald-700">{article.category}</span>
       <h1 className="mt-2 text-3xl font-bold text-gray-900">{article.title}</h1>
-      <div className="prose mt-8 max-w-none whitespace-pre-wrap text-gray-700">{article.body}</div>
+      <div
+        className="article-body mt-8 max-w-none text-gray-700"
+        dangerouslySetInnerHTML={{ __html: formatArticleBody(article.body) }}
+      />
     </article>
   );
 }

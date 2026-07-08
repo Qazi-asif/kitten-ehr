@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { formatArticleBody } from '../../utils/articleFormatting';
 import { CheckCircle2, Circle } from 'lucide-react';
 import {
   fetchFosterChecklistContent,
@@ -197,7 +198,10 @@ function OnboardingPage() {
                           </p>
                         )}
                         {article.body && (
-                          <p className="mt-2 whitespace-pre-wrap text-sm text-gray-600">{article.body}</p>
+                          <div
+                            className="article-body mt-2 text-sm text-gray-600"
+                            dangerouslySetInnerHTML={{ __html: formatArticleBody(article.body) }}
+                          />
                         )}
                       </li>
                     ))}

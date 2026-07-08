@@ -27,13 +27,13 @@ const navItems = [
     ],
   },
   { label: 'Education Hub', path: '/education' },
-  { label: 'Contact', path: '/contact' },
   {
     label: 'About',
     children: [
       { label: 'Our Mission', path: '/about' },
     ],
   },
+  { label: 'Contact', path: '/contact' },
 ];
 
 const DEFAULT_SETTINGS = {

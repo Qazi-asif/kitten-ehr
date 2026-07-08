@@ -3,13 +3,9 @@ import PublishingMatrix, { PublishTargetBadges } from '../../components/Publishi
 import { useAuth } from '../../context/AuthContext';
 import { createContentItem, deleteContentItem, fetchContent, updateContentItem } from '../../services/api';
 import { resolvePublishTargets } from '../../utils/publishTargets';
+import { EDUCATION_CATEGORIES } from '../../constants/educationCategories';
 
-const CATEGORY_OPTIONS = [
-  'Kitten Care 101',
-  'Colony & Feral Care',
-  'Becoming A Foster',
-  'Health & Emergencies',
-];
+const CATEGORY_OPTIONS = EDUCATION_CATEGORIES.map((category) => category.name);
 
 const emptyForm = {
   title: '',
@@ -191,10 +187,17 @@ function ContentManagerPage() {
             value={form.body}
             onChange={handleChange}
             placeholder="Article body"
-            rows={6}
+            rows={10}
             disabled={!canManage || saving}
-            className="rounded-lg border border-gray-300 px-3 py-2 text-sm md:col-span-2 disabled:bg-slate-50"
+            className="rounded-lg border border-gray-300 px-3 py-2 font-mono text-sm md:col-span-2 disabled:bg-slate-50"
           />
+          <p className="text-xs leading-relaxed text-slate-500 md:col-span-2">
+            Formatting: <code className="rounded bg-slate-100 px-1">**bold**</code>,{' '}
+            <code className="rounded bg-slate-100 px-1">*italic*</code>,{' '}
+            <code className="rounded bg-slate-100 px-1">![caption](https://example.com/photo.jpg)</code>,{' '}
+            <code className="rounded bg-slate-100 px-1">[link text](https://example.com)</code>.
+            Use a blank line between paragraphs.
+          </p>
         </div>
 
         <div className="mt-5">

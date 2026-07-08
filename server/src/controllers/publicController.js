@@ -128,7 +128,7 @@ export async function getPublicContent(_req, res, next) {
     const articles = await prisma.content.findMany({
       where: publicWebsiteFilter,
       orderBy: { createdAt: 'desc' },
-      select: { id: true, title: true, slug: true, category: true, createdAt: true },
+      select: { id: true, title: true, slug: true, category: true, body: true, createdAt: true },
     });
     res.json(articles);
   } catch (error) {
