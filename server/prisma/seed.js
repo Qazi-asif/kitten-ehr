@@ -57,6 +57,10 @@ async function seedSettings() {
     create: {
       id: 1,
       orgName: 'Pawsitive Transformations',
+      orgEin: '42-3678960',
+      contactPhone: '(951) 830-1825',
+      contactEmail: 'hello@pawsitivetransformations.org',
+      contactAddress: '12523 Limonite, Suite 440412\nMira Loma, CA 91752\nRiverside County',
       missionStatement:
         'Pawsitive Transformations rescues, fosters, and finds loving homes for kittens in need across our community.',
       defaultDonationAmount: 50,

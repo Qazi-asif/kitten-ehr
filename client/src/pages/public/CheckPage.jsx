@@ -384,7 +384,7 @@ export default function PawsitiveLandingPage() {
       <footer className="bg-[#00828a] text-white py-6 font-sans-paws text-[13px] font-semibold">
         <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
-            EIN: 46-4005576
+            EIN: 42-3678960
           </div>
           {/* Social Media Links */}
           <div className="flex items-center gap-5">

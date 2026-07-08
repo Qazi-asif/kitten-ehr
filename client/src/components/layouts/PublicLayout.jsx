@@ -38,6 +38,8 @@ const navItems = [
 
 const DEFAULT_SETTINGS = {
   orgName: 'Pawsitive Transformations',
+  orgEin: '42-3678960',
+  contactEmail: 'hello@pawsitivetransformations.org',
   facebookUrl: '',
   instagramUrl: '',
 };
@@ -74,6 +76,8 @@ const FOOTER_LINK_COLUMNS = [
 ];
 
 function SocialLinks({ settings }) {
+  const contactEmail = settings.contactEmail?.trim() || 'hello@pawsitivetransformations.org';
+
   return (
     <div className="flex items-center gap-4">
       {settings.facebookUrl ? (
@@ -97,7 +101,7 @@ function SocialLinks({ settings }) {
           <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.02 1.59 4.23.85.97 1.99 1.66 3.25 1.95v3.91c-1.21-.16-2.36-.67-3.34-1.39-.77-.55-1.4-1.28-1.84-2.14v7.7c0 5.04-4.22 8.78-9.29 8.29-3.9-.38-7.07-3.56-7.44-7.46C-.2 10.02 3.51 5.8 8.55 5.8c.45 0 .9.03 1.35.1v3.96c-1.39-.42-2.92-.09-4.04.83-1.42 1.17-1.78 3.25-.86 4.82.93 1.59 3.01 2.21 4.67 1.41.97-.47 1.58-1.47 1.58-2.55V.02h.27z" />
         </svg>
       </a>
-      <a href="mailto:hello@pawsitivetransformations.org" className="text-white/70 transition-colors hover:text-brand-light" aria-label="Email">
+      <a href={`mailto:${contactEmail}`} className="text-white/70 transition-colors hover:text-brand-light" aria-label="Email">
         <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
           <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
           <polyline points="22,6 12,13 2,6" />
@@ -360,7 +364,7 @@ function PublicLayout() {
         <div className="border-t border-white/10 bg-brand px-6 py-4 lg:px-8">
           <div className="mx-auto max-w-7xl space-y-2 text-center text-xs text-white/80">
             <p>
-              &copy; 2026 Pawsitive Transformations. All rights reserved. Pawsitive Transformations is a 501(c)(3) non-profit organization. EIN: 42-3678960.
+              &copy; 2026 Pawsitive Transformations. All rights reserved. Pawsitive Transformations is a 501(c)(3) non-profit organization. EIN: {settings.orgEin?.trim() || '42-3678960'}.
             </p>
             <p>
               This site uses AI-assisted tools to support our operations.{' '}

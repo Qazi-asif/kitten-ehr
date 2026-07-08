@@ -22,6 +22,10 @@ const TABS = [
 
 const EMPTY_ORG = {
   orgName: '',
+  orgEin: '',
+  contactPhone: '',
+  contactEmail: '',
+  contactAddress: '',
   missionStatement: '',
   defaultDonationAmount: 50,
   amazonWishlistUrl: '',
@@ -99,6 +103,10 @@ function SettingsPage() {
       const settingsData = await fetchSettings();
       setOrgSettings({
         orgName: settingsData.orgName || '',
+        orgEin: settingsData.orgEin || '',
+        contactPhone: settingsData.contactPhone || '',
+        contactEmail: settingsData.contactEmail || '',
+        contactAddress: settingsData.contactAddress || '',
         missionStatement: settingsData.missionStatement || '',
         defaultDonationAmount: settingsData.defaultDonationAmount ?? 50,
         amazonWishlistUrl: settingsData.amazonWishlistUrl || '',
@@ -155,6 +163,10 @@ function SettingsPage() {
       });
       setOrgSettings({
         orgName: updated.orgName || '',
+        orgEin: updated.orgEin || '',
+        contactPhone: updated.contactPhone || '',
+        contactEmail: updated.contactEmail || '',
+        contactAddress: updated.contactAddress || '',
         missionStatement: updated.missionStatement || '',
         defaultDonationAmount: updated.defaultDonationAmount ?? 50,
         amazonWishlistUrl: updated.amazonWishlistUrl || '',
@@ -426,6 +438,62 @@ function SettingsPage() {
               className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-slate-50"
             />
           </label>
+
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
+            <h3 className="text-sm font-bold text-slate-900">Contact Information</h3>
+            <p className="mt-1 text-sm text-slate-600">
+              Shown on the public contact page, donate page, and site footer.
+            </p>
+
+            <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+              <label className="block">
+                <span className="mb-1 block text-xs font-medium text-slate-600">EIN</span>
+                <input
+                  value={orgSettings.orgEin}
+                  onChange={(e) => handleOrgFieldChange('orgEin', e.target.value)}
+                  disabled={!canManageOrg}
+                  placeholder="42-3678960"
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-white"
+                />
+              </label>
+              <label className="block">
+                <span className="mb-1 block text-xs font-medium text-slate-600">Contact Phone</span>
+                <input
+                  type="tel"
+                  value={orgSettings.contactPhone}
+                  onChange={(e) => handleOrgFieldChange('contactPhone', e.target.value)}
+                  disabled={!canManageOrg}
+                  placeholder="(951) 830-1825"
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-white"
+                />
+              </label>
+            </div>
+
+            <label className="mt-4 block">
+              <span className="mb-1 block text-xs font-medium text-slate-600">Contact Email</span>
+              <input
+                type="email"
+                value={orgSettings.contactEmail}
+                onChange={(e) => handleOrgFieldChange('contactEmail', e.target.value)}
+                disabled={!canManageOrg}
+                placeholder="hello@pawsitivetransformations.org"
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-white"
+              />
+            </label>
+
+            <label className="mt-4 block">
+              <span className="mb-1 block text-xs font-medium text-slate-600">Mailing Address</span>
+              <textarea
+                rows={3}
+                value={orgSettings.contactAddress}
+                onChange={(e) => handleOrgFieldChange('contactAddress', e.target.value)}
+                disabled={!canManageOrg}
+                placeholder={'12523 Limonite, Suite 440412\nMira Loma, CA 91752\nRiverside County'}
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-white"
+              />
+              <p className="mt-1 text-xs text-slate-500">One line per address row.</p>
+            </label>
+          </div>
 
           <label className="block max-w-xs">
             <span className="mb-1 block text-xs font-medium text-slate-600">Default Donation Amount ($)</span>

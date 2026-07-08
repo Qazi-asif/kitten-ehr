@@ -503,6 +503,10 @@ model ProtocolDose {
 model Settings {
   id                    Int     @id @default(1)
   orgName               String  @default("Pawsitive Transformations")
+  orgEin                String  @default("42-3678960")
+  contactPhone          String  @default("(951) 830-1825")
+  contactEmail          String  @default("hello@pawsitivetransformations.org")
+  contactAddress        String  @default("12523 Limonite, Suite 440412\nMira Loma, CA 91752\nRiverside County")
   missionStatement      String  @default("")
   defaultDonationAmount Int     @default(50)
   amazonWishlistUrl     String  @default("")

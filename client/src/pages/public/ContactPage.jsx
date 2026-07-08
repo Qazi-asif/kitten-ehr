@@ -1,7 +1,27 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import { Mail, MapPin, Phone, Send } from 'lucide-react';
+import { fetchPublicSettings } from '../../services/publicApi';
+
+const FALLBACK_CONTACT = {
+  contactPhone: '(951) 830-1825',
+  contactEmail: 'hello@pawsitivetransformations.org',
+  contactAddress: '12523 Limonite, Suite 440412\nMira Loma, CA 91752\nRiverside County',
+  orgEin: '42-3678960',
+};
+
+function resolveContactEmail(settings) {
+  return (
+    settings.contactEmail?.trim()
+    || settings.adminNotifyEmail?.trim()
+    || settings.fromEmail?.trim()
+    || FALLBACK_CONTACT.contactEmail
+  );
+}
 
 function ContactPage() {
+  const outlet = useOutletContext();
+  const [settings, setSettings] = useState({ ...FALLBACK_CONTACT, ...(outlet?.settings ?? {}) });
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
@@ -11,6 +31,20 @@ function ContactPage() {
     message: '',
   });
 
+  useEffect(() => {
+    fetchPublicSettings()
+      .then((data) => setSettings({ ...FALLBACK_CONTACT, ...data }))
+      .catch(() => {});
+  }, []);
+
+  const contactEmail = resolveContactEmail(settings);
+  const contactPhone = settings.contactPhone?.trim() || FALLBACK_CONTACT.contactPhone;
+  const orgEin = settings.orgEin?.trim() || FALLBACK_CONTACT.orgEin;
+  const addressLines = (settings.contactAddress?.trim() || FALLBACK_CONTACT.contactAddress)
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean);
+
   function handleChange(event) {
     const { name, value } = event.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -18,12 +52,21 @@ function ContactPage() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    window.location.href = `mailto:david@pawsitivetransfomations.org?subject=${encodeURIComponent(form.topic)}&body=${encodeURIComponent(form.message)}`;
+    const subject = `[Contact] ${form.topic} — ${form.firstName} ${form.lastName}`;
+    const body = [
+      `Name: ${form.firstName} ${form.lastName}`,
+      `Email: ${form.email}`,
+      form.phone ? `Phone: ${form.phone}` : null,
+      `Topic: ${form.topic}`,
+      '',
+      form.message,
+    ].filter(Boolean).join('\n');
+
+    window.location.href = `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   }
 
   return (
     <div className="bg-white">
-      {/* Hero */}
       <div className="mx-auto max-w-7xl px-6 pt-10 pb-6 lg:px-8">
         <h1 className="text-6xl font-extrabold tracking-tight text-brand flex items-center gap-3">
           Contact Us
@@ -40,26 +83,26 @@ function ContactPage() {
 
       <div className="mx-auto max-w-7xl px-6 pb-0 lg:px-8">
         <div className="flex flex-col lg:flex-row gap-10 items-stretch">
-          
-          {/* Left Column: Info Card + Kitten */}
+
           <div className="lg:w-1/3 flex flex-col relative">
-            {/* Contact Info Card */}
             <div className="rounded-2xl border border-brand/40 bg-white p-7 relative z-10">
               <h2 className="text-xl font-bold text-brand">Contact Information</h2>
-              
+
               <ul className="mt-8 space-y-6">
                 <li className="flex items-start gap-4">
                   <Phone fill="currentColor" stroke="none" className="mt-1 h-6 w-6 shrink-0 text-brand" />
                   <div>
                     <p className="text-sm font-medium text-brand">Call / Text</p>
-                    <p className="font-semibold text-slate-800">(951) 951-830-1825</p>
+                    <p className="font-semibold text-slate-800">{contactPhone}</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-4">
                   <Mail fill="currentColor" stroke="none" className="mt-1 h-6 w-6 shrink-0 text-brand" />
                   <div>
                     <p className="text-sm font-medium text-brand">Email</p>
-                    <p className="font-semibold text-slate-800">david@pawsitivetransfomations.org</p>
+                    <a href={`mailto:${contactEmail}`} className="font-semibold text-slate-800 hover:text-brand">
+                      {contactEmail}
+                    </a>
                   </div>
                 </li>
                 <li className="flex items-start gap-4">
@@ -67,25 +110,24 @@ function ContactPage() {
                   <div>
                     <p className="text-sm font-medium text-brand">Address</p>
                     <div className="font-semibold text-slate-800 leading-snug">
-                      <p>12523 Limonite, Suite 440412</p>
-                      <p>Mira Loma, CA 91752</p>
-                      <p>Riverside County</p>
+                      {addressLines.map((line) => (
+                        <p key={line}>{line}</p>
+                      ))}
                     </div>
                   </div>
                 </li>
               </ul>
-              
+
               <div className="mt-10 pt-4 font-semibold text-slate-800">
-                EIN: 46-4805576
+                EIN: {orgEin}
               </div>
             </div>
 
-            {/* Cat and Heart Image Container */}
             <div className="relative mt-auto pt-8 flex items-end">
-              <img 
-                src="/images/contact-kitten.png" 
-                alt="Cat" 
-                className="w-full xl:w-11/12 object-contain object-bottom -mb-2 z-10" 
+              <img
+                src="/images/contact-kitten.png"
+                alt="Cat"
+                className="w-full xl:w-11/12 object-contain object-bottom -mb-2 z-10"
               />
               <div className="absolute right-0 bottom-12 w-1/4">
                  <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="3" className="w-full h-auto text-brand" style={{ transform: 'rotate(15deg)' }}>
@@ -96,12 +138,11 @@ function ContactPage() {
             </div>
           </div>
 
-          {/* Right Column: Form Card */}
           <div className="lg:w-2/3 pb-16">
             <div className="rounded-2xl border border-brand/40 bg-white p-7 lg:p-10 h-full">
               <h2 className="text-2xl font-bold text-brand">Send Us a Message</h2>
               <form onSubmit={handleSubmit} className="mt-8">
-                
+
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                   <label className="block">
                     <span className="mb-2 block text-sm font-semibold text-slate-800">First Name *</span>
@@ -112,7 +153,7 @@ function ContactPage() {
                     <input name="lastName" value={form.lastName} onChange={handleChange} required className="w-full rounded-md border border-slate-300 px-4 py-2.5 text-sm focus:border-brand focus:ring-brand" />
                   </label>
                 </div>
-                
+
                 <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
                   <label className="block">
                     <span className="mb-2 block text-sm font-semibold text-slate-800">Email *</span>
@@ -123,7 +164,7 @@ function ContactPage() {
                     <input type="tel" name="phone" value={form.phone} onChange={handleChange} className="w-full rounded-md border border-slate-300 px-4 py-2.5 text-sm focus:border-brand focus:ring-brand" />
                   </label>
                 </div>
-                
+
                 <label className="mt-6 block">
                   <span className="mb-2 block text-sm font-semibold text-slate-800">I am reaching out about *</span>
                   <select name="topic" value={form.topic} onChange={handleChange} required className="w-full rounded-md border border-slate-300 px-4 py-2.5 text-sm focus:border-brand focus:ring-brand bg-white">
@@ -135,23 +176,23 @@ function ContactPage() {
                     <option>Other</option>
                   </select>
                 </label>
-                
+
                 <label className="mt-6 block">
                   <span className="mb-2 block text-sm font-semibold text-slate-800">Message *</span>
                   <textarea name="message" value={form.message} onChange={handleChange} rows={6} required className="w-full rounded-md border border-slate-300 px-4 py-2.5 text-sm focus:border-brand focus:ring-brand" />
                 </label>
-                
+
                 <div className="mt-8 flex justify-center lg:justify-start">
                   <button type="submit" className="inline-flex items-center gap-2 rounded-lg bg-brand px-8 py-3.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-dark transition-colors">
                     Send Message
                     <Send className="h-4 w-4" />
                   </button>
                 </div>
-                
+
               </form>
             </div>
           </div>
-          
+
         </div>
       </div>
     </div>

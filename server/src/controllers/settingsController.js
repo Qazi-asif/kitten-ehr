@@ -14,6 +14,10 @@ function normalizeOptionalUrl(value) {
 
 const DEFAULTS = {
   orgName: 'Pawsitive Transformations',
+  orgEin: '42-3678960',
+  contactPhone: '(951) 830-1825',
+  contactEmail: 'hello@pawsitivetransformations.org',
+  contactAddress: '12523 Limonite, Suite 440412\nMira Loma, CA 91752\nRiverside County',
   missionStatement:
     'Pawsitive Transformations rescues, fosters, and finds loving homes for kittens in need across our community.',
   defaultDonationAmount: 50,
@@ -76,6 +80,10 @@ export async function updateSettings(req, res, next) {
   try {
     const {
       orgName,
+      orgEin,
+      contactPhone,
+      contactEmail,
+      contactAddress,
       missionStatement,
       defaultDonationAmount,
       amazonWishlistUrl,
@@ -115,6 +123,10 @@ export async function updateSettings(req, res, next) {
       }
       data.orgName = orgName.trim();
     }
+    if (orgEin !== undefined) data.orgEin = String(orgEin).trim();
+    if (contactPhone !== undefined) data.contactPhone = String(contactPhone).trim();
+    if (contactEmail !== undefined) data.contactEmail = String(contactEmail).trim();
+    if (contactAddress !== undefined) data.contactAddress = String(contactAddress);
     if (missionStatement !== undefined) data.missionStatement = missionStatement;
     if (defaultDonationAmount !== undefined) {
       const parsed = Number.parseInt(defaultDonationAmount, 10);

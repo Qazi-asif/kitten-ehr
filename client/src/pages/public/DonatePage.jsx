@@ -19,6 +19,7 @@ function DonatePage() {
   const hasPaypal = Boolean(settings.paypalLink);
   const hasVenmo = Boolean(settings.venmoQrCodeUrl);
   const hasAlternatePayments = hasStripe || hasPaypal || hasVenmo;
+  const orgEin = settings.orgEin?.trim() || '42-3678960';
 
   return (
     <div className="bg-white">
@@ -41,7 +42,7 @@ function DonatePage() {
           <h2 className="text-xl font-extrabold text-brand">Make a Difference Today</h2>
           <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600">
             Your donation helps provide essential care, shelter, and love to cats in need and supports wellness programs for people.
-            Pawsitive Transformations is a 501(c)(3) non-profit organization. EIN: 46-4005576.
+            Pawsitive Transformations is a 501(c)(3) non-profit organization. EIN: {orgEin}.
           </p>
         </div>
 
