@@ -21657,6 +21657,8 @@ export namespace Prisma {
   export type ApplicationUploadMinAggregateOutputType = {
     id: number | null
     applicationId: number | null
+    fileName: string | null
+    docLabel: string | null
     fileUrl: string | null
     fileType: string | null
     createdAt: Date | null
@@ -21665,6 +21667,8 @@ export namespace Prisma {
   export type ApplicationUploadMaxAggregateOutputType = {
     id: number | null
     applicationId: number | null
+    fileName: string | null
+    docLabel: string | null
     fileUrl: string | null
     fileType: string | null
     createdAt: Date | null
@@ -21673,6 +21677,8 @@ export namespace Prisma {
   export type ApplicationUploadCountAggregateOutputType = {
     id: number
     applicationId: number
+    fileName: number
+    docLabel: number
     fileUrl: number
     fileType: number
     createdAt: number
@@ -21693,6 +21699,8 @@ export namespace Prisma {
   export type ApplicationUploadMinAggregateInputType = {
     id?: true
     applicationId?: true
+    fileName?: true
+    docLabel?: true
     fileUrl?: true
     fileType?: true
     createdAt?: true
@@ -21701,6 +21709,8 @@ export namespace Prisma {
   export type ApplicationUploadMaxAggregateInputType = {
     id?: true
     applicationId?: true
+    fileName?: true
+    docLabel?: true
     fileUrl?: true
     fileType?: true
     createdAt?: true
@@ -21709,6 +21719,8 @@ export namespace Prisma {
   export type ApplicationUploadCountAggregateInputType = {
     id?: true
     applicationId?: true
+    fileName?: true
+    docLabel?: true
     fileUrl?: true
     fileType?: true
     createdAt?: true
@@ -21804,6 +21816,8 @@ export namespace Prisma {
   export type ApplicationUploadGroupByOutputType = {
     id: number
     applicationId: number
+    fileName: string
+    docLabel: string
     fileUrl: string
     fileType: string
     createdAt: Date
@@ -21831,6 +21845,8 @@ export namespace Prisma {
   export type ApplicationUploadSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     applicationId?: boolean
+    fileName?: boolean
+    docLabel?: boolean
     fileUrl?: boolean
     fileType?: boolean
     createdAt?: boolean
@@ -21840,6 +21856,8 @@ export namespace Prisma {
   export type ApplicationUploadSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     applicationId?: boolean
+    fileName?: boolean
+    docLabel?: boolean
     fileUrl?: boolean
     fileType?: boolean
     createdAt?: boolean
@@ -21849,6 +21867,8 @@ export namespace Prisma {
   export type ApplicationUploadSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     applicationId?: boolean
+    fileName?: boolean
+    docLabel?: boolean
     fileUrl?: boolean
     fileType?: boolean
     createdAt?: boolean
@@ -21858,12 +21878,14 @@ export namespace Prisma {
   export type ApplicationUploadSelectScalar = {
     id?: boolean
     applicationId?: boolean
+    fileName?: boolean
+    docLabel?: boolean
     fileUrl?: boolean
     fileType?: boolean
     createdAt?: boolean
   }
 
-  export type ApplicationUploadOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "applicationId" | "fileUrl" | "fileType" | "createdAt", ExtArgs["result"]["applicationUpload"]>
+  export type ApplicationUploadOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "applicationId" | "fileName" | "docLabel" | "fileUrl" | "fileType" | "createdAt", ExtArgs["result"]["applicationUpload"]>
   export type ApplicationUploadInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
   }
@@ -21882,6 +21904,8 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       applicationId: number
+      fileName: string
+      docLabel: string
       fileUrl: string
       fileType: string
       createdAt: Date
@@ -22311,6 +22335,8 @@ export namespace Prisma {
   interface ApplicationUploadFieldRefs {
     readonly id: FieldRef<"ApplicationUpload", 'Int'>
     readonly applicationId: FieldRef<"ApplicationUpload", 'Int'>
+    readonly fileName: FieldRef<"ApplicationUpload", 'String'>
+    readonly docLabel: FieldRef<"ApplicationUpload", 'String'>
     readonly fileUrl: FieldRef<"ApplicationUpload", 'String'>
     readonly fileType: FieldRef<"ApplicationUpload", 'String'>
     readonly createdAt: FieldRef<"ApplicationUpload", 'DateTime'>
@@ -35519,6 +35545,8 @@ export namespace Prisma {
   export const ApplicationUploadScalarFieldEnum: {
     id: 'id',
     applicationId: 'applicationId',
+    fileName: 'fileName',
+    docLabel: 'docLabel',
     fileUrl: 'fileUrl',
     fileType: 'fileType',
     createdAt: 'createdAt'
@@ -37106,6 +37134,8 @@ export namespace Prisma {
     NOT?: ApplicationUploadWhereInput | ApplicationUploadWhereInput[]
     id?: IntFilter<"ApplicationUpload"> | number
     applicationId?: IntFilter<"ApplicationUpload"> | number
+    fileName?: StringFilter<"ApplicationUpload"> | string
+    docLabel?: StringFilter<"ApplicationUpload"> | string
     fileUrl?: StringFilter<"ApplicationUpload"> | string
     fileType?: StringFilter<"ApplicationUpload"> | string
     createdAt?: DateTimeFilter<"ApplicationUpload"> | Date | string
@@ -37115,6 +37145,8 @@ export namespace Prisma {
   export type ApplicationUploadOrderByWithRelationInput = {
     id?: SortOrder
     applicationId?: SortOrder
+    fileName?: SortOrder
+    docLabel?: SortOrder
     fileUrl?: SortOrder
     fileType?: SortOrder
     createdAt?: SortOrder
@@ -37127,6 +37159,8 @@ export namespace Prisma {
     OR?: ApplicationUploadWhereInput[]
     NOT?: ApplicationUploadWhereInput | ApplicationUploadWhereInput[]
     applicationId?: IntFilter<"ApplicationUpload"> | number
+    fileName?: StringFilter<"ApplicationUpload"> | string
+    docLabel?: StringFilter<"ApplicationUpload"> | string
     fileUrl?: StringFilter<"ApplicationUpload"> | string
     fileType?: StringFilter<"ApplicationUpload"> | string
     createdAt?: DateTimeFilter<"ApplicationUpload"> | Date | string
@@ -37136,6 +37170,8 @@ export namespace Prisma {
   export type ApplicationUploadOrderByWithAggregationInput = {
     id?: SortOrder
     applicationId?: SortOrder
+    fileName?: SortOrder
+    docLabel?: SortOrder
     fileUrl?: SortOrder
     fileType?: SortOrder
     createdAt?: SortOrder
@@ -37152,6 +37188,8 @@ export namespace Prisma {
     NOT?: ApplicationUploadScalarWhereWithAggregatesInput | ApplicationUploadScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"ApplicationUpload"> | number
     applicationId?: IntWithAggregatesFilter<"ApplicationUpload"> | number
+    fileName?: StringWithAggregatesFilter<"ApplicationUpload"> | string
+    docLabel?: StringWithAggregatesFilter<"ApplicationUpload"> | string
     fileUrl?: StringWithAggregatesFilter<"ApplicationUpload"> | string
     fileType?: StringWithAggregatesFilter<"ApplicationUpload"> | string
     createdAt?: DateTimeWithAggregatesFilter<"ApplicationUpload"> | Date | string
@@ -39362,6 +39400,8 @@ export namespace Prisma {
   }
 
   export type ApplicationUploadCreateInput = {
+    fileName?: string
+    docLabel?: string
     fileUrl: string
     fileType: string
     createdAt?: Date | string
@@ -39371,12 +39411,16 @@ export namespace Prisma {
   export type ApplicationUploadUncheckedCreateInput = {
     id?: number
     applicationId: number
+    fileName?: string
+    docLabel?: string
     fileUrl: string
     fileType: string
     createdAt?: Date | string
   }
 
   export type ApplicationUploadUpdateInput = {
+    fileName?: StringFieldUpdateOperationsInput | string
+    docLabel?: StringFieldUpdateOperationsInput | string
     fileUrl?: StringFieldUpdateOperationsInput | string
     fileType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39386,6 +39430,8 @@ export namespace Prisma {
   export type ApplicationUploadUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     applicationId?: IntFieldUpdateOperationsInput | number
+    fileName?: StringFieldUpdateOperationsInput | string
+    docLabel?: StringFieldUpdateOperationsInput | string
     fileUrl?: StringFieldUpdateOperationsInput | string
     fileType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39394,12 +39440,16 @@ export namespace Prisma {
   export type ApplicationUploadCreateManyInput = {
     id?: number
     applicationId: number
+    fileName?: string
+    docLabel?: string
     fileUrl: string
     fileType: string
     createdAt?: Date | string
   }
 
   export type ApplicationUploadUpdateManyMutationInput = {
+    fileName?: StringFieldUpdateOperationsInput | string
+    docLabel?: StringFieldUpdateOperationsInput | string
     fileUrl?: StringFieldUpdateOperationsInput | string
     fileType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39408,6 +39458,8 @@ export namespace Prisma {
   export type ApplicationUploadUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     applicationId?: IntFieldUpdateOperationsInput | number
+    fileName?: StringFieldUpdateOperationsInput | string
+    docLabel?: StringFieldUpdateOperationsInput | string
     fileUrl?: StringFieldUpdateOperationsInput | string
     fileType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -41520,6 +41572,8 @@ export namespace Prisma {
   export type ApplicationUploadCountOrderByAggregateInput = {
     id?: SortOrder
     applicationId?: SortOrder
+    fileName?: SortOrder
+    docLabel?: SortOrder
     fileUrl?: SortOrder
     fileType?: SortOrder
     createdAt?: SortOrder
@@ -41533,6 +41587,8 @@ export namespace Prisma {
   export type ApplicationUploadMaxOrderByAggregateInput = {
     id?: SortOrder
     applicationId?: SortOrder
+    fileName?: SortOrder
+    docLabel?: SortOrder
     fileUrl?: SortOrder
     fileType?: SortOrder
     createdAt?: SortOrder
@@ -41541,6 +41597,8 @@ export namespace Prisma {
   export type ApplicationUploadMinOrderByAggregateInput = {
     id?: SortOrder
     applicationId?: SortOrder
+    fileName?: SortOrder
+    docLabel?: SortOrder
     fileUrl?: SortOrder
     fileType?: SortOrder
     createdAt?: SortOrder
@@ -46282,6 +46340,8 @@ export namespace Prisma {
   }
 
   export type ApplicationUploadCreateWithoutApplicationInput = {
+    fileName?: string
+    docLabel?: string
     fileUrl: string
     fileType: string
     createdAt?: Date | string
@@ -46289,6 +46349,8 @@ export namespace Prisma {
 
   export type ApplicationUploadUncheckedCreateWithoutApplicationInput = {
     id?: number
+    fileName?: string
+    docLabel?: string
     fileUrl: string
     fileType: string
     createdAt?: Date | string
@@ -46384,6 +46446,8 @@ export namespace Prisma {
     NOT?: ApplicationUploadScalarWhereInput | ApplicationUploadScalarWhereInput[]
     id?: IntFilter<"ApplicationUpload"> | number
     applicationId?: IntFilter<"ApplicationUpload"> | number
+    fileName?: StringFilter<"ApplicationUpload"> | string
+    docLabel?: StringFilter<"ApplicationUpload"> | string
     fileUrl?: StringFilter<"ApplicationUpload"> | string
     fileType?: StringFilter<"ApplicationUpload"> | string
     createdAt?: DateTimeFilter<"ApplicationUpload"> | Date | string
@@ -48439,6 +48503,8 @@ export namespace Prisma {
 
   export type ApplicationUploadCreateManyApplicationInput = {
     id?: number
+    fileName?: string
+    docLabel?: string
     fileUrl: string
     fileType: string
     createdAt?: Date | string
@@ -48489,6 +48555,8 @@ export namespace Prisma {
   }
 
   export type ApplicationUploadUpdateWithoutApplicationInput = {
+    fileName?: StringFieldUpdateOperationsInput | string
+    docLabel?: StringFieldUpdateOperationsInput | string
     fileUrl?: StringFieldUpdateOperationsInput | string
     fileType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -48496,6 +48564,8 @@ export namespace Prisma {
 
   export type ApplicationUploadUncheckedUpdateWithoutApplicationInput = {
     id?: IntFieldUpdateOperationsInput | number
+    fileName?: StringFieldUpdateOperationsInput | string
+    docLabel?: StringFieldUpdateOperationsInput | string
     fileUrl?: StringFieldUpdateOperationsInput | string
     fileType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -48503,6 +48573,8 @@ export namespace Prisma {
 
   export type ApplicationUploadUncheckedUpdateManyWithoutApplicationInput = {
     id?: IntFieldUpdateOperationsInput | number
+    fileName?: StringFieldUpdateOperationsInput | string
+    docLabel?: StringFieldUpdateOperationsInput | string
     fileUrl?: StringFieldUpdateOperationsInput | string
     fileType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

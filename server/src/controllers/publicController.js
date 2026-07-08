@@ -3,6 +3,12 @@ import {
   buildPublicAvailableKittenWhereClause,
   buildPublicWebsiteWhereClause,
 } from '../utils/publishTargets.js';
+import { isPhotoDocument, photoDocumentOrderBy } from '../utils/photoDocuments.js';
+import {
+  GENERIC_KITTEN_PHOTO_FALLBACK,
+  isResolvablePhotoUrl,
+  normalizeKittenPhotoUrl,
+} from '../utils/resolveKittenPhotoUrl.js';
 
 const publicKittenSelect = {
   id: true,
@@ -26,6 +32,50 @@ const publicKittenSelect = {
 const publicWebsiteFilter = buildPublicWebsiteWhereClause();
 const publicAvailableKittenFilter = buildPublicAvailableKittenWhereClause();
 
+async function enrichPublicKittensWithPhotos(kittens) {
+  if (kittens.length === 0) return kittens;
+
+  const needsDocLookup = kittens.filter((kitten) => !isResolvablePhotoUrl(kitten.primaryPhotoUrl));
+  const photoByKittenId = new Map();
+
+  if (needsDocLookup.length > 0) {
+    const documents = await prisma.document.findMany({
+      where: { kittenId: { in: needsDocLookup.map((kitten) => kitten.id) } },
+      orderBy: photoDocumentOrderBy(),
+      select: { kittenId: true, fileUrl: true, docType: true, isPrimaryPhoto: true },
+    });
+
+    for (const document of documents) {
+      if (!isPhotoDocument(document)) continue;
+      if (!photoByKittenId.has(document.kittenId)) {
+        photoByKittenId.set(document.kittenId, document.fileUrl);
+      }
+    }
+  }
+
+  return kittens.map((kitten) => {
+    const normalized = normalizeKittenPhotoUrl(kitten.primaryPhotoUrl, kitten.name);
+    if (normalized) {
+      return { ...kitten, primaryPhotoUrl: normalized };
+    }
+
+    const documentPhoto = photoByKittenId.get(kitten.id);
+    if (documentPhoto) {
+      return { ...kitten, primaryPhotoUrl: documentPhoto };
+    }
+
+    const nameFallback = normalizeKittenPhotoUrl(null, kitten.name);
+    return { ...kitten, primaryPhotoUrl: nameFallback || GENERIC_KITTEN_PHOTO_FALLBACK };
+  });
+}
+
+function resolvePublicKittenPhoto(kitten, documentPhoto = null) {
+  const normalized = normalizeKittenPhotoUrl(kitten.primaryPhotoUrl, kitten.name);
+  if (normalized) return normalized;
+  if (documentPhoto) return documentPhoto;
+  return normalizeKittenPhotoUrl(null, kitten.name) || GENERIC_KITTEN_PHOTO_FALLBACK;
+}
+
 export async function getPublicKittens(_req, res, next) {
   try {
     const kittens = await prisma.kitten.findMany({
@@ -33,7 +83,7 @@ export async function getPublicKittens(_req, res, next) {
       select: publicKittenSelect,
       orderBy: { id: 'asc' },
     });
-    res.json(kittens);
+    res.json(await enrichPublicKittensWithPhotos(kittens));
   } catch (error) {
     next(error);
   }
@@ -52,7 +102,8 @@ export async function getPublicKittenById(req, res, next) {
       return res.status(404).json({ error: 'Kitten not found' });
     }
 
-    res.json(kitten);
+    const [enriched] = await enrichPublicKittensWithPhotos([kitten]);
+    res.json(enriched);
   } catch (error) {
     next(error);
   }
@@ -153,14 +204,15 @@ export async function getPublicKittenPhotos(req, res, next) {
 
     const gallery = [];
     const seen = new Set();
+    const resolvedPrimary = resolvePublicKittenPhoto(kitten);
 
-    if (kitten.primaryPhotoUrl) {
+    if (resolvedPrimary) {
       gallery.push({
         id: 'primary',
-        fileUrl: kitten.primaryPhotoUrl,
+        fileUrl: resolvedPrimary,
         isPrimaryPhoto: true,
       });
-      seen.add(kitten.primaryPhotoUrl);
+      seen.add(resolvedPrimary);
     }
 
     for (const photo of photos) {

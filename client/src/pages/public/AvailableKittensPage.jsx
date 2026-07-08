@@ -25,12 +25,12 @@ const SUCCESS_STORIES = [
 ];
 
 const GALLERY = [
-  '/images/kittens/biscuit.jpg',
-  '/images/kittens/gravy.jpg',
-  '/images/kittens/nugget.jpg',
-  '/images/gallery/rescue-1.jpg',
-  '/images/gallery/rescue-2.jpg',
-  '/images/hero.jpg',
+  '/images/kittens/cute.png',
+  '/images/kittens/vect.jpg',
+  '/images/kittens/cato.png',
+  '/images/21.png',
+  '/images/22.png',
+  '/images/18.png',
 ];
 
 function AvailableKittensPage() {

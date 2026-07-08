@@ -11,6 +11,7 @@ function PublicKittenCard({ kitten }) {
       <div className="relative aspect-[4/5] overflow-hidden bg-slate-900">
         <KittenPhoto
           kitten={kitten}
+          allowFallback
           className="h-full w-full transition-transform duration-500 group-hover:scale-105"
         />
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent p-5 pt-16">

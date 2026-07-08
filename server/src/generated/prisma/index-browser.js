@@ -317,6 +317,8 @@ exports.Prisma.OnboardingChecklistScalarFieldEnum = {
 exports.Prisma.ApplicationUploadScalarFieldEnum = {
   id: 'id',
   applicationId: 'applicationId',
+  fileName: 'fileName',
+  docLabel: 'docLabel',
   fileUrl: 'fileUrl',
   fileType: 'fileType',
   createdAt: 'createdAt'

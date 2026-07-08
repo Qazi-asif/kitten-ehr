@@ -299,6 +299,8 @@ model ApplicationUpload {
   id            Int         @id @default(autoincrement())
   applicationId Int
   application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  fileName      String      @default("")
+  docLabel      String      @default("")
   fileUrl       String
   fileType      String
   createdAt     DateTime    @default(now())

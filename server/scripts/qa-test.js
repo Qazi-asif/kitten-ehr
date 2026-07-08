@@ -114,6 +114,33 @@ async function run() {
     }
   }
 
+  try {
+    const { data } = await api('/api/public/kittens', { auth: false });
+    if (!Array.isArray(data)) {
+      fail('Public kittens photo resolution', 'response is not an array');
+    } else if (data.length === 0) {
+      pass('Public kittens photo resolution (no available kittens)');
+    } else {
+      const unresolved = data.filter((kitten) => {
+        const url = kitten.primaryPhotoUrl || '';
+        return !url.startsWith('data:image/')
+          && !url.startsWith('/images/')
+          && !url.startsWith('http://')
+          && !url.startsWith('https://');
+      });
+      if (unresolved.length > 0) {
+        fail(
+          'Public kittens photo resolution',
+          `unresolved photos: ${unresolved.map((k) => `${k.name}=${k.primaryPhotoUrl || 'null'}`).join(', ')}`,
+        );
+      } else {
+        pass(`Public kittens photo resolution (${data.length} listed, all photos resolvable)`);
+      }
+    }
+  } catch (e) {
+    fail('Public kittens photo resolution', e.message);
+  }
+
   // Settings
   try {
     const { data } = await api('/api/settings');
