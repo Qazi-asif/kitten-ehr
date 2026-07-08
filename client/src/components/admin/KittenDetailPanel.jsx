@@ -7,19 +7,11 @@ import LitterSelect from './LitterSelect';
 import KittenPlacementTable from './KittenPlacementTable';
 import StatusBadge from './StatusBadge';
 import KittenDocumentsTab from './KittenDocumentsTab';
+import KittenHealthTab from './KittenHealthTab';
 import MedicalAlertsBanner from './MedicalAlertsBanner';
+import WishlistManager from './WishlistManager';
 import FaceSheet from '../FaceSheet';
 import KittenPhoto from '../KittenPhoto';
-import MedicationForm from '../MedicationForm';
-import MedicationsTable from '../MedicationsTable';
-import VaccineForm from '../VaccineForm';
-import VaccinesTable from '../VaccinesTable';
-import VetVisitForm from '../VetVisitForm';
-import VetVisitsTable from '../VetVisitsTable';
-import WeightLogForm from '../WeightLogForm';
-import WeightLogsTable from '../WeightLogsTable';
-import WishlistManager from './WishlistManager';
-import { WISHLIST_OWNER_TYPES } from '../../constants/wishlists';
 import {
   createMedication,
   createVaccine,
@@ -44,6 +36,7 @@ import {
   deleteKitten,
 } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
+import { WISHLIST_OWNER_TYPES } from '../../constants/wishlists';
 import { formatKittenAgeDetailed } from '../../utils/kittenAge';
 import { resolvePrimaryPhotoUrl } from '../../utils/kittenImages';
 
@@ -51,8 +44,7 @@ const TABS = [
   { id: 'profile', label: 'Profile' },
   { id: 'publishing', label: 'Publishing & Social' },
   { id: 'updates', label: 'Updates' },
-  { id: 'medical', label: 'Medical' },
-  { id: 'weight', label: 'Weight' },
+  { id: 'health', label: 'Health' },
   { id: 'documents', label: 'Documents' },
   { id: 'placements', label: 'Placements' },
   { id: 'notes', label: 'Notes' },
@@ -83,6 +75,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
   const { hasPermission } = useAuth();
   const canDelete = hasPermission('kittens.delete');
   const canEdit = hasPermission('kittens.edit');
+  const canManageMedical = hasPermission('medical.manage');
   const [kitten, setKitten] = useState(null);
   const [medical, setMedical] = useState({ vaccines: [], medications: [], vetAppointments: [] });
   const [weightLogs, setWeightLogs] = useState([]);
@@ -195,7 +188,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
   useEffect(() => {
     if (loading || !kittenId) return undefined;
 
-    const medicalTabs = new Set(['medical']);
+    const healthTabs = new Set(['health']);
     if (activeTab === 'profile' || activeTab === 'publishing' || activeTab === 'notes') return undefined;
     if (loadedTabs.has(activeTab)) return undefined;
 
@@ -204,10 +197,8 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
     async function loadTabData() {
       setTabLoading(true);
       try {
-        if (medicalTabs.has(activeTab)) {
-          await loadMedical();
-        } else if (activeTab === 'weight') {
-          await loadWeights();
+        if (healthTabs.has(activeTab)) {
+          await Promise.all([loadMedical(), loadWeights()]);
         } else if (activeTab === 'documents') {
           await loadDocuments();
         } else if (activeTab === 'updates') {
@@ -737,31 +728,17 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
             </div>
           )}
 
-          {activeTab === 'medical' && (
-            <div className="space-y-8">
-              <section>
-                <h3 className="mb-3 text-xs font-bold uppercase text-gray-700">Vaccinations</h3>
-                <VaccineForm onSubmit={handleCreateVaccine} />
-                <VaccinesTable vaccines={medical.vaccines} />
-              </section>
-              <section>
-                <h3 className="mb-3 text-xs font-bold uppercase text-gray-700">Medications</h3>
-                <MedicationForm onSubmit={handleCreateMedication} />
-                <MedicationsTable medications={medical.medications} />
-              </section>
-              <section>
-                <h3 className="mb-3 text-xs font-bold uppercase text-gray-700">Vet Visits</h3>
-                <VetVisitForm onSubmit={handleCreateVetVisit} />
-                <VetVisitsTable vetAppointments={medical.vetAppointments} />
-              </section>
-            </div>
-          )}
-
-          {activeTab === 'weight' && (
-            <>
-              <WeightLogForm onSubmit={handleCreateWeight} />
-              <WeightLogsTable logs={weightLogs} />
-            </>
+          {activeTab === 'health' && (
+            <KittenHealthTab
+              kittenId={kittenId}
+              canManageMedical={canManageMedical}
+              medical={medical}
+              weightLogs={weightLogs}
+              onCreateVaccine={handleCreateVaccine}
+              onCreateMedication={handleCreateMedication}
+              onCreateVetVisit={handleCreateVetVisit}
+              onCreateWeight={handleCreateWeight}
+            />
           )}
 
           {activeTab === 'documents' && (

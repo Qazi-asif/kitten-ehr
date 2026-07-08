@@ -17,6 +17,7 @@ import ContractsPage from './pages/admin/ContractsPage';
 import DashboardPage from './pages/admin/DashboardPage';
 import FinancePage from './pages/admin/FinancePage';
 import OnboardingPage from './pages/admin/OnboardingPage';
+import ProtocolLibrary from './pages/admin/ProtocolLibrary';
 import SettingsPage from './pages/admin/SettingsPage';
 import EmailTemplatesPage from './pages/admin/EmailTemplatesPage';
 import AboutPage from './pages/public/AboutPage';
@@ -73,6 +74,9 @@ function App() {
               <Route path="calendar" element={<CalendarPage />} />
               <Route element={<ProtectedRoute permission="content.view" />}>
                 <Route path="content" element={<ContentManagerPage />} />
+              </Route>
+              <Route element={<ProtectedRoute permission="medical.view" />}>
+                <Route path="protocols" element={<ProtocolLibrary />} />
               </Route>
               <Route element={<ProtectedRoute permission="donations.view" />}>
                 <Route path="finance" element={<FinancePage />} />
