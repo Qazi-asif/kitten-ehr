@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useLocation, useOutletContext } from 'react-router-dom';
 import { Mail, MapPin, Phone, Send } from 'lucide-react';
 import { fetchPublicSettings } from '../../services/publicApi';
 
@@ -10,18 +10,10 @@ const FALLBACK_CONTACT = {
   orgEin: '42-3678960',
 };
 
-function resolveContactEmail(settings) {
-  return (
-    settings.contactEmail?.trim()
-    || settings.adminNotifyEmail?.trim()
-    || settings.fromEmail?.trim()
-    || FALLBACK_CONTACT.contactEmail
-  );
-}
-
 function ContactPage() {
   const outlet = useOutletContext();
-  const [settings, setSettings] = useState({ ...FALLBACK_CONTACT, ...(outlet?.settings ?? {}) });
+  const location = useLocation();
+  const [settings, setSettings] = useState(outlet?.settings ?? FALLBACK_CONTACT);
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
@@ -32,12 +24,20 @@ function ContactPage() {
   });
 
   useEffect(() => {
-    fetchPublicSettings()
-      .then((data) => setSettings({ ...FALLBACK_CONTACT, ...data }))
-      .catch(() => {});
-  }, []);
+    let cancelled = false;
 
-  const contactEmail = resolveContactEmail(settings);
+    fetchPublicSettings()
+      .then((data) => {
+        if (!cancelled) setSettings(data);
+      })
+      .catch(() => {});
+
+    return () => {
+      cancelled = true;
+    };
+  }, [location.key]);
+
+  const contactEmail = settings.contactEmail?.trim() || FALLBACK_CONTACT.contactEmail;
   const contactPhone = settings.contactPhone?.trim() || FALLBACK_CONTACT.contactPhone;
   const orgEin = settings.orgEin?.trim() || FALLBACK_CONTACT.orgEin;
   const addressLines = (settings.contactAddress?.trim() || FALLBACK_CONTACT.contactAddress)

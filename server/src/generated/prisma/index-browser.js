@@ -452,6 +452,10 @@ exports.Prisma.ProtocolDoseScalarFieldEnum = {
 exports.Prisma.SettingsScalarFieldEnum = {
   id: 'id',
   orgName: 'orgName',
+  orgEin: 'orgEin',
+  contactPhone: 'contactPhone',
+  contactEmail: 'contactEmail',
+  contactAddress: 'contactAddress',
   missionStatement: 'missionStatement',
   defaultDonationAmount: 'defaultDonationAmount',
   amazonWishlistUrl: 'amazonWishlistUrl',

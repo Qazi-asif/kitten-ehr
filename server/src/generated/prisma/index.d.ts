@@ -38549,6 +38549,10 @@ export namespace Prisma {
   export type SettingsMinAggregateOutputType = {
     id: number | null
     orgName: string | null
+    orgEin: string | null
+    contactPhone: string | null
+    contactEmail: string | null
+    contactAddress: string | null
     missionStatement: string | null
     defaultDonationAmount: number | null
     amazonWishlistUrl: string | null
@@ -38581,6 +38585,10 @@ export namespace Prisma {
   export type SettingsMaxAggregateOutputType = {
     id: number | null
     orgName: string | null
+    orgEin: string | null
+    contactPhone: string | null
+    contactEmail: string | null
+    contactAddress: string | null
     missionStatement: string | null
     defaultDonationAmount: number | null
     amazonWishlistUrl: string | null
@@ -38613,6 +38621,10 @@ export namespace Prisma {
   export type SettingsCountAggregateOutputType = {
     id: number
     orgName: number
+    orgEin: number
+    contactPhone: number
+    contactEmail: number
+    contactAddress: number
     missionStatement: number
     defaultDonationAmount: number
     amazonWishlistUrl: number
@@ -38659,6 +38671,10 @@ export namespace Prisma {
   export type SettingsMinAggregateInputType = {
     id?: true
     orgName?: true
+    orgEin?: true
+    contactPhone?: true
+    contactEmail?: true
+    contactAddress?: true
     missionStatement?: true
     defaultDonationAmount?: true
     amazonWishlistUrl?: true
@@ -38691,6 +38707,10 @@ export namespace Prisma {
   export type SettingsMaxAggregateInputType = {
     id?: true
     orgName?: true
+    orgEin?: true
+    contactPhone?: true
+    contactEmail?: true
+    contactAddress?: true
     missionStatement?: true
     defaultDonationAmount?: true
     amazonWishlistUrl?: true
@@ -38723,6 +38743,10 @@ export namespace Prisma {
   export type SettingsCountAggregateInputType = {
     id?: true
     orgName?: true
+    orgEin?: true
+    contactPhone?: true
+    contactEmail?: true
+    contactAddress?: true
     missionStatement?: true
     defaultDonationAmount?: true
     amazonWishlistUrl?: true
@@ -38842,6 +38866,10 @@ export namespace Prisma {
   export type SettingsGroupByOutputType = {
     id: number
     orgName: string
+    orgEin: string
+    contactPhone: string
+    contactEmail: string
+    contactAddress: string
     missionStatement: string
     defaultDonationAmount: number
     amazonWishlistUrl: string
@@ -38893,6 +38921,10 @@ export namespace Prisma {
   export type SettingsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     orgName?: boolean
+    orgEin?: boolean
+    contactPhone?: boolean
+    contactEmail?: boolean
+    contactAddress?: boolean
     missionStatement?: boolean
     defaultDonationAmount?: boolean
     amazonWishlistUrl?: boolean
@@ -38925,6 +38957,10 @@ export namespace Prisma {
   export type SettingsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     orgName?: boolean
+    orgEin?: boolean
+    contactPhone?: boolean
+    contactEmail?: boolean
+    contactAddress?: boolean
     missionStatement?: boolean
     defaultDonationAmount?: boolean
     amazonWishlistUrl?: boolean
@@ -38957,6 +38993,10 @@ export namespace Prisma {
   export type SettingsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     orgName?: boolean
+    orgEin?: boolean
+    contactPhone?: boolean
+    contactEmail?: boolean
+    contactAddress?: boolean
     missionStatement?: boolean
     defaultDonationAmount?: boolean
     amazonWishlistUrl?: boolean
@@ -38989,6 +39029,10 @@ export namespace Prisma {
   export type SettingsSelectScalar = {
     id?: boolean
     orgName?: boolean
+    orgEin?: boolean
+    contactPhone?: boolean
+    contactEmail?: boolean
+    contactAddress?: boolean
     missionStatement?: boolean
     defaultDonationAmount?: boolean
     amazonWishlistUrl?: boolean
@@ -39018,7 +39062,7 @@ export namespace Prisma {
     venmoHandle?: boolean
   }
 
-  export type SettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orgName" | "missionStatement" | "defaultDonationAmount" | "amazonWishlistUrl" | "chewyWishlistUrl" | "facebookUrl" | "instagramUrl" | "socialPostingEnabled" | "facebookPageId" | "facebookPageAccessToken" | "instagramBusinessAccountId" | "groqApiKey" | "groqModel" | "aiEnabled" | "emailsEnabled" | "smtpHost" | "smtpPort" | "smtpSecure" | "smtpUser" | "smtpPass" | "fromEmail" | "fromName" | "adminNotifyEmail" | "donationWidgetCode" | "paypalLink" | "stripeLink" | "venmoQrCodeUrl" | "venmoHandle", ExtArgs["result"]["settings"]>
+  export type SettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orgName" | "orgEin" | "contactPhone" | "contactEmail" | "contactAddress" | "missionStatement" | "defaultDonationAmount" | "amazonWishlistUrl" | "chewyWishlistUrl" | "facebookUrl" | "instagramUrl" | "socialPostingEnabled" | "facebookPageId" | "facebookPageAccessToken" | "instagramBusinessAccountId" | "groqApiKey" | "groqModel" | "aiEnabled" | "emailsEnabled" | "smtpHost" | "smtpPort" | "smtpSecure" | "smtpUser" | "smtpPass" | "fromEmail" | "fromName" | "adminNotifyEmail" | "donationWidgetCode" | "paypalLink" | "stripeLink" | "venmoQrCodeUrl" | "venmoHandle", ExtArgs["result"]["settings"]>
 
   export type $SettingsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Settings"
@@ -39026,6 +39070,10 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       orgName: string
+      orgEin: string
+      contactPhone: string
+      contactEmail: string
+      contactAddress: string
       missionStatement: string
       defaultDonationAmount: number
       amazonWishlistUrl: string
@@ -39478,6 +39526,10 @@ export namespace Prisma {
   interface SettingsFieldRefs {
     readonly id: FieldRef<"Settings", 'Int'>
     readonly orgName: FieldRef<"Settings", 'String'>
+    readonly orgEin: FieldRef<"Settings", 'String'>
+    readonly contactPhone: FieldRef<"Settings", 'String'>
+    readonly contactEmail: FieldRef<"Settings", 'String'>
+    readonly contactAddress: FieldRef<"Settings", 'String'>
     readonly missionStatement: FieldRef<"Settings", 'String'>
     readonly defaultDonationAmount: FieldRef<"Settings", 'Int'>
     readonly amazonWishlistUrl: FieldRef<"Settings", 'String'>
@@ -43718,6 +43770,10 @@ export namespace Prisma {
   export const SettingsScalarFieldEnum: {
     id: 'id',
     orgName: 'orgName',
+    orgEin: 'orgEin',
+    contactPhone: 'contactPhone',
+    contactEmail: 'contactEmail',
+    contactAddress: 'contactAddress',
     missionStatement: 'missionStatement',
     defaultDonationAmount: 'defaultDonationAmount',
     amazonWishlistUrl: 'amazonWishlistUrl',
@@ -46218,6 +46274,10 @@ export namespace Prisma {
     NOT?: SettingsWhereInput | SettingsWhereInput[]
     id?: IntFilter<"Settings"> | number
     orgName?: StringFilter<"Settings"> | string
+    orgEin?: StringFilter<"Settings"> | string
+    contactPhone?: StringFilter<"Settings"> | string
+    contactEmail?: StringFilter<"Settings"> | string
+    contactAddress?: StringFilter<"Settings"> | string
     missionStatement?: StringFilter<"Settings"> | string
     defaultDonationAmount?: IntFilter<"Settings"> | number
     amazonWishlistUrl?: StringFilter<"Settings"> | string
@@ -46250,6 +46310,10 @@ export namespace Prisma {
   export type SettingsOrderByWithRelationInput = {
     id?: SortOrder
     orgName?: SortOrder
+    orgEin?: SortOrder
+    contactPhone?: SortOrder
+    contactEmail?: SortOrder
+    contactAddress?: SortOrder
     missionStatement?: SortOrder
     defaultDonationAmount?: SortOrder
     amazonWishlistUrl?: SortOrder
@@ -46285,6 +46349,10 @@ export namespace Prisma {
     OR?: SettingsWhereInput[]
     NOT?: SettingsWhereInput | SettingsWhereInput[]
     orgName?: StringFilter<"Settings"> | string
+    orgEin?: StringFilter<"Settings"> | string
+    contactPhone?: StringFilter<"Settings"> | string
+    contactEmail?: StringFilter<"Settings"> | string
+    contactAddress?: StringFilter<"Settings"> | string
     missionStatement?: StringFilter<"Settings"> | string
     defaultDonationAmount?: IntFilter<"Settings"> | number
     amazonWishlistUrl?: StringFilter<"Settings"> | string
@@ -46317,6 +46385,10 @@ export namespace Prisma {
   export type SettingsOrderByWithAggregationInput = {
     id?: SortOrder
     orgName?: SortOrder
+    orgEin?: SortOrder
+    contactPhone?: SortOrder
+    contactEmail?: SortOrder
+    contactAddress?: SortOrder
     missionStatement?: SortOrder
     defaultDonationAmount?: SortOrder
     amazonWishlistUrl?: SortOrder
@@ -46357,6 +46429,10 @@ export namespace Prisma {
     NOT?: SettingsScalarWhereWithAggregatesInput | SettingsScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Settings"> | number
     orgName?: StringWithAggregatesFilter<"Settings"> | string
+    orgEin?: StringWithAggregatesFilter<"Settings"> | string
+    contactPhone?: StringWithAggregatesFilter<"Settings"> | string
+    contactEmail?: StringWithAggregatesFilter<"Settings"> | string
+    contactAddress?: StringWithAggregatesFilter<"Settings"> | string
     missionStatement?: StringWithAggregatesFilter<"Settings"> | string
     defaultDonationAmount?: IntWithAggregatesFilter<"Settings"> | number
     amazonWishlistUrl?: StringWithAggregatesFilter<"Settings"> | string
@@ -48957,6 +49033,10 @@ export namespace Prisma {
   export type SettingsCreateInput = {
     id?: number
     orgName?: string
+    orgEin?: string
+    contactPhone?: string
+    contactEmail?: string
+    contactAddress?: string
     missionStatement?: string
     defaultDonationAmount?: number
     amazonWishlistUrl?: string
@@ -48989,6 +49069,10 @@ export namespace Prisma {
   export type SettingsUncheckedCreateInput = {
     id?: number
     orgName?: string
+    orgEin?: string
+    contactPhone?: string
+    contactEmail?: string
+    contactAddress?: string
     missionStatement?: string
     defaultDonationAmount?: number
     amazonWishlistUrl?: string
@@ -49021,6 +49105,10 @@ export namespace Prisma {
   export type SettingsUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     orgName?: StringFieldUpdateOperationsInput | string
+    orgEin?: StringFieldUpdateOperationsInput | string
+    contactPhone?: StringFieldUpdateOperationsInput | string
+    contactEmail?: StringFieldUpdateOperationsInput | string
+    contactAddress?: StringFieldUpdateOperationsInput | string
     missionStatement?: StringFieldUpdateOperationsInput | string
     defaultDonationAmount?: IntFieldUpdateOperationsInput | number
     amazonWishlistUrl?: StringFieldUpdateOperationsInput | string
@@ -49053,6 +49141,10 @@ export namespace Prisma {
   export type SettingsUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     orgName?: StringFieldUpdateOperationsInput | string
+    orgEin?: StringFieldUpdateOperationsInput | string
+    contactPhone?: StringFieldUpdateOperationsInput | string
+    contactEmail?: StringFieldUpdateOperationsInput | string
+    contactAddress?: StringFieldUpdateOperationsInput | string
     missionStatement?: StringFieldUpdateOperationsInput | string
     defaultDonationAmount?: IntFieldUpdateOperationsInput | number
     amazonWishlistUrl?: StringFieldUpdateOperationsInput | string
@@ -49085,6 +49177,10 @@ export namespace Prisma {
   export type SettingsCreateManyInput = {
     id?: number
     orgName?: string
+    orgEin?: string
+    contactPhone?: string
+    contactEmail?: string
+    contactAddress?: string
     missionStatement?: string
     defaultDonationAmount?: number
     amazonWishlistUrl?: string
@@ -49117,6 +49213,10 @@ export namespace Prisma {
   export type SettingsUpdateManyMutationInput = {
     id?: IntFieldUpdateOperationsInput | number
     orgName?: StringFieldUpdateOperationsInput | string
+    orgEin?: StringFieldUpdateOperationsInput | string
+    contactPhone?: StringFieldUpdateOperationsInput | string
+    contactEmail?: StringFieldUpdateOperationsInput | string
+    contactAddress?: StringFieldUpdateOperationsInput | string
     missionStatement?: StringFieldUpdateOperationsInput | string
     defaultDonationAmount?: IntFieldUpdateOperationsInput | number
     amazonWishlistUrl?: StringFieldUpdateOperationsInput | string
@@ -49149,6 +49249,10 @@ export namespace Prisma {
   export type SettingsUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     orgName?: StringFieldUpdateOperationsInput | string
+    orgEin?: StringFieldUpdateOperationsInput | string
+    contactPhone?: StringFieldUpdateOperationsInput | string
+    contactEmail?: StringFieldUpdateOperationsInput | string
+    contactAddress?: StringFieldUpdateOperationsInput | string
     missionStatement?: StringFieldUpdateOperationsInput | string
     defaultDonationAmount?: IntFieldUpdateOperationsInput | number
     amazonWishlistUrl?: StringFieldUpdateOperationsInput | string
@@ -51397,6 +51501,10 @@ export namespace Prisma {
   export type SettingsCountOrderByAggregateInput = {
     id?: SortOrder
     orgName?: SortOrder
+    orgEin?: SortOrder
+    contactPhone?: SortOrder
+    contactEmail?: SortOrder
+    contactAddress?: SortOrder
     missionStatement?: SortOrder
     defaultDonationAmount?: SortOrder
     amazonWishlistUrl?: SortOrder
@@ -51435,6 +51543,10 @@ export namespace Prisma {
   export type SettingsMaxOrderByAggregateInput = {
     id?: SortOrder
     orgName?: SortOrder
+    orgEin?: SortOrder
+    contactPhone?: SortOrder
+    contactEmail?: SortOrder
+    contactAddress?: SortOrder
     missionStatement?: SortOrder
     defaultDonationAmount?: SortOrder
     amazonWishlistUrl?: SortOrder
@@ -51467,6 +51579,10 @@ export namespace Prisma {
   export type SettingsMinOrderByAggregateInput = {
     id?: SortOrder
     orgName?: SortOrder
+    orgEin?: SortOrder
+    contactPhone?: SortOrder
+    contactEmail?: SortOrder
+    contactAddress?: SortOrder
     missionStatement?: SortOrder
     defaultDonationAmount?: SortOrder
     amazonWishlistUrl?: SortOrder

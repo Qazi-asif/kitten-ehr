@@ -1,6 +1,7 @@
 import prisma from '../lib/prisma.js';
 import { testSocialConnection } from '../services/socialMediaService.js';
 import { isAiKeyConfiguredInEnv } from '../utils/aiProvider.js';
+import { PUBLIC_CONTACT_DEFAULTS } from '../utils/publicSettings.js';
 
 const SETTINGS_ID = 1;
 
@@ -12,12 +13,9 @@ function normalizeOptionalUrl(value) {
   return `https://${trimmed}`;
 }
 
-const DEFAULTS = {
+export const DEFAULTS = {
   orgName: 'Pawsitive Transformations',
-  orgEin: '42-3678960',
-  contactPhone: '(951) 830-1825',
-  contactEmail: 'hello@pawsitivetransformations.org',
-  contactAddress: '12523 Limonite, Suite 440412\nMira Loma, CA 91752\nRiverside County',
+  ...PUBLIC_CONTACT_DEFAULTS,
   missionStatement:
     'Pawsitive Transformations rescues, fosters, and finds loving homes for kittens in need across our community.',
   defaultDonationAmount: 50,

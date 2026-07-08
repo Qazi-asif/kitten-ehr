@@ -1,4 +1,6 @@
 import prisma from '../lib/prisma.js';
+import { DEFAULTS } from './settingsController.js';
+import { PUBLIC_SETTINGS_SELECT, toPublicSettings } from '../utils/publicSettings.js';
 import {
   buildPublicAvailableKittenWhereClause,
   buildPublicWebsiteWhereClause,
@@ -261,24 +263,20 @@ export async function getPublicKittenUpdates(req, res, next) {
 
 export async function getPublicSettings(_req, res, next) {
   try {
-    let settings = await prisma.settings.findUnique({ where: { id: 1 } });
+    let settings = await prisma.settings.findUnique({
+      where: { id: 1 },
+      select: PUBLIC_SETTINGS_SELECT,
+    });
 
     if (!settings) {
       settings = await prisma.settings.create({
-        data: {
-          id: 1,
-          orgName: 'Pawsitive Transformations',
-          missionStatement: '',
-          defaultDonationAmount: 50,
-          amazonWishlistUrl: '',
-          chewyWishlistUrl: '',
-          facebookUrl: '',
-          instagramUrl: '',
-        },
+        data: { id: 1, ...DEFAULTS },
+        select: PUBLIC_SETTINGS_SELECT,
       });
     }
 
-    res.json(settings);
+    res.set('Cache-Control', 'no-store');
+    res.json(toPublicSettings(settings));
   } catch (error) {
     next(error);
   }

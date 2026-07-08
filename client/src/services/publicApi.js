@@ -39,7 +39,9 @@ export function fetchPublicEvents() {
 }
 
 export async function fetchPublicSettings() {
-  return publicRequest('/settings');
+  const response = await publicFetch('/public/settings', { cache: 'no-store' });
+  if (!response.ok) throw new Error('Request failed');
+  return response.json();
 }
 
 export async function submitApplication(type, formData, photos = []) {

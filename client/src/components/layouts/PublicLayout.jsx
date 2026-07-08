@@ -39,7 +39,9 @@ const navItems = [
 const DEFAULT_SETTINGS = {
   orgName: 'Pawsitive Transformations',
   orgEin: '42-3678960',
+  contactPhone: '(951) 830-1825',
   contactEmail: 'hello@pawsitivetransformations.org',
+  contactAddress: '12523 Limonite, Suite 440412\nMira Loma, CA 91752\nRiverside County',
   facebookUrl: '',
   instagramUrl: '',
 };
@@ -234,7 +236,7 @@ function PublicLayout() {
     fetchPublicSettings()
       .then(setSettings)
       .catch(() => {});
-  }, []);
+  }, [location.pathname]);
 
   useEffect(() => {
     setMobileOpen(false);
