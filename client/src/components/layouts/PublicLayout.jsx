@@ -360,7 +360,7 @@ function PublicLayout() {
         <div className="border-t border-white/10 bg-brand px-6 py-4 lg:px-8">
           <div className="mx-auto max-w-7xl space-y-2 text-center text-xs text-white/80">
             <p>
-              &copy; 2026 Pawsitive Transformations. All rights reserved. Pawsitive Transformations is a 501(c)(3) non-profit organization. EIN [PENDING].
+              &copy; 2026 Pawsitive Transformations. All rights reserved. Pawsitive Transformations is a 501(c)(3) non-profit organization. EIN: 42-3678960.
             </p>
             <p>
               This site uses AI-assisted tools to support our operations.{' '}
