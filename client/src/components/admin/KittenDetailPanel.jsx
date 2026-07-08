@@ -42,8 +42,8 @@ import {
   deleteKitten,
 } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
-import { formatKittenAgeShort } from '../../utils/kittenAge';
-import { formatKittenAge, resolvePrimaryPhotoUrl } from '../../utils/kittenImages';
+import { formatKittenAgeDetailed } from '../../utils/kittenAge';
+import { resolvePrimaryPhotoUrl } from '../../utils/kittenImages';
 
 const TABS = [
   { id: 'profile', label: 'Profile' },
@@ -434,7 +434,6 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
   if (error) return <p className="text-sm text-red-600">{error}</p>;
 
   const latestWeight = weightLogs[0];
-  const age = formatKittenAge(kitten.dateOfBirth);
   const medicalFlags = kitten.flags || [];
 
   return (
@@ -494,7 +493,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
             <dl className="grid flex-1 grid-cols-2 gap-3 sm:grid-cols-4">
               {[
                 ['Sex', kitten.sex || '—'],
-                ['Age', formatKittenAgeShort(kitten.dateOfBirth)],
+                ['Age', formatKittenAgeDetailed(kitten.dateOfBirth)],
                 ['Breed', kitten.breed],
                 ['Weight', gramsToLbs(latestWeight?.weightGrams)],
               ].map(([label, value]) => (
@@ -534,17 +533,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
           )}
 
           {activeTab === 'profile' && (
-            <div className="space-y-6">
-              <KittenPhotoManager
-                kitten={kitten}
-                photos={galleryPhotos}
-                editMode
-                uploading={photoUploading}
-                onUploadFiles={handleUploadPhotos}
-                onSetPrimary={handleSetPrimaryPhoto}
-                onDeletePhoto={handleDeletePhoto}
-              />
-            <form className="space-y-5" onSubmit={handleSaveProfile}>
+            <form className="space-y-6" onSubmit={handleSaveProfile}>
               <div className="flex items-center justify-between gap-3 rounded-lg border border-emerald-100 bg-emerald-50/60 px-4 py-3">
                 <p className="text-sm font-medium text-emerald-900">Update this kitten&apos;s profile details.</p>
                 <button
@@ -555,6 +544,18 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                   {savingProfile ? 'Saving...' : 'Save Profile'}
                 </button>
               </div>
+
+              <KittenPhotoManager
+                kitten={kitten}
+                photos={galleryPhotos}
+                editMode
+                uploading={photoUploading}
+                onUploadFiles={handleUploadPhotos}
+                onSetPrimary={handleSetPrimaryPhoto}
+                onDeletePhoto={handleDeletePhoto}
+              />
+
+              <div className="space-y-5">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {[
                   ['name', 'Name', 'text'],
@@ -575,6 +576,12 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                     />
                   </label>
                 ))}
+                <div className="block">
+                  <span className="text-xs font-semibold uppercase text-gray-500">Calculated Age</span>
+                  <p className="mt-1 rounded-lg border border-gray-100 bg-gray-50 px-3 py-2 text-sm font-medium text-gray-800">
+                    {formatKittenAgeDetailed(profileForm.dateOfBirth || kitten.dateOfBirth)}
+                  </p>
+                </div>
                 <label className="block">
                   <span className="text-xs font-semibold uppercase text-gray-500">Fixed Status</span>
                   <select
@@ -658,8 +665,17 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                   ))}
                 </div>
               </section>
+              <div className="flex justify-end border-t border-gray-100 pt-4">
+                <button
+                  type="submit"
+                  disabled={savingProfile}
+                  className="rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-60"
+                >
+                  {savingProfile ? 'Saving...' : 'Save Profile'}
+                </button>
+              </div>
+              </div>
             </form>
-            </div>
           )}
 
           {activeTab === 'publishing' && (

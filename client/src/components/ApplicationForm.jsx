@@ -5,6 +5,29 @@ import { submitApplication } from '../services/publicApi';
 import { CheckCircle2, ImagePlus, Send, X } from 'lucide-react';
 
 const OWN_OR_RENT_OPTIONS = ['', 'Own', 'Rent'];
+const FOSTER_EXPERIENCE_OPTIONS = [
+  '',
+  'None (first-time foster)',
+  'Some (I\'ve had cats of my own)',
+  'Experienced (I\'ve fostered before)',
+  'Advanced (comfortable with bottle babies / medical cases)',
+];
+const FOSTER_AVAILABILITY_OPTIONS = [
+  '',
+  'Work from home / home most of the day',
+  'Set my own schedule / flexible',
+  'Part-time work, partial availability',
+  'Full-time work, limited daytime availability',
+  'Away for long stretches / very limited',
+];
+const FOSTER_CAPACITY_OPTIONS = [
+  '',
+  '1 adult cat',
+  'Bonded pair (adults)',
+  'Mom + kittens (she does most of the work)',
+  'Neonate kittens (bottle-feeding every 2-4 hours)',
+  'Kittens (weaned)',
+];
 const FOSTER_PHOTO_ACCEPT = 'image/jpeg,image/png,image/heic,image/heif,.jpg,.jpeg,.png,.heic,.heif';
 const FOSTER_PHOTO_TYPES = new Set([
   'image/jpeg',
@@ -54,6 +77,7 @@ function ApplicationForm({ defaultType = 'Adoption', lockType = true, allowPhoto
     experienceLevel: '',
     homeType: '',
     availability: '',
+    capacity: '',
     message: '',
   });
 
@@ -120,6 +144,7 @@ function ApplicationForm({ defaultType = 'Adoption', lockType = true, allowPhoto
         payload.experienceLevel = form.experienceLevel;
         payload.homeType = form.homeType;
         payload.availability = form.availability;
+        payload.capacity = form.capacity;
       }
 
       await submitApplication(applicationType, payload, allowPhotoUpload ? photoFiles : []);
@@ -228,7 +253,18 @@ function ApplicationForm({ defaultType = 'Adoption', lockType = true, allowPhoto
             <>
               <label className="block">
                 <span className="mb-2 block text-sm font-semibold text-slate-800">Experience Level *</span>
-                <input name="experienceLevel" value={form.experienceLevel} onChange={handleChange} required placeholder="e.g., Beginner, Experienced" className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm focus:border-brand focus:ring-brand" />
+                <select
+                  name="experienceLevel"
+                  value={form.experienceLevel}
+                  onChange={handleChange}
+                  required
+                  className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm focus:border-brand focus:ring-brand"
+                >
+                  <option value="" disabled>Select your experience level</option>
+                  {FOSTER_EXPERIENCE_OPTIONS.filter(Boolean).map((option) => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                </select>
               </label>
               <label className="block">
                 <span className="mb-2 block text-sm font-semibold text-slate-800">Home Type *</span>
@@ -236,7 +272,33 @@ function ApplicationForm({ defaultType = 'Adoption', lockType = true, allowPhoto
               </label>
               <label className="block sm:col-span-2">
                 <span className="mb-2 block text-sm font-semibold text-slate-800">Availability *</span>
-                <input name="availability" value={form.availability} onChange={handleChange} required placeholder="e.g., Weekends, Full-time" className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm focus:border-brand focus:ring-brand" />
+                <select
+                  name="availability"
+                  value={form.availability}
+                  onChange={handleChange}
+                  required
+                  className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm focus:border-brand focus:ring-brand"
+                >
+                  <option value="" disabled>Select your availability</option>
+                  {FOSTER_AVAILABILITY_OPTIONS.filter(Boolean).map((option) => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                </select>
+              </label>
+              <label className="block sm:col-span-2">
+                <span className="mb-2 block text-sm font-semibold text-slate-800">Capacity *</span>
+                <select
+                  name="capacity"
+                  value={form.capacity}
+                  onChange={handleChange}
+                  required
+                  className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm focus:border-brand focus:ring-brand"
+                >
+                  <option value="" disabled>Select the foster capacity you can offer</option>
+                  {FOSTER_CAPACITY_OPTIONS.filter(Boolean).map((option) => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                </select>
               </label>
             </>
           )}
@@ -276,7 +338,7 @@ function ApplicationForm({ defaultType = 'Adoption', lockType = true, allowPhoto
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-sm font-semibold text-slate-900">Upload exactly {maxPhotos} photos of your home setup</p>
-                  <p className="mt-1 text-sm text-slate-600">JPG, PNG, or HEIC — foster space, supplies, or safe room.</p>
+                  <p className="mt-1 text-sm text-slate-600">JPG, PNG, or HEIC — foster space for cats and kittens, supplies, or safe room.</p>
                 </div>
                 <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-brand-dark">
                   <ImagePlus className="h-4 w-4" />
