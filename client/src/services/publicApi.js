@@ -31,6 +31,14 @@ export function fetchPublicContent(category) {
   return publicRequest(`/content${query}`);
 }
 
+export function fetchPublicWishlists(ownerType, ownerId) {
+  const params = new URLSearchParams({
+    ownerType,
+    ownerId: String(ownerId),
+  });
+  return publicRequest(`/wishlists?${params.toString()}`);
+}
+
 export function fetchPublicArticle(slug) {
   return publicRequest(`/content/${slug}`);
 }

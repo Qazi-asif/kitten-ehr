@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Heart, Home, Users, Cat } from 'lucide-react';
-import { fetchPublicKittens } from '../../services/publicApi';
+import {
+  CONTENT_CATEGORY_SUCCESS_STORY,
+  articleExcerpt,
+} from '../../constants/educationCategories';
+import { fetchPublicContent, fetchPublicKittens } from '../../services/publicApi';
 import { getKittenImageUrl } from '../../utils/kittenImages';
 
 function PawIcon({ className = '' }) {
@@ -63,9 +67,18 @@ const rescueNeeds = [
 
 function HomePage() {
   const [featured, setFeatured] = useState([]);
+  const [successStories, setSuccessStories] = useState([]);
+  const [storiesLoading, setStoriesLoading] = useState(true);
 
   useEffect(() => {
     fetchPublicKittens().then((data) => setFeatured(data.slice(0, 4))).catch(() => { });
+  }, []);
+
+  useEffect(() => {
+    fetchPublicContent(CONTENT_CATEGORY_SUCCESS_STORY)
+      .then((data) => setSuccessStories(Array.isArray(data) ? data : []))
+      .catch(() => setSuccessStories([]))
+      .finally(() => setStoriesLoading(false));
   }, []);
 
   const displayCats = featured.length >= 4
@@ -260,6 +273,52 @@ function HomePage() {
                 </Link>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-slate-100 bg-slate-50 py-16">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h2 className="text-base font-extrabold uppercase tracking-[0.15em] text-slate-800">
+                Success Stories
+              </h2>
+              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">
+                Happy endings from cats who found their forever homes through Pawsitive Transformations.
+              </p>
+            </div>
+            <Link
+              to="/kittens"
+              className="inline-flex shrink-0 rounded-lg border border-brand/30 bg-white px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-brand shadow-sm transition hover:bg-brand-light"
+            >
+              View Adoptable Cats
+            </Link>
+          </div>
+
+          <div className="mt-10">
+            {storiesLoading ? (
+              <p className="text-sm text-slate-500">Loading success stories...</p>
+            ) : successStories.length === 0 ? (
+              <div className="rounded-xl border border-slate-200 bg-white p-10 text-center">
+                <p className="text-base font-medium text-slate-700">No success stories yet</p>
+                <p className="mt-2 text-sm text-slate-500">Check back soon for adoption updates from our community.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+                {successStories.map((story) => (
+                  <article
+                    key={story.id}
+                    className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm"
+                  >
+                    <h3 className="text-lg font-bold text-brand">{story.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                      {articleExcerpt(story.body, 500)}
+                    </p>
+                  </article>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>

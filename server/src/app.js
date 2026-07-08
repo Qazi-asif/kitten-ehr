@@ -30,6 +30,7 @@ import aiRoutes from './routes/aiRoutes.js';
 import contractRoutes from './routes/contractRoutes.js';
 import onboardingRoutes from './routes/onboardingRoutes.js';
 import protocolRoutes from './routes/protocolRoutes.js';
+import wishlistRoutes from './routes/wishlistRoutes.js';
 import { requireAuth } from './middleware/authMiddleware.js';
 import { createOriginValidator } from './utils/corsOrigins.js';
 
@@ -133,6 +134,7 @@ app.use('/api/applications', requireAuth, applicationRoutes);
 app.use('/api/contracts', requireAuth, contractRoutes);
 app.use('/api/onboarding', requireAuth, onboardingRoutes);
 app.use('/api/content', requireAuth, contentRoutes);
+app.use('/api/wishlists', requireAuth, wishlistRoutes);
 app.use('/api/events', requireAuth, eventRoutes);
 app.use('/api/transactions', requireAuth, financeRoutes);
 app.use('/api/email-templates', emailTemplateRoutes);

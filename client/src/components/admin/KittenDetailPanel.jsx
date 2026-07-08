@@ -18,6 +18,8 @@ import VetVisitForm from '../VetVisitForm';
 import VetVisitsTable from '../VetVisitsTable';
 import WeightLogForm from '../WeightLogForm';
 import WeightLogsTable from '../WeightLogsTable';
+import WishlistManager from './WishlistManager';
+import { WISHLIST_OWNER_TYPES } from '../../constants/wishlists';
 import {
   createMedication,
   createVaccine,
@@ -80,6 +82,7 @@ function normalizeFixedStatus(value) {
 function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
   const { hasPermission } = useAuth();
   const canDelete = hasPermission('kittens.delete');
+  const canEdit = hasPermission('kittens.edit');
   const [kitten, setKitten] = useState(null);
   const [medical, setMedical] = useState({ vaccines: [], medications: [], vetAppointments: [] });
   const [weightLogs, setWeightLogs] = useState([]);
@@ -122,9 +125,6 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
       specialNeeds: data.specialNeeds || '',
       currentFosterId: data.currentFosterId ? String(data.currentFosterId) : '',
       litterId: data.litterId ? String(data.litterId) : '',
-      amazonWishlistUrl: data.amazonWishlistUrl || '',
-      walmartWishlistUrl: data.walmartWishlistUrl || '',
-      chewyWishlistUrl: data.chewyWishlistUrl || '',
     });
     setNotesForm({
       notes: data.notes || '',
@@ -257,9 +257,6 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
           ? Number.parseInt(profileForm.currentFosterId, 10)
           : null,
         litterId: profileForm.litterId ? Number.parseInt(profileForm.litterId, 10) : null,
-        amazonWishlistUrl: profileForm.amazonWishlistUrl?.trim() || null,
-        walmartWishlistUrl: profileForm.walmartWishlistUrl?.trim() || null,
-        chewyWishlistUrl: profileForm.chewyWishlistUrl?.trim() || null,
       });
       setKitten(updated);
       setProfileForm({
@@ -275,9 +272,6 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
         specialNeeds: updated.specialNeeds || '',
         currentFosterId: updated.currentFosterId ? String(updated.currentFosterId) : '',
         litterId: updated.litterId ? String(updated.litterId) : '',
-        amazonWishlistUrl: updated.amazonWishlistUrl || '',
-        walmartWishlistUrl: updated.walmartWishlistUrl || '',
-        chewyWishlistUrl: updated.chewyWishlistUrl || '',
       });
     } finally {
       setSavingProfile(false);
@@ -641,31 +635,16 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                   ))}
                 </select>
               </label>
-              <section className="sm:col-span-2 rounded-xl border border-gray-200 bg-gray-50 p-4">
-                <h3 className="text-sm font-bold text-gray-900">Individual Kitten Wishlists</h3>
-                <p className="mt-1 text-xs text-gray-500">
-                  Add store-specific wishlist links for this kitten. They appear on the public profile when saved.
-                </p>
-                <div className="mt-4 space-y-3">
-                  {[
-                    ['amazonWishlistUrl', 'Amazon Wishlist Link'],
-                    ['walmartWishlistUrl', 'Walmart Wishlist Link'],
-                    ['chewyWishlistUrl', 'Chewy Wishlist Link'],
-                  ].map(([field, label]) => (
-                    <label key={field} className="block">
-                      <span className="text-xs font-semibold uppercase text-gray-500">{label}</span>
-                      <input
-                        type="url"
-                        value={profileForm[field] || ''}
-                        onChange={(e) => handleProfileFieldChange(field, e.target.value)}
-                        placeholder="https://..."
-                        className="mt-1 w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm"
-                      />
-                    </label>
-                  ))}
-                </div>
-              </section>
-              <div className="flex justify-end border-t border-gray-100 pt-4">
+              <div className="sm:col-span-2">
+                <WishlistManager
+                  ownerType={WISHLIST_OWNER_TYPES.KITTEN}
+                  ownerId={kittenId}
+                  canManage={canEdit}
+                  title="Manage Wishlists"
+                  description="Add Amazon, Chewy, or Walmart wishlist links for this kitten. Saved links appear on the public profile."
+                />
+              </div>
+              <div className="flex justify-end border-t border-gray-100 pt-4 sm:col-span-2">
                 <button
                   type="submit"
                   disabled={savingProfile}

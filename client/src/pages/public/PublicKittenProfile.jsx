@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Heart, PawPrint, ShoppingBag, Sparkles } from 'lucide-react';
-import { fetchPublicKittenById, fetchPublicKittenUpdates } from '../../services/publicApi';
+import { WISHLIST_OWNER_TYPES, WISHLIST_RETAILER_META } from '../../constants/wishlists';
+import { fetchPublicKittenById, fetchPublicKittenUpdates, fetchPublicWishlists } from '../../services/publicApi';
 import KittenPhoto from '../../components/KittenPhoto';
 import { formatKittenAgeDetailed } from '../../utils/kittenAge';
 
@@ -35,27 +36,6 @@ const SPONSOR_TIERS = [
     name: 'Whole Kitten Caboodle',
     price: 350,
     getDescription: (name) => `Everything, pull to placement. Your name on ${name}'s page.`,
-  },
-];
-
-const KITTEN_WISHLISTS = [
-  {
-    field: 'amazonWishlistUrl',
-    label: 'Amazon Wishlist',
-    description: 'Shop supplies for this kitten',
-    buttonClass: 'border-amber-300 bg-amber-50 text-amber-900 hover:bg-amber-100',
-  },
-  {
-    field: 'walmartWishlistUrl',
-    label: 'Walmart Wishlist',
-    description: 'Help with everyday essentials',
-    buttonClass: 'border-blue-300 bg-blue-50 text-blue-900 hover:bg-blue-100',
-  },
-  {
-    field: 'chewyWishlistUrl',
-    label: 'Chewy Wishlist',
-    description: 'Food, formula, and pet supplies',
-    buttonClass: 'border-teal-300 bg-teal-50 text-teal-900 hover:bg-teal-100',
   },
 ];
 
@@ -93,16 +73,22 @@ function PublicKittenProfile() {
   const wishlistRef = useRef(null);
   const [kitten, setKitten] = useState(null);
   const [updates, setUpdates] = useState([]);
+  const [wishlists, setWishlists] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedTierId, setSelectedTierId] = useState(SPONSOR_TIERS[0].id);
   const [customAmount, setCustomAmount] = useState('');
 
   useEffect(() => {
-    Promise.all([fetchPublicKittenById(id), fetchPublicKittenUpdates(id)])
-      .then(([kittenData, updateData]) => {
+    Promise.all([
+      fetchPublicKittenById(id),
+      fetchPublicKittenUpdates(id),
+      fetchPublicWishlists(WISHLIST_OWNER_TYPES.KITTEN, id),
+    ])
+      .then(([kittenData, updateData, wishlistData]) => {
         setKitten(kittenData);
         setUpdates(updateData);
+        setWishlists(Array.isArray(wishlistData) ? wishlistData : []);
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
@@ -122,7 +108,6 @@ function PublicKittenProfile() {
 
   if (error) return <div className="px-6 py-12 text-red-600">{error}</div>;
 
-  const activeWishlists = KITTEN_WISHLISTS.filter((store) => kitten[store.field]);
   const selectedTier = SPONSOR_TIERS.find((tier) => tier.id === selectedTierId) || SPONSOR_TIERS[0];
   const sponsorAmount = customAmount.trim() || String(selectedTier.price);
 
@@ -234,24 +219,27 @@ function PublicKittenProfile() {
               <h2 className="text-lg font-bold text-slate-900">Wishlist</h2>
             </div>
             <div className="px-5 py-5">
-              {activeWishlists.length > 0 ? (
+              {wishlists.length > 0 ? (
                 <>
                   <p className="text-sm text-slate-600">
                     Send supplies directly to support {kitten.name}&apos;s care through these store wishlists.
                   </p>
                   <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
-                    {activeWishlists.map((store) => (
-                      <a
-                        key={store.field}
-                        href={kitten[store.field]}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`flex flex-col rounded-xl border p-4 text-center transition-colors ${store.buttonClass}`}
-                      >
-                        <span className="text-sm font-bold">{store.label}</span>
-                        <span className="mt-1 text-xs opacity-80">{store.description}</span>
-                      </a>
-                    ))}
+                    {wishlists.map((item) => {
+                      const meta = WISHLIST_RETAILER_META[item.retailer] || {};
+                      return (
+                        <a
+                          key={item.id}
+                          href={item.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`flex flex-col rounded-xl border p-4 text-center transition-colors ${meta.buttonClass || 'border-slate-200 bg-white text-slate-800 hover:bg-slate-50'}`}
+                        >
+                          <span className="text-sm font-bold">{item.label || meta.label || item.retailer}</span>
+                          <span className="mt-1 text-xs opacity-80">{meta.description || 'Shop wishlist supplies'}</span>
+                        </a>
+                      );
+                    })}
                   </div>
                 </>
               ) : (

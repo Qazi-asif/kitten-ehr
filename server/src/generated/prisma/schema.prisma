@@ -9,6 +9,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ActiveProtocolStatus {
+  ACTIVE
+  COMPLETED
+  DISCONTINUED
+}
+
+enum DoseStatus {
+  SCHEDULED
+  MISSED
+  GIVEN
+}
+
 model Litter {
   id         Int      @id @default(autoincrement())
   name       String
@@ -73,6 +85,8 @@ model Kitten {
   updates                Update[]
   transactions           Transaction[]
   contracts              Contract[]
+  activeProtocols        ActiveProtocol[]
+  eventCats              EventCats[]
 
   @@index([status])
   @@index([litterId])
@@ -313,7 +327,7 @@ model Content {
   title          String
   slug           String              @unique
   body           String              @default("")
-  category       String              @default("")
+  category       String              @default("education")
   isRequired     Boolean             @default(false)
   publishTargets String[]            @default([])
   createdAt      DateTime            @default(now())
@@ -334,13 +348,44 @@ model ContentCompletion {
 }
 
 model Event {
-  id             Int      @id @default(autoincrement())
+  id             Int         @id @default(autoincrement())
   title          String
+  slug           String      @unique
   date           DateTime
-  location       String   @default("")
-  description    String   @default("")
-  isPublic       Boolean  @default(false)
-  publishTargets String[] @default([])
+  endDate        DateTime?
+  location       String      @default("")
+  description    String      @default("")
+  isPublic       Boolean     @default(false)
+  status         String      @default("DRAFT")
+  internalNotes  String?
+  publishTargets String[]    @default([])
+  eventCats      EventCats[]
+  rsvps          EventRSVP[]
+}
+
+model EventRSVP {
+  id        Int      @id @default(autoincrement())
+  eventId   Int
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  name      String
+  email     String
+  createdAt DateTime @default(now())
+
+  @@index([eventId])
+}
+
+model EventCats {
+  id       Int      @id @default(autoincrement())
+  eventId  Int
+  event    Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  kittenId Int
+  kitten   Kitten   @relation(fields: [kittenId], references: [id], onDelete: Cascade)
+  addedAt  DateTime @default(now())
+  notes    String?
+
+  @@unique([eventId, kittenId])
+  @@index([eventId])
+  @@index([kittenId])
 }
 
 model Role {
@@ -371,26 +416,97 @@ model RolePermission {
 }
 
 model User {
-  id                      Int                   @id @default(autoincrement())
-  email                   String                @unique
-  passwordHash            String
-  firstName               String
-  lastName                String
-  isActive                Boolean               @default(true)
-  roleId                  Int
-  role                    Role                  @relation(fields: [roleId], references: [id], onDelete: Restrict)
-  fosterId                Int?
-  createdAt               DateTime              @default(now())
-  updatedAt               DateTime              @updatedAt
-  lastLoginAt             DateTime?
-  rejectedApplications    Application[]         @relation("ApplicationRejectedBy")
-  completedChecklistItems OnboardingChecklist[] @relation("ChecklistCompletedBy")
-  contentCompletions      ContentCompletion[]
+  id                        Int                   @id @default(autoincrement())
+  email                     String                @unique
+  passwordHash              String
+  firstName                 String
+  lastName                  String
+  isActive                  Boolean               @default(true)
+  roleId                    Int
+  role                      Role                  @relation(fields: [roleId], references: [id], onDelete: Restrict)
+  fosterId                  Int?
+  createdAt                 DateTime              @default(now())
+  updatedAt                 DateTime              @updatedAt
+  lastLoginAt               DateTime?
+  rejectedApplications      Application[]         @relation("ApplicationRejectedBy")
+  completedChecklistItems   OnboardingChecklist[] @relation("ChecklistCompletedBy")
+  contentCompletions        ContentCompletion[]
+  activatedProtocols        ActiveProtocol[]      @relation("ProtocolActivatedBy")
+  administeredProtocolDoses ProtocolDose[]        @relation("ProtocolDoseAdministeredBy")
+}
+
+model Protocol {
+  id              Int              @id @default(autoincrement())
+  name            String
+  description     String           @default("")
+  isActive        Boolean          @default(true)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  drugs           ProtocolDrug[]
+  activeProtocols ActiveProtocol[]
+}
+
+model ProtocolDrug {
+  id              Int            @id @default(autoincrement())
+  protocolId      Int
+  protocol        Protocol       @relation(fields: [protocolId], references: [id], onDelete: Cascade)
+  drugName        String
+  dosage          String         @default("")
+  route           String         @default("")
+  startDayOffset  Int
+  endDayOffset    Int
+  frequencyPerDay Int
+  instructions    String         @default("")
+  sortOrder       Int            @default(0)
+  doses           ProtocolDose[]
+
+  @@index([protocolId])
+}
+
+model ActiveProtocol {
+  id             Int                  @id @default(autoincrement())
+  protocolId     Int
+  protocol       Protocol             @relation(fields: [protocolId], references: [id], onDelete: Restrict)
+  kittenId       Int
+  kitten         Kitten               @relation(fields: [kittenId], references: [id], onDelete: Cascade)
+  activatedById  Int
+  activatedBy    User                 @relation("ProtocolActivatedBy", fields: [activatedById], references: [id], onDelete: Restrict)
+  activationDate DateTime
+  status         ActiveProtocolStatus @default(ACTIVE)
+  doses          ProtocolDose[]
+
+  @@index([kittenId])
+  @@index([protocolId])
+  @@index([activatedById])
+}
+
+model ProtocolDose {
+  id               Int            @id @default(autoincrement())
+  activeProtocolId Int
+  activeProtocol   ActiveProtocol @relation(fields: [activeProtocolId], references: [id], onDelete: Cascade)
+  protocolDrugId   Int
+  protocolDrug     ProtocolDrug   @relation(fields: [protocolDrugId], references: [id], onDelete: Restrict)
+  scheduledDate    DateTime
+  doseNumberInDay  Int
+  status           DoseStatus     @default(SCHEDULED)
+  administeredAt   DateTime?
+  administeredById Int?
+  administeredBy   User?          @relation("ProtocolDoseAdministeredBy", fields: [administeredById], references: [id], onDelete: SetNull)
+  notes            String         @default("")
+
+  @@unique([activeProtocolId, protocolDrugId, scheduledDate, doseNumberInDay])
+  @@index([activeProtocolId])
+  @@index([protocolDrugId])
+  @@index([administeredById])
 }
 
 model Settings {
   id                         Int     @id @default(1)
   orgName                    String  @default("Pawsitive Transformations")
+  orgEin                     String  @default("42-3678960")
+  contactPhone               String  @default("(951) 830-1825")
+  contactEmail               String  @default("hello@pawsitivetransformations.org")
+  contactAddress             String  @default("12523 Limonite, Suite 440412\nMira Loma, CA 91752\nRiverside County")
   missionStatement           String  @default("")
   defaultDonationAmount      Int     @default(50)
   amazonWishlistUrl          String  @default("")

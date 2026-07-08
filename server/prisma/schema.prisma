@@ -15,6 +15,18 @@ enum ActiveProtocolStatus {
   DISCONTINUED
 }
 
+enum WishlistOwnerType {
+  ORG
+  FOSTER
+  KITTEN
+}
+
+enum WishlistRetailer {
+  AMAZON
+  CHEWY
+  WALMART
+}
+
 enum DoseStatus {
   SCHEDULED
   MISSED
@@ -577,4 +589,17 @@ model Transaction {
   kittenId    Int?
   kitten      Kitten?  @relation(fields: [kittenId], references: [id], onDelete: SetNull)
   createdAt   DateTime @default(now())
+}
+
+model Wishlist {
+  id        Int               @id @default(autoincrement())
+  ownerType WishlistOwnerType
+  ownerId   Int
+  retailer  WishlistRetailer
+  url       String
+  label     String            @default("")
+  updatedAt DateTime          @updatedAt
+
+  @@unique([ownerType, ownerId, retailer])
+  @@index([ownerType, ownerId])
 }
