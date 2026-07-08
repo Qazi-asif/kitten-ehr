@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { AlertCircle, AlertTriangle, CheckCircle2, ClipboardList, FileSignature, HeartHandshake, Info } from 'lucide-react';
+import { ClipboardList, FileSignature, HeartHandshake } from 'lucide-react';
 import { Cat, Heart, Users } from 'lucide-react';
 import KittenPhoto from '../../components/KittenPhoto';
 import {
@@ -37,12 +37,66 @@ const STATUS_COLORS = {
   Deceased: '#EF4444',
 };
 
-const ALERT_STYLES = {
-  error: { icon: AlertCircle, color: 'text-red-500 bg-red-50' },
-  warning: { icon: AlertTriangle, color: 'text-amber-500 bg-amber-50' },
-  success: { icon: CheckCircle2, color: 'text-emerald-500 bg-emerald-50' },
-  info: { icon: Info, color: 'text-blue-500 bg-blue-50' },
-};
+const REMINDER_GROUPS = [
+  {
+    key: 'vaccines',
+    label: 'Vaccines',
+    items: (metrics) => [
+      ...(metrics?.vaccinesOverdue ?? []),
+      ...(metrics?.vaccinesDueSoon ?? []),
+    ],
+  },
+  {
+    key: 'medications',
+    label: 'Medications',
+    items: (metrics) => metrics?.medsEndingSoon ?? [],
+  },
+  {
+    key: 'vetVisits',
+    label: 'Vet Visits',
+    items: (metrics) => metrics?.upcomingVetVisits ?? [],
+  },
+  {
+    key: 'protocols',
+    label: 'Protocols',
+    items: (metrics) => metrics?.protocolFollowUps ?? [],
+  },
+];
+
+const MS_PER_DAY = 24 * 60 * 60 * 1000;
+
+function formatRelativeDueDate(dueDate, urgency) {
+  if (!dueDate) return '';
+  const target = new Date(dueDate);
+  const diffMs = target.getTime() - Date.now();
+  const days = Math.max(1, Math.ceil(Math.abs(diffMs) / MS_PER_DAY));
+  if (urgency === 'overdue' || diffMs < 0) {
+    return `Overdue by ${days} day${days === 1 ? '' : 's'}`;
+  }
+  return `Due in ${days} day${days === 1 ? '' : 's'}`;
+}
+
+function ReminderRow({ alert }) {
+  const isOverdue = alert.urgency === 'overdue';
+  return (
+    <li className={`rounded-lg border px-4 py-3 ${isOverdue ? 'border-red-100 bg-red-50' : 'border-amber-100 bg-amber-50'}`}>
+      <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p className={`text-sm font-semibold ${isOverdue ? 'text-red-800' : 'text-amber-900'}`}>
+            {alert.title}
+            {' — '}
+            <Link to={`/admin/kittens/${alert.kittenId}`} className="text-brand hover:underline">
+              {alert.kittenName}
+            </Link>
+          </p>
+          <p className={`mt-1 text-xs font-medium ${isOverdue ? 'text-red-600' : 'text-amber-700'}`}>
+            {formatRelativeDueDate(alert.dueDate, alert.urgency)}
+          </p>
+        </div>
+      </div>
+    </li>
+  );
+}
 
 function StatusDonut({ kittens }) {
   const segments = useMemo(() => {
@@ -95,7 +149,6 @@ function DashboardPage() {
   const [metrics, setMetrics] = useState(null);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({
-    alerts: [],
     medicalConcerns: [],
   });
   const [kittens, setKittens] = useState([]);
@@ -118,7 +171,6 @@ function DashboardPage() {
     ]);
     setMetrics(metricsData);
     setStats({
-      alerts: statsData.alerts ?? [],
       medicalConcerns: statsData.medicalConcerns ?? [],
     });
     setKittens(kittensData);
@@ -149,8 +201,19 @@ function DashboardPage() {
     [applications],
   );
 
-  const alerts = stats.alerts ?? [];
   const medicalConcerns = stats.medicalConcerns ?? [];
+
+  const reminderGroups = useMemo(
+    () => REMINDER_GROUPS
+      .map((group) => ({
+        ...group,
+        alerts: group.items(metrics),
+      }))
+      .filter((group) => group.alerts.length > 0),
+    [metrics],
+  );
+
+  const hasReminders = reminderGroups.length > 0;
 
   return (
     <div className="space-y-6">
@@ -174,6 +237,30 @@ function DashboardPage() {
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <h2 className="text-base font-bold text-slate-900">Upcoming Reminders</h2>
+        {loading ? (
+          <p className="mt-4 text-sm text-slate-500">Loading reminders...</p>
+        ) : !hasReminders ? (
+          <p className="mt-4 text-sm text-slate-500">
+            No upcoming reminders. Vaccines, medications, vet visits, and protocol follow-ups will appear here.
+          </p>
+        ) : (
+          <div className="mt-4 space-y-6">
+            {reminderGroups.map((group) => (
+              <section key={group.key}>
+                <h3 className="text-sm font-bold uppercase tracking-wide text-slate-500">{group.label}</h3>
+                <ul className="mt-3 space-y-2">
+                  {group.alerts.map((alert) => (
+                    <ReminderRow key={`${group.key}-${alert.id}-${alert.dueDate}`} alert={alert} />
+                  ))}
+                </ul>
+              </section>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
@@ -242,37 +329,15 @@ function DashboardPage() {
         )}
       </div>
 
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-        <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] xl:col-span-1">
-          <h2 className="text-base font-bold text-slate-900">Upcoming Alerts</h2>
-          {alerts.length === 0 ? (
-            <p className="mt-4 text-sm text-slate-500">No alerts right now. Medical, adoption, and event updates will appear here.</p>
-          ) : (
-            <ul className="mt-4 space-y-3">
-              {alerts.map((alert) => {
-                const style = ALERT_STYLES[alert.severity] ?? ALERT_STYLES.info;
-                const Icon = style.icon;
-                return (
-                  <li key={alert.text} className="flex items-start gap-3">
-                    <span className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${style.color}`}>
-                      <Icon className="h-4 w-4" />
-                    </span>
-                    <p className="text-sm leading-snug text-slate-600">{alert.text}</p>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </div>
-
-        <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] xl:col-span-1">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+        <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
           <h2 className="text-base font-bold text-slate-900">Kittens by Status</h2>
           <div className="mt-6 flex justify-center">
             <StatusDonut kittens={kittens} />
           </div>
         </div>
 
-        <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] xl:col-span-1">
+        <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
           <h2 className="text-base font-bold text-slate-900">Top Medical Concerns</h2>
           {medicalConcerns.length === 0 ? (
             <p className="mt-4 text-sm text-slate-500">No active medical concerns recorded.</p>
