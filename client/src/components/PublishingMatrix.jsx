@@ -1,5 +1,5 @@
 import { Check } from 'lucide-react';
-import { getPublishPlatformLabel, normalizePublishTargets } from '../utils/publishTargets';
+import { getPublishPlatformLabel, normalizePublishTargets, PUBLISH_PLATFORMS } from '../utils/publishTargets';
 
 function PublishTargetBadges({ targets = [], emptyLabel = 'None' }) {
   const selected = normalizePublishTargets(targets);
@@ -17,9 +17,13 @@ function PublishTargetBadges({ targets = [], emptyLabel = 'None' }) {
       {selected.map((target) => (
         <span
           key={target}
-          className="inline-flex rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-700 ring-1 ring-emerald-100"
+          className={`inline-flex rounded-full px-2 py-0.5 text-[11px] font-semibold ring-1 ${
+            target === 'FOSTER_CHECKLIST'
+              ? 'bg-violet-50 text-violet-700 ring-violet-100'
+              : 'bg-emerald-50 text-emerald-700 ring-emerald-100'
+          }`}
         >
-          {getPublishPlatformLabel(target)}
+          {target === 'FOSTER_CHECKLIST' ? 'New Foster Checklist' : getPublishPlatformLabel(target)}
         </span>
       ))}
     </div>
@@ -42,13 +46,11 @@ function PublishingMatrix({
     onChange(normalizePublishTargets(next));
   }
 
-  const platforms = [
-    { id: 'WEBSITE', label: 'Website', hint: 'Public website' },
-    { id: 'FACEBOOK', label: 'Facebook', hint: 'Facebook page' },
-    { id: 'INSTAGRAM', label: 'Instagram', hint: 'Instagram feed' },
-    { id: 'X', label: 'X (Twitter)', hint: 'X / Twitter' },
-    { id: 'TIKTOK', label: 'TikTok', hint: 'TikTok videos' },
-  ];
+  const platforms = PUBLISH_PLATFORMS.map((platform) => ({
+    id: platform.id,
+    label: platform.label,
+    hint: platform.description,
+  }));
 
   return (
     <div className={`rounded-xl border border-slate-200 bg-gradient-to-br from-white to-slate-50 ${compact ? 'p-4' : 'p-5 shadow-sm'}`}>

@@ -1,4 +1,4 @@
-export const PUBLISH_PLATFORM_IDS = ['WEBSITE', 'FACEBOOK', 'INSTAGRAM', 'X', 'TIKTOK'];
+export const PUBLISH_PLATFORM_IDS = ['WEBSITE', 'FACEBOOK', 'INSTAGRAM', 'X', 'TIKTOK', 'FOSTER_CHECKLIST'];
 
 export function normalizePublishTargets(targets) {
   if (!Array.isArray(targets)) return [];

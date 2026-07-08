@@ -4,6 +4,7 @@ import {
   deleteContent,
   getAllContent,
   getContentById,
+  getFosterChecklistContent,
   markContentComplete,
   updateContent,
 } from '../controllers/contentController.js';
@@ -11,6 +12,7 @@ import {
 const router = Router();
 
 router.get('/', getAllContent);
+router.get('/foster-checklist', getFosterChecklistContent);
 router.get('/:id', getContentById);
 router.post('/', createContent);
 router.post('/:id/complete', markContentComplete);

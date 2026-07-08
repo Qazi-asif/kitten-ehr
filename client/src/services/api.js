@@ -312,8 +312,16 @@ export async function sendKittenDocumentsEmail(kittenId, data) {
   return response.json();
 }
 
-export function fetchContent() {
-  return adminRequest('/content');
+export async function fetchContent() {
+  const response = await adminFetch('/content');
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to load articles'));
+  return response.json();
+}
+
+export async function fetchFosterChecklistContent() {
+  const response = await adminFetch('/content/foster-checklist');
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to load foster checklist articles'));
+  return response.json();
 }
 
 export async function createContentItem(data) {
@@ -321,6 +329,7 @@ export async function createContentItem(data) {
     method: 'POST',
     body: JSON.stringify(data),
   });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to create article'));
   return response.json();
 }
 
@@ -329,11 +338,13 @@ export async function updateContentItem(id, data) {
     method: 'PUT',
     body: JSON.stringify(data),
   });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to update article'));
   return response.json();
 }
 
 export async function deleteContentItem(id) {
-  await adminFetch(`/content/${id}`, { method: 'DELETE' });
+  const response = await adminFetch(`/content/${id}`, { method: 'DELETE' });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to delete article'));
 }
 
 export function fetchSponsorships(kittenId) {

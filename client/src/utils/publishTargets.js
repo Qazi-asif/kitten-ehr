@@ -1,4 +1,4 @@
-export const PUBLISH_PLATFORM_IDS = ['WEBSITE', 'FACEBOOK', 'INSTAGRAM', 'X', 'TIKTOK'];
+export const PUBLISH_PLATFORM_IDS = ['WEBSITE', 'FACEBOOK', 'INSTAGRAM', 'X', 'TIKTOK', 'FOSTER_CHECKLIST'];
 
 export const PUBLISH_PLATFORMS = [
   {
@@ -65,6 +65,19 @@ export const PUBLISH_PLATFORMS = [
     text: 'text-cyan-900',
     activeText: 'text-white',
     dot: 'bg-cyan-600',
+  },
+  {
+    id: 'FOSTER_CHECKLIST',
+    label: 'Internal',
+    shortLabel: 'Internal',
+    description: 'Checklist for new foster',
+    ring: 'ring-violet-200',
+    activeRing: 'ring-violet-600',
+    bg: 'bg-violet-50',
+    activeBg: 'bg-violet-700',
+    text: 'text-violet-900',
+    activeText: 'text-white',
+    dot: 'bg-violet-600',
   },
 ];
 

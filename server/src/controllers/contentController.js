@@ -18,6 +18,27 @@ export async function getAllContent(_req, res, next) {
   }
 }
 
+export async function getFosterChecklistContent(_req, res, next) {
+  try {
+    const content = await prisma.content.findMany({
+      where: { publishTargets: { has: 'FOSTER_CHECKLIST' } },
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        category: true,
+        body: true,
+        publishTargets: true,
+        createdAt: true,
+      },
+    });
+    res.json(content);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export async function getContentById(req, res, next) {
   try {
     const id = Number.parseInt(req.params.id, 10);

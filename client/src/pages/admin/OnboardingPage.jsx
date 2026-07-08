@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { CheckCircle2, Circle } from 'lucide-react';
 import {
+  fetchFosterChecklistContent,
   fetchOnboardingById,
   fetchOnboardingList,
   updateOnboardingChecklistItem,
@@ -22,6 +23,7 @@ function OnboardingPage() {
   const [loading, setLoading] = useState(true);
   const [detailLoading, setDetailLoading] = useState(false);
   const [savingItemId, setSavingItemId] = useState(null);
+  const [fosterArticles, setFosterArticles] = useState([]);
   const [error, setError] = useState('');
 
   const loadList = useCallback(async () => {
@@ -39,6 +41,9 @@ function OnboardingPage() {
 
   useEffect(() => {
     loadList();
+    fetchFosterChecklistContent()
+      .then(setFosterArticles)
+      .catch(() => setFosterArticles([]));
   }, [loadList]);
 
   async function openRecord(id) {
@@ -175,6 +180,30 @@ function OnboardingPage() {
                   </li>
                 ))}
               </ul>
+
+              {fosterArticles.length > 0 && (
+                <div className="mt-6 border-t border-gray-100 pt-4">
+                  <h3 className="text-sm font-bold text-gray-900">New Foster Reading</h3>
+                  <p className="mt-1 text-xs text-gray-500">
+                    Articles published to Internal — Checklist for new foster in Education Hub.
+                  </p>
+                  <ul className="mt-3 space-y-3">
+                    {fosterArticles.map((article) => (
+                      <li key={article.id} className="rounded-lg border border-violet-100 bg-violet-50/40 px-4 py-3">
+                        <p className="text-sm font-semibold text-gray-900">{article.title}</p>
+                        {article.category && (
+                          <p className="mt-0.5 text-xs font-medium uppercase tracking-wide text-violet-700">
+                            {article.category}
+                          </p>
+                        )}
+                        {article.body && (
+                          <p className="mt-2 whitespace-pre-wrap text-sm text-gray-600">{article.body}</p>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </>
           ) : (
             <p className="text-sm text-gray-500">Could not load checklist.</p>
