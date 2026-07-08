@@ -1,5 +1,6 @@
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
+  BookOpen,
   Calendar,
   Cat,
   ClipboardList,
@@ -22,6 +23,7 @@ const navItems = [
   { label: 'Onboarding', icon: UserCheck, path: '/admin/onboarding', permission: 'applications.view' },
   { label: 'Contracts', icon: FileSignature, path: '/admin/contracts', permission: 'applications.view' },
   { label: 'Calendar', icon: Calendar, path: '/admin/calendar', permission: 'events.view' },
+  { label: 'Education Hub', icon: BookOpen, path: '/admin/content', permission: 'content.view' },
   { label: 'Finance', icon: DollarSign, path: '/admin/finance', permission: 'donations.view' },
   { label: 'Emails', icon: Mail, path: '/admin/emails', permission: 'emails.view' },
   { label: 'Settings', icon: Settings, path: '/admin/settings' },
@@ -36,6 +38,7 @@ const pageMeta = [
   { match: (p) => p.startsWith('/admin/onboarding'), title: 'Onboarding', subtitle: 'Foster intake checklist and screening progress.' },
   { match: (p) => p.startsWith('/admin/contracts'), title: 'Contracts', subtitle: 'Review signed agreements, search by kitten or date, and manage pending drafts.' },
   { match: (p) => p.startsWith('/admin/calendar'), title: 'Calendar', subtitle: 'Public events and staff schedule.' },
+  { match: (p) => p.startsWith('/admin/content'), title: 'Education Hub', subtitle: 'Manage educational articles for the public Education Hub.' },
   { match: (p) => p.startsWith('/admin/finance') || p.startsWith('/admin/donations'), title: 'Finance', subtitle: 'Track income, expenses, and monthly rescue balance.' },
   { match: (p) => p.startsWith('/admin/emails'), title: 'Emails', subtitle: 'Automatic email templates, delivery settings, and send log.' },
   { match: (p) => p.startsWith('/admin/settings'), title: 'Settings', subtitle: 'Organization settings, user accounts, roles, and permissions.' },

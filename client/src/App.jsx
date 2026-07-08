@@ -12,6 +12,7 @@ import LitterListPage from './pages/LitterListPage';
 import LoginPage from './pages/LoginPage';
 import ApplicationsPage from './pages/admin/ApplicationsPage';
 import CalendarPage from './pages/admin/CalendarPage';
+import ContentManagerPage from './pages/admin/ContentManagerPage';
 import ContractsPage from './pages/admin/ContractsPage';
 import DashboardPage from './pages/admin/DashboardPage';
 import FinancePage from './pages/admin/FinancePage';
@@ -70,6 +71,9 @@ function App() {
               <Route path="onboarding" element={<OnboardingPage />} />
               <Route path="contracts" element={<ContractsPage />} />
               <Route path="calendar" element={<CalendarPage />} />
+              <Route element={<ProtectedRoute permission="content.view" />}>
+                <Route path="content" element={<ContentManagerPage />} />
+              </Route>
               <Route element={<ProtectedRoute permission="donations.view" />}>
                 <Route path="finance" element={<FinancePage />} />
                 <Route path="donations" element={<FinancePage />} />
