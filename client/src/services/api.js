@@ -76,8 +76,10 @@ export async function fetchKittenById(id) {
   return response.json();
 }
 
-export function fetchFosters() {
-  return adminRequest('/fosters');
+export async function fetchFosters() {
+  const response = await adminFetch('/fosters');
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to load fosters'));
+  return response.json();
 }
 
 export async function createFoster(fosterData) {

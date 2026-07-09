@@ -34,8 +34,8 @@ import {
   uploadKittenPhoto,
   updateKitten,
 } from '../services/api';
-import { formatKittenAgeShort } from '../utils/kittenAge';
-import { formatKittenAge, resolvePrimaryPhotoUrl } from '../utils/kittenImages';
+import { formatKittenAgeDetailed } from '../utils/kittenAge';
+import { resolvePrimaryPhotoUrl } from '../utils/kittenImages';
 import { useAuth } from '../context/AuthContext';
 
 const TABS = [
@@ -424,7 +424,7 @@ function KittenDetailPage() {
   }
 
   const latestWeight = weightLogs[0];
-  const age = formatKittenAge(kitten.dateOfBirth);
+  const age = formatKittenAgeDetailed(kitten.dateOfBirth);
   const medicalFlags = kitten.flags || [];
 
   return (
@@ -522,7 +522,7 @@ function KittenDetailPage() {
                 <div>
                   <h1 className="text-3xl font-bold text-slate-900">{kitten.name}</h1>
                   <p className="mt-1 text-slate-600">
-                    {kitten.sex || '—'} · {kitten.breed} · {kitten.color || 'Mixed'} · {formatKittenAgeShort(kitten.dateOfBirth)}
+                    {kitten.sex || '—'} · {kitten.breed} · {kitten.color || 'Mixed'} · {formatKittenAgeDetailed(kitten.dateOfBirth)}
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-2">

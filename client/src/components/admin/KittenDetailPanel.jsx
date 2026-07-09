@@ -581,6 +581,36 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                     ))}
                   </select>
                 </label>
+                <label className="block sm:col-span-2">
+                  <span className="text-xs font-semibold uppercase text-gray-500">Assigned Foster</span>
+                  <select
+                    value={profileForm.currentFosterId || ''}
+                    onChange={(e) => handleProfileFieldChange('currentFosterId', e.target.value)}
+                    disabled={!canEdit}
+                    className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm disabled:bg-gray-50"
+                  >
+                    <option value="">No foster assigned</option>
+                    {fosters.map((foster) => (
+                      <option key={foster.id} value={String(foster.id)}>
+                        {foster.name}
+                      </option>
+                    ))}
+                  </select>
+                  {fosters.length === 0 && (
+                    <p className="mt-1 text-xs text-amber-600">No fosters available. Add fosters under Admin → Fosters.</p>
+                  )}
+                </label>
+                <label className="block sm:col-span-2">
+                  <span className="text-xs font-semibold uppercase text-gray-500">Litter Group</span>
+                  <LitterSelect
+                    value={profileForm.litterId || ''}
+                    litters={litters}
+                    onChange={(value) => handleProfileFieldChange('litterId', value)}
+                    onLittersChange={setLitters}
+                    disabled={savingProfile || !canEdit}
+                    className="mt-1"
+                  />
+                </label>
               </div>
               <label className="block">
                 <span className="text-xs font-semibold uppercase text-gray-500">Rescue Story</span>
@@ -599,32 +629,6 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                   onChange={(e) => handleProfileFieldChange('specialNeeds', e.target.value)}
                   className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
                 />
-              </label>
-              <label className="block sm:col-span-2">
-                <span className="text-xs font-semibold uppercase text-gray-500">Litter Group</span>
-                <LitterSelect
-                  value={profileForm.litterId || ''}
-                  litters={litters}
-                  onChange={(value) => handleProfileFieldChange('litterId', value)}
-                  onLittersChange={setLitters}
-                  disabled={savingProfile}
-                  className="mt-1"
-                />
-              </label>
-              <label className="block sm:col-span-2">
-                <span className="text-xs font-semibold uppercase text-gray-500">Current Foster</span>
-                <select
-                  value={profileForm.currentFosterId || ''}
-                  onChange={(e) => handleProfileFieldChange('currentFosterId', e.target.value)}
-                  className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
-                >
-                  <option value="">No foster assigned</option>
-                  {fosters.map((foster) => (
-                    <option key={foster.id} value={foster.id}>
-                      {foster.name}
-                    </option>
-                  ))}
-                </select>
               </label>
               <div className="sm:col-span-2">
                 <WishlistManager
@@ -728,9 +732,9 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
             </div>
           )}
 
-          {activeTab === 'health' && (
+          {activeTab === 'health' && kittenId && (
             <KittenHealthTab
-              kittenId={kittenId}
+              kittenId={Number(kittenId)}
               canManageMedical={canManageMedical}
               medical={medical}
               weightLogs={weightLogs}
