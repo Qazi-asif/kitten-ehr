@@ -65,9 +65,17 @@ export async function loginRequest(email, password) {
   }
 
   let data = {};
+  const contentType = response.headers.get('content-type') || '';
   try {
     data = await response.json();
   } catch {
+    if (!contentType.includes('application/json')) {
+      throw new Error(
+        response.status >= 500
+          ? 'Login server error. Ensure the API is running and JWT_SECRET is set in server/.env.'
+          : 'Login server returned an invalid response. Is the API running on port 5000?',
+      );
+    }
     throw new Error('Unexpected response from login server');
   }
 

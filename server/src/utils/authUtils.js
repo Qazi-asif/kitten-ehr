@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-function requireJwtSecret() {
+function getJwtSecret() {
   const secret = process.env.JWT_SECRET;
   if (!secret || !secret.trim()) {
     throw new Error('JWT_SECRET environment variable is required. Set it in server/.env before starting the API.');
@@ -9,7 +9,6 @@ function requireJwtSecret() {
   return secret;
 }
 
-const JWT_SECRET = requireJwtSecret();
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
 
 export async function hashPassword(password) {
@@ -21,11 +20,11 @@ export async function comparePassword(password, hash) {
 }
 
 export function signToken(payload) {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+  return jwt.sign(payload, getJwtSecret(), { expiresIn: JWT_EXPIRES_IN });
 }
 
 export function verifyToken(token) {
-  return jwt.verify(token, JWT_SECRET);
+  return jwt.verify(token, getJwtSecret());
 }
 
 export function sanitizeUser(user) {

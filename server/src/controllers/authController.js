@@ -59,7 +59,17 @@ export async function login(req, res, next) {
       data: { lastLoginAt: new Date() },
     });
 
-    return res.json(formatAuthResponse(user));
+    let authResponse;
+    try {
+      authResponse = formatAuthResponse(user);
+    } catch (error) {
+      if (error.message?.includes('JWT_SECRET')) {
+        return res.status(503).json({ error: 'Server misconfigured: JWT_SECRET is not set. Add it to server/.env and restart the API.' });
+      }
+      throw error;
+    }
+
+    return res.json(authResponse);
   } catch (error) {
     next(error);
   }
