@@ -21,10 +21,10 @@ function formatCurrency(amount) {
 }
 
 const statCards = [
-  { key: 'totalKittens', label: 'Active Kittens', icon: Cat, color: 'text-brand bg-brand-light', format: 'number' },
+  { key: 'totalKittens', label: 'Total Kittens', icon: Cat, color: 'text-brand bg-brand-light', format: 'number' },
   { key: 'availableKittens', label: 'Available Kittens', icon: Heart, color: 'text-emerald-600 bg-emerald-50', format: 'number' },
   { key: 'totalAdopted', label: 'Total Adopted', icon: ClipboardList, color: 'text-amber-600 bg-amber-50', format: 'number' },
-  { key: 'activeFosters', label: 'Active Fosters', icon: Users, color: 'text-purple-600 bg-purple-50', format: 'number' },
+  { key: 'activeFosters', label: 'Total Fosters', icon: Users, color: 'text-purple-600 bg-purple-50', format: 'number' },
   { key: 'euthanasiaPulls', label: 'Euthanasia-Pull Rescues', icon: HeartHandshake, color: 'text-rose-600 bg-rose-50', format: 'number' },
 ];
 

@@ -363,6 +363,7 @@ export async function createSponsorship(kittenId, data) {
     method: 'POST',
     body: JSON.stringify(data),
   });
+  if (!response.ok) throw new Error('Failed to create sponsorship');
   return response.json();
 }
 

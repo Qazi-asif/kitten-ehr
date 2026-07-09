@@ -6,7 +6,7 @@ import PublicLayout from './components/layouts/PublicLayout';
 import FosterDetailPage from './pages/FosterDetailPage';
 import FosterListPage from './pages/FosterListPage';
 import KittenDetailPage from './pages/KittenDetailPage';
-import KittensPage from './pages/KittenListPage';
+import KittenListPage from './pages/KittenListPage';
 import LitterDetailPage from './pages/LitterDetailPage';
 import LitterListPage from './pages/LitterListPage';
 import LoginPage from './pages/LoginPage';
@@ -65,7 +65,7 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<DashboardPage />} />
-              <Route path="kittens" element={<KittensPage />} />
+              <Route path="kittens" element={<KittenListPage />} />
               <Route path="kittens/:id" element={<KittenDetailPage />} />
               <Route path="fosters" element={<FosterListPage />} />
               <Route path="fosters/:id" element={<FosterDetailPage />} />
