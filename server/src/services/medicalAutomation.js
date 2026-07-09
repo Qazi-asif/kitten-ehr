@@ -48,7 +48,7 @@ function earliestVaccine(vaccines) {
   )[0];
 }
 
-export async function evaluateKittenFlags(kitten, vaccines = [], weightLogs = []) {
+export function evaluateKittenFlags(kitten, vaccines = [], weightLogs = []) {
   const flags = [];
   const ageWeeks = getAgeInWeeks(kitten?.dateOfBirth);
   const latestWeightGrams = getLatestWeightGrams(weightLogs);

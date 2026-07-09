@@ -188,7 +188,7 @@ export async function getKittenById(req, res, next) {
       return res.status(404).json({ error: 'Kitten not found' });
     }
 
-    const flags = await evaluateKittenFlags(kitten, vaccines, weightLogs);
+    const flags = evaluateKittenFlags(kitten, vaccines, weightLogs);
 
     res.json({
       ...serializeKittenForDetail(kitten),
