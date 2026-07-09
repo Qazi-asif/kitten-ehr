@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Plus, Search, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, Search, X } from 'lucide-react';
 import StatusBadge from '../components/admin/StatusBadge';
 import KittenForm from '../components/KittenForm';
 import LitterGroupsPanel from '../components/admin/LitterGroupsPanel';
@@ -15,6 +15,7 @@ import {
 import { formatKittenAgeShort } from '../utils/kittenAge';
 
 const STATUS_OPTIONS = ['All', 'In Foster Care', 'Available for Adoption', 'Adopted', 'Medical Hold', 'Transferred', 'Deceased'];
+const PAGE_SIZE = 25;
 
 function KittensPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -30,19 +31,33 @@ function KittensPage() {
   const [statusFilter, setStatusFilter] = useState('All');
   const [fosterFilter, setFosterFilter] = useState('');
   const [litterFilter, setLitterFilter] = useState('');
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [total, setTotal] = useState(0);
   const showAddForm = searchParams.get('add') === '1';
 
   const loadKittens = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      setKittens(await fetchKittens());
+      const data = await fetchKittens({
+        page: listTab === 'recent' ? 1 : page,
+        limit: listTab === 'recent' ? 5 : PAGE_SIZE,
+        search: search.trim() || undefined,
+        status: statusFilter,
+        fosterId: fosterFilter || undefined,
+        litterId: litterFilter || undefined,
+      });
+      setKittens(data.items ?? []);
+      setTotal(data.total ?? 0);
+      setTotalPages(data.totalPages ?? 1);
     } catch (err) {
       setError(err.message);
+      setKittens([]);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [page, listTab, search, statusFilter, fosterFilter, litterFilter]);
 
   useEffect(() => {
     Promise.all([
@@ -51,6 +66,10 @@ function KittensPage() {
       fetchFosters().then(setFosters).catch(() => {}),
     ]).catch(() => {});
   }, [loadKittens]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [search, statusFilter, fosterFilter, litterFilter, listTab]);
 
   function closeAddForm() {
     searchParams.delete('add');
@@ -81,18 +100,15 @@ function KittensPage() {
     }
   }
 
-  const filtered = useMemo(() => {
-    let list = [...kittens];
-    if (listTab === 'recent') list = list.slice(0, 5);
-    if (search.trim()) {
-      const q = search.toLowerCase();
-      list = list.filter((k) => k.name.toLowerCase().includes(q) || k.breed?.toLowerCase().includes(q));
-    }
-    if (statusFilter !== 'All') list = list.filter((k) => k.status === statusFilter);
-    if (fosterFilter) list = list.filter((k) => String(k.currentFoster?.id) === fosterFilter);
-    if (litterFilter) list = list.filter((k) => String(k.litter?.id) === litterFilter);
-    return list;
-  }, [kittens, listTab, search, statusFilter, fosterFilter, litterFilter]);
+  const pageNumbers = useMemo(() => {
+    const pages = [];
+    const maxButtons = 5;
+    let start = Math.max(1, page - Math.floor(maxButtons / 2));
+    let end = Math.min(totalPages, start + maxButtons - 1);
+    start = Math.max(1, end - maxButtons + 1);
+    for (let i = start; i <= end; i += 1) pages.push(i);
+    return pages;
+  }, [page, totalPages]);
 
   return (
     <div className="space-y-6">
@@ -100,7 +116,7 @@ function KittensPage() {
         <div className="flex rounded-lg border border-slate-200 bg-white p-1 shadow-sm">
           {[
             { id: 'all', label: 'All Kittens' },
-            { id: 'recent', label: 'Recently Viewed' },
+            { id: 'recent', label: 'Recent Intakes' },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -190,6 +206,12 @@ function KittensPage() {
 
       {!loading && !error && (
         <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+          <div className="flex items-center justify-between border-b border-slate-100 px-5 py-3 text-sm text-slate-500">
+            <span>
+              {total} kitten{total === 1 ? '' : 's'}
+              {listTab === 'all' ? ` · Page ${page} of ${totalPages}` : ' · Recent intakes'}
+            </span>
+          </div>
           <div className="overflow-x-auto">
             <table className="min-w-full">
               <thead>
@@ -202,12 +224,12 @@ function KittensPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {filtered.length === 0 ? (
+                {kittens.length === 0 ? (
                   <tr>
                     <td colSpan={9} className="px-5 py-12 text-center text-sm text-slate-500">No kittens match your filters.</td>
                   </tr>
                 ) : (
-                  filtered.map((kitten) => (
+                  kittens.map((kitten) => (
                     <tr key={kitten.id} className="hover:bg-slate-50/80">
                       <td className="whitespace-nowrap px-5 py-3">
                         <KittenPhoto kitten={kitten} allowFallback className="h-10 w-10 rounded-full" />
@@ -261,6 +283,45 @@ function KittensPage() {
               </tbody>
             </table>
           </div>
+
+          {listTab === 'all' && totalPages > 1 && (
+            <div className="flex items-center justify-between border-t border-slate-100 px-5 py-4">
+              <button
+                type="button"
+                onClick={() => setPage((current) => Math.max(1, current - 1))}
+                disabled={page <= 1}
+                className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-semibold text-slate-600 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <ChevronLeft className="h-4 w-4" />
+                Previous
+              </button>
+              <div className="flex items-center gap-1">
+                {pageNumbers.map((pageNumber) => (
+                  <button
+                    key={pageNumber}
+                    type="button"
+                    onClick={() => setPage(pageNumber)}
+                    className={`min-w-9 rounded-lg px-3 py-1.5 text-sm font-semibold ${
+                      pageNumber === page
+                        ? 'bg-brand text-white'
+                        : 'border border-slate-200 text-slate-600 hover:bg-slate-50'
+                    }`}
+                  >
+                    {pageNumber}
+                  </button>
+                ))}
+              </div>
+              <button
+                type="button"
+                onClick={() => setPage((current) => Math.min(totalPages, current + 1))}
+                disabled={page >= totalPages}
+                className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-semibold text-slate-600 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                Next
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>

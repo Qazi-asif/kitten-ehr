@@ -37,8 +37,24 @@ async function adminRequest(path) {
   }
 }
 
-export function fetchKittens() {
-  return adminRequest('/kittens');
+export function fetchKittens(params) {
+  if (!params) {
+    return adminRequest('/kittens');
+  }
+
+  const searchParams = new URLSearchParams();
+  if (params.page) searchParams.set('page', String(params.page));
+  if (params.limit) searchParams.set('limit', String(params.limit));
+  if (params.search) searchParams.set('search', params.search);
+  if (params.status && params.status !== 'All') searchParams.set('status', params.status);
+  if (params.fosterId) searchParams.set('fosterId', String(params.fosterId));
+  if (params.litterId) searchParams.set('litterId', String(params.litterId));
+
+  const query = searchParams.toString();
+  return adminFetch(`/kittens${query ? `?${query}` : ''}`).then(async (response) => {
+    if (!response.ok) throw new Error('Failed to load kittens');
+    return response.json();
+  });
 }
 
 export async function fetchDashboardStats() {
@@ -244,29 +260,19 @@ export function fetchKittenPhotos(kittenId) {
   });
 }
 
-function readFileAsDataUrl(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = () => reject(new Error('Could not read the selected photo'));
-    reader.readAsDataURL(file);
-  });
-}
 
 export async function uploadKittenPhoto(kittenId, file, { setAsPrimary = false } = {}) {
   if (file.size > 5 * 1024 * 1024) {
     throw new Error('Photo is too large. Max 5MB.');
   }
 
-  const imageData = await readFileAsDataUrl(file);
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('setAsPrimary', String(setAsPrimary));
+
   const response = await adminFetch(`/kittens/${kittenId}/documents/photos`, {
     method: 'POST',
-    body: JSON.stringify({
-      imageData,
-      fileName: file.name,
-      mimeType: file.type,
-      setAsPrimary,
-    }),
+    body: formData,
   });
   if (!response.ok) throw new Error(await readApiError(response, 'Photo upload failed'));
   return response.json();

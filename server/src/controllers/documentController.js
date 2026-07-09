@@ -6,6 +6,7 @@ import {
   photoDocumentOrderBy,
   photoDocumentSelect,
 } from '../utils/photoDocuments.js';
+import { deleteStoredFile, persistKittenFile } from '../utils/fileStorage.js';
 
 const PHOTO_TRANSACTION_OPTIONS = { maxWait: 10000, timeout: 30000 };
 
@@ -86,7 +87,7 @@ export async function uploadDocument(req, res, next) {
     if (!kitten) return res.status(404).json({ error: 'Kitten not found' });
 
     const { docType, description } = req.body;
-    const fileUrl = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+    const fileUrl = await persistKittenFile(kittenId, req.file);
 
     const document = await prisma.document.create({
       data: {
@@ -121,7 +122,7 @@ export async function uploadPhoto(req, res, next) {
     const kitten = await findKitten(kittenId);
     if (!kitten) return res.status(404).json({ error: 'Kitten not found' });
 
-    const fileUrl = `data:${upload.mimetype};base64,${upload.buffer.toString('base64')}`;
+    const fileUrl = await persistKittenFile(kittenId, upload);
     const setAsPrimary = req.body.setAsPrimary === 'true' || req.body.setAsPrimary === true;
     const [hasPrimaryPhotoDoc, photoCount] = await Promise.all([
       prisma.document.count({ where: { kittenId, isPrimaryPhoto: true } }),
@@ -132,6 +133,7 @@ export async function uploadPhoto(req, res, next) {
             { isPrimaryPhoto: true },
             { docType: { in: ['Photo', 'Primary Photo', 'Gallery Photo'] } },
             { fileUrl: { startsWith: 'data:image/' } },
+            { fileUrl: { startsWith: '/uploads/' } },
           ],
         },
       }),
@@ -225,6 +227,7 @@ export async function deleteDocument(req, res, next) {
     const wasPrimary = document.isPrimaryPhoto || document.fileUrl === kitten?.primaryPhotoUrl;
 
     await prisma.document.delete({ where: { id } });
+    await deleteStoredFile(document.fileUrl);
 
     if (wasPrimary && kitten) {
       const nextPhoto = await prisma.document.findFirst({

@@ -14,6 +14,7 @@ export function isResolvablePhotoUrl(url) {
   if (url.startsWith('data:image/')) return true;
   if (url.startsWith('http://') || url.startsWith('https://')) return true;
   if (url.startsWith('/images/')) return true;
+  if (url.startsWith('/uploads/')) return true;
   return false;
 }
 

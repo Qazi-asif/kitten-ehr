@@ -19,17 +19,80 @@ const kittenIncludes = {
   currentFoster: { select: { id: true, name: true, phone: true } },
 };
 
-export async function getAllKittens(_req, res) {
+export async function getAllKittens(req, res) {
   try {
-    const kittens = await prisma.kitten.findMany({
-      orderBy: { id: 'asc' },
-      select: kittenListSelect,
+    const usePagination = req.query.page != null
+      || req.query.limit != null
+      || req.query.search
+      || (req.query.status && req.query.status !== 'All')
+      || req.query.fosterId
+      || req.query.litterId;
+
+    const where = buildKittenListWhere(req.query);
+
+    if (!usePagination) {
+      const kittens = await prisma.kitten.findMany({
+        where,
+        orderBy: { id: 'asc' },
+        select: kittenListSelect,
+      });
+      return res.json(kittens.map(serializeKittenForList));
+    }
+
+    const page = Math.max(1, Number.parseInt(req.query.page, 10) || 1);
+    const limit = Math.min(100, Math.max(1, Number.parseInt(req.query.limit, 10) || 25));
+    const skip = (page - 1) * limit;
+
+    const [total, kittens] = await Promise.all([
+      prisma.kitten.count({ where }),
+      prisma.kitten.findMany({
+        where,
+        skip,
+        take: limit,
+        orderBy: [{ intakeDate: 'desc' }, { id: 'desc' }],
+        select: kittenListSelect,
+      }),
+    ]);
+
+    res.json({
+      items: kittens.map(serializeKittenForList),
+      total,
+      page,
+      limit,
+      totalPages: Math.max(1, Math.ceil(total / limit)),
     });
-    res.json(kittens.map(serializeKittenForList));
   } catch (error) {
     console.error('Failed to fetch kittens:', error);
     res.status(500).json({ error: 'Failed to fetch kittens' });
   }
+}
+
+function buildKittenListWhere(query) {
+  const where = {};
+
+  if (query.status && query.status !== 'All') {
+    where.status = String(query.status);
+  }
+
+  const fosterId = Number.parseInt(query.fosterId, 10);
+  if (Number.isInteger(fosterId) && fosterId > 0) {
+    where.currentFosterId = fosterId;
+  }
+
+  const litterId = Number.parseInt(query.litterId, 10);
+  if (Number.isInteger(litterId) && litterId > 0) {
+    where.litterId = litterId;
+  }
+
+  const search = typeof query.search === 'string' ? query.search.trim() : '';
+  if (search) {
+    where.OR = [
+      { name: { contains: search, mode: 'insensitive' } },
+      { breed: { contains: search, mode: 'insensitive' } },
+    ];
+  }
+
+  return where;
 }
 
 export async function createKitten(req, res, next) {

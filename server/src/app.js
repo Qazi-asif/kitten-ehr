@@ -35,6 +35,7 @@ import socialPostRoutes from './routes/socialPostRoutes.js';
 import wishlistRoutes from './routes/wishlistRoutes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
 import { requireAuth } from './middleware/authMiddleware.js';
+import { getUploadRoot } from './utils/fileStorage.js';
 import { createOriginValidator } from './utils/corsOrigins.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -88,6 +89,8 @@ app.use('/api/public/applications', applicationLimiter);
 app.use('/api/public/donations', donationLimiter);
 
 app.use(express.json({ limit: '10mb' }));
+
+app.use('/uploads', express.static(getUploadRoot(), { fallthrough: true }));
 
 let spec = {
   openapi: '3.0.0',
