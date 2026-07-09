@@ -1,5 +1,6 @@
 import './loadEnv.js';
 import express from 'express';
+import compression from 'compression';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
@@ -44,6 +45,7 @@ const PORT = process.env.PORT || 5000;
 const isOriginAllowed = createOriginValidator();
 
 app.use(helmet());
+app.use(compression());
 
 app.use(
   cors({

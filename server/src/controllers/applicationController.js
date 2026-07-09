@@ -7,6 +7,7 @@ import {
 import { sendApplicationReceivedEmails, sendApplicationStatusChangedEmail } from '../services/emailService.js';
 import { APPLICATION_REVIEW_STATUSES } from '../constants/emailTemplates.js';
 import { validateUploadedFile } from '../utils/fileValidation.js';
+import { persistApplicationFile } from '../utils/fileStorage.js';
 
 const VALID_STATUSES = ['New', 'Under Review', 'Approved', 'Denied'];
 const MAX_APPLICATION_PHOTOS = 3;
@@ -34,8 +35,8 @@ const applicationDetailInclude = {
   },
 };
 
-function fileToDataUrl(file) {
-  return `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
+async function resolveApplicationFileUrl(applicationId, file) {
+  return persistApplicationFile(applicationId, file);
 }
 
 async function saveApplicationUploads(applicationId, files = []) {
@@ -57,7 +58,7 @@ async function saveApplicationUploads(applicationId, files = []) {
           applicationId,
           fileName: file.originalname || 'upload',
           docLabel: 'Applicant Photo',
-          fileUrl: fileToDataUrl(file),
+          fileUrl: await resolveApplicationFileUrl(applicationId, file),
           fileType: file.mimetype,
         },
       }),
@@ -220,7 +221,7 @@ export async function uploadApplicationDocument(req, res, next) {
         applicationId,
         fileName: req.file.originalname || 'document',
         docLabel,
-        fileUrl: fileToDataUrl(req.file),
+        fileUrl: await resolveApplicationFileUrl(applicationId, req.file),
         fileType: req.file.mimetype,
       },
     });

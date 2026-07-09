@@ -1,4 +1,5 @@
 import prisma from '../lib/prisma.js';
+import { paginatedResponse, parsePagination, wantsPagination } from '../utils/pagination.js';
 
 const CONTRACT_INCLUDE = {
   application: {
@@ -52,12 +53,31 @@ function buildContractWhere(query) {
 
 export async function getContracts(req, res, next) {
   try {
-    const contracts = await prisma.contract.findMany({
-      where: buildContractWhere(req.query),
-      orderBy: { createdAt: 'desc' },
-      include: CONTRACT_INCLUDE,
-    });
-    res.json(contracts);
+    const where = buildContractWhere(req.query);
+
+    if (!wantsPagination(req.query)) {
+      const contracts = await prisma.contract.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        include: CONTRACT_INCLUDE,
+        take: 100,
+      });
+      return res.json(contracts);
+    }
+
+    const { page, limit, skip } = parsePagination(req.query, 50);
+    const [total, contracts] = await Promise.all([
+      prisma.contract.count({ where }),
+      prisma.contract.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        include: CONTRACT_INCLUDE,
+        skip,
+        take: limit,
+      }),
+    ]);
+
+    return res.json(paginatedResponse(contracts, total, page, limit));
   } catch (error) {
     next(error);
   }

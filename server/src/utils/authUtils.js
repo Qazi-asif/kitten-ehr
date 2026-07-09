@@ -1,7 +1,15 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'pawsitive-dev-jwt-secret-change-in-production';
+function requireJwtSecret() {
+  const secret = process.env.JWT_SECRET;
+  if (!secret || !secret.trim()) {
+    throw new Error('JWT_SECRET environment variable is required. Set it in server/.env before starting the API.');
+  }
+  return secret;
+}
+
+const JWT_SECRET = requireJwtSecret();
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
 
 export async function hashPassword(password) {

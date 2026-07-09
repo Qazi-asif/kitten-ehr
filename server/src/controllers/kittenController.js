@@ -13,6 +13,9 @@ import {
 } from '../utils/kittenSerialization.js';
 import { evaluateKittenFlags } from '../services/medicalAutomation.js';
 import { buildDashboardInsights } from '../services/dashboardInsights.js';
+import { getCachedResponse, setCachedResponse } from '../utils/responseCache.js';
+
+const DASHBOARD_STATS_TTL_MS = 60 * 1000;
 
 const kittenIncludes = {
   litter: { select: { id: true, name: true } },
@@ -297,6 +300,11 @@ export async function deleteKitten(req, res, next) {
 
 export async function getDashboardStats(_req, res, next) {
   try {
+    const cached = getCachedResponse('dashboard-stats', DASHBOARD_STATS_TTL_MS);
+    if (cached) {
+      return res.json(cached);
+    }
+
     const yearStart = new Date(new Date().getFullYear(), 0, 1);
     const [
       activeKittens,
@@ -318,7 +326,7 @@ export async function getDashboardStats(_req, res, next) {
       buildDashboardInsights(prisma),
     ]);
 
-    res.json({
+    const payload = {
       activeKittens,
       availableForAdoption,
       pendingAdoptions,
@@ -326,7 +334,10 @@ export async function getDashboardStats(_req, res, next) {
       adoptionsThisYear,
       alerts: insights.alerts,
       medicalConcerns: insights.medicalConcerns,
-    });
+    };
+
+    setCachedResponse('dashboard-stats', payload);
+    res.json(payload);
   } catch (error) {
     next(error);
   }

@@ -1,13 +1,41 @@
 import prisma from '../lib/prisma.js';
 import { hashPassword, sanitizeUser } from '../utils/authUtils.js';
+import { validatePasswordStrength } from '../utils/passwordPolicy.js';
+import { paginatedResponse, parsePagination, wantsPagination } from '../utils/pagination.js';
+
+async function validateFosterId(fosterId) {
+  if (fosterId == null || fosterId === '') return null;
+  const parsed = Number.parseInt(fosterId, 10);
+  if (!Number.isInteger(parsed) || parsed <= 0) {
+    return { error: 'Invalid foster id' };
+  }
+  const foster = await prisma.foster.findUnique({ where: { id: parsed }, select: { id: true } });
+  if (!foster) return { error: 'Foster not found' };
+  return { id: parsed };
+}
 
 export async function listUsers(req, res) {
-  const users = await prisma.user.findMany({
-    include: { role: true },
-    orderBy: [{ lastName: 'asc' }, { firstName: 'asc' }],
-  });
+  if (!wantsPagination(req.query)) {
+    const users = await prisma.user.findMany({
+      include: { role: true },
+      orderBy: [{ lastName: 'asc' }, { firstName: 'asc' }],
+      take: 200,
+    });
+    return res.json(users.map(sanitizeUser));
+  }
 
-  return res.json(users.map(sanitizeUser));
+  const { page, limit, skip } = parsePagination(req.query, 50);
+  const [total, users] = await Promise.all([
+    prisma.user.count(),
+    prisma.user.findMany({
+      include: { role: true },
+      orderBy: [{ lastName: 'asc' }, { firstName: 'asc' }],
+      skip,
+      take: limit,
+    }),
+  ]);
+
+  return res.json(paginatedResponse(users.map(sanitizeUser), total, page, limit));
 }
 
 export async function createUser(req, res) {
@@ -21,9 +49,19 @@ export async function createUser(req, res) {
     return res.status(400).json({ error: 'Password must be at least 8 characters' });
   }
 
+  const passwordError = validatePasswordStrength(password);
+  if (passwordError) {
+    return res.status(400).json({ error: passwordError });
+  }
+
   const role = await prisma.role.findUnique({ where: { id: Number.parseInt(roleId, 10) } });
   if (!role) {
     return res.status(400).json({ error: 'Invalid role' });
+  }
+
+  const fosterResult = await validateFosterId(fosterId);
+  if (fosterResult?.error) {
+    return res.status(400).json({ error: fosterResult.error });
   }
 
   try {
@@ -35,7 +73,7 @@ export async function createUser(req, res) {
         lastName: lastName.trim(),
         roleId: role.id,
         isActive: Boolean(isActive),
-        fosterId: fosterId ? Number.parseInt(fosterId, 10) : null,
+        fosterId: fosterResult?.id ?? null,
       },
       include: { role: true },
     });
@@ -65,11 +103,18 @@ export async function updateUser(req, res) {
   if (lastName !== undefined) data.lastName = lastName.trim();
   if (roleId !== undefined) data.roleId = Number.parseInt(roleId, 10);
   if (isActive !== undefined) data.isActive = Boolean(isActive);
-  if (fosterId !== undefined) data.fosterId = fosterId ? Number.parseInt(fosterId, 10) : null;
+  if (fosterId !== undefined) {
+    const fosterResult = await validateFosterId(fosterId);
+    if (fosterResult?.error) {
+      return res.status(400).json({ error: fosterResult.error });
+    }
+    data.fosterId = fosterResult?.id ?? null;
+  }
 
   if (password) {
-    if (password.length < 8) {
-      return res.status(400).json({ error: 'Password must be at least 8 characters' });
+    const passwordError = validatePasswordStrength(password);
+    if (passwordError) {
+      return res.status(400).json({ error: passwordError });
     }
     data.passwordHash = await hashPassword(password);
   }

@@ -7,14 +7,19 @@ import {
 } from '../constants/emailTemplates.js';
 import { getApplicantEmail, getApplicantName } from '../utils/applicationFormData.js';
 import { wrapEmailContent } from '../utils/emailLayout.js';
+import { escapeHtml } from '../utils/htmlEscape.js';
 
 const SETTINGS_ID = 1;
+let cachedTransporter = null;
+let cachedTransporterKey = '';
 
-function renderTemplateString(template, variables) {
+function renderTemplateString(template, variables, { escapeValues = false } = {}) {
   if (!template) return '';
   return template.replace(/\{\{(\w+)\}\}/g, (_, key) => {
     const value = variables[key];
-    return value == null ? '' : String(value);
+    if (value == null) return '';
+    const text = String(value);
+    return escapeValues ? escapeHtml(text) : text;
   });
 }
 
@@ -99,7 +104,7 @@ async function getLayoutTemplate() {
 
 async function buildRenderedEmail(template, variables) {
   const subject = renderTemplateString(template.subject, variables);
-  const innerHtml = renderTemplateString(template.bodyHtml, variables);
+  const innerHtml = renderTemplateString(template.bodyHtml, variables, { escapeValues: true });
   const layoutHtml = await getLayoutTemplate();
   const html = template.key === EMAIL_TEMPLATE_KEYS.EMAIL_LAYOUT
     ? innerHtml
@@ -108,6 +113,25 @@ async function buildRenderedEmail(template, variables) {
   const text = renderTemplateString(textSource, variables);
 
   return { subject, html, text };
+}
+
+function getSmtpTransporter(settings, smtpHost, smtpUser, smtpPass) {
+  const key = `${smtpHost}|${settings.smtpPort}|${settings.smtpSecure}|${smtpUser}`;
+  if (cachedTransporter && cachedTransporterKey === key) {
+    return cachedTransporter;
+  }
+
+  cachedTransporter = nodemailer.createTransport({
+    host: smtpHost,
+    port: settings.smtpPort || 587,
+    secure: settings.smtpSecure,
+    auth: {
+      user: smtpUser,
+      pass: smtpPass,
+    },
+  });
+  cachedTransporterKey = key;
+  return cachedTransporter;
 }
 
 export async function sendTemplatedEmail({
@@ -190,15 +214,7 @@ export async function sendTemplatedEmail({
   }
 
   try {
-    const transporter = nodemailer.createTransport({
-      host: smtpHost,
-      port: settings.smtpPort || 587,
-      secure: settings.smtpSecure,
-      auth: {
-        user: smtpUser,
-        pass: smtpPass,
-      },
-    });
+    const transporter = getSmtpTransporter(settings, smtpHost, smtpUser, smtpPass);
 
     const info = await transporter.sendMail({
       from: `"${settings.fromName || settings.orgName}" <${settings.fromEmail || smtpUser}>`,

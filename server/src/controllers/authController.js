@@ -1,5 +1,6 @@
 import prisma from '../lib/prisma.js';
 import { comparePassword, hashPassword, sanitizeUser, signToken } from '../utils/authUtils.js';
+import { validatePasswordStrength } from '../utils/passwordPolicy.js';
 
 function userPermissions(user) {
   return user.role.permissions.map((rp) => rp.permission.key);
@@ -96,8 +97,13 @@ export async function changePassword(req, res, next) {
   try {
     const { currentPassword, newPassword } = req.body;
 
-    if (!currentPassword || !newPassword || newPassword.length < 8) {
-      return res.status(400).json({ error: 'New password must be at least 8 characters' });
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ error: 'Current and new password are required' });
+    }
+
+    const passwordError = validatePasswordStrength(newPassword);
+    if (passwordError) {
+      return res.status(400).json({ error: passwordError });
     }
 
     const user = await prisma.user.findUnique({ where: { id: req.user.id } });

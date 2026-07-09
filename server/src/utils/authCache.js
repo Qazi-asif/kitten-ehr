@@ -1,7 +1,17 @@
 const CACHE_TTL_MS = 5 * 60 * 1000;
+const MAX_CACHE_SIZE = 500;
+const CACHE_ENABLED = !process.env.VERCEL;
 const cache = new Map();
 
+function evictIfNeeded() {
+  if (cache.size < MAX_CACHE_SIZE) return;
+  const oldestKey = cache.keys().next().value;
+  if (oldestKey !== undefined) cache.delete(oldestKey);
+}
+
 export function getCachedAuth(userId) {
+  if (!CACHE_ENABLED) return null;
+
   const entry = cache.get(userId);
   if (!entry) return null;
   if (Date.now() - entry.cachedAt > CACHE_TTL_MS) {
@@ -12,6 +22,8 @@ export function getCachedAuth(userId) {
 }
 
 export function setCachedAuth(userId, data) {
+  if (!CACHE_ENABLED) return;
+  evictIfNeeded();
   cache.set(userId, { data, cachedAt: Date.now() });
 }
 

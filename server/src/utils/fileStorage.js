@@ -38,6 +38,16 @@ export async function saveKittenFile(kittenId, buffer, originalName, mimeType) {
   return `/uploads/kittens/${kittenId}/${safeName}`;
 }
 
+export async function saveApplicationFile(applicationId, buffer, originalName, mimeType) {
+  const ext = extensionForFile(originalName, mimeType);
+  const safeName = `${randomUUID()}${ext}`;
+  const dir = path.join(UPLOAD_ROOT, 'applications', String(applicationId));
+  await fs.mkdir(dir, { recursive: true });
+  const absolutePath = path.join(dir, safeName);
+  await fs.writeFile(absolutePath, buffer);
+  return `/uploads/applications/${applicationId}/${safeName}`;
+}
+
 export async function deleteStoredFile(fileUrl) {
   if (!isStoredFileUrl(fileUrl)) return;
   const relative = fileUrl.replace(/^\/uploads\//, '');
@@ -52,6 +62,13 @@ export function shouldUseDiskStorage() {
 export async function persistKittenFile(kittenId, file) {
   if (shouldUseDiskStorage()) {
     return saveKittenFile(kittenId, file.buffer, file.originalname, file.mimetype);
+  }
+  return `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
+}
+
+export async function persistApplicationFile(applicationId, file) {
+  if (shouldUseDiskStorage()) {
+    return saveApplicationFile(applicationId, file.buffer, file.originalname, file.mimetype);
   }
   return `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
 }

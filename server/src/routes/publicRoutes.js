@@ -18,6 +18,13 @@ import { getPublicWishlists, getPublicFosterWishlists, getPublicKittenWishlists 
 
 const router = Router();
 
+router.use((req, res, next) => {
+  if (req.method === 'GET') {
+    res.set('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
+  }
+  next();
+});
+
 router.get('/wishlists', getPublicWishlists);
 router.get('/kittens', getPublicKittens);
 router.get('/kittens/:id/wishlists', getPublicKittenWishlists);

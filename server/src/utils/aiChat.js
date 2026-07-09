@@ -37,6 +37,10 @@ function shouldRetryStatus(status) {
   return [429, 500, 502, 503, 504].includes(status);
 }
 
+function sanitizeLogMessage(message) {
+  return String(message).replace(/Bearer\s+\S+/gi, 'Bearer [REDACTED]');
+}
+
 export async function createChatCompletion(provider, messages, options = {}) {
   const models = provider.supportsModelFallback
     ? [...new Set([provider.model, ...GROQ_MODEL_FALLBACKS])]
@@ -77,7 +81,7 @@ export async function createChatCompletion(provider, messages, options = {}) {
 
       lastStatus = response.status;
       lastError = extractAiError(payload, lastError, response.status, provider.providerLabel);
-      console.error(`${provider.providerLabel} API error (${response.status}) model=${model}:`, lastError);
+      console.error(`${provider.providerLabel} API error (${response.status}) model=${model}:`, sanitizeLogMessage(lastError));
 
       if (shouldRetryStatus(response.status) && attempt < maxAttempts - 1) {
         continue;

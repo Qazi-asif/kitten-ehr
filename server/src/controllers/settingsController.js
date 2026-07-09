@@ -166,11 +166,13 @@ export async function updateSettings(req, res, next) {
     }
     if (smtpSecure !== undefined) data.smtpSecure = Boolean(smtpSecure);
     if (smtpUser !== undefined) data.smtpUser = String(smtpUser).trim();
-    if (smtpPass !== undefined && smtpPass !== '') data.smtpPass = String(smtpPass);
+    if (smtpPass !== undefined && smtpPass !== '') data.smtpPass = String(smtpPass).slice(0, 500);
     if (fromEmail !== undefined) data.fromEmail = String(fromEmail).trim();
     if (fromName !== undefined) data.fromName = String(fromName).trim();
     if (adminNotifyEmail !== undefined) data.adminNotifyEmail = String(adminNotifyEmail).trim();
-    if (donationWidgetCode !== undefined) data.donationWidgetCode = String(donationWidgetCode);
+    if (donationWidgetCode !== undefined) {
+      data.donationWidgetCode = String(donationWidgetCode).slice(0, 10000);
+    }
     if (paypalLink !== undefined) data.paypalLink = normalizeOptionalUrl(paypalLink);
     if (stripeLink !== undefined) data.stripeLink = normalizeOptionalUrl(stripeLink);
     if (venmoQrCodeUrl !== undefined) data.venmoQrCodeUrl = String(venmoQrCodeUrl).trim();

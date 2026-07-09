@@ -37,7 +37,7 @@ export function createOriginValidator() {
         return true;
       }
 
-      if (protocol === 'https:' && hostname.endsWith('.vercel.app')) {
+      if (protocol === 'https:' && /^kitten-ehr[a-z0-9-]*\.vercel\.app$/i.test(hostname)) {
         return true;
       }
     } catch {

@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const createApplicationSchema = z.object({
   type: z.enum(['Adoption', 'Foster'], { errorMap: () => ({ message: 'type must be Adoption or Foster' }) }),
   formData: z.union([
-    z.string().min(2, 'formData is required').max(50000),
+    z.string().min(2, 'formData is required').max(10000),
     z.record(z.unknown()),
   ]),
   kittenOfInterest: z.string().trim().max(200).optional().nullable(),

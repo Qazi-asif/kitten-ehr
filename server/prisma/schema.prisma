@@ -354,6 +354,8 @@ model Content {
   publishTargets String[]            @default([])
   createdAt      DateTime            @default(now())
   completions    ContentCompletion[]
+
+  @@index([category])
 }
 
 model ContentCompletion {
@@ -602,6 +604,9 @@ model Transaction {
   kittenId    Int?
   kitten      Kitten?  @relation(fields: [kittenId], references: [id], onDelete: SetNull)
   createdAt   DateTime @default(now())
+
+  @@index([date])
+  @@index([type, date])
 }
 
 model Wishlist {

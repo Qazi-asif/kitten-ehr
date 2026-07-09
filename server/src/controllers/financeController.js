@@ -1,5 +1,6 @@
 import prisma from '../lib/prisma.js';
 import { sendDonationReceivedEmails } from '../services/emailService.js';
+import { paginatedResponse, parsePagination, wantsPagination } from '../utils/pagination.js';
 
 function getPeriodStarts(now = new Date()) {
   const weekStart = new Date(now);
@@ -118,15 +119,33 @@ export async function getAllTransactions(req, res, next) {
       }
     }
 
-    const transactions = await prisma.transaction.findMany({
-      where,
-      include: {
-        kitten: { select: { id: true, name: true } },
-      },
-      orderBy: [{ date: 'desc' }, { id: 'desc' }],
-    });
+    const include = {
+      kitten: { select: { id: true, name: true } },
+    };
 
-    res.json(transactions);
+    if (!wantsPagination(req.query)) {
+      const transactions = await prisma.transaction.findMany({
+        where,
+        include,
+        orderBy: [{ date: 'desc' }, { id: 'desc' }],
+        take: 200,
+      });
+      return res.json(transactions);
+    }
+
+    const { page, limit, skip } = parsePagination(req.query, 50);
+    const [total, transactions] = await Promise.all([
+      prisma.transaction.count({ where }),
+      prisma.transaction.findMany({
+        where,
+        include,
+        orderBy: [{ date: 'desc' }, { id: 'desc' }],
+        skip,
+        take: limit,
+      }),
+    ]);
+
+    return res.json(paginatedResponse(transactions, total, page, limit));
   } catch (error) {
     next(error);
   }
