@@ -54,6 +54,15 @@ async function enrichEventKittens(kittens) {
   if (kittens.length === 0) return kittens;
 
   const needsDocLookup = kittens.filter((kitten) => !isResolvablePhotoUrl(kitten.primaryPhotoUrl));
+  if (needsDocLookup.length === 0) {
+    return kittens.map((kitten) => {
+      const normalized = normalizeKittenPhotoUrl(kitten.primaryPhotoUrl, kitten.name);
+      return normalized
+        ? { ...kitten, primaryPhotoUrl: normalized }
+        : { ...kitten, primaryPhotoUrl: normalizeKittenPhotoUrl(null, kitten.name) || GENERIC_KITTEN_PHOTO_FALLBACK };
+    });
+  }
+
   const photoByKittenId = new Map();
 
   if (needsDocLookup.length > 0) {

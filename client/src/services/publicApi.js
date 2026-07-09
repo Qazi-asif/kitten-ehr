@@ -1,9 +1,14 @@
 import { publicFetch } from './api.js';
+import { cachedRequest } from '../utils/apiCache.js';
+
+const PUBLIC_CACHE_TTL_MS = 60_000;
 
 async function publicRequest(path) {
-  const response = await publicFetch(`/public${path}`);
-  if (!response.ok) throw new Error('Request failed');
-  return response.json();
+  return cachedRequest(`public:${path}`, async () => {
+    const response = await publicFetch(`/public${path}`);
+    if (!response.ok) throw new Error('Request failed');
+    return response.json();
+  }, PUBLIC_CACHE_TTL_MS);
 }
 
 export function fetchPublicKittens(limit) {
@@ -55,10 +60,8 @@ export function fetchPublicEventBySlug(slug) {
   return publicRequest(`/events/${slug}`);
 }
 
-export async function fetchPublicSettings() {
-  const response = await publicFetch('/public/settings', { cache: 'no-store' });
-  if (!response.ok) throw new Error('Request failed');
-  return response.json();
+export function fetchPublicSettings() {
+  return publicRequest('/settings');
 }
 
 export async function submitApplication(type, formData, photos = []) {

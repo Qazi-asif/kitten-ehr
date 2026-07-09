@@ -2,6 +2,12 @@ import fs from 'fs/promises';
 import path from 'path';
 import { randomUUID } from 'crypto';
 import { fileURLToPath } from 'url';
+import {
+  deleteFromObjectStorage,
+  isObjectStorageConfigured,
+  isObjectStorageUrl,
+  uploadToObjectStorage,
+} from './objectStorage.js';
 
 const UPLOAD_ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '../../uploads');
 
@@ -20,12 +26,20 @@ function extensionForFile(originalName, mimeType) {
   return MIME_EXTENSIONS[mimeType] || '';
 }
 
+function toDataUrl(file) {
+  return `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
+}
+
 export function getUploadRoot() {
   return UPLOAD_ROOT;
 }
 
 export function isStoredFileUrl(url) {
   return typeof url === 'string' && url.startsWith('/uploads/');
+}
+
+export function isManagedFileUrl(url) {
+  return isStoredFileUrl(url) || isObjectStorageUrl(url);
 }
 
 export async function saveKittenFile(kittenId, buffer, originalName, mimeType) {
@@ -48,11 +62,39 @@ export async function saveApplicationFile(applicationId, buffer, originalName, m
   return `/uploads/applications/${applicationId}/${safeName}`;
 }
 
+async function persistScopedFile(scope, scopeId, file) {
+  const ext = extensionForFile(file.originalname, file.mimetype);
+  const key = `${scope}/${scopeId}/${randomUUID()}${ext}`;
+
+  if (isObjectStorageConfigured()) {
+    return uploadToObjectStorage(key, file.buffer, file.mimetype);
+  }
+
+  if (shouldUseDiskStorage()) {
+    if (scope === 'kittens') {
+      return saveKittenFile(scopeId, file.buffer, file.originalname, file.mimetype);
+    }
+    return saveApplicationFile(scopeId, file.buffer, file.originalname, file.mimetype);
+  }
+
+  console.warn(
+    `[fileStorage] Storing ${scope}/${scopeId} file as base64 in the database. `
+    + 'Configure S3/R2 env vars (S3_BUCKET, S3_ACCESS_KEY_ID, S3_SECRET_ACCESS_KEY, S3_PUBLIC_URL) for production.',
+  );
+  return toDataUrl(file);
+}
+
 export async function deleteStoredFile(fileUrl) {
-  if (!isStoredFileUrl(fileUrl)) return;
-  const relative = fileUrl.replace(/^\/uploads\//, '');
-  const absolutePath = path.join(UPLOAD_ROOT, relative);
-  await fs.unlink(absolutePath).catch(() => {});
+  if (isStoredFileUrl(fileUrl)) {
+    const relative = fileUrl.replace(/^\/uploads\//, '');
+    const absolutePath = path.join(UPLOAD_ROOT, relative);
+    await fs.unlink(absolutePath).catch(() => {});
+    return;
+  }
+
+  if (isObjectStorageUrl(fileUrl)) {
+    await deleteFromObjectStorage(fileUrl);
+  }
 }
 
 export function shouldUseDiskStorage() {
@@ -60,15 +102,9 @@ export function shouldUseDiskStorage() {
 }
 
 export async function persistKittenFile(kittenId, file) {
-  if (shouldUseDiskStorage()) {
-    return saveKittenFile(kittenId, file.buffer, file.originalname, file.mimetype);
-  }
-  return `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
+  return persistScopedFile('kittens', kittenId, file);
 }
 
 export async function persistApplicationFile(applicationId, file) {
-  if (shouldUseDiskStorage()) {
-    return saveApplicationFile(applicationId, file.buffer, file.originalname, file.mimetype);
-  }
-  return `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
+  return persistScopedFile('applications', applicationId, file);
 }
