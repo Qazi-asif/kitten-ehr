@@ -6,8 +6,9 @@ async function publicRequest(path) {
   return response.json();
 }
 
-export function fetchPublicKittens() {
-  return publicRequest('/kittens');
+export function fetchPublicKittens(limit) {
+  const query = limit ? `?limit=${encodeURIComponent(String(limit))}` : '';
+  return publicRequest(`/kittens${query}`);
 }
 
 export function fetchPublicKittenById(id) {

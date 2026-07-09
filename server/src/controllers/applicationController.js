@@ -11,6 +11,29 @@ import { validateUploadedFile } from '../utils/fileValidation.js';
 const VALID_STATUSES = ['New', 'Under Review', 'Approved', 'Denied'];
 const MAX_APPLICATION_PHOTOS = 3;
 
+const applicationListInclude = {
+  uploads: {
+    orderBy: { createdAt: 'asc' },
+    select: {
+      id: true,
+      fileName: true,
+      docLabel: true,
+      fileType: true,
+      createdAt: true,
+    },
+  },
+  rejectedBy: {
+    select: { id: true, firstName: true, lastName: true },
+  },
+};
+
+const applicationDetailInclude = {
+  uploads: { orderBy: { createdAt: 'asc' } },
+  rejectedBy: {
+    select: { id: true, firstName: true, lastName: true },
+  },
+};
+
 function fileToDataUrl(file) {
   return `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
 }
@@ -51,14 +74,27 @@ export async function getApplications(req, res, next) {
     const applications = await prisma.application.findMany({
       where: status ? { status } : undefined,
       orderBy: { createdAt: 'desc' },
-      include: {
-        uploads: { orderBy: { createdAt: 'asc' } },
-        rejectedBy: {
-          select: { id: true, firstName: true, lastName: true },
-        },
-      },
+      include: applicationListInclude,
     });
     res.json(applications);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getApplicationById(req, res, next) {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+    const application = await prisma.application.findUnique({
+      where: { id },
+      include: applicationDetailInclude,
+    });
+
+    if (!application) {
+      return res.status(404).json({ error: 'Application not found' });
+    }
+
+    res.json(application);
   } catch (error) {
     next(error);
   }
@@ -145,12 +181,7 @@ export async function updateApplicationStatus(req, res, next) {
     const application = await prisma.application.update({
       where: { id },
       data: updateData,
-      include: {
-        uploads: { orderBy: { createdAt: 'asc' } },
-        rejectedBy: {
-          select: { id: true, firstName: true, lastName: true },
-        },
-      },
+      include: applicationDetailInclude,
     });
 
     if (statusChanged && APPLICATION_REVIEW_STATUSES.includes(application.status)) {

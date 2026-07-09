@@ -180,6 +180,7 @@ model Vaccine {
   notes          String   @default("")
 
   @@index([kittenId])
+  @@index([nextDueDate])
 }
 
 model Medication {
@@ -197,6 +198,7 @@ model Medication {
   notes     String    @default("")
 
   @@index([kittenId])
+  @@index([status, endDate])
 }
 
 model VetAppointment {
@@ -214,6 +216,7 @@ model VetAppointment {
   notes        String    @default("")
 
   @@index([kittenId])
+  @@index([date])
 }
 
 model Document {
@@ -250,6 +253,7 @@ model Application {
   uploads          ApplicationUpload[]
 
   @@index([rejectedById])
+  @@index([status, createdAt])
 }
 
 enum ContractType {
@@ -379,6 +383,8 @@ model Event {
   publishTargets String[]    @default([])
   eventCats      EventCats[]
   rsvps          EventRSVP[]
+
+  @@index([isPublic, status, date])
 }
 
 model EventRSVP {
@@ -516,6 +522,7 @@ model ProtocolDose {
   @@index([activeProtocolId])
   @@index([protocolDrugId])
   @@index([administeredById])
+  @@index([status, scheduledDate])
 }
 
 model Settings {

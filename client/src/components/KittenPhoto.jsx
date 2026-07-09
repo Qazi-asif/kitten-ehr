@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Camera } from 'lucide-react';
 import { getKittenFallbackImageUrl, getKittenImageUrl } from '../utils/kittenImages';
 
@@ -47,4 +47,4 @@ function KittenPhoto({ kitten, alt, className = '', allowFallback = false, ...pr
   );
 }
 
-export default KittenPhoto;
+export default memo(KittenPhoto);

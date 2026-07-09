@@ -46,7 +46,21 @@ async function validateOwner(ownerType, ownerId) {
   }
 
   if (ownerType === 'KITTEN') {
-    const kitten = await prisma.kitten.findUnique({ where: { id: ownerId } });
+    const kitten = await prisma.kitten.findUnique({
+      where: { id: ownerId },
+      select: {
+        id: true,
+        name: true,
+        status: true,
+        primaryPhotoUrl: true,
+        rescueStory: true,
+        dateOfBirth: true,
+        sex: true,
+        breed: true,
+        color: true,
+        specialNeeds: true,
+      },
+    });
     if (!kitten) return 'Kitten not found';
     return null;
   }

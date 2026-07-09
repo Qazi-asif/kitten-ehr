@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import ApplicationDetailPanel from '../../components/admin/ApplicationDetailPanel';
 import {
   deleteApplicationDocument,
+  fetchApplicationById,
   fetchApplications,
   updateApplicationStatus,
   uploadApplicationDocument,
@@ -107,21 +108,36 @@ function ApplicationsPage() {
 
   useEffect(() => {
     const selectedId = searchParams.get('id');
-    if (!selectedId || applications.length === 0) return;
+    if (!selectedId) return;
 
-    const match = applications.find((app) => String(app.id) === selectedId);
-    if (match) {
-      setSelected(match);
-      detailRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }, [applications, searchParams]);
+    let cancelled = false;
+    fetchApplicationById(selectedId)
+      .then((application) => {
+        if (!cancelled) {
+          setSelected(application);
+          detailRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      })
+      .catch((err) => {
+        if (!cancelled) setError(err.message);
+      });
 
-  function openApplication(app) {
-    setSelected(app);
+    return () => {
+      cancelled = true;
+    };
+  }, [searchParams]);
+
+  async function openApplication(app) {
     setSearchParams({ id: String(app.id) });
-    window.setTimeout(() => {
-      detailRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 0);
+    try {
+      const fullApplication = await fetchApplicationById(app.id);
+      setSelected(fullApplication);
+      window.setTimeout(() => {
+        detailRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 0);
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   function closeApplication() {

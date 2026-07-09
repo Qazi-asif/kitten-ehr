@@ -16,19 +16,13 @@ const publicKittenSelect = {
   id: true,
   name: true,
   status: true,
+  primaryPhotoUrl: true,
   rescueStory: true,
-  websiteFeaturedComment: true,
   dateOfBirth: true,
   sex: true,
-  fixedStatus: true,
   breed: true,
   color: true,
-  fivFelvStatus: true,
   specialNeeds: true,
-  primaryPhotoUrl: true,
-  amazonWishlistUrl: true,
-  walmartWishlistUrl: true,
-  chewyWishlistUrl: true,
 };
 
 const publicWebsiteFilter = buildPublicWebsiteWhereClause();
@@ -48,6 +42,7 @@ async function enrichPublicKittensWithPhotos(kittens) {
     });
 
     for (const document of documents) {
+      if (photoByKittenId.size === needsDocLookup.length) break;
       if (!isPhotoDocument(document)) continue;
       if (!photoByKittenId.has(document.kittenId)) {
         photoByKittenId.set(document.kittenId, document.fileUrl);
@@ -78,12 +73,18 @@ function resolvePublicKittenPhoto(kitten, documentPhoto = null) {
   return normalizeKittenPhotoUrl(null, kitten.name) || GENERIC_KITTEN_PHOTO_FALLBACK;
 }
 
-export async function getPublicKittens(_req, res, next) {
+export async function getPublicKittens(req, res, next) {
   try {
+    const parsedLimit = Number.parseInt(req.query.limit, 10);
+    const limit = Number.isInteger(parsedLimit) && parsedLimit > 0
+      ? Math.min(parsedLimit, 100)
+      : undefined;
+
     const kittens = await prisma.kitten.findMany({
       where: publicAvailableKittenFilter,
       select: publicKittenSelect,
       orderBy: { id: 'asc' },
+      ...(limit ? { take: limit } : {}),
     });
     res.json(await enrichPublicKittensWithPhotos(kittens));
   } catch (error) {

@@ -72,8 +72,14 @@ export async function buildDashboardInsights(prisma) {
   const kittenIds = activeKittens.map((kitten) => kitten.id);
   const [vaccines, weightLogs] = kittenIds.length
     ? await Promise.all([
-        prisma.vaccine.findMany({ where: { kittenId: { in: kittenIds } } }),
-        prisma.weightLog.findMany({ where: { kittenId: { in: kittenIds } } }),
+        prisma.vaccine.findMany({
+          where: { kittenId: { in: kittenIds } },
+          select: { kittenId: true, type: true, dateGiven: true },
+        }),
+        prisma.weightLog.findMany({
+          where: { kittenId: { in: kittenIds } },
+          select: { kittenId: true, weightGrams: true, weightOz: true, date: true },
+        }),
       ])
     : [[], []];
 
@@ -82,7 +88,7 @@ export async function buildDashboardInsights(prisma) {
 
   const vaccineFlagKittenIds = new Set();
   for (const kitten of activeKittens) {
-    const flags = await evaluateKittenFlags(
+    const flags = evaluateKittenFlags(
       kitten,
       vaccinesByKitten.get(kitten.id) ?? [],
       weightLogsByKitten.get(kitten.id) ?? [],

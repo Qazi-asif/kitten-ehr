@@ -1,99 +1,111 @@
+import { lazy, Suspense } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminLayout from './components/layouts/AdminLayout';
 import PublicLayout from './components/layouts/PublicLayout';
-import FosterDetailPage from './pages/FosterDetailPage';
-import FosterListPage from './pages/FosterListPage';
-import KittenDetailPage from './pages/KittenDetailPage';
-import KittenListPage from './pages/KittenListPage';
-import LitterDetailPage from './pages/LitterDetailPage';
-import LitterListPage from './pages/LitterListPage';
 import LoginPage from './pages/LoginPage';
-import ApplicationsPage from './pages/admin/ApplicationsPage';
-import CalendarPage from './pages/admin/CalendarPage';
-import ContentManagerPage from './pages/admin/ContentManagerPage';
-import ContractsPage from './pages/admin/ContractsPage';
-import DashboardPage from './pages/admin/DashboardPage';
-import FinancePage from './pages/admin/FinancePage';
-import OnboardingPage from './pages/admin/OnboardingPage';
-import ProtocolLibrary from './pages/admin/ProtocolLibrary';
-import MarketingPage from './pages/admin/MarketingPage';
-import SettingsPage from './pages/admin/SettingsPage';
-import EmailTemplatesPage from './pages/admin/EmailTemplatesPage';
-import AboutPage from './pages/public/AboutPage';
-import PrivacyPolicyPage from './pages/public/PrivacyPolicyPage';
-import AdoptionFormPage from './pages/public/AdoptionFormPage';
-import ArticlePage from './pages/public/ArticlePage';
-import AvailableKittensPage from './pages/public/AvailableKittensPage';
-import ContactPage from './pages/public/ContactPage';
-import DonatePage from './pages/public/DonatePage';
-import EducationHubPage from './pages/public/EducationHubPage';
-import EventsPage from './pages/public/EventsPage';
-import EventDetailPage from './pages/public/EventDetailPage';
-import FosterPage from './pages/public/FosterPage';
-import FosterFormPage from './pages/public/FosterFormPage';
-import HomePage from './pages/public/HomePage';
-import CheckPage from './pages/public/CheckPage';
-import PublicKittenProfile from './pages/public/PublicKittenProfile';
+
+const FosterDetailPage = lazy(() => import('./pages/FosterDetailPage'));
+const FosterListPage = lazy(() => import('./pages/FosterListPage'));
+const KittenDetailPage = lazy(() => import('./pages/KittenDetailPage'));
+const KittenListPage = lazy(() => import('./pages/KittenListPage'));
+const LitterDetailPage = lazy(() => import('./pages/LitterDetailPage'));
+const LitterListPage = lazy(() => import('./pages/LitterListPage'));
+const ApplicationsPage = lazy(() => import('./pages/admin/ApplicationsPage'));
+const CalendarPage = lazy(() => import('./pages/admin/CalendarPage'));
+const ContentManagerPage = lazy(() => import('./pages/admin/ContentManagerPage'));
+const ContractsPage = lazy(() => import('./pages/admin/ContractsPage'));
+const DashboardPage = lazy(() => import('./pages/admin/DashboardPage'));
+const FinancePage = lazy(() => import('./pages/admin/FinancePage'));
+const OnboardingPage = lazy(() => import('./pages/admin/OnboardingPage'));
+const ProtocolLibrary = lazy(() => import('./pages/admin/ProtocolLibrary'));
+const MarketingPage = lazy(() => import('./pages/admin/MarketingPage'));
+const SettingsPage = lazy(() => import('./pages/admin/SettingsPage'));
+const EmailTemplatesPage = lazy(() => import('./pages/admin/EmailTemplatesPage'));
+const AboutPage = lazy(() => import('./pages/public/AboutPage'));
+const PrivacyPolicyPage = lazy(() => import('./pages/public/PrivacyPolicyPage'));
+const AdoptionFormPage = lazy(() => import('./pages/public/AdoptionFormPage'));
+const ArticlePage = lazy(() => import('./pages/public/ArticlePage'));
+const AvailableKittensPage = lazy(() => import('./pages/public/AvailableKittensPage'));
+const ContactPage = lazy(() => import('./pages/public/ContactPage'));
+const DonatePage = lazy(() => import('./pages/public/DonatePage'));
+const EducationHubPage = lazy(() => import('./pages/public/EducationHubPage'));
+const EventsPage = lazy(() => import('./pages/public/EventsPage'));
+const EventDetailPage = lazy(() => import('./pages/public/EventDetailPage'));
+const FosterPage = lazy(() => import('./pages/public/FosterPage'));
+const FosterFormPage = lazy(() => import('./pages/public/FosterFormPage'));
+const HomePage = lazy(() => import('./pages/public/HomePage'));
+const CheckPage = lazy(() => import('./pages/public/CheckPage'));
+const PublicKittenProfile = lazy(() => import('./pages/public/PublicKittenProfile'));
+
+function PageLoader() {
+  return (
+    <div className="flex min-h-[40vh] items-center justify-center text-slate-500">
+      Loading...
+    </div>
+  );
+}
 
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
 
-          <Route element={<PublicLayout />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/check" element={<CheckPage />} />
-            <Route path="/kittens" element={<AvailableKittensPage />} />
-            <Route path="/kittens/:id" element={<PublicKittenProfile />} />
-            <Route path="/adopt" element={<AdoptionFormPage />} />
-            <Route path="/foster" element={<FosterFormPage />} />
-            <Route path="/get-involved" element={<FosterPage />} />
-            <Route path="/education" element={<EducationHubPage />} />
-            <Route path="/education/:slug" element={<ArticlePage />} />
-            <Route path="/events" element={<EventsPage />} />
-            <Route path="/events/:slug" element={<EventDetailPage />} />
-            <Route path="/donate" element={<DonatePage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/privacy" element={<PrivacyPolicyPage />} />
-          </Route>
-
-          <Route element={<ProtectedRoute />}>
-            <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<DashboardPage />} />
-              <Route path="kittens" element={<KittenListPage />} />
-              <Route path="kittens/:id" element={<KittenDetailPage />} />
-              <Route path="fosters" element={<FosterListPage />} />
-              <Route path="fosters/:id" element={<FosterDetailPage />} />
-              <Route path="litters" element={<LitterListPage />} />
-              <Route path="litters/:id" element={<LitterDetailPage />} />
-              <Route path="applications" element={<ApplicationsPage />} />
-              <Route path="onboarding" element={<OnboardingPage />} />
-              <Route path="contracts" element={<ContractsPage />} />
-              <Route path="calendar" element={<CalendarPage />} />
-              <Route element={<ProtectedRoute permission="events.view" />}>
-                <Route path="marketing" element={<MarketingPage />} />
-              </Route>
-              <Route element={<ProtectedRoute permission="content.view" />}>
-                <Route path="content" element={<ContentManagerPage />} />
-              </Route>
-              <Route element={<ProtectedRoute permission="medical.view" />}>
-                <Route path="protocols" element={<ProtocolLibrary />} />
-              </Route>
-              <Route element={<ProtectedRoute permission="donations.view" />}>
-                <Route path="finance" element={<FinancePage />} />
-                <Route path="donations" element={<FinancePage />} />
-              </Route>
-              <Route path="settings" element={<SettingsPage />} />
-              <Route path="emails" element={<EmailTemplatesPage />} />
-              <Route path="*" element={<Navigate to="/admin" replace />} />
+            <Route element={<PublicLayout />}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/check" element={<CheckPage />} />
+              <Route path="/kittens" element={<AvailableKittensPage />} />
+              <Route path="/kittens/:id" element={<PublicKittenProfile />} />
+              <Route path="/adopt" element={<AdoptionFormPage />} />
+              <Route path="/foster" element={<FosterFormPage />} />
+              <Route path="/get-involved" element={<FosterPage />} />
+              <Route path="/education" element={<EducationHubPage />} />
+              <Route path="/education/:slug" element={<ArticlePage />} />
+              <Route path="/events" element={<EventsPage />} />
+              <Route path="/events/:slug" element={<EventDetailPage />} />
+              <Route path="/donate" element={<DonatePage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/privacy" element={<PrivacyPolicyPage />} />
             </Route>
-          </Route>
-        </Routes>
+
+            <Route element={<ProtectedRoute />}>
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<DashboardPage />} />
+                <Route path="kittens" element={<KittenListPage />} />
+                <Route path="kittens/:id" element={<KittenDetailPage />} />
+                <Route path="fosters" element={<FosterListPage />} />
+                <Route path="fosters/:id" element={<FosterDetailPage />} />
+                <Route path="litters" element={<LitterListPage />} />
+                <Route path="litters/:id" element={<LitterDetailPage />} />
+                <Route path="applications" element={<ApplicationsPage />} />
+                <Route path="onboarding" element={<OnboardingPage />} />
+                <Route path="contracts" element={<ContractsPage />} />
+                <Route path="calendar" element={<CalendarPage />} />
+                <Route element={<ProtectedRoute permission="events.view" />}>
+                  <Route path="marketing" element={<MarketingPage />} />
+                </Route>
+                <Route element={<ProtectedRoute permission="content.view" />}>
+                  <Route path="content" element={<ContentManagerPage />} />
+                </Route>
+                <Route element={<ProtectedRoute permission="medical.view" />}>
+                  <Route path="protocols" element={<ProtocolLibrary />} />
+                </Route>
+                <Route element={<ProtectedRoute permission="donations.view" />}>
+                  <Route path="finance" element={<FinancePage />} />
+                  <Route path="donations" element={<FinancePage />} />
+                </Route>
+                <Route path="settings" element={<SettingsPage />} />
+                <Route path="emails" element={<EmailTemplatesPage />} />
+                <Route path="*" element={<Navigate to="/admin" replace />} />
+              </Route>
+            </Route>
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </AuthProvider>
   );

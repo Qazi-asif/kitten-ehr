@@ -71,17 +71,16 @@ function HomePage() {
   const [storiesLoading, setStoriesLoading] = useState(true);
 
   useEffect(() => {
-    fetchPublicKittens().then((data) => setFeatured(data.slice(0, 4))).catch(() => { });
+    Promise.all([
+      fetchPublicKittens(4).then((data) => setFeatured(Array.isArray(data) ? data : [])).catch(() => {}),
+      fetchPublicContent(CONTENT_CATEGORY_SUCCESS_STORY)
+        .then((data) => setSuccessStories(Array.isArray(data) ? data : []))
+        .catch(() => setSuccessStories([]))
+        .finally(() => setStoriesLoading(false)),
+    ]);
   }, []);
 
-  useEffect(() => {
-    fetchPublicContent(CONTENT_CATEGORY_SUCCESS_STORY)
-      .then((data) => setSuccessStories(Array.isArray(data) ? data : []))
-      .catch(() => setSuccessStories([]))
-      .finally(() => setStoriesLoading(false));
-  }, []);
-
-  const displayCats = featured.length >= 4
+  const displayCats = featured.length > 0
     ? featured.slice(0, 4).map((c) => ({ image: getKittenImageUrl(c, { allowFallback: true }) }))
     : [
       { image: '/images/21.png' },

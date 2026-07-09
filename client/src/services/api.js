@@ -191,6 +191,12 @@ export async function fetchApplications(status) {
   return response.json();
 }
 
+export async function fetchApplicationById(id) {
+  const response = await adminFetch(`/applications/${id}`);
+  if (!response.ok) throw new Error('Failed to load application');
+  return response.json();
+}
+
 export async function createApplication(data) {
   const response = await adminFetch('/applications', {
     method: 'POST',

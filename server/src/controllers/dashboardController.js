@@ -1,6 +1,18 @@
 import prisma from '../lib/prisma.js';
+import { buildDashboardInsights } from '../services/dashboardInsights.js';
+import { stripInlineDataUrl } from '../utils/kittenSerialization.js';
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
+const ALERT_LIMIT = 25;
+
+const dashboardKittenSelect = {
+  id: true,
+  name: true,
+  status: true,
+  breed: true,
+  intakeDate: true,
+  primaryPhotoUrl: true,
+};
 
 const vaccineSelect = {
   id: true,
@@ -27,6 +39,13 @@ const vetAppointmentSelect = {
   kittenId: true,
   kitten: { select: { id: true, name: true } },
 };
+
+function serializeDashboardKitten(kitten) {
+  return {
+    ...kitten,
+    primaryPhotoUrl: stripInlineDataUrl(kitten.primaryPhotoUrl),
+  };
+}
 
 function mapVaccineAlert(record, urgency) {
   return {
@@ -94,6 +113,7 @@ export async function getDashboardAlerts() {
       distinct: ['kittenId', 'nextDueDate'],
       select: vaccineSelect,
       orderBy: { nextDueDate: 'asc' },
+      take: ALERT_LIMIT,
     }),
     prisma.vaccine.findMany({
       where: {
@@ -102,6 +122,7 @@ export async function getDashboardAlerts() {
       distinct: ['kittenId', 'nextDueDate'],
       select: vaccineSelect,
       orderBy: { nextDueDate: 'asc' },
+      take: ALERT_LIMIT,
     }),
     prisma.medication.findMany({
       where: {
@@ -110,6 +131,7 @@ export async function getDashboardAlerts() {
       },
       select: medicationSelect,
       orderBy: { endDate: 'asc' },
+      take: ALERT_LIMIT,
     }),
     prisma.vetAppointment.findMany({
       where: {
@@ -117,6 +139,7 @@ export async function getDashboardAlerts() {
       },
       select: vetAppointmentSelect,
       orderBy: { date: 'asc' },
+      take: ALERT_LIMIT,
     }),
     prisma.protocolDose.findMany({
       where: {
@@ -137,6 +160,7 @@ export async function getDashboardAlerts() {
         },
       },
       orderBy: { scheduledDate: 'asc' },
+      take: ALERT_LIMIT,
     }),
   ]);
 
@@ -159,6 +183,11 @@ export async function getDashboardMetrics(_req, res, next) {
       euthanasiaPulls,
       activeProtocols,
       alerts,
+      insights,
+      statusGroups,
+      recentIntakes,
+      recentAdoptions,
+      pendingApplications,
     ] = await Promise.all([
       prisma.kitten.count(),
       prisma.kitten.count({ where: { status: 'Available for Adoption' } }),
@@ -167,7 +196,40 @@ export async function getDashboardMetrics(_req, res, next) {
       prisma.kitten.count({ where: { intakeSource: { contains: 'Euthanasia' } } }),
       prisma.activeProtocol.count(),
       getDashboardAlerts(),
+      buildDashboardInsights(prisma),
+      prisma.kitten.groupBy({
+        by: ['status'],
+        _count: { _all: true },
+      }),
+      prisma.kitten.findMany({
+        orderBy: [{ intakeDate: 'desc' }, { id: 'desc' }],
+        take: 4,
+        select: dashboardKittenSelect,
+      }),
+      prisma.kitten.findMany({
+        where: { status: 'Adopted' },
+        orderBy: [{ intakeDate: 'desc' }, { id: 'desc' }],
+        take: 4,
+        select: dashboardKittenSelect,
+      }),
+      prisma.application.findMany({
+        where: { status: { in: ['New', 'Under Review'] } },
+        orderBy: { createdAt: 'desc' },
+        take: 5,
+        select: {
+          id: true,
+          type: true,
+          status: true,
+          kittenOfInterest: true,
+          formData: true,
+          createdAt: true,
+        },
+      }),
     ]);
+
+    const statusCounts = Object.fromEntries(
+      statusGroups.map((group) => [group.status, group._count._all]),
+    );
 
     res.json({
       totalKittens,
@@ -176,6 +238,11 @@ export async function getDashboardMetrics(_req, res, next) {
       totalAdopted,
       euthanasiaPulls,
       activeProtocols,
+      medicalConcerns: insights.medicalConcerns,
+      statusCounts,
+      recentIntakes: recentIntakes.map(serializeDashboardKitten),
+      recentAdoptions: recentAdoptions.map(serializeDashboardKitten),
+      pendingApplications,
       ...alerts,
     });
   } catch (error) {
