@@ -178,6 +178,16 @@ export type EmailLog = $Result.DefaultSelection<Prisma.$EmailLogPayload>
  * 
  */
 export type Transaction = $Result.DefaultSelection<Prisma.$TransactionPayload>
+/**
+ * Model Wishlist
+ * 
+ */
+export type Wishlist = $Result.DefaultSelection<Prisma.$WishlistPayload>
+/**
+ * Model SocialPost
+ * 
+ */
+export type SocialPost = $Result.DefaultSelection<Prisma.$SocialPostPayload>
 
 /**
  * Enums
@@ -190,6 +200,33 @@ export namespace $Enums {
 };
 
 export type ActiveProtocolStatus = (typeof ActiveProtocolStatus)[keyof typeof ActiveProtocolStatus]
+
+
+export const WishlistOwnerType: {
+  ORG: 'ORG',
+  FOSTER: 'FOSTER',
+  KITTEN: 'KITTEN'
+};
+
+export type WishlistOwnerType = (typeof WishlistOwnerType)[keyof typeof WishlistOwnerType]
+
+
+export const WishlistRetailer: {
+  AMAZON: 'AMAZON',
+  CHEWY: 'CHEWY',
+  WALMART: 'WALMART'
+};
+
+export type WishlistRetailer = (typeof WishlistRetailer)[keyof typeof WishlistRetailer]
+
+
+export const SocialPostStatus: {
+  DRAFT: 'DRAFT',
+  SCHEDULED: 'SCHEDULED',
+  POSTED: 'POSTED'
+};
+
+export type SocialPostStatus = (typeof SocialPostStatus)[keyof typeof SocialPostStatus]
 
 
 export const DoseStatus: {
@@ -234,6 +271,18 @@ export type FosterOnboardingStatus = (typeof FosterOnboardingStatus)[keyof typeo
 export type ActiveProtocolStatus = $Enums.ActiveProtocolStatus
 
 export const ActiveProtocolStatus: typeof $Enums.ActiveProtocolStatus
+
+export type WishlistOwnerType = $Enums.WishlistOwnerType
+
+export const WishlistOwnerType: typeof $Enums.WishlistOwnerType
+
+export type WishlistRetailer = $Enums.WishlistRetailer
+
+export const WishlistRetailer: typeof $Enums.WishlistRetailer
+
+export type SocialPostStatus = $Enums.SocialPostStatus
+
+export const SocialPostStatus: typeof $Enums.SocialPostStatus
 
 export type DoseStatus = $Enums.DoseStatus
 
@@ -698,6 +747,26 @@ export class PrismaClient<
     * ```
     */
   get transaction(): Prisma.TransactionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.wishlist`: Exposes CRUD operations for the **Wishlist** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Wishlists
+    * const wishlists = await prisma.wishlist.findMany()
+    * ```
+    */
+  get wishlist(): Prisma.WishlistDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.socialPost`: Exposes CRUD operations for the **SocialPost** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SocialPosts
+    * const socialPosts = await prisma.socialPost.findMany()
+    * ```
+    */
+  get socialPost(): Prisma.SocialPostDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1171,7 +1240,9 @@ export namespace Prisma {
     Settings: 'Settings',
     EmailTemplate: 'EmailTemplate',
     EmailLog: 'EmailLog',
-    Transaction: 'Transaction'
+    Transaction: 'Transaction',
+    Wishlist: 'Wishlist',
+    SocialPost: 'SocialPost'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1190,7 +1261,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "litter" | "foster" | "kitten" | "update" | "sponsorship" | "placement" | "weightLog" | "vaccine" | "medication" | "vetAppointment" | "document" | "application" | "contract" | "fosterOnboarding" | "onboardingChecklist" | "applicationUpload" | "content" | "contentCompletion" | "event" | "eventRSVP" | "eventCats" | "role" | "permission" | "rolePermission" | "user" | "protocol" | "protocolDrug" | "activeProtocol" | "protocolDose" | "settings" | "emailTemplate" | "emailLog" | "transaction"
+      modelProps: "litter" | "foster" | "kitten" | "update" | "sponsorship" | "placement" | "weightLog" | "vaccine" | "medication" | "vetAppointment" | "document" | "application" | "contract" | "fosterOnboarding" | "onboardingChecklist" | "applicationUpload" | "content" | "contentCompletion" | "event" | "eventRSVP" | "eventCats" | "role" | "permission" | "rolePermission" | "user" | "protocol" | "protocolDrug" | "activeProtocol" | "protocolDose" | "settings" | "emailTemplate" | "emailLog" | "transaction" | "wishlist" | "socialPost"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3636,6 +3707,154 @@ export namespace Prisma {
           }
         }
       }
+      Wishlist: {
+        payload: Prisma.$WishlistPayload<ExtArgs>
+        fields: Prisma.WishlistFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.WishlistFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WishlistPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.WishlistFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WishlistPayload>
+          }
+          findFirst: {
+            args: Prisma.WishlistFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WishlistPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.WishlistFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WishlistPayload>
+          }
+          findMany: {
+            args: Prisma.WishlistFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WishlistPayload>[]
+          }
+          create: {
+            args: Prisma.WishlistCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WishlistPayload>
+          }
+          createMany: {
+            args: Prisma.WishlistCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.WishlistCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WishlistPayload>[]
+          }
+          delete: {
+            args: Prisma.WishlistDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WishlistPayload>
+          }
+          update: {
+            args: Prisma.WishlistUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WishlistPayload>
+          }
+          deleteMany: {
+            args: Prisma.WishlistDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.WishlistUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.WishlistUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WishlistPayload>[]
+          }
+          upsert: {
+            args: Prisma.WishlistUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WishlistPayload>
+          }
+          aggregate: {
+            args: Prisma.WishlistAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateWishlist>
+          }
+          groupBy: {
+            args: Prisma.WishlistGroupByArgs<ExtArgs>
+            result: $Utils.Optional<WishlistGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.WishlistCountArgs<ExtArgs>
+            result: $Utils.Optional<WishlistCountAggregateOutputType> | number
+          }
+        }
+      }
+      SocialPost: {
+        payload: Prisma.$SocialPostPayload<ExtArgs>
+        fields: Prisma.SocialPostFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SocialPostFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SocialPostPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SocialPostFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SocialPostPayload>
+          }
+          findFirst: {
+            args: Prisma.SocialPostFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SocialPostPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SocialPostFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SocialPostPayload>
+          }
+          findMany: {
+            args: Prisma.SocialPostFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SocialPostPayload>[]
+          }
+          create: {
+            args: Prisma.SocialPostCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SocialPostPayload>
+          }
+          createMany: {
+            args: Prisma.SocialPostCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SocialPostCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SocialPostPayload>[]
+          }
+          delete: {
+            args: Prisma.SocialPostDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SocialPostPayload>
+          }
+          update: {
+            args: Prisma.SocialPostUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SocialPostPayload>
+          }
+          deleteMany: {
+            args: Prisma.SocialPostDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SocialPostUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SocialPostUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SocialPostPayload>[]
+          }
+          upsert: {
+            args: Prisma.SocialPostUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SocialPostPayload>
+          }
+          aggregate: {
+            args: Prisma.SocialPostAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSocialPost>
+          }
+          groupBy: {
+            args: Prisma.SocialPostGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SocialPostGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SocialPostCountArgs<ExtArgs>
+            result: $Utils.Optional<SocialPostCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -3765,6 +3984,8 @@ export namespace Prisma {
     emailTemplate?: EmailTemplateOmit
     emailLog?: EmailLogOmit
     transaction?: TransactionOmit
+    wishlist?: WishlistOmit
+    socialPost?: SocialPostOmit
   }
 
   /* Types for Logging */
@@ -43339,6 +43560,2129 @@ export namespace Prisma {
 
 
   /**
+   * Model Wishlist
+   */
+
+  export type AggregateWishlist = {
+    _count: WishlistCountAggregateOutputType | null
+    _avg: WishlistAvgAggregateOutputType | null
+    _sum: WishlistSumAggregateOutputType | null
+    _min: WishlistMinAggregateOutputType | null
+    _max: WishlistMaxAggregateOutputType | null
+  }
+
+  export type WishlistAvgAggregateOutputType = {
+    id: number | null
+    ownerId: number | null
+  }
+
+  export type WishlistSumAggregateOutputType = {
+    id: number | null
+    ownerId: number | null
+  }
+
+  export type WishlistMinAggregateOutputType = {
+    id: number | null
+    ownerType: $Enums.WishlistOwnerType | null
+    ownerId: number | null
+    retailer: $Enums.WishlistRetailer | null
+    url: string | null
+    label: string | null
+    updatedAt: Date | null
+  }
+
+  export type WishlistMaxAggregateOutputType = {
+    id: number | null
+    ownerType: $Enums.WishlistOwnerType | null
+    ownerId: number | null
+    retailer: $Enums.WishlistRetailer | null
+    url: string | null
+    label: string | null
+    updatedAt: Date | null
+  }
+
+  export type WishlistCountAggregateOutputType = {
+    id: number
+    ownerType: number
+    ownerId: number
+    retailer: number
+    url: number
+    label: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type WishlistAvgAggregateInputType = {
+    id?: true
+    ownerId?: true
+  }
+
+  export type WishlistSumAggregateInputType = {
+    id?: true
+    ownerId?: true
+  }
+
+  export type WishlistMinAggregateInputType = {
+    id?: true
+    ownerType?: true
+    ownerId?: true
+    retailer?: true
+    url?: true
+    label?: true
+    updatedAt?: true
+  }
+
+  export type WishlistMaxAggregateInputType = {
+    id?: true
+    ownerType?: true
+    ownerId?: true
+    retailer?: true
+    url?: true
+    label?: true
+    updatedAt?: true
+  }
+
+  export type WishlistCountAggregateInputType = {
+    id?: true
+    ownerType?: true
+    ownerId?: true
+    retailer?: true
+    url?: true
+    label?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type WishlistAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Wishlist to aggregate.
+     */
+    where?: WishlistWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Wishlists to fetch.
+     */
+    orderBy?: WishlistOrderByWithRelationInput | WishlistOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: WishlistWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Wishlists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Wishlists.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Wishlists
+    **/
+    _count?: true | WishlistCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: WishlistAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: WishlistSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: WishlistMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: WishlistMaxAggregateInputType
+  }
+
+  export type GetWishlistAggregateType<T extends WishlistAggregateArgs> = {
+        [P in keyof T & keyof AggregateWishlist]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateWishlist[P]>
+      : GetScalarType<T[P], AggregateWishlist[P]>
+  }
+
+
+
+
+  export type WishlistGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WishlistWhereInput
+    orderBy?: WishlistOrderByWithAggregationInput | WishlistOrderByWithAggregationInput[]
+    by: WishlistScalarFieldEnum[] | WishlistScalarFieldEnum
+    having?: WishlistScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: WishlistCountAggregateInputType | true
+    _avg?: WishlistAvgAggregateInputType
+    _sum?: WishlistSumAggregateInputType
+    _min?: WishlistMinAggregateInputType
+    _max?: WishlistMaxAggregateInputType
+  }
+
+  export type WishlistGroupByOutputType = {
+    id: number
+    ownerType: $Enums.WishlistOwnerType
+    ownerId: number
+    retailer: $Enums.WishlistRetailer
+    url: string
+    label: string
+    updatedAt: Date
+    _count: WishlistCountAggregateOutputType | null
+    _avg: WishlistAvgAggregateOutputType | null
+    _sum: WishlistSumAggregateOutputType | null
+    _min: WishlistMinAggregateOutputType | null
+    _max: WishlistMaxAggregateOutputType | null
+  }
+
+  type GetWishlistGroupByPayload<T extends WishlistGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<WishlistGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof WishlistGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], WishlistGroupByOutputType[P]>
+            : GetScalarType<T[P], WishlistGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type WishlistSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    ownerType?: boolean
+    ownerId?: boolean
+    retailer?: boolean
+    url?: boolean
+    label?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["wishlist"]>
+
+  export type WishlistSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    ownerType?: boolean
+    ownerId?: boolean
+    retailer?: boolean
+    url?: boolean
+    label?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["wishlist"]>
+
+  export type WishlistSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    ownerType?: boolean
+    ownerId?: boolean
+    retailer?: boolean
+    url?: boolean
+    label?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["wishlist"]>
+
+  export type WishlistSelectScalar = {
+    id?: boolean
+    ownerType?: boolean
+    ownerId?: boolean
+    retailer?: boolean
+    url?: boolean
+    label?: boolean
+    updatedAt?: boolean
+  }
+
+  export type WishlistOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "ownerType" | "ownerId" | "retailer" | "url" | "label" | "updatedAt", ExtArgs["result"]["wishlist"]>
+
+  export type $WishlistPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Wishlist"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      ownerType: $Enums.WishlistOwnerType
+      ownerId: number
+      retailer: $Enums.WishlistRetailer
+      url: string
+      label: string
+      updatedAt: Date
+    }, ExtArgs["result"]["wishlist"]>
+    composites: {}
+  }
+
+  type WishlistGetPayload<S extends boolean | null | undefined | WishlistDefaultArgs> = $Result.GetResult<Prisma.$WishlistPayload, S>
+
+  type WishlistCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<WishlistFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: WishlistCountAggregateInputType | true
+    }
+
+  export interface WishlistDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Wishlist'], meta: { name: 'Wishlist' } }
+    /**
+     * Find zero or one Wishlist that matches the filter.
+     * @param {WishlistFindUniqueArgs} args - Arguments to find a Wishlist
+     * @example
+     * // Get one Wishlist
+     * const wishlist = await prisma.wishlist.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends WishlistFindUniqueArgs>(args: SelectSubset<T, WishlistFindUniqueArgs<ExtArgs>>): Prisma__WishlistClient<$Result.GetResult<Prisma.$WishlistPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Wishlist that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {WishlistFindUniqueOrThrowArgs} args - Arguments to find a Wishlist
+     * @example
+     * // Get one Wishlist
+     * const wishlist = await prisma.wishlist.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends WishlistFindUniqueOrThrowArgs>(args: SelectSubset<T, WishlistFindUniqueOrThrowArgs<ExtArgs>>): Prisma__WishlistClient<$Result.GetResult<Prisma.$WishlistPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Wishlist that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WishlistFindFirstArgs} args - Arguments to find a Wishlist
+     * @example
+     * // Get one Wishlist
+     * const wishlist = await prisma.wishlist.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends WishlistFindFirstArgs>(args?: SelectSubset<T, WishlistFindFirstArgs<ExtArgs>>): Prisma__WishlistClient<$Result.GetResult<Prisma.$WishlistPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Wishlist that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WishlistFindFirstOrThrowArgs} args - Arguments to find a Wishlist
+     * @example
+     * // Get one Wishlist
+     * const wishlist = await prisma.wishlist.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends WishlistFindFirstOrThrowArgs>(args?: SelectSubset<T, WishlistFindFirstOrThrowArgs<ExtArgs>>): Prisma__WishlistClient<$Result.GetResult<Prisma.$WishlistPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Wishlists that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WishlistFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Wishlists
+     * const wishlists = await prisma.wishlist.findMany()
+     * 
+     * // Get first 10 Wishlists
+     * const wishlists = await prisma.wishlist.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const wishlistWithIdOnly = await prisma.wishlist.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends WishlistFindManyArgs>(args?: SelectSubset<T, WishlistFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WishlistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Wishlist.
+     * @param {WishlistCreateArgs} args - Arguments to create a Wishlist.
+     * @example
+     * // Create one Wishlist
+     * const Wishlist = await prisma.wishlist.create({
+     *   data: {
+     *     // ... data to create a Wishlist
+     *   }
+     * })
+     * 
+     */
+    create<T extends WishlistCreateArgs>(args: SelectSubset<T, WishlistCreateArgs<ExtArgs>>): Prisma__WishlistClient<$Result.GetResult<Prisma.$WishlistPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Wishlists.
+     * @param {WishlistCreateManyArgs} args - Arguments to create many Wishlists.
+     * @example
+     * // Create many Wishlists
+     * const wishlist = await prisma.wishlist.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends WishlistCreateManyArgs>(args?: SelectSubset<T, WishlistCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Wishlists and returns the data saved in the database.
+     * @param {WishlistCreateManyAndReturnArgs} args - Arguments to create many Wishlists.
+     * @example
+     * // Create many Wishlists
+     * const wishlist = await prisma.wishlist.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Wishlists and only return the `id`
+     * const wishlistWithIdOnly = await prisma.wishlist.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends WishlistCreateManyAndReturnArgs>(args?: SelectSubset<T, WishlistCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WishlistPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Wishlist.
+     * @param {WishlistDeleteArgs} args - Arguments to delete one Wishlist.
+     * @example
+     * // Delete one Wishlist
+     * const Wishlist = await prisma.wishlist.delete({
+     *   where: {
+     *     // ... filter to delete one Wishlist
+     *   }
+     * })
+     * 
+     */
+    delete<T extends WishlistDeleteArgs>(args: SelectSubset<T, WishlistDeleteArgs<ExtArgs>>): Prisma__WishlistClient<$Result.GetResult<Prisma.$WishlistPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Wishlist.
+     * @param {WishlistUpdateArgs} args - Arguments to update one Wishlist.
+     * @example
+     * // Update one Wishlist
+     * const wishlist = await prisma.wishlist.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends WishlistUpdateArgs>(args: SelectSubset<T, WishlistUpdateArgs<ExtArgs>>): Prisma__WishlistClient<$Result.GetResult<Prisma.$WishlistPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Wishlists.
+     * @param {WishlistDeleteManyArgs} args - Arguments to filter Wishlists to delete.
+     * @example
+     * // Delete a few Wishlists
+     * const { count } = await prisma.wishlist.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends WishlistDeleteManyArgs>(args?: SelectSubset<T, WishlistDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Wishlists.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WishlistUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Wishlists
+     * const wishlist = await prisma.wishlist.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends WishlistUpdateManyArgs>(args: SelectSubset<T, WishlistUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Wishlists and returns the data updated in the database.
+     * @param {WishlistUpdateManyAndReturnArgs} args - Arguments to update many Wishlists.
+     * @example
+     * // Update many Wishlists
+     * const wishlist = await prisma.wishlist.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Wishlists and only return the `id`
+     * const wishlistWithIdOnly = await prisma.wishlist.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends WishlistUpdateManyAndReturnArgs>(args: SelectSubset<T, WishlistUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WishlistPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Wishlist.
+     * @param {WishlistUpsertArgs} args - Arguments to update or create a Wishlist.
+     * @example
+     * // Update or create a Wishlist
+     * const wishlist = await prisma.wishlist.upsert({
+     *   create: {
+     *     // ... data to create a Wishlist
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Wishlist we want to update
+     *   }
+     * })
+     */
+    upsert<T extends WishlistUpsertArgs>(args: SelectSubset<T, WishlistUpsertArgs<ExtArgs>>): Prisma__WishlistClient<$Result.GetResult<Prisma.$WishlistPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Wishlists.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WishlistCountArgs} args - Arguments to filter Wishlists to count.
+     * @example
+     * // Count the number of Wishlists
+     * const count = await prisma.wishlist.count({
+     *   where: {
+     *     // ... the filter for the Wishlists we want to count
+     *   }
+     * })
+    **/
+    count<T extends WishlistCountArgs>(
+      args?: Subset<T, WishlistCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], WishlistCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Wishlist.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WishlistAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends WishlistAggregateArgs>(args: Subset<T, WishlistAggregateArgs>): Prisma.PrismaPromise<GetWishlistAggregateType<T>>
+
+    /**
+     * Group by Wishlist.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WishlistGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends WishlistGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: WishlistGroupByArgs['orderBy'] }
+        : { orderBy?: WishlistGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, WishlistGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWishlistGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Wishlist model
+   */
+  readonly fields: WishlistFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Wishlist.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__WishlistClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Wishlist model
+   */
+  interface WishlistFieldRefs {
+    readonly id: FieldRef<"Wishlist", 'Int'>
+    readonly ownerType: FieldRef<"Wishlist", 'WishlistOwnerType'>
+    readonly ownerId: FieldRef<"Wishlist", 'Int'>
+    readonly retailer: FieldRef<"Wishlist", 'WishlistRetailer'>
+    readonly url: FieldRef<"Wishlist", 'String'>
+    readonly label: FieldRef<"Wishlist", 'String'>
+    readonly updatedAt: FieldRef<"Wishlist", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Wishlist findUnique
+   */
+  export type WishlistFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Wishlist
+     */
+    select?: WishlistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Wishlist
+     */
+    omit?: WishlistOmit<ExtArgs> | null
+    /**
+     * Filter, which Wishlist to fetch.
+     */
+    where: WishlistWhereUniqueInput
+  }
+
+  /**
+   * Wishlist findUniqueOrThrow
+   */
+  export type WishlistFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Wishlist
+     */
+    select?: WishlistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Wishlist
+     */
+    omit?: WishlistOmit<ExtArgs> | null
+    /**
+     * Filter, which Wishlist to fetch.
+     */
+    where: WishlistWhereUniqueInput
+  }
+
+  /**
+   * Wishlist findFirst
+   */
+  export type WishlistFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Wishlist
+     */
+    select?: WishlistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Wishlist
+     */
+    omit?: WishlistOmit<ExtArgs> | null
+    /**
+     * Filter, which Wishlist to fetch.
+     */
+    where?: WishlistWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Wishlists to fetch.
+     */
+    orderBy?: WishlistOrderByWithRelationInput | WishlistOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Wishlists.
+     */
+    cursor?: WishlistWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Wishlists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Wishlists.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Wishlists.
+     */
+    distinct?: WishlistScalarFieldEnum | WishlistScalarFieldEnum[]
+  }
+
+  /**
+   * Wishlist findFirstOrThrow
+   */
+  export type WishlistFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Wishlist
+     */
+    select?: WishlistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Wishlist
+     */
+    omit?: WishlistOmit<ExtArgs> | null
+    /**
+     * Filter, which Wishlist to fetch.
+     */
+    where?: WishlistWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Wishlists to fetch.
+     */
+    orderBy?: WishlistOrderByWithRelationInput | WishlistOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Wishlists.
+     */
+    cursor?: WishlistWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Wishlists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Wishlists.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Wishlists.
+     */
+    distinct?: WishlistScalarFieldEnum | WishlistScalarFieldEnum[]
+  }
+
+  /**
+   * Wishlist findMany
+   */
+  export type WishlistFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Wishlist
+     */
+    select?: WishlistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Wishlist
+     */
+    omit?: WishlistOmit<ExtArgs> | null
+    /**
+     * Filter, which Wishlists to fetch.
+     */
+    where?: WishlistWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Wishlists to fetch.
+     */
+    orderBy?: WishlistOrderByWithRelationInput | WishlistOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Wishlists.
+     */
+    cursor?: WishlistWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Wishlists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Wishlists.
+     */
+    skip?: number
+    distinct?: WishlistScalarFieldEnum | WishlistScalarFieldEnum[]
+  }
+
+  /**
+   * Wishlist create
+   */
+  export type WishlistCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Wishlist
+     */
+    select?: WishlistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Wishlist
+     */
+    omit?: WishlistOmit<ExtArgs> | null
+    /**
+     * The data needed to create a Wishlist.
+     */
+    data: XOR<WishlistCreateInput, WishlistUncheckedCreateInput>
+  }
+
+  /**
+   * Wishlist createMany
+   */
+  export type WishlistCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Wishlists.
+     */
+    data: WishlistCreateManyInput | WishlistCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Wishlist createManyAndReturn
+   */
+  export type WishlistCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Wishlist
+     */
+    select?: WishlistSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Wishlist
+     */
+    omit?: WishlistOmit<ExtArgs> | null
+    /**
+     * The data used to create many Wishlists.
+     */
+    data: WishlistCreateManyInput | WishlistCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Wishlist update
+   */
+  export type WishlistUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Wishlist
+     */
+    select?: WishlistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Wishlist
+     */
+    omit?: WishlistOmit<ExtArgs> | null
+    /**
+     * The data needed to update a Wishlist.
+     */
+    data: XOR<WishlistUpdateInput, WishlistUncheckedUpdateInput>
+    /**
+     * Choose, which Wishlist to update.
+     */
+    where: WishlistWhereUniqueInput
+  }
+
+  /**
+   * Wishlist updateMany
+   */
+  export type WishlistUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Wishlists.
+     */
+    data: XOR<WishlistUpdateManyMutationInput, WishlistUncheckedUpdateManyInput>
+    /**
+     * Filter which Wishlists to update
+     */
+    where?: WishlistWhereInput
+    /**
+     * Limit how many Wishlists to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Wishlist updateManyAndReturn
+   */
+  export type WishlistUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Wishlist
+     */
+    select?: WishlistSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Wishlist
+     */
+    omit?: WishlistOmit<ExtArgs> | null
+    /**
+     * The data used to update Wishlists.
+     */
+    data: XOR<WishlistUpdateManyMutationInput, WishlistUncheckedUpdateManyInput>
+    /**
+     * Filter which Wishlists to update
+     */
+    where?: WishlistWhereInput
+    /**
+     * Limit how many Wishlists to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Wishlist upsert
+   */
+  export type WishlistUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Wishlist
+     */
+    select?: WishlistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Wishlist
+     */
+    omit?: WishlistOmit<ExtArgs> | null
+    /**
+     * The filter to search for the Wishlist to update in case it exists.
+     */
+    where: WishlistWhereUniqueInput
+    /**
+     * In case the Wishlist found by the `where` argument doesn't exist, create a new Wishlist with this data.
+     */
+    create: XOR<WishlistCreateInput, WishlistUncheckedCreateInput>
+    /**
+     * In case the Wishlist was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<WishlistUpdateInput, WishlistUncheckedUpdateInput>
+  }
+
+  /**
+   * Wishlist delete
+   */
+  export type WishlistDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Wishlist
+     */
+    select?: WishlistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Wishlist
+     */
+    omit?: WishlistOmit<ExtArgs> | null
+    /**
+     * Filter which Wishlist to delete.
+     */
+    where: WishlistWhereUniqueInput
+  }
+
+  /**
+   * Wishlist deleteMany
+   */
+  export type WishlistDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Wishlists to delete
+     */
+    where?: WishlistWhereInput
+    /**
+     * Limit how many Wishlists to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Wishlist without action
+   */
+  export type WishlistDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Wishlist
+     */
+    select?: WishlistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Wishlist
+     */
+    omit?: WishlistOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SocialPost
+   */
+
+  export type AggregateSocialPost = {
+    _count: SocialPostCountAggregateOutputType | null
+    _avg: SocialPostAvgAggregateOutputType | null
+    _sum: SocialPostSumAggregateOutputType | null
+    _min: SocialPostMinAggregateOutputType | null
+    _max: SocialPostMaxAggregateOutputType | null
+  }
+
+  export type SocialPostAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type SocialPostSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type SocialPostMinAggregateOutputType = {
+    id: number | null
+    body: string | null
+    imageUrl: string | null
+    scheduledFor: Date | null
+    status: $Enums.SocialPostStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SocialPostMaxAggregateOutputType = {
+    id: number | null
+    body: string | null
+    imageUrl: string | null
+    scheduledFor: Date | null
+    status: $Enums.SocialPostStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SocialPostCountAggregateOutputType = {
+    id: number
+    body: number
+    imageUrl: number
+    platforms: number
+    scheduledFor: number
+    status: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type SocialPostAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type SocialPostSumAggregateInputType = {
+    id?: true
+  }
+
+  export type SocialPostMinAggregateInputType = {
+    id?: true
+    body?: true
+    imageUrl?: true
+    scheduledFor?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SocialPostMaxAggregateInputType = {
+    id?: true
+    body?: true
+    imageUrl?: true
+    scheduledFor?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SocialPostCountAggregateInputType = {
+    id?: true
+    body?: true
+    imageUrl?: true
+    platforms?: true
+    scheduledFor?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type SocialPostAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SocialPost to aggregate.
+     */
+    where?: SocialPostWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SocialPosts to fetch.
+     */
+    orderBy?: SocialPostOrderByWithRelationInput | SocialPostOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SocialPostWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SocialPosts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SocialPosts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SocialPosts
+    **/
+    _count?: true | SocialPostCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SocialPostAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SocialPostSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SocialPostMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SocialPostMaxAggregateInputType
+  }
+
+  export type GetSocialPostAggregateType<T extends SocialPostAggregateArgs> = {
+        [P in keyof T & keyof AggregateSocialPost]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSocialPost[P]>
+      : GetScalarType<T[P], AggregateSocialPost[P]>
+  }
+
+
+
+
+  export type SocialPostGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SocialPostWhereInput
+    orderBy?: SocialPostOrderByWithAggregationInput | SocialPostOrderByWithAggregationInput[]
+    by: SocialPostScalarFieldEnum[] | SocialPostScalarFieldEnum
+    having?: SocialPostScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SocialPostCountAggregateInputType | true
+    _avg?: SocialPostAvgAggregateInputType
+    _sum?: SocialPostSumAggregateInputType
+    _min?: SocialPostMinAggregateInputType
+    _max?: SocialPostMaxAggregateInputType
+  }
+
+  export type SocialPostGroupByOutputType = {
+    id: number
+    body: string
+    imageUrl: string
+    platforms: string[]
+    scheduledFor: Date | null
+    status: $Enums.SocialPostStatus
+    createdAt: Date
+    updatedAt: Date
+    _count: SocialPostCountAggregateOutputType | null
+    _avg: SocialPostAvgAggregateOutputType | null
+    _sum: SocialPostSumAggregateOutputType | null
+    _min: SocialPostMinAggregateOutputType | null
+    _max: SocialPostMaxAggregateOutputType | null
+  }
+
+  type GetSocialPostGroupByPayload<T extends SocialPostGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SocialPostGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SocialPostGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SocialPostGroupByOutputType[P]>
+            : GetScalarType<T[P], SocialPostGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SocialPostSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    body?: boolean
+    imageUrl?: boolean
+    platforms?: boolean
+    scheduledFor?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["socialPost"]>
+
+  export type SocialPostSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    body?: boolean
+    imageUrl?: boolean
+    platforms?: boolean
+    scheduledFor?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["socialPost"]>
+
+  export type SocialPostSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    body?: boolean
+    imageUrl?: boolean
+    platforms?: boolean
+    scheduledFor?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["socialPost"]>
+
+  export type SocialPostSelectScalar = {
+    id?: boolean
+    body?: boolean
+    imageUrl?: boolean
+    platforms?: boolean
+    scheduledFor?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type SocialPostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "body" | "imageUrl" | "platforms" | "scheduledFor" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["socialPost"]>
+
+  export type $SocialPostPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SocialPost"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      body: string
+      imageUrl: string
+      platforms: string[]
+      scheduledFor: Date | null
+      status: $Enums.SocialPostStatus
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["socialPost"]>
+    composites: {}
+  }
+
+  type SocialPostGetPayload<S extends boolean | null | undefined | SocialPostDefaultArgs> = $Result.GetResult<Prisma.$SocialPostPayload, S>
+
+  type SocialPostCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SocialPostFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SocialPostCountAggregateInputType | true
+    }
+
+  export interface SocialPostDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SocialPost'], meta: { name: 'SocialPost' } }
+    /**
+     * Find zero or one SocialPost that matches the filter.
+     * @param {SocialPostFindUniqueArgs} args - Arguments to find a SocialPost
+     * @example
+     * // Get one SocialPost
+     * const socialPost = await prisma.socialPost.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SocialPostFindUniqueArgs>(args: SelectSubset<T, SocialPostFindUniqueArgs<ExtArgs>>): Prisma__SocialPostClient<$Result.GetResult<Prisma.$SocialPostPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SocialPost that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SocialPostFindUniqueOrThrowArgs} args - Arguments to find a SocialPost
+     * @example
+     * // Get one SocialPost
+     * const socialPost = await prisma.socialPost.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SocialPostFindUniqueOrThrowArgs>(args: SelectSubset<T, SocialPostFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SocialPostClient<$Result.GetResult<Prisma.$SocialPostPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SocialPost that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SocialPostFindFirstArgs} args - Arguments to find a SocialPost
+     * @example
+     * // Get one SocialPost
+     * const socialPost = await prisma.socialPost.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SocialPostFindFirstArgs>(args?: SelectSubset<T, SocialPostFindFirstArgs<ExtArgs>>): Prisma__SocialPostClient<$Result.GetResult<Prisma.$SocialPostPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SocialPost that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SocialPostFindFirstOrThrowArgs} args - Arguments to find a SocialPost
+     * @example
+     * // Get one SocialPost
+     * const socialPost = await prisma.socialPost.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SocialPostFindFirstOrThrowArgs>(args?: SelectSubset<T, SocialPostFindFirstOrThrowArgs<ExtArgs>>): Prisma__SocialPostClient<$Result.GetResult<Prisma.$SocialPostPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SocialPosts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SocialPostFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SocialPosts
+     * const socialPosts = await prisma.socialPost.findMany()
+     * 
+     * // Get first 10 SocialPosts
+     * const socialPosts = await prisma.socialPost.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const socialPostWithIdOnly = await prisma.socialPost.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SocialPostFindManyArgs>(args?: SelectSubset<T, SocialPostFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SocialPostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SocialPost.
+     * @param {SocialPostCreateArgs} args - Arguments to create a SocialPost.
+     * @example
+     * // Create one SocialPost
+     * const SocialPost = await prisma.socialPost.create({
+     *   data: {
+     *     // ... data to create a SocialPost
+     *   }
+     * })
+     * 
+     */
+    create<T extends SocialPostCreateArgs>(args: SelectSubset<T, SocialPostCreateArgs<ExtArgs>>): Prisma__SocialPostClient<$Result.GetResult<Prisma.$SocialPostPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SocialPosts.
+     * @param {SocialPostCreateManyArgs} args - Arguments to create many SocialPosts.
+     * @example
+     * // Create many SocialPosts
+     * const socialPost = await prisma.socialPost.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SocialPostCreateManyArgs>(args?: SelectSubset<T, SocialPostCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SocialPosts and returns the data saved in the database.
+     * @param {SocialPostCreateManyAndReturnArgs} args - Arguments to create many SocialPosts.
+     * @example
+     * // Create many SocialPosts
+     * const socialPost = await prisma.socialPost.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SocialPosts and only return the `id`
+     * const socialPostWithIdOnly = await prisma.socialPost.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SocialPostCreateManyAndReturnArgs>(args?: SelectSubset<T, SocialPostCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SocialPostPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SocialPost.
+     * @param {SocialPostDeleteArgs} args - Arguments to delete one SocialPost.
+     * @example
+     * // Delete one SocialPost
+     * const SocialPost = await prisma.socialPost.delete({
+     *   where: {
+     *     // ... filter to delete one SocialPost
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SocialPostDeleteArgs>(args: SelectSubset<T, SocialPostDeleteArgs<ExtArgs>>): Prisma__SocialPostClient<$Result.GetResult<Prisma.$SocialPostPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SocialPost.
+     * @param {SocialPostUpdateArgs} args - Arguments to update one SocialPost.
+     * @example
+     * // Update one SocialPost
+     * const socialPost = await prisma.socialPost.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SocialPostUpdateArgs>(args: SelectSubset<T, SocialPostUpdateArgs<ExtArgs>>): Prisma__SocialPostClient<$Result.GetResult<Prisma.$SocialPostPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SocialPosts.
+     * @param {SocialPostDeleteManyArgs} args - Arguments to filter SocialPosts to delete.
+     * @example
+     * // Delete a few SocialPosts
+     * const { count } = await prisma.socialPost.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SocialPostDeleteManyArgs>(args?: SelectSubset<T, SocialPostDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SocialPosts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SocialPostUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SocialPosts
+     * const socialPost = await prisma.socialPost.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SocialPostUpdateManyArgs>(args: SelectSubset<T, SocialPostUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SocialPosts and returns the data updated in the database.
+     * @param {SocialPostUpdateManyAndReturnArgs} args - Arguments to update many SocialPosts.
+     * @example
+     * // Update many SocialPosts
+     * const socialPost = await prisma.socialPost.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SocialPosts and only return the `id`
+     * const socialPostWithIdOnly = await prisma.socialPost.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SocialPostUpdateManyAndReturnArgs>(args: SelectSubset<T, SocialPostUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SocialPostPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SocialPost.
+     * @param {SocialPostUpsertArgs} args - Arguments to update or create a SocialPost.
+     * @example
+     * // Update or create a SocialPost
+     * const socialPost = await prisma.socialPost.upsert({
+     *   create: {
+     *     // ... data to create a SocialPost
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SocialPost we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SocialPostUpsertArgs>(args: SelectSubset<T, SocialPostUpsertArgs<ExtArgs>>): Prisma__SocialPostClient<$Result.GetResult<Prisma.$SocialPostPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SocialPosts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SocialPostCountArgs} args - Arguments to filter SocialPosts to count.
+     * @example
+     * // Count the number of SocialPosts
+     * const count = await prisma.socialPost.count({
+     *   where: {
+     *     // ... the filter for the SocialPosts we want to count
+     *   }
+     * })
+    **/
+    count<T extends SocialPostCountArgs>(
+      args?: Subset<T, SocialPostCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SocialPostCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SocialPost.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SocialPostAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SocialPostAggregateArgs>(args: Subset<T, SocialPostAggregateArgs>): Prisma.PrismaPromise<GetSocialPostAggregateType<T>>
+
+    /**
+     * Group by SocialPost.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SocialPostGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SocialPostGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SocialPostGroupByArgs['orderBy'] }
+        : { orderBy?: SocialPostGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SocialPostGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSocialPostGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SocialPost model
+   */
+  readonly fields: SocialPostFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SocialPost.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SocialPostClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SocialPost model
+   */
+  interface SocialPostFieldRefs {
+    readonly id: FieldRef<"SocialPost", 'Int'>
+    readonly body: FieldRef<"SocialPost", 'String'>
+    readonly imageUrl: FieldRef<"SocialPost", 'String'>
+    readonly platforms: FieldRef<"SocialPost", 'String[]'>
+    readonly scheduledFor: FieldRef<"SocialPost", 'DateTime'>
+    readonly status: FieldRef<"SocialPost", 'SocialPostStatus'>
+    readonly createdAt: FieldRef<"SocialPost", 'DateTime'>
+    readonly updatedAt: FieldRef<"SocialPost", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SocialPost findUnique
+   */
+  export type SocialPostFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SocialPost
+     */
+    select?: SocialPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SocialPost
+     */
+    omit?: SocialPostOmit<ExtArgs> | null
+    /**
+     * Filter, which SocialPost to fetch.
+     */
+    where: SocialPostWhereUniqueInput
+  }
+
+  /**
+   * SocialPost findUniqueOrThrow
+   */
+  export type SocialPostFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SocialPost
+     */
+    select?: SocialPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SocialPost
+     */
+    omit?: SocialPostOmit<ExtArgs> | null
+    /**
+     * Filter, which SocialPost to fetch.
+     */
+    where: SocialPostWhereUniqueInput
+  }
+
+  /**
+   * SocialPost findFirst
+   */
+  export type SocialPostFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SocialPost
+     */
+    select?: SocialPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SocialPost
+     */
+    omit?: SocialPostOmit<ExtArgs> | null
+    /**
+     * Filter, which SocialPost to fetch.
+     */
+    where?: SocialPostWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SocialPosts to fetch.
+     */
+    orderBy?: SocialPostOrderByWithRelationInput | SocialPostOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SocialPosts.
+     */
+    cursor?: SocialPostWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SocialPosts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SocialPosts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SocialPosts.
+     */
+    distinct?: SocialPostScalarFieldEnum | SocialPostScalarFieldEnum[]
+  }
+
+  /**
+   * SocialPost findFirstOrThrow
+   */
+  export type SocialPostFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SocialPost
+     */
+    select?: SocialPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SocialPost
+     */
+    omit?: SocialPostOmit<ExtArgs> | null
+    /**
+     * Filter, which SocialPost to fetch.
+     */
+    where?: SocialPostWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SocialPosts to fetch.
+     */
+    orderBy?: SocialPostOrderByWithRelationInput | SocialPostOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SocialPosts.
+     */
+    cursor?: SocialPostWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SocialPosts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SocialPosts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SocialPosts.
+     */
+    distinct?: SocialPostScalarFieldEnum | SocialPostScalarFieldEnum[]
+  }
+
+  /**
+   * SocialPost findMany
+   */
+  export type SocialPostFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SocialPost
+     */
+    select?: SocialPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SocialPost
+     */
+    omit?: SocialPostOmit<ExtArgs> | null
+    /**
+     * Filter, which SocialPosts to fetch.
+     */
+    where?: SocialPostWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SocialPosts to fetch.
+     */
+    orderBy?: SocialPostOrderByWithRelationInput | SocialPostOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SocialPosts.
+     */
+    cursor?: SocialPostWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SocialPosts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SocialPosts.
+     */
+    skip?: number
+    distinct?: SocialPostScalarFieldEnum | SocialPostScalarFieldEnum[]
+  }
+
+  /**
+   * SocialPost create
+   */
+  export type SocialPostCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SocialPost
+     */
+    select?: SocialPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SocialPost
+     */
+    omit?: SocialPostOmit<ExtArgs> | null
+    /**
+     * The data needed to create a SocialPost.
+     */
+    data: XOR<SocialPostCreateInput, SocialPostUncheckedCreateInput>
+  }
+
+  /**
+   * SocialPost createMany
+   */
+  export type SocialPostCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SocialPosts.
+     */
+    data: SocialPostCreateManyInput | SocialPostCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SocialPost createManyAndReturn
+   */
+  export type SocialPostCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SocialPost
+     */
+    select?: SocialPostSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SocialPost
+     */
+    omit?: SocialPostOmit<ExtArgs> | null
+    /**
+     * The data used to create many SocialPosts.
+     */
+    data: SocialPostCreateManyInput | SocialPostCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SocialPost update
+   */
+  export type SocialPostUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SocialPost
+     */
+    select?: SocialPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SocialPost
+     */
+    omit?: SocialPostOmit<ExtArgs> | null
+    /**
+     * The data needed to update a SocialPost.
+     */
+    data: XOR<SocialPostUpdateInput, SocialPostUncheckedUpdateInput>
+    /**
+     * Choose, which SocialPost to update.
+     */
+    where: SocialPostWhereUniqueInput
+  }
+
+  /**
+   * SocialPost updateMany
+   */
+  export type SocialPostUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SocialPosts.
+     */
+    data: XOR<SocialPostUpdateManyMutationInput, SocialPostUncheckedUpdateManyInput>
+    /**
+     * Filter which SocialPosts to update
+     */
+    where?: SocialPostWhereInput
+    /**
+     * Limit how many SocialPosts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SocialPost updateManyAndReturn
+   */
+  export type SocialPostUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SocialPost
+     */
+    select?: SocialPostSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SocialPost
+     */
+    omit?: SocialPostOmit<ExtArgs> | null
+    /**
+     * The data used to update SocialPosts.
+     */
+    data: XOR<SocialPostUpdateManyMutationInput, SocialPostUncheckedUpdateManyInput>
+    /**
+     * Filter which SocialPosts to update
+     */
+    where?: SocialPostWhereInput
+    /**
+     * Limit how many SocialPosts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SocialPost upsert
+   */
+  export type SocialPostUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SocialPost
+     */
+    select?: SocialPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SocialPost
+     */
+    omit?: SocialPostOmit<ExtArgs> | null
+    /**
+     * The filter to search for the SocialPost to update in case it exists.
+     */
+    where: SocialPostWhereUniqueInput
+    /**
+     * In case the SocialPost found by the `where` argument doesn't exist, create a new SocialPost with this data.
+     */
+    create: XOR<SocialPostCreateInput, SocialPostUncheckedCreateInput>
+    /**
+     * In case the SocialPost was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SocialPostUpdateInput, SocialPostUncheckedUpdateInput>
+  }
+
+  /**
+   * SocialPost delete
+   */
+  export type SocialPostDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SocialPost
+     */
+    select?: SocialPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SocialPost
+     */
+    omit?: SocialPostOmit<ExtArgs> | null
+    /**
+     * Filter which SocialPost to delete.
+     */
+    where: SocialPostWhereUniqueInput
+  }
+
+  /**
+   * SocialPost deleteMany
+   */
+  export type SocialPostDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SocialPosts to delete
+     */
+    where?: SocialPostWhereInput
+    /**
+     * Limit how many SocialPosts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SocialPost without action
+   */
+  export type SocialPostDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SocialPost
+     */
+    select?: SocialPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SocialPost
+     */
+    omit?: SocialPostOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -43857,6 +46201,33 @@ export namespace Prisma {
   export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
 
 
+  export const WishlistScalarFieldEnum: {
+    id: 'id',
+    ownerType: 'ownerType',
+    ownerId: 'ownerId',
+    retailer: 'retailer',
+    url: 'url',
+    label: 'label',
+    updatedAt: 'updatedAt'
+  };
+
+  export type WishlistScalarFieldEnum = (typeof WishlistScalarFieldEnum)[keyof typeof WishlistScalarFieldEnum]
+
+
+  export const SocialPostScalarFieldEnum: {
+    id: 'id',
+    body: 'body',
+    imageUrl: 'imageUrl',
+    platforms: 'platforms',
+    scheduledFor: 'scheduledFor',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type SocialPostScalarFieldEnum = (typeof SocialPostScalarFieldEnum)[keyof typeof SocialPostScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -44016,6 +46387,48 @@ export namespace Prisma {
    * Reference to a field of type 'DoseStatus[]'
    */
   export type ListEnumDoseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DoseStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'WishlistOwnerType'
+   */
+  export type EnumWishlistOwnerTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WishlistOwnerType'>
+    
+
+
+  /**
+   * Reference to a field of type 'WishlistOwnerType[]'
+   */
+  export type ListEnumWishlistOwnerTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WishlistOwnerType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'WishlistRetailer'
+   */
+  export type EnumWishlistRetailerFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WishlistRetailer'>
+    
+
+
+  /**
+   * Reference to a field of type 'WishlistRetailer[]'
+   */
+  export type ListEnumWishlistRetailerFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WishlistRetailer[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'SocialPostStatus'
+   */
+  export type EnumSocialPostStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SocialPostStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'SocialPostStatus[]'
+   */
+  export type ListEnumSocialPostStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SocialPostStatus[]'>
     
   /**
    * Deep Input Types
@@ -46715,6 +49128,140 @@ export namespace Prisma {
     date?: DateTimeWithAggregatesFilter<"Transaction"> | Date | string
     kittenId?: IntNullableWithAggregatesFilter<"Transaction"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"Transaction"> | Date | string
+  }
+
+  export type WishlistWhereInput = {
+    AND?: WishlistWhereInput | WishlistWhereInput[]
+    OR?: WishlistWhereInput[]
+    NOT?: WishlistWhereInput | WishlistWhereInput[]
+    id?: IntFilter<"Wishlist"> | number
+    ownerType?: EnumWishlistOwnerTypeFilter<"Wishlist"> | $Enums.WishlistOwnerType
+    ownerId?: IntFilter<"Wishlist"> | number
+    retailer?: EnumWishlistRetailerFilter<"Wishlist"> | $Enums.WishlistRetailer
+    url?: StringFilter<"Wishlist"> | string
+    label?: StringFilter<"Wishlist"> | string
+    updatedAt?: DateTimeFilter<"Wishlist"> | Date | string
+  }
+
+  export type WishlistOrderByWithRelationInput = {
+    id?: SortOrder
+    ownerType?: SortOrder
+    ownerId?: SortOrder
+    retailer?: SortOrder
+    url?: SortOrder
+    label?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WishlistWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    ownerType_ownerId_retailer?: WishlistOwnerTypeOwnerIdRetailerCompoundUniqueInput
+    AND?: WishlistWhereInput | WishlistWhereInput[]
+    OR?: WishlistWhereInput[]
+    NOT?: WishlistWhereInput | WishlistWhereInput[]
+    ownerType?: EnumWishlistOwnerTypeFilter<"Wishlist"> | $Enums.WishlistOwnerType
+    ownerId?: IntFilter<"Wishlist"> | number
+    retailer?: EnumWishlistRetailerFilter<"Wishlist"> | $Enums.WishlistRetailer
+    url?: StringFilter<"Wishlist"> | string
+    label?: StringFilter<"Wishlist"> | string
+    updatedAt?: DateTimeFilter<"Wishlist"> | Date | string
+  }, "id" | "ownerType_ownerId_retailer">
+
+  export type WishlistOrderByWithAggregationInput = {
+    id?: SortOrder
+    ownerType?: SortOrder
+    ownerId?: SortOrder
+    retailer?: SortOrder
+    url?: SortOrder
+    label?: SortOrder
+    updatedAt?: SortOrder
+    _count?: WishlistCountOrderByAggregateInput
+    _avg?: WishlistAvgOrderByAggregateInput
+    _max?: WishlistMaxOrderByAggregateInput
+    _min?: WishlistMinOrderByAggregateInput
+    _sum?: WishlistSumOrderByAggregateInput
+  }
+
+  export type WishlistScalarWhereWithAggregatesInput = {
+    AND?: WishlistScalarWhereWithAggregatesInput | WishlistScalarWhereWithAggregatesInput[]
+    OR?: WishlistScalarWhereWithAggregatesInput[]
+    NOT?: WishlistScalarWhereWithAggregatesInput | WishlistScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Wishlist"> | number
+    ownerType?: EnumWishlistOwnerTypeWithAggregatesFilter<"Wishlist"> | $Enums.WishlistOwnerType
+    ownerId?: IntWithAggregatesFilter<"Wishlist"> | number
+    retailer?: EnumWishlistRetailerWithAggregatesFilter<"Wishlist"> | $Enums.WishlistRetailer
+    url?: StringWithAggregatesFilter<"Wishlist"> | string
+    label?: StringWithAggregatesFilter<"Wishlist"> | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Wishlist"> | Date | string
+  }
+
+  export type SocialPostWhereInput = {
+    AND?: SocialPostWhereInput | SocialPostWhereInput[]
+    OR?: SocialPostWhereInput[]
+    NOT?: SocialPostWhereInput | SocialPostWhereInput[]
+    id?: IntFilter<"SocialPost"> | number
+    body?: StringFilter<"SocialPost"> | string
+    imageUrl?: StringFilter<"SocialPost"> | string
+    platforms?: StringNullableListFilter<"SocialPost">
+    scheduledFor?: DateTimeNullableFilter<"SocialPost"> | Date | string | null
+    status?: EnumSocialPostStatusFilter<"SocialPost"> | $Enums.SocialPostStatus
+    createdAt?: DateTimeFilter<"SocialPost"> | Date | string
+    updatedAt?: DateTimeFilter<"SocialPost"> | Date | string
+  }
+
+  export type SocialPostOrderByWithRelationInput = {
+    id?: SortOrder
+    body?: SortOrder
+    imageUrl?: SortOrder
+    platforms?: SortOrder
+    scheduledFor?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SocialPostWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: SocialPostWhereInput | SocialPostWhereInput[]
+    OR?: SocialPostWhereInput[]
+    NOT?: SocialPostWhereInput | SocialPostWhereInput[]
+    body?: StringFilter<"SocialPost"> | string
+    imageUrl?: StringFilter<"SocialPost"> | string
+    platforms?: StringNullableListFilter<"SocialPost">
+    scheduledFor?: DateTimeNullableFilter<"SocialPost"> | Date | string | null
+    status?: EnumSocialPostStatusFilter<"SocialPost"> | $Enums.SocialPostStatus
+    createdAt?: DateTimeFilter<"SocialPost"> | Date | string
+    updatedAt?: DateTimeFilter<"SocialPost"> | Date | string
+  }, "id">
+
+  export type SocialPostOrderByWithAggregationInput = {
+    id?: SortOrder
+    body?: SortOrder
+    imageUrl?: SortOrder
+    platforms?: SortOrder
+    scheduledFor?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: SocialPostCountOrderByAggregateInput
+    _avg?: SocialPostAvgOrderByAggregateInput
+    _max?: SocialPostMaxOrderByAggregateInput
+    _min?: SocialPostMinOrderByAggregateInput
+    _sum?: SocialPostSumOrderByAggregateInput
+  }
+
+  export type SocialPostScalarWhereWithAggregatesInput = {
+    AND?: SocialPostScalarWhereWithAggregatesInput | SocialPostScalarWhereWithAggregatesInput[]
+    OR?: SocialPostScalarWhereWithAggregatesInput[]
+    NOT?: SocialPostScalarWhereWithAggregatesInput | SocialPostScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"SocialPost"> | number
+    body?: StringWithAggregatesFilter<"SocialPost"> | string
+    imageUrl?: StringWithAggregatesFilter<"SocialPost"> | string
+    platforms?: StringNullableListFilter<"SocialPost">
+    scheduledFor?: DateTimeNullableWithAggregatesFilter<"SocialPost"> | Date | string | null
+    status?: EnumSocialPostStatusWithAggregatesFilter<"SocialPost"> | $Enums.SocialPostStatus
+    createdAt?: DateTimeWithAggregatesFilter<"SocialPost"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"SocialPost"> | Date | string
   }
 
   export type LitterCreateInput = {
@@ -49566,6 +52113,147 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type WishlistCreateInput = {
+    ownerType: $Enums.WishlistOwnerType
+    ownerId: number
+    retailer: $Enums.WishlistRetailer
+    url: string
+    label?: string
+    updatedAt?: Date | string
+  }
+
+  export type WishlistUncheckedCreateInput = {
+    id?: number
+    ownerType: $Enums.WishlistOwnerType
+    ownerId: number
+    retailer: $Enums.WishlistRetailer
+    url: string
+    label?: string
+    updatedAt?: Date | string
+  }
+
+  export type WishlistUpdateInput = {
+    ownerType?: EnumWishlistOwnerTypeFieldUpdateOperationsInput | $Enums.WishlistOwnerType
+    ownerId?: IntFieldUpdateOperationsInput | number
+    retailer?: EnumWishlistRetailerFieldUpdateOperationsInput | $Enums.WishlistRetailer
+    url?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WishlistUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    ownerType?: EnumWishlistOwnerTypeFieldUpdateOperationsInput | $Enums.WishlistOwnerType
+    ownerId?: IntFieldUpdateOperationsInput | number
+    retailer?: EnumWishlistRetailerFieldUpdateOperationsInput | $Enums.WishlistRetailer
+    url?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WishlistCreateManyInput = {
+    id?: number
+    ownerType: $Enums.WishlistOwnerType
+    ownerId: number
+    retailer: $Enums.WishlistRetailer
+    url: string
+    label?: string
+    updatedAt?: Date | string
+  }
+
+  export type WishlistUpdateManyMutationInput = {
+    ownerType?: EnumWishlistOwnerTypeFieldUpdateOperationsInput | $Enums.WishlistOwnerType
+    ownerId?: IntFieldUpdateOperationsInput | number
+    retailer?: EnumWishlistRetailerFieldUpdateOperationsInput | $Enums.WishlistRetailer
+    url?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WishlistUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    ownerType?: EnumWishlistOwnerTypeFieldUpdateOperationsInput | $Enums.WishlistOwnerType
+    ownerId?: IntFieldUpdateOperationsInput | number
+    retailer?: EnumWishlistRetailerFieldUpdateOperationsInput | $Enums.WishlistRetailer
+    url?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SocialPostCreateInput = {
+    body?: string
+    imageUrl?: string
+    platforms?: SocialPostCreateplatformsInput | string[]
+    scheduledFor?: Date | string | null
+    status?: $Enums.SocialPostStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SocialPostUncheckedCreateInput = {
+    id?: number
+    body?: string
+    imageUrl?: string
+    platforms?: SocialPostCreateplatformsInput | string[]
+    scheduledFor?: Date | string | null
+    status?: $Enums.SocialPostStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SocialPostUpdateInput = {
+    body?: StringFieldUpdateOperationsInput | string
+    imageUrl?: StringFieldUpdateOperationsInput | string
+    platforms?: SocialPostUpdateplatformsInput | string[]
+    scheduledFor?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumSocialPostStatusFieldUpdateOperationsInput | $Enums.SocialPostStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SocialPostUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    body?: StringFieldUpdateOperationsInput | string
+    imageUrl?: StringFieldUpdateOperationsInput | string
+    platforms?: SocialPostUpdateplatformsInput | string[]
+    scheduledFor?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumSocialPostStatusFieldUpdateOperationsInput | $Enums.SocialPostStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SocialPostCreateManyInput = {
+    id?: number
+    body?: string
+    imageUrl?: string
+    platforms?: SocialPostCreateplatformsInput | string[]
+    scheduledFor?: Date | string | null
+    status?: $Enums.SocialPostStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SocialPostUpdateManyMutationInput = {
+    body?: StringFieldUpdateOperationsInput | string
+    imageUrl?: StringFieldUpdateOperationsInput | string
+    platforms?: SocialPostUpdateplatformsInput | string[]
+    scheduledFor?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumSocialPostStatusFieldUpdateOperationsInput | $Enums.SocialPostStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SocialPostUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    body?: StringFieldUpdateOperationsInput | string
+    imageUrl?: StringFieldUpdateOperationsInput | string
+    platforms?: SocialPostUpdateplatformsInput | string[]
+    scheduledFor?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumSocialPostStatusFieldUpdateOperationsInput | $Enums.SocialPostStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -51774,6 +54462,142 @@ export namespace Prisma {
     kittenId?: SortOrder
   }
 
+  export type EnumWishlistOwnerTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.WishlistOwnerType | EnumWishlistOwnerTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.WishlistOwnerType[] | ListEnumWishlistOwnerTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.WishlistOwnerType[] | ListEnumWishlistOwnerTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumWishlistOwnerTypeFilter<$PrismaModel> | $Enums.WishlistOwnerType
+  }
+
+  export type EnumWishlistRetailerFilter<$PrismaModel = never> = {
+    equals?: $Enums.WishlistRetailer | EnumWishlistRetailerFieldRefInput<$PrismaModel>
+    in?: $Enums.WishlistRetailer[] | ListEnumWishlistRetailerFieldRefInput<$PrismaModel>
+    notIn?: $Enums.WishlistRetailer[] | ListEnumWishlistRetailerFieldRefInput<$PrismaModel>
+    not?: NestedEnumWishlistRetailerFilter<$PrismaModel> | $Enums.WishlistRetailer
+  }
+
+  export type WishlistOwnerTypeOwnerIdRetailerCompoundUniqueInput = {
+    ownerType: $Enums.WishlistOwnerType
+    ownerId: number
+    retailer: $Enums.WishlistRetailer
+  }
+
+  export type WishlistCountOrderByAggregateInput = {
+    id?: SortOrder
+    ownerType?: SortOrder
+    ownerId?: SortOrder
+    retailer?: SortOrder
+    url?: SortOrder
+    label?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WishlistAvgOrderByAggregateInput = {
+    id?: SortOrder
+    ownerId?: SortOrder
+  }
+
+  export type WishlistMaxOrderByAggregateInput = {
+    id?: SortOrder
+    ownerType?: SortOrder
+    ownerId?: SortOrder
+    retailer?: SortOrder
+    url?: SortOrder
+    label?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WishlistMinOrderByAggregateInput = {
+    id?: SortOrder
+    ownerType?: SortOrder
+    ownerId?: SortOrder
+    retailer?: SortOrder
+    url?: SortOrder
+    label?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WishlistSumOrderByAggregateInput = {
+    id?: SortOrder
+    ownerId?: SortOrder
+  }
+
+  export type EnumWishlistOwnerTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.WishlistOwnerType | EnumWishlistOwnerTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.WishlistOwnerType[] | ListEnumWishlistOwnerTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.WishlistOwnerType[] | ListEnumWishlistOwnerTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumWishlistOwnerTypeWithAggregatesFilter<$PrismaModel> | $Enums.WishlistOwnerType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumWishlistOwnerTypeFilter<$PrismaModel>
+    _max?: NestedEnumWishlistOwnerTypeFilter<$PrismaModel>
+  }
+
+  export type EnumWishlistRetailerWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.WishlistRetailer | EnumWishlistRetailerFieldRefInput<$PrismaModel>
+    in?: $Enums.WishlistRetailer[] | ListEnumWishlistRetailerFieldRefInput<$PrismaModel>
+    notIn?: $Enums.WishlistRetailer[] | ListEnumWishlistRetailerFieldRefInput<$PrismaModel>
+    not?: NestedEnumWishlistRetailerWithAggregatesFilter<$PrismaModel> | $Enums.WishlistRetailer
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumWishlistRetailerFilter<$PrismaModel>
+    _max?: NestedEnumWishlistRetailerFilter<$PrismaModel>
+  }
+
+  export type EnumSocialPostStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.SocialPostStatus | EnumSocialPostStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SocialPostStatus[] | ListEnumSocialPostStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SocialPostStatus[] | ListEnumSocialPostStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSocialPostStatusFilter<$PrismaModel> | $Enums.SocialPostStatus
+  }
+
+  export type SocialPostCountOrderByAggregateInput = {
+    id?: SortOrder
+    body?: SortOrder
+    imageUrl?: SortOrder
+    platforms?: SortOrder
+    scheduledFor?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SocialPostAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type SocialPostMaxOrderByAggregateInput = {
+    id?: SortOrder
+    body?: SortOrder
+    imageUrl?: SortOrder
+    scheduledFor?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SocialPostMinOrderByAggregateInput = {
+    id?: SortOrder
+    body?: SortOrder
+    imageUrl?: SortOrder
+    scheduledFor?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SocialPostSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type EnumSocialPostStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SocialPostStatus | EnumSocialPostStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SocialPostStatus[] | ListEnumSocialPostStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SocialPostStatus[] | ListEnumSocialPostStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSocialPostStatusWithAggregatesFilter<$PrismaModel> | $Enums.SocialPostStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSocialPostStatusFilter<$PrismaModel>
+    _max?: NestedEnumSocialPostStatusFilter<$PrismaModel>
+  }
+
   export type KittenCreateNestedManyWithoutLitterInput = {
     create?: XOR<KittenCreateWithoutLitterInput, KittenUncheckedCreateWithoutLitterInput> | KittenCreateWithoutLitterInput[] | KittenUncheckedCreateWithoutLitterInput[]
     connectOrCreate?: KittenCreateOrConnectWithoutLitterInput | KittenCreateOrConnectWithoutLitterInput[]
@@ -53738,6 +56562,27 @@ export namespace Prisma {
     update?: XOR<XOR<KittenUpdateToOneWithWhereWithoutTransactionsInput, KittenUpdateWithoutTransactionsInput>, KittenUncheckedUpdateWithoutTransactionsInput>
   }
 
+  export type EnumWishlistOwnerTypeFieldUpdateOperationsInput = {
+    set?: $Enums.WishlistOwnerType
+  }
+
+  export type EnumWishlistRetailerFieldUpdateOperationsInput = {
+    set?: $Enums.WishlistRetailer
+  }
+
+  export type SocialPostCreateplatformsInput = {
+    set: string[]
+  }
+
+  export type SocialPostUpdateplatformsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type EnumSocialPostStatusFieldUpdateOperationsInput = {
+    set?: $Enums.SocialPostStatus
+  }
+
   export type NestedIntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -54038,6 +56883,57 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumDoseStatusFilter<$PrismaModel>
     _max?: NestedEnumDoseStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumWishlistOwnerTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.WishlistOwnerType | EnumWishlistOwnerTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.WishlistOwnerType[] | ListEnumWishlistOwnerTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.WishlistOwnerType[] | ListEnumWishlistOwnerTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumWishlistOwnerTypeFilter<$PrismaModel> | $Enums.WishlistOwnerType
+  }
+
+  export type NestedEnumWishlistRetailerFilter<$PrismaModel = never> = {
+    equals?: $Enums.WishlistRetailer | EnumWishlistRetailerFieldRefInput<$PrismaModel>
+    in?: $Enums.WishlistRetailer[] | ListEnumWishlistRetailerFieldRefInput<$PrismaModel>
+    notIn?: $Enums.WishlistRetailer[] | ListEnumWishlistRetailerFieldRefInput<$PrismaModel>
+    not?: NestedEnumWishlistRetailerFilter<$PrismaModel> | $Enums.WishlistRetailer
+  }
+
+  export type NestedEnumWishlistOwnerTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.WishlistOwnerType | EnumWishlistOwnerTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.WishlistOwnerType[] | ListEnumWishlistOwnerTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.WishlistOwnerType[] | ListEnumWishlistOwnerTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumWishlistOwnerTypeWithAggregatesFilter<$PrismaModel> | $Enums.WishlistOwnerType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumWishlistOwnerTypeFilter<$PrismaModel>
+    _max?: NestedEnumWishlistOwnerTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumWishlistRetailerWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.WishlistRetailer | EnumWishlistRetailerFieldRefInput<$PrismaModel>
+    in?: $Enums.WishlistRetailer[] | ListEnumWishlistRetailerFieldRefInput<$PrismaModel>
+    notIn?: $Enums.WishlistRetailer[] | ListEnumWishlistRetailerFieldRefInput<$PrismaModel>
+    not?: NestedEnumWishlistRetailerWithAggregatesFilter<$PrismaModel> | $Enums.WishlistRetailer
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumWishlistRetailerFilter<$PrismaModel>
+    _max?: NestedEnumWishlistRetailerFilter<$PrismaModel>
+  }
+
+  export type NestedEnumSocialPostStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.SocialPostStatus | EnumSocialPostStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SocialPostStatus[] | ListEnumSocialPostStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SocialPostStatus[] | ListEnumSocialPostStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSocialPostStatusFilter<$PrismaModel> | $Enums.SocialPostStatus
+  }
+
+  export type NestedEnumSocialPostStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SocialPostStatus | EnumSocialPostStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SocialPostStatus[] | ListEnumSocialPostStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SocialPostStatus[] | ListEnumSocialPostStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSocialPostStatusWithAggregatesFilter<$PrismaModel> | $Enums.SocialPostStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSocialPostStatusFilter<$PrismaModel>
+    _max?: NestedEnumSocialPostStatusFilter<$PrismaModel>
   }
 
   export type KittenCreateWithoutLitterInput = {

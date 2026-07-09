@@ -12,6 +12,14 @@ async function safeDelete(label, action) {
   }
 }
 
+async function safeDeleteModel(label, delegate) {
+  if (!delegate?.deleteMany) {
+    console.log(`Skipped ${label} (model not in Prisma client)`);
+    return;
+  }
+  await safeDelete(label, () => delegate.deleteMany({}));
+}
+
 async function main() {
   try {
     await safeDelete('protocol doses', () => prisma.protocolDose.deleteMany({}));
@@ -39,6 +47,8 @@ async function main() {
     await prisma.foster.deleteMany({});
     await prisma.event.deleteMany({});
     await prisma.content.deleteMany({});
+    await safeDeleteModel('social posts', prisma.socialPost);
+    await safeDeleteModel('wishlists', prisma.wishlist);
     await safeDelete('protocol drugs', () => prisma.protocolDrug.deleteMany({}));
     await safeDelete('protocols', () => prisma.protocol.deleteMany({}));
     console.log('All sample data cleared successfully!');

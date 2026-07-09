@@ -527,6 +527,27 @@ exports.Prisma.TransactionScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.WishlistScalarFieldEnum = {
+  id: 'id',
+  ownerType: 'ownerType',
+  ownerId: 'ownerId',
+  retailer: 'retailer',
+  url: 'url',
+  label: 'label',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SocialPostScalarFieldEnum = {
+  id: 'id',
+  body: 'body',
+  imageUrl: 'imageUrl',
+  platforms: 'platforms',
+  scheduledFor: 'scheduledFor',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -573,6 +594,24 @@ exports.DoseStatus = exports.$Enums.DoseStatus = {
   GIVEN: 'GIVEN'
 };
 
+exports.WishlistOwnerType = exports.$Enums.WishlistOwnerType = {
+  ORG: 'ORG',
+  FOSTER: 'FOSTER',
+  KITTEN: 'KITTEN'
+};
+
+exports.WishlistRetailer = exports.$Enums.WishlistRetailer = {
+  AMAZON: 'AMAZON',
+  CHEWY: 'CHEWY',
+  WALMART: 'WALMART'
+};
+
+exports.SocialPostStatus = exports.$Enums.SocialPostStatus = {
+  DRAFT: 'DRAFT',
+  SCHEDULED: 'SCHEDULED',
+  POSTED: 'POSTED'
+};
+
 exports.Prisma.ModelName = {
   Litter: 'Litter',
   Foster: 'Foster',
@@ -606,7 +645,9 @@ exports.Prisma.ModelName = {
   Settings: 'Settings',
   EmailTemplate: 'EmailTemplate',
   EmailLog: 'EmailLog',
-  Transaction: 'Transaction'
+  Transaction: 'Transaction',
+  Wishlist: 'Wishlist',
+  SocialPost: 'SocialPost'
 };
 
 /**
