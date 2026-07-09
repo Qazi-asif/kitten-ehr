@@ -14,12 +14,13 @@ import {
   getPublicStats,
 } from '../controllers/publicController.js';
 import { getPublicEventBySlug, rsvpForEvent } from '../controllers/eventController.js';
-import { getPublicWishlists } from '../controllers/wishlistController.js';
+import { getPublicWishlists, getPublicFosterWishlists, getPublicKittenWishlists } from '../controllers/wishlistController.js';
 
 const router = Router();
 
 router.get('/wishlists', getPublicWishlists);
 router.get('/kittens', getPublicKittens);
+router.get('/kittens/:id/wishlists', getPublicKittenWishlists);
 router.get('/kittens/:id/photos', getPublicKittenPhotos);
 router.get('/kittens/:id/updates', getPublicKittenUpdates);
 router.get('/kittens/:id', getPublicKittenById);

@@ -8,6 +8,10 @@ import {
   deleteKitten,
 } from '../controllers/kittenController.js';
 import { getKittenPlacements } from '../controllers/placementController.js';
+import {
+  createKittenWishlist,
+  getKittenWishlists,
+} from '../controllers/wishlistController.js';
 import { requirePermission } from '../middleware/authMiddleware.js';
 
 const router = Router();
@@ -149,6 +153,8 @@ router.post('/', createKitten);
  */
 router.get('/dashboard/stats', getDashboardStats);
 router.get('/:id/placements', getKittenPlacements);
+router.get('/:id/wishlists', requirePermission('kittens.view'), getKittenWishlists);
+router.post('/:id/wishlists', requirePermission('kittens.edit'), createKittenWishlist);
 router.get('/:id', getKittenById);
 
 router.patch('/:id', updateKitten);

@@ -1,4 +1,5 @@
 import { adminFetch } from './api';
+import { WISHLIST_OWNER_TYPES } from '../constants/wishlists';
 
 async function readApiError(response, fallback) {
   try {
@@ -9,20 +10,39 @@ async function readApiError(response, fallback) {
   }
 }
 
-export async function fetchWishlists(ownerType, ownerId) {
+function wishlistPath(ownerType, ownerId) {
+  if (ownerType === WISHLIST_OWNER_TYPES.FOSTER) {
+    return `/fosters/${ownerId}/wishlists`;
+  }
+  if (ownerType === WISHLIST_OWNER_TYPES.KITTEN) {
+    return `/kittens/${ownerId}/wishlists`;
+  }
   const params = new URLSearchParams({
     ownerType,
     ownerId: String(ownerId),
   });
-  const response = await adminFetch(`/wishlists?${params.toString()}`);
+  return `/wishlists?${params.toString()}`;
+}
+
+export async function fetchWishlists(ownerType, ownerId) {
+  const response = await adminFetch(wishlistPath(ownerType, ownerId));
   if (!response.ok) throw new Error(await readApiError(response, 'Failed to load wishlists'));
   return response.json();
 }
 
 export async function createWishlist(payload) {
-  const response = await adminFetch('/wishlists', {
+  const { ownerType, ownerId, ...body } = payload;
+  const path = ownerType === WISHLIST_OWNER_TYPES.FOSTER || ownerType === WISHLIST_OWNER_TYPES.KITTEN
+    ? wishlistPath(ownerType, ownerId)
+    : '/wishlists';
+
+  const response = await adminFetch(path, {
     method: 'POST',
-    body: JSON.stringify(payload),
+    body: JSON.stringify(
+      ownerType === WISHLIST_OWNER_TYPES.FOSTER || ownerType === WISHLIST_OWNER_TYPES.KITTEN
+        ? body
+        : payload,
+    ),
   });
   if (!response.ok) throw new Error(await readApiError(response, 'Failed to save wishlist'));
   return response.json();

@@ -32,6 +32,9 @@ export function fetchPublicContent(category) {
 }
 
 export function fetchPublicWishlists(ownerType, ownerId) {
+  if (ownerType === 'KITTEN') {
+    return publicRequest(`/kittens/${ownerId}/wishlists`);
+  }
   const params = new URLSearchParams({
     ownerType,
     ownerId: String(ownerId),

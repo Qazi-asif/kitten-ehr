@@ -4,7 +4,10 @@ import { Mail, MapPin, Phone, Users } from 'lucide-react';
 import AssignKittenForm from '../components/admin/AssignKittenForm';
 import FosterCapabilityBadges from '../components/admin/FosterCapabilityBadges';
 import FosterPlacementTable from '../components/admin/FosterPlacementTable';
+import WishlistManager from '../components/admin/WishlistManager';
 import FosterPhoto from '../components/FosterPhoto';
+import { useAuth } from '../context/AuthContext';
+import { WISHLIST_OWNER_TYPES } from '../constants/wishlists';
 import {
   createFosterPlacement,
   fetchFosterById,
@@ -14,6 +17,8 @@ import {
 
 function FosterDetailPage() {
   const { id } = useParams();
+  const { hasPermission } = useAuth();
+  const canManageFoster = hasPermission('fosters.manage');
   const [foster, setFoster] = useState(null);
   const [placements, setPlacements] = useState([]);
   const [kittens, setKittens] = useState([]);
@@ -146,6 +151,16 @@ function FosterDetailPage() {
             </div>
           </div>
         </div>
+      </section>
+
+      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <WishlistManager
+          ownerType={WISHLIST_OWNER_TYPES.FOSTER}
+          ownerId={id}
+          canManage={canManageFoster}
+          title="Foster Wishlists"
+          description="Manage Amazon, Chewy, and Walmart wishlist links for this foster home."
+        />
       </section>
 
       <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
