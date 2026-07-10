@@ -1,12 +1,14 @@
 import prisma from '../lib/prisma.js';
 import { paginatedResponse, parsePagination, wantsPagination } from '../utils/pagination.js';
+import { buildContractAgreementText, getAgreementTemplateBySlug } from '../utils/contractAgreementText.js';
+import { sendContractAgreementEmail } from '../services/emailService.js';
 
 const CONTRACT_INCLUDE = {
   application: {
     select: { id: true, type: true, status: true, kittenOfInterest: true },
   },
   kitten: {
-    select: { id: true, name: true },
+    select: { id: true, name: true, microchipNumber: true },
   },
   foster: {
     select: { id: true, name: true, email: true },
@@ -19,7 +21,18 @@ const VALID_TEMPLATE_SLUGS = new Set([
   'adoption',
 ]);
 
-function resolveTemplate(templateSlug, fallbackType = 'FOSTER') {
+async function resolveTemplate(templateSlug, fallbackType = 'FOSTER') {
+  if (templateSlug) {
+    try {
+      const template = await getAgreementTemplateBySlug(templateSlug);
+      if (template) {
+        return { templateSlug: template.slug, type: template.type };
+      }
+    } catch {
+      // fall through to legacy defaults
+    }
+  }
+
   const slug = VALID_TEMPLATE_SLUGS.has(templateSlug)
     ? templateSlug
     : (fallbackType === 'ADOPTION' ? 'adoption' : 'foster_supplies_provided');
@@ -141,7 +154,9 @@ export async function getContractById(req, res, next) {
     });
 
     if (!contract) return res.status(404).json({ error: 'Contract not found' });
-    res.json(contract);
+
+    const agreementText = await buildContractAgreementText(contract);
+    res.json({ ...contract, agreementText });
   } catch (error) {
     next(error);
   }
@@ -154,6 +169,9 @@ export async function createContractDraft(req, res, next) {
       templateSlug,
       signerName,
       signerEmail,
+      signerAddress,
+      signerPhone,
+      microchipNumber,
       kittenName,
       kittenId,
       fosterId,
@@ -161,7 +179,7 @@ export async function createContractDraft(req, res, next) {
       documentVersion,
     } = req.body;
 
-    const resolvedTemplate = resolveTemplate(templateSlug, type);
+    const resolvedTemplate = await resolveTemplate(templateSlug, type);
     if (!signerName?.trim()) return res.status(400).json({ error: 'signerName is required' });
     if (!signerEmail?.trim()) return res.status(400).json({ error: 'signerEmail is required' });
 
@@ -172,7 +190,7 @@ export async function createContractDraft(req, res, next) {
     if (resolvedKittenId) {
       const kitten = await prisma.kitten.findUnique({
         where: { id: resolvedKittenId },
-        select: { name: true },
+        select: { name: true, microchipNumber: true },
       });
       if (!kitten) return res.status(400).json({ error: 'kittenId not found' });
       if (!resolvedKittenName) resolvedKittenName = kitten.name;
@@ -192,6 +210,9 @@ export async function createContractDraft(req, res, next) {
         templateSlug: resolvedTemplate.templateSlug,
         signerName: signerName.trim(),
         signerEmail: signerEmail.trim(),
+        signerAddress: signerAddress?.trim() || '',
+        signerPhone: signerPhone?.trim() || '',
+        microchipNumber: microchipNumber?.trim() || '',
         kittenName: resolvedKittenName,
         kittenId: resolvedKittenId,
         fosterId: resolvedFosterId,
@@ -223,6 +244,9 @@ export async function updateContract(req, res, next) {
       templateSlug,
       signerName,
       signerEmail,
+      signerAddress,
+      signerPhone,
+      microchipNumber,
       kittenName,
       kittenId,
       fosterId,
@@ -233,11 +257,11 @@ export async function updateContract(req, res, next) {
     const data = {};
 
     if (templateSlug !== undefined) {
-      const resolvedTemplate = resolveTemplate(templateSlug, type || existing.type);
+      const resolvedTemplate = await resolveTemplate(templateSlug, type || existing.type);
       data.templateSlug = resolvedTemplate.templateSlug;
       data.type = resolvedTemplate.type;
     } else if (type !== undefined) {
-      const resolvedTemplate = resolveTemplate(existing.templateSlug, type);
+      const resolvedTemplate = await resolveTemplate(existing.templateSlug, type);
       data.type = resolvedTemplate.type;
     }
     if (signerName !== undefined) {
@@ -248,6 +272,9 @@ export async function updateContract(req, res, next) {
       if (!signerEmail?.trim()) return res.status(400).json({ error: 'signerEmail is required' });
       data.signerEmail = signerEmail.trim();
     }
+    if (signerAddress !== undefined) data.signerAddress = signerAddress.trim();
+    if (signerPhone !== undefined) data.signerPhone = signerPhone.trim();
+    if (microchipNumber !== undefined) data.microchipNumber = microchipNumber.trim();
     if (documentVersion !== undefined) {
       if (!documentVersion?.trim()) return res.status(400).json({ error: 'documentVersion is required' });
       data.documentVersion = documentVersion.trim();
@@ -271,7 +298,7 @@ export async function updateContract(req, res, next) {
       if (parsedKittenId) {
         const kitten = await prisma.kitten.findUnique({
           where: { id: parsedKittenId },
-          select: { name: true },
+          select: { name: true, microchipNumber: true },
         });
         if (!kitten) return res.status(400).json({ error: 'kittenId not found' });
         data.kittenId = parsedKittenId;
@@ -363,6 +390,42 @@ export async function markContractSigned(req, res, next) {
     res.json(contract);
   } catch (error) {
     if (error.code === 'P2025') return res.status(404).json({ error: 'Contract not found' });
+    next(error);
+  }
+}
+
+export async function emailContractAgreement(req, res, next) {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+    const contract = await prisma.contract.findUnique({
+      where: { id },
+      include: CONTRACT_INCLUDE,
+    });
+
+    if (!contract) return res.status(404).json({ error: 'Contract not found' });
+    if (contract.status === 'VOID') {
+      return res.status(400).json({ error: 'Cannot email a void contract' });
+    }
+    if (!contract.signerEmail?.trim()) {
+      return res.status(400).json({ error: 'Contract has no signer email' });
+    }
+
+    const agreementText = await buildContractAgreementText(contract);
+    const result = await sendContractAgreementEmail({
+      contract,
+      agreementText,
+      note: req.body?.note?.trim() || '',
+    });
+
+    if (result.skipped) {
+      return res.status(400).json({ error: result.errorMessage || 'Email was not sent' });
+    }
+    if (!result.ok) {
+      return res.status(500).json({ error: result.error || 'Failed to send agreement email' });
+    }
+
+    res.json({ ok: true, messageId: result.messageId });
+  } catch (error) {
     next(error);
   }
 }

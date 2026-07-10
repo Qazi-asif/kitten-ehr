@@ -283,12 +283,26 @@ exports.Prisma.ApplicationScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.ContractTemplateScalarFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  type: 'type',
+  label: 'label',
+  version: 'version',
+  bodyText: 'bodyText',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.ContractScalarFieldEnum = {
   id: 'id',
   type: 'type',
   templateSlug: 'templateSlug',
   signerName: 'signerName',
   signerEmail: 'signerEmail',
+  signerAddress: 'signerAddress',
+  signerPhone: 'signerPhone',
+  microchipNumber: 'microchipNumber',
   kittenName: 'kittenName',
   kittenId: 'kittenId',
   fosterId: 'fosterId',
@@ -633,6 +647,7 @@ exports.Prisma.ModelName = {
   VetAppointment: 'VetAppointment',
   Document: 'Document',
   Application: 'Application',
+  ContractTemplate: 'ContractTemplate',
   Contract: 'Contract',
   FosterOnboarding: 'FosterOnboarding',
   OnboardingChecklist: 'OnboardingChecklist',

@@ -74,6 +74,11 @@ export type Document = $Result.DefaultSelection<Prisma.$DocumentPayload>
  */
 export type Application = $Result.DefaultSelection<Prisma.$ApplicationPayload>
 /**
+ * Model ContractTemplate
+ * 
+ */
+export type ContractTemplate = $Result.DefaultSelection<Prisma.$ContractTemplatePayload>
+/**
  * Model Contract
  * 
  */
@@ -537,6 +542,16 @@ export class PrismaClient<
     * ```
     */
   get application(): Prisma.ApplicationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.contractTemplate`: Exposes CRUD operations for the **ContractTemplate** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ContractTemplates
+    * const contractTemplates = await prisma.contractTemplate.findMany()
+    * ```
+    */
+  get contractTemplate(): Prisma.ContractTemplateDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.contract`: Exposes CRUD operations for the **Contract** model.
@@ -1220,6 +1235,7 @@ export namespace Prisma {
     VetAppointment: 'VetAppointment',
     Document: 'Document',
     Application: 'Application',
+    ContractTemplate: 'ContractTemplate',
     Contract: 'Contract',
     FosterOnboarding: 'FosterOnboarding',
     OnboardingChecklist: 'OnboardingChecklist',
@@ -1261,7 +1277,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "litter" | "foster" | "kitten" | "update" | "sponsorship" | "placement" | "weightLog" | "vaccine" | "medication" | "vetAppointment" | "document" | "application" | "contract" | "fosterOnboarding" | "onboardingChecklist" | "applicationUpload" | "content" | "contentCompletion" | "event" | "eventRSVP" | "eventCats" | "role" | "permission" | "rolePermission" | "user" | "protocol" | "protocolDrug" | "activeProtocol" | "protocolDose" | "settings" | "emailTemplate" | "emailLog" | "transaction" | "wishlist" | "socialPost"
+      modelProps: "litter" | "foster" | "kitten" | "update" | "sponsorship" | "placement" | "weightLog" | "vaccine" | "medication" | "vetAppointment" | "document" | "application" | "contractTemplate" | "contract" | "fosterOnboarding" | "onboardingChecklist" | "applicationUpload" | "content" | "contentCompletion" | "event" | "eventRSVP" | "eventCats" | "role" | "permission" | "rolePermission" | "user" | "protocol" | "protocolDrug" | "activeProtocol" | "protocolDose" | "settings" | "emailTemplate" | "emailLog" | "transaction" | "wishlist" | "socialPost"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2150,6 +2166,80 @@ export namespace Prisma {
           count: {
             args: Prisma.ApplicationCountArgs<ExtArgs>
             result: $Utils.Optional<ApplicationCountAggregateOutputType> | number
+          }
+        }
+      }
+      ContractTemplate: {
+        payload: Prisma.$ContractTemplatePayload<ExtArgs>
+        fields: Prisma.ContractTemplateFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ContractTemplateFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractTemplatePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ContractTemplateFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractTemplatePayload>
+          }
+          findFirst: {
+            args: Prisma.ContractTemplateFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractTemplatePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ContractTemplateFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractTemplatePayload>
+          }
+          findMany: {
+            args: Prisma.ContractTemplateFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractTemplatePayload>[]
+          }
+          create: {
+            args: Prisma.ContractTemplateCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractTemplatePayload>
+          }
+          createMany: {
+            args: Prisma.ContractTemplateCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ContractTemplateCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractTemplatePayload>[]
+          }
+          delete: {
+            args: Prisma.ContractTemplateDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractTemplatePayload>
+          }
+          update: {
+            args: Prisma.ContractTemplateUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractTemplatePayload>
+          }
+          deleteMany: {
+            args: Prisma.ContractTemplateDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ContractTemplateUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ContractTemplateUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractTemplatePayload>[]
+          }
+          upsert: {
+            args: Prisma.ContractTemplateUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractTemplatePayload>
+          }
+          aggregate: {
+            args: Prisma.ContractTemplateAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateContractTemplate>
+          }
+          groupBy: {
+            args: Prisma.ContractTemplateGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ContractTemplateGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ContractTemplateCountArgs<ExtArgs>
+            result: $Utils.Optional<ContractTemplateCountAggregateOutputType> | number
           }
         }
       }
@@ -3963,6 +4053,7 @@ export namespace Prisma {
     vetAppointment?: VetAppointmentOmit
     document?: DocumentOmit
     application?: ApplicationOmit
+    contractTemplate?: ContractTemplateOmit
     contract?: ContractOmit
     fosterOnboarding?: FosterOnboardingOmit
     onboardingChecklist?: OnboardingChecklistOmit
@@ -19297,6 +19388,1074 @@ export namespace Prisma {
 
 
   /**
+   * Model ContractTemplate
+   */
+
+  export type AggregateContractTemplate = {
+    _count: ContractTemplateCountAggregateOutputType | null
+    _avg: ContractTemplateAvgAggregateOutputType | null
+    _sum: ContractTemplateSumAggregateOutputType | null
+    _min: ContractTemplateMinAggregateOutputType | null
+    _max: ContractTemplateMaxAggregateOutputType | null
+  }
+
+  export type ContractTemplateAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type ContractTemplateSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type ContractTemplateMinAggregateOutputType = {
+    id: number | null
+    slug: string | null
+    type: $Enums.ContractType | null
+    label: string | null
+    version: string | null
+    bodyText: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ContractTemplateMaxAggregateOutputType = {
+    id: number | null
+    slug: string | null
+    type: $Enums.ContractType | null
+    label: string | null
+    version: string | null
+    bodyText: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ContractTemplateCountAggregateOutputType = {
+    id: number
+    slug: number
+    type: number
+    label: number
+    version: number
+    bodyText: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ContractTemplateAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type ContractTemplateSumAggregateInputType = {
+    id?: true
+  }
+
+  export type ContractTemplateMinAggregateInputType = {
+    id?: true
+    slug?: true
+    type?: true
+    label?: true
+    version?: true
+    bodyText?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ContractTemplateMaxAggregateInputType = {
+    id?: true
+    slug?: true
+    type?: true
+    label?: true
+    version?: true
+    bodyText?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ContractTemplateCountAggregateInputType = {
+    id?: true
+    slug?: true
+    type?: true
+    label?: true
+    version?: true
+    bodyText?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ContractTemplateAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ContractTemplate to aggregate.
+     */
+    where?: ContractTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ContractTemplates to fetch.
+     */
+    orderBy?: ContractTemplateOrderByWithRelationInput | ContractTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ContractTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ContractTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ContractTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ContractTemplates
+    **/
+    _count?: true | ContractTemplateCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ContractTemplateAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ContractTemplateSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ContractTemplateMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ContractTemplateMaxAggregateInputType
+  }
+
+  export type GetContractTemplateAggregateType<T extends ContractTemplateAggregateArgs> = {
+        [P in keyof T & keyof AggregateContractTemplate]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateContractTemplate[P]>
+      : GetScalarType<T[P], AggregateContractTemplate[P]>
+  }
+
+
+
+
+  export type ContractTemplateGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ContractTemplateWhereInput
+    orderBy?: ContractTemplateOrderByWithAggregationInput | ContractTemplateOrderByWithAggregationInput[]
+    by: ContractTemplateScalarFieldEnum[] | ContractTemplateScalarFieldEnum
+    having?: ContractTemplateScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ContractTemplateCountAggregateInputType | true
+    _avg?: ContractTemplateAvgAggregateInputType
+    _sum?: ContractTemplateSumAggregateInputType
+    _min?: ContractTemplateMinAggregateInputType
+    _max?: ContractTemplateMaxAggregateInputType
+  }
+
+  export type ContractTemplateGroupByOutputType = {
+    id: number
+    slug: string
+    type: $Enums.ContractType
+    label: string
+    version: string
+    bodyText: string
+    createdAt: Date
+    updatedAt: Date
+    _count: ContractTemplateCountAggregateOutputType | null
+    _avg: ContractTemplateAvgAggregateOutputType | null
+    _sum: ContractTemplateSumAggregateOutputType | null
+    _min: ContractTemplateMinAggregateOutputType | null
+    _max: ContractTemplateMaxAggregateOutputType | null
+  }
+
+  type GetContractTemplateGroupByPayload<T extends ContractTemplateGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ContractTemplateGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ContractTemplateGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ContractTemplateGroupByOutputType[P]>
+            : GetScalarType<T[P], ContractTemplateGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ContractTemplateSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    slug?: boolean
+    type?: boolean
+    label?: boolean
+    version?: boolean
+    bodyText?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["contractTemplate"]>
+
+  export type ContractTemplateSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    slug?: boolean
+    type?: boolean
+    label?: boolean
+    version?: boolean
+    bodyText?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["contractTemplate"]>
+
+  export type ContractTemplateSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    slug?: boolean
+    type?: boolean
+    label?: boolean
+    version?: boolean
+    bodyText?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["contractTemplate"]>
+
+  export type ContractTemplateSelectScalar = {
+    id?: boolean
+    slug?: boolean
+    type?: boolean
+    label?: boolean
+    version?: boolean
+    bodyText?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ContractTemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "slug" | "type" | "label" | "version" | "bodyText" | "createdAt" | "updatedAt", ExtArgs["result"]["contractTemplate"]>
+
+  export type $ContractTemplatePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ContractTemplate"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      slug: string
+      type: $Enums.ContractType
+      label: string
+      version: string
+      bodyText: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["contractTemplate"]>
+    composites: {}
+  }
+
+  type ContractTemplateGetPayload<S extends boolean | null | undefined | ContractTemplateDefaultArgs> = $Result.GetResult<Prisma.$ContractTemplatePayload, S>
+
+  type ContractTemplateCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ContractTemplateFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ContractTemplateCountAggregateInputType | true
+    }
+
+  export interface ContractTemplateDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ContractTemplate'], meta: { name: 'ContractTemplate' } }
+    /**
+     * Find zero or one ContractTemplate that matches the filter.
+     * @param {ContractTemplateFindUniqueArgs} args - Arguments to find a ContractTemplate
+     * @example
+     * // Get one ContractTemplate
+     * const contractTemplate = await prisma.contractTemplate.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ContractTemplateFindUniqueArgs>(args: SelectSubset<T, ContractTemplateFindUniqueArgs<ExtArgs>>): Prisma__ContractTemplateClient<$Result.GetResult<Prisma.$ContractTemplatePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ContractTemplate that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ContractTemplateFindUniqueOrThrowArgs} args - Arguments to find a ContractTemplate
+     * @example
+     * // Get one ContractTemplate
+     * const contractTemplate = await prisma.contractTemplate.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ContractTemplateFindUniqueOrThrowArgs>(args: SelectSubset<T, ContractTemplateFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ContractTemplateClient<$Result.GetResult<Prisma.$ContractTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ContractTemplate that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractTemplateFindFirstArgs} args - Arguments to find a ContractTemplate
+     * @example
+     * // Get one ContractTemplate
+     * const contractTemplate = await prisma.contractTemplate.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ContractTemplateFindFirstArgs>(args?: SelectSubset<T, ContractTemplateFindFirstArgs<ExtArgs>>): Prisma__ContractTemplateClient<$Result.GetResult<Prisma.$ContractTemplatePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ContractTemplate that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractTemplateFindFirstOrThrowArgs} args - Arguments to find a ContractTemplate
+     * @example
+     * // Get one ContractTemplate
+     * const contractTemplate = await prisma.contractTemplate.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ContractTemplateFindFirstOrThrowArgs>(args?: SelectSubset<T, ContractTemplateFindFirstOrThrowArgs<ExtArgs>>): Prisma__ContractTemplateClient<$Result.GetResult<Prisma.$ContractTemplatePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ContractTemplates that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractTemplateFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ContractTemplates
+     * const contractTemplates = await prisma.contractTemplate.findMany()
+     * 
+     * // Get first 10 ContractTemplates
+     * const contractTemplates = await prisma.contractTemplate.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const contractTemplateWithIdOnly = await prisma.contractTemplate.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ContractTemplateFindManyArgs>(args?: SelectSubset<T, ContractTemplateFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ContractTemplate.
+     * @param {ContractTemplateCreateArgs} args - Arguments to create a ContractTemplate.
+     * @example
+     * // Create one ContractTemplate
+     * const ContractTemplate = await prisma.contractTemplate.create({
+     *   data: {
+     *     // ... data to create a ContractTemplate
+     *   }
+     * })
+     * 
+     */
+    create<T extends ContractTemplateCreateArgs>(args: SelectSubset<T, ContractTemplateCreateArgs<ExtArgs>>): Prisma__ContractTemplateClient<$Result.GetResult<Prisma.$ContractTemplatePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ContractTemplates.
+     * @param {ContractTemplateCreateManyArgs} args - Arguments to create many ContractTemplates.
+     * @example
+     * // Create many ContractTemplates
+     * const contractTemplate = await prisma.contractTemplate.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ContractTemplateCreateManyArgs>(args?: SelectSubset<T, ContractTemplateCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ContractTemplates and returns the data saved in the database.
+     * @param {ContractTemplateCreateManyAndReturnArgs} args - Arguments to create many ContractTemplates.
+     * @example
+     * // Create many ContractTemplates
+     * const contractTemplate = await prisma.contractTemplate.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ContractTemplates and only return the `id`
+     * const contractTemplateWithIdOnly = await prisma.contractTemplate.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ContractTemplateCreateManyAndReturnArgs>(args?: SelectSubset<T, ContractTemplateCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractTemplatePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ContractTemplate.
+     * @param {ContractTemplateDeleteArgs} args - Arguments to delete one ContractTemplate.
+     * @example
+     * // Delete one ContractTemplate
+     * const ContractTemplate = await prisma.contractTemplate.delete({
+     *   where: {
+     *     // ... filter to delete one ContractTemplate
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ContractTemplateDeleteArgs>(args: SelectSubset<T, ContractTemplateDeleteArgs<ExtArgs>>): Prisma__ContractTemplateClient<$Result.GetResult<Prisma.$ContractTemplatePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ContractTemplate.
+     * @param {ContractTemplateUpdateArgs} args - Arguments to update one ContractTemplate.
+     * @example
+     * // Update one ContractTemplate
+     * const contractTemplate = await prisma.contractTemplate.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ContractTemplateUpdateArgs>(args: SelectSubset<T, ContractTemplateUpdateArgs<ExtArgs>>): Prisma__ContractTemplateClient<$Result.GetResult<Prisma.$ContractTemplatePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ContractTemplates.
+     * @param {ContractTemplateDeleteManyArgs} args - Arguments to filter ContractTemplates to delete.
+     * @example
+     * // Delete a few ContractTemplates
+     * const { count } = await prisma.contractTemplate.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ContractTemplateDeleteManyArgs>(args?: SelectSubset<T, ContractTemplateDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ContractTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractTemplateUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ContractTemplates
+     * const contractTemplate = await prisma.contractTemplate.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ContractTemplateUpdateManyArgs>(args: SelectSubset<T, ContractTemplateUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ContractTemplates and returns the data updated in the database.
+     * @param {ContractTemplateUpdateManyAndReturnArgs} args - Arguments to update many ContractTemplates.
+     * @example
+     * // Update many ContractTemplates
+     * const contractTemplate = await prisma.contractTemplate.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ContractTemplates and only return the `id`
+     * const contractTemplateWithIdOnly = await prisma.contractTemplate.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ContractTemplateUpdateManyAndReturnArgs>(args: SelectSubset<T, ContractTemplateUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractTemplatePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ContractTemplate.
+     * @param {ContractTemplateUpsertArgs} args - Arguments to update or create a ContractTemplate.
+     * @example
+     * // Update or create a ContractTemplate
+     * const contractTemplate = await prisma.contractTemplate.upsert({
+     *   create: {
+     *     // ... data to create a ContractTemplate
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ContractTemplate we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ContractTemplateUpsertArgs>(args: SelectSubset<T, ContractTemplateUpsertArgs<ExtArgs>>): Prisma__ContractTemplateClient<$Result.GetResult<Prisma.$ContractTemplatePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ContractTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractTemplateCountArgs} args - Arguments to filter ContractTemplates to count.
+     * @example
+     * // Count the number of ContractTemplates
+     * const count = await prisma.contractTemplate.count({
+     *   where: {
+     *     // ... the filter for the ContractTemplates we want to count
+     *   }
+     * })
+    **/
+    count<T extends ContractTemplateCountArgs>(
+      args?: Subset<T, ContractTemplateCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ContractTemplateCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ContractTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractTemplateAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ContractTemplateAggregateArgs>(args: Subset<T, ContractTemplateAggregateArgs>): Prisma.PrismaPromise<GetContractTemplateAggregateType<T>>
+
+    /**
+     * Group by ContractTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractTemplateGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ContractTemplateGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ContractTemplateGroupByArgs['orderBy'] }
+        : { orderBy?: ContractTemplateGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ContractTemplateGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetContractTemplateGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ContractTemplate model
+   */
+  readonly fields: ContractTemplateFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ContractTemplate.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ContractTemplateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ContractTemplate model
+   */
+  interface ContractTemplateFieldRefs {
+    readonly id: FieldRef<"ContractTemplate", 'Int'>
+    readonly slug: FieldRef<"ContractTemplate", 'String'>
+    readonly type: FieldRef<"ContractTemplate", 'ContractType'>
+    readonly label: FieldRef<"ContractTemplate", 'String'>
+    readonly version: FieldRef<"ContractTemplate", 'String'>
+    readonly bodyText: FieldRef<"ContractTemplate", 'String'>
+    readonly createdAt: FieldRef<"ContractTemplate", 'DateTime'>
+    readonly updatedAt: FieldRef<"ContractTemplate", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ContractTemplate findUnique
+   */
+  export type ContractTemplateFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractTemplate
+     */
+    select?: ContractTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContractTemplate
+     */
+    omit?: ContractTemplateOmit<ExtArgs> | null
+    /**
+     * Filter, which ContractTemplate to fetch.
+     */
+    where: ContractTemplateWhereUniqueInput
+  }
+
+  /**
+   * ContractTemplate findUniqueOrThrow
+   */
+  export type ContractTemplateFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractTemplate
+     */
+    select?: ContractTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContractTemplate
+     */
+    omit?: ContractTemplateOmit<ExtArgs> | null
+    /**
+     * Filter, which ContractTemplate to fetch.
+     */
+    where: ContractTemplateWhereUniqueInput
+  }
+
+  /**
+   * ContractTemplate findFirst
+   */
+  export type ContractTemplateFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractTemplate
+     */
+    select?: ContractTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContractTemplate
+     */
+    omit?: ContractTemplateOmit<ExtArgs> | null
+    /**
+     * Filter, which ContractTemplate to fetch.
+     */
+    where?: ContractTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ContractTemplates to fetch.
+     */
+    orderBy?: ContractTemplateOrderByWithRelationInput | ContractTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ContractTemplates.
+     */
+    cursor?: ContractTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ContractTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ContractTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ContractTemplates.
+     */
+    distinct?: ContractTemplateScalarFieldEnum | ContractTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * ContractTemplate findFirstOrThrow
+   */
+  export type ContractTemplateFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractTemplate
+     */
+    select?: ContractTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContractTemplate
+     */
+    omit?: ContractTemplateOmit<ExtArgs> | null
+    /**
+     * Filter, which ContractTemplate to fetch.
+     */
+    where?: ContractTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ContractTemplates to fetch.
+     */
+    orderBy?: ContractTemplateOrderByWithRelationInput | ContractTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ContractTemplates.
+     */
+    cursor?: ContractTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ContractTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ContractTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ContractTemplates.
+     */
+    distinct?: ContractTemplateScalarFieldEnum | ContractTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * ContractTemplate findMany
+   */
+  export type ContractTemplateFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractTemplate
+     */
+    select?: ContractTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContractTemplate
+     */
+    omit?: ContractTemplateOmit<ExtArgs> | null
+    /**
+     * Filter, which ContractTemplates to fetch.
+     */
+    where?: ContractTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ContractTemplates to fetch.
+     */
+    orderBy?: ContractTemplateOrderByWithRelationInput | ContractTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ContractTemplates.
+     */
+    cursor?: ContractTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ContractTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ContractTemplates.
+     */
+    skip?: number
+    distinct?: ContractTemplateScalarFieldEnum | ContractTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * ContractTemplate create
+   */
+  export type ContractTemplateCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractTemplate
+     */
+    select?: ContractTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContractTemplate
+     */
+    omit?: ContractTemplateOmit<ExtArgs> | null
+    /**
+     * The data needed to create a ContractTemplate.
+     */
+    data: XOR<ContractTemplateCreateInput, ContractTemplateUncheckedCreateInput>
+  }
+
+  /**
+   * ContractTemplate createMany
+   */
+  export type ContractTemplateCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ContractTemplates.
+     */
+    data: ContractTemplateCreateManyInput | ContractTemplateCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ContractTemplate createManyAndReturn
+   */
+  export type ContractTemplateCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractTemplate
+     */
+    select?: ContractTemplateSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContractTemplate
+     */
+    omit?: ContractTemplateOmit<ExtArgs> | null
+    /**
+     * The data used to create many ContractTemplates.
+     */
+    data: ContractTemplateCreateManyInput | ContractTemplateCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ContractTemplate update
+   */
+  export type ContractTemplateUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractTemplate
+     */
+    select?: ContractTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContractTemplate
+     */
+    omit?: ContractTemplateOmit<ExtArgs> | null
+    /**
+     * The data needed to update a ContractTemplate.
+     */
+    data: XOR<ContractTemplateUpdateInput, ContractTemplateUncheckedUpdateInput>
+    /**
+     * Choose, which ContractTemplate to update.
+     */
+    where: ContractTemplateWhereUniqueInput
+  }
+
+  /**
+   * ContractTemplate updateMany
+   */
+  export type ContractTemplateUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ContractTemplates.
+     */
+    data: XOR<ContractTemplateUpdateManyMutationInput, ContractTemplateUncheckedUpdateManyInput>
+    /**
+     * Filter which ContractTemplates to update
+     */
+    where?: ContractTemplateWhereInput
+    /**
+     * Limit how many ContractTemplates to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ContractTemplate updateManyAndReturn
+   */
+  export type ContractTemplateUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractTemplate
+     */
+    select?: ContractTemplateSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContractTemplate
+     */
+    omit?: ContractTemplateOmit<ExtArgs> | null
+    /**
+     * The data used to update ContractTemplates.
+     */
+    data: XOR<ContractTemplateUpdateManyMutationInput, ContractTemplateUncheckedUpdateManyInput>
+    /**
+     * Filter which ContractTemplates to update
+     */
+    where?: ContractTemplateWhereInput
+    /**
+     * Limit how many ContractTemplates to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ContractTemplate upsert
+   */
+  export type ContractTemplateUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractTemplate
+     */
+    select?: ContractTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContractTemplate
+     */
+    omit?: ContractTemplateOmit<ExtArgs> | null
+    /**
+     * The filter to search for the ContractTemplate to update in case it exists.
+     */
+    where: ContractTemplateWhereUniqueInput
+    /**
+     * In case the ContractTemplate found by the `where` argument doesn't exist, create a new ContractTemplate with this data.
+     */
+    create: XOR<ContractTemplateCreateInput, ContractTemplateUncheckedCreateInput>
+    /**
+     * In case the ContractTemplate was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ContractTemplateUpdateInput, ContractTemplateUncheckedUpdateInput>
+  }
+
+  /**
+   * ContractTemplate delete
+   */
+  export type ContractTemplateDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractTemplate
+     */
+    select?: ContractTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContractTemplate
+     */
+    omit?: ContractTemplateOmit<ExtArgs> | null
+    /**
+     * Filter which ContractTemplate to delete.
+     */
+    where: ContractTemplateWhereUniqueInput
+  }
+
+  /**
+   * ContractTemplate deleteMany
+   */
+  export type ContractTemplateDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ContractTemplates to delete
+     */
+    where?: ContractTemplateWhereInput
+    /**
+     * Limit how many ContractTemplates to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ContractTemplate without action
+   */
+  export type ContractTemplateDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractTemplate
+     */
+    select?: ContractTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContractTemplate
+     */
+    omit?: ContractTemplateOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Model Contract
    */
 
@@ -19328,6 +20487,9 @@ export namespace Prisma {
     templateSlug: string | null
     signerName: string | null
     signerEmail: string | null
+    signerAddress: string | null
+    signerPhone: string | null
+    microchipNumber: string | null
     kittenName: string | null
     kittenId: number | null
     fosterId: number | null
@@ -19346,6 +20508,9 @@ export namespace Prisma {
     templateSlug: string | null
     signerName: string | null
     signerEmail: string | null
+    signerAddress: string | null
+    signerPhone: string | null
+    microchipNumber: string | null
     kittenName: string | null
     kittenId: number | null
     fosterId: number | null
@@ -19364,6 +20529,9 @@ export namespace Prisma {
     templateSlug: number
     signerName: number
     signerEmail: number
+    signerAddress: number
+    signerPhone: number
+    microchipNumber: number
     kittenName: number
     kittenId: number
     fosterId: number
@@ -19398,6 +20566,9 @@ export namespace Prisma {
     templateSlug?: true
     signerName?: true
     signerEmail?: true
+    signerAddress?: true
+    signerPhone?: true
+    microchipNumber?: true
     kittenName?: true
     kittenId?: true
     fosterId?: true
@@ -19416,6 +20587,9 @@ export namespace Prisma {
     templateSlug?: true
     signerName?: true
     signerEmail?: true
+    signerAddress?: true
+    signerPhone?: true
+    microchipNumber?: true
     kittenName?: true
     kittenId?: true
     fosterId?: true
@@ -19434,6 +20608,9 @@ export namespace Prisma {
     templateSlug?: true
     signerName?: true
     signerEmail?: true
+    signerAddress?: true
+    signerPhone?: true
+    microchipNumber?: true
     kittenName?: true
     kittenId?: true
     fosterId?: true
@@ -19539,6 +20716,9 @@ export namespace Prisma {
     templateSlug: string
     signerName: string
     signerEmail: string
+    signerAddress: string
+    signerPhone: string
+    microchipNumber: string
     kittenName: string
     kittenId: number | null
     fosterId: number | null
@@ -19576,6 +20756,9 @@ export namespace Prisma {
     templateSlug?: boolean
     signerName?: boolean
     signerEmail?: boolean
+    signerAddress?: boolean
+    signerPhone?: boolean
+    microchipNumber?: boolean
     kittenName?: boolean
     kittenId?: boolean
     fosterId?: boolean
@@ -19597,6 +20780,9 @@ export namespace Prisma {
     templateSlug?: boolean
     signerName?: boolean
     signerEmail?: boolean
+    signerAddress?: boolean
+    signerPhone?: boolean
+    microchipNumber?: boolean
     kittenName?: boolean
     kittenId?: boolean
     fosterId?: boolean
@@ -19618,6 +20804,9 @@ export namespace Prisma {
     templateSlug?: boolean
     signerName?: boolean
     signerEmail?: boolean
+    signerAddress?: boolean
+    signerPhone?: boolean
+    microchipNumber?: boolean
     kittenName?: boolean
     kittenId?: boolean
     fosterId?: boolean
@@ -19639,6 +20828,9 @@ export namespace Prisma {
     templateSlug?: boolean
     signerName?: boolean
     signerEmail?: boolean
+    signerAddress?: boolean
+    signerPhone?: boolean
+    microchipNumber?: boolean
     kittenName?: boolean
     kittenId?: boolean
     fosterId?: boolean
@@ -19651,7 +20843,7 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-  export type ContractOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "templateSlug" | "signerName" | "signerEmail" | "kittenName" | "kittenId" | "fosterId" | "applicationId" | "documentVersion" | "signedPdfUrl" | "signatureAudit" | "status" | "signedAt" | "createdAt", ExtArgs["result"]["contract"]>
+  export type ContractOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "templateSlug" | "signerName" | "signerEmail" | "signerAddress" | "signerPhone" | "microchipNumber" | "kittenName" | "kittenId" | "fosterId" | "applicationId" | "documentVersion" | "signedPdfUrl" | "signatureAudit" | "status" | "signedAt" | "createdAt", ExtArgs["result"]["contract"]>
   export type ContractInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     kitten?: boolean | Contract$kittenArgs<ExtArgs>
     foster?: boolean | Contract$fosterArgs<ExtArgs>
@@ -19681,6 +20873,9 @@ export namespace Prisma {
       templateSlug: string
       signerName: string
       signerEmail: string
+      signerAddress: string
+      signerPhone: string
+      microchipNumber: string
       kittenName: string
       kittenId: number | null
       fosterId: number | null
@@ -20122,6 +21317,9 @@ export namespace Prisma {
     readonly templateSlug: FieldRef<"Contract", 'String'>
     readonly signerName: FieldRef<"Contract", 'String'>
     readonly signerEmail: FieldRef<"Contract", 'String'>
+    readonly signerAddress: FieldRef<"Contract", 'String'>
+    readonly signerPhone: FieldRef<"Contract", 'String'>
+    readonly microchipNumber: FieldRef<"Contract", 'String'>
     readonly kittenName: FieldRef<"Contract", 'String'>
     readonly kittenId: FieldRef<"Contract", 'Int'>
     readonly fosterId: FieldRef<"Contract", 'Int'>
@@ -46134,12 +47332,29 @@ export namespace Prisma {
   export type ApplicationScalarFieldEnum = (typeof ApplicationScalarFieldEnum)[keyof typeof ApplicationScalarFieldEnum]
 
 
+  export const ContractTemplateScalarFieldEnum: {
+    id: 'id',
+    slug: 'slug',
+    type: 'type',
+    label: 'label',
+    version: 'version',
+    bodyText: 'bodyText',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ContractTemplateScalarFieldEnum = (typeof ContractTemplateScalarFieldEnum)[keyof typeof ContractTemplateScalarFieldEnum]
+
+
   export const ContractScalarFieldEnum: {
     id: 'id',
     type: 'type',
     templateSlug: 'templateSlug',
     signerName: 'signerName',
     signerEmail: 'signerEmail',
+    signerAddress: 'signerAddress',
+    signerPhone: 'signerPhone',
+    microchipNumber: 'microchipNumber',
     kittenName: 'kittenName',
     kittenId: 'kittenId',
     fosterId: 'fosterId',
@@ -47757,6 +48972,75 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Application"> | Date | string
   }
 
+  export type ContractTemplateWhereInput = {
+    AND?: ContractTemplateWhereInput | ContractTemplateWhereInput[]
+    OR?: ContractTemplateWhereInput[]
+    NOT?: ContractTemplateWhereInput | ContractTemplateWhereInput[]
+    id?: IntFilter<"ContractTemplate"> | number
+    slug?: StringFilter<"ContractTemplate"> | string
+    type?: EnumContractTypeFilter<"ContractTemplate"> | $Enums.ContractType
+    label?: StringFilter<"ContractTemplate"> | string
+    version?: StringFilter<"ContractTemplate"> | string
+    bodyText?: StringFilter<"ContractTemplate"> | string
+    createdAt?: DateTimeFilter<"ContractTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"ContractTemplate"> | Date | string
+  }
+
+  export type ContractTemplateOrderByWithRelationInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    type?: SortOrder
+    label?: SortOrder
+    version?: SortOrder
+    bodyText?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ContractTemplateWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    slug?: string
+    AND?: ContractTemplateWhereInput | ContractTemplateWhereInput[]
+    OR?: ContractTemplateWhereInput[]
+    NOT?: ContractTemplateWhereInput | ContractTemplateWhereInput[]
+    type?: EnumContractTypeFilter<"ContractTemplate"> | $Enums.ContractType
+    label?: StringFilter<"ContractTemplate"> | string
+    version?: StringFilter<"ContractTemplate"> | string
+    bodyText?: StringFilter<"ContractTemplate"> | string
+    createdAt?: DateTimeFilter<"ContractTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"ContractTemplate"> | Date | string
+  }, "id" | "slug">
+
+  export type ContractTemplateOrderByWithAggregationInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    type?: SortOrder
+    label?: SortOrder
+    version?: SortOrder
+    bodyText?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ContractTemplateCountOrderByAggregateInput
+    _avg?: ContractTemplateAvgOrderByAggregateInput
+    _max?: ContractTemplateMaxOrderByAggregateInput
+    _min?: ContractTemplateMinOrderByAggregateInput
+    _sum?: ContractTemplateSumOrderByAggregateInput
+  }
+
+  export type ContractTemplateScalarWhereWithAggregatesInput = {
+    AND?: ContractTemplateScalarWhereWithAggregatesInput | ContractTemplateScalarWhereWithAggregatesInput[]
+    OR?: ContractTemplateScalarWhereWithAggregatesInput[]
+    NOT?: ContractTemplateScalarWhereWithAggregatesInput | ContractTemplateScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"ContractTemplate"> | number
+    slug?: StringWithAggregatesFilter<"ContractTemplate"> | string
+    type?: EnumContractTypeWithAggregatesFilter<"ContractTemplate"> | $Enums.ContractType
+    label?: StringWithAggregatesFilter<"ContractTemplate"> | string
+    version?: StringWithAggregatesFilter<"ContractTemplate"> | string
+    bodyText?: StringWithAggregatesFilter<"ContractTemplate"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"ContractTemplate"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ContractTemplate"> | Date | string
+  }
+
   export type ContractWhereInput = {
     AND?: ContractWhereInput | ContractWhereInput[]
     OR?: ContractWhereInput[]
@@ -47766,6 +49050,9 @@ export namespace Prisma {
     templateSlug?: StringFilter<"Contract"> | string
     signerName?: StringFilter<"Contract"> | string
     signerEmail?: StringFilter<"Contract"> | string
+    signerAddress?: StringFilter<"Contract"> | string
+    signerPhone?: StringFilter<"Contract"> | string
+    microchipNumber?: StringFilter<"Contract"> | string
     kittenName?: StringFilter<"Contract"> | string
     kittenId?: IntNullableFilter<"Contract"> | number | null
     fosterId?: IntNullableFilter<"Contract"> | number | null
@@ -47787,6 +49074,9 @@ export namespace Prisma {
     templateSlug?: SortOrder
     signerName?: SortOrder
     signerEmail?: SortOrder
+    signerAddress?: SortOrder
+    signerPhone?: SortOrder
+    microchipNumber?: SortOrder
     kittenName?: SortOrder
     kittenId?: SortOrderInput | SortOrder
     fosterId?: SortOrderInput | SortOrder
@@ -47811,6 +49101,9 @@ export namespace Prisma {
     templateSlug?: StringFilter<"Contract"> | string
     signerName?: StringFilter<"Contract"> | string
     signerEmail?: StringFilter<"Contract"> | string
+    signerAddress?: StringFilter<"Contract"> | string
+    signerPhone?: StringFilter<"Contract"> | string
+    microchipNumber?: StringFilter<"Contract"> | string
     kittenName?: StringFilter<"Contract"> | string
     kittenId?: IntNullableFilter<"Contract"> | number | null
     fosterId?: IntNullableFilter<"Contract"> | number | null
@@ -47832,6 +49125,9 @@ export namespace Prisma {
     templateSlug?: SortOrder
     signerName?: SortOrder
     signerEmail?: SortOrder
+    signerAddress?: SortOrder
+    signerPhone?: SortOrder
+    microchipNumber?: SortOrder
     kittenName?: SortOrder
     kittenId?: SortOrderInput | SortOrder
     fosterId?: SortOrderInput | SortOrder
@@ -47858,6 +49154,9 @@ export namespace Prisma {
     templateSlug?: StringWithAggregatesFilter<"Contract"> | string
     signerName?: StringWithAggregatesFilter<"Contract"> | string
     signerEmail?: StringWithAggregatesFilter<"Contract"> | string
+    signerAddress?: StringWithAggregatesFilter<"Contract"> | string
+    signerPhone?: StringWithAggregatesFilter<"Contract"> | string
+    microchipNumber?: StringWithAggregatesFilter<"Contract"> | string
     kittenName?: StringWithAggregatesFilter<"Contract"> | string
     kittenId?: IntNullableWithAggregatesFilter<"Contract"> | number | null
     fosterId?: IntNullableWithAggregatesFilter<"Contract"> | number | null
@@ -50725,11 +52024,88 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ContractTemplateCreateInput = {
+    slug: string
+    type: $Enums.ContractType
+    label: string
+    version?: string
+    bodyText: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ContractTemplateUncheckedCreateInput = {
+    id?: number
+    slug: string
+    type: $Enums.ContractType
+    label: string
+    version?: string
+    bodyText: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ContractTemplateUpdateInput = {
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumContractTypeFieldUpdateOperationsInput | $Enums.ContractType
+    label?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    bodyText?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContractTemplateUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumContractTypeFieldUpdateOperationsInput | $Enums.ContractType
+    label?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    bodyText?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContractTemplateCreateManyInput = {
+    id?: number
+    slug: string
+    type: $Enums.ContractType
+    label: string
+    version?: string
+    bodyText: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ContractTemplateUpdateManyMutationInput = {
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumContractTypeFieldUpdateOperationsInput | $Enums.ContractType
+    label?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    bodyText?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContractTemplateUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumContractTypeFieldUpdateOperationsInput | $Enums.ContractType
+    label?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    bodyText?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ContractCreateInput = {
     type: $Enums.ContractType
     templateSlug?: string
     signerName: string
     signerEmail: string
+    signerAddress?: string
+    signerPhone?: string
+    microchipNumber?: string
     kittenName?: string
     documentVersion: string
     signedPdfUrl?: string
@@ -50748,6 +52124,9 @@ export namespace Prisma {
     templateSlug?: string
     signerName: string
     signerEmail: string
+    signerAddress?: string
+    signerPhone?: string
+    microchipNumber?: string
     kittenName?: string
     kittenId?: number | null
     fosterId?: number | null
@@ -50765,6 +52144,9 @@ export namespace Prisma {
     templateSlug?: StringFieldUpdateOperationsInput | string
     signerName?: StringFieldUpdateOperationsInput | string
     signerEmail?: StringFieldUpdateOperationsInput | string
+    signerAddress?: StringFieldUpdateOperationsInput | string
+    signerPhone?: StringFieldUpdateOperationsInput | string
+    microchipNumber?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
     documentVersion?: StringFieldUpdateOperationsInput | string
     signedPdfUrl?: StringFieldUpdateOperationsInput | string
@@ -50783,6 +52165,9 @@ export namespace Prisma {
     templateSlug?: StringFieldUpdateOperationsInput | string
     signerName?: StringFieldUpdateOperationsInput | string
     signerEmail?: StringFieldUpdateOperationsInput | string
+    signerAddress?: StringFieldUpdateOperationsInput | string
+    signerPhone?: StringFieldUpdateOperationsInput | string
+    microchipNumber?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
     kittenId?: NullableIntFieldUpdateOperationsInput | number | null
     fosterId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -50801,6 +52186,9 @@ export namespace Prisma {
     templateSlug?: string
     signerName: string
     signerEmail: string
+    signerAddress?: string
+    signerPhone?: string
+    microchipNumber?: string
     kittenName?: string
     kittenId?: number | null
     fosterId?: number | null
@@ -50818,6 +52206,9 @@ export namespace Prisma {
     templateSlug?: StringFieldUpdateOperationsInput | string
     signerName?: StringFieldUpdateOperationsInput | string
     signerEmail?: StringFieldUpdateOperationsInput | string
+    signerAddress?: StringFieldUpdateOperationsInput | string
+    signerPhone?: StringFieldUpdateOperationsInput | string
+    microchipNumber?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
     documentVersion?: StringFieldUpdateOperationsInput | string
     signedPdfUrl?: StringFieldUpdateOperationsInput | string
@@ -50833,6 +52224,9 @@ export namespace Prisma {
     templateSlug?: StringFieldUpdateOperationsInput | string
     signerName?: StringFieldUpdateOperationsInput | string
     signerEmail?: StringFieldUpdateOperationsInput | string
+    signerAddress?: StringFieldUpdateOperationsInput | string
+    signerPhone?: StringFieldUpdateOperationsInput | string
+    microchipNumber?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
     kittenId?: NullableIntFieldUpdateOperationsInput | number | null
     fosterId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -53630,6 +55024,57 @@ export namespace Prisma {
     not?: NestedEnumContractTypeFilter<$PrismaModel> | $Enums.ContractType
   }
 
+  export type ContractTemplateCountOrderByAggregateInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    type?: SortOrder
+    label?: SortOrder
+    version?: SortOrder
+    bodyText?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ContractTemplateAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type ContractTemplateMaxOrderByAggregateInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    type?: SortOrder
+    label?: SortOrder
+    version?: SortOrder
+    bodyText?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ContractTemplateMinOrderByAggregateInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    type?: SortOrder
+    label?: SortOrder
+    version?: SortOrder
+    bodyText?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ContractTemplateSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type EnumContractTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ContractType | EnumContractTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ContractType[] | ListEnumContractTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ContractType[] | ListEnumContractTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumContractTypeWithAggregatesFilter<$PrismaModel> | $Enums.ContractType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumContractTypeFilter<$PrismaModel>
+    _max?: NestedEnumContractTypeFilter<$PrismaModel>
+  }
+
   export type EnumContractStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.ContractStatus | EnumContractStatusFieldRefInput<$PrismaModel>
     in?: $Enums.ContractStatus[] | ListEnumContractStatusFieldRefInput<$PrismaModel>
@@ -53648,6 +55093,9 @@ export namespace Prisma {
     templateSlug?: SortOrder
     signerName?: SortOrder
     signerEmail?: SortOrder
+    signerAddress?: SortOrder
+    signerPhone?: SortOrder
+    microchipNumber?: SortOrder
     kittenName?: SortOrder
     kittenId?: SortOrder
     fosterId?: SortOrder
@@ -53673,6 +55121,9 @@ export namespace Prisma {
     templateSlug?: SortOrder
     signerName?: SortOrder
     signerEmail?: SortOrder
+    signerAddress?: SortOrder
+    signerPhone?: SortOrder
+    microchipNumber?: SortOrder
     kittenName?: SortOrder
     kittenId?: SortOrder
     fosterId?: SortOrder
@@ -53691,6 +55142,9 @@ export namespace Prisma {
     templateSlug?: SortOrder
     signerName?: SortOrder
     signerEmail?: SortOrder
+    signerAddress?: SortOrder
+    signerPhone?: SortOrder
+    microchipNumber?: SortOrder
     kittenName?: SortOrder
     kittenId?: SortOrder
     fosterId?: SortOrder
@@ -53708,16 +55162,6 @@ export namespace Prisma {
     kittenId?: SortOrder
     fosterId?: SortOrder
     applicationId?: SortOrder
-  }
-
-  export type EnumContractTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.ContractType | EnumContractTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.ContractType[] | ListEnumContractTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.ContractType[] | ListEnumContractTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumContractTypeWithAggregatesFilter<$PrismaModel> | $Enums.ContractType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumContractTypeFilter<$PrismaModel>
-    _max?: NestedEnumContractTypeFilter<$PrismaModel>
   }
 
   export type EnumContractStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -56038,6 +57482,10 @@ export namespace Prisma {
     deleteMany?: ApplicationUploadScalarWhereInput | ApplicationUploadScalarWhereInput[]
   }
 
+  export type EnumContractTypeFieldUpdateOperationsInput = {
+    set?: $Enums.ContractType
+  }
+
   export type KittenCreateNestedOneWithoutContractsInput = {
     create?: XOR<KittenCreateWithoutContractsInput, KittenUncheckedCreateWithoutContractsInput>
     connectOrCreate?: KittenCreateOrConnectWithoutContractsInput
@@ -56054,10 +57502,6 @@ export namespace Prisma {
     create?: XOR<ApplicationCreateWithoutContractsInput, ApplicationUncheckedCreateWithoutContractsInput>
     connectOrCreate?: ApplicationCreateOrConnectWithoutContractsInput
     connect?: ApplicationWhereUniqueInput
-  }
-
-  export type EnumContractTypeFieldUpdateOperationsInput = {
-    set?: $Enums.ContractType
   }
 
   export type EnumContractStatusFieldUpdateOperationsInput = {
@@ -57313,13 +58757,6 @@ export namespace Prisma {
     not?: NestedEnumContractTypeFilter<$PrismaModel> | $Enums.ContractType
   }
 
-  export type NestedEnumContractStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.ContractStatus | EnumContractStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.ContractStatus[] | ListEnumContractStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.ContractStatus[] | ListEnumContractStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumContractStatusFilter<$PrismaModel> | $Enums.ContractStatus
-  }
-
   export type NestedEnumContractTypeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.ContractType | EnumContractTypeFieldRefInput<$PrismaModel>
     in?: $Enums.ContractType[] | ListEnumContractTypeFieldRefInput<$PrismaModel>
@@ -57328,6 +58765,13 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumContractTypeFilter<$PrismaModel>
     _max?: NestedEnumContractTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumContractStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ContractStatus | EnumContractStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ContractStatus[] | ListEnumContractStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ContractStatus[] | ListEnumContractStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumContractStatusFilter<$PrismaModel> | $Enums.ContractStatus
   }
 
   export type NestedEnumContractStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -57724,6 +59168,9 @@ export namespace Prisma {
     templateSlug?: string
     signerName: string
     signerEmail: string
+    signerAddress?: string
+    signerPhone?: string
+    microchipNumber?: string
     kittenName?: string
     documentVersion: string
     signedPdfUrl?: string
@@ -57741,6 +59188,9 @@ export namespace Prisma {
     templateSlug?: string
     signerName: string
     signerEmail: string
+    signerAddress?: string
+    signerPhone?: string
+    microchipNumber?: string
     kittenName?: string
     kittenId?: number | null
     applicationId?: number | null
@@ -57832,6 +59282,9 @@ export namespace Prisma {
     templateSlug?: StringFilter<"Contract"> | string
     signerName?: StringFilter<"Contract"> | string
     signerEmail?: StringFilter<"Contract"> | string
+    signerAddress?: StringFilter<"Contract"> | string
+    signerPhone?: StringFilter<"Contract"> | string
+    microchipNumber?: StringFilter<"Contract"> | string
     kittenName?: StringFilter<"Contract"> | string
     kittenId?: IntNullableFilter<"Contract"> | number | null
     fosterId?: IntNullableFilter<"Contract"> | number | null
@@ -58373,6 +59826,9 @@ export namespace Prisma {
     templateSlug?: string
     signerName: string
     signerEmail: string
+    signerAddress?: string
+    signerPhone?: string
+    microchipNumber?: string
     kittenName?: string
     documentVersion: string
     signedPdfUrl?: string
@@ -58390,6 +59846,9 @@ export namespace Prisma {
     templateSlug?: string
     signerName: string
     signerEmail: string
+    signerAddress?: string
+    signerPhone?: string
+    microchipNumber?: string
     kittenName?: string
     fosterId?: number | null
     applicationId?: number | null
@@ -60659,6 +62118,9 @@ export namespace Prisma {
     templateSlug?: string
     signerName: string
     signerEmail: string
+    signerAddress?: string
+    signerPhone?: string
+    microchipNumber?: string
     kittenName?: string
     documentVersion: string
     signedPdfUrl?: string
@@ -60676,6 +62138,9 @@ export namespace Prisma {
     templateSlug?: string
     signerName: string
     signerEmail: string
+    signerAddress?: string
+    signerPhone?: string
+    microchipNumber?: string
     kittenName?: string
     kittenId?: number | null
     fosterId?: number | null
@@ -63805,6 +65270,9 @@ export namespace Prisma {
     templateSlug?: string
     signerName: string
     signerEmail: string
+    signerAddress?: string
+    signerPhone?: string
+    microchipNumber?: string
     kittenName?: string
     kittenId?: number | null
     applicationId?: number | null
@@ -63968,6 +65436,9 @@ export namespace Prisma {
     templateSlug?: StringFieldUpdateOperationsInput | string
     signerName?: StringFieldUpdateOperationsInput | string
     signerEmail?: StringFieldUpdateOperationsInput | string
+    signerAddress?: StringFieldUpdateOperationsInput | string
+    signerPhone?: StringFieldUpdateOperationsInput | string
+    microchipNumber?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
     documentVersion?: StringFieldUpdateOperationsInput | string
     signedPdfUrl?: StringFieldUpdateOperationsInput | string
@@ -63985,6 +65456,9 @@ export namespace Prisma {
     templateSlug?: StringFieldUpdateOperationsInput | string
     signerName?: StringFieldUpdateOperationsInput | string
     signerEmail?: StringFieldUpdateOperationsInput | string
+    signerAddress?: StringFieldUpdateOperationsInput | string
+    signerPhone?: StringFieldUpdateOperationsInput | string
+    microchipNumber?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
     kittenId?: NullableIntFieldUpdateOperationsInput | number | null
     applicationId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -64002,6 +65476,9 @@ export namespace Prisma {
     templateSlug?: StringFieldUpdateOperationsInput | string
     signerName?: StringFieldUpdateOperationsInput | string
     signerEmail?: StringFieldUpdateOperationsInput | string
+    signerAddress?: StringFieldUpdateOperationsInput | string
+    signerPhone?: StringFieldUpdateOperationsInput | string
+    microchipNumber?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
     kittenId?: NullableIntFieldUpdateOperationsInput | number | null
     applicationId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -64148,6 +65625,9 @@ export namespace Prisma {
     templateSlug?: string
     signerName: string
     signerEmail: string
+    signerAddress?: string
+    signerPhone?: string
+    microchipNumber?: string
     kittenName?: string
     fosterId?: number | null
     applicationId?: number | null
@@ -64582,6 +66062,9 @@ export namespace Prisma {
     templateSlug?: StringFieldUpdateOperationsInput | string
     signerName?: StringFieldUpdateOperationsInput | string
     signerEmail?: StringFieldUpdateOperationsInput | string
+    signerAddress?: StringFieldUpdateOperationsInput | string
+    signerPhone?: StringFieldUpdateOperationsInput | string
+    microchipNumber?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
     documentVersion?: StringFieldUpdateOperationsInput | string
     signedPdfUrl?: StringFieldUpdateOperationsInput | string
@@ -64599,6 +66082,9 @@ export namespace Prisma {
     templateSlug?: StringFieldUpdateOperationsInput | string
     signerName?: StringFieldUpdateOperationsInput | string
     signerEmail?: StringFieldUpdateOperationsInput | string
+    signerAddress?: StringFieldUpdateOperationsInput | string
+    signerPhone?: StringFieldUpdateOperationsInput | string
+    microchipNumber?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
     fosterId?: NullableIntFieldUpdateOperationsInput | number | null
     applicationId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -64616,6 +66102,9 @@ export namespace Prisma {
     templateSlug?: StringFieldUpdateOperationsInput | string
     signerName?: StringFieldUpdateOperationsInput | string
     signerEmail?: StringFieldUpdateOperationsInput | string
+    signerAddress?: StringFieldUpdateOperationsInput | string
+    signerPhone?: StringFieldUpdateOperationsInput | string
+    microchipNumber?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
     fosterId?: NullableIntFieldUpdateOperationsInput | number | null
     applicationId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -64678,6 +66167,9 @@ export namespace Prisma {
     templateSlug?: string
     signerName: string
     signerEmail: string
+    signerAddress?: string
+    signerPhone?: string
+    microchipNumber?: string
     kittenName?: string
     kittenId?: number | null
     fosterId?: number | null
@@ -64703,6 +66195,9 @@ export namespace Prisma {
     templateSlug?: StringFieldUpdateOperationsInput | string
     signerName?: StringFieldUpdateOperationsInput | string
     signerEmail?: StringFieldUpdateOperationsInput | string
+    signerAddress?: StringFieldUpdateOperationsInput | string
+    signerPhone?: StringFieldUpdateOperationsInput | string
+    microchipNumber?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
     documentVersion?: StringFieldUpdateOperationsInput | string
     signedPdfUrl?: StringFieldUpdateOperationsInput | string
@@ -64720,6 +66215,9 @@ export namespace Prisma {
     templateSlug?: StringFieldUpdateOperationsInput | string
     signerName?: StringFieldUpdateOperationsInput | string
     signerEmail?: StringFieldUpdateOperationsInput | string
+    signerAddress?: StringFieldUpdateOperationsInput | string
+    signerPhone?: StringFieldUpdateOperationsInput | string
+    microchipNumber?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
     kittenId?: NullableIntFieldUpdateOperationsInput | number | null
     fosterId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -64737,6 +66235,9 @@ export namespace Prisma {
     templateSlug?: StringFieldUpdateOperationsInput | string
     signerName?: StringFieldUpdateOperationsInput | string
     signerEmail?: StringFieldUpdateOperationsInput | string
+    signerAddress?: StringFieldUpdateOperationsInput | string
+    signerPhone?: StringFieldUpdateOperationsInput | string
+    microchipNumber?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
     kittenId?: NullableIntFieldUpdateOperationsInput | number | null
     fosterId?: NullableIntFieldUpdateOperationsInput | number | null

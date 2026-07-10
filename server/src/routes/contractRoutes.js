@@ -2,6 +2,7 @@ import { Router } from 'express';
 import {
   createContractDraft,
   deleteContract,
+  emailContractAgreement,
   getContractById,
   getContracts,
   getContractStats,
@@ -17,6 +18,7 @@ router.get('/:id', getContractById);
 router.post('/', createContractDraft);
 router.patch('/:id', updateContract);
 router.delete('/:id', deleteContract);
+router.post('/:id/email', emailContractAgreement);
 router.post('/:id/sign', markContractSigned);
 
 export default router;

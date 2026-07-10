@@ -274,12 +274,28 @@ enum ContractStatus {
   VOID
 }
 
+model ContractTemplate {
+  id        Int          @id @default(autoincrement())
+  slug      String       @unique
+  type      ContractType
+  label     String
+  version   String       @default("2026.1")
+  bodyText  String       @db.Text
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@index([type])
+}
+
 model Contract {
   id               Int            @id @default(autoincrement())
   type             ContractType
   templateSlug     String         @default("foster_supplies_provided")
   signerName       String
   signerEmail      String
+  signerAddress    String         @default("")
+  signerPhone      String         @default("")
+  microchipNumber  String         @default("")
   kittenName       String         @default("")
   kittenId         Int?
   kitten           Kitten?        @relation(fields: [kittenId], references: [id], onDelete: SetNull)

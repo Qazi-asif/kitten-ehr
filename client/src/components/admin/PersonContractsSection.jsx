@@ -70,10 +70,10 @@ function PersonContractsSection({ signerEmail, title = 'Executed Agreements' }) 
                   {contract.status}
                 </span>
                 <Link
-                  to={`/admin/contracts?review=${contract.id}`}
+                  to={`/admin/contracts?view=${contract.id}`}
                   className="text-sm font-semibold text-brand hover:underline"
                 >
-                  Open
+                  View
                 </Link>
               </div>
             </li>

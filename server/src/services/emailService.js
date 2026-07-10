@@ -356,3 +356,112 @@ export async function sendSponsorshipReceivedEmails({
     }),
   ]);
 }
+
+export async function sendContractAgreementEmail({ contract, agreementText, note = '' }) {
+  const settings = await getEmailSettings();
+  const recipient = contract.signerEmail?.trim();
+  const provider = resolveEmailProvider(settings);
+  const templateKey = EMAIL_TEMPLATE_KEYS.CONTRACT_AGREEMENT;
+  const kittenName = contract.kittenName || contract.kitten?.name || 'your cat';
+  const subject = `${settings.orgName || 'Pawsitive Transformations'} — ${contract.type === 'ADOPTION' ? 'Cat Adoption Agreement' : 'Foster Care Agreement'}`;
+
+  if (!settings.emailsEnabled) {
+    await logEmailAttempt({
+      templateKey,
+      toEmail: recipient || 'unknown',
+      subject: '(skipped - emails disabled)',
+      status: 'skipped',
+      provider,
+      errorMessage: 'Email sending is disabled in settings',
+      relatedType: 'Contract',
+      relatedId: contract.id,
+    });
+    return { ok: false, skipped: true, errorMessage: 'Email sending is disabled in settings' };
+  }
+
+  if (!recipient) {
+    await logEmailAttempt({
+      templateKey,
+      toEmail: 'unknown',
+      subject: '(skipped - missing recipient)',
+      status: 'skipped',
+      provider,
+      errorMessage: 'Recipient email is missing',
+      relatedType: 'Contract',
+      relatedId: contract.id,
+    });
+    return { ok: false, skipped: true, errorMessage: 'Recipient email is missing' };
+  }
+
+  const noteBlock = note
+    ? `<p style="margin:0 0 16px;padding:12px;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0;">${escapeHtml(note)}</p>`
+    : '';
+
+  const innerHtml = `
+<h2 style="margin:0 0 16px;font-size:20px;">Agreement for ${escapeHtml(kittenName)}</h2>
+<p>Hi ${escapeHtml(contract.signerName)},</p>
+<p>Please review the agreement below from ${escapeHtml(settings.orgName || 'Pawsitive Transformations')}. A team member will help you complete signing in the admin portal or at your adoption appointment.</p>
+${noteBlock}
+<pre style="margin:20px 0;padding:16px;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0;white-space:pre-wrap;font-family:Georgia,serif;font-size:13px;line-height:1.6;color:#334155;">${escapeHtml(agreementText)}</pre>
+<p>If you have questions, reply to this email or contact us directly.</p>
+<p>Thank you,<br>${escapeHtml(settings.orgName || 'Pawsitive Transformations')}</p>`;
+
+  const layoutHtml = await getLayoutTemplate();
+  const html = wrapEmailContent(innerHtml, { orgName: settings.orgName }, layoutHtml);
+  const text = stripHtml(innerHtml);
+
+  const smtpPass = process.env.SMTP_PASS || process.env.SENDGRID_API_KEY || settings.smtpPass;
+  const smtpHost = process.env.SMTP_HOST || settings.smtpHost;
+  const smtpUser = process.env.SMTP_USER || settings.smtpUser;
+
+  if (!smtpHost || !smtpUser || !smtpPass) {
+    await logEmailAttempt({
+      templateKey,
+      toEmail: recipient,
+      subject,
+      status: 'skipped',
+      provider,
+      errorMessage: 'SMTP is not fully configured',
+      relatedType: 'Contract',
+      relatedId: contract.id,
+    });
+    return { ok: false, skipped: true, errorMessage: 'SMTP is not fully configured' };
+  }
+
+  try {
+    const transporter = getSmtpTransporter(settings, smtpHost, smtpUser, smtpPass);
+    const info = await transporter.sendMail({
+      from: `"${settings.fromName || settings.orgName}" <${settings.fromEmail || smtpUser}>`,
+      to: recipient,
+      subject,
+      text,
+      html: html || undefined,
+    });
+
+    await logEmailAttempt({
+      templateKey,
+      toEmail: recipient,
+      subject,
+      status: 'sent',
+      provider,
+      externalMessageId: info.messageId || '',
+      relatedType: 'Contract',
+      relatedId: contract.id,
+    });
+
+    return { ok: true, messageId: info.messageId };
+  } catch (error) {
+    await logEmailAttempt({
+      templateKey,
+      toEmail: recipient,
+      subject,
+      status: 'failed',
+      provider,
+      errorMessage: error.message,
+      relatedType: 'Contract',
+      relatedId: contract.id,
+    });
+    console.error('Contract agreement email failed:', error.message);
+    return { ok: false, error: error.message };
+  }
+}

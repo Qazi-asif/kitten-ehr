@@ -6,13 +6,17 @@ const EMPTY_FORM = {
   templateSlug: 'foster_supplies_provided',
   signerName: '',
   signerEmail: '',
+  signerAddress: '',
+  signerPhone: '',
+  microchipNumber: '',
   kittenName: '',
   documentVersion: '2026.1',
 };
 
-function ContractEditModal({ contract, onClose, onSave, saving }) {
+function ContractEditModal({ contract, templateOptions = CONTRACT_TEMPLATES, onClose, onSave, saving }) {
   const [form, setForm] = useState(EMPTY_FORM);
   const [error, setError] = useState('');
+  const isAdoption = form.templateSlug === 'adoption';
 
   useEffect(() => {
     if (!contract) return;
@@ -20,6 +24,9 @@ function ContractEditModal({ contract, onClose, onSave, saving }) {
       templateSlug: contract.templateSlug || 'foster_supplies_provided',
       signerName: contract.signerName || '',
       signerEmail: contract.signerEmail || '',
+      signerAddress: contract.signerAddress || '',
+      signerPhone: contract.signerPhone || '',
+      microchipNumber: contract.microchipNumber || contract.kitten?.microchipNumber || '',
       kittenName: contract.kittenName || contract.kitten?.name || '',
       documentVersion: contract.documentVersion || '2026.1',
     });
@@ -34,6 +41,9 @@ function ContractEditModal({ contract, onClose, onSave, saving }) {
         templateSlug: form.templateSlug,
         signerName: form.signerName.trim(),
         signerEmail: form.signerEmail.trim(),
+        signerAddress: form.signerAddress.trim(),
+        signerPhone: form.signerPhone.trim(),
+        microchipNumber: form.microchipNumber.trim(),
         kittenName: form.kittenName.trim(),
         documentVersion: form.documentVersion.trim(),
       });
@@ -63,7 +73,7 @@ function ContractEditModal({ contract, onClose, onSave, saving }) {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="px-6 py-5">
+        <form onSubmit={handleSubmit} className="max-h-[80vh] overflow-y-auto px-6 py-5">
           {error && (
             <div className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>
           )}
@@ -76,7 +86,7 @@ function ContractEditModal({ contract, onClose, onSave, saving }) {
                 onChange={(e) => setForm((prev) => ({ ...prev, templateSlug: e.target.value }))}
                 className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
               >
-                {CONTRACT_TEMPLATES.map((template) => (
+                {templateOptions.map((template) => (
                   <option key={template.slug} value={template.slug}>{template.label}</option>
                 ))}
               </select>
@@ -100,6 +110,34 @@ function ContractEditModal({ contract, onClose, onSave, saving }) {
                 className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
               />
             </label>
+            {isAdoption && (
+              <>
+                <label className="block sm:col-span-2">
+                  <span className="text-xs font-semibold uppercase text-gray-500">Adopter address</span>
+                  <input
+                    value={form.signerAddress}
+                    onChange={(e) => setForm((prev) => ({ ...prev, signerAddress: e.target.value }))}
+                    className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                  />
+                </label>
+                <label className="block">
+                  <span className="text-xs font-semibold uppercase text-gray-500">Phone</span>
+                  <input
+                    value={form.signerPhone}
+                    onChange={(e) => setForm((prev) => ({ ...prev, signerPhone: e.target.value }))}
+                    className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                  />
+                </label>
+                <label className="block">
+                  <span className="text-xs font-semibold uppercase text-gray-500">Microchip number</span>
+                  <input
+                    value={form.microchipNumber}
+                    onChange={(e) => setForm((prev) => ({ ...prev, microchipNumber: e.target.value }))}
+                    className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                  />
+                </label>
+              </>
+            )}
             <label className="block sm:col-span-2">
               <span className="text-xs font-semibold uppercase text-gray-500">Kitten name</span>
               <input

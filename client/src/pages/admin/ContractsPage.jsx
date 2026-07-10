@@ -1,14 +1,17 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Eye, FileSignature, Pencil, Plus, Search, Trash2 } from 'lucide-react';
+import { Eye, FileSignature, Mail, Pencil, Plus, Search, Trash2 } from 'lucide-react';
+import AgreementTemplatesPanel from '../../components/admin/AgreementTemplatesPanel';
 import ContractEditModal from '../../components/admin/ContractEditModal';
-import ContractReviewModal from '../../components/admin/ContractReviewModal';
+import ContractViewModal from '../../components/admin/ContractViewModal';
 import ContractSigningPad from '../../components/ContractSigningPad';
 import {
   createContractDraft,
   deleteContract,
+  emailContractAgreement,
   fetchContractById,
   fetchContracts,
+  fetchContractTemplates,
   markContractSigned,
   updateContract,
 } from '../../services/api';
@@ -26,6 +29,9 @@ const EMPTY_DRAFT = {
   templateSlug: 'foster_supplies_provided',
   signerName: '',
   signerEmail: '',
+  signerAddress: '',
+  signerPhone: '',
+  microchipNumber: '',
   kittenName: '',
   documentVersion: '2026.1',
 };
@@ -48,6 +54,8 @@ function ContractsPage() {
   const [signingContract, setSigningContract] = useState(null);
   const [reviewContract, setReviewContract] = useState(null);
   const [editContract, setEditContract] = useState(null);
+  const [agreementTemplates, setAgreementTemplates] = useState([]);
+  const [emailingId, setEmailingId] = useState(null);
   const [savingEdit, setSavingEdit] = useState(false);
   const [showDraftForm, setShowDraftForm] = useState(false);
   const [draftForm, setDraftForm] = useState(EMPTY_DRAFT);
@@ -87,21 +95,29 @@ function ContractsPage() {
     load(initial);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const reviewId = searchParams.get('review');
+  useEffect(() => {
+    fetchContractTemplates()
+      .then((data) => setAgreementTemplates(Array.isArray(data) ? data : []))
+      .catch(() => setAgreementTemplates([]));
+  }, []);
+
+  const templateOptions = agreementTemplates.length
+    ? agreementTemplates.map((template) => ({ slug: template.slug, label: template.label }))
+    : CONTRACT_TEMPLATES;
+
+  const reviewId = searchParams.get('review') || searchParams.get('view');
 
   useEffect(() => {
     if (!reviewId) return;
 
     const match = contracts.find((c) => String(c.id) === reviewId);
-    if (match?.status === 'SIGNED') {
+    if (match) {
       setReviewContract(match);
       return;
     }
 
     fetchContractById(reviewId)
-      .then((contract) => {
-        if (contract.status === 'SIGNED') setReviewContract(contract);
-      })
+      .then((contract) => setReviewContract(contract))
       .catch(() => {});
   }, [reviewId, contracts]);
 
@@ -148,6 +164,9 @@ function ContractsPage() {
         templateSlug: draftForm.templateSlug,
         signerName: draftForm.signerName.trim(),
         signerEmail: draftForm.signerEmail.trim(),
+        signerAddress: draftForm.signerAddress.trim(),
+        signerPhone: draftForm.signerPhone.trim(),
+        microchipNumber: draftForm.microchipNumber.trim(),
         kittenName: draftForm.kittenName.trim(),
         documentVersion: draftForm.documentVersion.trim(),
       });
@@ -191,10 +210,27 @@ function ContractsPage() {
     }
   }
 
+  async function handleEmail(contract) {
+    const note = window.prompt('Optional message to include in the email (leave blank for none):', '');
+    if (note === null) return;
+
+    setEmailingId(contract.id);
+    setError('');
+    try {
+      await emailContractAgreement(contract.id, { note: note.trim() });
+      window.alert(`Agreement emailed to ${contract.signerEmail}.`);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setEmailingId(null);
+    }
+  }
+
   function openReview(contract) {
     setReviewContract(contract);
     const params = new URLSearchParams(searchParams);
-    params.set('review', String(contract.id));
+    params.set('view', String(contract.id));
+    params.delete('review');
     setSearchParams(params);
   }
 
@@ -202,11 +238,15 @@ function ContractsPage() {
     setReviewContract(null);
     const params = new URLSearchParams(searchParams);
     params.delete('review');
+    params.delete('view');
     setSearchParams(params);
   }
 
+  const draftIsAdoption = draftForm.templateSlug === 'adoption';
+
   return (
     <div>
+      <AgreementTemplatesPanel />
       <div className="mb-6 flex flex-wrap items-center justify-end gap-4">
         <button
           type="button"
@@ -325,7 +365,7 @@ function ContractsPage() {
                 onChange={(e) => setDraftForm((prev) => ({ ...prev, templateSlug: e.target.value }))}
                 className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
               >
-                {CONTRACT_TEMPLATES.map((template) => (
+                {templateOptions.map((template) => (
                   <option key={template.slug} value={template.slug}>{template.label}</option>
                 ))}
               </select>
@@ -358,6 +398,34 @@ function ContractsPage() {
                 className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
               />
             </label>
+            {draftIsAdoption && (
+              <>
+                <label className="block sm:col-span-2">
+                  <span className="text-xs font-semibold uppercase text-gray-500">Adopter address</span>
+                  <input
+                    value={draftForm.signerAddress}
+                    onChange={(e) => setDraftForm((prev) => ({ ...prev, signerAddress: e.target.value }))}
+                    className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                  />
+                </label>
+                <label className="block">
+                  <span className="text-xs font-semibold uppercase text-gray-500">Phone</span>
+                  <input
+                    value={draftForm.signerPhone}
+                    onChange={(e) => setDraftForm((prev) => ({ ...prev, signerPhone: e.target.value }))}
+                    className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                  />
+                </label>
+                <label className="block">
+                  <span className="text-xs font-semibold uppercase text-gray-500">Microchip number</span>
+                  <input
+                    value={draftForm.microchipNumber}
+                    onChange={(e) => setDraftForm((prev) => ({ ...prev, microchipNumber: e.target.value }))}
+                    className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                  />
+                </label>
+              </>
+            )}
             <label className="block">
               <span className="text-xs font-semibold uppercase text-gray-500">Document version</span>
               <input
@@ -437,14 +505,23 @@ function ContractsPage() {
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex flex-wrap items-center gap-2 text-sm">
-                          {contract.status === 'SIGNED' && (
+                          <button
+                            type="button"
+                            onClick={() => openReview(contract)}
+                            className="inline-flex items-center gap-1 font-semibold text-emerald-700 hover:underline"
+                          >
+                            <Eye className="h-4 w-4" />
+                            View
+                          </button>
+                          {contract.status !== 'VOID' && (
                             <button
                               type="button"
-                              onClick={() => openReview(contract)}
-                              className="inline-flex items-center gap-1 font-semibold text-emerald-700 hover:underline"
+                              onClick={() => handleEmail(contract)}
+                              disabled={emailingId === contract.id}
+                              className="inline-flex items-center gap-1 font-semibold text-sky-700 hover:underline disabled:opacity-50"
                             >
-                              <Eye className="h-4 w-4" />
-                              Review
+                              <Mail className="h-4 w-4" />
+                              {emailingId === contract.id ? 'Sending...' : 'Email'}
                             </button>
                           )}
                           {contract.status === 'SENT' && (
@@ -503,7 +580,7 @@ function ContractsPage() {
           <div className="h-full w-full max-h-[900px] max-w-4xl overflow-hidden rounded-2xl border border-neutral-300 shadow-2xl">
             <ContractSigningPad
               contractId={signingContract.id}
-              contractText={getDefaultContractText(signingContract)}
+              contractText={getDefaultContractText(signingContract, agreementTemplates)}
               signerName={signingContract.signerName}
               onClose={() => setSigningContract(null)}
               onSign={handleSign}
@@ -512,10 +589,15 @@ function ContractsPage() {
         </div>
       )}
 
-      <ContractReviewModal contract={reviewContract} onClose={closeReview} />
+      <ContractViewModal
+        contract={reviewContract}
+        templates={agreementTemplates}
+        onClose={closeReview}
+      />
 
       <ContractEditModal
         contract={editContract}
+        templateOptions={templateOptions}
         onClose={() => setEditContract(null)}
         onSave={handleSaveEdit}
         saving={savingEdit}

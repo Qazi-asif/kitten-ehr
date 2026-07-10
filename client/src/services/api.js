@@ -623,6 +623,50 @@ export async function deleteContract(id) {
   if (!response.ok) throw new Error(await readApiError(response, 'Failed to delete contract'));
 }
 
+export async function emailContractAgreement(id, data = {}) {
+  const response = await adminFetch(`/contracts/${id}/email`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to email agreement'));
+  return response.json();
+}
+
+export async function fetchContractTemplates() {
+  const response = await adminFetch('/contract-templates');
+  if (!response.ok) throw new Error('Failed to load agreement templates');
+  return response.json();
+}
+
+export async function createContractTemplate(data) {
+  const response = await adminFetch('/contract-templates', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to create agreement template'));
+  return response.json();
+}
+
+export async function updateContractTemplate(slug, data) {
+  const response = await adminFetch(`/contract-templates/${slug}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to update agreement template'));
+  return response.json();
+}
+
+export async function deleteContractTemplate(slug) {
+  const response = await adminFetch(`/contract-templates/${slug}`, { method: 'DELETE' });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to delete agreement template'));
+}
+
+export async function resetContractTemplate(slug) {
+  const response = await adminFetch(`/contract-templates/${slug}/reset`, { method: 'POST' });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to reset agreement template'));
+  return response.json();
+}
+
 export async function fetchOnboardingList() {
   const response = await adminFetch('/onboarding');
   if (!response.ok) throw new Error('Failed to load onboarding records');
