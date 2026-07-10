@@ -16,7 +16,7 @@ const CATEGORY_ICONS = {
       <path d="M28 36 h8 M28 44 h8" />
     </svg>
   ),
-  'Colony & Feral Care': (
+  'Colony & Feral': (
     <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="h-10 w-10 text-brand">
       <path d="M12 48 L12 28 L32 14 L52 28 L52 48 Z" />
       <rect x="24" y="34" width="16" height="14" rx="2" />
@@ -24,7 +24,7 @@ const CATEGORY_ICONS = {
       <circle cx="32" cy="24" r="4" fill="currentColor" stroke="none" />
     </svg>
   ),
-  'Becoming A Foster': (
+  'Foster Education': (
     <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="h-10 w-10 text-brand">
       <rect x="8" y="20" width="48" height="30" rx="3" />
       <path d="M16 20 L16 14 L48 14 L48 20" />
@@ -34,7 +34,7 @@ const CATEGORY_ICONS = {
       <path d="M8 26 L56 26" />
     </svg>
   ),
-  'Health & Emergencies': (
+  'Toxins/Health': (
     <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="h-10 w-10 text-brand">
       <path d="M32 8 L12 20 L12 44 L32 56 L52 44 L52 20 Z" />
       <path d="M32 22 v12 M32 38 v4" strokeWidth="3" />
@@ -85,7 +85,13 @@ function EducationHubPage() {
               </svg>
             </h1>
             <p className="mt-2 text-lg font-medium text-slate-600">
-              Helpful resources for cat caregivers and community members.
+              Everything we know, in your corner.
+            </p>
+          </div>
+
+          <div className="px-6 pb-8 lg:px-8">
+            <p className="max-w-3xl text-base leading-relaxed text-slate-600">
+              Good information saves lives. Whether you&apos;re bottle-feeding your first litter, caring for a colony, fostering for us, or just want to keep your own cat safe and healthy, this is where we share what we&apos;ve learned. Browse the guides below, and come back often. We&apos;re always adding more.
             </p>
           </div>
 

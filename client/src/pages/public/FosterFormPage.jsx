@@ -43,7 +43,7 @@ function FosterFormPage() {
             Foster Application
           </h1>
           <p className="mt-5 text-lg leading-relaxed text-slate-600 max-w-2xl mx-auto">
-            Fosters are the heart of our rescue! Tell us about your home and availability so we can match you with the perfect foster cats and kittens.
+            Ready to save lives? Fill out the foster application and we&apos;ll reach out to get you started.
           </p>
         </div>
       </div>

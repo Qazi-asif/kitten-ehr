@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Heart, PawPrint, ShoppingBag, Sparkles } from 'lucide-react';
+import { DONATE_PAGE_LIVE } from '../../constants/siteFeatures';
 import { WISHLIST_OWNER_TYPES, WISHLIST_RETAILER_META } from '../../constants/wishlists';
 import { fetchPublicKittenById, fetchPublicKittenUpdates, fetchPublicWishlists } from '../../services/publicApi';
 import KittenPhoto from '../../components/KittenPhoto';
@@ -165,7 +166,7 @@ function PublicKittenProfile() {
             <button
               type="button"
               onClick={() => scrollToRef(sponsorRef)}
-              className="rounded-xl border-2 border-brand bg-white px-4 py-2.5 text-sm font-bold text-brand transition hover:bg-brand-light"
+              className={`rounded-xl border-2 border-brand bg-white px-4 py-2.5 text-sm font-bold text-brand transition hover:bg-brand-light ${!DONATE_PAGE_LIVE ? 'hidden' : ''}`}
             >
               Sponsor Me
             </button>
@@ -195,7 +196,7 @@ function PublicKittenProfile() {
             <div className="px-5 py-5">
               <p className="text-base leading-relaxed text-slate-700">
                 {kitten.rescueStory
-                  || `${kitten.name} is full of personality and ready to meet their person. Every rescue has a story — and ${kitten.name}'s is still being written with love in foster care.`}
+                  || `${kitten.name} is full of personality and ready to meet their person. Every rescue has a story, and ${kitten.name}'s is still being written with love in foster care.`}
               </p>
               <div className="mt-5 flex flex-wrap gap-2">
                 {infoPills.map((pill) => (
@@ -265,7 +266,7 @@ function PublicKittenProfile() {
             <div className="max-h-[32rem] overflow-y-auto px-4 py-4">
               {updates.length === 0 ? (
                 <p className="px-1 py-6 text-center text-sm text-slate-500">
-                  No public updates yet — check back soon!
+                  No public updates yet. Check back soon!
                 </p>
               ) : (
                 <ol className="space-y-4">
@@ -313,7 +314,8 @@ function PublicKittenProfile() {
         </aside>
       </div>
 
-      {/* Sponsorship section — canonical tiers */}
+      {/* Sponsorship section */}
+      {DONATE_PAGE_LIVE && (
       <section
         ref={sponsorRef}
         id="sponsor"
@@ -325,9 +327,9 @@ function PublicKittenProfile() {
               <Heart className="h-6 w-6" />
             </div>
             <div>
-              <h2 className="text-2xl font-extrabold text-slate-900">Sponsor This Kitten</h2>
-              <p className="mt-1 text-sm text-slate-600">
-                Choose a care package for {kitten.name} or name your own amount.
+              <h2 className="text-2xl font-extrabold text-slate-900">Sponsor {kitten.name}</h2>
+              <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600">
+                Every kitten we rescue needs food, shots, a surgery, and a whole lot of care before they find their person. Sponsoring {kitten.name} covers the real cost of getting them there safely. Pick a tier below, or chip in any amount. You&apos;ll be part of {kitten.name}&apos;s rescue story, and we&apos;ll keep you posted right up until adoption day.
               </p>
             </div>
           </div>
@@ -378,8 +380,8 @@ function PublicKittenProfile() {
                   className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-lg font-semibold text-slate-900 outline-none focus:border-brand focus:ring-1 focus:ring-brand"
                 />
               </div>
-              <span className="mt-2 text-xs text-slate-500">
-                Enter any amount to sponsor {kitten.name}&apos;s care.
+              <span className="mt-2 text-xs leading-relaxed text-slate-500">
+                Not seeing your number? Give whatever feels right. Every dollar goes to work for {kitten.name} and the kittens right behind them.
               </span>
             </label>
           </div>
@@ -396,6 +398,7 @@ function PublicKittenProfile() {
           </p>
         </div>
       </section>
+      )}
     </div>
   );
 }

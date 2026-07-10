@@ -7,23 +7,26 @@ export const EDUCATION_CATEGORIES = [
     description: 'Essential guidance for caring for kittens, from bottle feeding to preparing your home.',
   },
   {
-    name: 'Colony & Feral Care',
+    name: 'Colony & Feral',
     description: 'Trap-Neuter-Return, colony care, and support for community cats.',
   },
   {
-    name: 'Becoming A Foster',
+    name: 'Foster Education',
     description: 'What to expect as a foster, how we support you, and how to get started.',
   },
   {
-    name: 'Health & Emergencies',
-    description: 'Medical basics, FIV/FeLV information, and what to do when a cat needs urgent help.',
+    name: 'Toxins/Health',
+    description: 'Medical basics, toxins, and what to do when a cat needs urgent help.',
   },
 ];
 
 const LEGACY_CATEGORY_MAP = {
   'Kitten Care': 'Kitten Care 101',
   Adoption: 'Kitten Care 101',
-  Fostering: 'Becoming A Foster',
+  Fostering: 'Foster Education',
+  'Becoming A Foster': 'Foster Education',
+  'Colony & Feral Care': 'Colony & Feral',
+  'Health & Emergencies': 'Toxins/Health',
 };
 
 export function normalizeEducationCategory(category = '') {

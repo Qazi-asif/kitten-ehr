@@ -42,7 +42,7 @@ function AdoptionFormPage() {
             Adoption Application
           </h1>
           <p className="mt-5 text-lg leading-relaxed text-slate-600 max-w-2xl mx-auto">
-            Ready to add a new furry member to your family? Fill out the application below, and our adoption counselors will review it shortly.
+            Ready to add a new furry member to your family? Fill out the application below and we&apos;ll review it and reach out soon.
           </p>
         </div>
       </div>

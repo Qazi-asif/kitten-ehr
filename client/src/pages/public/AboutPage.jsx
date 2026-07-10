@@ -1,13 +1,29 @@
 import { Link } from 'react-router-dom';
 
+const TEAM = [
+  {
+    name: 'Lauren',
+    title: 'Chief Cat Herder (Director of Strategy)',
+    bio: 'Vision, business direction, technology, and execution. Lauren is a licensed psychologist by day and a Canadian by origin who fell into cat rescue by accident in 2025 and hasn\'t looked back. She cares for a colony in Corona, jumps in on trapping missions as needed, fosters full time, and shares her home with a headcount of personal cats that is best described as "ever-growing." She\'s also the name on the state and IRS paperwork, which is a filing technicality, not a hierarchy.',
+  },
+  {
+    name: 'Danielle',
+    title: 'Chief of Purrs & Partnerships (Director of Development)',
+    bio: 'Community partnerships, grants, fundraising, and donor relationships, plus the corporate record-keeping and people side of a growing organization. Danielle is an HR specialist and former federal employee who has spent years in animal rescue. She fosters too, and raised two kids alongside a house full of fur children.',
+  },
+  {
+    name: 'Maggie',
+    title: 'Chief of Rescue Ops (Director of Operations)',
+    bio: 'The rescue engine: intake, foster development, and medical protocols, keeping cats moving safely from pull to placement. Maggie coordinates a shelter euthanasia list, connecting rescues and fosters and networking cats out of danger, and brings nearly a decade of critical-care experience as a medical and neonate foster. She and her husband Craig keep an endless revolving door of cats and kittens.',
+  },
+];
+
 function AboutPage() {
   return (
-    <div className="bg-white overflow-hidden">
-      
-      {/* Hero */}
+    <div className="overflow-hidden bg-white">
       <div className="mx-auto max-w-7xl px-6 pt-10 pb-6 lg:px-8">
-        <h1 className="text-6xl font-extrabold tracking-tight text-brand flex items-center gap-3">
-          About Us
+        <h1 className="flex items-center gap-3 text-6xl font-extrabold tracking-tight text-brand">
+          Our Mission
           <svg viewBox="0 0 100 100" fill="currentColor" className="h-11 w-11 text-brand">
             <circle cx="25" cy="30" r="9" />
             <circle cx="43" cy="18" r="10" />
@@ -16,81 +32,72 @@ function AboutPage() {
             <path d="M 52,43 C 33,43 21,57 21,72 C 21,87 34,96 52,96 C 70,96 83,87 83,72 C 83,57 71,43 52,43 Z" />
           </svg>
         </h1>
-        <p className="mt-2 text-lg font-medium text-slate-600">Our mission, our story, and the community we serve.</p>
+        <p className="mt-2 text-lg font-medium text-slate-600">
+          The cats we save, the story behind us, and the community we serve.
+        </p>
       </div>
 
-      <div className="mx-auto max-w-7xl px-6 pb-16 lg:px-8 mt-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          
-          {/* Left Column: Image with decoration */}
+      <div className="mx-auto max-w-7xl px-6 pb-16 lg:px-8">
+        <section className="mb-16 rounded-2xl border border-brand/20 bg-brand-light/20 p-8">
+          <h2 className="text-sm font-bold uppercase tracking-[0.2em] text-brand">Our Mission</h2>
+          <p className="mt-4 text-xl font-semibold leading-relaxed text-slate-800">
+            To save the most vulnerable cats from euthanasia and hardship, and to connect them with the people who need them just as much.
+          </p>
+        </section>
+
+        <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-2 lg:gap-20">
           <div className="relative">
-            {/* Background decorative blob */}
-            <svg viewBox="0 0 200 200" className="absolute -top-10 -left-10 w-full h-full text-brand/10 transform scale-110 -z-10" fill="currentColor">
-              <path d="M42.7,-73.4C55.9,-67.2,67.6,-57,75.4,-44.2C83.2,-31.4,87.2,-15.7,85.6,-0.9C84,13.9,76.8,27.8,67.6,39.8C58.3,51.8,47.1,61.9,34,68.7C20.9,75.6,5.9,79.2,-8.1,77.5C-22.1,75.9,-35.1,68.9,-46.9,60.2C-58.7,51.6,-69.3,41.2,-76.4,28.6C-83.6,16,-87.3,1.3,-84.9,-12.3C-82.5,-26,-74,-38.5,-63.3,-48.5C-52.5,-58.4,-39.6,-65.7,-26.4,-71.4C-13.1,-77,1,-80.9,14.7,-79.1C28.4,-77.2,29.5,-79.7,42.7,-73.4Z" transform="translate(100 100)" />
-            </svg>
-            
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
-              <img 
-                src="/images/about.jpg" 
-                alt="Rescue kitten" 
-                className="w-full h-full object-cover aspect-[4/5] sm:aspect-square lg:aspect-[4/5]" 
+            <div className="relative overflow-hidden rounded-3xl border-4 border-white shadow-2xl">
+              <img
+                src="/images/about.jpg"
+                alt="Rescue cat"
+                className="aspect-[4/5] h-full w-full object-cover sm:aspect-square lg:aspect-[4/5]"
               />
-              
-              {/* Floating badge */}
-              <div className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-sm p-4 rounded-2xl shadow-xl border border-white flex items-center gap-4">
-                 <div className="h-12 w-12 bg-brand/10 rounded-full flex items-center justify-center text-brand">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
-                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                    </svg>
-                 </div>
-                 <div>
-                   <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Since</p>
-                   <p className="text-xl font-black text-brand">2018</p>
-                 </div>
-              </div>
             </div>
           </div>
-          
-          {/* Right Column: Text & Stats */}
-          <div className="flex flex-col justify-center">
-            <h2 className="text-4xl font-extrabold text-brand mb-6">Our Story</h2>
-            
+
+          <div>
+            <h2 className="mb-6 text-4xl font-extrabold text-brand">Our Story</h2>
             <div className="space-y-5 text-lg leading-relaxed text-slate-600">
               <p>
-                Pawsitive Transformations is a foster-based kitten rescue dedicated to saving neonatal and special-needs kittens. Our volunteers provide round-the-clock bottle feeding, medical support, and socialization until each kitten is ready for adoption.
+                Pawsitive Transformations is a foster-based cat rescue in the Inland Empire. We pull at-risk cats and kittens from euthanasia lists, from the streets, and from communities that have run out of options, then get them healthy in foster homes and match them with the people who&apos;ll love them for life.
               </p>
               <p>
-                We believe every kitten deserves a chance at a happy, healthy life — and a loving forever home. Through our community outreach and education, we strive to reduce the population of homeless cats and promote responsible pet ownership.
+                We believe every cat deserves a shot at a healthy life and a home to grow old in. Through fostering, community partnerships, and education, we work to save the cats in front of us today and shrink the crisis that put them at risk in the first place.
               </p>
             </div>
-            
-            {/* Stats Grid */}
-            <div className="grid grid-cols-2 gap-6 mt-10">
-              <div className="rounded-2xl border border-brand/20 bg-brand/5 p-6 border-l-4 border-l-brand">
-                <p className="text-4xl font-black text-brand">2,450+</p>
-                <p className="mt-1 text-sm font-bold text-slate-600 uppercase tracking-wider">Cats Rescued</p>
-              </div>
-              <div className="rounded-2xl border border-brand/20 bg-brand/5 p-6 border-l-4 border-l-brand">
-                <p className="text-4xl font-black text-brand">15k+</p>
-                <p className="mt-1 text-sm font-bold text-slate-600 uppercase tracking-wider">Lives Touched</p>
-              </div>
-            </div>
-            
-            {/* CTA Buttons */}
+
             <div className="mt-10 flex flex-wrap gap-4">
-              <Link to="/kittens" className="rounded-xl bg-brand px-8 py-3.5 text-base font-bold text-white shadow-sm hover:bg-brand-dark transition-colors">
+              <Link
+                to="/kittens"
+                className="rounded-xl bg-brand px-8 py-3.5 text-base font-bold text-white shadow-sm transition-colors hover:bg-brand-dark"
+              >
                 Meet Our Cats
               </Link>
-              <Link to="/get-involved" className="rounded-xl border-2 border-brand/20 bg-white px-8 py-3.5 text-base font-bold text-brand hover:border-brand transition-colors">
+              <Link
+                to="/get-involved"
+                className="rounded-xl border-2 border-brand/20 bg-white px-8 py-3.5 text-base font-bold text-brand transition-colors hover:border-brand"
+              >
                 Get Involved
               </Link>
             </div>
-            
           </div>
-          
         </div>
+
+        <section className="mt-20">
+          <h2 className="text-3xl font-extrabold text-brand">Meet the Team</h2>
+          <div className="mt-8 space-y-8">
+            {TEAM.map((member) => (
+              <div key={member.name} className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
+                <h3 className="text-xl font-bold text-slate-900">
+                  {member.name} · {member.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">{member.bio}</p>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
-      
     </div>
   );
 }

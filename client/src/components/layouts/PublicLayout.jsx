@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { ChevronDown, Menu, X } from 'lucide-react';
+import { DONATE_PAGE_LIVE } from '../../constants/siteFeatures';
 import { fetchPublicSettings } from '../../services/publicApi';
 import PublicLogo from '../PublicLogo';
 
@@ -8,7 +9,7 @@ const navItems = [
   {
     label: 'Adopt',
     children: [
-      { label: 'Available Kittens', path: '/kittens' },
+      { label: 'Available Cats', path: '/kittens' },
       { label: 'Adoption Process', path: '/adopt' },
     ],
   },
@@ -20,7 +21,7 @@ const navItems = [
     ],
   },
   {
-    label: 'Support Us',
+    label: 'Get Involved',
     children: [
       { label: 'Donate', path: '/donate' },
       { label: 'Events', path: '/events' },
@@ -36,21 +37,28 @@ const navItems = [
   { label: 'Contact', path: '/contact' },
 ];
 
+const DEFAULT_SOCIAL = {
+  facebookUrl: 'https://facebook.com/PawsitiveTransformationsCA',
+  instagramUrl: 'https://instagram.com/pawsitivetransformationsCA',
+  tiktokUrl: 'https://tiktok.com/@PawsitiveTrans',
+};
+
 const DEFAULT_SETTINGS = {
   orgName: 'Pawsitive Transformations',
-  orgEin: '42-3678960',
+  orgEin: '',
   contactPhone: '(951) 830-1825',
   contactEmail: 'hello@pawsitivetransformations.org',
-  contactAddress: '12523 Limonite, Suite 440412\nMira Loma, CA 91752\nRiverside County',
-  facebookUrl: '',
-  instagramUrl: '',
+  contactAddress: '12523 Limonite, Suite 440412\nMira Loma, CA 91752',
+  facebookUrl: DEFAULT_SOCIAL.facebookUrl,
+  instagramUrl: DEFAULT_SOCIAL.instagramUrl,
+  tiktokUrl: DEFAULT_SOCIAL.tiktokUrl,
 };
 
 const FOOTER_LINK_COLUMNS = [
   {
     title: 'Adopt',
     links: [
-      { label: 'Available Kittens', path: '/kittens' },
+      { label: 'Available Cats', path: '/kittens' },
       { label: 'Adoption Process', path: '/adopt' },
     ],
   },
@@ -62,7 +70,7 @@ const FOOTER_LINK_COLUMNS = [
     ],
   },
   {
-    title: 'Support Us',
+    title: 'Get Involved',
     links: [
       { label: 'Donate', path: '/donate' },
       { label: 'Events', path: '/events' },
@@ -77,28 +85,33 @@ const FOOTER_LINK_COLUMNS = [
   },
 ];
 
+function displayEin(orgEin) {
+  const trimmed = orgEin?.trim();
+  if (!trimmed || trimmed === '[PENDING]') return '[PENDING]';
+  return trimmed;
+}
+
 function SocialLinks({ settings }) {
   const contactEmail = settings.contactEmail?.trim() || 'hello@pawsitivetransformations.org';
+  const facebookUrl = settings.facebookUrl?.trim() || DEFAULT_SOCIAL.facebookUrl;
+  const instagramUrl = settings.instagramUrl?.trim() || DEFAULT_SOCIAL.instagramUrl;
+  const tiktokUrl = settings.tiktokUrl?.trim() || DEFAULT_SOCIAL.tiktokUrl;
 
   return (
     <div className="flex items-center gap-4">
-      {settings.facebookUrl ? (
-        <a href={settings.facebookUrl} target="_blank" rel="noreferrer" className="text-white/70 transition-colors hover:text-brand-light" aria-label="Facebook">
-          <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-            <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
-          </svg>
-        </a>
-      ) : null}
-      {settings.instagramUrl ? (
-        <a href={settings.instagramUrl} target="_blank" rel="noreferrer" className="text-white/70 transition-colors hover:text-brand-light" aria-label="Instagram">
-          <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-            <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" />
-            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-          </svg>
-        </a>
-      ) : null}
-      <a href="https://tiktok.com" target="_blank" rel="noreferrer" className="text-white/70 transition-colors hover:text-brand-light" aria-label="TikTok">
+      <a href={facebookUrl} target="_blank" rel="noreferrer" className="text-white/70 transition-colors hover:text-brand-light" aria-label="Facebook">
+        <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+          <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
+        </svg>
+      </a>
+      <a href={instagramUrl} target="_blank" rel="noreferrer" className="text-white/70 transition-colors hover:text-brand-light" aria-label="Instagram">
+        <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+          <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" />
+          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+        </svg>
+      </a>
+      <a href={tiktokUrl} target="_blank" rel="noreferrer" className="text-white/70 transition-colors hover:text-brand-light" aria-label="TikTok">
         <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
           <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.02 1.59 4.23.85.97 1.99 1.66 3.25 1.95v3.91c-1.21-.16-2.36-.67-3.34-1.39-.77-.55-1.4-1.28-1.84-2.14v7.7c0 5.04-4.22 8.78-9.29 8.29-3.9-.38-7.07-3.56-7.44-7.46C-.2 10.02 3.51 5.8 8.55 5.8c.45 0 .9.03 1.35.1v3.96c-1.39-.42-2.92-.09-4.04.83-1.42 1.17-1.78 3.25-.86 4.82.93 1.59 3.01 2.21 4.67 1.41.97-.47 1.58-1.47 1.58-2.55V.02h.27z" />
         </svg>
@@ -234,7 +247,7 @@ function PublicLayout() {
 
   useEffect(() => {
     fetchPublicSettings()
-      .then(setSettings)
+      .then((data) => setSettings({ ...DEFAULT_SETTINGS, ...data }))
       .catch(() => {});
   }, [location.pathname]);
 
@@ -273,12 +286,14 @@ function PublicLayout() {
           </nav>
 
           <div className="flex items-center gap-3 sm:gap-4">
-            <Link
-              to="/donate"
-              className="hidden rounded-full bg-brand px-6 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-brand-dark hover:shadow-md sm:inline-block"
-            >
-              Donate
-            </Link>
+            {DONATE_PAGE_LIVE ? (
+              <Link
+                to="/donate"
+                className="hidden rounded-full bg-brand px-6 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-brand-dark hover:shadow-md sm:inline-block"
+              >
+                Donate
+              </Link>
+            ) : null}
             <button
               type="button"
               onClick={() => setMobileOpen((open) => !open)}
@@ -307,13 +322,15 @@ function PublicLayout() {
                   onNavigate={closeMobileMenu}
                 />
               ))}
-              <Link
-                to="/donate"
-                onClick={closeMobileMenu}
-                className="mt-2 rounded-full bg-brand px-3 py-2.5 text-center text-sm font-semibold text-white"
-              >
-                Donate
-              </Link>
+              {DONATE_PAGE_LIVE ? (
+                <Link
+                  to="/donate"
+                  onClick={closeMobileMenu}
+                  className="mt-2 rounded-full bg-brand px-3 py-2.5 text-center text-sm font-semibold text-white"
+                >
+                  Donate
+                </Link>
+              ) : null}
               <Link
                 to="/login"
                 onClick={closeMobileMenu}
@@ -331,7 +348,6 @@ function PublicLayout() {
       </main>
 
       <footer className="border-t border-brand-dark/20 bg-brand-dark text-white">
-        {/* Row 1 — Main footer links */}
         <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
           <div className="mb-10 flex flex-col items-start justify-between gap-6 border-b border-white/15 pb-10 sm:flex-row sm:items-center">
             <div>
@@ -362,11 +378,10 @@ function PublicLayout() {
           </div>
         </div>
 
-        {/* Row 2 — Legal & compliance */}
         <div className="border-t border-white/10 bg-brand px-6 py-4 lg:px-8">
           <div className="mx-auto max-w-7xl space-y-2 text-center text-xs text-white/80">
             <p>
-              &copy; 2026 Pawsitive Transformations. All rights reserved. Pawsitive Transformations is a 501(c)(3) non-profit organization. EIN: {settings.orgEin?.trim() || '42-3678960'}.
+              &copy; 2026 Pawsitive Transformations. All rights reserved. Pawsitive Transformations is a 501(c)(3) non-profit organization. EIN: {displayEin(settings.orgEin)}.
             </p>
             <p>
               This site uses AI-assisted tools to support our operations.{' '}
@@ -378,7 +393,6 @@ function PublicLayout() {
           </div>
         </div>
 
-        {/* Row 3 — Agency credit */}
         <div className="border-t border-white/10 bg-brand-dark px-6 py-3 lg:px-8">
           <p className="mx-auto max-w-7xl text-right text-[11px] text-brand-light/90">
             <span className="transition-colors hover:text-white">Engineered by Wolke Consultancy LLC</span>

@@ -53,9 +53,9 @@ function EventDetailPage() {
 
       {kittens.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-bold text-slate-900">Photo Gallery</h2>
+          <h2 className="text-xl font-bold text-slate-900">Cats attending</h2>
           <p className="mt-1 text-sm text-slate-600">
-            Meet the kittens and cats featured at this event.
+            Adoptable cats tagged to this event.
           </p>
           <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
             {kittens.map((kitten, index) => (

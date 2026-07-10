@@ -49,28 +49,37 @@ function EventsPage() {
     [events],
   );
 
+  const pastEvents = useMemo(
+    () => events.filter((event) => new Date(event.date) < new Date()).reverse(),
+    [events],
+  );
+
   return (
     <div className="mx-auto max-w-6xl px-6 py-12">
-      <h1 className="text-3xl font-bold text-slate-900">Events Calendar</h1>
-      <p className="mt-2 text-slate-600">
-        Browse adoption fairs, fundraisers, and community events on the calendar below.
+      <h1 className="text-3xl font-bold text-slate-900">Events</h1>
+      <p className="mt-2 text-lg text-slate-600">Come meet the cats. Bring a friend.</p>
+      <p className="mt-4 max-w-3xl text-sm leading-relaxed text-slate-600">
+        From adoption events to volunteer meetups, this is where you&apos;ll find us out in the community. Browse what&apos;s coming up, see which cats will be there, and RSVP so we know to look for you. Every event is a chance to meet an adoptable cat, learn about fostering, or just get your cat fix for the day.
       </p>
 
       {loading ? (
         <p className="mt-8 text-slate-500">Loading events...</p>
       ) : events.length === 0 ? (
         <p className="mt-8 rounded-xl bg-brand-light px-6 py-8 text-center text-slate-600">
-          No public events right now. Check back soon!
+          No events on the calendar right now, but we&apos;re never quiet for long. Follow us on Instagram and Facebook for the first word on adoption events, pop-ups, and meetups.
         </p>
       ) : (
         <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[1.1fr_0.9fr]">
-          <PublicEventsCalendar
-            events={events}
-            selectedDate={selectedDate}
-            onSelectDate={setSelectedDate}
-            monthDate={monthDate}
-            onMonthChange={setMonthDate}
-          />
+          <div>
+            <h2 className="mb-4 text-lg font-bold text-slate-900">Upcoming Events</h2>
+            <PublicEventsCalendar
+              events={events}
+              selectedDate={selectedDate}
+              onSelectDate={setSelectedDate}
+              monthDate={monthDate}
+              onMonthChange={setMonthDate}
+            />
+          </div>
 
           <div className="space-y-6">
             <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -109,7 +118,7 @@ function EventsPage() {
                           to={`/events/${event.slug}`}
                           className="mt-3 inline-flex text-sm font-semibold text-brand hover:underline"
                         >
-                          View details →
+                          View details
                         </Link>
                       )}
                     </li>
@@ -119,7 +128,7 @@ function EventsPage() {
             </section>
 
             <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <h2 className="text-lg font-bold text-slate-900">Coming Up</h2>
+              <h2 className="text-lg font-bold text-slate-900">Upcoming Events</h2>
               {upcomingEvents.length === 0 ? (
                 <p className="mt-3 text-sm text-slate-500">No upcoming events scheduled.</p>
               ) : (
@@ -148,6 +157,45 @@ function EventsPage() {
           </div>
         </div>
       )}
+
+      {pastEvents.length > 0 && (
+        <section className="mt-12 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 className="text-lg font-bold text-slate-900">Past Events</h2>
+          <p className="mt-2 text-sm text-slate-600">
+            Miss one? Here&apos;s where our cats have been lately. Every event puts more cats in front of the people who&apos;ll take them home.
+          </p>
+          <ul className="mt-4 space-y-3">
+            {pastEvents.slice(0, 5).map((event) => (
+              <li key={event.id}>
+                {event.slug ? (
+                  <Link
+                    to={`/events/${event.slug}`}
+                    className="block rounded-lg border border-slate-100 px-3 py-2 hover:border-brand/30 hover:bg-brand-light/30"
+                  >
+                    <p className="text-sm font-semibold text-slate-900">{event.title}</p>
+                    <p className="text-xs text-slate-500">{formatEventDate(event.date)}</p>
+                  </Link>
+                ) : (
+                  <div className="rounded-lg border border-slate-100 px-3 py-2">
+                    <p className="text-sm font-semibold text-slate-900">{event.title}</p>
+                    <p className="text-xs text-slate-500">{formatEventDate(event.date)}</p>
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <section className="mt-12 rounded-2xl border border-brand/25 bg-brand-light/20 p-6 text-center">
+        <p className="text-sm leading-relaxed text-slate-700">
+          Want us at your business, school, or community event? We love a good tabling opportunity. Reach out through our{' '}
+          <Link to="/contact" className="font-semibold text-brand hover:underline">
+            Contact
+          </Link>{' '}
+          page and let&apos;s set it up.
+        </p>
+      </section>
     </div>
   );
 }

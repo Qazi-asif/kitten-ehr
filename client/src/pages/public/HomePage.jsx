@@ -1,83 +1,54 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Heart, Home, Users, Cat } from 'lucide-react';
-import {
-  CONTENT_CATEGORY_SUCCESS_STORY,
-  articleExcerpt,
-} from '../../constants/educationCategories';
-import { fetchPublicContent, fetchPublicKittens } from '../../services/publicApi';
+import { fetchPublicKittens } from '../../services/publicApi';
 import { getKittenImageUrl } from '../../utils/kittenImages';
-
-function PawIcon({ className = '' }) {
-  return (
-    <svg viewBox="0 0 100 100" fill="currentColor" className={className}>
-      <circle cx="25" cy="30" r="9" />
-      <circle cx="43" cy="18" r="10" />
-      <circle cx="63" cy="18" r="10" />
-      <circle cx="81" cy="32" r="9" />
-      <path d="M 52,43 C 33,43 21,57 21,72 C 21,87 34,96 52,96 C 70,96 83,87 83,72 C 83,57 71,43 52,43 Z" />
-    </svg>
-  );
-}
 
 const pillars = [
   {
     icon: Cat,
     title: 'RESCUE',
-    text: 'We pull at-risk cats and kittens from euthanasia lists, the streets, and communities across Southern California that have nowhere else to turn.',
+    text: 'We pull cats and kittens from euthanasia lists, streets, and communities out of options.',
   },
   {
     icon: Heart,
     title: 'REHABILITATE',
-    text: 'We provide medical treatment, nutrition, and safe foster care so each cat can heal physically and emotionally.',
+    text: 'Vetting, vaccines, spay and neuter, and foster care until they\'re healthy and ready for a home.',
   },
   {
     icon: Home,
     title: 'RESTORE',
-    text: 'We rebuild trust and wellness through patient care, socialization, and support for the people who love them.',
+    text: 'The bond between a cat and a person heals them both. That two-way rescue is the heart of what we do.',
   },
   {
     icon: Users,
     title: 'REACH',
-    text: 'We extend education, adoption pathways, foster support, and community resources so more cats and neighbors can thrive.',
+    text: 'Free resources on kitten care, colonies, and keeping cats safe and healthy, out in the community.',
   },
 ];
 
 const howItWorks = [
   {
     title: 'We pull.',
-    text: 'When a cat lands on a euthanasia list, is found injured on the street, or comes from a community with no resources, we act fast. We pull them into safety and into our foster network.',
+    text: 'From shelter euthanasia lists, from parking lots and backyards, from colonies and porches. Kittens too young to survive on their own, moms with litters, cats who just ran out of time and options. Wherever a cat is out of chances, that\'s where we start.',
   },
   {
     title: 'We heal.',
-    text: 'Every cat receives the medical care, nutrition, and daily support they need to recover—whether that means bottle feeding, treating illness, or giving a shy soul time to trust again.',
+    text: 'Every cat goes into a foster home, not a cage. Vetting, vaccines, spay or neuter, microchip, and as much couch time as it takes.',
   },
   {
     title: 'We place.',
-    text: 'Once a cat is ready, we match them with adopters and forever homes, so every rescue becomes a lifeline that continues far beyond our doors.',
+    text: 'Adopters are screened, cats are matched, and every adoption comes with a lifetime promise: if life changes, that cat always has a home with us. No time limit, no judgment.',
   },
-];
-
-const rescueNeeds = [
-  'Kitten Formula & Bottles',
-  'Canned Cat Food (Kittens & Adults)',
-  'Litter (Unscented)',
-  'Fleece Blankets & Towels',
 ];
 
 function HomePage() {
   const [featured, setFeatured] = useState([]);
-  const [successStories, setSuccessStories] = useState([]);
-  const [storiesLoading, setStoriesLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([
-      fetchPublicKittens(4).then((data) => setFeatured(Array.isArray(data) ? data : [])).catch(() => {}),
-      fetchPublicContent(CONTENT_CATEGORY_SUCCESS_STORY)
-        .then((data) => setSuccessStories(Array.isArray(data) ? data : []))
-        .catch(() => setSuccessStories([]))
-        .finally(() => setStoriesLoading(false)),
-    ]);
+    fetchPublicKittens(4)
+      .then((data) => setFeatured(Array.isArray(data) ? data : []))
+      .catch(() => {});
   }, []);
 
   const displayCats = featured.length > 0
@@ -174,6 +145,29 @@ function HomePage() {
       </section>
 
       <section className="border-b border-slate-100 bg-white py-14">
+        <div className="mx-auto max-w-3xl px-6 text-center lg:px-8">
+          <h2 className="text-2xl font-extrabold text-brand">Fostering is the whole engine.</h2>
+          <p className="mt-4 text-base leading-relaxed text-slate-600">
+            You provide the spare room and the love; we cover the rest. One foster home can save a dozen lives a year.
+          </p>
+          <Link
+            to="/get-involved"
+            className="mt-8 inline-flex rounded-lg bg-brand px-6 py-3.5 text-sm font-bold text-white shadow-md transition hover:bg-brand-dark"
+          >
+            Become a Foster
+          </Link>
+        </div>
+      </section>
+
+      <section className="border-b border-slate-100 bg-slate-50 py-12">
+        <div className="mx-auto max-w-4xl px-6 text-center lg:px-8">
+          <p className="text-base leading-relaxed text-slate-600">
+            Pawsitive Transformations is a California nonprofit based in the Inland Empire. Every dollar, every share, every foster application takes a cat off a list or off the street, and puts it on a couch.
+          </p>
+        </div>
+      </section>
+
+      <section className="border-b border-slate-100 bg-white py-14">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {pillars.map(({ icon: Icon, title, text }) => (
@@ -193,131 +187,25 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="bg-white py-20">
+      <section className="bg-white py-16">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-16 lg:grid-cols-3 lg:gap-8">
-            <div className="flex flex-col justify-between pr-0 lg:border-r lg:border-slate-200 lg:pr-10">
-              <div>
-                <h2 className="flex items-center gap-2.5 text-base font-extrabold uppercase tracking-[0.15em] text-slate-800">
-                  <PawIcon className="h-5 w-5 text-brand" />
-                  Featured Cats
-                </h2>
-                <div className="mt-8 grid grid-cols-2 gap-4">
-                  {displayCats.map((cat, idx) => (
-                    <div key={idx} className="aspect-[3/4] overflow-hidden rounded-lg border border-slate-200 bg-slate-50 shadow-sm transition hover:shadow-md">
-                      <img src={cat.image} alt="Featured Kitten" className="h-full w-full object-cover" />
-                    </div>
-                  ))}
+          <div className="flex flex-col items-center gap-8 text-center">
+            <h2 className="text-base font-extrabold uppercase tracking-[0.15em] text-slate-800">
+              Meet the Cats
+            </h2>
+            <div className="grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-4">
+              {displayCats.map((cat, idx) => (
+                <div key={idx} className="aspect-[3/4] overflow-hidden rounded-lg border border-slate-200 bg-slate-50 shadow-sm">
+                  <img src={cat.image} alt="Featured cat" className="h-full w-full object-cover" />
                 </div>
-              </div>
-              <div className="mt-10 text-center lg:text-left">
-                <Link
-                  to="/kittens"
-                  className="inline-flex rounded-lg bg-brand px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-sm transition hover:bg-brand-dark"
-                >
-                  Meet the Cats
-                </Link>
-              </div>
-            </div>
-
-            <div className="flex flex-col justify-between px-0 lg:border-r lg:border-slate-200 lg:px-10">
-              <div>
-                <h2 className="text-base font-extrabold uppercase tracking-[0.15em] text-slate-800">
-                  Current Rescue Needs
-                </h2>
-                <ul className="mt-8 space-y-4 text-slate-600">
-                  {rescueNeeds.map((need) => (
-                    <li key={need} className="flex items-center gap-3">
-                      <PawIcon className="h-4 w-4 shrink-0 text-brand" />
-                      <span className="text-xs font-semibold leading-relaxed tracking-wide">{need}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="mt-10 text-center lg:text-left">
-                <Link
-                  to="/donate"
-                  className="inline-flex rounded-lg bg-brand px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-sm transition hover:bg-brand-dark"
-                >
-                  Support the Mission
-                </Link>
-              </div>
-            </div>
-
-            <div className="flex flex-col justify-between pl-0 lg:pl-10">
-              <div>
-                <h2 className="flex items-center gap-2 text-base font-extrabold uppercase tracking-[0.15em] text-slate-800">
-                  <svg className="h-5 w-5 fill-current text-brand" viewBox="0 0 24 24">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                  </svg>
-                  Our Impact
-                </h2>
-                <div className="mt-8 space-y-8">
-                  <div>
-                    <p className="text-5xl font-extrabold tracking-tight text-brand">2,450+</p>
-                    <p className="mt-1.5 text-xs font-bold uppercase tracking-wider text-slate-500">Cats Rescued</p>
-                  </div>
-                  <div>
-                    <p className="text-5xl font-extrabold tracking-tight text-brand">15,000+</p>
-                    <p className="mt-1.5 text-xs font-bold uppercase tracking-wider text-slate-500">Lives Touched</p>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-10 text-center lg:text-left">
-                <Link
-                  to="/about"
-                  className="inline-flex rounded-lg bg-brand px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-sm transition hover:bg-brand-dark"
-                >
-                  Our Story
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="border-t border-slate-100 bg-slate-50 py-16">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <h2 className="text-base font-extrabold uppercase tracking-[0.15em] text-slate-800">
-                Success Stories
-              </h2>
-              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">
-                Happy endings from cats who found their forever homes through Pawsitive Transformations.
-              </p>
+              ))}
             </div>
             <Link
               to="/kittens"
-              className="inline-flex shrink-0 rounded-lg border border-brand/30 bg-white px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-brand shadow-sm transition hover:bg-brand-light"
+              className="inline-flex rounded-lg bg-brand px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-sm transition hover:bg-brand-dark"
             >
-              View Adoptable Cats
+              Meet the Cats
             </Link>
-          </div>
-
-          <div className="mt-10">
-            {storiesLoading ? (
-              <p className="text-sm text-slate-500">Loading success stories...</p>
-            ) : successStories.length === 0 ? (
-              <div className="rounded-xl border border-slate-200 bg-white p-10 text-center">
-                <p className="text-base font-medium text-slate-700">No success stories yet</p>
-                <p className="mt-2 text-sm text-slate-500">Check back soon for adoption updates from our community.</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-                {successStories.map((story) => (
-                  <article
-                    key={story.id}
-                    className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm"
-                  >
-                    <h3 className="text-lg font-bold text-brand">{story.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                      {articleExcerpt(story.body, 500)}
-                    </p>
-                  </article>
-                ))}
-              </div>
-            )}
           </div>
         </div>
       </section>
@@ -325,7 +213,7 @@ function HomePage() {
       <section className="relative flex w-full leading-[0]">
         <img
           src="/images/below-sec.png"
-          alt="Below Section"
+          alt=""
           className="h-auto w-full object-cover"
         />
         <div className="pointer-events-none absolute inset-0">
