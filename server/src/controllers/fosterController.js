@@ -9,7 +9,19 @@ export async function getAllFosters(_req, res, next) {
   try {
     const fosters = await prisma.foster.findMany({
       orderBy: { id: 'asc' },
-      include: {
+      // Exclude photoUrl from list view — it can be a large base64 blob and
+      // is only needed on the individual foster detail page.
+      select: {
+        id: true,
+        name: true,
+        phone: true,
+        email: true,
+        address: true,
+        experienceLevel: true,
+        capabilityFlags: true,
+        maxKittens: true,
+        notes: true,
+        createdAt: true,
         _count: { select: { currentKittens: true, placements: true } },
       },
     });

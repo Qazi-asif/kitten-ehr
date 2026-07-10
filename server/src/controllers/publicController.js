@@ -11,6 +11,11 @@ import {
   isResolvablePhotoUrl,
   normalizeKittenPhotoUrl,
 } from '../utils/resolveKittenPhotoUrl.js';
+import { getCachedResponse, setCachedResponse } from '../utils/responseCache.js';
+
+// Cache TTLs for public read-only endpoints (milliseconds)
+const PUBLIC_KITTENS_TTL_MS = 60 * 1000;  // 1 min — kitten list
+const PUBLIC_STATS_TTL_MS  = 60 * 1000;   // 1 min — stat counters
 
 const publicKittenSelect = {
   id: true,
@@ -94,13 +99,22 @@ export async function getPublicKittens(req, res, next) {
       ? Math.min(parsedLimit, 100)
       : undefined;
 
+    const cacheKey = `public-kittens:${limit ?? 'all'}`;
+    const cached = getCachedResponse(cacheKey, PUBLIC_KITTENS_TTL_MS);
+    if (cached) {
+      return res.json(cached);
+    }
+
     const kittens = await prisma.kitten.findMany({
       where: publicAvailableKittenFilter,
       select: publicKittenSelect,
       orderBy: { id: 'asc' },
       ...(limit ? { take: limit } : {}),
     });
-    res.json(await enrichPublicKittensWithPhotos(kittens));
+    const enriched = await enrichPublicKittensWithPhotos(kittens);
+
+    setCachedResponse(cacheKey, enriched);
+    res.json(enriched);
   } catch (error) {
     next(error);
   }
@@ -128,13 +142,20 @@ export async function getPublicKittenById(req, res, next) {
 
 export async function getPublicStats(_req, res, next) {
   try {
+    const cached = getCachedResponse('public-stats', PUBLIC_STATS_TTL_MS);
+    if (cached) {
+      return res.json(cached);
+    }
+
     const [availableKittens, adoptedKittens, activeFosters] = await Promise.all([
       prisma.kitten.count({ where: publicAvailableKittenFilter }),
       prisma.kitten.count({ where: { status: 'Adopted' } }),
       prisma.foster.count({ where: { currentKittens: { some: {} } } }),
     ]);
 
-    res.json({ availableKittens, adoptedKittens, activeFosters });
+    const payload = { availableKittens, adoptedKittens, activeFosters };
+    setCachedResponse('public-stats', payload);
+    res.json(payload);
   } catch (error) {
     next(error);
   }
@@ -297,7 +318,9 @@ export async function getPublicSettings(_req, res, next) {
       });
     }
 
-    res.set('Cache-Control', 'no-store');
+    // Allow short-lived public caching — settings rarely change.
+    // The admin can force a refresh by updating settings.
+    res.set('Cache-Control', 'public, max-age=120, stale-while-revalidate=300');
     res.json(toPublicSettings(settings));
   } catch (error) {
     next(error);

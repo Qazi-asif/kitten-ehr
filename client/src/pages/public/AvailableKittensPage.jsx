@@ -16,14 +16,17 @@ function AvailableKittensPage() {
   const [activeFilter, setActiveFilter] = useState('all');
 
   useEffect(() => {
-    fetchPublicKittens()
-      .then(setKittens)
-      .finally(() => setLoading(false));
-
-    fetchPublicContent(CONTENT_CATEGORY_SUCCESS_STORY)
-      .then((data) => setSuccessStories(Array.isArray(data) ? data : []))
-      .catch(() => setSuccessStories([]))
-      .finally(() => setStoriesLoading(false));
+    // Fire both requests in parallel — they are independent
+    Promise.all([
+      fetchPublicKittens(),
+      fetchPublicContent(CONTENT_CATEGORY_SUCCESS_STORY).catch(() => []),
+    ]).then(([kittensData, storiesData]) => {
+      setKittens(kittensData);
+      setSuccessStories(Array.isArray(storiesData) ? storiesData : []);
+    }).finally(() => {
+      setLoading(false);
+      setStoriesLoading(false);
+    });
   }, []);
 
   const filteredKittens = useMemo(

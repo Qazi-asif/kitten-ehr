@@ -60,12 +60,16 @@ function KittensPage() {
   }, [page, listTab, search, statusFilter, fosterFilter, litterFilter]);
 
   useEffect(() => {
+    loadKittens();
+  }, [loadKittens]);
+
+  // Litters and fosters are only needed for filters/form — load them once on mount
+  useEffect(() => {
     Promise.all([
-      loadKittens(),
       fetchLitters().then(setLitters).catch(() => {}),
       fetchFosters().then(setFosters).catch(() => {}),
     ]).catch(() => {});
-  }, [loadKittens]);
+  }, []);
 
   useEffect(() => {
     setPage(1);

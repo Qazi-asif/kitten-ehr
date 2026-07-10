@@ -1,9 +1,13 @@
 import prisma from '../lib/prisma.js';
 import { buildDashboardInsights } from '../services/dashboardInsights.js';
 import { stripInlineDataUrl } from '../utils/kittenSerialization.js';
+import { getCachedResponse, setCachedResponse } from '../utils/responseCache.js';
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 const ALERT_LIMIT = 25;
+// Cache dashboard metrics for 60 seconds — keeps the DB quiet under repeated
+// refreshes while still reflecting new data within a minute.
+const DASHBOARD_METRICS_TTL_MS = 60 * 1000;
 
 const dashboardKittenSelect = {
   id: true,
@@ -175,6 +179,12 @@ export async function getDashboardAlerts() {
 
 export async function getDashboardMetrics(_req, res, next) {
   try {
+    // Serve from cache when available — avoids hammering the DB on every page load
+    const cached = getCachedResponse('dashboard-metrics', DASHBOARD_METRICS_TTL_MS);
+    if (cached) {
+      return res.json(cached);
+    }
+
     const [
       totalKittens,
       availableKittens,
@@ -231,7 +241,7 @@ export async function getDashboardMetrics(_req, res, next) {
       statusGroups.map((group) => [group.status, group._count._all]),
     );
 
-    res.json({
+    const payload = {
       totalKittens,
       availableKittens,
       activeFosters,
@@ -244,7 +254,10 @@ export async function getDashboardMetrics(_req, res, next) {
       recentAdoptions: recentAdoptions.map(serializeDashboardKitten),
       pendingApplications,
       ...alerts,
-    });
+    };
+
+    setCachedResponse('dashboard-metrics', payload);
+    res.json(payload);
   } catch (error) {
     next(error);
   }

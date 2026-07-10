@@ -14,7 +14,7 @@ import {
 } from '../utils/kittenSerialization.js';
 import { evaluateKittenFlags } from '../services/medicalAutomation.js';
 import { buildDashboardInsights } from '../services/dashboardInsights.js';
-import { getCachedResponse, setCachedResponse } from '../utils/responseCache.js';
+import { getCachedResponse, setCachedResponse, invalidateCacheByPrefix } from '../utils/responseCache.js';
 
 const DASHBOARD_STATS_TTL_MS = 60 * 1000;
 
@@ -163,6 +163,11 @@ export async function createKitten(req, res, next) {
         },
       });
     }
+
+    // Bust cached public kittens list and dashboard so the new kitten appears immediately
+    invalidateCacheByPrefix('public-kittens');
+    invalidateCacheByPrefix('public-stats');
+    invalidateCacheByPrefix('dashboard-metrics');
 
     res.status(201).json(kitten);
   } catch (error) {
@@ -317,6 +322,11 @@ export async function updateKitten(req, res, next) {
       });
     }
 
+    // Bust caches — publish targets or status may have changed
+    invalidateCacheByPrefix('public-kittens');
+    invalidateCacheByPrefix('public-stats');
+    invalidateCacheByPrefix('dashboard-metrics');
+
     res.json(kitten);
   } catch (error) {
     next(error);
@@ -341,6 +351,11 @@ export async function deleteKitten(req, res, next) {
     }
 
     await prisma.kitten.delete({ where: { id } });
+
+    // Bust caches — kitten removed from public list
+    invalidateCacheByPrefix('public-kittens');
+    invalidateCacheByPrefix('public-stats');
+    invalidateCacheByPrefix('dashboard-metrics');
 
     res.status(204).send();
   } catch (error) {
