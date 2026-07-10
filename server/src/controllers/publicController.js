@@ -333,7 +333,7 @@ export async function submitContactForm(req, res, next) {
   try {
     const { firstName, lastName, email, phone, topic, message } = req.body;
 
-    // Basic validation
+    // Validation
     if (!firstName?.trim() || !lastName?.trim()) {
       return res.status(400).json({ error: 'First and last name are required.' });
     }
@@ -347,39 +347,44 @@ export async function submitContactForm(req, res, next) {
       return res.status(400).json({ error: 'Please select a topic.' });
     }
 
-    // Load SMTP settings from DB (falls back to env vars)
+    // Load SMTP config — env vars take priority over DB values
     const settings = await prisma.settings.findUnique({ where: { id: 1 } });
 
-    const smtpHost = process.env.SMTP_HOST || settings?.smtpHost;
-    const smtpUser = process.env.SMTP_USER || settings?.smtpUser;
-    const smtpPass = process.env.SMTP_PASS || settings?.smtpPass;
-    const adminEmail = settings?.adminNotifyEmail || settings?.contactEmail || smtpUser;
+    const smtpHost = (process.env.SMTP_HOST || settings?.smtpHost || '').trim();
+    const smtpUser = (process.env.SMTP_USER || settings?.smtpUser || '').trim();
+    const smtpPass = (process.env.SMTP_PASS || settings?.smtpPass || '').trim();
+    const adminEmail = (settings?.adminNotifyEmail || settings?.contactEmail || smtpUser || '').trim();
+    const emailsEnabled = Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS)
+      || Boolean(settings?.emailsEnabled);
 
-    if (!settings?.emailsEnabled) {
+    if (!emailsEnabled) {
       return res.status(503).json({ error: 'Email sending is currently disabled. Please contact us directly.' });
     }
-
     if (!smtpHost || !smtpUser || !smtpPass) {
-      return res.status(503).json({ error: 'Email is not configured. Please contact us directly.' });
+      return res.status(503).json({ error: 'Email is not fully configured on the server. Please contact us directly.' });
     }
-
     if (!adminEmail) {
-      return res.status(503).json({ error: 'No recipient email configured. Please contact us directly.' });
+      return res.status(503).json({ error: 'No recipient email address is configured. Please contact us directly.' });
     }
 
-    const port = Number(settings?.smtpPort) || 587;
-    const secure = settings?.smtpSecure === true || port === 465;
+    const port = Number(process.env.SMTP_PORT || settings?.smtpPort) || 587;
+    // port 465 = direct SSL; everything else (587, 25, etc.) = STARTTLS
+    const secure = port === 465 || process.env.SMTP_SECURE === 'true' || settings?.smtpSecure === true;
     const orgName = settings?.orgName || 'Pawsitive Transformations';
 
-    const transporter = nodemailer.createTransport({
+    const transportConfig = {
       host: smtpHost,
       port,
       secure,
       auth: { user: smtpUser, pass: smtpPass },
-      ...(secure ? {} : { requireTLS: true }),
-    });
+      // Tighten TLS for STARTTLS connections without using requireTLS,
+      // which can cause handshake failures on some hosted environments.
+      tls: { rejectUnauthorized: false },
+    };
 
-    const subject = `[Contact Form] ${escapeHtml(topic)} — ${escapeHtml(firstName.trim())} ${escapeHtml(lastName.trim())}`;
+    const transporter = nodemailer.createTransport(transportConfig);
+
+    const subject = `[Contact Form] ${topic.trim()} — ${firstName.trim()} ${lastName.trim()}`;
 
     const htmlBody = `
 <div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#334155;">
@@ -406,36 +411,36 @@ export async function submitContactForm(req, res, next) {
       message.trim(),
     ].filter(Boolean).join('\n');
 
-    // Send notification to admin
-    await transporter.sendMail({
-      from: `"${orgName} Contact Form" <${smtpUser}>`,
-      to: adminEmail,
-      replyTo: email.trim(),
-      subject,
-      text: textBody,
-      html: htmlBody,
-    });
+    try {
+      // Admin notification
+      await transporter.sendMail({
+        from: `"${orgName} Contact Form" <${smtpUser}>`,
+        to: adminEmail,
+        replyTo: email.trim(),
+        subject,
+        text: textBody,
+        html: htmlBody,
+      });
 
-    // Send confirmation to the sender
-    const confirmSubject = `We received your message — ${orgName}`;
-    const confirmHtml = `
-<div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#334155;">
-  <h2 style="color:#0d9488;margin:0 0 16px;">Thanks for reaching out, ${escapeHtml(firstName.trim())}!</h2>
-  <p>We received your message about <strong>${escapeHtml(topic.trim())}</strong> and will get back to you as soon as possible.</p>
-  <p style="margin-top:20px;font-size:12px;color:#94a3b8;">${escapeHtml(orgName)}</p>
-</div>`;
-
-    await transporter.sendMail({
-      from: `"${orgName}" <${smtpUser}>`,
-      to: email.trim(),
-      subject: confirmSubject,
-      text: `Hi ${firstName.trim()},\n\nThanks for reaching out! We received your message about "${topic.trim()}" and will be in touch shortly.\n\n${orgName}`,
-      html: confirmHtml,
-    });
+      // Sender confirmation
+      await transporter.sendMail({
+        from: `"${orgName}" <${smtpUser}>`,
+        to: email.trim(),
+        subject: `We received your message — ${orgName}`,
+        text: `Hi ${firstName.trim()},\n\nThanks for reaching out! We received your message about "${topic.trim()}" and will be in touch shortly.\n\n${orgName}`,
+        html: `<div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#334155;"><h2 style="color:#0d9488;margin:0 0 16px;">Thanks for reaching out, ${escapeHtml(firstName.trim())}!</h2><p>We received your message about <strong>${escapeHtml(topic.trim())}</strong> and will get back to you as soon as possible.</p><p style="margin-top:20px;font-size:12px;color:#94a3b8;">${escapeHtml(orgName)}</p></div>`,
+      });
+    } catch (smtpError) {
+      // Return a descriptive error instead of a generic 500
+      console.error('Contact form SMTP error:', smtpError.message);
+      return res.status(502).json({
+        error: `Failed to send email: ${smtpError.message}`,
+      });
+    }
 
     res.json({ ok: true });
   } catch (error) {
-    console.error('Contact form email failed:', error.message);
+    console.error('Contact form error:', error.message);
     next(error);
   }
 }

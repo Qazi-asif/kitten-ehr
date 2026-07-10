@@ -177,7 +177,12 @@ app.use((err, _req, res, _next) => {
     return res.status(500).json({ error: `Database error:${hint} ${err.message}` });
   }
 
-  res.status(500).json({ error: 'Internal Server Error' });
+  // In development expose the real error message; in production keep it generic
+  // but still include a short hint so the frontend can show something useful.
+  const isDev = process.env.NODE_ENV !== 'production';
+  res.status(500).json({
+    error: isDev ? (err.message || 'Internal Server Error') : 'Internal Server Error',
+  });
 });
 
 export default app;
