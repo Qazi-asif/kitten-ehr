@@ -3,6 +3,7 @@ import { Link, Outlet, useLocation } from 'react-router-dom';
 import { ChevronDown, Menu, X } from 'lucide-react';
 import { isDonatePageLive } from '../../constants/siteFeatures';
 import { fetchPublicSettings, invalidatePublicSettingsCache } from '../../services/publicApi';
+import { FOOTER_EIN_DISPLAY } from '../../constants/siteCopy';
 import PublicLogo from '../PublicLogo';
 
 const navItems = [
@@ -40,6 +41,7 @@ const navItems = [
 const DEFAULT_SOCIAL = {
   facebookUrl: 'https://facebook.com/PawsitiveTransformationsCA',
   instagramUrl: 'https://instagram.com/pawsitivetransformationsCA',
+  xUrl: 'https://x.com/pawsitivetrans',
   tiktokUrl: 'https://tiktok.com/@PawsitiveTrans',
 };
 
@@ -86,16 +88,15 @@ const FOOTER_LINK_COLUMNS = [
   },
 ];
 
-function displayEin(orgEin) {
-  const trimmed = orgEin?.trim();
-  if (!trimmed || trimmed === '[PENDING]') return '[PENDING]';
-  return trimmed;
+function displayEin() {
+  return FOOTER_EIN_DISPLAY;
 }
 
 function SocialLinks({ settings }) {
   const contactEmail = settings.contactEmail?.trim() || 'hello@pawsitivetransformations.org';
   const facebookUrl = settings.facebookUrl?.trim() || DEFAULT_SOCIAL.facebookUrl;
   const instagramUrl = settings.instagramUrl?.trim() || DEFAULT_SOCIAL.instagramUrl;
+  const xUrl = settings.xUrl?.trim() || DEFAULT_SOCIAL.xUrl;
   const tiktokUrl = settings.tiktokUrl?.trim() || DEFAULT_SOCIAL.tiktokUrl;
 
   return (
@@ -110,6 +111,11 @@ function SocialLinks({ settings }) {
           <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
           <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" />
           <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+        </svg>
+      </a>
+      <a href={xUrl} target="_blank" rel="noreferrer" className="text-white/70 transition-colors hover:text-brand-light" aria-label="X">
+        <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
         </svg>
       </a>
       <a href={tiktokUrl} target="_blank" rel="noreferrer" className="text-white/70 transition-colors hover:text-brand-light" aria-label="TikTok">
@@ -387,7 +393,7 @@ function PublicLayout() {
         <div className="border-t border-white/10 bg-brand px-6 py-4 lg:px-8">
           <div className="mx-auto max-w-7xl space-y-2 text-center text-xs text-white/80">
             <p>
-              &copy; 2026 Pawsitive Transformations. All rights reserved. Pawsitive Transformations is a 501(c)(3) non-profit organization. EIN: {displayEin(settings.orgEin)}.
+              &copy; 2026 Pawsitive Transformations. All rights reserved. Pawsitive Transformations is a 501(c)(3) non-profit organization. EIN {displayEin()}.
             </p>
             <p>
               This site uses AI-assisted tools to support our operations.{' '}

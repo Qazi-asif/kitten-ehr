@@ -1,9 +1,13 @@
 export const DEFAULT_GIVEBUTTER_ACCOUNT = 'MW5zW87vHahaqHQX';
-export const DEFAULT_GIVEBUTTER_CAMPAIGN = 'other';
+export const DEFAULT_GIVEBUTTER_WIDGET_ID = 'gV1nYk';
 
-/** Script + inline form — script alone does not render a visible donation UI. */
+/** Donate page: script + inline form (amounts configured in Givebutter dashboard). */
 export const DEFAULT_GIVEBUTTER_EMBED = `<script async src="https://widgets.givebutter.com/latest.umd.cjs?acct=${DEFAULT_GIVEBUTTER_ACCOUNT}"></script>
-<givebutter-giving-form campaign="${DEFAULT_GIVEBUTTER_CAMPAIGN}"></givebutter-giving-form>`;
+<givebutter-giving-form campaign="other"></givebutter-giving-form>`;
+
+/** Sponsor a Kitten: approved widget from Website Copy Master Doc Section 10. */
+export const DEFAULT_GIVEBUTTER_SPONSOR_EMBED = `<script async src="https://widgets.givebutter.com/latest.umd.cjs?acct=${DEFAULT_GIVEBUTTER_ACCOUNT}"></script>
+<givebutter-widget id="${DEFAULT_GIVEBUTTER_WIDGET_ID}"></givebutter-widget>`;
 
 function extractCampaignFromEmbed(code) {
   const campaignAttr = code.match(/campaign=["']([^"']+)["']/i);
@@ -12,7 +16,7 @@ function extractCampaignFromEmbed(code) {
   const pageParam = code.match(/[?&]p=([^&"'\s>]+)/i);
   if (pageParam?.[1]) return pageParam[1];
 
-  return DEFAULT_GIVEBUTTER_CAMPAIGN;
+  return 'other';
 }
 
 /** Ensure embed includes a visible Givebutter element, not just the library script. */

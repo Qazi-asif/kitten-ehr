@@ -12,12 +12,7 @@ function DonationCheckoutPanel({
 }) {
   return (
     <div className={`rounded-2xl border border-brand/25 bg-white p-6 shadow-sm ${className}`}>
-      <h3 className="text-lg font-bold text-slate-900">Complete your sponsorship</h3>
-      <p className="mt-2 text-sm text-slate-600">
-        Secure checkout is powered by Givebutter. Choose your payment method below to sponsor {kittenName}.
-      </p>
-
-      <p className="mt-4 text-xs leading-relaxed text-slate-500">
+      <p className="text-xs leading-relaxed text-slate-500">
         {sponsorshipOverflowDisclosure(kittenName)}
       </p>
 

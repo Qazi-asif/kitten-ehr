@@ -5,6 +5,7 @@ import GivebutterDonationWidget from '../../components/GivebutterDonationWidget'
 import { getFileUrl } from '../../services/api';
 import { isDonatePageLive } from '../../constants/siteFeatures';
 import { fetchPublicSettings, invalidatePublicSettingsCache } from '../../services/publicApi';
+import { DONATE_PAGE_EIN } from '../../constants/siteCopy';
 import { markCheckoutSuccessParam } from '../../hooks/useGivebutterCheckout';
 
 const OTHER_WAYS = [
@@ -130,9 +131,7 @@ function DonatePage() {
     markCheckoutSuccessParam('donation');
   }, []);
 
-  const orgEin = settings.orgEin?.trim() && settings.orgEin.trim() !== '[PENDING]'
-    ? settings.orgEin.trim()
-    : '[PENDING]';
+  const orgEin = DONATE_PAGE_EIN;
 
   const otherWayLinks = useMemo(() => {
     const venmoHandle = settings.venmoHandle?.trim();

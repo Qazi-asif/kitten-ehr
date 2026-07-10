@@ -29,7 +29,7 @@ function PrivacyPolicyPage() {
             <h2 className="text-xl font-bold text-slate-900">Our Use of Technology</h2>
             <p className="mt-3 leading-relaxed">
               Our organization uses AI-assisted tools to help staff draft marketing copy, social media captions,
-              and certain administrative materials. These tools are designed to support our team—not replace
+              and certain administrative materials. These tools are designed to support our team, not replace
               the judgment, care, and expertise of the people who run our rescue. AI-generated suggestions
               are always reviewed, edited, and approved by human staff before anything is published on our
               website, social channels, or shared with the public.
@@ -38,7 +38,7 @@ function PrivacyPolicyPage() {
               We follow a human-in-the-loop approach to content governance. Private donor information,
               applicant details, foster contact data, medical records, and other sensitive personal
               information are never shared with external AI systems. Only non-sensitive, public-facing
-              information—such as a kitten&apos;s name, breed, adoption status, and general rescue story—is
+              information, such as a kitten&apos;s name, breed, adoption status, and general rescue story, is
               used when staff choose to use AI drafting features, and administrators may disable those
               features organization-wide at any time.
             </p>

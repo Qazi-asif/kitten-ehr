@@ -52,7 +52,7 @@ function ContactPage() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    const subject = `[Contact] ${form.topic} — ${form.firstName} ${form.lastName}`;
+    const subject = `[Contact] ${form.topic}, ${form.firstName} ${form.lastName}`;
     const body = [
       `Name: ${form.firstName} ${form.lastName}`,
       `Email: ${form.email}`,

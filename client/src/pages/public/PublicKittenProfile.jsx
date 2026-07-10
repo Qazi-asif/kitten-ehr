@@ -2,51 +2,14 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Heart, PawPrint, ShoppingBag, Sparkles } from 'lucide-react';
 import { isDonatePageLive } from '../../constants/siteFeatures';
+import { DEFAULT_GIVEBUTTER_SPONSOR_EMBED } from '../../constants/givebutterDefaults';
+import { sponsorshipOverflowDisclosure } from '../../constants/donationCopy';
 import { WISHLIST_OWNER_TYPES, WISHLIST_RETAILER_META } from '../../constants/wishlists';
-import DonationCheckoutPanel from '../../components/DonationCheckoutPanel';
-import DonationConfirmation from '../../components/DonationConfirmation';
+import GivebutterDonationWidget from '../../components/GivebutterDonationWidget';
 import { fetchPublicKittenById, fetchPublicKittenUpdates, fetchPublicSettings, fetchPublicWishlists } from '../../services/publicApi';
 import { markCheckoutSuccessParam } from '../../hooks/useGivebutterCheckout';
 import KittenPhoto from '../../components/KittenPhoto';
 import { formatKittenAgeDetailed } from '../../utils/kittenAge';
-
-const SPONSOR_TIERS = [
-  {
-    id: 'kickstart',
-    name: 'Kickstart Kitty',
-    price: 15,
-    description: 'A vaccine, a dewormer, or a week of formula',
-  },
-  {
-    id: 'shots',
-    name: 'Shots & Chips',
-    price: 40,
-    description: 'Full vaccine set plus a microchip',
-  },
-  {
-    id: 'belly',
-    name: 'Belly & Box',
-    price: 75,
-    description: 'A month of food, litter, and flea prevention',
-  },
-  {
-    id: 'fix',
-    name: 'The Big Fix',
-    price: 135,
-    getDescription: (name) => `Covers ${name}'s spay or neuter surgery`,
-  },
-  {
-    id: 'caboodle',
-    name: 'Whole Kitten Caboodle',
-    price: 350,
-    getDescription: (name) => `Everything, pull to placement. Your name on ${name}'s page.`,
-  },
-];
-
-function tierDescription(tier, kittenName) {
-  if (tier.getDescription) return tier.getDescription(kittenName);
-  return tier.description;
-}
 
 function extractImagesFromContent(content = '') {
   const dataImages = content.match(/data:image\/[a-zA-Z+]+;base64,[A-Za-z0-9+/=]+/g) || [];
@@ -80,11 +43,7 @@ function PublicKittenProfile() {
   const [wishlists, setWishlists] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedTierId, setSelectedTierId] = useState(SPONSOR_TIERS[0].id);
-  const [customAmount, setCustomAmount] = useState('');
-  const [showCheckout, setShowCheckout] = useState(false);
   const [sponsorshipComplete, setSponsorshipComplete] = useState(false);
-  const [donationWidgetCode, setDonationWidgetCode] = useState('');
   const [donatePageLive, setDonatePageLive] = useState(false);
 
   useEffect(() => {
@@ -98,7 +57,6 @@ function PublicKittenProfile() {
         setKitten(kittenData);
         setUpdates(updateData);
         setWishlists(Array.isArray(wishlistData) ? wishlistData : []);
-        setDonationWidgetCode(settingsData?.donationWidgetCode || '');
         setDonatePageLive(Boolean(settingsData?.donatePageLive));
       })
       .catch((err) => setError(err.message))
@@ -107,7 +65,6 @@ function PublicKittenProfile() {
 
   const handleSponsorshipSuccess = useCallback(() => {
     setSponsorshipComplete(true);
-    setShowCheckout(false);
     markCheckoutSuccessParam('sponsor');
   }, []);
 
@@ -125,17 +82,12 @@ function PublicKittenProfile() {
 
   if (error) return <div className="px-6 py-12 text-red-600">{error}</div>;
 
-  const selectedTier = SPONSOR_TIERS.find((tier) => tier.id === selectedTierId) || SPONSOR_TIERS[0];
-  const sponsorAmount = customAmount.trim() || String(selectedTier.price);
-
   const infoPills = [
     { label: 'Age', value: formatKittenAgeDetailed(kitten.dateOfBirth) },
     { label: 'Sex', value: kitten.sex || 'Unknown' },
     { label: 'Breed', value: kitten.breed || 'Mixed' },
     { label: 'Fixed Status', value: kitten.fixedStatus || 'Pending' },
   ];
-
-  const complianceText = `Sponsorships help cover ${kitten.name}'s care. Once ${kitten.name} is fully funded or finds a home, additional gifts support kittens just like them. Pawsitive Transformations directs all sponsorship funds where the cats need them most.`;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-brand-light/25 via-white to-slate-50">
@@ -350,90 +302,22 @@ function PublicKittenProfile() {
             </div>
           </div>
 
-          {sponsorshipComplete ? (
-            <DonationConfirmation variant="sponsor" kittenName={kitten.name} className="mt-8" />
-          ) : null}
-
-          {!sponsorshipComplete && (
-          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {SPONSOR_TIERS.map((tier) => {
-              const selected = selectedTierId === tier.id && !customAmount.trim();
-              return (
-                <button
-                  key={tier.id}
-                  type="button"
-                  onClick={() => {
-                    setSelectedTierId(tier.id);
-                    setCustomAmount('');
-                  }}
-                  className={`rounded-2xl border p-5 text-left transition-all ${
-                    selected
-                      ? 'border-brand bg-brand-light/50 shadow-md ring-2 ring-brand/30'
-                      : 'border-slate-200 bg-white hover:border-brand/40 hover:shadow-md'
-                  }`}
-                >
-                  <p className="text-sm font-bold uppercase tracking-wide text-brand">{tier.name}</p>
-                  <p className="mt-2 text-3xl font-extrabold text-slate-900">${tier.price}</p>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                    {tierDescription(tier, kitten.name)}
-                  </p>
-                </button>
-              );
-            })}
-
-            <label
-              className={`flex flex-col rounded-2xl border p-5 transition-all ${
-                customAmount.trim()
-                  ? 'border-brand bg-brand-light/50 shadow-md ring-2 ring-brand/30'
-                  : 'border-dashed border-brand/40 bg-brand-light/20'
-              }`}
-            >
-              <span className="text-sm font-bold text-brand">Name your own amount</span>
-              <div className="mt-3 flex items-center gap-2">
-                <span className="text-2xl font-bold text-slate-500">$</span>
-                <input
-                  type="number"
-                  min="1"
-                  step="1"
-                  value={customAmount}
-                  onChange={(e) => setCustomAmount(e.target.value)}
-                  placeholder="50"
-                  className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-lg font-semibold text-slate-900 outline-none focus:border-brand focus:ring-1 focus:ring-brand"
+          {!sponsorshipComplete ? (
+            <>
+              <div className="mt-8 overflow-hidden rounded-xl border border-slate-100 bg-white p-4 shadow-sm">
+                <GivebutterDonationWidget
+                  code={DEFAULT_GIVEBUTTER_SPONSOR_EMBED}
+                  kittenId={kitten.id}
+                  kittenName={kitten.name}
+                  sponsor
+                  onSuccess={handleSponsorshipSuccess}
+                  className="min-h-[420px] w-full"
                 />
               </div>
-              <span className="mt-2 text-xs leading-relaxed text-slate-500">
-                Not seeing your number? Give whatever feels right. Every dollar goes to work for {kitten.name} and the kittens right behind them.
-              </span>
-            </label>
-          </div>
-          )}
-
-          {!sponsorshipComplete && !showCheckout ? (
-            <button
-              type="button"
-              onClick={() => setShowCheckout(true)}
-              className="mt-8 inline-flex w-full items-center justify-center rounded-xl bg-brand px-6 py-4 text-sm font-bold uppercase tracking-wide text-white shadow-md transition hover:bg-brand-dark sm:max-w-md"
-            >
-              Sponsor {kitten.name} · ${sponsorAmount}
-            </button>
-          ) : null}
-
-          {!sponsorshipComplete && showCheckout ? (
-            <DonationCheckoutPanel
-              widgetCode={donationWidgetCode}
-              amount={sponsorAmount}
-              kittenId={kitten.id}
-              kittenName={kitten.name}
-              tier={selectedTier.name}
-              onSuccess={handleSponsorshipSuccess}
-              className="mt-8"
-            />
-          ) : null}
-
-          {!sponsorshipComplete ? (
-          <p className="mt-4 max-w-3xl text-xs leading-relaxed text-slate-500">
-            {complianceText}
-          </p>
+              <p className="mt-4 max-w-3xl text-xs leading-relaxed text-slate-500">
+                {sponsorshipOverflowDisclosure(kitten.name)}
+              </p>
+            </>
           ) : null}
         </div>
       </section>

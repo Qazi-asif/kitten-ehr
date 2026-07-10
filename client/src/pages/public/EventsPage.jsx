@@ -191,9 +191,9 @@ function EventsPage() {
         <p className="text-sm leading-relaxed text-slate-700">
           Want us at your business, school, or community event? We love a good tabling opportunity. Reach out through our{' '}
           <Link to="/contact" className="font-semibold text-brand hover:underline">
-            Contact
+            Contact page
           </Link>{' '}
-          page and let&apos;s set it up.
+          and let&apos;s set it up.
         </p>
       </section>
     </div>

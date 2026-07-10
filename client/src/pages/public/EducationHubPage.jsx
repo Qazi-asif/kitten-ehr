@@ -108,15 +108,10 @@ function EducationHubPage() {
                       <div className="shrink-0">{CATEGORY_ICONS[category.name]}</div>
                       <div>
                         <h2 className="text-2xl font-extrabold text-brand">{category.name}</h2>
-                        <p className="mt-1 max-w-2xl text-sm leading-relaxed text-slate-600">
-                          {category.description}
-                        </p>
                       </div>
                     </div>
 
-                    {categoryArticles.length === 0 ? (
-                      <p className="mt-4 text-sm text-slate-500">Articles coming soon.</p>
-                    ) : (
+                    {categoryArticles.length === 0 ? null : (
                       <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
                         {categoryArticles.map((article) => (
                           <div
