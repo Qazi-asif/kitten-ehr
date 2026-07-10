@@ -7144,6 +7144,7 @@ export namespace Prisma {
     specialNeeds: string | null
     microchipNumber: string | null
     primaryPhotoUrl: string | null
+    thumbnailUrl: string | null
     intakeDate: Date | null
     intakeSource: string | null
     notes: string | null
@@ -7176,6 +7177,7 @@ export namespace Prisma {
     specialNeeds: string | null
     microchipNumber: string | null
     primaryPhotoUrl: string | null
+    thumbnailUrl: string | null
     intakeDate: Date | null
     intakeSource: string | null
     notes: string | null
@@ -7208,6 +7210,7 @@ export namespace Prisma {
     specialNeeds: number
     microchipNumber: number
     primaryPhotoUrl: number
+    thumbnailUrl: number
     intakeDate: number
     intakeSource: number
     notes: number
@@ -7257,6 +7260,7 @@ export namespace Prisma {
     specialNeeds?: true
     microchipNumber?: true
     primaryPhotoUrl?: true
+    thumbnailUrl?: true
     intakeDate?: true
     intakeSource?: true
     notes?: true
@@ -7289,6 +7293,7 @@ export namespace Prisma {
     specialNeeds?: true
     microchipNumber?: true
     primaryPhotoUrl?: true
+    thumbnailUrl?: true
     intakeDate?: true
     intakeSource?: true
     notes?: true
@@ -7321,6 +7326,7 @@ export namespace Prisma {
     specialNeeds?: true
     microchipNumber?: true
     primaryPhotoUrl?: true
+    thumbnailUrl?: true
     intakeDate?: true
     intakeSource?: true
     notes?: true
@@ -7441,6 +7447,7 @@ export namespace Prisma {
     specialNeeds: string | null
     microchipNumber: string
     primaryPhotoUrl: string | null
+    thumbnailUrl: string | null
     intakeDate: Date | null
     intakeSource: string
     notes: string
@@ -7493,6 +7500,7 @@ export namespace Prisma {
     specialNeeds?: boolean
     microchipNumber?: boolean
     primaryPhotoUrl?: boolean
+    thumbnailUrl?: boolean
     intakeDate?: boolean
     intakeSource?: boolean
     notes?: boolean
@@ -7543,6 +7551,7 @@ export namespace Prisma {
     specialNeeds?: boolean
     microchipNumber?: boolean
     primaryPhotoUrl?: boolean
+    thumbnailUrl?: boolean
     intakeDate?: boolean
     intakeSource?: boolean
     notes?: boolean
@@ -7579,6 +7588,7 @@ export namespace Prisma {
     specialNeeds?: boolean
     microchipNumber?: boolean
     primaryPhotoUrl?: boolean
+    thumbnailUrl?: boolean
     intakeDate?: boolean
     intakeSource?: boolean
     notes?: boolean
@@ -7615,6 +7625,7 @@ export namespace Prisma {
     specialNeeds?: boolean
     microchipNumber?: boolean
     primaryPhotoUrl?: boolean
+    thumbnailUrl?: boolean
     intakeDate?: boolean
     intakeSource?: boolean
     notes?: boolean
@@ -7633,7 +7644,7 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-  export type KittenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "litterId" | "status" | "rescueStory" | "dateOfBirth" | "sex" | "fixedStatus" | "breed" | "color" | "fivFelvStatus" | "specialNeeds" | "microchipNumber" | "primaryPhotoUrl" | "intakeDate" | "intakeSource" | "notes" | "internalNotes" | "isListedOnWebsite" | "websiteFeaturedComment" | "publishTargets" | "amazonWishlistUrl" | "walmartWishlistUrl" | "chewyWishlistUrl" | "isBondedPair" | "bondedWithKittenId" | "bondedWithName" | "isMedicalSpecialNeeds" | "currentFosterId" | "createdAt", ExtArgs["result"]["kitten"]>
+  export type KittenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "litterId" | "status" | "rescueStory" | "dateOfBirth" | "sex" | "fixedStatus" | "breed" | "color" | "fivFelvStatus" | "specialNeeds" | "microchipNumber" | "primaryPhotoUrl" | "thumbnailUrl" | "intakeDate" | "intakeSource" | "notes" | "internalNotes" | "isListedOnWebsite" | "websiteFeaturedComment" | "publishTargets" | "amazonWishlistUrl" | "walmartWishlistUrl" | "chewyWishlistUrl" | "isBondedPair" | "bondedWithKittenId" | "bondedWithName" | "isMedicalSpecialNeeds" | "currentFosterId" | "createdAt", ExtArgs["result"]["kitten"]>
   export type KittenInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     litter?: boolean | Kitten$litterArgs<ExtArgs>
     bondedWithKitten?: boolean | Kitten$bondedWithKittenArgs<ExtArgs>
@@ -7699,6 +7710,7 @@ export namespace Prisma {
       specialNeeds: string | null
       microchipNumber: string
       primaryPhotoUrl: string | null
+      thumbnailUrl: string | null
       intakeDate: Date | null
       intakeSource: string
       notes: string
@@ -8168,6 +8180,7 @@ export namespace Prisma {
     readonly specialNeeds: FieldRef<"Kitten", 'String'>
     readonly microchipNumber: FieldRef<"Kitten", 'String'>
     readonly primaryPhotoUrl: FieldRef<"Kitten", 'String'>
+    readonly thumbnailUrl: FieldRef<"Kitten", 'String'>
     readonly intakeDate: FieldRef<"Kitten", 'DateTime'>
     readonly intakeSource: FieldRef<"Kitten", 'String'>
     readonly notes: FieldRef<"Kitten", 'String'>
@@ -47177,6 +47190,7 @@ export namespace Prisma {
     specialNeeds: 'specialNeeds',
     microchipNumber: 'microchipNumber',
     primaryPhotoUrl: 'primaryPhotoUrl',
+    thumbnailUrl: 'thumbnailUrl',
     intakeDate: 'intakeDate',
     intakeSource: 'intakeSource',
     notes: 'notes',
@@ -48066,6 +48080,7 @@ export namespace Prisma {
     specialNeeds?: StringNullableFilter<"Kitten"> | string | null
     microchipNumber?: StringFilter<"Kitten"> | string
     primaryPhotoUrl?: StringNullableFilter<"Kitten"> | string | null
+    thumbnailUrl?: StringNullableFilter<"Kitten"> | string | null
     intakeDate?: DateTimeNullableFilter<"Kitten"> | Date | string | null
     intakeSource?: StringFilter<"Kitten"> | string
     notes?: StringFilter<"Kitten"> | string
@@ -48115,6 +48130,7 @@ export namespace Prisma {
     specialNeeds?: SortOrderInput | SortOrder
     microchipNumber?: SortOrder
     primaryPhotoUrl?: SortOrderInput | SortOrder
+    thumbnailUrl?: SortOrderInput | SortOrder
     intakeDate?: SortOrderInput | SortOrder
     intakeSource?: SortOrder
     notes?: SortOrder
@@ -48167,6 +48183,7 @@ export namespace Prisma {
     specialNeeds?: StringNullableFilter<"Kitten"> | string | null
     microchipNumber?: StringFilter<"Kitten"> | string
     primaryPhotoUrl?: StringNullableFilter<"Kitten"> | string | null
+    thumbnailUrl?: StringNullableFilter<"Kitten"> | string | null
     intakeDate?: DateTimeNullableFilter<"Kitten"> | Date | string | null
     intakeSource?: StringFilter<"Kitten"> | string
     notes?: StringFilter<"Kitten"> | string
@@ -48216,6 +48233,7 @@ export namespace Prisma {
     specialNeeds?: SortOrderInput | SortOrder
     microchipNumber?: SortOrder
     primaryPhotoUrl?: SortOrderInput | SortOrder
+    thumbnailUrl?: SortOrderInput | SortOrder
     intakeDate?: SortOrderInput | SortOrder
     intakeSource?: SortOrder
     notes?: SortOrder
@@ -48257,6 +48275,7 @@ export namespace Prisma {
     specialNeeds?: StringNullableWithAggregatesFilter<"Kitten"> | string | null
     microchipNumber?: StringWithAggregatesFilter<"Kitten"> | string
     primaryPhotoUrl?: StringNullableWithAggregatesFilter<"Kitten"> | string | null
+    thumbnailUrl?: StringNullableWithAggregatesFilter<"Kitten"> | string | null
     intakeDate?: DateTimeNullableWithAggregatesFilter<"Kitten"> | Date | string | null
     intakeSource?: StringWithAggregatesFilter<"Kitten"> | string
     notes?: StringWithAggregatesFilter<"Kitten"> | string
@@ -51040,6 +51059,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -51087,6 +51107,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -51131,6 +51152,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -51178,6 +51200,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -51224,6 +51247,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -51255,6 +51279,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -51286,6 +51311,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -54412,6 +54438,7 @@ export namespace Prisma {
     specialNeeds?: SortOrder
     microchipNumber?: SortOrder
     primaryPhotoUrl?: SortOrder
+    thumbnailUrl?: SortOrder
     intakeDate?: SortOrder
     intakeSource?: SortOrder
     notes?: SortOrder
@@ -54452,6 +54479,7 @@ export namespace Prisma {
     specialNeeds?: SortOrder
     microchipNumber?: SortOrder
     primaryPhotoUrl?: SortOrder
+    thumbnailUrl?: SortOrder
     intakeDate?: SortOrder
     intakeSource?: SortOrder
     notes?: SortOrder
@@ -54484,6 +54512,7 @@ export namespace Prisma {
     specialNeeds?: SortOrder
     microchipNumber?: SortOrder
     primaryPhotoUrl?: SortOrder
+    thumbnailUrl?: SortOrder
     intakeDate?: SortOrder
     intakeSource?: SortOrder
     notes?: SortOrder
@@ -58899,6 +58928,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -58944,6 +58974,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -59019,6 +59050,7 @@ export namespace Prisma {
     specialNeeds?: StringNullableFilter<"Kitten"> | string | null
     microchipNumber?: StringFilter<"Kitten"> | string
     primaryPhotoUrl?: StringNullableFilter<"Kitten"> | string | null
+    thumbnailUrl?: StringNullableFilter<"Kitten"> | string | null
     intakeDate?: DateTimeNullableFilter<"Kitten"> | Date | string | null
     intakeSource?: StringFilter<"Kitten"> | string
     notes?: StringFilter<"Kitten"> | string
@@ -59050,6 +59082,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -59096,6 +59129,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -59328,6 +59362,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -59374,6 +59409,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -59422,6 +59458,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -59468,6 +59505,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -59968,6 +60006,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -60014,6 +60053,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -60452,6 +60492,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -60498,6 +60539,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -60557,6 +60599,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -60603,6 +60646,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -60646,6 +60690,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -60692,6 +60737,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -60751,6 +60797,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -60797,6 +60844,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -60840,6 +60888,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -60886,6 +60935,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -60983,6 +61033,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -61029,6 +61080,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -61116,6 +61168,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -61162,6 +61215,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -61221,6 +61275,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -61267,6 +61322,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -61310,6 +61366,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -61356,6 +61413,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -61415,6 +61473,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -61461,6 +61520,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -61504,6 +61564,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -61550,6 +61611,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -61609,6 +61671,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -61655,6 +61718,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -61698,6 +61762,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -61744,6 +61809,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -61803,6 +61869,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -61849,6 +61916,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -61892,6 +61960,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -61938,6 +62007,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -61997,6 +62067,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -62043,6 +62114,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -62293,6 +62365,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -62339,6 +62412,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -62472,6 +62546,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -62518,6 +62593,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -63305,6 +63381,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -63351,6 +63428,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -63450,6 +63528,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -63496,6 +63575,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -64330,6 +64410,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -64376,6 +64457,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -64536,6 +64618,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -64582,6 +64665,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -64889,6 +64973,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -64935,6 +65020,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -64994,6 +65080,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -65040,6 +65127,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -65084,6 +65172,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -65115,6 +65204,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -65160,6 +65250,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -65205,6 +65296,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -65238,6 +65330,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -65297,6 +65390,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -65343,6 +65437,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -65388,6 +65483,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -65505,6 +65601,7 @@ export namespace Prisma {
     specialNeeds?: string | null
     microchipNumber?: string
     primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
     notes?: string
@@ -65667,6 +65764,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -65713,6 +65811,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
@@ -65758,6 +65857,7 @@ export namespace Prisma {
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
     primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string

@@ -158,6 +158,7 @@ exports.Prisma.KittenScalarFieldEnum = {
   specialNeeds: 'specialNeeds',
   microchipNumber: 'microchipNumber',
   primaryPhotoUrl: 'primaryPhotoUrl',
+  thumbnailUrl: 'thumbnailUrl',
   intakeDate: 'intakeDate',
   intakeSource: 'intakeSource',
   notes: 'notes',
