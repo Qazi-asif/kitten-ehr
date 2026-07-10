@@ -5,7 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import { ORG_SETTINGS_ID, WISHLIST_OWNER_TYPES } from '../../constants/wishlists';
 import { fetchSettings, testSocialSettingsConnection, updateSettings } from '../../services/api';
 import { invalidatePublicSettingsCache } from '../../services/publicApi';
-import { DEFAULT_GIVEBUTTER_EMBED } from '../../constants/givebutterDefaults';
+import { DEFAULT_GIVEBUTTER_EMBED, ensureGivebutterEmbed } from '../../constants/givebutterDefaults';
 import {
   createRole,
   createUser,
@@ -190,7 +190,7 @@ function SettingsPage() {
       const updated = await updateSettings({
         donatePageLive: live,
         donationWidgetCode: live
-          ? (orgSettings.donationWidgetCode?.trim() || DEFAULT_GIVEBUTTER_EMBED)
+          ? ensureGivebutterEmbed(orgSettings.donationWidgetCode?.trim() || DEFAULT_GIVEBUTTER_EMBED)
           : orgSettings.donationWidgetCode,
       });
       setOrgSettings(mapOrgSettingsFromApi(updated));
@@ -604,7 +604,11 @@ function SettingsPage() {
             ) : null}
 
             <p className="mt-4 text-sm text-slate-600">
-              Enable applies your Givebutter embed automatically if the field below is empty.
+              Paste the full embed from Givebutter Dashboard → Sharing → Widgets (Form). It must include
+              both the <code className="rounded bg-slate-200 px-1 text-xs">&lt;script&gt;</code> tag and a
+              {' '}<code className="rounded bg-slate-200 px-1 text-xs">&lt;givebutter-giving-form&gt;</code> or
+              {' '}<code className="rounded bg-slate-200 px-1 text-xs">&lt;givebutter-widget&gt;</code> tag.
+              Enable saves a starter embed if the field is empty and upgrades script-only snippets automatically.
               After going live, point Givebutter webhooks to{' '}
               <code className="rounded bg-slate-200 px-1.5 py-0.5 text-xs">/api/webhooks/givebutter</code>{' '}
               with event <code className="rounded bg-slate-200 px-1.5 py-0.5 text-xs">transaction.succeeded</code>.

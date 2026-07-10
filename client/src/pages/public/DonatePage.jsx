@@ -4,7 +4,7 @@ import DonationConfirmation from '../../components/DonationConfirmation';
 import GivebutterDonationWidget from '../../components/GivebutterDonationWidget';
 import { getFileUrl } from '../../services/api';
 import { isDonatePageLive } from '../../constants/siteFeatures';
-import { fetchPublicSettings } from '../../services/publicApi';
+import { fetchPublicSettings, invalidatePublicSettingsCache } from '../../services/publicApi';
 import { markCheckoutSuccessParam } from '../../hooks/useGivebutterCheckout';
 
 const OTHER_WAYS = [
@@ -119,6 +119,7 @@ function DonatePage() {
   const prefilledAmount = searchParams.get('amount') || '';
 
   useEffect(() => {
+    invalidatePublicSettingsCache();
     fetchPublicSettings()
       .then(setSettings)
       .catch(() => {});

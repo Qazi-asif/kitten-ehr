@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { ChevronDown, Menu, X } from 'lucide-react';
 import { isDonatePageLive } from '../../constants/siteFeatures';
-import { fetchPublicSettings } from '../../services/publicApi';
+import { fetchPublicSettings, invalidatePublicSettingsCache } from '../../services/publicApi';
 import PublicLogo from '../PublicLogo';
 
 const navItems = [
@@ -247,6 +247,9 @@ function PublicLayout() {
   const location = useLocation();
 
   useEffect(() => {
+    if (location.pathname === '/donate') {
+      invalidatePublicSettingsCache();
+    }
     fetchPublicSettings()
       .then((data) => setSettings({ ...DEFAULT_SETTINGS, ...data }))
       .catch(() => {});

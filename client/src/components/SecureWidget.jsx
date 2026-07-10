@@ -14,7 +14,15 @@ const ALLOWED_HOSTS = [
   'donorbox.co',
 ];
 
-const ALLOWED_TAGS = new Set(['SCRIPT', 'IFRAME', 'GIVEBUTTER-WIDGET', 'DIV', 'FORM']);
+const ALLOWED_TAGS = new Set(['SCRIPT', 'IFRAME', 'DIV', 'FORM']);
+
+function isGivebutterTag(tagName) {
+  return tagName?.startsWith('GIVEBUTTER-');
+}
+
+function isAllowedTag(tagName) {
+  return ALLOWED_TAGS.has(tagName) || isGivebutterTag(tagName);
+}
 
 function isAllowedUrl(urlString) {
   if (!urlString) return false;
@@ -57,7 +65,7 @@ function sanitizeWidgetCode(code) {
       return;
     }
 
-    if (!ALLOWED_TAGS.has(node.nodeName)) {
+    if (!isAllowedTag(node.nodeName)) {
       node.remove();
       return;
     }
@@ -83,6 +91,65 @@ function sanitizeWidgetCode(code) {
   return template.innerHTML;
 }
 
+function ensureScriptLoaded(node) {
+  const src = node.getAttribute('src');
+  if (!src || !isAllowedUrl(src)) return;
+
+  const selector = `script[data-secure-widget-src="${CSS.escape(src)}"]`;
+  if (document.querySelector(selector)) return;
+
+  const script = document.createElement('script');
+  script.src = src;
+  script.async = true;
+  script.dataset.secureWidgetSrc = src;
+  Array.from(node.attributes).forEach((attr) => {
+    if (attr.name !== 'src') script.setAttribute(attr.name, attr.value);
+  });
+  document.head.appendChild(script);
+}
+
+function mountWidgetNodes(container, sanitizedCode) {
+  container.innerHTML = '';
+  if (!sanitizedCode) return;
+
+  const template = document.createElement('template');
+  template.innerHTML = sanitizedCode;
+
+  const nodes = Array.from(template.content.childNodes).filter(
+    (node) => node.nodeType === Node.ELEMENT_NODE,
+  );
+
+  nodes
+    .filter((node) => node.nodeName === 'SCRIPT')
+    .forEach((node) => ensureScriptLoaded(node));
+
+  nodes.forEach((node) => {
+    if (node.nodeName === 'SCRIPT') return;
+
+    if (isGivebutterTag(node.nodeName) || node.nodeName === 'DIV' || node.nodeName === 'FORM') {
+      container.appendChild(node.cloneNode(true));
+      return;
+    }
+
+    if (node.nodeName === 'IFRAME') {
+      const src = node.getAttribute('src');
+      if (!src || !isAllowedUrl(src)) return;
+
+      const iframe = document.createElement('iframe');
+      iframe.src = src;
+      iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox');
+      iframe.setAttribute('loading', 'lazy');
+      iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+      Array.from(node.attributes).forEach((attr) => {
+        if (!['src', 'sandbox', 'loading', 'referrerpolicy'].includes(attr.name.toLowerCase())) {
+          iframe.setAttribute(attr.name, attr.value);
+        }
+      });
+      container.appendChild(iframe);
+    }
+  });
+}
+
 function SecureWidget({ code, className = '' }) {
   const containerRef = useRef(null);
   const sanitizedCode = useMemo(() => sanitizeWidgetCode(code), [code]);
@@ -90,52 +157,7 @@ function SecureWidget({ code, className = '' }) {
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
-
-    container.innerHTML = '';
-    if (!sanitizedCode) return;
-
-    const template = document.createElement('template');
-    template.innerHTML = sanitizedCode;
-
-    Array.from(template.content.childNodes).forEach((node) => {
-      if (node.nodeType !== Node.ELEMENT_NODE) return;
-
-      if (node.nodeName === 'SCRIPT') {
-        const src = node.getAttribute('src');
-        if (!src || !isAllowedUrl(src)) return;
-
-        const script = document.createElement('script');
-        script.src = src;
-        script.async = true;
-        Array.from(node.attributes).forEach((attr) => {
-          if (attr.name !== 'src') script.setAttribute(attr.name, attr.value);
-        });
-        container.appendChild(script);
-        return;
-      }
-
-      if (node.nodeName === 'GIVEBUTTER-WIDGET' || node.nodeName === 'DIV' || node.nodeName === 'FORM') {
-        container.appendChild(node.cloneNode(true));
-        return;
-      }
-
-      if (node.nodeName === 'IFRAME') {
-        const src = node.getAttribute('src');
-        if (!src || !isAllowedUrl(src)) return;
-
-        const iframe = document.createElement('iframe');
-        iframe.src = src;
-        iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox');
-        iframe.setAttribute('loading', 'lazy');
-        iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
-        Array.from(node.attributes).forEach((attr) => {
-          if (!['src', 'sandbox', 'loading', 'referrerpolicy'].includes(attr.name.toLowerCase())) {
-            iframe.setAttribute(attr.name, attr.value);
-          }
-        });
-        container.appendChild(iframe);
-      }
-    });
+    mountWidgetNodes(container, sanitizedCode);
   }, [sanitizedCode]);
 
   if (!sanitizedCode) return null;
