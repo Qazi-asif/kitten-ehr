@@ -109,3 +109,15 @@ export async function submitDonation(data) {
   }
   return response.json();
 }
+
+export async function submitContact(data) {
+  const response = await publicFetch('/public/contact', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(payload.error || 'Failed to send message');
+  }
+  return payload;
+}

@@ -30,15 +30,17 @@ export const DEFAULTS = {
   groqApiKey: '',
   groqModel: 'llama-3.3-70b-versatile',
   aiEnabled: true,
-  emailsEnabled: false,
-  smtpHost: '',
-  smtpPort: 587,
-  smtpSecure: false,
-  smtpUser: '',
-  smtpPass: '',
-  fromEmail: '',
-  fromName: '',
-  adminNotifyEmail: '',
+  // Email defaults: enabled by default if SMTP env vars are present, otherwise
+  // the admin must configure SMTP manually in Settings → Emails before emails work.
+  emailsEnabled: Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS),
+  smtpHost: process.env.SMTP_HOST || 'smtp.gmail.com',
+  smtpPort: Number(process.env.SMTP_PORT) || 587,
+  smtpSecure: process.env.SMTP_SECURE === 'true' || Number(process.env.SMTP_PORT) === 465,
+  smtpUser: process.env.SMTP_USER || '',
+  smtpPass: process.env.SMTP_PASS || '',
+  fromEmail: process.env.SMTP_USER || '',
+  fromName: 'Pawsitive Transformations',
+  adminNotifyEmail: process.env.SMTP_USER || '',
   donationWidgetCode: '',
   donatePageLive: false,
   paypalLink: '',
@@ -68,6 +70,34 @@ export async function getSettings(_req, res, next) {
       settings = await prisma.settings.create({
         data: { id: SETTINGS_ID, ...DEFAULTS },
       });
+    } else {
+      // Self-heal: if SMTP env vars are set but the DB row still has empty/disabled
+      // values (e.g. row was created before .env was configured), patch them in.
+      const envHost = process.env.SMTP_HOST;
+      const envUser = process.env.SMTP_USER;
+      const envPass = process.env.SMTP_PASS;
+
+      const needsPatch =
+        envHost && envUser && envPass &&
+        (!settings.smtpHost || !settings.smtpUser || !settings.smtpPass || !settings.emailsEnabled);
+
+      if (needsPatch) {
+        const port = Number(process.env.SMTP_PORT) || 587;
+        settings = await prisma.settings.update({
+          where: { id: SETTINGS_ID },
+          data: {
+            emailsEnabled: true,
+            smtpHost: settings.smtpHost || envHost,
+            smtpPort: settings.smtpPort || port,
+            smtpSecure: settings.smtpSecure || process.env.SMTP_SECURE === 'true' || port === 465,
+            smtpUser: settings.smtpUser || envUser,
+            smtpPass: settings.smtpPass || envPass,
+            fromEmail: settings.fromEmail || envUser,
+            fromName: settings.fromName || settings.orgName || 'Pawsitive Transformations',
+            adminNotifyEmail: settings.adminNotifyEmail || envUser,
+          },
+        });
+      }
     }
 
     res.json(sanitizeSettings(settings));

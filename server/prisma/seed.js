@@ -52,6 +52,14 @@ async function seedAuth() {
 }
 
 async function seedSettings() {
+  const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
+  const smtpPort = Number(process.env.SMTP_PORT) || 587;
+  const smtpSecure = process.env.SMTP_SECURE === 'true' || smtpPort === 465;
+  const smtpUser = process.env.SMTP_USER || '';
+  const smtpPass = process.env.SMTP_PASS || '';
+  // Enable emails automatically when credentials are present in env
+  const emailsEnabled = Boolean(smtpHost && smtpUser && smtpPass);
+
   await prisma.settings.upsert({
     where: { id: 1 },
     create: {
@@ -68,7 +76,17 @@ async function seedSettings() {
       chewyWishlistUrl: '',
       facebookUrl: '',
       instagramUrl: '',
+      emailsEnabled,
+      smtpHost,
+      smtpPort,
+      smtpSecure,
+      smtpUser,
+      smtpPass,
+      fromEmail: smtpUser,
+      fromName: 'Pawsitive Transformations',
+      adminNotifyEmail: smtpUser,
     },
+    // Don't overwrite existing settings (e.g. after re-seeding data only)
     update: {},
   });
 }

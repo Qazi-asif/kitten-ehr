@@ -12,6 +12,7 @@ import {
   getPublicKittens,
   getPublicSettings,
   getPublicStats,
+  submitContactForm,
 } from '../controllers/publicController.js';
 import { getPublicEventBySlug, rsvpForEvent } from '../controllers/eventController.js';
 import { getPublicWishlists, getPublicFosterWishlists, getPublicKittenWishlists } from '../controllers/wishlistController.js';
@@ -40,5 +41,6 @@ router.get('/events/:slug', getPublicEventBySlug);
 router.post('/events/:slug/rsvp', rsvpForEvent);
 router.post('/applications', upload.array('photos', 3), createApplication);
 router.post('/donations', createPublicDonation);
+router.post('/contact', submitContactForm);
 
 export default router;

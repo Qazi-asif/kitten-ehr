@@ -12,6 +12,8 @@ import {
   normalizeKittenPhotoUrl,
 } from '../utils/resolveKittenPhotoUrl.js';
 import { getCachedResponse, setCachedResponse } from '../utils/responseCache.js';
+import nodemailer from 'nodemailer';
+import { escapeHtml } from '../utils/htmlEscape.js';
 
 // Cache TTLs for public read-only endpoints (milliseconds)
 const PUBLIC_KITTENS_TTL_MS = 60 * 1000;  // 1 min — kitten list
@@ -323,6 +325,117 @@ export async function getPublicSettings(_req, res, next) {
     res.set('Cache-Control', 'public, max-age=120, stale-while-revalidate=300');
     res.json(toPublicSettings(settings));
   } catch (error) {
+    next(error);
+  }
+}
+
+export async function submitContactForm(req, res, next) {
+  try {
+    const { firstName, lastName, email, phone, topic, message } = req.body;
+
+    // Basic validation
+    if (!firstName?.trim() || !lastName?.trim()) {
+      return res.status(400).json({ error: 'First and last name are required.' });
+    }
+    if (!email?.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      return res.status(400).json({ error: 'A valid email address is required.' });
+    }
+    if (!message?.trim()) {
+      return res.status(400).json({ error: 'Message is required.' });
+    }
+    if (!topic?.trim() || topic === 'Select an option') {
+      return res.status(400).json({ error: 'Please select a topic.' });
+    }
+
+    // Load SMTP settings from DB (falls back to env vars)
+    const settings = await prisma.settings.findUnique({ where: { id: 1 } });
+
+    const smtpHost = process.env.SMTP_HOST || settings?.smtpHost;
+    const smtpUser = process.env.SMTP_USER || settings?.smtpUser;
+    const smtpPass = process.env.SMTP_PASS || settings?.smtpPass;
+    const adminEmail = settings?.adminNotifyEmail || settings?.contactEmail || smtpUser;
+
+    if (!settings?.emailsEnabled) {
+      return res.status(503).json({ error: 'Email sending is currently disabled. Please contact us directly.' });
+    }
+
+    if (!smtpHost || !smtpUser || !smtpPass) {
+      return res.status(503).json({ error: 'Email is not configured. Please contact us directly.' });
+    }
+
+    if (!adminEmail) {
+      return res.status(503).json({ error: 'No recipient email configured. Please contact us directly.' });
+    }
+
+    const port = Number(settings?.smtpPort) || 587;
+    const secure = settings?.smtpSecure === true || port === 465;
+    const orgName = settings?.orgName || 'Pawsitive Transformations';
+
+    const transporter = nodemailer.createTransport({
+      host: smtpHost,
+      port,
+      secure,
+      auth: { user: smtpUser, pass: smtpPass },
+      ...(secure ? {} : { requireTLS: true }),
+    });
+
+    const subject = `[Contact Form] ${escapeHtml(topic)} — ${escapeHtml(firstName.trim())} ${escapeHtml(lastName.trim())}`;
+
+    const htmlBody = `
+<div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#334155;">
+  <h2 style="color:#0d9488;margin:0 0 20px;">New Contact Form Message</h2>
+  <table style="width:100%;border-collapse:collapse;">
+    <tr><td style="padding:8px 0;font-weight:600;width:120px;color:#64748b;">Name</td><td style="padding:8px 0;">${escapeHtml(firstName.trim())} ${escapeHtml(lastName.trim())}</td></tr>
+    <tr><td style="padding:8px 0;font-weight:600;color:#64748b;">Email</td><td style="padding:8px 0;"><a href="mailto:${escapeHtml(email.trim())}" style="color:#0d9488;">${escapeHtml(email.trim())}</a></td></tr>
+    ${phone?.trim() ? `<tr><td style="padding:8px 0;font-weight:600;color:#64748b;">Phone</td><td style="padding:8px 0;">${escapeHtml(phone.trim())}</td></tr>` : ''}
+    <tr><td style="padding:8px 0;font-weight:600;color:#64748b;">Topic</td><td style="padding:8px 0;">${escapeHtml(topic.trim())}</td></tr>
+  </table>
+  <div style="margin-top:20px;padding:16px;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0;">
+    <p style="margin:0 0 8px;font-weight:600;color:#64748b;">Message</p>
+    <p style="margin:0;white-space:pre-wrap;line-height:1.6;">${escapeHtml(message.trim())}</p>
+  </div>
+  <p style="margin-top:20px;font-size:12px;color:#94a3b8;">Sent via ${escapeHtml(orgName)} contact form</p>
+</div>`;
+
+    const textBody = [
+      `New contact form message from ${firstName.trim()} ${lastName.trim()}`,
+      `Email: ${email.trim()}`,
+      phone?.trim() ? `Phone: ${phone.trim()}` : null,
+      `Topic: ${topic.trim()}`,
+      '',
+      message.trim(),
+    ].filter(Boolean).join('\n');
+
+    // Send notification to admin
+    await transporter.sendMail({
+      from: `"${orgName} Contact Form" <${smtpUser}>`,
+      to: adminEmail,
+      replyTo: email.trim(),
+      subject,
+      text: textBody,
+      html: htmlBody,
+    });
+
+    // Send confirmation to the sender
+    const confirmSubject = `We received your message — ${orgName}`;
+    const confirmHtml = `
+<div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#334155;">
+  <h2 style="color:#0d9488;margin:0 0 16px;">Thanks for reaching out, ${escapeHtml(firstName.trim())}!</h2>
+  <p>We received your message about <strong>${escapeHtml(topic.trim())}</strong> and will get back to you as soon as possible.</p>
+  <p style="margin-top:20px;font-size:12px;color:#94a3b8;">${escapeHtml(orgName)}</p>
+</div>`;
+
+    await transporter.sendMail({
+      from: `"${orgName}" <${smtpUser}>`,
+      to: email.trim(),
+      subject: confirmSubject,
+      text: `Hi ${firstName.trim()},\n\nThanks for reaching out! We received your message about "${topic.trim()}" and will be in touch shortly.\n\n${orgName}`,
+      html: confirmHtml,
+    });
+
+    res.json({ ok: true });
+  } catch (error) {
+    console.error('Contact form email failed:', error.message);
     next(error);
   }
 }
