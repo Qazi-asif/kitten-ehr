@@ -3,7 +3,7 @@ import { useOutletContext, useSearchParams } from 'react-router-dom';
 import DonationConfirmation from '../../components/DonationConfirmation';
 import GivebutterDonationWidget from '../../components/GivebutterDonationWidget';
 import { getFileUrl } from '../../services/api';
-import { DONATE_PAGE_LIVE } from '../../constants/siteFeatures';
+import { isDonatePageLive } from '../../constants/siteFeatures';
 import { fetchPublicSettings } from '../../services/publicApi';
 import { markCheckoutSuccessParam } from '../../hooks/useGivebutterCheckout';
 
@@ -33,7 +33,7 @@ function DonatePage() {
     ? settings.orgEin.trim()
     : '[PENDING]';
 
-  if (!DONATE_PAGE_LIVE) {
+  if (!isDonatePageLive(settings)) {
     return (
       <div className="bg-white">
         <div className="mx-auto max-w-3xl px-6 py-20 text-center lg:px-8">

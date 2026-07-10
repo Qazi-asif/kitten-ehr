@@ -4,6 +4,8 @@ import WishlistManager from '../../components/admin/WishlistManager';
 import { useAuth } from '../../context/AuthContext';
 import { ORG_SETTINGS_ID, WISHLIST_OWNER_TYPES } from '../../constants/wishlists';
 import { fetchSettings, testSocialSettingsConnection, updateSettings } from '../../services/api';
+import { invalidatePublicSettingsCache } from '../../services/publicApi';
+import { DEFAULT_GIVEBUTTER_EMBED } from '../../constants/givebutterDefaults';
 import {
   createRole,
   createUser,
@@ -41,6 +43,7 @@ const EMPTY_ORG = {
   groqApiKeyConfigured: false,
   aiEnabled: true,
   donationWidgetCode: '',
+  donatePageLive: false,
   paypalLink: '',
   stripeLink: '',
   venmoQrCodeUrl: '',
@@ -62,6 +65,34 @@ const EMPTY_ROLE = {
   permissions: [],
 };
 
+function mapOrgSettingsFromApi(settingsData = {}) {
+  return {
+    orgName: settingsData.orgName || '',
+    orgEin: settingsData.orgEin || '',
+    contactPhone: settingsData.contactPhone || '',
+    contactEmail: settingsData.contactEmail || '',
+    contactAddress: settingsData.contactAddress || '',
+    missionStatement: settingsData.missionStatement || '',
+    defaultDonationAmount: settingsData.defaultDonationAmount ?? 50,
+    facebookUrl: settingsData.facebookUrl || '',
+    instagramUrl: settingsData.instagramUrl || '',
+    socialPostingEnabled: Boolean(settingsData.socialPostingEnabled),
+    facebookPageId: settingsData.facebookPageId || '',
+    facebookPageAccessToken: '',
+    instagramBusinessAccountId: settingsData.instagramBusinessAccountId || '',
+    groqApiKey: '',
+    groqModel: settingsData.groqModel || settingsData.grokModel || 'llama-3.3-70b-versatile',
+    groqApiKeyConfigured: Boolean(settingsData.groqApiKeyConfigured ?? settingsData.xaiApiKeyConfigured),
+    aiEnabled: settingsData.aiEnabled !== false,
+    donationWidgetCode: settingsData.donationWidgetCode || '',
+    donatePageLive: Boolean(settingsData.donatePageLive),
+    paypalLink: settingsData.paypalLink || '',
+    stripeLink: settingsData.stripeLink || '',
+    venmoQrCodeUrl: settingsData.venmoQrCodeUrl || '',
+    venmoHandle: settingsData.venmoHandle || '',
+  };
+}
+
 function SettingsPage() {
   const { user: currentUser, refreshUser, hasPermission } = useAuth();
   const [activeTab, setActiveTab] = useState('organization');
@@ -78,6 +109,7 @@ function SettingsPage() {
   const [orgSaving, setOrgSaving] = useState(false);
   const [socialTesting, setSocialTesting] = useState(false);
   const [socialTestMessage, setSocialTestMessage] = useState('');
+  const [donationStatusMessage, setDonationStatusMessage] = useState('');
 
   const canManageUsers = hasPermission('users.manage');
   const canManageRoles = hasPermission('roles.manage');
@@ -101,30 +133,7 @@ function SettingsPage() {
     setError('');
     try {
       const settingsData = await fetchSettings();
-      setOrgSettings({
-        orgName: settingsData.orgName || '',
-        orgEin: settingsData.orgEin || '',
-        contactPhone: settingsData.contactPhone || '',
-        contactEmail: settingsData.contactEmail || '',
-        contactAddress: settingsData.contactAddress || '',
-        missionStatement: settingsData.missionStatement || '',
-        defaultDonationAmount: settingsData.defaultDonationAmount ?? 50,
-        facebookUrl: settingsData.facebookUrl || '',
-        instagramUrl: settingsData.instagramUrl || '',
-        socialPostingEnabled: Boolean(settingsData.socialPostingEnabled),
-        facebookPageId: settingsData.facebookPageId || '',
-        facebookPageAccessToken: '',
-        instagramBusinessAccountId: settingsData.instagramBusinessAccountId || '',
-        groqApiKey: '',
-        groqModel: settingsData.groqModel || settingsData.grokModel || 'llama-3.3-70b-versatile',
-        groqApiKeyConfigured: Boolean(settingsData.groqApiKeyConfigured ?? settingsData.xaiApiKeyConfigured),
-        aiEnabled: settingsData.aiEnabled !== false,
-        donationWidgetCode: settingsData.donationWidgetCode || '',
-        paypalLink: settingsData.paypalLink || '',
-        stripeLink: settingsData.stripeLink || '',
-        venmoQrCodeUrl: settingsData.venmoQrCodeUrl || '',
-        venmoHandle: settingsData.venmoHandle || '',
-      });
+      setOrgSettings(mapOrgSettingsFromApi(settingsData));
 
       const tasks = [];
       if (canViewUsers) tasks.push(fetchUsers().then(setUsers));
@@ -159,30 +168,8 @@ function SettingsPage() {
         ...orgSettings,
         defaultDonationAmount: Number.parseInt(orgSettings.defaultDonationAmount, 10) || 50,
       });
-      setOrgSettings({
-        orgName: updated.orgName || '',
-        orgEin: updated.orgEin || '',
-        contactPhone: updated.contactPhone || '',
-        contactEmail: updated.contactEmail || '',
-        contactAddress: updated.contactAddress || '',
-        missionStatement: updated.missionStatement || '',
-        defaultDonationAmount: updated.defaultDonationAmount ?? 50,
-        facebookUrl: updated.facebookUrl || '',
-        instagramUrl: updated.instagramUrl || '',
-        socialPostingEnabled: Boolean(updated.socialPostingEnabled),
-        facebookPageId: updated.facebookPageId || '',
-        facebookPageAccessToken: '',
-        instagramBusinessAccountId: updated.instagramBusinessAccountId || '',
-        groqApiKey: '',
-        groqModel: updated.groqModel || updated.grokModel || 'llama-3.3-70b-versatile',
-        groqApiKeyConfigured: Boolean(updated.groqApiKeyConfigured ?? updated.xaiApiKeyConfigured),
-        aiEnabled: updated.aiEnabled !== false,
-        donationWidgetCode: updated.donationWidgetCode || '',
-        paypalLink: updated.paypalLink || '',
-        stripeLink: updated.stripeLink || '',
-        venmoQrCodeUrl: updated.venmoQrCodeUrl || '',
-        venmoHandle: updated.venmoHandle || '',
-      });
+      setOrgSettings(mapOrgSettingsFromApi(updated));
+      invalidatePublicSettingsCache();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -192,6 +179,32 @@ function SettingsPage() {
 
   function handleOrgFieldChange(field, value) {
     setOrgSettings((prev) => ({ ...prev, [field]: value }));
+  }
+
+  async function setDonationPageLive(live) {
+    if (!canManageOrg) return;
+    setOrgSaving(true);
+    setError('');
+    setDonationStatusMessage('');
+    try {
+      const updated = await updateSettings({
+        donatePageLive: live,
+        donationWidgetCode: live
+          ? (orgSettings.donationWidgetCode?.trim() || DEFAULT_GIVEBUTTER_EMBED)
+          : orgSettings.donationWidgetCode,
+      });
+      setOrgSettings(mapOrgSettingsFromApi(updated));
+      invalidatePublicSettingsCache();
+      setDonationStatusMessage(
+        live
+          ? 'Donations are live. Open /donate in a new tab to test the public page.'
+          : 'Donations are turned off. The public donate page now shows the coming-soon message.',
+      );
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setOrgSaving(false);
+    }
   }
 
   function handleVenmoQrUpload(event) {
@@ -537,10 +550,62 @@ function SettingsPage() {
           </div>
 
           <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
-            <h3 className="text-sm font-bold text-slate-900">Payment &amp; Donation Links</h3>
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <h3 className="text-sm font-bold text-slate-900">Donation Page</h3>
+                <p className="mt-1 text-sm text-slate-600">
+                  Turn the public donate page and kitten sponsorship checkout on or off without redeploying.
+                </p>
+              </div>
+              <span
+                className={`inline-flex rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${
+                  orgSettings.donatePageLive
+                    ? 'bg-emerald-100 text-emerald-800'
+                    : 'bg-slate-200 text-slate-700'
+                }`}
+              >
+                {orgSettings.donatePageLive ? 'Live' : 'Off'}
+              </span>
+            </div>
+
+            <div className="mt-4 flex flex-wrap gap-3">
+              {canManageOrg ? (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => setDonationPageLive(true)}
+                    disabled={orgSaving || orgSettings.donatePageLive}
+                    className="rounded-lg bg-brand px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-dark disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {orgSaving ? 'Saving...' : 'Enable Donations & Test'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setDonationPageLive(false)}
+                    disabled={orgSaving || !orgSettings.donatePageLive}
+                    className="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    Turn Off Donations
+                  </button>
+                  <a
+                    href="/donate"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center rounded-lg border border-brand/30 bg-white px-4 py-2.5 text-sm font-semibold text-brand transition hover:bg-brand-light/40"
+                  >
+                    Preview Donate Page
+                  </a>
+                </>
+              ) : null}
+            </div>
+
+            {donationStatusMessage ? (
+              <p className="mt-3 text-sm font-medium text-emerald-700">{donationStatusMessage}</p>
+            ) : null}
+
             <p className="mt-4 text-sm text-slate-600">
-              Configure the public donate page: GiveButter embed, Stripe/PayPal links, and Venmo QR details.
-              After Givebutter is live, point webhooks to{' '}
+              Enable applies your Givebutter embed automatically if the field below is empty.
+              After going live, point Givebutter webhooks to{' '}
               <code className="rounded bg-slate-200 px-1.5 py-0.5 text-xs">/api/webhooks/givebutter</code>{' '}
               with event <code className="rounded bg-slate-200 px-1.5 py-0.5 text-xs">transaction.succeeded</code>.
             </p>
@@ -552,7 +617,7 @@ function SettingsPage() {
                 value={orgSettings.donationWidgetCode}
                 onChange={(e) => handleOrgFieldChange('donationWidgetCode', e.target.value)}
                 disabled={!canManageOrg}
-                placeholder={'<script src="https://widgets.givebutter.com/..."></script>\n<givebutter-widget id="..."></givebutter-widget>'}
+                placeholder={DEFAULT_GIVEBUTTER_EMBED}
                 className="w-full rounded-lg border border-slate-300 px-3 py-2 font-mono text-xs disabled:bg-white"
               />
             </label>

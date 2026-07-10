@@ -557,6 +557,7 @@ model Settings {
   fromName              String  @default("")
   adminNotifyEmail      String  @default("")
   donationWidgetCode    String  @default("")
+  donatePageLive        Boolean @default(false)
   paypalLink            String  @default("")
   stripeLink            String  @default("")
   venmoQrCodeUrl        String  @default("")

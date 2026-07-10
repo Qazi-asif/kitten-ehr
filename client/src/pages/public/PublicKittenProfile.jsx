@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Heart, PawPrint, ShoppingBag, Sparkles } from 'lucide-react';
-import { DONATE_PAGE_LIVE } from '../../constants/siteFeatures';
+import { isDonatePageLive } from '../../constants/siteFeatures';
 import { WISHLIST_OWNER_TYPES, WISHLIST_RETAILER_META } from '../../constants/wishlists';
 import DonationCheckoutPanel from '../../components/DonationCheckoutPanel';
 import DonationConfirmation from '../../components/DonationConfirmation';
@@ -85,6 +85,7 @@ function PublicKittenProfile() {
   const [showCheckout, setShowCheckout] = useState(false);
   const [sponsorshipComplete, setSponsorshipComplete] = useState(false);
   const [donationWidgetCode, setDonationWidgetCode] = useState('');
+  const [donatePageLive, setDonatePageLive] = useState(false);
 
   useEffect(() => {
     Promise.all([
@@ -98,6 +99,7 @@ function PublicKittenProfile() {
         setUpdates(updateData);
         setWishlists(Array.isArray(wishlistData) ? wishlistData : []);
         setDonationWidgetCode(settingsData?.donationWidgetCode || '');
+        setDonatePageLive(Boolean(settingsData?.donatePageLive));
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
@@ -180,7 +182,7 @@ function PublicKittenProfile() {
             <button
               type="button"
               onClick={() => scrollToRef(sponsorRef)}
-              className={`rounded-xl border-2 border-brand bg-white px-4 py-2.5 text-sm font-bold text-brand transition hover:bg-brand-light ${!DONATE_PAGE_LIVE ? 'hidden' : ''}`}
+              className={`rounded-xl border-2 border-brand bg-white px-4 py-2.5 text-sm font-bold text-brand transition hover:bg-brand-light ${!isDonatePageLive({ donatePageLive }) ? 'hidden' : ''}`}
             >
               Sponsor Me
             </button>
@@ -329,7 +331,7 @@ function PublicKittenProfile() {
       </div>
 
       {/* Sponsorship section */}
-      {DONATE_PAGE_LIVE && (
+      {isDonatePageLive({ donatePageLive }) && (
       <section
         ref={sponsorRef}
         id="sponsor"

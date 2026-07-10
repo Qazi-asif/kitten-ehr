@@ -40,6 +40,7 @@ export const DEFAULTS = {
   fromName: '',
   adminNotifyEmail: '',
   donationWidgetCode: '',
+  donatePageLive: false,
   paypalLink: '',
   stripeLink: '',
   venmoQrCodeUrl: '',
@@ -107,6 +108,7 @@ export async function updateSettings(req, res, next) {
       fromName,
       adminNotifyEmail,
       donationWidgetCode,
+      donatePageLive,
       paypalLink,
       stripeLink,
       venmoQrCodeUrl,
@@ -173,6 +175,7 @@ export async function updateSettings(req, res, next) {
     if (donationWidgetCode !== undefined) {
       data.donationWidgetCode = String(donationWidgetCode).slice(0, 10000);
     }
+    if (donatePageLive !== undefined) data.donatePageLive = Boolean(donatePageLive);
     if (paypalLink !== undefined) data.paypalLink = normalizeOptionalUrl(paypalLink);
     if (stripeLink !== undefined) data.stripeLink = normalizeOptionalUrl(stripeLink);
     if (venmoQrCodeUrl !== undefined) data.venmoQrCodeUrl = String(venmoQrCodeUrl).trim();

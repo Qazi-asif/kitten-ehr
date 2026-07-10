@@ -479,6 +479,7 @@ exports.Prisma.SettingsScalarFieldEnum = {
   fromName: 'fromName',
   adminNotifyEmail: 'adminNotifyEmail',
   donationWidgetCode: 'donationWidgetCode',
+  donatePageLive: 'donatePageLive',
   paypalLink: 'paypalLink',
   stripeLink: 'stripeLink',
   venmoQrCodeUrl: 'venmoQrCodeUrl',

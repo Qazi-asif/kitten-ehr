@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { ChevronDown, Menu, X } from 'lucide-react';
-import { DONATE_PAGE_LIVE } from '../../constants/siteFeatures';
+import { isDonatePageLive } from '../../constants/siteFeatures';
 import { fetchPublicSettings } from '../../services/publicApi';
 import PublicLogo from '../PublicLogo';
 
@@ -52,6 +52,7 @@ const DEFAULT_SETTINGS = {
   facebookUrl: DEFAULT_SOCIAL.facebookUrl,
   instagramUrl: DEFAULT_SOCIAL.instagramUrl,
   tiktokUrl: DEFAULT_SOCIAL.tiktokUrl,
+  donatePageLive: false,
 };
 
 const FOOTER_LINK_COLUMNS = [
@@ -259,6 +260,8 @@ function PublicLayout() {
     setMobileOpen(false);
   }
 
+  const donationsLive = isDonatePageLive(settings);
+
   return (
     <div className="flex min-h-screen flex-col bg-white text-slate-700">
       <header className="sticky top-0 z-50 border-b border-slate-100 bg-white/95 backdrop-blur-md">
@@ -286,7 +289,7 @@ function PublicLayout() {
           </nav>
 
           <div className="flex items-center gap-3 sm:gap-4">
-            {DONATE_PAGE_LIVE ? (
+            {donationsLive ? (
               <Link
                 to="/donate"
                 className="hidden rounded-full bg-brand px-6 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-brand-dark hover:shadow-md sm:inline-block"
@@ -322,7 +325,7 @@ function PublicLayout() {
                   onNavigate={closeMobileMenu}
                 />
               ))}
-              {DONATE_PAGE_LIVE ? (
+              {donationsLive ? (
                 <Link
                   to="/donate"
                   onClick={closeMobileMenu}

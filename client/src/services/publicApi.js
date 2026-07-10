@@ -1,5 +1,5 @@
 import { publicFetch } from './api.js';
-import { cachedRequest } from '../utils/apiCache.js';
+import { cachedRequest, invalidateCache } from '../utils/apiCache.js';
 
 const PUBLIC_CACHE_TTL_MS = 60_000;
 
@@ -58,6 +58,10 @@ export function fetchPublicEvents() {
 
 export function fetchPublicEventBySlug(slug) {
   return publicRequest(`/events/${slug}`);
+}
+
+export function invalidatePublicSettingsCache() {
+  invalidateCache('public:/settings');
 }
 
 export function fetchPublicSettings() {

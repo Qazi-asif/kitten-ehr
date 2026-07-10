@@ -1,2 +1,5 @@
-/** Donate/sponsor solicitation stays off until AG Registry registration is complete. */
-export const DONATE_PAGE_LIVE = import.meta.env.VITE_DONATE_LIVE === 'true';
+/** Donations are live when enabled in Admin Settings (or via VITE_DONATE_LIVE for overrides). */
+export function isDonatePageLive(settings) {
+  if (settings?.donatePageLive === true) return true;
+  return import.meta.env.VITE_DONATE_LIVE === 'true';
+}

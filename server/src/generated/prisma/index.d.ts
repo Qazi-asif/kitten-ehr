@@ -38797,6 +38797,7 @@ export namespace Prisma {
     fromName: string | null
     adminNotifyEmail: string | null
     donationWidgetCode: string | null
+    donatePageLive: boolean | null
     paypalLink: string | null
     stripeLink: string | null
     venmoQrCodeUrl: string | null
@@ -38833,6 +38834,7 @@ export namespace Prisma {
     fromName: string | null
     adminNotifyEmail: string | null
     donationWidgetCode: string | null
+    donatePageLive: boolean | null
     paypalLink: string | null
     stripeLink: string | null
     venmoQrCodeUrl: string | null
@@ -38869,6 +38871,7 @@ export namespace Prisma {
     fromName: number
     adminNotifyEmail: number
     donationWidgetCode: number
+    donatePageLive: number
     paypalLink: number
     stripeLink: number
     venmoQrCodeUrl: number
@@ -38919,6 +38922,7 @@ export namespace Prisma {
     fromName?: true
     adminNotifyEmail?: true
     donationWidgetCode?: true
+    donatePageLive?: true
     paypalLink?: true
     stripeLink?: true
     venmoQrCodeUrl?: true
@@ -38955,6 +38959,7 @@ export namespace Prisma {
     fromName?: true
     adminNotifyEmail?: true
     donationWidgetCode?: true
+    donatePageLive?: true
     paypalLink?: true
     stripeLink?: true
     venmoQrCodeUrl?: true
@@ -38991,6 +38996,7 @@ export namespace Prisma {
     fromName?: true
     adminNotifyEmail?: true
     donationWidgetCode?: true
+    donatePageLive?: true
     paypalLink?: true
     stripeLink?: true
     venmoQrCodeUrl?: true
@@ -39114,6 +39120,7 @@ export namespace Prisma {
     fromName: string
     adminNotifyEmail: string
     donationWidgetCode: string
+    donatePageLive: boolean
     paypalLink: string
     stripeLink: string
     venmoQrCodeUrl: string
@@ -39169,6 +39176,7 @@ export namespace Prisma {
     fromName?: boolean
     adminNotifyEmail?: boolean
     donationWidgetCode?: boolean
+    donatePageLive?: boolean
     paypalLink?: boolean
     stripeLink?: boolean
     venmoQrCodeUrl?: boolean
@@ -39205,6 +39213,7 @@ export namespace Prisma {
     fromName?: boolean
     adminNotifyEmail?: boolean
     donationWidgetCode?: boolean
+    donatePageLive?: boolean
     paypalLink?: boolean
     stripeLink?: boolean
     venmoQrCodeUrl?: boolean
@@ -39241,6 +39250,7 @@ export namespace Prisma {
     fromName?: boolean
     adminNotifyEmail?: boolean
     donationWidgetCode?: boolean
+    donatePageLive?: boolean
     paypalLink?: boolean
     stripeLink?: boolean
     venmoQrCodeUrl?: boolean
@@ -39277,13 +39287,14 @@ export namespace Prisma {
     fromName?: boolean
     adminNotifyEmail?: boolean
     donationWidgetCode?: boolean
+    donatePageLive?: boolean
     paypalLink?: boolean
     stripeLink?: boolean
     venmoQrCodeUrl?: boolean
     venmoHandle?: boolean
   }
 
-  export type SettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orgName" | "orgEin" | "contactPhone" | "contactEmail" | "contactAddress" | "missionStatement" | "defaultDonationAmount" | "amazonWishlistUrl" | "chewyWishlistUrl" | "facebookUrl" | "instagramUrl" | "socialPostingEnabled" | "facebookPageId" | "facebookPageAccessToken" | "instagramBusinessAccountId" | "groqApiKey" | "groqModel" | "aiEnabled" | "emailsEnabled" | "smtpHost" | "smtpPort" | "smtpSecure" | "smtpUser" | "smtpPass" | "fromEmail" | "fromName" | "adminNotifyEmail" | "donationWidgetCode" | "paypalLink" | "stripeLink" | "venmoQrCodeUrl" | "venmoHandle", ExtArgs["result"]["settings"]>
+  export type SettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orgName" | "orgEin" | "contactPhone" | "contactEmail" | "contactAddress" | "missionStatement" | "defaultDonationAmount" | "amazonWishlistUrl" | "chewyWishlistUrl" | "facebookUrl" | "instagramUrl" | "socialPostingEnabled" | "facebookPageId" | "facebookPageAccessToken" | "instagramBusinessAccountId" | "groqApiKey" | "groqModel" | "aiEnabled" | "emailsEnabled" | "smtpHost" | "smtpPort" | "smtpSecure" | "smtpUser" | "smtpPass" | "fromEmail" | "fromName" | "adminNotifyEmail" | "donationWidgetCode" | "donatePageLive" | "paypalLink" | "stripeLink" | "venmoQrCodeUrl" | "venmoHandle", ExtArgs["result"]["settings"]>
 
   export type $SettingsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Settings"
@@ -39318,6 +39329,7 @@ export namespace Prisma {
       fromName: string
       adminNotifyEmail: string
       donationWidgetCode: string
+      donatePageLive: boolean
       paypalLink: string
       stripeLink: string
       venmoQrCodeUrl: string
@@ -39774,6 +39786,7 @@ export namespace Prisma {
     readonly fromName: FieldRef<"Settings", 'String'>
     readonly adminNotifyEmail: FieldRef<"Settings", 'String'>
     readonly donationWidgetCode: FieldRef<"Settings", 'String'>
+    readonly donatePageLive: FieldRef<"Settings", 'Boolean'>
     readonly paypalLink: FieldRef<"Settings", 'String'>
     readonly stripeLink: FieldRef<"Settings", 'String'>
     readonly venmoQrCodeUrl: FieldRef<"Settings", 'String'>
@@ -46154,6 +46167,7 @@ export namespace Prisma {
     fromName: 'fromName',
     adminNotifyEmail: 'adminNotifyEmail',
     donationWidgetCode: 'donationWidgetCode',
+    donatePageLive: 'donatePageLive',
     paypalLink: 'paypalLink',
     stripeLink: 'stripeLink',
     venmoQrCodeUrl: 'venmoQrCodeUrl',
@@ -48728,6 +48742,7 @@ export namespace Prisma {
     fromName?: StringFilter<"Settings"> | string
     adminNotifyEmail?: StringFilter<"Settings"> | string
     donationWidgetCode?: StringFilter<"Settings"> | string
+    donatePageLive?: BoolFilter<"Settings"> | boolean
     paypalLink?: StringFilter<"Settings"> | string
     stripeLink?: StringFilter<"Settings"> | string
     venmoQrCodeUrl?: StringFilter<"Settings"> | string
@@ -48764,6 +48779,7 @@ export namespace Prisma {
     fromName?: SortOrder
     adminNotifyEmail?: SortOrder
     donationWidgetCode?: SortOrder
+    donatePageLive?: SortOrder
     paypalLink?: SortOrder
     stripeLink?: SortOrder
     venmoQrCodeUrl?: SortOrder
@@ -48803,6 +48819,7 @@ export namespace Prisma {
     fromName?: StringFilter<"Settings"> | string
     adminNotifyEmail?: StringFilter<"Settings"> | string
     donationWidgetCode?: StringFilter<"Settings"> | string
+    donatePageLive?: BoolFilter<"Settings"> | boolean
     paypalLink?: StringFilter<"Settings"> | string
     stripeLink?: StringFilter<"Settings"> | string
     venmoQrCodeUrl?: StringFilter<"Settings"> | string
@@ -48839,6 +48856,7 @@ export namespace Prisma {
     fromName?: SortOrder
     adminNotifyEmail?: SortOrder
     donationWidgetCode?: SortOrder
+    donatePageLive?: SortOrder
     paypalLink?: SortOrder
     stripeLink?: SortOrder
     venmoQrCodeUrl?: SortOrder
@@ -48883,6 +48901,7 @@ export namespace Prisma {
     fromName?: StringWithAggregatesFilter<"Settings"> | string
     adminNotifyEmail?: StringWithAggregatesFilter<"Settings"> | string
     donationWidgetCode?: StringWithAggregatesFilter<"Settings"> | string
+    donatePageLive?: BoolWithAggregatesFilter<"Settings"> | boolean
     paypalLink?: StringWithAggregatesFilter<"Settings"> | string
     stripeLink?: StringWithAggregatesFilter<"Settings"> | string
     venmoQrCodeUrl?: StringWithAggregatesFilter<"Settings"> | string
@@ -51626,6 +51645,7 @@ export namespace Prisma {
     fromName?: string
     adminNotifyEmail?: string
     donationWidgetCode?: string
+    donatePageLive?: boolean
     paypalLink?: string
     stripeLink?: string
     venmoQrCodeUrl?: string
@@ -51662,6 +51682,7 @@ export namespace Prisma {
     fromName?: string
     adminNotifyEmail?: string
     donationWidgetCode?: string
+    donatePageLive?: boolean
     paypalLink?: string
     stripeLink?: string
     venmoQrCodeUrl?: string
@@ -51698,6 +51719,7 @@ export namespace Prisma {
     fromName?: StringFieldUpdateOperationsInput | string
     adminNotifyEmail?: StringFieldUpdateOperationsInput | string
     donationWidgetCode?: StringFieldUpdateOperationsInput | string
+    donatePageLive?: BoolFieldUpdateOperationsInput | boolean
     paypalLink?: StringFieldUpdateOperationsInput | string
     stripeLink?: StringFieldUpdateOperationsInput | string
     venmoQrCodeUrl?: StringFieldUpdateOperationsInput | string
@@ -51734,6 +51756,7 @@ export namespace Prisma {
     fromName?: StringFieldUpdateOperationsInput | string
     adminNotifyEmail?: StringFieldUpdateOperationsInput | string
     donationWidgetCode?: StringFieldUpdateOperationsInput | string
+    donatePageLive?: BoolFieldUpdateOperationsInput | boolean
     paypalLink?: StringFieldUpdateOperationsInput | string
     stripeLink?: StringFieldUpdateOperationsInput | string
     venmoQrCodeUrl?: StringFieldUpdateOperationsInput | string
@@ -51770,6 +51793,7 @@ export namespace Prisma {
     fromName?: string
     adminNotifyEmail?: string
     donationWidgetCode?: string
+    donatePageLive?: boolean
     paypalLink?: string
     stripeLink?: string
     venmoQrCodeUrl?: string
@@ -51806,6 +51830,7 @@ export namespace Prisma {
     fromName?: StringFieldUpdateOperationsInput | string
     adminNotifyEmail?: StringFieldUpdateOperationsInput | string
     donationWidgetCode?: StringFieldUpdateOperationsInput | string
+    donatePageLive?: BoolFieldUpdateOperationsInput | boolean
     paypalLink?: StringFieldUpdateOperationsInput | string
     stripeLink?: StringFieldUpdateOperationsInput | string
     venmoQrCodeUrl?: StringFieldUpdateOperationsInput | string
@@ -51842,6 +51867,7 @@ export namespace Prisma {
     fromName?: StringFieldUpdateOperationsInput | string
     adminNotifyEmail?: StringFieldUpdateOperationsInput | string
     donationWidgetCode?: StringFieldUpdateOperationsInput | string
+    donatePageLive?: BoolFieldUpdateOperationsInput | boolean
     paypalLink?: StringFieldUpdateOperationsInput | string
     stripeLink?: StringFieldUpdateOperationsInput | string
     venmoQrCodeUrl?: StringFieldUpdateOperationsInput | string
@@ -54242,6 +54268,7 @@ export namespace Prisma {
     fromName?: SortOrder
     adminNotifyEmail?: SortOrder
     donationWidgetCode?: SortOrder
+    donatePageLive?: SortOrder
     paypalLink?: SortOrder
     stripeLink?: SortOrder
     venmoQrCodeUrl?: SortOrder
@@ -54284,6 +54311,7 @@ export namespace Prisma {
     fromName?: SortOrder
     adminNotifyEmail?: SortOrder
     donationWidgetCode?: SortOrder
+    donatePageLive?: SortOrder
     paypalLink?: SortOrder
     stripeLink?: SortOrder
     venmoQrCodeUrl?: SortOrder
@@ -54320,6 +54348,7 @@ export namespace Prisma {
     fromName?: SortOrder
     adminNotifyEmail?: SortOrder
     donationWidgetCode?: SortOrder
+    donatePageLive?: SortOrder
     paypalLink?: SortOrder
     stripeLink?: SortOrder
     venmoQrCodeUrl?: SortOrder
