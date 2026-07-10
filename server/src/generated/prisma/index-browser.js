@@ -522,6 +522,7 @@ exports.Prisma.TransactionScalarFieldEnum = {
   description: 'description',
   donorName: 'donorName',
   donorEmail: 'donorEmail',
+  externalId: 'externalId',
   date: 'date',
   kittenId: 'kittenId',
   createdAt: 'createdAt'

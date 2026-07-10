@@ -15,6 +15,24 @@ enum ActiveProtocolStatus {
   DISCONTINUED
 }
 
+enum WishlistOwnerType {
+  ORG
+  FOSTER
+  KITTEN
+}
+
+enum WishlistRetailer {
+  AMAZON
+  CHEWY
+  WALMART
+}
+
+enum SocialPostStatus {
+  DRAFT
+  SCHEDULED
+  POSTED
+}
+
 enum DoseStatus {
   SCHEDULED
   MISSED
@@ -162,6 +180,7 @@ model Vaccine {
   notes          String    @default("")
 
   @@index([kittenId])
+  @@index([nextDueDate])
 }
 
 model Medication {
@@ -179,6 +198,7 @@ model Medication {
   notes     String    @default("")
 
   @@index([kittenId])
+  @@index([status, endDate])
 }
 
 model VetAppointment {
@@ -196,6 +216,7 @@ model VetAppointment {
   notes        String    @default("")
 
   @@index([kittenId])
+  @@index([date])
 }
 
 model Document {
@@ -232,6 +253,7 @@ model Application {
   uploads          ApplicationUpload[]
 
   @@index([rejectedById])
+  @@index([status, createdAt])
 }
 
 enum ContractType {
@@ -332,6 +354,8 @@ model Content {
   publishTargets String[]            @default([])
   createdAt      DateTime            @default(now())
   completions    ContentCompletion[]
+
+  @@index([category])
 }
 
 model ContentCompletion {
@@ -361,6 +385,8 @@ model Event {
   publishTargets String[]    @default([])
   eventCats      EventCats[]
   rsvps          EventRSVP[]
+
+  @@index([isPublic, status, date])
 }
 
 model EventRSVP {
@@ -498,6 +524,7 @@ model ProtocolDose {
   @@index([activeProtocolId])
   @@index([protocolDrugId])
   @@index([administeredById])
+  @@index([status, scheduledDate])
 }
 
 model Settings {
@@ -573,8 +600,38 @@ model Transaction {
   description String   @default("")
   donorName   String   @default("")
   donorEmail  String   @default("")
+  externalId  String?  @unique
   date        DateTime
   kittenId    Int?
   kitten      Kitten?  @relation(fields: [kittenId], references: [id], onDelete: SetNull)
   createdAt   DateTime @default(now())
+
+  @@index([date])
+  @@index([type, date])
+}
+
+model Wishlist {
+  id        Int               @id @default(autoincrement())
+  ownerType WishlistOwnerType
+  ownerId   Int
+  retailer  WishlistRetailer
+  url       String
+  label     String            @default("")
+  updatedAt DateTime          @updatedAt
+
+  @@unique([ownerType, ownerId, retailer])
+  @@index([ownerType, ownerId])
+}
+
+model SocialPost {
+  id           Int              @id @default(autoincrement())
+  body         String           @default("")
+  imageUrl     String           @default("")
+  platforms    String[]         @default([])
+  scheduledFor DateTime?
+  status       SocialPostStatus @default(DRAFT)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  @@map("social_posts")
 }

@@ -19,6 +19,7 @@ import sponsorshipRoutes from './routes/sponsorshipRoutes.js';
 import contentRoutes from './routes/contentRoutes.js';
 import eventRoutes from './routes/eventRoutes.js';
 import publicRoutes from './routes/publicRoutes.js';
+import webhookRoutes from './routes/webhookRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import roleRoutes from './routes/roleRoutes.js';
@@ -117,6 +118,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
 app.use('/api/auth', authRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/public', publicRoutes);
+app.use('/api/webhooks', webhookRoutes);
 
 app.get('/api/health', (_req, res) => {
   res.json({

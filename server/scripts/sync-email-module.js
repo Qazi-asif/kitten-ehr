@@ -60,6 +60,9 @@ async function syncTemplates() {
         category: template.category,
         description: template.description,
         isSystem: template.isSystem,
+        subject: template.subject,
+        bodyHtml: template.bodyHtml,
+        bodyText: template.bodyText,
       },
     });
   }

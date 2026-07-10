@@ -5,6 +5,7 @@ import {
   EMAIL_TEMPLATE_KEYS,
   STATUS_EMAIL_TEMPLATE_MAP,
 } from '../constants/emailTemplates.js';
+import { sponsorshipOverflowDisclosure } from '../constants/donationCopy.js';
 import { getApplicantEmail, getApplicantName } from '../utils/applicationFormData.js';
 import { wrapEmailContent } from '../utils/emailLayout.js';
 import { escapeHtml } from '../utils/htmlEscape.js';
@@ -298,6 +299,7 @@ export async function sendDonationReceivedEmails({ transaction, donorName, donor
     donorEmail: donorEmail || '',
     amount: Number(transaction.amount).toFixed(2),
     donationDate: new Date(transaction.date).toLocaleDateString(),
+    orgName: settings.orgName || 'Pawsitive Transformations',
   };
 
   await Promise.all([
@@ -313,6 +315,43 @@ export async function sendDonationReceivedEmails({ transaction, donorName, donor
       toEmail: settings.adminNotifyEmail,
       variables: vars,
       relatedType: 'Donation',
+      relatedId: transaction.id,
+    }),
+  ]);
+}
+
+export async function sendSponsorshipReceivedEmails({
+  transaction,
+  donorName,
+  donorEmail,
+  kittenName,
+  tier,
+}) {
+  const settings = await getEmailSettings();
+  const vars = {
+    donorName: donorName || 'Supporter',
+    donorEmail: donorEmail || '',
+    amount: Number(transaction.amount).toFixed(2),
+    donationDate: new Date(transaction.date).toLocaleDateString(),
+    orgName: settings.orgName || 'Pawsitive Transformations',
+    kittenName: kittenName || 'your sponsored kitten',
+    tier: tier || 'Custom',
+    overflowDisclosure: sponsorshipOverflowDisclosure(kittenName || 'this kitten'),
+  };
+
+  await Promise.all([
+    sendTemplatedEmail({
+      templateKey: EMAIL_TEMPLATE_KEYS.SPONSORSHIP_RECEIVED,
+      toEmail: donorEmail,
+      variables: vars,
+      relatedType: 'Sponsorship',
+      relatedId: transaction.id,
+    }),
+    sendTemplatedEmail({
+      templateKey: EMAIL_TEMPLATE_KEYS.SPONSORSHIP_RECEIVED_ADMIN,
+      toEmail: settings.adminNotifyEmail,
+      variables: vars,
+      relatedType: 'Sponsorship',
       relatedId: transaction.id,
     }),
   ]);

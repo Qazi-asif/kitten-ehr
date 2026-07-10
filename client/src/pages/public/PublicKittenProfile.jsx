@@ -1,9 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Heart, PawPrint, ShoppingBag, Sparkles } from 'lucide-react';
 import { DONATE_PAGE_LIVE } from '../../constants/siteFeatures';
 import { WISHLIST_OWNER_TYPES, WISHLIST_RETAILER_META } from '../../constants/wishlists';
-import { fetchPublicKittenById, fetchPublicKittenUpdates, fetchPublicWishlists } from '../../services/publicApi';
+import DonationCheckoutPanel from '../../components/DonationCheckoutPanel';
+import DonationConfirmation from '../../components/DonationConfirmation';
+import { fetchPublicKittenById, fetchPublicKittenUpdates, fetchPublicSettings, fetchPublicWishlists } from '../../services/publicApi';
+import { markCheckoutSuccessParam } from '../../hooks/useGivebutterCheckout';
 import KittenPhoto from '../../components/KittenPhoto';
 import { formatKittenAgeDetailed } from '../../utils/kittenAge';
 
@@ -79,21 +82,32 @@ function PublicKittenProfile() {
   const [error, setError] = useState(null);
   const [selectedTierId, setSelectedTierId] = useState(SPONSOR_TIERS[0].id);
   const [customAmount, setCustomAmount] = useState('');
+  const [showCheckout, setShowCheckout] = useState(false);
+  const [sponsorshipComplete, setSponsorshipComplete] = useState(false);
+  const [donationWidgetCode, setDonationWidgetCode] = useState('');
 
   useEffect(() => {
     Promise.all([
       fetchPublicKittenById(id),
       fetchPublicKittenUpdates(id),
       fetchPublicWishlists(WISHLIST_OWNER_TYPES.KITTEN, id),
+      fetchPublicSettings(),
     ])
-      .then(([kittenData, updateData, wishlistData]) => {
+      .then(([kittenData, updateData, wishlistData, settingsData]) => {
         setKitten(kittenData);
         setUpdates(updateData);
         setWishlists(Array.isArray(wishlistData) ? wishlistData : []);
+        setDonationWidgetCode(settingsData?.donationWidgetCode || '');
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, [id]);
+
+  const handleSponsorshipSuccess = useCallback(() => {
+    setSponsorshipComplete(true);
+    setShowCheckout(false);
+    markCheckoutSuccessParam('sponsor');
+  }, []);
 
   function scrollToRef(ref) {
     ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -334,6 +348,11 @@ function PublicKittenProfile() {
             </div>
           </div>
 
+          {sponsorshipComplete ? (
+            <DonationConfirmation variant="sponsor" kittenName={kitten.name} className="mt-8" />
+          ) : null}
+
+          {!sponsorshipComplete && (
           <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {SPONSOR_TIERS.map((tier) => {
               const selected = selectedTierId === tier.id && !customAmount.trim();
@@ -385,17 +404,35 @@ function PublicKittenProfile() {
               </span>
             </label>
           </div>
+          )}
 
-          <Link
-            to={`/donate?kitten=${encodeURIComponent(kitten.name)}&amount=${encodeURIComponent(sponsorAmount)}`}
-            className="mt-8 inline-flex w-full items-center justify-center rounded-xl bg-brand px-6 py-4 text-sm font-bold uppercase tracking-wide text-white shadow-md transition hover:bg-brand-dark sm:max-w-md"
-          >
-            Sponsor {kitten.name} · ${sponsorAmount}
-          </Link>
+          {!sponsorshipComplete && !showCheckout ? (
+            <button
+              type="button"
+              onClick={() => setShowCheckout(true)}
+              className="mt-8 inline-flex w-full items-center justify-center rounded-xl bg-brand px-6 py-4 text-sm font-bold uppercase tracking-wide text-white shadow-md transition hover:bg-brand-dark sm:max-w-md"
+            >
+              Sponsor {kitten.name} · ${sponsorAmount}
+            </button>
+          ) : null}
 
+          {!sponsorshipComplete && showCheckout ? (
+            <DonationCheckoutPanel
+              widgetCode={donationWidgetCode}
+              amount={sponsorAmount}
+              kittenId={kitten.id}
+              kittenName={kitten.name}
+              tier={selectedTier.name}
+              onSuccess={handleSponsorshipSuccess}
+              className="mt-8"
+            />
+          ) : null}
+
+          {!sponsorshipComplete ? (
           <p className="mt-4 max-w-3xl text-xs leading-relaxed text-slate-500">
             {complianceText}
           </p>
+          ) : null}
         </div>
       </section>
       )}

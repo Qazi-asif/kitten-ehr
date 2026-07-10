@@ -538,8 +538,11 @@ function SettingsPage() {
 
           <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
             <h3 className="text-sm font-bold text-slate-900">Payment &amp; Donation Links</h3>
-            <p className="mt-1 text-sm text-slate-600">
+            <p className="mt-4 text-sm text-slate-600">
               Configure the public donate page: GiveButter embed, Stripe/PayPal links, and Venmo QR details.
+              After Givebutter is live, point webhooks to{' '}
+              <code className="rounded bg-slate-200 px-1.5 py-0.5 text-xs">/api/webhooks/givebutter</code>{' '}
+              with event <code className="rounded bg-slate-200 px-1.5 py-0.5 text-xs">transaction.succeeded</code>.
             </p>
 
             <label className="mt-4 block">

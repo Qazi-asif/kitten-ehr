@@ -600,6 +600,7 @@ model Transaction {
   description String   @default("")
   donorName   String   @default("")
   donorEmail  String   @default("")
+  externalId  String?  @unique
   date        DateTime
   kittenId    Int?
   kitten      Kitten?  @relation(fields: [kittenId], references: [id], onDelete: SetNull)

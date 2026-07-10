@@ -42407,6 +42407,7 @@ export namespace Prisma {
     description: string | null
     donorName: string | null
     donorEmail: string | null
+    externalId: string | null
     date: Date | null
     kittenId: number | null
     createdAt: Date | null
@@ -42420,6 +42421,7 @@ export namespace Prisma {
     description: string | null
     donorName: string | null
     donorEmail: string | null
+    externalId: string | null
     date: Date | null
     kittenId: number | null
     createdAt: Date | null
@@ -42433,6 +42435,7 @@ export namespace Prisma {
     description: number
     donorName: number
     donorEmail: number
+    externalId: number
     date: number
     kittenId: number
     createdAt: number
@@ -42460,6 +42463,7 @@ export namespace Prisma {
     description?: true
     donorName?: true
     donorEmail?: true
+    externalId?: true
     date?: true
     kittenId?: true
     createdAt?: true
@@ -42473,6 +42477,7 @@ export namespace Prisma {
     description?: true
     donorName?: true
     donorEmail?: true
+    externalId?: true
     date?: true
     kittenId?: true
     createdAt?: true
@@ -42486,6 +42491,7 @@ export namespace Prisma {
     description?: true
     donorName?: true
     donorEmail?: true
+    externalId?: true
     date?: true
     kittenId?: true
     createdAt?: true
@@ -42586,6 +42592,7 @@ export namespace Prisma {
     description: string
     donorName: string
     donorEmail: string
+    externalId: string | null
     date: Date
     kittenId: number | null
     createdAt: Date
@@ -42618,6 +42625,7 @@ export namespace Prisma {
     description?: boolean
     donorName?: boolean
     donorEmail?: boolean
+    externalId?: boolean
     date?: boolean
     kittenId?: boolean
     createdAt?: boolean
@@ -42632,6 +42640,7 @@ export namespace Prisma {
     description?: boolean
     donorName?: boolean
     donorEmail?: boolean
+    externalId?: boolean
     date?: boolean
     kittenId?: boolean
     createdAt?: boolean
@@ -42646,6 +42655,7 @@ export namespace Prisma {
     description?: boolean
     donorName?: boolean
     donorEmail?: boolean
+    externalId?: boolean
     date?: boolean
     kittenId?: boolean
     createdAt?: boolean
@@ -42660,12 +42670,13 @@ export namespace Prisma {
     description?: boolean
     donorName?: boolean
     donorEmail?: boolean
+    externalId?: boolean
     date?: boolean
     kittenId?: boolean
     createdAt?: boolean
   }
 
-  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "category" | "amount" | "description" | "donorName" | "donorEmail" | "date" | "kittenId" | "createdAt", ExtArgs["result"]["transaction"]>
+  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "category" | "amount" | "description" | "donorName" | "donorEmail" | "externalId" | "date" | "kittenId" | "createdAt", ExtArgs["result"]["transaction"]>
   export type TransactionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     kitten?: boolean | Transaction$kittenArgs<ExtArgs>
   }
@@ -42689,6 +42700,7 @@ export namespace Prisma {
       description: string
       donorName: string
       donorEmail: string
+      externalId: string | null
       date: Date
       kittenId: number | null
       createdAt: Date
@@ -43123,6 +43135,7 @@ export namespace Prisma {
     readonly description: FieldRef<"Transaction", 'String'>
     readonly donorName: FieldRef<"Transaction", 'String'>
     readonly donorEmail: FieldRef<"Transaction", 'String'>
+    readonly externalId: FieldRef<"Transaction", 'String'>
     readonly date: FieldRef<"Transaction", 'DateTime'>
     readonly kittenId: FieldRef<"Transaction", 'Int'>
     readonly createdAt: FieldRef<"Transaction", 'DateTime'>
@@ -46193,6 +46206,7 @@ export namespace Prisma {
     description: 'description',
     donorName: 'donorName',
     donorEmail: 'donorEmail',
+    externalId: 'externalId',
     date: 'date',
     kittenId: 'kittenId',
     createdAt: 'createdAt'
@@ -49059,6 +49073,7 @@ export namespace Prisma {
     description?: StringFilter<"Transaction"> | string
     donorName?: StringFilter<"Transaction"> | string
     donorEmail?: StringFilter<"Transaction"> | string
+    externalId?: StringNullableFilter<"Transaction"> | string | null
     date?: DateTimeFilter<"Transaction"> | Date | string
     kittenId?: IntNullableFilter<"Transaction"> | number | null
     createdAt?: DateTimeFilter<"Transaction"> | Date | string
@@ -49073,6 +49088,7 @@ export namespace Prisma {
     description?: SortOrder
     donorName?: SortOrder
     donorEmail?: SortOrder
+    externalId?: SortOrderInput | SortOrder
     date?: SortOrder
     kittenId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -49081,6 +49097,7 @@ export namespace Prisma {
 
   export type TransactionWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    externalId?: string
     AND?: TransactionWhereInput | TransactionWhereInput[]
     OR?: TransactionWhereInput[]
     NOT?: TransactionWhereInput | TransactionWhereInput[]
@@ -49094,7 +49111,7 @@ export namespace Prisma {
     kittenId?: IntNullableFilter<"Transaction"> | number | null
     createdAt?: DateTimeFilter<"Transaction"> | Date | string
     kitten?: XOR<KittenNullableScalarRelationFilter, KittenWhereInput> | null
-  }, "id">
+  }, "id" | "externalId">
 
   export type TransactionOrderByWithAggregationInput = {
     id?: SortOrder
@@ -49104,6 +49121,7 @@ export namespace Prisma {
     description?: SortOrder
     donorName?: SortOrder
     donorEmail?: SortOrder
+    externalId?: SortOrderInput | SortOrder
     date?: SortOrder
     kittenId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -49125,6 +49143,7 @@ export namespace Prisma {
     description?: StringWithAggregatesFilter<"Transaction"> | string
     donorName?: StringWithAggregatesFilter<"Transaction"> | string
     donorEmail?: StringWithAggregatesFilter<"Transaction"> | string
+    externalId?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     date?: DateTimeWithAggregatesFilter<"Transaction"> | Date | string
     kittenId?: IntNullableWithAggregatesFilter<"Transaction"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"Transaction"> | Date | string
@@ -52033,6 +52052,7 @@ export namespace Prisma {
     description?: string
     donorName?: string
     donorEmail?: string
+    externalId?: string | null
     date: Date | string
     createdAt?: Date | string
     kitten?: KittenCreateNestedOneWithoutTransactionsInput
@@ -52046,6 +52066,7 @@ export namespace Prisma {
     description?: string
     donorName?: string
     donorEmail?: string
+    externalId?: string | null
     date: Date | string
     kittenId?: number | null
     createdAt?: Date | string
@@ -52058,6 +52079,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     donorName?: StringFieldUpdateOperationsInput | string
     donorEmail?: StringFieldUpdateOperationsInput | string
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     kitten?: KittenUpdateOneWithoutTransactionsNestedInput
@@ -52071,6 +52093,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     donorName?: StringFieldUpdateOperationsInput | string
     donorEmail?: StringFieldUpdateOperationsInput | string
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     kittenId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -52084,6 +52107,7 @@ export namespace Prisma {
     description?: string
     donorName?: string
     donorEmail?: string
+    externalId?: string | null
     date: Date | string
     kittenId?: number | null
     createdAt?: Date | string
@@ -52096,6 +52120,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     donorName?: StringFieldUpdateOperationsInput | string
     donorEmail?: StringFieldUpdateOperationsInput | string
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -52108,6 +52133,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     donorName?: StringFieldUpdateOperationsInput | string
     donorEmail?: StringFieldUpdateOperationsInput | string
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     kittenId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54419,6 +54445,7 @@ export namespace Prisma {
     description?: SortOrder
     donorName?: SortOrder
     donorEmail?: SortOrder
+    externalId?: SortOrder
     date?: SortOrder
     kittenId?: SortOrder
     createdAt?: SortOrder
@@ -54438,6 +54465,7 @@ export namespace Prisma {
     description?: SortOrder
     donorName?: SortOrder
     donorEmail?: SortOrder
+    externalId?: SortOrder
     date?: SortOrder
     kittenId?: SortOrder
     createdAt?: SortOrder
@@ -54451,6 +54479,7 @@ export namespace Prisma {
     description?: SortOrder
     donorName?: SortOrder
     donorEmail?: SortOrder
+    externalId?: SortOrder
     date?: SortOrder
     kittenId?: SortOrder
     createdAt?: SortOrder
@@ -57535,6 +57564,7 @@ export namespace Prisma {
     description?: string
     donorName?: string
     donorEmail?: string
+    externalId?: string | null
     date: Date | string
     createdAt?: Date | string
   }
@@ -57547,6 +57577,7 @@ export namespace Prisma {
     description?: string
     donorName?: string
     donorEmail?: string
+    externalId?: string | null
     date: Date | string
     createdAt?: Date | string
   }
@@ -57974,6 +58005,7 @@ export namespace Prisma {
     description?: StringFilter<"Transaction"> | string
     donorName?: StringFilter<"Transaction"> | string
     donorEmail?: StringFilter<"Transaction"> | string
+    externalId?: StringNullableFilter<"Transaction"> | string | null
     date?: DateTimeFilter<"Transaction"> | Date | string
     kittenId?: IntNullableFilter<"Transaction"> | number | null
     createdAt?: DateTimeFilter<"Transaction"> | Date | string
@@ -62761,6 +62793,7 @@ export namespace Prisma {
     description?: string
     donorName?: string
     donorEmail?: string
+    externalId?: string | null
     date: Date | string
     createdAt?: Date | string
   }
@@ -63046,6 +63079,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     donorName?: StringFieldUpdateOperationsInput | string
     donorEmail?: StringFieldUpdateOperationsInput | string
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -63058,6 +63092,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     donorName?: StringFieldUpdateOperationsInput | string
     donorEmail?: StringFieldUpdateOperationsInput | string
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -63070,6 +63105,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     donorName?: StringFieldUpdateOperationsInput | string
     donorEmail?: StringFieldUpdateOperationsInput | string
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

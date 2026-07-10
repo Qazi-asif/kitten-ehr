@@ -1,13 +1,19 @@
-import { useEffect, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
-import SecureWidget from '../../components/SecureWidget';
+import { useEffect, useState, useCallback } from 'react';
+import { useOutletContext, useSearchParams } from 'react-router-dom';
+import DonationConfirmation from '../../components/DonationConfirmation';
+import GivebutterDonationWidget from '../../components/GivebutterDonationWidget';
 import { getFileUrl } from '../../services/api';
 import { DONATE_PAGE_LIVE } from '../../constants/siteFeatures';
 import { fetchPublicSettings } from '../../services/publicApi';
+import { markCheckoutSuccessParam } from '../../hooks/useGivebutterCheckout';
 
 function DonatePage() {
   const outlet = useOutletContext();
+  const [searchParams] = useSearchParams();
   const [settings, setSettings] = useState(outlet?.settings ?? {});
+  const [donationComplete, setDonationComplete] = useState(false);
+
+  const prefilledAmount = searchParams.get('amount') || '';
 
   useEffect(() => {
     fetchPublicSettings()
@@ -15,7 +21,11 @@ function DonatePage() {
       .catch(() => {});
   }, []);
 
-  const hasWidget = Boolean(settings.donationWidgetCode?.trim());
+  const handleDonationSuccess = useCallback(() => {
+    setDonationComplete(true);
+    markCheckoutSuccessParam('donation');
+  }, []);
+
   const hasStripe = Boolean(settings.stripeLink);
   const hasPaypal = Boolean(settings.paypalLink);
   const hasVenmo = Boolean(settings.venmoQrCodeUrl);
@@ -61,6 +71,10 @@ function DonatePage() {
       </div>
 
       <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
+        {donationComplete ? (
+          <DonationConfirmation variant="donation" className="mb-12" />
+        ) : null}
+
         <div className="mb-8 rounded-2xl border border-brand/25 bg-brand-light/20 p-6 lg:p-8">
           <h2 className="text-xl font-extrabold text-brand">Make a Difference Today</h2>
           <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600">
@@ -85,15 +99,14 @@ function DonatePage() {
             Donations support the rescue wherever the need is greatest.
           </p>
 
-          {hasWidget ? (
-            <div className="mt-6 overflow-hidden">
-              <SecureWidget code={settings.donationWidgetCode} className="min-h-[420px] w-full" />
-            </div>
-          ) : (
-            <p className="mt-6 rounded-xl border border-dashed border-slate-200 bg-slate-50 px-6 py-8 text-center text-sm text-slate-600">
-              Online donation form is being configured in Givebutter.
-            </p>
-          )}
+          <div className="mt-6 overflow-hidden">
+            <GivebutterDonationWidget
+              code={settings.donationWidgetCode}
+              amount={prefilledAmount || undefined}
+              onSuccess={handleDonationSuccess}
+              className="min-h-[420px] w-full"
+            />
+          </div>
         </section>
 
         <section className="mb-12 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:p-8">

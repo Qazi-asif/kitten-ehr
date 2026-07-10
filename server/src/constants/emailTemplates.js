@@ -10,6 +10,8 @@ export const EMAIL_TEMPLATE_KEYS = {
   APPLICATION_UNDER_REVIEW: 'application.status.under_review',
   DONATION_RECEIVED: 'donation.received',
   DONATION_RECEIVED_ADMIN: 'donation.received.admin',
+  SPONSORSHIP_RECEIVED: 'sponsorship.received',
+  SPONSORSHIP_RECEIVED_ADMIN: 'sponsorship.received.admin',
 };
 
 export const APPLICATION_REVIEW_STATUSES = ['Approved', 'Denied', 'Under Review'];
@@ -62,9 +64,9 @@ const underReviewBody = `
 <p>We appreciate your patience while our team completes the review process.</p>`;
 
 const donationThankYouBody = `
-<h2 style="margin:0 0 16px;font-size:20px;color:#059669;">Thank You for Your Generosity!</h2>
+<h2 style="margin:0 0 16px;font-size:20px;color:#059669;">Thank you.</h2>
 <p>Dear {{donorName}},</p>
-<p>On behalf of everyone at {{orgName}}, thank you for your donation. Your support directly funds rescue, medical care, and foster supplies.</p>
+<p>Thank you. You just moved a cat closer to a couch. Watch your inbox; we love sharing where the help goes.</p>
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:20px 0;background:#ecfdf5;border-radius:8px;border:1px solid #a7f3d0;">
   <tr><td style="padding:16px;font-size:14px;">
     <p style="margin:0 0 8px;"><strong>Donation Amount:</strong> \${{amount}}</p>
@@ -72,7 +74,35 @@ const donationThankYouBody = `
     <p style="margin:0;"><strong>Donor Email:</strong> {{donorEmail}}</p>
   </td></tr>
 </table>
+<p>Donations support the rescue wherever the need is greatest.</p>
 <p>With gratitude,<br/>The {{orgName}} Team</p>`;
+
+const sponsorshipThankYouBody = `
+<h2 style="margin:0 0 16px;font-size:20px;color:#059669;">You&apos;re officially in {{kittenName}}&apos;s corner.</h2>
+<p>Dear {{donorName}},</p>
+<p>Thank you. We&apos;ll keep you posted on how {{kittenName}}&apos;s doing. Welcome to the rescue.</p>
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:20px 0;background:#ecfdf5;border-radius:8px;border:1px solid #a7f3d0;">
+  <tr><td style="padding:16px;font-size:14px;">
+    <p style="margin:0 0 8px;"><strong>Sponsorship Amount:</strong> \${{amount}}</p>
+    <p style="margin:0 0 8px;"><strong>Tier:</strong> {{tier}}</p>
+    <p style="margin:0 0 8px;"><strong>Kitten:</strong> {{kittenName}}</p>
+    <p style="margin:0;"><strong>Date:</strong> {{donationDate}}</p>
+  </td></tr>
+</table>
+<p style="margin:16px 0 0;font-size:13px;color:#475569;line-height:1.6;">{{overflowDisclosure}}</p>`;
+
+const sponsorshipAdminBody = `
+<h2 style="margin:0 0 16px;font-size:20px;color:#0f172a;">New Kitten Sponsorship</h2>
+<p>A sponsorship gift was recorded for {{kittenName}}.</p>
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:20px 0;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0;">
+  <tr><td style="padding:16px;font-size:14px;">
+    <p style="margin:0 0 8px;"><strong>Donor Name:</strong> {{donorName}}</p>
+    <p style="margin:0 0 8px;"><strong>Donor Email:</strong> {{donorEmail}}</p>
+    <p style="margin:0 0 8px;"><strong>Amount:</strong> \${{amount}}</p>
+    <p style="margin:0 0 8px;"><strong>Tier:</strong> {{tier}}</p>
+    <p style="margin:0;"><strong>Date:</strong> {{donationDate}}</p>
+  </td></tr>
+</table>`;
 
 const donationAdminBody = `
 <h2 style="margin:0 0 16px;font-size:20px;color:#0f172a;">New Donation Received</h2>
@@ -169,11 +199,33 @@ export const DEFAULT_EMAIL_TEMPLATES = [
     key: EMAIL_TEMPLATE_KEYS.DONATION_RECEIVED,
     name: 'Donation Thank You',
     category: 'Donation',
-    subject: 'Thank you for your donation to {{orgName}}',
+    subject: 'Thank you for supporting {{orgName}}',
     bodyHtml: donationThankYouBody,
     bodyText:
-      'Hi {{donorName}},\n\nThank you for your generous donation of ${{amount}} to {{orgName}} on {{donationDate}}.\n\nYour support helps us rescue and care for kittens in need.',
+      'Dear {{donorName}},\n\nThank you. You just moved a cat closer to a couch. Watch your inbox; we love sharing where the help goes.\n\nDonation Amount: ${{amount}}\nDate: {{donationDate}}\n\nDonations support the rescue wherever the need is greatest.\n\n{{orgName}}',
     description: 'Sent automatically to the donor after a donation is recorded.',
+    isSystem: true,
+  },
+  {
+    key: EMAIL_TEMPLATE_KEYS.SPONSORSHIP_RECEIVED,
+    name: 'Sponsorship Thank You',
+    category: 'Donation',
+    subject: 'You\'re in {{kittenName}}\'s corner',
+    bodyHtml: sponsorshipThankYouBody,
+    bodyText:
+      'Dear {{donorName}},\n\nYou\'re officially in {{kittenName}}\'s corner. Thank you. We\'ll keep you posted on how they\'re doing. Welcome to the rescue.\n\nSponsorship Amount: ${{amount}}\nTier: {{tier}}\nKitten: {{kittenName}}\nDate: {{donationDate}}\n\n{{overflowDisclosure}}',
+    description: 'Sent automatically to the donor after a kitten sponsorship is recorded. Includes required overflow disclosure.',
+    isSystem: true,
+  },
+  {
+    key: EMAIL_TEMPLATE_KEYS.SPONSORSHIP_RECEIVED_ADMIN,
+    name: 'Sponsorship Received (Admin Alert)',
+    category: 'Donation',
+    subject: 'New sponsorship for {{kittenName}}: ${{amount}}',
+    bodyHtml: sponsorshipAdminBody,
+    bodyText:
+      'A new sponsorship was received for {{kittenName}}.\n\nDonor: {{donorName}} ({{donorEmail}})\nAmount: ${{amount}}\nTier: {{tier}}\nDate: {{donationDate}}',
+    description: 'Sent automatically to the admin notification email when a kitten sponsorship is recorded.',
     isSystem: true,
   },
   {
@@ -202,6 +254,15 @@ export const TEMPLATE_VARIABLES = {
     '{{statusNotes}}',
     '{{orgName}}',
   ],
-  Donation: ['{{donorName}}', '{{donorEmail}}', '{{amount}}', '{{donationDate}}', '{{orgName}}'],
+  Donation: [
+    '{{donorName}}',
+    '{{donorEmail}}',
+    '{{amount}}',
+    '{{donationDate}}',
+    '{{orgName}}',
+    '{{kittenName}}',
+    '{{tier}}',
+    '{{overflowDisclosure}}',
+  ],
   General: ['{{orgName}}', '{{content}}'],
 };
