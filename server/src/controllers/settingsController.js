@@ -35,7 +35,8 @@ export const DEFAULTS = {
   emailsEnabled: Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS),
   smtpHost: process.env.SMTP_HOST || 'smtp.gmail.com',
   smtpPort: Number(process.env.SMTP_PORT) || 587,
-  smtpSecure: process.env.SMTP_SECURE === 'true' || Number(process.env.SMTP_PORT) === 465,
+  // Always false by default — secure is derived from port at send time (465=SSL, else STARTTLS)
+  smtpSecure: false,
   smtpUser: process.env.SMTP_USER || '',
   smtpPass: process.env.SMTP_PASS || '',
   fromEmail: process.env.SMTP_USER || '',
@@ -89,7 +90,7 @@ export async function getSettings(_req, res, next) {
             emailsEnabled: true,
             smtpHost: settings.smtpHost || envHost,
             smtpPort: settings.smtpPort || port,
-            smtpSecure: settings.smtpSecure || process.env.SMTP_SECURE === 'true' || port === 465,
+            smtpSecure: false, // always false — secure is derived from port at send time
             smtpUser: settings.smtpUser || envUser,
             smtpPass: settings.smtpPass || envPass,
             fromEmail: settings.fromEmail || envUser,

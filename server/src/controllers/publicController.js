@@ -368,8 +368,10 @@ export async function submitContactForm(req, res, next) {
     }
 
     const port = Number(process.env.SMTP_PORT || settings?.smtpPort) || 587;
-    // port 465 = direct SSL; everything else (587, 25, etc.) = STARTTLS
-    const secure = port === 465 || process.env.SMTP_SECURE === 'true' || settings?.smtpSecure === true;
+    // Derive secure ONLY from the port — never trust the DB smtpSecure flag
+    // because it can be stale or incorrectly set.
+    // 465 = direct SSL (secure:true), 587/25/2525 = STARTTLS (secure:false).
+    const secure = port === 465;
     const orgName = settings?.orgName || 'Pawsitive Transformations';
 
     const transportConfig = {
@@ -377,8 +379,6 @@ export async function submitContactForm(req, res, next) {
       port,
       secure,
       auth: { user: smtpUser, pass: smtpPass },
-      // Tighten TLS for STARTTLS connections without using requireTLS,
-      // which can cause handshake failures on some hosted environments.
       tls: { rejectUnauthorized: false },
     };
 

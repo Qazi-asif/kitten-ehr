@@ -54,7 +54,6 @@ async function seedAuth() {
 async function seedSettings() {
   const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
   const smtpPort = Number(process.env.SMTP_PORT) || 587;
-  const smtpSecure = process.env.SMTP_SECURE === 'true' || smtpPort === 465;
   const smtpUser = process.env.SMTP_USER || '';
   const smtpPass = process.env.SMTP_PASS || '';
   // Enable emails automatically when credentials are present in env
@@ -79,7 +78,7 @@ async function seedSettings() {
       emailsEnabled,
       smtpHost,
       smtpPort,
-      smtpSecure,
+      smtpSecure: false, // always false — secure is derived from port at send time
       smtpUser,
       smtpPass,
       fromEmail: smtpUser,
