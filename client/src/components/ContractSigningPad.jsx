@@ -14,6 +14,7 @@ function ContractSigningPad({
 }) {
   const sigRef = useRef(null);
   const [agreed, setAgreed] = useState(false);
+  const [nameConfirmed, setNameConfirmed] = useState(false);
   const [hasSignature, setHasSignature] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -29,8 +30,8 @@ function ContractSigningPad({
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!agreed || !hasSignature || sigRef.current?.isEmpty()) {
-      setError('Please agree to the terms and provide your signature.');
+    if (!agreed || !nameConfirmed || !hasSignature || sigRef.current?.isEmpty()) {
+      setError('Please confirm your name, agree to the terms, and provide your signature.');
       return;
     }
 
@@ -47,6 +48,7 @@ function ContractSigningPad({
         signatureImage,
         signedAt,
         ipAddress,
+        nameConfirmed,
       });
     } catch (err) {
       setError(err.message || 'Failed to submit signature.');
@@ -55,7 +57,7 @@ function ContractSigningPad({
     }
   }
 
-  const canSubmit = agreed && hasSignature && !submitting;
+  const canSubmit = agreed && nameConfirmed && hasSignature && !submitting;
 
   return (
     <div className="flex h-full max-h-[90vh] flex-col bg-white text-neutral-900">
@@ -94,6 +96,23 @@ function ContractSigningPad({
         </div>
 
         <div className="space-y-5 border-t border-neutral-200 bg-neutral-50 px-6 py-5">
+          <div className="rounded-lg border border-neutral-300 bg-white px-4 py-3">
+            <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Signer Name</p>
+            <p className="mt-1 font-serif text-base font-semibold text-neutral-900">{signerName || '—'}</p>
+          </div>
+
+          <label className="flex items-start gap-3">
+            <input
+              type="checkbox"
+              checked={nameConfirmed}
+              onChange={(e) => setNameConfirmed(e.target.checked)}
+              className="mt-1 h-4 w-4 rounded border-neutral-400 text-neutral-900 focus:ring-neutral-900"
+            />
+            <span className="text-sm leading-relaxed text-neutral-800">
+              I confirm the name above is my full legal name and I am the person signing this agreement.
+            </span>
+          </label>
+
           <label className="flex items-start gap-3">
             <input
               type="checkbox"

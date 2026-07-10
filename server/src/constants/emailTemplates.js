@@ -13,6 +13,7 @@ export const EMAIL_TEMPLATE_KEYS = {
   SPONSORSHIP_RECEIVED: 'sponsorship.received',
   SPONSORSHIP_RECEIVED_ADMIN: 'sponsorship.received.admin',
   CONTRACT_AGREEMENT: 'contract.agreement',
+  CONTRACT_SIGNED_PDF: 'contract.signed_pdf',
 };
 
 export const APPLICATION_REVIEW_STATUSES = ['Approved', 'Denied', 'Under Review'];

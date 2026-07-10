@@ -38,6 +38,15 @@ export function getContractAgreementText(contract, templates = []) {
 }
 
 export function getDefaultContractText(contract, templates = []) {
+  // Signed contracts with a frozen snapshot (captured at signing time, see
+  // markContractSigned) always show that exact text, not a live re-render
+  // of the current template - the whole point is that later template edits
+  // don't retroactively change what a signed contract shows. Signed
+  // contracts that predate this (no frozenAgreementText) fall through to
+  // live rendering below, unchanged from prior behavior.
+  if (contract?.status === 'SIGNED' && contract?.frozenAgreementText) {
+    return contract.frozenAgreementText;
+  }
   if (contract?.agreementText) return contract.agreementText;
   return getContractAgreementText(contract, templates);
 }

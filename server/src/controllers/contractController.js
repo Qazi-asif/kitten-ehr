@@ -1,7 +1,7 @@
 import prisma from '../lib/prisma.js';
 import { paginatedResponse, parsePagination, wantsPagination } from '../utils/pagination.js';
 import { buildContractAgreementText, getAgreementTemplateBySlug } from '../utils/contractAgreementText.js';
-import { sendContractAgreementEmail } from '../services/emailService.js';
+import { sendContractAgreementEmail, sendSignedContractPdfEmail } from '../services/emailService.js';
 import { getClientIp } from '../utils/requestIp.js';
 import { generateContractPdf, storeContractPdf } from '../utils/contractPdf.js';
 
@@ -477,6 +477,42 @@ export async function emailContractAgreement(req, res, next) {
     }
 
     res.json({ ok: true, messageId: result.messageId });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function emailSignedContractPdf(req, res, next) {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+    const contract = await prisma.contract.findUnique({
+      where: { id },
+      include: CONTRACT_INCLUDE,
+    });
+
+    if (!contract) return res.status(404).json({ error: 'Contract not found' });
+    if (contract.status !== 'SIGNED') {
+      return res.status(400).json({ error: 'Only signed contracts have a PDF to email' });
+    }
+    if (!contract.signerEmail?.trim()) {
+      return res.status(400).json({ error: 'Contract has no signer email' });
+    }
+    if (!contract.pdfUrl) {
+      return res.status(400).json({
+        error: 'No PDF is available for this contract. PDF generation may have failed at signing time.',
+      });
+    }
+
+    const result = await sendSignedContractPdfEmail({ contract });
+
+    if (result.skipped) {
+      return res.status(400).json({ error: result.errorMessage || 'Email was not sent' });
+    }
+    if (!result.ok) {
+      return res.status(500).json({ error: result.error || 'Failed to send signed PDF email' });
+    }
+
+    res.json({ ok: true, messageId: result.messageId, previewUrl: result.previewUrl || null });
   } catch (error) {
     next(error);
   }

@@ -3,6 +3,7 @@ import {
   createContractDraft,
   deleteContract,
   emailContractAgreement,
+  emailSignedContractPdf,
   getContractById,
   getContracts,
   getContractStats,
@@ -19,6 +20,7 @@ router.post('/', createContractDraft);
 router.patch('/:id', updateContract);
 router.delete('/:id', deleteContract);
 router.post('/:id/email', emailContractAgreement);
+router.post('/:id/email-pdf', emailSignedContractPdf);
 router.post('/:id/sign', markContractSigned);
 
 export default router;

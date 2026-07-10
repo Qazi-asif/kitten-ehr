@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Eye, FileSignature, Mail, Pencil, Plus, Search, Trash2 } from 'lucide-react';
+import { Eye, FileSignature, Mail, Paperclip, Pencil, Plus, Search, Trash2 } from 'lucide-react';
 import AgreementTemplatesPanel from '../../components/admin/AgreementTemplatesPanel';
 import ContractEditModal from '../../components/admin/ContractEditModal';
 import ContractViewModal from '../../components/admin/ContractViewModal';
@@ -9,6 +9,7 @@ import {
   createContractDraft,
   deleteContract,
   emailContractAgreement,
+  emailSignedContractPdf,
   fetchContractById,
   fetchContracts,
   fetchContractTemplates,
@@ -56,6 +57,7 @@ function ContractsPage() {
   const [editContract, setEditContract] = useState(null);
   const [agreementTemplates, setAgreementTemplates] = useState([]);
   const [emailingId, setEmailingId] = useState(null);
+  const [emailingPdfId, setEmailingPdfId] = useState(null);
   const [savingEdit, setSavingEdit] = useState(false);
   const [showDraftForm, setShowDraftForm] = useState(false);
   const [draftForm, setDraftForm] = useState(EMPTY_DRAFT);
@@ -223,6 +225,26 @@ function ContractsPage() {
       setError(err.message);
     } finally {
       setEmailingId(null);
+    }
+  }
+
+  async function handleEmailPdf(contract) {
+    setEmailingPdfId(contract.id);
+    setError('');
+    try {
+      const result = await emailSignedContractPdf(contract.id);
+      if (result.previewUrl) {
+        window.alert(
+          `Signed PDF emailed to ${contract.signerEmail}.\n\nThis looks like a test SMTP account - preview the captured email here:\n${result.previewUrl}`,
+        );
+        window.open(result.previewUrl, '_blank', 'noopener,noreferrer');
+      } else {
+        window.alert(`Signed PDF emailed to ${contract.signerEmail}.`);
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setEmailingPdfId(null);
     }
   }
 
@@ -522,6 +544,18 @@ function ContractsPage() {
                             >
                               <Mail className="h-4 w-4" />
                               {emailingId === contract.id ? 'Sending...' : 'Email'}
+                            </button>
+                          )}
+                          {contract.status === 'SIGNED' && (
+                            <button
+                              type="button"
+                              onClick={() => handleEmailPdf(contract)}
+                              disabled={emailingPdfId === contract.id || !contract.pdfUrl}
+                              title={!contract.pdfUrl ? 'No PDF available for this contract' : undefined}
+                              className="inline-flex items-center gap-1 font-semibold text-indigo-700 hover:underline disabled:opacity-50"
+                            >
+                              <Paperclip className="h-4 w-4" />
+                              {emailingPdfId === contract.id ? 'Sending...' : 'Email Signed PDF'}
                             </button>
                           )}
                           {contract.status === 'SENT' && (

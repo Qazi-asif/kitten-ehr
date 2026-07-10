@@ -602,6 +602,7 @@ export async function markContractSigned(id, data) {
         signedAt: data.signedAt,
         ipAddress: data.ipAddress,
         signedVia: 'ContractSigningPad',
+        nameConfirmed: Boolean(data.nameConfirmed),
       },
     }),
   });
@@ -629,6 +630,15 @@ export async function emailContractAgreement(id, data = {}) {
     body: JSON.stringify(data),
   });
   if (!response.ok) throw new Error(await readApiError(response, 'Failed to email agreement'));
+  return response.json();
+}
+
+export async function emailSignedContractPdf(id) {
+  const response = await adminFetch(`/contracts/${id}/email-pdf`, {
+    method: 'POST',
+    body: JSON.stringify({}),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to email signed PDF'));
   return response.json();
 }
 

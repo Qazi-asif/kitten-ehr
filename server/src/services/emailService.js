@@ -357,6 +357,157 @@ export async function sendSponsorshipReceivedEmails({
   ]);
 }
 
+// Builds a nodemailer attachment from Contract.pdfUrl, which is either a
+// base64 data URL (no object storage configured - current default) or a
+// real https:// URL (if S3/R2 is ever configured). Returns null if pdfUrl
+// is empty or in neither recognized shape, so callers can skip cleanly
+// rather than send a broken attachment.
+function buildPdfAttachment(pdfUrl, filename) {
+  if (!pdfUrl) return null;
+
+  const dataUrlMatch = /^data:application\/pdf;base64,(.+)$/.exec(pdfUrl);
+  if (dataUrlMatch) {
+    return { filename, content: dataUrlMatch[1], encoding: 'base64' };
+  }
+
+  if (/^https?:\/\//i.test(pdfUrl)) {
+    return { filename, path: pdfUrl };
+  }
+
+  return null;
+}
+
+/**
+ * Emails the already-generated signed PDF (Contract.pdfUrl) as an
+ * attachment. Separate from sendContractAgreementEmail on purpose - this is
+ * a new, additive action for SIGNED contracts only, not a change to the
+ * existing SENT-contract "Email" flow above, which is untouched.
+ */
+export async function sendSignedContractPdfEmail({ contract }) {
+  const settings = await getEmailSettings();
+  const recipient = contract.signerEmail?.trim();
+  const provider = resolveEmailProvider(settings);
+  const templateKey = EMAIL_TEMPLATE_KEYS.CONTRACT_SIGNED_PDF;
+  const kittenName = contract.kittenName || contract.kitten?.name || 'your cat';
+  const agreementLabel = contract.type === 'ADOPTION' ? 'Cat Adoption Agreement' : 'Foster Care Agreement';
+  const subject = `${settings.orgName || 'Pawsitive Transformations'} — Signed ${agreementLabel}`;
+
+  if (!settings.emailsEnabled) {
+    await logEmailAttempt({
+      templateKey,
+      toEmail: recipient || 'unknown',
+      subject: '(skipped - emails disabled)',
+      status: 'skipped',
+      provider,
+      errorMessage: 'Email sending is disabled in settings',
+      relatedType: 'Contract',
+      relatedId: contract.id,
+    });
+    return { ok: false, skipped: true, errorMessage: 'Email sending is disabled in settings' };
+  }
+
+  if (!recipient) {
+    await logEmailAttempt({
+      templateKey,
+      toEmail: 'unknown',
+      subject: '(skipped - missing recipient)',
+      status: 'skipped',
+      provider,
+      errorMessage: 'Recipient email is missing',
+      relatedType: 'Contract',
+      relatedId: contract.id,
+    });
+    return { ok: false, skipped: true, errorMessage: 'Recipient email is missing' };
+  }
+
+  const filename = `${agreementLabel.replace(/\s+/g, '-')}-${contract.id}.pdf`;
+  const attachment = buildPdfAttachment(contract.pdfUrl, filename);
+  if (!attachment) {
+    await logEmailAttempt({
+      templateKey,
+      toEmail: recipient,
+      subject: '(skipped - no PDF available)',
+      status: 'skipped',
+      provider,
+      errorMessage: 'No PDF is available for this contract',
+      relatedType: 'Contract',
+      relatedId: contract.id,
+    });
+    return { ok: false, skipped: true, errorMessage: 'No PDF is available for this contract' };
+  }
+
+  const innerHtml = `
+<h2 style="margin:0 0 16px;font-size:20px;">Your Signed Agreement for ${escapeHtml(kittenName)}</h2>
+<p>Hi ${escapeHtml(contract.signerName)},</p>
+<p>Attached is your signed ${escapeHtml(agreementLabel)} from ${escapeHtml(settings.orgName || 'Pawsitive Transformations')}, for your records.</p>
+<p>If you have questions, reply to this email or contact us directly.</p>
+<p>Thank you,<br>${escapeHtml(settings.orgName || 'Pawsitive Transformations')}</p>`;
+
+  const layoutHtml = await getLayoutTemplate();
+  const html = wrapEmailContent(innerHtml, { orgName: settings.orgName }, layoutHtml);
+  const text = stripHtml(innerHtml);
+
+  const smtpPass = process.env.SMTP_PASS || process.env.SENDGRID_API_KEY || settings.smtpPass;
+  const smtpHost = process.env.SMTP_HOST || settings.smtpHost;
+  const smtpUser = process.env.SMTP_USER || settings.smtpUser;
+
+  if (!smtpHost || !smtpUser || !smtpPass) {
+    await logEmailAttempt({
+      templateKey,
+      toEmail: recipient,
+      subject,
+      status: 'skipped',
+      provider,
+      errorMessage: 'SMTP is not fully configured',
+      relatedType: 'Contract',
+      relatedId: contract.id,
+    });
+    return { ok: false, skipped: true, errorMessage: 'SMTP is not fully configured' };
+  }
+
+  try {
+    const transporter = getSmtpTransporter(settings, smtpHost, smtpUser, smtpPass);
+    const info = await transporter.sendMail({
+      from: `"${settings.fromName || settings.orgName}" <${settings.fromEmail || smtpUser}>`,
+      to: recipient,
+      subject,
+      text,
+      html: html || undefined,
+      attachments: [attachment],
+    });
+
+    // Only truthy when the message was actually sent through an Ethereal
+    // test account - safe to call unconditionally, no effect on real SMTP.
+    const previewUrl = nodemailer.getTestMessageUrl(info) || null;
+
+    await logEmailAttempt({
+      templateKey,
+      toEmail: recipient,
+      subject,
+      status: 'sent',
+      provider,
+      externalMessageId: info.messageId || '',
+      relatedType: 'Contract',
+      relatedId: contract.id,
+    });
+
+    return { ok: true, messageId: info.messageId, previewUrl };
+  } catch (error) {
+    await logEmailAttempt({
+      templateKey,
+      toEmail: recipient,
+      subject,
+      status: 'failed',
+      provider,
+      errorMessage: error.message,
+      relatedType: 'Contract',
+      relatedId: contract.id,
+    });
+    console.error('Signed contract PDF email failed:', error.message);
+    return { ok: false, error: error.message };
+  }
+}
+
 export async function sendContractAgreementEmail({ contract, agreementText, note = '' }) {
   const settings = await getEmailSettings();
   const recipient = contract.signerEmail?.trim();
