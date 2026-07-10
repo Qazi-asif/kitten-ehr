@@ -10,6 +10,7 @@ import {
   kittenListSelect,
   serializeKittenForDetail,
   serializeKittenForList,
+  enrichKittensWithPhotos,
 } from '../utils/kittenSerialization.js';
 import { evaluateKittenFlags } from '../services/medicalAutomation.js';
 import { buildDashboardInsights } from '../services/dashboardInsights.js';
@@ -20,6 +21,7 @@ const DASHBOARD_STATS_TTL_MS = 60 * 1000;
 const kittenIncludes = {
   litter: { select: { id: true, name: true } },
   currentFoster: { select: { id: true, name: true, phone: true } },
+  bondedWithKitten: { select: { id: true, name: true } },
 };
 
 export async function getAllKittens(req, res) {
@@ -39,7 +41,8 @@ export async function getAllKittens(req, res) {
         orderBy: { id: 'asc' },
         select: kittenListSelect,
       });
-      return res.json(kittens.map(serializeKittenForList));
+      const enriched = await enrichKittensWithPhotos(kittens);
+      return res.json(enriched.map(serializeKittenForList));
     }
 
     const page = Math.max(1, Number.parseInt(req.query.page, 10) || 1);
@@ -57,8 +60,10 @@ export async function getAllKittens(req, res) {
       }),
     ]);
 
+    const enriched = await enrichKittensWithPhotos(kittens);
+
     res.json({
-      items: kittens.map(serializeKittenForList),
+      items: enriched.map(serializeKittenForList),
       total,
       page,
       limit,
@@ -229,6 +234,22 @@ export async function updateKitten(req, res, next) {
     if (body.chewyWishlistUrl !== undefined) {
       data.chewyWishlistUrl = body.chewyWishlistUrl?.trim() || null;
     }
+    if (body.isBondedPair !== undefined) {
+      data.isBondedPair = body.isBondedPair;
+      if (!body.isBondedPair) {
+        data.bondedWithKittenId = null;
+        data.bondedWithName = '';
+      }
+    }
+    if (body.bondedWithKittenId !== undefined) {
+      data.bondedWithKittenId = body.bondedWithKittenId ?? null;
+    }
+    if (body.bondedWithName !== undefined) {
+      data.bondedWithName = body.bondedWithName?.trim() || '';
+    }
+    if (body.isMedicalSpecialNeeds !== undefined) {
+      data.isMedicalSpecialNeeds = body.isMedicalSpecialNeeds;
+    }
     if (body.publishTargets !== undefined) {
       data.publishTargets = normalizePublishTargets(body.publishTargets);
       data.isListedOnWebsite = targetsIncludeWebsite(data.publishTargets);
@@ -244,6 +265,20 @@ export async function updateKitten(req, res, next) {
     }
 
     delete data.weightGrams;
+
+    if (data.bondedWithKittenId && data.bondedWithKittenId === id) {
+      return res.status(400).json({ error: 'A kitten cannot be bonded with itself' });
+    }
+
+    if (data.bondedWithKittenId) {
+      const partner = await prisma.kitten.findUnique({
+        where: { id: data.bondedWithKittenId },
+        select: { id: true },
+      });
+      if (!partner) return res.status(400).json({ error: 'Bonded partner kitten not found' });
+    }
+
+    const previousPartnerId = existing.bondedWithKittenId;
 
     let kitten;
     try {
@@ -261,6 +296,24 @@ export async function updateKitten(req, res, next) {
         where: { id },
         data: withLegacyWebsiteFlag(data, data.publishTargets),
         include: kittenIncludes,
+      });
+    }
+
+    if (previousPartnerId && previousPartnerId !== data.bondedWithKittenId) {
+      await prisma.kitten.updateMany({
+        where: { id: previousPartnerId, bondedWithKittenId: id },
+        data: { bondedWithKittenId: null, isBondedPair: false, bondedWithName: '' },
+      });
+    }
+
+    if (data.bondedWithKittenId) {
+      await prisma.kitten.update({
+        where: { id: data.bondedWithKittenId },
+        data: {
+          isBondedPair: true,
+          bondedWithKittenId: id,
+          bondedWithName: kitten.name,
+        },
       });
     }
 

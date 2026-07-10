@@ -23,6 +23,11 @@ const publicKittenSelect = {
   breed: true,
   color: true,
   specialNeeds: true,
+  isBondedPair: true,
+  bondedWithKittenId: true,
+  bondedWithName: true,
+  isMedicalSpecialNeeds: true,
+  bondedWithKitten: { select: { id: true, name: true } },
 };
 
 const publicWebsiteFilter = buildPublicWebsiteWhereClause();

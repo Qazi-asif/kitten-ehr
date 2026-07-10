@@ -26,6 +26,7 @@ const EmailTemplatesPage = lazy(() => import('./pages/admin/EmailTemplatesPage')
 const AboutPage = lazy(() => import('./pages/public/AboutPage'));
 const PrivacyPolicyPage = lazy(() => import('./pages/public/PrivacyPolicyPage'));
 const AdoptionFormPage = lazy(() => import('./pages/public/AdoptionFormPage'));
+const AdoptionProcessPage = lazy(() => import('./pages/public/AdoptionProcessPage'));
 const ArticlePage = lazy(() => import('./pages/public/ArticlePage'));
 const AvailableKittensPage = lazy(() => import('./pages/public/AvailableKittensPage'));
 const ContactPage = lazy(() => import('./pages/public/ContactPage'));
@@ -60,7 +61,8 @@ function App() {
               <Route path="/check" element={<CheckPage />} />
               <Route path="/kittens" element={<AvailableKittensPage />} />
               <Route path="/kittens/:id" element={<PublicKittenProfile />} />
-              <Route path="/adopt" element={<AdoptionFormPage />} />
+              <Route path="/adopt" element={<AdoptionProcessPage />} />
+              <Route path="/adopt/apply" element={<AdoptionFormPage />} />
               <Route path="/foster" element={<FosterFormPage />} />
               <Route path="/get-involved" element={<FosterPage />} />
               <Route path="/education" element={<EducationHubPage />} />

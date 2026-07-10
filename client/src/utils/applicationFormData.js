@@ -12,6 +12,10 @@ const FIELD_LABELS = {
   hasOtherPets: 'Other Pets at Home',
   homeType: 'Home Type',
   availability: 'Availability',
+  capacity: 'Foster Capacity',
+  isolationRoom: 'Isolation Room Available',
+  vehicleAccess: 'Vehicle Access',
+  unexpectedStopPlan: 'If Fostering Stops Unexpectedly',
   message: 'Additional Message',
   applicant: 'Applicant',
   kitten: 'Name',
@@ -29,12 +33,24 @@ const FOSTER_FIELD_ORDER = [
   'hasOtherPets',
   'homeType',
   'availability',
+  'capacity',
+  'isolationRoom',
+  'vehicleAccess',
+  'unexpectedStopPlan',
   'message',
 ];
 
 const APPLICANT_FIELDS = ['fullName', 'email', 'phone', 'address'];
 const ADOPTION_SPECIFIC_FIELDS = ['experience'];
-const FOSTER_SPECIFIC_FIELDS = ['experienceLevel', 'homeType', 'availability'];
+const FOSTER_SPECIFIC_FIELDS = [
+  'experienceLevel',
+  'homeType',
+  'availability',
+  'capacity',
+  'isolationRoom',
+  'vehicleAccess',
+  'unexpectedStopPlan',
+];
 
 export function parseApplicationFormData(formData) {
   if (!formData) return {};
@@ -83,6 +99,7 @@ export function getHouseholdPets(formData) {
 
 function formatFieldValue(value) {
   if (value == null || value === '') return '—';
+  if (Array.isArray(value)) return value.join(', ');
   if (typeof value === 'object') return JSON.stringify(value, null, 2);
   return String(value);
 }

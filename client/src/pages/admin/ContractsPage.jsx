@@ -14,6 +14,7 @@ import {
 } from '../../services/api';
 import { resolveContractKittenName } from '../../utils/contractAudit';
 import { getDefaultContractText } from '../../utils/contractText';
+import { CONTRACT_TEMPLATES, getContractTemplateLabel } from '../../constants/contractTemplates';
 
 const STATUS_STYLES = {
   SENT: 'bg-amber-100 text-amber-800',
@@ -22,11 +23,11 @@ const STATUS_STYLES = {
 };
 
 const EMPTY_DRAFT = {
-  type: 'FOSTER',
+  templateSlug: 'foster_supplies_provided',
   signerName: '',
   signerEmail: '',
   kittenName: '',
-  documentVersion: '1.0',
+  documentVersion: '2026.1',
 };
 
 const EMPTY_FILTERS = {
@@ -144,7 +145,7 @@ function ContractsPage() {
     setError('');
     try {
       await createContractDraft({
-        type: draftForm.type,
+        templateSlug: draftForm.templateSlug,
         signerName: draftForm.signerName.trim(),
         signerEmail: draftForm.signerEmail.trim(),
         kittenName: draftForm.kittenName.trim(),
@@ -317,15 +318,16 @@ function ContractsPage() {
         >
           <h2 className="text-sm font-bold uppercase tracking-wide text-gray-700">New draft contract</h2>
           <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            <label className="block">
-              <span className="text-xs font-semibold uppercase text-gray-500">Type</span>
+            <label className="block sm:col-span-2">
+              <span className="text-xs font-semibold uppercase text-gray-500">Agreement template</span>
               <select
-                value={draftForm.type}
-                onChange={(e) => setDraftForm((prev) => ({ ...prev, type: e.target.value }))}
+                value={draftForm.templateSlug}
+                onChange={(e) => setDraftForm((prev) => ({ ...prev, templateSlug: e.target.value }))}
                 className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
               >
-                <option value="FOSTER">Foster</option>
-                <option value="ADOPTION">Adoption</option>
+                {CONTRACT_TEMPLATES.map((template) => (
+                  <option key={template.slug} value={template.slug}>{template.label}</option>
+                ))}
               </select>
             </label>
             <label className="block">
@@ -421,7 +423,7 @@ function ContractsPage() {
                         <p className="text-sm font-medium text-gray-900">{contract.signerName}</p>
                         <p className="text-xs text-gray-500">{contract.signerEmail}</p>
                       </td>
-                      <td className="px-4 py-3 text-sm text-gray-700">{contract.type}</td>
+                      <td className="px-4 py-3 text-sm text-gray-700">{getContractTemplateLabel(contract.templateSlug)}</td>
                       <td className="px-4 py-3">
                         <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${STATUS_STYLES[contract.status] || STATUS_STYLES.SENT}`}>
                           {contract.status}

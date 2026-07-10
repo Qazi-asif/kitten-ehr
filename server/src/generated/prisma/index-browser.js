@@ -168,6 +168,10 @@ exports.Prisma.KittenScalarFieldEnum = {
   amazonWishlistUrl: 'amazonWishlistUrl',
   walmartWishlistUrl: 'walmartWishlistUrl',
   chewyWishlistUrl: 'chewyWishlistUrl',
+  isBondedPair: 'isBondedPair',
+  bondedWithKittenId: 'bondedWithKittenId',
+  bondedWithName: 'bondedWithName',
+  isMedicalSpecialNeeds: 'isMedicalSpecialNeeds',
   currentFosterId: 'currentFosterId',
   createdAt: 'createdAt'
 };
@@ -282,10 +286,12 @@ exports.Prisma.ApplicationScalarFieldEnum = {
 exports.Prisma.ContractScalarFieldEnum = {
   id: 'id',
   type: 'type',
+  templateSlug: 'templateSlug',
   signerName: 'signerName',
   signerEmail: 'signerEmail',
   kittenName: 'kittenName',
   kittenId: 'kittenId',
+  fosterId: 'fosterId',
   applicationId: 'applicationId',
   documentVersion: 'documentVersion',
   signedPdfUrl: 'signedPdfUrl',

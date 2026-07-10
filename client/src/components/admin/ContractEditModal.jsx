@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Pencil, X } from 'lucide-react';
+import { CONTRACT_TEMPLATES } from '../../constants/contractTemplates';
 
 const EMPTY_FORM = {
-  type: 'FOSTER',
+  templateSlug: 'foster_supplies_provided',
   signerName: '',
   signerEmail: '',
   kittenName: '',
-  documentVersion: '1.0',
+  documentVersion: '2026.1',
 };
 
 function ContractEditModal({ contract, onClose, onSave, saving }) {
@@ -16,11 +17,11 @@ function ContractEditModal({ contract, onClose, onSave, saving }) {
   useEffect(() => {
     if (!contract) return;
     setForm({
-      type: contract.type || 'FOSTER',
+      templateSlug: contract.templateSlug || 'foster_supplies_provided',
       signerName: contract.signerName || '',
       signerEmail: contract.signerEmail || '',
       kittenName: contract.kittenName || contract.kitten?.name || '',
-      documentVersion: contract.documentVersion || '1.0',
+      documentVersion: contract.documentVersion || '2026.1',
     });
     setError('');
   }, [contract]);
@@ -30,7 +31,7 @@ function ContractEditModal({ contract, onClose, onSave, saving }) {
     setError('');
     try {
       await onSave({
-        type: form.type,
+        templateSlug: form.templateSlug,
         signerName: form.signerName.trim(),
         signerEmail: form.signerEmail.trim(),
         kittenName: form.kittenName.trim(),
@@ -69,22 +70,41 @@ function ContractEditModal({ contract, onClose, onSave, saving }) {
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <label className="block sm:col-span-2">
-              <span className="text-xs font-semibold uppercase text-gray-500">Type</span>
+              <span className="text-xs font-semibold uppercase text-gray-500">Agreement template</span>
               <select
-                value={form.type}
-                onChange={(e) => setForm((prev) => ({ ...prev, type: e.target.value }))}
+                value={form.templateSlug}
+                onChange={(e) => setForm((prev) => ({ ...prev, templateSlug: e.target.value }))}
                 className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
               >
-                <option value="FOSTER">Foster</option>
-                <option value="ADOPTION">Adoption</option>
+                {CONTRACT_TEMPLATES.map((template) => (
+                  <option key={template.slug} value={template.slug}>{template.label}</option>
+                ))}
               </select>
             </label>
-            <label className="block">
+            <label className="block sm:col-span-2">
+              <span className="text-xs font-semibold uppercase text-gray-500">Signer name</span>
+              <input
+                required
+                value={form.signerName}
+                onChange={(e) => setForm((prev) => ({ ...prev, signerName: e.target.value }))}
+                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+              />
+            </label>
+            <label className="block sm:col-span-2">
+              <span className="text-xs font-semibold uppercase text-gray-500">Signer email</span>
+              <input
+                required
+                type="email"
+                value={form.signerEmail}
+                onChange={(e) => setForm((prev) => ({ ...prev, signerEmail: e.target.value }))}
+                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+              />
+            </label>
+            <label className="block sm:col-span-2">
               <span className="text-xs font-semibold uppercase text-gray-500">Kitten name</span>
               <input
                 value={form.kittenName}
                 onChange={(e) => setForm((prev) => ({ ...prev, kittenName: e.target.value }))}
-                placeholder="e.g. Biscuit"
                 className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
               />
             </label>
@@ -97,28 +117,9 @@ function ContractEditModal({ contract, onClose, onSave, saving }) {
                 className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
               />
             </label>
-            <label className="block">
-              <span className="text-xs font-semibold uppercase text-gray-500">Signer name</span>
-              <input
-                required
-                value={form.signerName}
-                onChange={(e) => setForm((prev) => ({ ...prev, signerName: e.target.value }))}
-                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
-              />
-            </label>
-            <label className="block">
-              <span className="text-xs font-semibold uppercase text-gray-500">Signer email</span>
-              <input
-                type="email"
-                required
-                value={form.signerEmail}
-                onChange={(e) => setForm((prev) => ({ ...prev, signerEmail: e.target.value }))}
-                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
-              />
-            </label>
           </div>
 
-          <div className="mt-6 flex justify-end gap-2">
+          <div className="mt-6 flex justify-end gap-3">
             <button
               type="button"
               onClick={onClose}
@@ -129,9 +130,9 @@ function ContractEditModal({ contract, onClose, onSave, saving }) {
             <button
               type="submit"
               disabled={saving}
-              className="rounded-lg bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800 disabled:opacity-60"
+              className="rounded-lg bg-neutral-900 px-4 py-2 text-sm font-semibold text-white hover:bg-black disabled:opacity-60"
             >
-              {saving ? 'Saving...' : 'Save Changes'}
+              {saving ? 'Saving...' : 'Save changes'}
             </button>
           </div>
         </form>

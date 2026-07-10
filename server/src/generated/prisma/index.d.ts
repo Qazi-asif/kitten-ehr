@@ -4099,11 +4099,13 @@ export namespace Prisma {
   export type FosterCountOutputType = {
     currentKittens: number
     placements: number
+    contracts: number
   }
 
   export type FosterCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     currentKittens?: boolean | FosterCountOutputTypeCountCurrentKittensArgs
     placements?: boolean | FosterCountOutputTypeCountPlacementsArgs
+    contracts?: boolean | FosterCountOutputTypeCountContractsArgs
   }
 
   // Custom InputTypes
@@ -4131,12 +4133,20 @@ export namespace Prisma {
     where?: PlacementWhereInput
   }
 
+  /**
+   * FosterCountOutputType without action
+   */
+  export type FosterCountOutputTypeCountContractsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ContractWhereInput
+  }
+
 
   /**
    * Count Type KittenCountOutputType
    */
 
   export type KittenCountOutputType = {
+    bondedPartners: number
     placements: number
     weightLogs: number
     vaccines: number
@@ -4152,6 +4162,7 @@ export namespace Prisma {
   }
 
   export type KittenCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    bondedPartners?: boolean | KittenCountOutputTypeCountBondedPartnersArgs
     placements?: boolean | KittenCountOutputTypeCountPlacementsArgs
     weightLogs?: boolean | KittenCountOutputTypeCountWeightLogsArgs
     vaccines?: boolean | KittenCountOutputTypeCountVaccinesArgs
@@ -4175,6 +4186,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the KittenCountOutputType
      */
     select?: KittenCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * KittenCountOutputType without action
+   */
+  export type KittenCountOutputTypeCountBondedPartnersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: KittenWhereInput
   }
 
   /**
@@ -5999,6 +6017,7 @@ export namespace Prisma {
     createdAt?: boolean
     currentKittens?: boolean | Foster$currentKittensArgs<ExtArgs>
     placements?: boolean | Foster$placementsArgs<ExtArgs>
+    contracts?: boolean | Foster$contractsArgs<ExtArgs>
     _count?: boolean | FosterCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["foster"]>
 
@@ -6051,6 +6070,7 @@ export namespace Prisma {
   export type FosterInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     currentKittens?: boolean | Foster$currentKittensArgs<ExtArgs>
     placements?: boolean | Foster$placementsArgs<ExtArgs>
+    contracts?: boolean | Foster$contractsArgs<ExtArgs>
     _count?: boolean | FosterCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type FosterIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -6061,6 +6081,7 @@ export namespace Prisma {
     objects: {
       currentKittens: Prisma.$KittenPayload<ExtArgs>[]
       placements: Prisma.$PlacementPayload<ExtArgs>[]
+      contracts: Prisma.$ContractPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -6471,6 +6492,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     currentKittens<T extends Foster$currentKittensArgs<ExtArgs> = {}>(args?: Subset<T, Foster$currentKittensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$KittenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     placements<T extends Foster$placementsArgs<ExtArgs> = {}>(args?: Subset<T, Foster$placementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlacementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    contracts<T extends Foster$contractsArgs<ExtArgs> = {}>(args?: Subset<T, Foster$contractsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6948,6 +6970,30 @@ export namespace Prisma {
   }
 
   /**
+   * Foster.contracts
+   */
+  export type Foster$contractsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Contract
+     */
+    select?: ContractSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Contract
+     */
+    omit?: ContractOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractInclude<ExtArgs> | null
+    where?: ContractWhereInput
+    orderBy?: ContractOrderByWithRelationInput | ContractOrderByWithRelationInput[]
+    cursor?: ContractWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ContractScalarFieldEnum | ContractScalarFieldEnum[]
+  }
+
+  /**
    * Foster without action
    */
   export type FosterDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6981,12 +7027,14 @@ export namespace Prisma {
   export type KittenAvgAggregateOutputType = {
     id: number | null
     litterId: number | null
+    bondedWithKittenId: number | null
     currentFosterId: number | null
   }
 
   export type KittenSumAggregateOutputType = {
     id: number | null
     litterId: number | null
+    bondedWithKittenId: number | null
     currentFosterId: number | null
   }
 
@@ -7014,6 +7062,10 @@ export namespace Prisma {
     amazonWishlistUrl: string | null
     walmartWishlistUrl: string | null
     chewyWishlistUrl: string | null
+    isBondedPair: boolean | null
+    bondedWithKittenId: number | null
+    bondedWithName: string | null
+    isMedicalSpecialNeeds: boolean | null
     currentFosterId: number | null
     createdAt: Date | null
   }
@@ -7042,6 +7094,10 @@ export namespace Prisma {
     amazonWishlistUrl: string | null
     walmartWishlistUrl: string | null
     chewyWishlistUrl: string | null
+    isBondedPair: boolean | null
+    bondedWithKittenId: number | null
+    bondedWithName: string | null
+    isMedicalSpecialNeeds: boolean | null
     currentFosterId: number | null
     createdAt: Date | null
   }
@@ -7071,6 +7127,10 @@ export namespace Prisma {
     amazonWishlistUrl: number
     walmartWishlistUrl: number
     chewyWishlistUrl: number
+    isBondedPair: number
+    bondedWithKittenId: number
+    bondedWithName: number
+    isMedicalSpecialNeeds: number
     currentFosterId: number
     createdAt: number
     _all: number
@@ -7080,12 +7140,14 @@ export namespace Prisma {
   export type KittenAvgAggregateInputType = {
     id?: true
     litterId?: true
+    bondedWithKittenId?: true
     currentFosterId?: true
   }
 
   export type KittenSumAggregateInputType = {
     id?: true
     litterId?: true
+    bondedWithKittenId?: true
     currentFosterId?: true
   }
 
@@ -7113,6 +7175,10 @@ export namespace Prisma {
     amazonWishlistUrl?: true
     walmartWishlistUrl?: true
     chewyWishlistUrl?: true
+    isBondedPair?: true
+    bondedWithKittenId?: true
+    bondedWithName?: true
+    isMedicalSpecialNeeds?: true
     currentFosterId?: true
     createdAt?: true
   }
@@ -7141,6 +7207,10 @@ export namespace Prisma {
     amazonWishlistUrl?: true
     walmartWishlistUrl?: true
     chewyWishlistUrl?: true
+    isBondedPair?: true
+    bondedWithKittenId?: true
+    bondedWithName?: true
+    isMedicalSpecialNeeds?: true
     currentFosterId?: true
     createdAt?: true
   }
@@ -7170,6 +7240,10 @@ export namespace Prisma {
     amazonWishlistUrl?: true
     walmartWishlistUrl?: true
     chewyWishlistUrl?: true
+    isBondedPair?: true
+    bondedWithKittenId?: true
+    bondedWithName?: true
+    isMedicalSpecialNeeds?: true
     currentFosterId?: true
     createdAt?: true
     _all?: true
@@ -7286,6 +7360,10 @@ export namespace Prisma {
     amazonWishlistUrl: string | null
     walmartWishlistUrl: string | null
     chewyWishlistUrl: string | null
+    isBondedPair: boolean
+    bondedWithKittenId: number | null
+    bondedWithName: string
+    isMedicalSpecialNeeds: boolean
     currentFosterId: number | null
     createdAt: Date
     _count: KittenCountAggregateOutputType | null
@@ -7334,9 +7412,15 @@ export namespace Prisma {
     amazonWishlistUrl?: boolean
     walmartWishlistUrl?: boolean
     chewyWishlistUrl?: boolean
+    isBondedPair?: boolean
+    bondedWithKittenId?: boolean
+    bondedWithName?: boolean
+    isMedicalSpecialNeeds?: boolean
     currentFosterId?: boolean
     createdAt?: boolean
     litter?: boolean | Kitten$litterArgs<ExtArgs>
+    bondedWithKitten?: boolean | Kitten$bondedWithKittenArgs<ExtArgs>
+    bondedPartners?: boolean | Kitten$bondedPartnersArgs<ExtArgs>
     currentFoster?: boolean | Kitten$currentFosterArgs<ExtArgs>
     placements?: boolean | Kitten$placementsArgs<ExtArgs>
     weightLogs?: boolean | Kitten$weightLogsArgs<ExtArgs>
@@ -7378,9 +7462,14 @@ export namespace Prisma {
     amazonWishlistUrl?: boolean
     walmartWishlistUrl?: boolean
     chewyWishlistUrl?: boolean
+    isBondedPair?: boolean
+    bondedWithKittenId?: boolean
+    bondedWithName?: boolean
+    isMedicalSpecialNeeds?: boolean
     currentFosterId?: boolean
     createdAt?: boolean
     litter?: boolean | Kitten$litterArgs<ExtArgs>
+    bondedWithKitten?: boolean | Kitten$bondedWithKittenArgs<ExtArgs>
     currentFoster?: boolean | Kitten$currentFosterArgs<ExtArgs>
   }, ExtArgs["result"]["kitten"]>
 
@@ -7409,9 +7498,14 @@ export namespace Prisma {
     amazonWishlistUrl?: boolean
     walmartWishlistUrl?: boolean
     chewyWishlistUrl?: boolean
+    isBondedPair?: boolean
+    bondedWithKittenId?: boolean
+    bondedWithName?: boolean
+    isMedicalSpecialNeeds?: boolean
     currentFosterId?: boolean
     createdAt?: boolean
     litter?: boolean | Kitten$litterArgs<ExtArgs>
+    bondedWithKitten?: boolean | Kitten$bondedWithKittenArgs<ExtArgs>
     currentFoster?: boolean | Kitten$currentFosterArgs<ExtArgs>
   }, ExtArgs["result"]["kitten"]>
 
@@ -7440,13 +7534,19 @@ export namespace Prisma {
     amazonWishlistUrl?: boolean
     walmartWishlistUrl?: boolean
     chewyWishlistUrl?: boolean
+    isBondedPair?: boolean
+    bondedWithKittenId?: boolean
+    bondedWithName?: boolean
+    isMedicalSpecialNeeds?: boolean
     currentFosterId?: boolean
     createdAt?: boolean
   }
 
-  export type KittenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "litterId" | "status" | "rescueStory" | "dateOfBirth" | "sex" | "fixedStatus" | "breed" | "color" | "fivFelvStatus" | "specialNeeds" | "microchipNumber" | "primaryPhotoUrl" | "intakeDate" | "intakeSource" | "notes" | "internalNotes" | "isListedOnWebsite" | "websiteFeaturedComment" | "publishTargets" | "amazonWishlistUrl" | "walmartWishlistUrl" | "chewyWishlistUrl" | "currentFosterId" | "createdAt", ExtArgs["result"]["kitten"]>
+  export type KittenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "litterId" | "status" | "rescueStory" | "dateOfBirth" | "sex" | "fixedStatus" | "breed" | "color" | "fivFelvStatus" | "specialNeeds" | "microchipNumber" | "primaryPhotoUrl" | "intakeDate" | "intakeSource" | "notes" | "internalNotes" | "isListedOnWebsite" | "websiteFeaturedComment" | "publishTargets" | "amazonWishlistUrl" | "walmartWishlistUrl" | "chewyWishlistUrl" | "isBondedPair" | "bondedWithKittenId" | "bondedWithName" | "isMedicalSpecialNeeds" | "currentFosterId" | "createdAt", ExtArgs["result"]["kitten"]>
   export type KittenInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     litter?: boolean | Kitten$litterArgs<ExtArgs>
+    bondedWithKitten?: boolean | Kitten$bondedWithKittenArgs<ExtArgs>
+    bondedPartners?: boolean | Kitten$bondedPartnersArgs<ExtArgs>
     currentFoster?: boolean | Kitten$currentFosterArgs<ExtArgs>
     placements?: boolean | Kitten$placementsArgs<ExtArgs>
     weightLogs?: boolean | Kitten$weightLogsArgs<ExtArgs>
@@ -7464,10 +7564,12 @@ export namespace Prisma {
   }
   export type KittenIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     litter?: boolean | Kitten$litterArgs<ExtArgs>
+    bondedWithKitten?: boolean | Kitten$bondedWithKittenArgs<ExtArgs>
     currentFoster?: boolean | Kitten$currentFosterArgs<ExtArgs>
   }
   export type KittenIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     litter?: boolean | Kitten$litterArgs<ExtArgs>
+    bondedWithKitten?: boolean | Kitten$bondedWithKittenArgs<ExtArgs>
     currentFoster?: boolean | Kitten$currentFosterArgs<ExtArgs>
   }
 
@@ -7475,6 +7577,8 @@ export namespace Prisma {
     name: "Kitten"
     objects: {
       litter: Prisma.$LitterPayload<ExtArgs> | null
+      bondedWithKitten: Prisma.$KittenPayload<ExtArgs> | null
+      bondedPartners: Prisma.$KittenPayload<ExtArgs>[]
       currentFoster: Prisma.$FosterPayload<ExtArgs> | null
       placements: Prisma.$PlacementPayload<ExtArgs>[]
       weightLogs: Prisma.$WeightLogPayload<ExtArgs>[]
@@ -7514,6 +7618,10 @@ export namespace Prisma {
       amazonWishlistUrl: string | null
       walmartWishlistUrl: string | null
       chewyWishlistUrl: string | null
+      isBondedPair: boolean
+      bondedWithKittenId: number | null
+      bondedWithName: string
+      isMedicalSpecialNeeds: boolean
       currentFosterId: number | null
       createdAt: Date
     }, ExtArgs["result"]["kitten"]>
@@ -7911,6 +8019,8 @@ export namespace Prisma {
   export interface Prisma__KittenClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     litter<T extends Kitten$litterArgs<ExtArgs> = {}>(args?: Subset<T, Kitten$litterArgs<ExtArgs>>): Prisma__LitterClient<$Result.GetResult<Prisma.$LitterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    bondedWithKitten<T extends Kitten$bondedWithKittenArgs<ExtArgs> = {}>(args?: Subset<T, Kitten$bondedWithKittenArgs<ExtArgs>>): Prisma__KittenClient<$Result.GetResult<Prisma.$KittenPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    bondedPartners<T extends Kitten$bondedPartnersArgs<ExtArgs> = {}>(args?: Subset<T, Kitten$bondedPartnersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$KittenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     currentFoster<T extends Kitten$currentFosterArgs<ExtArgs> = {}>(args?: Subset<T, Kitten$currentFosterArgs<ExtArgs>>): Prisma__FosterClient<$Result.GetResult<Prisma.$FosterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     placements<T extends Kitten$placementsArgs<ExtArgs> = {}>(args?: Subset<T, Kitten$placementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlacementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     weightLogs<T extends Kitten$weightLogsArgs<ExtArgs> = {}>(args?: Subset<T, Kitten$weightLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WeightLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -7977,6 +8087,10 @@ export namespace Prisma {
     readonly amazonWishlistUrl: FieldRef<"Kitten", 'String'>
     readonly walmartWishlistUrl: FieldRef<"Kitten", 'String'>
     readonly chewyWishlistUrl: FieldRef<"Kitten", 'String'>
+    readonly isBondedPair: FieldRef<"Kitten", 'Boolean'>
+    readonly bondedWithKittenId: FieldRef<"Kitten", 'Int'>
+    readonly bondedWithName: FieldRef<"Kitten", 'String'>
+    readonly isMedicalSpecialNeeds: FieldRef<"Kitten", 'Boolean'>
     readonly currentFosterId: FieldRef<"Kitten", 'Int'>
     readonly createdAt: FieldRef<"Kitten", 'DateTime'>
   }
@@ -8391,6 +8505,49 @@ export namespace Prisma {
      */
     include?: LitterInclude<ExtArgs> | null
     where?: LitterWhereInput
+  }
+
+  /**
+   * Kitten.bondedWithKitten
+   */
+  export type Kitten$bondedWithKittenArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Kitten
+     */
+    select?: KittenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Kitten
+     */
+    omit?: KittenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: KittenInclude<ExtArgs> | null
+    where?: KittenWhereInput
+  }
+
+  /**
+   * Kitten.bondedPartners
+   */
+  export type Kitten$bondedPartnersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Kitten
+     */
+    select?: KittenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Kitten
+     */
+    omit?: KittenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: KittenInclude<ExtArgs> | null
+    where?: KittenWhereInput
+    orderBy?: KittenOrderByWithRelationInput | KittenOrderByWithRelationInput[]
+    cursor?: KittenWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: KittenScalarFieldEnum | KittenScalarFieldEnum[]
   }
 
   /**
@@ -19154,22 +19311,26 @@ export namespace Prisma {
   export type ContractAvgAggregateOutputType = {
     id: number | null
     kittenId: number | null
+    fosterId: number | null
     applicationId: number | null
   }
 
   export type ContractSumAggregateOutputType = {
     id: number | null
     kittenId: number | null
+    fosterId: number | null
     applicationId: number | null
   }
 
   export type ContractMinAggregateOutputType = {
     id: number | null
     type: $Enums.ContractType | null
+    templateSlug: string | null
     signerName: string | null
     signerEmail: string | null
     kittenName: string | null
     kittenId: number | null
+    fosterId: number | null
     applicationId: number | null
     documentVersion: string | null
     signedPdfUrl: string | null
@@ -19182,10 +19343,12 @@ export namespace Prisma {
   export type ContractMaxAggregateOutputType = {
     id: number | null
     type: $Enums.ContractType | null
+    templateSlug: string | null
     signerName: string | null
     signerEmail: string | null
     kittenName: string | null
     kittenId: number | null
+    fosterId: number | null
     applicationId: number | null
     documentVersion: string | null
     signedPdfUrl: string | null
@@ -19198,10 +19361,12 @@ export namespace Prisma {
   export type ContractCountAggregateOutputType = {
     id: number
     type: number
+    templateSlug: number
     signerName: number
     signerEmail: number
     kittenName: number
     kittenId: number
+    fosterId: number
     applicationId: number
     documentVersion: number
     signedPdfUrl: number
@@ -19216,22 +19381,26 @@ export namespace Prisma {
   export type ContractAvgAggregateInputType = {
     id?: true
     kittenId?: true
+    fosterId?: true
     applicationId?: true
   }
 
   export type ContractSumAggregateInputType = {
     id?: true
     kittenId?: true
+    fosterId?: true
     applicationId?: true
   }
 
   export type ContractMinAggregateInputType = {
     id?: true
     type?: true
+    templateSlug?: true
     signerName?: true
     signerEmail?: true
     kittenName?: true
     kittenId?: true
+    fosterId?: true
     applicationId?: true
     documentVersion?: true
     signedPdfUrl?: true
@@ -19244,10 +19413,12 @@ export namespace Prisma {
   export type ContractMaxAggregateInputType = {
     id?: true
     type?: true
+    templateSlug?: true
     signerName?: true
     signerEmail?: true
     kittenName?: true
     kittenId?: true
+    fosterId?: true
     applicationId?: true
     documentVersion?: true
     signedPdfUrl?: true
@@ -19260,10 +19431,12 @@ export namespace Prisma {
   export type ContractCountAggregateInputType = {
     id?: true
     type?: true
+    templateSlug?: true
     signerName?: true
     signerEmail?: true
     kittenName?: true
     kittenId?: true
+    fosterId?: true
     applicationId?: true
     documentVersion?: true
     signedPdfUrl?: true
@@ -19363,10 +19536,12 @@ export namespace Prisma {
   export type ContractGroupByOutputType = {
     id: number
     type: $Enums.ContractType
+    templateSlug: string
     signerName: string
     signerEmail: string
     kittenName: string
     kittenId: number | null
+    fosterId: number | null
     applicationId: number | null
     documentVersion: string
     signedPdfUrl: string
@@ -19398,10 +19573,12 @@ export namespace Prisma {
   export type ContractSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     type?: boolean
+    templateSlug?: boolean
     signerName?: boolean
     signerEmail?: boolean
     kittenName?: boolean
     kittenId?: boolean
+    fosterId?: boolean
     applicationId?: boolean
     documentVersion?: boolean
     signedPdfUrl?: boolean
@@ -19410,16 +19587,19 @@ export namespace Prisma {
     signedAt?: boolean
     createdAt?: boolean
     kitten?: boolean | Contract$kittenArgs<ExtArgs>
+    foster?: boolean | Contract$fosterArgs<ExtArgs>
     application?: boolean | Contract$applicationArgs<ExtArgs>
   }, ExtArgs["result"]["contract"]>
 
   export type ContractSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     type?: boolean
+    templateSlug?: boolean
     signerName?: boolean
     signerEmail?: boolean
     kittenName?: boolean
     kittenId?: boolean
+    fosterId?: boolean
     applicationId?: boolean
     documentVersion?: boolean
     signedPdfUrl?: boolean
@@ -19428,16 +19608,19 @@ export namespace Prisma {
     signedAt?: boolean
     createdAt?: boolean
     kitten?: boolean | Contract$kittenArgs<ExtArgs>
+    foster?: boolean | Contract$fosterArgs<ExtArgs>
     application?: boolean | Contract$applicationArgs<ExtArgs>
   }, ExtArgs["result"]["contract"]>
 
   export type ContractSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     type?: boolean
+    templateSlug?: boolean
     signerName?: boolean
     signerEmail?: boolean
     kittenName?: boolean
     kittenId?: boolean
+    fosterId?: boolean
     applicationId?: boolean
     documentVersion?: boolean
     signedPdfUrl?: boolean
@@ -19446,16 +19629,19 @@ export namespace Prisma {
     signedAt?: boolean
     createdAt?: boolean
     kitten?: boolean | Contract$kittenArgs<ExtArgs>
+    foster?: boolean | Contract$fosterArgs<ExtArgs>
     application?: boolean | Contract$applicationArgs<ExtArgs>
   }, ExtArgs["result"]["contract"]>
 
   export type ContractSelectScalar = {
     id?: boolean
     type?: boolean
+    templateSlug?: boolean
     signerName?: boolean
     signerEmail?: boolean
     kittenName?: boolean
     kittenId?: boolean
+    fosterId?: boolean
     applicationId?: boolean
     documentVersion?: boolean
     signedPdfUrl?: boolean
@@ -19465,17 +19651,20 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-  export type ContractOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "signerName" | "signerEmail" | "kittenName" | "kittenId" | "applicationId" | "documentVersion" | "signedPdfUrl" | "signatureAudit" | "status" | "signedAt" | "createdAt", ExtArgs["result"]["contract"]>
+  export type ContractOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "templateSlug" | "signerName" | "signerEmail" | "kittenName" | "kittenId" | "fosterId" | "applicationId" | "documentVersion" | "signedPdfUrl" | "signatureAudit" | "status" | "signedAt" | "createdAt", ExtArgs["result"]["contract"]>
   export type ContractInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     kitten?: boolean | Contract$kittenArgs<ExtArgs>
+    foster?: boolean | Contract$fosterArgs<ExtArgs>
     application?: boolean | Contract$applicationArgs<ExtArgs>
   }
   export type ContractIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     kitten?: boolean | Contract$kittenArgs<ExtArgs>
+    foster?: boolean | Contract$fosterArgs<ExtArgs>
     application?: boolean | Contract$applicationArgs<ExtArgs>
   }
   export type ContractIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     kitten?: boolean | Contract$kittenArgs<ExtArgs>
+    foster?: boolean | Contract$fosterArgs<ExtArgs>
     application?: boolean | Contract$applicationArgs<ExtArgs>
   }
 
@@ -19483,15 +19672,18 @@ export namespace Prisma {
     name: "Contract"
     objects: {
       kitten: Prisma.$KittenPayload<ExtArgs> | null
+      foster: Prisma.$FosterPayload<ExtArgs> | null
       application: Prisma.$ApplicationPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       type: $Enums.ContractType
+      templateSlug: string
       signerName: string
       signerEmail: string
       kittenName: string
       kittenId: number | null
+      fosterId: number | null
       applicationId: number | null
       documentVersion: string
       signedPdfUrl: string
@@ -19894,6 +20086,7 @@ export namespace Prisma {
   export interface Prisma__ContractClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     kitten<T extends Contract$kittenArgs<ExtArgs> = {}>(args?: Subset<T, Contract$kittenArgs<ExtArgs>>): Prisma__KittenClient<$Result.GetResult<Prisma.$KittenPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    foster<T extends Contract$fosterArgs<ExtArgs> = {}>(args?: Subset<T, Contract$fosterArgs<ExtArgs>>): Prisma__FosterClient<$Result.GetResult<Prisma.$FosterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     application<T extends Contract$applicationArgs<ExtArgs> = {}>(args?: Subset<T, Contract$applicationArgs<ExtArgs>>): Prisma__ApplicationClient<$Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -19926,10 +20119,12 @@ export namespace Prisma {
   interface ContractFieldRefs {
     readonly id: FieldRef<"Contract", 'Int'>
     readonly type: FieldRef<"Contract", 'ContractType'>
+    readonly templateSlug: FieldRef<"Contract", 'String'>
     readonly signerName: FieldRef<"Contract", 'String'>
     readonly signerEmail: FieldRef<"Contract", 'String'>
     readonly kittenName: FieldRef<"Contract", 'String'>
     readonly kittenId: FieldRef<"Contract", 'Int'>
+    readonly fosterId: FieldRef<"Contract", 'Int'>
     readonly applicationId: FieldRef<"Contract", 'Int'>
     readonly documentVersion: FieldRef<"Contract", 'String'>
     readonly signedPdfUrl: FieldRef<"Contract", 'String'>
@@ -20349,6 +20544,25 @@ export namespace Prisma {
      */
     include?: KittenInclude<ExtArgs> | null
     where?: KittenWhereInput
+  }
+
+  /**
+   * Contract.foster
+   */
+  export type Contract$fosterArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Foster
+     */
+    select?: FosterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Foster
+     */
+    omit?: FosterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FosterInclude<ExtArgs> | null
+    where?: FosterWhereInput
   }
 
   /**
@@ -45775,6 +45989,10 @@ export namespace Prisma {
     amazonWishlistUrl: 'amazonWishlistUrl',
     walmartWishlistUrl: 'walmartWishlistUrl',
     chewyWishlistUrl: 'chewyWishlistUrl',
+    isBondedPair: 'isBondedPair',
+    bondedWithKittenId: 'bondedWithKittenId',
+    bondedWithName: 'bondedWithName',
+    isMedicalSpecialNeeds: 'isMedicalSpecialNeeds',
     currentFosterId: 'currentFosterId',
     createdAt: 'createdAt'
   };
@@ -45919,10 +46137,12 @@ export namespace Prisma {
   export const ContractScalarFieldEnum: {
     id: 'id',
     type: 'type',
+    templateSlug: 'templateSlug',
     signerName: 'signerName',
     signerEmail: 'signerEmail',
     kittenName: 'kittenName',
     kittenId: 'kittenId',
+    fosterId: 'fosterId',
     applicationId: 'applicationId',
     documentVersion: 'documentVersion',
     signedPdfUrl: 'signedPdfUrl',
@@ -46533,6 +46753,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Foster"> | Date | string
     currentKittens?: KittenListRelationFilter
     placements?: PlacementListRelationFilter
+    contracts?: ContractListRelationFilter
   }
 
   export type FosterOrderByWithRelationInput = {
@@ -46550,6 +46771,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     currentKittens?: KittenOrderByRelationAggregateInput
     placements?: PlacementOrderByRelationAggregateInput
+    contracts?: ContractOrderByRelationAggregateInput
   }
 
   export type FosterWhereUniqueInput = Prisma.AtLeast<{
@@ -46570,6 +46792,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Foster"> | Date | string
     currentKittens?: KittenListRelationFilter
     placements?: PlacementListRelationFilter
+    contracts?: ContractListRelationFilter
   }, "id">
 
   export type FosterOrderByWithAggregationInput = {
@@ -46638,9 +46861,15 @@ export namespace Prisma {
     amazonWishlistUrl?: StringNullableFilter<"Kitten"> | string | null
     walmartWishlistUrl?: StringNullableFilter<"Kitten"> | string | null
     chewyWishlistUrl?: StringNullableFilter<"Kitten"> | string | null
+    isBondedPair?: BoolFilter<"Kitten"> | boolean
+    bondedWithKittenId?: IntNullableFilter<"Kitten"> | number | null
+    bondedWithName?: StringFilter<"Kitten"> | string
+    isMedicalSpecialNeeds?: BoolFilter<"Kitten"> | boolean
     currentFosterId?: IntNullableFilter<"Kitten"> | number | null
     createdAt?: DateTimeFilter<"Kitten"> | Date | string
     litter?: XOR<LitterNullableScalarRelationFilter, LitterWhereInput> | null
+    bondedWithKitten?: XOR<KittenNullableScalarRelationFilter, KittenWhereInput> | null
+    bondedPartners?: KittenListRelationFilter
     currentFoster?: XOR<FosterNullableScalarRelationFilter, FosterWhereInput> | null
     placements?: PlacementListRelationFilter
     weightLogs?: WeightLogListRelationFilter
@@ -46681,9 +46910,15 @@ export namespace Prisma {
     amazonWishlistUrl?: SortOrderInput | SortOrder
     walmartWishlistUrl?: SortOrderInput | SortOrder
     chewyWishlistUrl?: SortOrderInput | SortOrder
+    isBondedPair?: SortOrder
+    bondedWithKittenId?: SortOrderInput | SortOrder
+    bondedWithName?: SortOrder
+    isMedicalSpecialNeeds?: SortOrder
     currentFosterId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     litter?: LitterOrderByWithRelationInput
+    bondedWithKitten?: KittenOrderByWithRelationInput
+    bondedPartners?: KittenOrderByRelationAggregateInput
     currentFoster?: FosterOrderByWithRelationInput
     placements?: PlacementOrderByRelationAggregateInput
     weightLogs?: WeightLogOrderByRelationAggregateInput
@@ -46727,9 +46962,15 @@ export namespace Prisma {
     amazonWishlistUrl?: StringNullableFilter<"Kitten"> | string | null
     walmartWishlistUrl?: StringNullableFilter<"Kitten"> | string | null
     chewyWishlistUrl?: StringNullableFilter<"Kitten"> | string | null
+    isBondedPair?: BoolFilter<"Kitten"> | boolean
+    bondedWithKittenId?: IntNullableFilter<"Kitten"> | number | null
+    bondedWithName?: StringFilter<"Kitten"> | string
+    isMedicalSpecialNeeds?: BoolFilter<"Kitten"> | boolean
     currentFosterId?: IntNullableFilter<"Kitten"> | number | null
     createdAt?: DateTimeFilter<"Kitten"> | Date | string
     litter?: XOR<LitterNullableScalarRelationFilter, LitterWhereInput> | null
+    bondedWithKitten?: XOR<KittenNullableScalarRelationFilter, KittenWhereInput> | null
+    bondedPartners?: KittenListRelationFilter
     currentFoster?: XOR<FosterNullableScalarRelationFilter, FosterWhereInput> | null
     placements?: PlacementListRelationFilter
     weightLogs?: WeightLogListRelationFilter
@@ -46770,6 +47011,10 @@ export namespace Prisma {
     amazonWishlistUrl?: SortOrderInput | SortOrder
     walmartWishlistUrl?: SortOrderInput | SortOrder
     chewyWishlistUrl?: SortOrderInput | SortOrder
+    isBondedPair?: SortOrder
+    bondedWithKittenId?: SortOrderInput | SortOrder
+    bondedWithName?: SortOrder
+    isMedicalSpecialNeeds?: SortOrder
     currentFosterId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: KittenCountOrderByAggregateInput
@@ -46807,6 +47052,10 @@ export namespace Prisma {
     amazonWishlistUrl?: StringNullableWithAggregatesFilter<"Kitten"> | string | null
     walmartWishlistUrl?: StringNullableWithAggregatesFilter<"Kitten"> | string | null
     chewyWishlistUrl?: StringNullableWithAggregatesFilter<"Kitten"> | string | null
+    isBondedPair?: BoolWithAggregatesFilter<"Kitten"> | boolean
+    bondedWithKittenId?: IntNullableWithAggregatesFilter<"Kitten"> | number | null
+    bondedWithName?: StringWithAggregatesFilter<"Kitten"> | string
+    isMedicalSpecialNeeds?: BoolWithAggregatesFilter<"Kitten"> | boolean
     currentFosterId?: IntNullableWithAggregatesFilter<"Kitten"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"Kitten"> | Date | string
   }
@@ -47514,10 +47763,12 @@ export namespace Prisma {
     NOT?: ContractWhereInput | ContractWhereInput[]
     id?: IntFilter<"Contract"> | number
     type?: EnumContractTypeFilter<"Contract"> | $Enums.ContractType
+    templateSlug?: StringFilter<"Contract"> | string
     signerName?: StringFilter<"Contract"> | string
     signerEmail?: StringFilter<"Contract"> | string
     kittenName?: StringFilter<"Contract"> | string
     kittenId?: IntNullableFilter<"Contract"> | number | null
+    fosterId?: IntNullableFilter<"Contract"> | number | null
     applicationId?: IntNullableFilter<"Contract"> | number | null
     documentVersion?: StringFilter<"Contract"> | string
     signedPdfUrl?: StringFilter<"Contract"> | string
@@ -47526,16 +47777,19 @@ export namespace Prisma {
     signedAt?: DateTimeNullableFilter<"Contract"> | Date | string | null
     createdAt?: DateTimeFilter<"Contract"> | Date | string
     kitten?: XOR<KittenNullableScalarRelationFilter, KittenWhereInput> | null
+    foster?: XOR<FosterNullableScalarRelationFilter, FosterWhereInput> | null
     application?: XOR<ApplicationNullableScalarRelationFilter, ApplicationWhereInput> | null
   }
 
   export type ContractOrderByWithRelationInput = {
     id?: SortOrder
     type?: SortOrder
+    templateSlug?: SortOrder
     signerName?: SortOrder
     signerEmail?: SortOrder
     kittenName?: SortOrder
     kittenId?: SortOrderInput | SortOrder
+    fosterId?: SortOrderInput | SortOrder
     applicationId?: SortOrderInput | SortOrder
     documentVersion?: SortOrder
     signedPdfUrl?: SortOrder
@@ -47544,6 +47798,7 @@ export namespace Prisma {
     signedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     kitten?: KittenOrderByWithRelationInput
+    foster?: FosterOrderByWithRelationInput
     application?: ApplicationOrderByWithRelationInput
   }
 
@@ -47553,10 +47808,12 @@ export namespace Prisma {
     OR?: ContractWhereInput[]
     NOT?: ContractWhereInput | ContractWhereInput[]
     type?: EnumContractTypeFilter<"Contract"> | $Enums.ContractType
+    templateSlug?: StringFilter<"Contract"> | string
     signerName?: StringFilter<"Contract"> | string
     signerEmail?: StringFilter<"Contract"> | string
     kittenName?: StringFilter<"Contract"> | string
     kittenId?: IntNullableFilter<"Contract"> | number | null
+    fosterId?: IntNullableFilter<"Contract"> | number | null
     applicationId?: IntNullableFilter<"Contract"> | number | null
     documentVersion?: StringFilter<"Contract"> | string
     signedPdfUrl?: StringFilter<"Contract"> | string
@@ -47565,16 +47822,19 @@ export namespace Prisma {
     signedAt?: DateTimeNullableFilter<"Contract"> | Date | string | null
     createdAt?: DateTimeFilter<"Contract"> | Date | string
     kitten?: XOR<KittenNullableScalarRelationFilter, KittenWhereInput> | null
+    foster?: XOR<FosterNullableScalarRelationFilter, FosterWhereInput> | null
     application?: XOR<ApplicationNullableScalarRelationFilter, ApplicationWhereInput> | null
   }, "id">
 
   export type ContractOrderByWithAggregationInput = {
     id?: SortOrder
     type?: SortOrder
+    templateSlug?: SortOrder
     signerName?: SortOrder
     signerEmail?: SortOrder
     kittenName?: SortOrder
     kittenId?: SortOrderInput | SortOrder
+    fosterId?: SortOrderInput | SortOrder
     applicationId?: SortOrderInput | SortOrder
     documentVersion?: SortOrder
     signedPdfUrl?: SortOrder
@@ -47595,10 +47855,12 @@ export namespace Prisma {
     NOT?: ContractScalarWhereWithAggregatesInput | ContractScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Contract"> | number
     type?: EnumContractTypeWithAggregatesFilter<"Contract"> | $Enums.ContractType
+    templateSlug?: StringWithAggregatesFilter<"Contract"> | string
     signerName?: StringWithAggregatesFilter<"Contract"> | string
     signerEmail?: StringWithAggregatesFilter<"Contract"> | string
     kittenName?: StringWithAggregatesFilter<"Contract"> | string
     kittenId?: IntNullableWithAggregatesFilter<"Contract"> | number | null
+    fosterId?: IntNullableWithAggregatesFilter<"Contract"> | number | null
     applicationId?: IntNullableWithAggregatesFilter<"Contract"> | number | null
     documentVersion?: StringWithAggregatesFilter<"Contract"> | string
     signedPdfUrl?: StringWithAggregatesFilter<"Contract"> | string
@@ -49366,6 +49628,7 @@ export namespace Prisma {
     createdAt?: Date | string
     currentKittens?: KittenCreateNestedManyWithoutCurrentFosterInput
     placements?: PlacementCreateNestedManyWithoutFosterInput
+    contracts?: ContractCreateNestedManyWithoutFosterInput
   }
 
   export type FosterUncheckedCreateInput = {
@@ -49383,6 +49646,7 @@ export namespace Prisma {
     createdAt?: Date | string
     currentKittens?: KittenUncheckedCreateNestedManyWithoutCurrentFosterInput
     placements?: PlacementUncheckedCreateNestedManyWithoutFosterInput
+    contracts?: ContractUncheckedCreateNestedManyWithoutFosterInput
   }
 
   export type FosterUpdateInput = {
@@ -49399,6 +49663,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     currentKittens?: KittenUpdateManyWithoutCurrentFosterNestedInput
     placements?: PlacementUpdateManyWithoutFosterNestedInput
+    contracts?: ContractUpdateManyWithoutFosterNestedInput
   }
 
   export type FosterUncheckedUpdateInput = {
@@ -49416,6 +49681,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     currentKittens?: KittenUncheckedUpdateManyWithoutCurrentFosterNestedInput
     placements?: PlacementUncheckedUpdateManyWithoutFosterNestedInput
+    contracts?: ContractUncheckedUpdateManyWithoutFosterNestedInput
   }
 
   export type FosterCreateManyInput = {
@@ -49485,8 +49751,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
+    bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
     placements?: PlacementCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogCreateNestedManyWithoutKittenInput
@@ -49527,8 +49798,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithKittenId?: number | null
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
+    bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogUncheckedCreateNestedManyWithoutKittenInput
     vaccines?: VaccineUncheckedCreateNestedManyWithoutKittenInput
@@ -49566,8 +49842,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
+    bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
     placements?: PlacementUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUpdateManyWithoutKittenNestedInput
@@ -49608,8 +49889,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUncheckedUpdateManyWithoutKittenNestedInput
     vaccines?: VaccineUncheckedUpdateManyWithoutKittenNestedInput
@@ -49649,6 +49935,10 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithKittenId?: number | null
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
   }
@@ -49676,6 +49966,9 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -49704,6 +49997,10 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -50430,6 +50727,7 @@ export namespace Prisma {
 
   export type ContractCreateInput = {
     type: $Enums.ContractType
+    templateSlug?: string
     signerName: string
     signerEmail: string
     kittenName?: string
@@ -50440,16 +50738,19 @@ export namespace Prisma {
     signedAt?: Date | string | null
     createdAt?: Date | string
     kitten?: KittenCreateNestedOneWithoutContractsInput
+    foster?: FosterCreateNestedOneWithoutContractsInput
     application?: ApplicationCreateNestedOneWithoutContractsInput
   }
 
   export type ContractUncheckedCreateInput = {
     id?: number
     type: $Enums.ContractType
+    templateSlug?: string
     signerName: string
     signerEmail: string
     kittenName?: string
     kittenId?: number | null
+    fosterId?: number | null
     applicationId?: number | null
     documentVersion: string
     signedPdfUrl?: string
@@ -50461,6 +50762,7 @@ export namespace Prisma {
 
   export type ContractUpdateInput = {
     type?: EnumContractTypeFieldUpdateOperationsInput | $Enums.ContractType
+    templateSlug?: StringFieldUpdateOperationsInput | string
     signerName?: StringFieldUpdateOperationsInput | string
     signerEmail?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
@@ -50471,16 +50773,19 @@ export namespace Prisma {
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     kitten?: KittenUpdateOneWithoutContractsNestedInput
+    foster?: FosterUpdateOneWithoutContractsNestedInput
     application?: ApplicationUpdateOneWithoutContractsNestedInput
   }
 
   export type ContractUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     type?: EnumContractTypeFieldUpdateOperationsInput | $Enums.ContractType
+    templateSlug?: StringFieldUpdateOperationsInput | string
     signerName?: StringFieldUpdateOperationsInput | string
     signerEmail?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
     kittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    fosterId?: NullableIntFieldUpdateOperationsInput | number | null
     applicationId?: NullableIntFieldUpdateOperationsInput | number | null
     documentVersion?: StringFieldUpdateOperationsInput | string
     signedPdfUrl?: StringFieldUpdateOperationsInput | string
@@ -50493,10 +50798,12 @@ export namespace Prisma {
   export type ContractCreateManyInput = {
     id?: number
     type: $Enums.ContractType
+    templateSlug?: string
     signerName: string
     signerEmail: string
     kittenName?: string
     kittenId?: number | null
+    fosterId?: number | null
     applicationId?: number | null
     documentVersion: string
     signedPdfUrl?: string
@@ -50508,6 +50815,7 @@ export namespace Prisma {
 
   export type ContractUpdateManyMutationInput = {
     type?: EnumContractTypeFieldUpdateOperationsInput | $Enums.ContractType
+    templateSlug?: StringFieldUpdateOperationsInput | string
     signerName?: StringFieldUpdateOperationsInput | string
     signerEmail?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
@@ -50522,10 +50830,12 @@ export namespace Prisma {
   export type ContractUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     type?: EnumContractTypeFieldUpdateOperationsInput | $Enums.ContractType
+    templateSlug?: StringFieldUpdateOperationsInput | string
     signerName?: StringFieldUpdateOperationsInput | string
     signerEmail?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
     kittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    fosterId?: NullableIntFieldUpdateOperationsInput | number | null
     applicationId?: NullableIntFieldUpdateOperationsInput | number | null
     documentVersion?: StringFieldUpdateOperationsInput | string
     signedPdfUrl?: StringFieldUpdateOperationsInput | string
@@ -52451,12 +52761,22 @@ export namespace Prisma {
     none?: PlacementWhereInput
   }
 
+  export type ContractListRelationFilter = {
+    every?: ContractWhereInput
+    some?: ContractWhereInput
+    none?: ContractWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
   }
 
   export type PlacementOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ContractOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -52573,6 +52893,11 @@ export namespace Prisma {
     isNot?: LitterWhereInput | null
   }
 
+  export type KittenNullableScalarRelationFilter = {
+    is?: KittenWhereInput | null
+    isNot?: KittenWhereInput | null
+  }
+
   export type FosterNullableScalarRelationFilter = {
     is?: FosterWhereInput | null
     isNot?: FosterWhereInput | null
@@ -52626,12 +52951,6 @@ export namespace Prisma {
     none?: TransactionWhereInput
   }
 
-  export type ContractListRelationFilter = {
-    every?: ContractWhereInput
-    some?: ContractWhereInput
-    none?: ContractWhereInput
-  }
-
   export type ActiveProtocolListRelationFilter = {
     every?: ActiveProtocolWhereInput
     some?: ActiveProtocolWhereInput
@@ -52676,10 +52995,6 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type ContractOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type ActiveProtocolOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -52713,6 +53028,10 @@ export namespace Prisma {
     amazonWishlistUrl?: SortOrder
     walmartWishlistUrl?: SortOrder
     chewyWishlistUrl?: SortOrder
+    isBondedPair?: SortOrder
+    bondedWithKittenId?: SortOrder
+    bondedWithName?: SortOrder
+    isMedicalSpecialNeeds?: SortOrder
     currentFosterId?: SortOrder
     createdAt?: SortOrder
   }
@@ -52720,6 +53039,7 @@ export namespace Prisma {
   export type KittenAvgOrderByAggregateInput = {
     id?: SortOrder
     litterId?: SortOrder
+    bondedWithKittenId?: SortOrder
     currentFosterId?: SortOrder
   }
 
@@ -52747,6 +53067,10 @@ export namespace Prisma {
     amazonWishlistUrl?: SortOrder
     walmartWishlistUrl?: SortOrder
     chewyWishlistUrl?: SortOrder
+    isBondedPair?: SortOrder
+    bondedWithKittenId?: SortOrder
+    bondedWithName?: SortOrder
+    isMedicalSpecialNeeds?: SortOrder
     currentFosterId?: SortOrder
     createdAt?: SortOrder
   }
@@ -52775,6 +53099,10 @@ export namespace Prisma {
     amazonWishlistUrl?: SortOrder
     walmartWishlistUrl?: SortOrder
     chewyWishlistUrl?: SortOrder
+    isBondedPair?: SortOrder
+    bondedWithKittenId?: SortOrder
+    bondedWithName?: SortOrder
+    isMedicalSpecialNeeds?: SortOrder
     currentFosterId?: SortOrder
     createdAt?: SortOrder
   }
@@ -52782,6 +53110,7 @@ export namespace Prisma {
   export type KittenSumOrderByAggregateInput = {
     id?: SortOrder
     litterId?: SortOrder
+    bondedWithKittenId?: SortOrder
     currentFosterId?: SortOrder
   }
 
@@ -53308,11 +53637,6 @@ export namespace Prisma {
     not?: NestedEnumContractStatusFilter<$PrismaModel> | $Enums.ContractStatus
   }
 
-  export type KittenNullableScalarRelationFilter = {
-    is?: KittenWhereInput | null
-    isNot?: KittenWhereInput | null
-  }
-
   export type ApplicationNullableScalarRelationFilter = {
     is?: ApplicationWhereInput | null
     isNot?: ApplicationWhereInput | null
@@ -53321,10 +53645,12 @@ export namespace Prisma {
   export type ContractCountOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
+    templateSlug?: SortOrder
     signerName?: SortOrder
     signerEmail?: SortOrder
     kittenName?: SortOrder
     kittenId?: SortOrder
+    fosterId?: SortOrder
     applicationId?: SortOrder
     documentVersion?: SortOrder
     signedPdfUrl?: SortOrder
@@ -53337,16 +53663,19 @@ export namespace Prisma {
   export type ContractAvgOrderByAggregateInput = {
     id?: SortOrder
     kittenId?: SortOrder
+    fosterId?: SortOrder
     applicationId?: SortOrder
   }
 
   export type ContractMaxOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
+    templateSlug?: SortOrder
     signerName?: SortOrder
     signerEmail?: SortOrder
     kittenName?: SortOrder
     kittenId?: SortOrder
+    fosterId?: SortOrder
     applicationId?: SortOrder
     documentVersion?: SortOrder
     signedPdfUrl?: SortOrder
@@ -53359,10 +53688,12 @@ export namespace Prisma {
   export type ContractMinOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
+    templateSlug?: SortOrder
     signerName?: SortOrder
     signerEmail?: SortOrder
     kittenName?: SortOrder
     kittenId?: SortOrder
+    fosterId?: SortOrder
     applicationId?: SortOrder
     documentVersion?: SortOrder
     signedPdfUrl?: SortOrder
@@ -53375,6 +53706,7 @@ export namespace Prisma {
   export type ContractSumOrderByAggregateInput = {
     id?: SortOrder
     kittenId?: SortOrder
+    fosterId?: SortOrder
     applicationId?: SortOrder
   }
 
@@ -54728,6 +55060,13 @@ export namespace Prisma {
     connect?: PlacementWhereUniqueInput | PlacementWhereUniqueInput[]
   }
 
+  export type ContractCreateNestedManyWithoutFosterInput = {
+    create?: XOR<ContractCreateWithoutFosterInput, ContractUncheckedCreateWithoutFosterInput> | ContractCreateWithoutFosterInput[] | ContractUncheckedCreateWithoutFosterInput[]
+    connectOrCreate?: ContractCreateOrConnectWithoutFosterInput | ContractCreateOrConnectWithoutFosterInput[]
+    createMany?: ContractCreateManyFosterInputEnvelope
+    connect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+  }
+
   export type KittenUncheckedCreateNestedManyWithoutCurrentFosterInput = {
     create?: XOR<KittenCreateWithoutCurrentFosterInput, KittenUncheckedCreateWithoutCurrentFosterInput> | KittenCreateWithoutCurrentFosterInput[] | KittenUncheckedCreateWithoutCurrentFosterInput[]
     connectOrCreate?: KittenCreateOrConnectWithoutCurrentFosterInput | KittenCreateOrConnectWithoutCurrentFosterInput[]
@@ -54740,6 +55079,13 @@ export namespace Prisma {
     connectOrCreate?: PlacementCreateOrConnectWithoutFosterInput | PlacementCreateOrConnectWithoutFosterInput[]
     createMany?: PlacementCreateManyFosterInputEnvelope
     connect?: PlacementWhereUniqueInput | PlacementWhereUniqueInput[]
+  }
+
+  export type ContractUncheckedCreateNestedManyWithoutFosterInput = {
+    create?: XOR<ContractCreateWithoutFosterInput, ContractUncheckedCreateWithoutFosterInput> | ContractCreateWithoutFosterInput[] | ContractUncheckedCreateWithoutFosterInput[]
+    connectOrCreate?: ContractCreateOrConnectWithoutFosterInput | ContractCreateOrConnectWithoutFosterInput[]
+    createMany?: ContractCreateManyFosterInputEnvelope
+    connect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -54774,6 +55120,20 @@ export namespace Prisma {
     deleteMany?: PlacementScalarWhereInput | PlacementScalarWhereInput[]
   }
 
+  export type ContractUpdateManyWithoutFosterNestedInput = {
+    create?: XOR<ContractCreateWithoutFosterInput, ContractUncheckedCreateWithoutFosterInput> | ContractCreateWithoutFosterInput[] | ContractUncheckedCreateWithoutFosterInput[]
+    connectOrCreate?: ContractCreateOrConnectWithoutFosterInput | ContractCreateOrConnectWithoutFosterInput[]
+    upsert?: ContractUpsertWithWhereUniqueWithoutFosterInput | ContractUpsertWithWhereUniqueWithoutFosterInput[]
+    createMany?: ContractCreateManyFosterInputEnvelope
+    set?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    disconnect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    delete?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    connect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    update?: ContractUpdateWithWhereUniqueWithoutFosterInput | ContractUpdateWithWhereUniqueWithoutFosterInput[]
+    updateMany?: ContractUpdateManyWithWhereWithoutFosterInput | ContractUpdateManyWithWhereWithoutFosterInput[]
+    deleteMany?: ContractScalarWhereInput | ContractScalarWhereInput[]
+  }
+
   export type KittenUncheckedUpdateManyWithoutCurrentFosterNestedInput = {
     create?: XOR<KittenCreateWithoutCurrentFosterInput, KittenUncheckedCreateWithoutCurrentFosterInput> | KittenCreateWithoutCurrentFosterInput[] | KittenUncheckedCreateWithoutCurrentFosterInput[]
     connectOrCreate?: KittenCreateOrConnectWithoutCurrentFosterInput | KittenCreateOrConnectWithoutCurrentFosterInput[]
@@ -54802,6 +55162,20 @@ export namespace Prisma {
     deleteMany?: PlacementScalarWhereInput | PlacementScalarWhereInput[]
   }
 
+  export type ContractUncheckedUpdateManyWithoutFosterNestedInput = {
+    create?: XOR<ContractCreateWithoutFosterInput, ContractUncheckedCreateWithoutFosterInput> | ContractCreateWithoutFosterInput[] | ContractUncheckedCreateWithoutFosterInput[]
+    connectOrCreate?: ContractCreateOrConnectWithoutFosterInput | ContractCreateOrConnectWithoutFosterInput[]
+    upsert?: ContractUpsertWithWhereUniqueWithoutFosterInput | ContractUpsertWithWhereUniqueWithoutFosterInput[]
+    createMany?: ContractCreateManyFosterInputEnvelope
+    set?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    disconnect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    delete?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    connect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    update?: ContractUpdateWithWhereUniqueWithoutFosterInput | ContractUpdateWithWhereUniqueWithoutFosterInput[]
+    updateMany?: ContractUpdateManyWithWhereWithoutFosterInput | ContractUpdateManyWithWhereWithoutFosterInput[]
+    deleteMany?: ContractScalarWhereInput | ContractScalarWhereInput[]
+  }
+
   export type KittenCreatepublishTargetsInput = {
     set: string[]
   }
@@ -54810,6 +55184,19 @@ export namespace Prisma {
     create?: XOR<LitterCreateWithoutKittensInput, LitterUncheckedCreateWithoutKittensInput>
     connectOrCreate?: LitterCreateOrConnectWithoutKittensInput
     connect?: LitterWhereUniqueInput
+  }
+
+  export type KittenCreateNestedOneWithoutBondedPartnersInput = {
+    create?: XOR<KittenCreateWithoutBondedPartnersInput, KittenUncheckedCreateWithoutBondedPartnersInput>
+    connectOrCreate?: KittenCreateOrConnectWithoutBondedPartnersInput
+    connect?: KittenWhereUniqueInput
+  }
+
+  export type KittenCreateNestedManyWithoutBondedWithKittenInput = {
+    create?: XOR<KittenCreateWithoutBondedWithKittenInput, KittenUncheckedCreateWithoutBondedWithKittenInput> | KittenCreateWithoutBondedWithKittenInput[] | KittenUncheckedCreateWithoutBondedWithKittenInput[]
+    connectOrCreate?: KittenCreateOrConnectWithoutBondedWithKittenInput | KittenCreateOrConnectWithoutBondedWithKittenInput[]
+    createMany?: KittenCreateManyBondedWithKittenInputEnvelope
+    connect?: KittenWhereUniqueInput | KittenWhereUniqueInput[]
   }
 
   export type FosterCreateNestedOneWithoutCurrentKittensInput = {
@@ -54900,6 +55287,13 @@ export namespace Prisma {
     connectOrCreate?: EventCatsCreateOrConnectWithoutKittenInput | EventCatsCreateOrConnectWithoutKittenInput[]
     createMany?: EventCatsCreateManyKittenInputEnvelope
     connect?: EventCatsWhereUniqueInput | EventCatsWhereUniqueInput[]
+  }
+
+  export type KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput = {
+    create?: XOR<KittenCreateWithoutBondedWithKittenInput, KittenUncheckedCreateWithoutBondedWithKittenInput> | KittenCreateWithoutBondedWithKittenInput[] | KittenUncheckedCreateWithoutBondedWithKittenInput[]
+    connectOrCreate?: KittenCreateOrConnectWithoutBondedWithKittenInput | KittenCreateOrConnectWithoutBondedWithKittenInput[]
+    createMany?: KittenCreateManyBondedWithKittenInputEnvelope
+    connect?: KittenWhereUniqueInput | KittenWhereUniqueInput[]
   }
 
   export type PlacementUncheckedCreateNestedManyWithoutKittenInput = {
@@ -55007,6 +55401,30 @@ export namespace Prisma {
     delete?: LitterWhereInput | boolean
     connect?: LitterWhereUniqueInput
     update?: XOR<XOR<LitterUpdateToOneWithWhereWithoutKittensInput, LitterUpdateWithoutKittensInput>, LitterUncheckedUpdateWithoutKittensInput>
+  }
+
+  export type KittenUpdateOneWithoutBondedPartnersNestedInput = {
+    create?: XOR<KittenCreateWithoutBondedPartnersInput, KittenUncheckedCreateWithoutBondedPartnersInput>
+    connectOrCreate?: KittenCreateOrConnectWithoutBondedPartnersInput
+    upsert?: KittenUpsertWithoutBondedPartnersInput
+    disconnect?: KittenWhereInput | boolean
+    delete?: KittenWhereInput | boolean
+    connect?: KittenWhereUniqueInput
+    update?: XOR<XOR<KittenUpdateToOneWithWhereWithoutBondedPartnersInput, KittenUpdateWithoutBondedPartnersInput>, KittenUncheckedUpdateWithoutBondedPartnersInput>
+  }
+
+  export type KittenUpdateManyWithoutBondedWithKittenNestedInput = {
+    create?: XOR<KittenCreateWithoutBondedWithKittenInput, KittenUncheckedCreateWithoutBondedWithKittenInput> | KittenCreateWithoutBondedWithKittenInput[] | KittenUncheckedCreateWithoutBondedWithKittenInput[]
+    connectOrCreate?: KittenCreateOrConnectWithoutBondedWithKittenInput | KittenCreateOrConnectWithoutBondedWithKittenInput[]
+    upsert?: KittenUpsertWithWhereUniqueWithoutBondedWithKittenInput | KittenUpsertWithWhereUniqueWithoutBondedWithKittenInput[]
+    createMany?: KittenCreateManyBondedWithKittenInputEnvelope
+    set?: KittenWhereUniqueInput | KittenWhereUniqueInput[]
+    disconnect?: KittenWhereUniqueInput | KittenWhereUniqueInput[]
+    delete?: KittenWhereUniqueInput | KittenWhereUniqueInput[]
+    connect?: KittenWhereUniqueInput | KittenWhereUniqueInput[]
+    update?: KittenUpdateWithWhereUniqueWithoutBondedWithKittenInput | KittenUpdateWithWhereUniqueWithoutBondedWithKittenInput[]
+    updateMany?: KittenUpdateManyWithWhereWithoutBondedWithKittenInput | KittenUpdateManyWithWhereWithoutBondedWithKittenInput[]
+    deleteMany?: KittenScalarWhereInput | KittenScalarWhereInput[]
   }
 
   export type FosterUpdateOneWithoutCurrentKittensNestedInput = {
@@ -55193,6 +55611,20 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput = {
+    create?: XOR<KittenCreateWithoutBondedWithKittenInput, KittenUncheckedCreateWithoutBondedWithKittenInput> | KittenCreateWithoutBondedWithKittenInput[] | KittenUncheckedCreateWithoutBondedWithKittenInput[]
+    connectOrCreate?: KittenCreateOrConnectWithoutBondedWithKittenInput | KittenCreateOrConnectWithoutBondedWithKittenInput[]
+    upsert?: KittenUpsertWithWhereUniqueWithoutBondedWithKittenInput | KittenUpsertWithWhereUniqueWithoutBondedWithKittenInput[]
+    createMany?: KittenCreateManyBondedWithKittenInputEnvelope
+    set?: KittenWhereUniqueInput | KittenWhereUniqueInput[]
+    disconnect?: KittenWhereUniqueInput | KittenWhereUniqueInput[]
+    delete?: KittenWhereUniqueInput | KittenWhereUniqueInput[]
+    connect?: KittenWhereUniqueInput | KittenWhereUniqueInput[]
+    update?: KittenUpdateWithWhereUniqueWithoutBondedWithKittenInput | KittenUpdateWithWhereUniqueWithoutBondedWithKittenInput[]
+    updateMany?: KittenUpdateManyWithWhereWithoutBondedWithKittenInput | KittenUpdateManyWithWhereWithoutBondedWithKittenInput[]
+    deleteMany?: KittenScalarWhereInput | KittenScalarWhereInput[]
   }
 
   export type PlacementUncheckedUpdateManyWithoutKittenNestedInput = {
@@ -55612,6 +56044,12 @@ export namespace Prisma {
     connect?: KittenWhereUniqueInput
   }
 
+  export type FosterCreateNestedOneWithoutContractsInput = {
+    create?: XOR<FosterCreateWithoutContractsInput, FosterUncheckedCreateWithoutContractsInput>
+    connectOrCreate?: FosterCreateOrConnectWithoutContractsInput
+    connect?: FosterWhereUniqueInput
+  }
+
   export type ApplicationCreateNestedOneWithoutContractsInput = {
     create?: XOR<ApplicationCreateWithoutContractsInput, ApplicationUncheckedCreateWithoutContractsInput>
     connectOrCreate?: ApplicationCreateOrConnectWithoutContractsInput
@@ -55634,6 +56072,16 @@ export namespace Prisma {
     delete?: KittenWhereInput | boolean
     connect?: KittenWhereUniqueInput
     update?: XOR<XOR<KittenUpdateToOneWithWhereWithoutContractsInput, KittenUpdateWithoutContractsInput>, KittenUncheckedUpdateWithoutContractsInput>
+  }
+
+  export type FosterUpdateOneWithoutContractsNestedInput = {
+    create?: XOR<FosterCreateWithoutContractsInput, FosterUncheckedCreateWithoutContractsInput>
+    connectOrCreate?: FosterCreateOrConnectWithoutContractsInput
+    upsert?: FosterUpsertWithoutContractsInput
+    disconnect?: FosterWhereInput | boolean
+    delete?: FosterWhereInput | boolean
+    connect?: FosterWhereUniqueInput
+    update?: XOR<XOR<FosterUpdateToOneWithWhereWithoutContractsInput, FosterUpdateWithoutContractsInput>, FosterUncheckedUpdateWithoutContractsInput>
   }
 
   export type ApplicationUpdateOneWithoutContractsNestedInput = {
@@ -57017,7 +57465,12 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     createdAt?: Date | string
+    bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
+    bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
     placements?: PlacementCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogCreateNestedManyWithoutKittenInput
@@ -57057,8 +57510,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithKittenId?: number | null
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
+    bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogUncheckedCreateNestedManyWithoutKittenInput
     vaccines?: VaccineUncheckedCreateNestedManyWithoutKittenInput
@@ -57127,6 +57585,10 @@ export namespace Prisma {
     amazonWishlistUrl?: StringNullableFilter<"Kitten"> | string | null
     walmartWishlistUrl?: StringNullableFilter<"Kitten"> | string | null
     chewyWishlistUrl?: StringNullableFilter<"Kitten"> | string | null
+    isBondedPair?: BoolFilter<"Kitten"> | boolean
+    bondedWithKittenId?: IntNullableFilter<"Kitten"> | number | null
+    bondedWithName?: StringFilter<"Kitten"> | string
+    isMedicalSpecialNeeds?: BoolFilter<"Kitten"> | boolean
     currentFosterId?: IntNullableFilter<"Kitten"> | number | null
     createdAt?: DateTimeFilter<"Kitten"> | Date | string
   }
@@ -57154,8 +57616,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
+    bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     placements?: PlacementCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogCreateNestedManyWithoutKittenInput
     vaccines?: VaccineCreateNestedManyWithoutKittenInput
@@ -57195,7 +57662,12 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithKittenId?: number | null
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     createdAt?: Date | string
+    bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogUncheckedCreateNestedManyWithoutKittenInput
     vaccines?: VaccineUncheckedCreateNestedManyWithoutKittenInput
@@ -57247,6 +57719,49 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ContractCreateWithoutFosterInput = {
+    type: $Enums.ContractType
+    templateSlug?: string
+    signerName: string
+    signerEmail: string
+    kittenName?: string
+    documentVersion: string
+    signedPdfUrl?: string
+    signatureAudit?: string
+    status?: $Enums.ContractStatus
+    signedAt?: Date | string | null
+    createdAt?: Date | string
+    kitten?: KittenCreateNestedOneWithoutContractsInput
+    application?: ApplicationCreateNestedOneWithoutContractsInput
+  }
+
+  export type ContractUncheckedCreateWithoutFosterInput = {
+    id?: number
+    type: $Enums.ContractType
+    templateSlug?: string
+    signerName: string
+    signerEmail: string
+    kittenName?: string
+    kittenId?: number | null
+    applicationId?: number | null
+    documentVersion: string
+    signedPdfUrl?: string
+    signatureAudit?: string
+    status?: $Enums.ContractStatus
+    signedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type ContractCreateOrConnectWithoutFosterInput = {
+    where: ContractWhereUniqueInput
+    create: XOR<ContractCreateWithoutFosterInput, ContractUncheckedCreateWithoutFosterInput>
+  }
+
+  export type ContractCreateManyFosterInputEnvelope = {
+    data: ContractCreateManyFosterInput | ContractCreateManyFosterInput[]
+    skipDuplicates?: boolean
+  }
+
   export type KittenUpsertWithWhereUniqueWithoutCurrentFosterInput = {
     where: KittenWhereUniqueInput
     update: XOR<KittenUpdateWithoutCurrentFosterInput, KittenUncheckedUpdateWithoutCurrentFosterInput>
@@ -57292,6 +57807,43 @@ export namespace Prisma {
     notes?: StringFilter<"Placement"> | string
   }
 
+  export type ContractUpsertWithWhereUniqueWithoutFosterInput = {
+    where: ContractWhereUniqueInput
+    update: XOR<ContractUpdateWithoutFosterInput, ContractUncheckedUpdateWithoutFosterInput>
+    create: XOR<ContractCreateWithoutFosterInput, ContractUncheckedCreateWithoutFosterInput>
+  }
+
+  export type ContractUpdateWithWhereUniqueWithoutFosterInput = {
+    where: ContractWhereUniqueInput
+    data: XOR<ContractUpdateWithoutFosterInput, ContractUncheckedUpdateWithoutFosterInput>
+  }
+
+  export type ContractUpdateManyWithWhereWithoutFosterInput = {
+    where: ContractScalarWhereInput
+    data: XOR<ContractUpdateManyMutationInput, ContractUncheckedUpdateManyWithoutFosterInput>
+  }
+
+  export type ContractScalarWhereInput = {
+    AND?: ContractScalarWhereInput | ContractScalarWhereInput[]
+    OR?: ContractScalarWhereInput[]
+    NOT?: ContractScalarWhereInput | ContractScalarWhereInput[]
+    id?: IntFilter<"Contract"> | number
+    type?: EnumContractTypeFilter<"Contract"> | $Enums.ContractType
+    templateSlug?: StringFilter<"Contract"> | string
+    signerName?: StringFilter<"Contract"> | string
+    signerEmail?: StringFilter<"Contract"> | string
+    kittenName?: StringFilter<"Contract"> | string
+    kittenId?: IntNullableFilter<"Contract"> | number | null
+    fosterId?: IntNullableFilter<"Contract"> | number | null
+    applicationId?: IntNullableFilter<"Contract"> | number | null
+    documentVersion?: StringFilter<"Contract"> | string
+    signedPdfUrl?: StringFilter<"Contract"> | string
+    signatureAudit?: StringFilter<"Contract"> | string
+    status?: EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
+    signedAt?: DateTimeNullableFilter<"Contract"> | Date | string | null
+    createdAt?: DateTimeFilter<"Contract"> | Date | string
+  }
+
   export type LitterCreateWithoutKittensInput = {
     name: string
     intakeDate: Date | string
@@ -57310,6 +57862,199 @@ export namespace Prisma {
     create: XOR<LitterCreateWithoutKittensInput, LitterUncheckedCreateWithoutKittensInput>
   }
 
+  export type KittenCreateWithoutBondedPartnersInput = {
+    name: string
+    status?: string
+    rescueStory?: string
+    dateOfBirth?: Date | string | null
+    sex?: string
+    fixedStatus?: string
+    breed: string
+    color?: string
+    fivFelvStatus?: string | null
+    specialNeeds?: string | null
+    microchipNumber?: string
+    primaryPhotoUrl?: string | null
+    intakeDate?: Date | string | null
+    intakeSource?: string
+    notes?: string
+    internalNotes?: string
+    isListedOnWebsite?: boolean
+    websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
+    createdAt?: Date | string
+    litter?: LitterCreateNestedOneWithoutKittensInput
+    bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
+    currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
+    placements?: PlacementCreateNestedManyWithoutKittenInput
+    weightLogs?: WeightLogCreateNestedManyWithoutKittenInput
+    vaccines?: VaccineCreateNestedManyWithoutKittenInput
+    medications?: MedicationCreateNestedManyWithoutKittenInput
+    vetAppointments?: VetAppointmentCreateNestedManyWithoutKittenInput
+    documents?: DocumentCreateNestedManyWithoutKittenInput
+    sponsorships?: SponsorshipCreateNestedManyWithoutKittenInput
+    updates?: UpdateCreateNestedManyWithoutKittenInput
+    transactions?: TransactionCreateNestedManyWithoutKittenInput
+    contracts?: ContractCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsCreateNestedManyWithoutKittenInput
+  }
+
+  export type KittenUncheckedCreateWithoutBondedPartnersInput = {
+    id?: number
+    name: string
+    litterId?: number | null
+    status?: string
+    rescueStory?: string
+    dateOfBirth?: Date | string | null
+    sex?: string
+    fixedStatus?: string
+    breed: string
+    color?: string
+    fivFelvStatus?: string | null
+    specialNeeds?: string | null
+    microchipNumber?: string
+    primaryPhotoUrl?: string | null
+    intakeDate?: Date | string | null
+    intakeSource?: string
+    notes?: string
+    internalNotes?: string
+    isListedOnWebsite?: boolean
+    websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithKittenId?: number | null
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
+    currentFosterId?: number | null
+    createdAt?: Date | string
+    placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
+    weightLogs?: WeightLogUncheckedCreateNestedManyWithoutKittenInput
+    vaccines?: VaccineUncheckedCreateNestedManyWithoutKittenInput
+    medications?: MedicationUncheckedCreateNestedManyWithoutKittenInput
+    vetAppointments?: VetAppointmentUncheckedCreateNestedManyWithoutKittenInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutKittenInput
+    sponsorships?: SponsorshipUncheckedCreateNestedManyWithoutKittenInput
+    updates?: UpdateUncheckedCreateNestedManyWithoutKittenInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutKittenInput
+    contracts?: ContractUncheckedCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsUncheckedCreateNestedManyWithoutKittenInput
+  }
+
+  export type KittenCreateOrConnectWithoutBondedPartnersInput = {
+    where: KittenWhereUniqueInput
+    create: XOR<KittenCreateWithoutBondedPartnersInput, KittenUncheckedCreateWithoutBondedPartnersInput>
+  }
+
+  export type KittenCreateWithoutBondedWithKittenInput = {
+    name: string
+    status?: string
+    rescueStory?: string
+    dateOfBirth?: Date | string | null
+    sex?: string
+    fixedStatus?: string
+    breed: string
+    color?: string
+    fivFelvStatus?: string | null
+    specialNeeds?: string | null
+    microchipNumber?: string
+    primaryPhotoUrl?: string | null
+    intakeDate?: Date | string | null
+    intakeSource?: string
+    notes?: string
+    internalNotes?: string
+    isListedOnWebsite?: boolean
+    websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
+    createdAt?: Date | string
+    litter?: LitterCreateNestedOneWithoutKittensInput
+    bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
+    currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
+    placements?: PlacementCreateNestedManyWithoutKittenInput
+    weightLogs?: WeightLogCreateNestedManyWithoutKittenInput
+    vaccines?: VaccineCreateNestedManyWithoutKittenInput
+    medications?: MedicationCreateNestedManyWithoutKittenInput
+    vetAppointments?: VetAppointmentCreateNestedManyWithoutKittenInput
+    documents?: DocumentCreateNestedManyWithoutKittenInput
+    sponsorships?: SponsorshipCreateNestedManyWithoutKittenInput
+    updates?: UpdateCreateNestedManyWithoutKittenInput
+    transactions?: TransactionCreateNestedManyWithoutKittenInput
+    contracts?: ContractCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsCreateNestedManyWithoutKittenInput
+  }
+
+  export type KittenUncheckedCreateWithoutBondedWithKittenInput = {
+    id?: number
+    name: string
+    litterId?: number | null
+    status?: string
+    rescueStory?: string
+    dateOfBirth?: Date | string | null
+    sex?: string
+    fixedStatus?: string
+    breed: string
+    color?: string
+    fivFelvStatus?: string | null
+    specialNeeds?: string | null
+    microchipNumber?: string
+    primaryPhotoUrl?: string | null
+    intakeDate?: Date | string | null
+    intakeSource?: string
+    notes?: string
+    internalNotes?: string
+    isListedOnWebsite?: boolean
+    websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
+    currentFosterId?: number | null
+    createdAt?: Date | string
+    bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
+    placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
+    weightLogs?: WeightLogUncheckedCreateNestedManyWithoutKittenInput
+    vaccines?: VaccineUncheckedCreateNestedManyWithoutKittenInput
+    medications?: MedicationUncheckedCreateNestedManyWithoutKittenInput
+    vetAppointments?: VetAppointmentUncheckedCreateNestedManyWithoutKittenInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutKittenInput
+    sponsorships?: SponsorshipUncheckedCreateNestedManyWithoutKittenInput
+    updates?: UpdateUncheckedCreateNestedManyWithoutKittenInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutKittenInput
+    contracts?: ContractUncheckedCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsUncheckedCreateNestedManyWithoutKittenInput
+  }
+
+  export type KittenCreateOrConnectWithoutBondedWithKittenInput = {
+    where: KittenWhereUniqueInput
+    create: XOR<KittenCreateWithoutBondedWithKittenInput, KittenUncheckedCreateWithoutBondedWithKittenInput>
+  }
+
+  export type KittenCreateManyBondedWithKittenInputEnvelope = {
+    data: KittenCreateManyBondedWithKittenInput | KittenCreateManyBondedWithKittenInput[]
+    skipDuplicates?: boolean
+  }
+
   export type FosterCreateWithoutCurrentKittensInput = {
     name: string
     phone: string
@@ -57323,6 +58068,7 @@ export namespace Prisma {
     notes?: string
     createdAt?: Date | string
     placements?: PlacementCreateNestedManyWithoutFosterInput
+    contracts?: ContractCreateNestedManyWithoutFosterInput
   }
 
   export type FosterUncheckedCreateWithoutCurrentKittensInput = {
@@ -57339,6 +58085,7 @@ export namespace Prisma {
     notes?: string
     createdAt?: Date | string
     placements?: PlacementUncheckedCreateNestedManyWithoutFosterInput
+    contracts?: ContractUncheckedCreateNestedManyWithoutFosterInput
   }
 
   export type FosterCreateOrConnectWithoutCurrentKittensInput = {
@@ -57623,6 +58370,7 @@ export namespace Prisma {
 
   export type ContractCreateWithoutKittenInput = {
     type: $Enums.ContractType
+    templateSlug?: string
     signerName: string
     signerEmail: string
     kittenName?: string
@@ -57632,15 +58380,18 @@ export namespace Prisma {
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
     createdAt?: Date | string
+    foster?: FosterCreateNestedOneWithoutContractsInput
     application?: ApplicationCreateNestedOneWithoutContractsInput
   }
 
   export type ContractUncheckedCreateWithoutKittenInput = {
     id?: number
     type: $Enums.ContractType
+    templateSlug?: string
     signerName: string
     signerEmail: string
     kittenName?: string
+    fosterId?: number | null
     applicationId?: number | null
     documentVersion: string
     signedPdfUrl?: string
@@ -57734,6 +58485,122 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
   }
 
+  export type KittenUpsertWithoutBondedPartnersInput = {
+    update: XOR<KittenUpdateWithoutBondedPartnersInput, KittenUncheckedUpdateWithoutBondedPartnersInput>
+    create: XOR<KittenCreateWithoutBondedPartnersInput, KittenUncheckedCreateWithoutBondedPartnersInput>
+    where?: KittenWhereInput
+  }
+
+  export type KittenUpdateToOneWithWhereWithoutBondedPartnersInput = {
+    where?: KittenWhereInput
+    data: XOR<KittenUpdateWithoutBondedPartnersInput, KittenUncheckedUpdateWithoutBondedPartnersInput>
+  }
+
+  export type KittenUpdateWithoutBondedPartnersInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rescueStory?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sex?: StringFieldUpdateOperationsInput | string
+    fixedStatus?: StringFieldUpdateOperationsInput | string
+    breed?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
+    microchipNumber?: StringFieldUpdateOperationsInput | string
+    primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    intakeSource?: StringFieldUpdateOperationsInput | string
+    notes?: StringFieldUpdateOperationsInput | string
+    internalNotes?: StringFieldUpdateOperationsInput | string
+    isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    litter?: LitterUpdateOneWithoutKittensNestedInput
+    bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
+    currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
+    placements?: PlacementUpdateManyWithoutKittenNestedInput
+    weightLogs?: WeightLogUpdateManyWithoutKittenNestedInput
+    vaccines?: VaccineUpdateManyWithoutKittenNestedInput
+    medications?: MedicationUpdateManyWithoutKittenNestedInput
+    vetAppointments?: VetAppointmentUpdateManyWithoutKittenNestedInput
+    documents?: DocumentUpdateManyWithoutKittenNestedInput
+    sponsorships?: SponsorshipUpdateManyWithoutKittenNestedInput
+    updates?: UpdateUpdateManyWithoutKittenNestedInput
+    transactions?: TransactionUpdateManyWithoutKittenNestedInput
+    contracts?: ContractUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUpdateManyWithoutKittenNestedInput
+  }
+
+  export type KittenUncheckedUpdateWithoutBondedPartnersInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    litterId?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    rescueStory?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sex?: StringFieldUpdateOperationsInput | string
+    fixedStatus?: StringFieldUpdateOperationsInput | string
+    breed?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
+    microchipNumber?: StringFieldUpdateOperationsInput | string
+    primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    intakeSource?: StringFieldUpdateOperationsInput | string
+    notes?: StringFieldUpdateOperationsInput | string
+    internalNotes?: StringFieldUpdateOperationsInput | string
+    isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
+    weightLogs?: WeightLogUncheckedUpdateManyWithoutKittenNestedInput
+    vaccines?: VaccineUncheckedUpdateManyWithoutKittenNestedInput
+    medications?: MedicationUncheckedUpdateManyWithoutKittenNestedInput
+    vetAppointments?: VetAppointmentUncheckedUpdateManyWithoutKittenNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutKittenNestedInput
+    sponsorships?: SponsorshipUncheckedUpdateManyWithoutKittenNestedInput
+    updates?: UpdateUncheckedUpdateManyWithoutKittenNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutKittenNestedInput
+    contracts?: ContractUncheckedUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUncheckedUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUncheckedUpdateManyWithoutKittenNestedInput
+  }
+
+  export type KittenUpsertWithWhereUniqueWithoutBondedWithKittenInput = {
+    where: KittenWhereUniqueInput
+    update: XOR<KittenUpdateWithoutBondedWithKittenInput, KittenUncheckedUpdateWithoutBondedWithKittenInput>
+    create: XOR<KittenCreateWithoutBondedWithKittenInput, KittenUncheckedCreateWithoutBondedWithKittenInput>
+  }
+
+  export type KittenUpdateWithWhereUniqueWithoutBondedWithKittenInput = {
+    where: KittenWhereUniqueInput
+    data: XOR<KittenUpdateWithoutBondedWithKittenInput, KittenUncheckedUpdateWithoutBondedWithKittenInput>
+  }
+
+  export type KittenUpdateManyWithWhereWithoutBondedWithKittenInput = {
+    where: KittenScalarWhereInput
+    data: XOR<KittenUpdateManyMutationInput, KittenUncheckedUpdateManyWithoutBondedWithKittenInput>
+  }
+
   export type FosterUpsertWithoutCurrentKittensInput = {
     update: XOR<FosterUpdateWithoutCurrentKittensInput, FosterUncheckedUpdateWithoutCurrentKittensInput>
     create: XOR<FosterCreateWithoutCurrentKittensInput, FosterUncheckedCreateWithoutCurrentKittensInput>
@@ -57758,6 +58625,7 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUpdateManyWithoutFosterNestedInput
+    contracts?: ContractUpdateManyWithoutFosterNestedInput
   }
 
   export type FosterUncheckedUpdateWithoutCurrentKittensInput = {
@@ -57774,6 +58642,7 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUncheckedUpdateManyWithoutFosterNestedInput
+    contracts?: ContractUncheckedUpdateManyWithoutFosterNestedInput
   }
 
   export type PlacementUpsertWithWhereUniqueWithoutKittenInput = {
@@ -58056,25 +58925,6 @@ export namespace Prisma {
     data: XOR<ContractUpdateManyMutationInput, ContractUncheckedUpdateManyWithoutKittenInput>
   }
 
-  export type ContractScalarWhereInput = {
-    AND?: ContractScalarWhereInput | ContractScalarWhereInput[]
-    OR?: ContractScalarWhereInput[]
-    NOT?: ContractScalarWhereInput | ContractScalarWhereInput[]
-    id?: IntFilter<"Contract"> | number
-    type?: EnumContractTypeFilter<"Contract"> | $Enums.ContractType
-    signerName?: StringFilter<"Contract"> | string
-    signerEmail?: StringFilter<"Contract"> | string
-    kittenName?: StringFilter<"Contract"> | string
-    kittenId?: IntNullableFilter<"Contract"> | number | null
-    applicationId?: IntNullableFilter<"Contract"> | number | null
-    documentVersion?: StringFilter<"Contract"> | string
-    signedPdfUrl?: StringFilter<"Contract"> | string
-    signatureAudit?: StringFilter<"Contract"> | string
-    status?: EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
-    signedAt?: DateTimeNullableFilter<"Contract"> | Date | string | null
-    createdAt?: DateTimeFilter<"Contract"> | Date | string
-  }
-
   export type ActiveProtocolUpsertWithWhereUniqueWithoutKittenInput = {
     where: ActiveProtocolWhereUniqueInput
     update: XOR<ActiveProtocolUpdateWithoutKittenInput, ActiveProtocolUncheckedUpdateWithoutKittenInput>
@@ -58153,8 +59003,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
+    bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
     placements?: PlacementCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogCreateNestedManyWithoutKittenInput
@@ -58194,8 +59049,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithKittenId?: number | null
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
+    bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogUncheckedCreateNestedManyWithoutKittenInput
     vaccines?: VaccineUncheckedCreateNestedManyWithoutKittenInput
@@ -58248,8 +59108,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
+    bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
     placements?: PlacementUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUpdateManyWithoutKittenNestedInput
@@ -58289,8 +59154,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUncheckedUpdateManyWithoutKittenNestedInput
     vaccines?: VaccineUncheckedUpdateManyWithoutKittenNestedInput
@@ -58327,8 +59197,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
+    bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
     placements?: PlacementCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogCreateNestedManyWithoutKittenInput
@@ -58368,8 +59243,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithKittenId?: number | null
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
+    bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogUncheckedCreateNestedManyWithoutKittenInput
     vaccines?: VaccineUncheckedCreateNestedManyWithoutKittenInput
@@ -58422,8 +59302,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
+    bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
     placements?: PlacementUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUpdateManyWithoutKittenNestedInput
@@ -58463,8 +59348,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUncheckedUpdateManyWithoutKittenNestedInput
     vaccines?: VaccineUncheckedUpdateManyWithoutKittenNestedInput
@@ -58501,8 +59391,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
+    bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
     weightLogs?: WeightLogCreateNestedManyWithoutKittenInput
     vaccines?: VaccineCreateNestedManyWithoutKittenInput
@@ -58542,8 +59437,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithKittenId?: number | null
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
+    bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
     weightLogs?: WeightLogUncheckedCreateNestedManyWithoutKittenInput
     vaccines?: VaccineUncheckedCreateNestedManyWithoutKittenInput
     medications?: MedicationUncheckedCreateNestedManyWithoutKittenInput
@@ -58575,6 +59475,7 @@ export namespace Prisma {
     notes?: string
     createdAt?: Date | string
     currentKittens?: KittenCreateNestedManyWithoutCurrentFosterInput
+    contracts?: ContractCreateNestedManyWithoutFosterInput
   }
 
   export type FosterUncheckedCreateWithoutPlacementsInput = {
@@ -58591,6 +59492,7 @@ export namespace Prisma {
     notes?: string
     createdAt?: Date | string
     currentKittens?: KittenUncheckedCreateNestedManyWithoutCurrentFosterInput
+    contracts?: ContractUncheckedCreateNestedManyWithoutFosterInput
   }
 
   export type FosterCreateOrConnectWithoutPlacementsInput = {
@@ -58632,8 +59534,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
+    bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
     weightLogs?: WeightLogUpdateManyWithoutKittenNestedInput
     vaccines?: VaccineUpdateManyWithoutKittenNestedInput
@@ -58673,8 +59580,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
     weightLogs?: WeightLogUncheckedUpdateManyWithoutKittenNestedInput
     vaccines?: VaccineUncheckedUpdateManyWithoutKittenNestedInput
     medications?: MedicationUncheckedUpdateManyWithoutKittenNestedInput
@@ -58712,6 +59624,7 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     currentKittens?: KittenUpdateManyWithoutCurrentFosterNestedInput
+    contracts?: ContractUpdateManyWithoutFosterNestedInput
   }
 
   export type FosterUncheckedUpdateWithoutPlacementsInput = {
@@ -58728,6 +59641,7 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     currentKittens?: KittenUncheckedUpdateManyWithoutCurrentFosterNestedInput
+    contracts?: ContractUncheckedUpdateManyWithoutFosterNestedInput
   }
 
   export type KittenCreateWithoutWeightLogsInput = {
@@ -58753,8 +59667,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
+    bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
     placements?: PlacementCreateNestedManyWithoutKittenInput
     vaccines?: VaccineCreateNestedManyWithoutKittenInput
@@ -58794,8 +59713,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithKittenId?: number | null
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
+    bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
     vaccines?: VaccineUncheckedCreateNestedManyWithoutKittenInput
     medications?: MedicationUncheckedCreateNestedManyWithoutKittenInput
@@ -58848,8 +59772,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
+    bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
     placements?: PlacementUpdateManyWithoutKittenNestedInput
     vaccines?: VaccineUpdateManyWithoutKittenNestedInput
@@ -58889,8 +59818,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
     vaccines?: VaccineUncheckedUpdateManyWithoutKittenNestedInput
     medications?: MedicationUncheckedUpdateManyWithoutKittenNestedInput
@@ -58927,8 +59861,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
+    bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
     placements?: PlacementCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogCreateNestedManyWithoutKittenInput
@@ -58968,8 +59907,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithKittenId?: number | null
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
+    bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogUncheckedCreateNestedManyWithoutKittenInput
     medications?: MedicationUncheckedCreateNestedManyWithoutKittenInput
@@ -59022,8 +59966,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
+    bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
     placements?: PlacementUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUpdateManyWithoutKittenNestedInput
@@ -59063,8 +60012,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUncheckedUpdateManyWithoutKittenNestedInput
     medications?: MedicationUncheckedUpdateManyWithoutKittenNestedInput
@@ -59101,8 +60055,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
+    bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
     placements?: PlacementCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogCreateNestedManyWithoutKittenInput
@@ -59142,8 +60101,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithKittenId?: number | null
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
+    bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogUncheckedCreateNestedManyWithoutKittenInput
     vaccines?: VaccineUncheckedCreateNestedManyWithoutKittenInput
@@ -59196,8 +60160,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
+    bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
     placements?: PlacementUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUpdateManyWithoutKittenNestedInput
@@ -59237,8 +60206,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUncheckedUpdateManyWithoutKittenNestedInput
     vaccines?: VaccineUncheckedUpdateManyWithoutKittenNestedInput
@@ -59275,8 +60249,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
+    bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
     placements?: PlacementCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogCreateNestedManyWithoutKittenInput
@@ -59316,8 +60295,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithKittenId?: number | null
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
+    bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogUncheckedCreateNestedManyWithoutKittenInput
     vaccines?: VaccineUncheckedCreateNestedManyWithoutKittenInput
@@ -59370,8 +60354,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
+    bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
     placements?: PlacementUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUpdateManyWithoutKittenNestedInput
@@ -59411,8 +60400,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUncheckedUpdateManyWithoutKittenNestedInput
     vaccines?: VaccineUncheckedUpdateManyWithoutKittenNestedInput
@@ -59449,8 +60443,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
+    bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
     placements?: PlacementCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogCreateNestedManyWithoutKittenInput
@@ -59490,8 +60489,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithKittenId?: number | null
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
+    bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogUncheckedCreateNestedManyWithoutKittenInput
     vaccines?: VaccineUncheckedCreateNestedManyWithoutKittenInput
@@ -59544,8 +60548,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
+    bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
     placements?: PlacementUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUpdateManyWithoutKittenNestedInput
@@ -59585,8 +60594,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUncheckedUpdateManyWithoutKittenNestedInput
     vaccines?: VaccineUncheckedUpdateManyWithoutKittenNestedInput
@@ -59642,6 +60656,7 @@ export namespace Prisma {
 
   export type ContractCreateWithoutApplicationInput = {
     type: $Enums.ContractType
+    templateSlug?: string
     signerName: string
     signerEmail: string
     kittenName?: string
@@ -59652,15 +60667,18 @@ export namespace Prisma {
     signedAt?: Date | string | null
     createdAt?: Date | string
     kitten?: KittenCreateNestedOneWithoutContractsInput
+    foster?: FosterCreateNestedOneWithoutContractsInput
   }
 
   export type ContractUncheckedCreateWithoutApplicationInput = {
     id?: number
     type: $Enums.ContractType
+    templateSlug?: string
     signerName: string
     signerEmail: string
     kittenName?: string
     kittenId?: number | null
+    fosterId?: number | null
     documentVersion: string
     signedPdfUrl?: string
     signatureAudit?: string
@@ -59820,8 +60838,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
+    bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
     placements?: PlacementCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogCreateNestedManyWithoutKittenInput
@@ -59861,8 +60884,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithKittenId?: number | null
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
+    bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogUncheckedCreateNestedManyWithoutKittenInput
     vaccines?: VaccineUncheckedCreateNestedManyWithoutKittenInput
@@ -59879,6 +60907,44 @@ export namespace Prisma {
   export type KittenCreateOrConnectWithoutContractsInput = {
     where: KittenWhereUniqueInput
     create: XOR<KittenCreateWithoutContractsInput, KittenUncheckedCreateWithoutContractsInput>
+  }
+
+  export type FosterCreateWithoutContractsInput = {
+    name: string
+    phone: string
+    email: string
+    address: string
+    emergencyContact?: string
+    experienceLevel?: string
+    capabilityFlags?: string
+    maxKittens?: number
+    photoUrl?: string | null
+    notes?: string
+    createdAt?: Date | string
+    currentKittens?: KittenCreateNestedManyWithoutCurrentFosterInput
+    placements?: PlacementCreateNestedManyWithoutFosterInput
+  }
+
+  export type FosterUncheckedCreateWithoutContractsInput = {
+    id?: number
+    name: string
+    phone: string
+    email: string
+    address: string
+    emergencyContact?: string
+    experienceLevel?: string
+    capabilityFlags?: string
+    maxKittens?: number
+    photoUrl?: string | null
+    notes?: string
+    createdAt?: Date | string
+    currentKittens?: KittenUncheckedCreateNestedManyWithoutCurrentFosterInput
+    placements?: PlacementUncheckedCreateNestedManyWithoutFosterInput
+  }
+
+  export type FosterCreateOrConnectWithoutContractsInput = {
+    where: FosterWhereUniqueInput
+    create: XOR<FosterCreateWithoutContractsInput, FosterUncheckedCreateWithoutContractsInput>
   }
 
   export type ApplicationCreateWithoutContractsInput = {
@@ -59951,8 +61017,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
+    bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
     placements?: PlacementUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUpdateManyWithoutKittenNestedInput
@@ -59992,8 +61063,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUncheckedUpdateManyWithoutKittenNestedInput
     vaccines?: VaccineUncheckedUpdateManyWithoutKittenNestedInput
@@ -60005,6 +61081,50 @@ export namespace Prisma {
     transactions?: TransactionUncheckedUpdateManyWithoutKittenNestedInput
     activeProtocols?: ActiveProtocolUncheckedUpdateManyWithoutKittenNestedInput
     eventCats?: EventCatsUncheckedUpdateManyWithoutKittenNestedInput
+  }
+
+  export type FosterUpsertWithoutContractsInput = {
+    update: XOR<FosterUpdateWithoutContractsInput, FosterUncheckedUpdateWithoutContractsInput>
+    create: XOR<FosterCreateWithoutContractsInput, FosterUncheckedCreateWithoutContractsInput>
+    where?: FosterWhereInput
+  }
+
+  export type FosterUpdateToOneWithWhereWithoutContractsInput = {
+    where?: FosterWhereInput
+    data: XOR<FosterUpdateWithoutContractsInput, FosterUncheckedUpdateWithoutContractsInput>
+  }
+
+  export type FosterUpdateWithoutContractsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    emergencyContact?: StringFieldUpdateOperationsInput | string
+    experienceLevel?: StringFieldUpdateOperationsInput | string
+    capabilityFlags?: StringFieldUpdateOperationsInput | string
+    maxKittens?: IntFieldUpdateOperationsInput | number
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentKittens?: KittenUpdateManyWithoutCurrentFosterNestedInput
+    placements?: PlacementUpdateManyWithoutFosterNestedInput
+  }
+
+  export type FosterUncheckedUpdateWithoutContractsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    emergencyContact?: StringFieldUpdateOperationsInput | string
+    experienceLevel?: StringFieldUpdateOperationsInput | string
+    capabilityFlags?: StringFieldUpdateOperationsInput | string
+    maxKittens?: IntFieldUpdateOperationsInput | number
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentKittens?: KittenUncheckedUpdateManyWithoutCurrentFosterNestedInput
+    placements?: PlacementUncheckedUpdateManyWithoutFosterNestedInput
   }
 
   export type ApplicationUpsertWithoutContractsInput = {
@@ -60730,8 +61850,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
+    bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
     placements?: PlacementCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogCreateNestedManyWithoutKittenInput
@@ -60771,8 +61896,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithKittenId?: number | null
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
+    bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogUncheckedCreateNestedManyWithoutKittenInput
     vaccines?: VaccineUncheckedCreateNestedManyWithoutKittenInput
@@ -60865,8 +61995,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
+    bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
     placements?: PlacementUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUpdateManyWithoutKittenNestedInput
@@ -60906,8 +62041,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUncheckedUpdateManyWithoutKittenNestedInput
     vaccines?: VaccineUncheckedUpdateManyWithoutKittenNestedInput
@@ -61735,8 +62875,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
+    bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
     placements?: PlacementCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogCreateNestedManyWithoutKittenInput
@@ -61776,8 +62921,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithKittenId?: number | null
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
+    bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogUncheckedCreateNestedManyWithoutKittenInput
     vaccines?: VaccineUncheckedCreateNestedManyWithoutKittenInput
@@ -61931,8 +63081,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
+    bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
     placements?: PlacementUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUpdateManyWithoutKittenNestedInput
@@ -61972,8 +63127,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUncheckedUpdateManyWithoutKittenNestedInput
     vaccines?: VaccineUncheckedUpdateManyWithoutKittenNestedInput
@@ -62274,8 +63434,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
+    bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
     placements?: PlacementCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogCreateNestedManyWithoutKittenInput
@@ -62315,8 +63480,13 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithKittenId?: number | null
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
+    bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
     weightLogs?: WeightLogUncheckedCreateNestedManyWithoutKittenInput
     vaccines?: VaccineUncheckedCreateNestedManyWithoutKittenInput
@@ -62369,8 +63539,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
+    bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
     placements?: PlacementUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUpdateManyWithoutKittenNestedInput
@@ -62410,8 +63585,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUncheckedUpdateManyWithoutKittenNestedInput
     vaccines?: VaccineUncheckedUpdateManyWithoutKittenNestedInput
@@ -62449,6 +63629,10 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithKittenId?: number | null
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
   }
@@ -62476,7 +63660,12 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
+    bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
     placements?: PlacementUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUpdateManyWithoutKittenNestedInput
@@ -62516,8 +63705,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUncheckedUpdateManyWithoutKittenNestedInput
     vaccines?: VaccineUncheckedUpdateManyWithoutKittenNestedInput
@@ -62556,6 +63750,10 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -62585,6 +63783,10 @@ export namespace Prisma {
     amazonWishlistUrl?: string | null
     walmartWishlistUrl?: string | null
     chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithKittenId?: number | null
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
     createdAt?: Date | string
   }
 
@@ -62595,6 +63797,23 @@ export namespace Prisma {
     dischargeDate?: Date | string | null
     dischargeType?: string | null
     notes?: string
+  }
+
+  export type ContractCreateManyFosterInput = {
+    id?: number
+    type: $Enums.ContractType
+    templateSlug?: string
+    signerName: string
+    signerEmail: string
+    kittenName?: string
+    kittenId?: number | null
+    applicationId?: number | null
+    documentVersion: string
+    signedPdfUrl?: string
+    signatureAudit?: string
+    status?: $Enums.ContractStatus
+    signedAt?: Date | string | null
+    createdAt?: Date | string
   }
 
   export type KittenUpdateWithoutCurrentFosterInput = {
@@ -62620,8 +63839,13 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
+    bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     placements?: PlacementUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUpdateManyWithoutKittenNestedInput
     vaccines?: VaccineUpdateManyWithoutKittenNestedInput
@@ -62661,7 +63885,12 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
     weightLogs?: WeightLogUncheckedUpdateManyWithoutKittenNestedInput
     vaccines?: VaccineUncheckedUpdateManyWithoutKittenNestedInput
@@ -62701,6 +63930,10 @@ export namespace Prisma {
     amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -62728,6 +63961,88 @@ export namespace Prisma {
     dischargeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dischargeType?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ContractUpdateWithoutFosterInput = {
+    type?: EnumContractTypeFieldUpdateOperationsInput | $Enums.ContractType
+    templateSlug?: StringFieldUpdateOperationsInput | string
+    signerName?: StringFieldUpdateOperationsInput | string
+    signerEmail?: StringFieldUpdateOperationsInput | string
+    kittenName?: StringFieldUpdateOperationsInput | string
+    documentVersion?: StringFieldUpdateOperationsInput | string
+    signedPdfUrl?: StringFieldUpdateOperationsInput | string
+    signatureAudit?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    kitten?: KittenUpdateOneWithoutContractsNestedInput
+    application?: ApplicationUpdateOneWithoutContractsNestedInput
+  }
+
+  export type ContractUncheckedUpdateWithoutFosterInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumContractTypeFieldUpdateOperationsInput | $Enums.ContractType
+    templateSlug?: StringFieldUpdateOperationsInput | string
+    signerName?: StringFieldUpdateOperationsInput | string
+    signerEmail?: StringFieldUpdateOperationsInput | string
+    kittenName?: StringFieldUpdateOperationsInput | string
+    kittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    applicationId?: NullableIntFieldUpdateOperationsInput | number | null
+    documentVersion?: StringFieldUpdateOperationsInput | string
+    signedPdfUrl?: StringFieldUpdateOperationsInput | string
+    signatureAudit?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContractUncheckedUpdateManyWithoutFosterInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumContractTypeFieldUpdateOperationsInput | $Enums.ContractType
+    templateSlug?: StringFieldUpdateOperationsInput | string
+    signerName?: StringFieldUpdateOperationsInput | string
+    signerEmail?: StringFieldUpdateOperationsInput | string
+    kittenName?: StringFieldUpdateOperationsInput | string
+    kittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    applicationId?: NullableIntFieldUpdateOperationsInput | number | null
+    documentVersion?: StringFieldUpdateOperationsInput | string
+    signedPdfUrl?: StringFieldUpdateOperationsInput | string
+    signatureAudit?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type KittenCreateManyBondedWithKittenInput = {
+    id?: number
+    name: string
+    litterId?: number | null
+    status?: string
+    rescueStory?: string
+    dateOfBirth?: Date | string | null
+    sex?: string
+    fixedStatus?: string
+    breed: string
+    color?: string
+    fivFelvStatus?: string | null
+    specialNeeds?: string | null
+    microchipNumber?: string
+    primaryPhotoUrl?: string | null
+    intakeDate?: Date | string | null
+    intakeSource?: string
+    notes?: string
+    internalNotes?: string
+    isListedOnWebsite?: boolean
+    websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
+    amazonWishlistUrl?: string | null
+    walmartWishlistUrl?: string | null
+    chewyWishlistUrl?: string | null
+    isBondedPair?: boolean
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
+    currentFosterId?: number | null
+    createdAt?: Date | string
   }
 
   export type PlacementCreateManyKittenInput = {
@@ -62830,9 +64145,11 @@ export namespace Prisma {
   export type ContractCreateManyKittenInput = {
     id?: number
     type: $Enums.ContractType
+    templateSlug?: string
     signerName: string
     signerEmail: string
     kittenName?: string
+    fosterId?: number | null
     applicationId?: number | null
     documentVersion: string
     signedPdfUrl?: string
@@ -62855,6 +64172,127 @@ export namespace Prisma {
     eventId: number
     addedAt?: Date | string
     notes?: string | null
+  }
+
+  export type KittenUpdateWithoutBondedWithKittenInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rescueStory?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sex?: StringFieldUpdateOperationsInput | string
+    fixedStatus?: StringFieldUpdateOperationsInput | string
+    breed?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
+    microchipNumber?: StringFieldUpdateOperationsInput | string
+    primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    intakeSource?: StringFieldUpdateOperationsInput | string
+    notes?: StringFieldUpdateOperationsInput | string
+    internalNotes?: StringFieldUpdateOperationsInput | string
+    isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    litter?: LitterUpdateOneWithoutKittensNestedInput
+    bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
+    currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
+    placements?: PlacementUpdateManyWithoutKittenNestedInput
+    weightLogs?: WeightLogUpdateManyWithoutKittenNestedInput
+    vaccines?: VaccineUpdateManyWithoutKittenNestedInput
+    medications?: MedicationUpdateManyWithoutKittenNestedInput
+    vetAppointments?: VetAppointmentUpdateManyWithoutKittenNestedInput
+    documents?: DocumentUpdateManyWithoutKittenNestedInput
+    sponsorships?: SponsorshipUpdateManyWithoutKittenNestedInput
+    updates?: UpdateUpdateManyWithoutKittenNestedInput
+    transactions?: TransactionUpdateManyWithoutKittenNestedInput
+    contracts?: ContractUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUpdateManyWithoutKittenNestedInput
+  }
+
+  export type KittenUncheckedUpdateWithoutBondedWithKittenInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    litterId?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    rescueStory?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sex?: StringFieldUpdateOperationsInput | string
+    fixedStatus?: StringFieldUpdateOperationsInput | string
+    breed?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
+    microchipNumber?: StringFieldUpdateOperationsInput | string
+    primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    intakeSource?: StringFieldUpdateOperationsInput | string
+    notes?: StringFieldUpdateOperationsInput | string
+    internalNotes?: StringFieldUpdateOperationsInput | string
+    isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
+    placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
+    weightLogs?: WeightLogUncheckedUpdateManyWithoutKittenNestedInput
+    vaccines?: VaccineUncheckedUpdateManyWithoutKittenNestedInput
+    medications?: MedicationUncheckedUpdateManyWithoutKittenNestedInput
+    vetAppointments?: VetAppointmentUncheckedUpdateManyWithoutKittenNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutKittenNestedInput
+    sponsorships?: SponsorshipUncheckedUpdateManyWithoutKittenNestedInput
+    updates?: UpdateUncheckedUpdateManyWithoutKittenNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutKittenNestedInput
+    contracts?: ContractUncheckedUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUncheckedUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUncheckedUpdateManyWithoutKittenNestedInput
+  }
+
+  export type KittenUncheckedUpdateManyWithoutBondedWithKittenInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    litterId?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    rescueStory?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sex?: StringFieldUpdateOperationsInput | string
+    fixedStatus?: StringFieldUpdateOperationsInput | string
+    breed?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
+    microchipNumber?: StringFieldUpdateOperationsInput | string
+    primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    intakeSource?: StringFieldUpdateOperationsInput | string
+    notes?: StringFieldUpdateOperationsInput | string
+    internalNotes?: StringFieldUpdateOperationsInput | string
+    isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PlacementUpdateWithoutKittenInput = {
@@ -63141,6 +64579,7 @@ export namespace Prisma {
 
   export type ContractUpdateWithoutKittenInput = {
     type?: EnumContractTypeFieldUpdateOperationsInput | $Enums.ContractType
+    templateSlug?: StringFieldUpdateOperationsInput | string
     signerName?: StringFieldUpdateOperationsInput | string
     signerEmail?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
@@ -63150,15 +64589,18 @@ export namespace Prisma {
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    foster?: FosterUpdateOneWithoutContractsNestedInput
     application?: ApplicationUpdateOneWithoutContractsNestedInput
   }
 
   export type ContractUncheckedUpdateWithoutKittenInput = {
     id?: IntFieldUpdateOperationsInput | number
     type?: EnumContractTypeFieldUpdateOperationsInput | $Enums.ContractType
+    templateSlug?: StringFieldUpdateOperationsInput | string
     signerName?: StringFieldUpdateOperationsInput | string
     signerEmail?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
+    fosterId?: NullableIntFieldUpdateOperationsInput | number | null
     applicationId?: NullableIntFieldUpdateOperationsInput | number | null
     documentVersion?: StringFieldUpdateOperationsInput | string
     signedPdfUrl?: StringFieldUpdateOperationsInput | string
@@ -63171,9 +64613,11 @@ export namespace Prisma {
   export type ContractUncheckedUpdateManyWithoutKittenInput = {
     id?: IntFieldUpdateOperationsInput | number
     type?: EnumContractTypeFieldUpdateOperationsInput | $Enums.ContractType
+    templateSlug?: StringFieldUpdateOperationsInput | string
     signerName?: StringFieldUpdateOperationsInput | string
     signerEmail?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
+    fosterId?: NullableIntFieldUpdateOperationsInput | number | null
     applicationId?: NullableIntFieldUpdateOperationsInput | number | null
     documentVersion?: StringFieldUpdateOperationsInput | string
     signedPdfUrl?: StringFieldUpdateOperationsInput | string
@@ -63231,10 +64675,12 @@ export namespace Prisma {
   export type ContractCreateManyApplicationInput = {
     id?: number
     type: $Enums.ContractType
+    templateSlug?: string
     signerName: string
     signerEmail: string
     kittenName?: string
     kittenId?: number | null
+    fosterId?: number | null
     documentVersion: string
     signedPdfUrl?: string
     signatureAudit?: string
@@ -63254,6 +64700,7 @@ export namespace Prisma {
 
   export type ContractUpdateWithoutApplicationInput = {
     type?: EnumContractTypeFieldUpdateOperationsInput | $Enums.ContractType
+    templateSlug?: StringFieldUpdateOperationsInput | string
     signerName?: StringFieldUpdateOperationsInput | string
     signerEmail?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
@@ -63264,15 +64711,18 @@ export namespace Prisma {
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     kitten?: KittenUpdateOneWithoutContractsNestedInput
+    foster?: FosterUpdateOneWithoutContractsNestedInput
   }
 
   export type ContractUncheckedUpdateWithoutApplicationInput = {
     id?: IntFieldUpdateOperationsInput | number
     type?: EnumContractTypeFieldUpdateOperationsInput | $Enums.ContractType
+    templateSlug?: StringFieldUpdateOperationsInput | string
     signerName?: StringFieldUpdateOperationsInput | string
     signerEmail?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
     kittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    fosterId?: NullableIntFieldUpdateOperationsInput | number | null
     documentVersion?: StringFieldUpdateOperationsInput | string
     signedPdfUrl?: StringFieldUpdateOperationsInput | string
     signatureAudit?: StringFieldUpdateOperationsInput | string
@@ -63284,10 +64734,12 @@ export namespace Prisma {
   export type ContractUncheckedUpdateManyWithoutApplicationInput = {
     id?: IntFieldUpdateOperationsInput | number
     type?: EnumContractTypeFieldUpdateOperationsInput | $Enums.ContractType
+    templateSlug?: StringFieldUpdateOperationsInput | string
     signerName?: StringFieldUpdateOperationsInput | string
     signerEmail?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
     kittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    fosterId?: NullableIntFieldUpdateOperationsInput | number | null
     documentVersion?: StringFieldUpdateOperationsInput | string
     signedPdfUrl?: StringFieldUpdateOperationsInput | string
     signatureAudit?: StringFieldUpdateOperationsInput | string

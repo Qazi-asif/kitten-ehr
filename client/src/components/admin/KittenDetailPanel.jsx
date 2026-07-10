@@ -21,6 +21,7 @@ import {
   fetchDocuments,
   fetchFosters,
   fetchLitters,
+  fetchKittens,
   fetchKittenById,
   fetchKittenPhotos,
   fetchKittenPlacements,
@@ -97,6 +98,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
   const [updateForm, setUpdateForm] = useState({ content: '', isPublic: false });
   const [savingUpdate, setSavingUpdate] = useState(false);
   const [fosters, setFosters] = useState([]);
+  const [allKittens, setAllKittens] = useState([]);
   const [litters, setLitters] = useState([]);
   const [error, setError] = useState(null);
   const [alertsDismissed, setAlertsDismissed] = useState(false);
@@ -118,6 +120,10 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
       specialNeeds: data.specialNeeds || '',
       currentFosterId: data.currentFosterId ? String(data.currentFosterId) : '',
       litterId: data.litterId ? String(data.litterId) : '',
+      isBondedPair: Boolean(data.isBondedPair),
+      bondedWithKittenId: data.bondedWithKittenId ? String(data.bondedWithKittenId) : '',
+      bondedWithName: data.bondedWithName || '',
+      isMedicalSpecialNeeds: Boolean(data.isMedicalSpecialNeeds),
     });
     setNotesForm({
       notes: data.notes || '',
@@ -170,6 +176,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
       loadKitten(),
       fetchFosters().then(setFosters).catch(() => setFosters([])),
       fetchLitters().then(setLitters).catch(() => setLitters([])),
+      fetchKittens().then(setAllKittens).catch(() => setAllKittens([])),
     ])
       .then(() => setLoading(false))
       .catch((err) => {
@@ -226,7 +233,14 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
   }, [activeTab, kittenId, loading, loadedTabs, loadMedical, loadWeights, loadDocuments, loadUpdates, loadPlacements]);
 
   function handleProfileFieldChange(field, value) {
-    setProfileForm((prev) => ({ ...prev, [field]: value }));
+    setProfileForm((prev) => {
+      const next = { ...prev, [field]: value };
+      if (field === 'isBondedPair' && !value) {
+        next.bondedWithKittenId = '';
+        next.bondedWithName = '';
+      }
+      return next;
+    });
   }
 
   async function handleSaveProfile(event) {
@@ -248,6 +262,12 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
           ? Number.parseInt(profileForm.currentFosterId, 10)
           : null,
         litterId: profileForm.litterId ? Number.parseInt(profileForm.litterId, 10) : null,
+        isBondedPair: profileForm.isBondedPair,
+        bondedWithKittenId: profileForm.isBondedPair && profileForm.bondedWithKittenId
+          ? Number.parseInt(profileForm.bondedWithKittenId, 10)
+          : null,
+        bondedWithName: profileForm.isBondedPair ? profileForm.bondedWithName : '',
+        isMedicalSpecialNeeds: profileForm.isMedicalSpecialNeeds,
       });
       setKitten(updated);
       setProfileForm({
@@ -263,6 +283,10 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
         specialNeeds: updated.specialNeeds || '',
         currentFosterId: updated.currentFosterId ? String(updated.currentFosterId) : '',
         litterId: updated.litterId ? String(updated.litterId) : '',
+        isBondedPair: Boolean(updated.isBondedPair),
+        bondedWithKittenId: updated.bondedWithKittenId ? String(updated.bondedWithKittenId) : '',
+        bondedWithName: updated.bondedWithName || '',
+        isMedicalSpecialNeeds: Boolean(updated.isMedicalSpecialNeeds),
       });
     } finally {
       setSavingProfile(false);
@@ -610,6 +634,56 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                     disabled={savingProfile || !canEdit}
                     className="mt-1"
                   />
+                </label>
+                <label className="flex items-center gap-2 sm:col-span-2">
+                  <input
+                    type="checkbox"
+                    checked={profileForm.isBondedPair}
+                    onChange={(e) => handleProfileFieldChange('isBondedPair', e.target.checked)}
+                    disabled={!canEdit}
+                  />
+                  <span className="text-sm font-medium text-gray-800">Bonded Pair</span>
+                </label>
+                {profileForm.isBondedPair && (
+                  <>
+                    <label className="block sm:col-span-2">
+                      <span className="text-xs font-semibold uppercase text-gray-500">Bonded With (linked cat)</span>
+                      <select
+                        value={profileForm.bondedWithKittenId || ''}
+                        onChange={(e) => handleProfileFieldChange('bondedWithKittenId', e.target.value)}
+                        disabled={!canEdit}
+                        className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+                      >
+                        <option value="">Select bonded partner</option>
+                        {allKittens
+                          .filter((item) => item.id !== kittenId)
+                          .map((item) => (
+                            <option key={item.id} value={String(item.id)}>
+                              {item.name}
+                            </option>
+                          ))}
+                      </select>
+                    </label>
+                    <label className="block sm:col-span-2">
+                      <span className="text-xs font-semibold uppercase text-gray-500">Or bonded partner name (text fallback)</span>
+                      <input
+                        value={profileForm.bondedWithName || ''}
+                        onChange={(e) => handleProfileFieldChange('bondedWithName', e.target.value)}
+                        disabled={!canEdit}
+                        placeholder="Use if partner is not in the system yet"
+                        className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+                      />
+                    </label>
+                  </>
+                )}
+                <label className="flex items-center gap-2 sm:col-span-2">
+                  <input
+                    type="checkbox"
+                    checked={profileForm.isMedicalSpecialNeeds}
+                    onChange={(e) => handleProfileFieldChange('isMedicalSpecialNeeds', e.target.checked)}
+                    disabled={!canEdit}
+                  />
+                  <span className="text-sm font-medium text-gray-800">Medical / Special Needs</span>
                 </label>
               </div>
               <label className="block">

@@ -69,7 +69,7 @@ function FosterPage() {
           Be the difference between a list and a lap.
         </h1>
         <p className="mt-5 max-w-3xl text-lg leading-relaxed text-slate-600">
-          Fostering is the single most important thing anyone can do for these cats. You provide a safe room and the love; we provide the training, the vet care, and the backup, every step of the way.
+          Foster families are the heart of Pawsitive Transformations. When you open your home, you give an at-risk cat the room to heal, grow, and find their person. You provide a safe room and the love; we provide the training, the vet care, and the backup, every step of the way. Every cat needs something different, so we match placements to your time, your experience, and your living situation, not the other way around. No experience required. We&apos;ll teach you everything.
         </p>
       </div>
 

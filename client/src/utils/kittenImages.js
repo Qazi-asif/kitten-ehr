@@ -20,39 +20,48 @@ function isResolvablePhotoUrl(url) {
   return false;
 }
 
-function normalizePhotoUrl(url, kittenName = '') {
+function normalizePhotoUrl(url, kittenName = '', { allowNameFallback = false } = {}) {
   if (url && isResolvablePhotoUrl(url)) {
     return url;
   }
 
   if (url) {
     const legacyMatch = url.match(LEGACY_UPLOAD_PATTERN);
-    if (legacyMatch) {
+    if (legacyMatch && allowNameFallback) {
       const fallback = KITTEN_FALLBACKS[legacyMatch[1].toLowerCase()];
       if (fallback) return fallback;
     }
   }
 
-  const nameKey = kittenName?.trim().toLowerCase();
-  if (nameKey && KITTEN_FALLBACKS[nameKey]) {
-    return KITTEN_FALLBACKS[nameKey];
+  if (allowNameFallback) {
+    const nameKey = kittenName?.trim().toLowerCase();
+    if (nameKey && KITTEN_FALLBACKS[nameKey]) {
+      return KITTEN_FALLBACKS[nameKey];
+    }
   }
 
   return null;
 }
 
-export function resolvePrimaryPhotoUrl({ primaryPhotoUrl, photos, name } = {}) {
-  const normalizedPrimary = normalizePhotoUrl(primaryPhotoUrl, name);
+export function resolvePrimaryPhotoUrl({ primaryPhotoUrl, photos, name, hasPrimaryPhoto } = {}, options = {}) {
+  const normalizedPrimary = normalizePhotoUrl(primaryPhotoUrl, name, options);
   if (normalizedPrimary) return normalizedPrimary;
 
   const primaryDoc = photos?.find((photo) => photo.isPrimaryPhoto);
   if (primaryDoc?.fileUrl) return primaryDoc.fileUrl;
 
-  return photos?.[0]?.fileUrl ?? null;
+  const firstPhoto = photos?.[0]?.fileUrl;
+  if (firstPhoto) return firstPhoto;
+
+  if (hasPrimaryPhoto) return null;
+
+  return null;
 }
 
 export function getKittenImageUrl(kitten, { allowFallback = false } = {}) {
-  const resolved = normalizePhotoUrl(kitten?.primaryPhotoUrl, kitten?.name);
+  const resolved = normalizePhotoUrl(kitten?.primaryPhotoUrl, kitten?.name, {
+    allowNameFallback: allowFallback,
+  });
   if (resolved) {
     return getFileUrl(resolved);
   }

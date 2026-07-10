@@ -62,6 +62,7 @@ model Foster {
   createdAt        DateTime    @default(now())
   currentKittens   Kitten[]    @relation("CurrentFoster")
   placements       Placement[]
+  contracts        Contract[]
 }
 
 model Kitten {
@@ -90,6 +91,12 @@ model Kitten {
   amazonWishlistUrl  String?
   walmartWishlistUrl String?
   chewyWishlistUrl   String?
+  isBondedPair           Boolean  @default(false)
+  bondedWithKittenId     Int?
+  bondedWithKitten       Kitten?  @relation("KittenBondedPair", fields: [bondedWithKittenId], references: [id], onDelete: SetNull)
+  bondedPartners         Kitten[] @relation("KittenBondedPair")
+  bondedWithName         String   @default("")
+  isMedicalSpecialNeeds  Boolean  @default(false)
   currentFosterId Int?
   currentFoster   Foster?          @relation("CurrentFoster", fields: [currentFosterId], references: [id], onDelete: SetNull)
   createdAt       DateTime         @default(now())
@@ -270,11 +277,14 @@ enum ContractStatus {
 model Contract {
   id               Int            @id @default(autoincrement())
   type             ContractType
+  templateSlug     String         @default("foster_supplies_provided")
   signerName       String
   signerEmail      String
   kittenName       String         @default("")
   kittenId         Int?
   kitten           Kitten?        @relation(fields: [kittenId], references: [id], onDelete: SetNull)
+  fosterId         Int?
+  foster           Foster?        @relation(fields: [fosterId], references: [id], onDelete: SetNull)
   applicationId    Int?
   application      Application?   @relation(fields: [applicationId], references: [id], onDelete: SetNull)
   documentVersion  String
@@ -285,12 +295,14 @@ model Contract {
   createdAt        DateTime       @default(now())
 
   @@index([applicationId])
+  @@index([fosterId])
   @@index([kittenId])
   @@index([kittenName])
   @@index([status])
   @@index([signerEmail])
   @@index([signedAt])
   @@index([createdAt])
+  @@index([templateSlug])
 }
 
 enum FosterOnboardingStatus {

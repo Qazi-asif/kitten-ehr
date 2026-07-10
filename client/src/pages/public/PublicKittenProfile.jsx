@@ -2,7 +2,10 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Heart, PawPrint, ShoppingBag, Sparkles } from 'lucide-react';
 import { isDonatePageLive } from '../../constants/siteFeatures';
-import { DEFAULT_GIVEBUTTER_SPONSOR_EMBED } from '../../constants/givebutterDefaults';
+import {
+  DEFAULT_GIVEBUTTER_SPONSOR_EMBED,
+  DEFAULT_GIVEBUTTER_SPONSOR_URL,
+} from '../../constants/givebutterDefaults';
 import { sponsorshipOverflowDisclosure } from '../../constants/donationCopy';
 import { WISHLIST_OWNER_TYPES, WISHLIST_RETAILER_META } from '../../constants/wishlists';
 import GivebutterDonationWidget from '../../components/GivebutterDonationWidget';
@@ -82,22 +85,20 @@ function PublicKittenProfile() {
 
   if (error) return <div className="px-6 py-12 text-red-600">{error}</div>;
 
-  const infoPills = [
-    { label: 'Age', value: formatKittenAgeDetailed(kitten.dateOfBirth) },
-    { label: 'Sex', value: kitten.sex || 'Unknown' },
-    { label: 'Breed', value: kitten.breed || 'Mixed' },
-    { label: 'Fixed Status', value: kitten.fixedStatus || 'Pending' },
-  ];
+  const bondedLabel = kitten.bondedWithKitten?.name || kitten.bondedWithName;
+  const detailLine = [
+    kitten.sex || 'Unknown sex',
+    formatKittenAgeDetailed(kitten.dateOfBirth) || 'Age unknown',
+    kitten.breed || 'Mixed',
+  ].join(' · ');
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-brand-light/25 via-white to-slate-50">
-      {/* Cover photo banner */}
       <div className="relative h-56 w-full overflow-hidden bg-slate-200 sm:h-72 md:h-80 lg:h-96">
         <KittenPhoto kitten={kitten} allowFallback className="h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
       </div>
 
-      {/* Profile header — Facebook-style identity bar */}
       <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <div className="-mt-14 flex flex-col gap-4 sm:-mt-16 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex items-end gap-4">
@@ -111,33 +112,32 @@ function PublicKittenProfile() {
               <h1 className="mt-1 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
                 {kitten.name}
               </h1>
-              {kitten.websiteFeaturedComment ? (
-                <p className="mt-1 max-w-xl text-sm font-medium text-slate-600 sm:text-base">
-                  {kitten.websiteFeaturedComment}
-                </p>
-              ) : (
-                <p className="mt-1 flex items-center gap-1.5 text-sm text-slate-500">
-                  <Sparkles className="h-4 w-4 text-brand" />
-                  Looking for a forever home
-                </p>
-              )}
+              <p className="mt-1 text-sm font-semibold text-brand">{kitten.status}</p>
+              <p className="mt-1 text-sm text-slate-600">{detailLine}</p>
+              {kitten.isBondedPair && bondedLabel ? (
+                <p className="mt-1 text-xs font-medium text-slate-500">Bonded with {bondedLabel}</p>
+              ) : null}
+              {kitten.isMedicalSpecialNeeds ? (
+                <p className="mt-1 text-xs font-semibold text-amber-700">Medical / Special Needs</p>
+              ) : null}
             </div>
           </div>
 
           <div className="flex flex-wrap gap-2 pb-1 sm:justify-end">
             <Link
-              to={`/adopt?kitten=${encodeURIComponent(kitten.name)}`}
+              to={`/adopt/apply?kitten=${encodeURIComponent(kitten.name)}`}
               className="rounded-xl bg-brand px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-brand-dark"
             >
               Adopt Me
             </Link>
-            <button
-              type="button"
-              onClick={() => scrollToRef(sponsorRef)}
+            <a
+              href={DEFAULT_GIVEBUTTER_SPONSOR_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className={`rounded-xl border-2 border-brand bg-white px-4 py-2.5 text-sm font-bold text-brand transition hover:bg-brand-light ${!isDonatePageLive({ donatePageLive }) ? 'hidden' : ''}`}
             >
               Sponsor Me
-            </button>
+            </a>
             <button
               type="button"
               onClick={() => scrollToRef(wishlistRef)}
@@ -150,9 +150,7 @@ function PublicKittenProfile() {
         </div>
       </div>
 
-      {/* Main social feed layout */}
       <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 px-4 py-8 sm:px-6 lg:grid-cols-3 lg:gap-8 lg:px-8">
-        {/* Left — About + Wishlist */}
         <div className="space-y-6 lg:col-span-2">
           <section className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm">
             <div className="border-b border-slate-100 bg-gradient-to-r from-brand-light/60 to-white px-5 py-4">
@@ -166,16 +164,6 @@ function PublicKittenProfile() {
                 {kitten.rescueStory
                   || `${kitten.name} is full of personality and ready to meet their person. Every rescue has a story, and ${kitten.name}'s is still being written with love in foster care.`}
               </p>
-              <div className="mt-5 flex flex-wrap gap-2">
-                {infoPills.map((pill) => (
-                  <span
-                    key={pill.label}
-                    className="inline-flex items-center rounded-full border border-brand/25 bg-brand-light/40 px-3.5 py-1.5 text-xs font-bold text-brand"
-                  >
-                    {pill.label}: {pill.value}
-                  </span>
-                ))}
-              </div>
             </div>
           </section>
 
@@ -224,7 +212,6 @@ function PublicKittenProfile() {
           </section>
         </div>
 
-        {/* Right — Recent Updates timeline */}
         <aside className="lg:col-span-1">
           <div className="rounded-2xl border border-slate-200/80 bg-white shadow-sm lg:sticky lg:top-24">
             <div className="border-b border-slate-100 px-5 py-4">
@@ -282,7 +269,6 @@ function PublicKittenProfile() {
         </aside>
       </div>
 
-      {/* Sponsorship section */}
       {isDonatePageLive({ donatePageLive }) && (
       <section
         ref={sponsorRef}
@@ -297,7 +283,7 @@ function PublicKittenProfile() {
             <div>
               <h2 className="text-2xl font-extrabold text-slate-900">Sponsor {kitten.name}</h2>
               <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600">
-                Every kitten we rescue needs food, shots, a surgery, and a whole lot of care before they find their person. Sponsoring {kitten.name} covers the real cost of getting them there safely. Pick a tier below, or chip in any amount. You&apos;ll be part of {kitten.name}&apos;s rescue story, and we&apos;ll keep you posted right up until adoption day.
+                Sponsor {kitten.name} through Givebutter to help cover food, vaccines, surgery, and the daily care that gets them to adoption day.
               </p>
             </div>
           </div>

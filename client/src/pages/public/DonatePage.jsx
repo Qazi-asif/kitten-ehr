@@ -2,22 +2,17 @@ import { useEffect, useState, useCallback, useMemo } from 'react';
 import { Link, useOutletContext, useSearchParams } from 'react-router-dom';
 import DonationConfirmation from '../../components/DonationConfirmation';
 import GivebutterDonationWidget from '../../components/GivebutterDonationWidget';
-import { getFileUrl } from '../../services/api';
 import { isDonatePageLive } from '../../constants/siteFeatures';
 import { fetchPublicSettings, invalidatePublicSettingsCache } from '../../services/publicApi';
 import { DONATE_PAGE_EIN } from '../../constants/siteCopy';
+import {
+  DEFAULT_GIVEBUTTER_EMBED,
+  DEFAULT_GIVEBUTTER_NINE_LIVES_EMBED,
+  DEFAULT_PAYPAL_URL,
+} from '../../constants/givebutterDefaults';
 import { markCheckoutSuccessParam } from '../../hooks/useGivebutterCheckout';
 
 const OTHER_WAYS = [
-  {
-    key: 'venmo',
-    label: 'Venmo',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
-        <path d="M19.4 3c.4.7.6 1.4.6 2.4 0 3-2.6 6.9-4.7 9.6H10L8.2 3.8l4.5-.4 1 7.7c.9-1.5 2-3.9 2-5.5 0-.9-.2-1.5-.4-2L19.4 3z" />
-      </svg>
-    ),
-  },
   {
     key: 'paypal',
     label: 'PayPal',
@@ -74,15 +69,6 @@ const OTHER_WAYS = [
   },
 ];
 
-const NINE_LIVES_TIERS = [
-  { amount: '$5/mo', name: 'Whisker Watch', desc: 'Small but mighty. Every month adds up to real care.' },
-  { amount: '$10/mo', name: 'Bowl Buddy', desc: 'Keeps food and formula flowing for cats and kittens alike.' },
-  { amount: '$25/mo', name: 'Shot Sponsor', desc: 'Keeps vaccines and dewormer stocked across the rescue.' },
-  { amount: '$50/mo', name: 'Fix Fund', desc: 'Fuels the spay and neuter work that stops the cycle for good.' },
-  { amount: '$100/mo', name: 'Colony Champion', desc: 'Powers whole rescues, pull to placement, month after month.' },
-  { amount: 'Any amount, every month', name: 'Steady is what saves lives.', desc: null },
-];
-
 function PawIcon({ className = 'h-5 w-5' }) {
   return (
     <svg viewBox="0 0 100 100" fill="currentColor" className={className}>
@@ -133,19 +119,13 @@ function DonatePage() {
 
   const orgEin = DONATE_PAGE_EIN;
 
-  const otherWayLinks = useMemo(() => {
-    const venmoHandle = settings.venmoHandle?.trim();
-    const venmoSlug = venmoHandle?.replace(/^@/, '');
-
-    return {
-      venmo: venmoSlug ? `https://venmo.com/u/${venmoSlug}` : null,
-      paypal: settings.paypalLink?.trim() || null,
-      amazon: settings.amazonWishlistUrl?.trim() || null,
-      chewy: settings.chewyWishlistUrl?.trim() || null,
-      planned: '/contact',
-      corporate: '/contact',
-    };
-  }, [settings]);
+  const otherWayLinks = useMemo(() => ({
+    paypal: settings.paypalLink?.trim() || DEFAULT_PAYPAL_URL,
+    amazon: settings.amazonWishlistUrl?.trim() || null,
+    chewy: settings.chewyWishlistUrl?.trim() || null,
+    planned: '/contact',
+    corporate: '/contact',
+  }), [settings]);
 
   if (!isDonatePageLive(settings)) {
     return (
@@ -222,12 +202,12 @@ function DonatePage() {
               Donations support the rescue wherever the need is greatest.
             </p>
             <p className="mt-4 text-xs italic text-slate-500">
-              Note: the named tiers (Kickstart Kitty, Shots &amp; Chips, and so on) live on the individual kitten sponsor pages, not here. This page is general one-time and recurring giving.
+              General one-time and recurring giving for the rescue. Kitten sponsorship lives on each cat&apos;s Meet Me page.
             </p>
 
             <div className="mt-6 overflow-hidden rounded-xl border border-slate-100 bg-slate-50/50">
               <GivebutterDonationWidget
-                code={settings.donationWidgetCode}
+                code={settings.donationWidgetCode || DEFAULT_GIVEBUTTER_EMBED}
                 amount={prefilledAmount || undefined}
                 onSuccess={handleDonationSuccess}
                 className="min-h-[420px] w-full"
@@ -279,19 +259,6 @@ function DonatePage() {
                 );
               })}
             </ul>
-
-            {settings.venmoQrCodeUrl ? (
-              <div className="mt-6 flex flex-col items-center border-t border-slate-100 pt-6">
-                <img
-                  src={getFileUrl(settings.venmoQrCodeUrl)}
-                  alt="Venmo QR code"
-                  className="h-32 w-32 rounded-xl border border-slate-200 bg-white object-contain p-2 shadow-sm"
-                />
-                {settings.venmoHandle ? (
-                  <p className="mt-3 text-xs font-semibold text-slate-600">{settings.venmoHandle}</p>
-                ) : null}
-              </div>
-            ) : null}
           </div>
         </div>
 
@@ -300,24 +267,14 @@ function DonatePage() {
           <p className="mt-3 max-w-4xl text-sm leading-relaxed text-slate-600">
             Join the Nine Lives Club with a monthly gift. It&apos;s the most powerful thing you can do for these cats: it turns one-time generosity into something we can count on, which means we can say yes to the next cat before the crisis, not after.
           </p>
-          <ul className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
-            {NINE_LIVES_TIERS.map((tier) => (
-              <li
-                key={tier.name}
-                className="rounded-xl border border-brand/15 bg-white px-4 py-3 text-sm text-slate-600"
-              >
-                <span className="font-semibold text-slate-800">{tier.amount}</span>
-                {tier.desc ? (
-                  <>
-                    {' '}
-                    · {tier.name} · {tier.desc}
-                  </>
-                ) : (
-                  <> · {tier.name}</>
-                )}
-              </li>
-            ))}
-          </ul>
+          <div className="mt-6 overflow-hidden rounded-xl border border-slate-100 bg-white p-4 shadow-sm">
+            <GivebutterDonationWidget
+              code={DEFAULT_GIVEBUTTER_NINE_LIVES_EMBED}
+              frequency="monthly"
+              onSuccess={handleDonationSuccess}
+              className="min-h-[420px] w-full"
+            />
+          </div>
           <p className="mt-6 text-sm text-slate-600">
             Cancel anytime, no questions. We&apos;ll keep you posted on exactly who your giving helped.
           </p>

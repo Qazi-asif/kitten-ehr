@@ -8,7 +8,27 @@ const CONTRACT_INCLUDE = {
   kitten: {
     select: { id: true, name: true },
   },
+  foster: {
+    select: { id: true, name: true, email: true },
+  },
 };
+
+const VALID_TEMPLATE_SLUGS = new Set([
+  'foster_supplies_provided',
+  'foster_supplies_not_provided',
+  'adoption',
+]);
+
+function resolveTemplate(templateSlug, fallbackType = 'FOSTER') {
+  const slug = VALID_TEMPLATE_SLUGS.has(templateSlug)
+    ? templateSlug
+    : (fallbackType === 'ADOPTION' ? 'adoption' : 'foster_supplies_provided');
+
+  return {
+    templateSlug: slug,
+    type: slug === 'adoption' ? 'ADOPTION' : 'FOSTER',
+  };
+}
 
 function parseSignatureAudit(raw) {
   if (!raw) return {};
@@ -131,23 +151,23 @@ export async function createContractDraft(req, res, next) {
   try {
     const {
       type,
+      templateSlug,
       signerName,
       signerEmail,
       kittenName,
       kittenId,
+      fosterId,
       applicationId,
       documentVersion,
     } = req.body;
 
-    if (!type || !['FOSTER', 'ADOPTION'].includes(type)) {
-      return res.status(400).json({ error: 'type must be FOSTER or ADOPTION' });
-    }
+    const resolvedTemplate = resolveTemplate(templateSlug, type);
     if (!signerName?.trim()) return res.status(400).json({ error: 'signerName is required' });
     if (!signerEmail?.trim()) return res.status(400).json({ error: 'signerEmail is required' });
-    if (!documentVersion?.trim()) return res.status(400).json({ error: 'documentVersion is required' });
 
     let resolvedKittenName = kittenName?.trim() || '';
     let resolvedKittenId = kittenId ? Number.parseInt(kittenId, 10) : null;
+    let resolvedFosterId = fosterId ? Number.parseInt(fosterId, 10) : null;
 
     if (resolvedKittenId) {
       const kitten = await prisma.kitten.findUnique({
@@ -158,15 +178,25 @@ export async function createContractDraft(req, res, next) {
       if (!resolvedKittenName) resolvedKittenName = kitten.name;
     }
 
+    if (resolvedFosterId) {
+      const foster = await prisma.foster.findUnique({
+        where: { id: resolvedFosterId },
+        select: { id: true },
+      });
+      if (!foster) return res.status(400).json({ error: 'fosterId not found' });
+    }
+
     const contract = await prisma.contract.create({
       data: {
-        type,
+        type: resolvedTemplate.type,
+        templateSlug: resolvedTemplate.templateSlug,
         signerName: signerName.trim(),
         signerEmail: signerEmail.trim(),
         kittenName: resolvedKittenName,
         kittenId: resolvedKittenId,
+        fosterId: resolvedFosterId,
         applicationId: applicationId ? Number.parseInt(applicationId, 10) : null,
-        documentVersion: documentVersion.trim(),
+        documentVersion: documentVersion?.trim() || '2026.1',
         status: 'SENT',
       },
       include: CONTRACT_INCLUDE,
@@ -190,21 +220,25 @@ export async function updateContract(req, res, next) {
 
     const {
       type,
+      templateSlug,
       signerName,
       signerEmail,
       kittenName,
       kittenId,
+      fosterId,
       documentVersion,
       status,
     } = req.body;
 
     const data = {};
 
-    if (type !== undefined) {
-      if (!['FOSTER', 'ADOPTION'].includes(type)) {
-        return res.status(400).json({ error: 'type must be FOSTER or ADOPTION' });
-      }
-      data.type = type;
+    if (templateSlug !== undefined) {
+      const resolvedTemplate = resolveTemplate(templateSlug, type || existing.type);
+      data.templateSlug = resolvedTemplate.templateSlug;
+      data.type = resolvedTemplate.type;
+    } else if (type !== undefined) {
+      const resolvedTemplate = resolveTemplate(existing.templateSlug, type);
+      data.type = resolvedTemplate.type;
     }
     if (signerName !== undefined) {
       if (!signerName?.trim()) return res.status(400).json({ error: 'signerName is required' });
@@ -219,6 +253,19 @@ export async function updateContract(req, res, next) {
       data.documentVersion = documentVersion.trim();
     }
     if (kittenName !== undefined) data.kittenName = kittenName.trim();
+    if (fosterId !== undefined) {
+      const parsedFosterId = fosterId ? Number.parseInt(fosterId, 10) : null;
+      if (parsedFosterId) {
+        const foster = await prisma.foster.findUnique({
+          where: { id: parsedFosterId },
+          select: { id: true },
+        });
+        if (!foster) return res.status(400).json({ error: 'fosterId not found' });
+        data.fosterId = parsedFosterId;
+      } else {
+        data.fosterId = null;
+      }
+    }
     if (kittenId !== undefined) {
       const parsedKittenId = kittenId ? Number.parseInt(kittenId, 10) : null;
       if (parsedKittenId) {

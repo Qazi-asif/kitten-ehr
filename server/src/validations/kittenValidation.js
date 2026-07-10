@@ -68,6 +68,10 @@ export const updateKittenSchema = z
     amazonWishlistUrl: optionalUrl,
     walmartWishlistUrl: optionalUrl,
     chewyWishlistUrl: optionalUrl,
+    isBondedPair: z.boolean().optional(),
+    bondedWithKittenId: z.coerce.number().int().positive().optional().nullable(),
+    bondedWithName: z.string().max(200).optional(),
+    isMedicalSpecialNeeds: z.boolean().optional(),
     weightGrams: z.coerce.number().positive('Weight must be a positive number').optional(),
   })
   .strict();

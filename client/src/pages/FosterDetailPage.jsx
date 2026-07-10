@@ -4,6 +4,7 @@ import { Mail, MapPin, Phone, Users } from 'lucide-react';
 import AssignKittenForm from '../components/admin/AssignKittenForm';
 import FosterCapabilityBadges from '../components/admin/FosterCapabilityBadges';
 import FosterPlacementTable from '../components/admin/FosterPlacementTable';
+import PersonContractsSection from '../components/admin/PersonContractsSection';
 import WishlistManager from '../components/admin/WishlistManager';
 import FosterPhoto from '../components/FosterPhoto';
 import { useAuth } from '../context/AuthContext';
@@ -162,6 +163,8 @@ function FosterDetailPage() {
           description="Manage Amazon, Chewy, and Walmart wishlist links for this foster home."
         />
       </section>
+
+      <PersonContractsSection signerEmail={foster.email} title="Foster Agreements" />
 
       <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-4">

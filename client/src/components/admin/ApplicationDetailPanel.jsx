@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import ApplicationDocumentsSection from './ApplicationDocumentsSection';
+import PersonContractsSection from './PersonContractsSection';
 import {
   getApplicationDisplaySections,
   getApplicationSummary,
   getHouseholdPets,
+  parseApplicationFormData,
   resolveKittenOfInterest,
 } from '../../utils/applicationFormData';
 
@@ -60,6 +62,11 @@ function ApplicationDetailPanel({
     () => getHouseholdPets(application?.formData),
     [application?.formData],
   );
+
+  const applicantEmail = useMemo(() => {
+    const parsed = parseApplicationFormData(application?.formData);
+    return parsed.email || '';
+  }, [application?.formData]);
 
   const sections = useMemo(
     () => getApplicationDisplaySections(application?.formData, application?.type),
@@ -214,6 +221,11 @@ function ApplicationDetailPanel({
           onDelete={(uploadId) => onDeleteDocument(application.id, uploadId)}
           uploading={uploadingDocument}
           deletingId={deletingDocumentId}
+        />
+
+        <PersonContractsSection
+          signerEmail={applicantEmail}
+          title={application.type === 'Foster' ? 'Foster Agreements' : 'Adoption Agreements'}
         />
       </div>
     </section>

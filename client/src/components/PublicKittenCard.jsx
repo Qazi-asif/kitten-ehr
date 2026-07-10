@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
-import { Heart } from 'lucide-react';
 import KittenPhoto from './KittenPhoto';
 import { formatKittenAge } from '../utils/kittenImages';
 
 function PublicKittenCard({ kitten }) {
   const age = formatKittenAge(kitten.dateOfBirth);
+  const bondedLabel = kitten.bondedWithKitten?.name || kitten.bondedWithName;
 
   return (
     <article className="group overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(0,168,158,0.15)]">
@@ -21,7 +21,6 @@ function PublicKittenCard({ kitten }) {
           </p>
         </div>
         <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-brand shadow-sm">
-          <Heart className="h-3 w-3 fill-brand text-brand" />
           Available
         </span>
       </div>
@@ -37,9 +36,14 @@ function PublicKittenCard({ kitten }) {
               {age}
             </span>
           )}
-          {kitten.fixedStatus && (
+          {kitten.isBondedPair && (
             <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">
-              {kitten.fixedStatus}
+              Bonded Pair{bondedLabel ? ` · ${bondedLabel}` : ''}
+            </span>
+          )}
+          {kitten.isMedicalSpecialNeeds && (
+            <span className="rounded-full bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-800">
+              Medical / Special Needs
             </span>
           )}
         </div>

@@ -5,6 +5,13 @@ import { submitApplication } from '../services/publicApi';
 import { CheckCircle2, ImagePlus, Send, X } from 'lucide-react';
 
 const OWN_OR_RENT_OPTIONS = ['', 'Own', 'Rent'];
+const ADOPTION_EXPERIENCE_OPTIONS = [
+  '',
+  'None, first-time cat owner',
+  'Some, I\'ve had cats of my own before',
+  'Experienced, I\'ve had multiple cats across my life',
+  'Advanced, I\'ve had medical cases and/or raised kittens from bottle babies',
+];
 const FOSTER_EXPERIENCE_OPTIONS = [
   '',
   'None (first-time foster)',
@@ -21,13 +28,16 @@ const FOSTER_AVAILABILITY_OPTIONS = [
   'Away for long stretches / very limited',
 ];
 const FOSTER_CAPACITY_OPTIONS = [
-  '',
   '1 adult cat',
   'Bonded pair (adults)',
+  'Senior cat',
   'Mom + kittens (she does most of the work)',
-  'Neonate kittens (bottle-feeding every 2-4 hours)',
+  'Neonate kittens (bottle-feeding every 2 to 4 hours)',
   'Kittens (weaned)',
+  'Special needs / medical cats',
 ];
+const ISOLATION_ROOM_OPTIONS = ['', 'Yes', 'No', 'Not sure'];
+const VEHICLE_ACCESS_OPTIONS = ['', 'Yes', 'No', 'Sometimes / shared vehicle'];
 const FOSTER_PHOTO_ACCEPT = 'image/jpeg,image/png,image/heic,image/heif,.jpg,.jpeg,.png,.heic,.heif';
 const FOSTER_PHOTO_TYPES = new Set([
   'image/jpeg',
@@ -77,12 +87,24 @@ function ApplicationForm({ defaultType = 'Adoption', lockType = true, allowPhoto
     experienceLevel: '',
     homeType: '',
     availability: '',
-    capacity: '',
+    capacity: [],
+    isolationRoom: '',
+    vehicleAccess: '',
+    unexpectedStopPlan: '',
     message: '',
   });
 
   function handleChange(e) {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
+    if (type === 'checkbox' && name === 'capacity') {
+      setForm((prev) => ({
+        ...prev,
+        capacity: checked
+          ? [...prev.capacity, value]
+          : prev.capacity.filter((item) => item !== value),
+      }));
+      return;
+    }
     setForm((prev) => ({ ...prev, [name]: value }));
   }
 
@@ -126,6 +148,11 @@ function ApplicationForm({ defaultType = 'Adoption', lockType = true, allowPhoto
     e.preventDefault();
     setSubmitting(true);
     setError('');
+    if (applicationType === 'Foster' && form.capacity.length === 0) {
+      setError('Please select at least one foster capacity option.');
+      setSubmitting(false);
+      return;
+    }
     try {
       const payload = {
         fullName: form.fullName,
@@ -145,6 +172,9 @@ function ApplicationForm({ defaultType = 'Adoption', lockType = true, allowPhoto
         payload.homeType = form.homeType;
         payload.availability = form.availability;
         payload.capacity = form.capacity;
+        payload.isolationRoom = form.isolationRoom;
+        payload.vehicleAccess = form.vehicleAccess;
+        payload.unexpectedStopPlan = form.unexpectedStopPlan;
       }
 
       await submitApplication(applicationType, payload, allowPhotoUpload ? photoFiles : []);
@@ -246,8 +276,19 @@ function ApplicationForm({ defaultType = 'Adoption', lockType = true, allowPhoto
           
           {applicationType === 'Adoption' ? (
             <label className="block sm:col-span-2">
-              <span className="mb-2 block text-sm font-semibold text-slate-800">Experience with Cats *</span>
-              <input name="experience" value={form.experience} onChange={handleChange} required placeholder="e.g., Have owned cats before, first time owner" className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm focus:border-brand focus:ring-brand" />
+              <span className="mb-2 block text-sm font-semibold text-slate-800">Experience Level *</span>
+              <select
+                name="experience"
+                value={form.experience}
+                onChange={handleChange}
+                required
+                className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm focus:border-brand focus:ring-brand"
+              >
+                <option value="" disabled>Select your experience level</option>
+                {ADOPTION_EXPERIENCE_OPTIONS.filter(Boolean).map((option) => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
+              </select>
             </label>
           ) : (
             <>
@@ -285,20 +326,72 @@ function ApplicationForm({ defaultType = 'Adoption', lockType = true, allowPhoto
                   ))}
                 </select>
               </label>
+              <fieldset className="block sm:col-span-2">
+                <legend className="mb-2 block text-sm font-semibold text-slate-800">Capacity *</legend>
+                <p className="mb-3 text-xs text-slate-500">Select all foster types you can accommodate.</p>
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  {FOSTER_CAPACITY_OPTIONS.map((option) => (
+                    <label key={option} className="flex items-start gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm">
+                      <input
+                        type="checkbox"
+                        name="capacity"
+                        value={option}
+                        checked={form.capacity.includes(option)}
+                        onChange={handleChange}
+                        className="mt-1"
+                      />
+                      <span>{option}</span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
               <label className="block sm:col-span-2">
-                <span className="mb-2 block text-sm font-semibold text-slate-800">Capacity *</span>
+                <span className="mb-2 block text-sm font-semibold text-slate-800">
+                  Do you have a separate room where a new foster cat can be isolated from your other animals? *
+                </span>
                 <select
-                  name="capacity"
-                  value={form.capacity}
+                  name="isolationRoom"
+                  value={form.isolationRoom}
                   onChange={handleChange}
                   required
                   className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm focus:border-brand focus:ring-brand"
                 >
-                  <option value="" disabled>Select the foster capacity you can offer</option>
-                  {FOSTER_CAPACITY_OPTIONS.filter(Boolean).map((option) => (
+                  <option value="" disabled>Select an option</option>
+                  {ISOLATION_ROOM_OPTIONS.filter(Boolean).map((option) => (
                     <option key={option} value={option}>{option}</option>
                   ))}
                 </select>
+              </label>
+              <label className="block sm:col-span-2">
+                <span className="mb-2 block text-sm font-semibold text-slate-800">Do you have access to a vehicle? *</span>
+                <p className="mb-2 text-xs leading-relaxed text-slate-500">
+                  Fosters transport cats to vet appointments, spay/neuter surgeries, and adoption events. Reliable transportation helps, and we can sometimes assist with rides.
+                </p>
+                <select
+                  name="vehicleAccess"
+                  value={form.vehicleAccess}
+                  onChange={handleChange}
+                  required
+                  className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm focus:border-brand focus:ring-brand"
+                >
+                  <option value="" disabled>Select an option</option>
+                  {VEHICLE_ACCESS_OPTIONS.filter(Boolean).map((option) => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                </select>
+              </label>
+              <label className="block sm:col-span-2">
+                <span className="mb-2 block text-sm font-semibold text-slate-800">
+                  What would you do if you needed to stop fostering unexpectedly? *
+                </span>
+                <textarea
+                  name="unexpectedStopPlan"
+                  value={form.unexpectedStopPlan}
+                  onChange={handleChange}
+                  required
+                  rows={3}
+                  className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm focus:border-brand focus:ring-brand"
+                />
               </label>
             </>
           )}
