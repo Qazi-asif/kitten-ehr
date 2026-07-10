@@ -48,6 +48,7 @@ const EMPTY_ORG = {
   stripeLink: '',
   venmoQrCodeUrl: '',
   venmoHandle: '',
+  orgLogoUrl: '',
 };
 
 const EMPTY_USER = {
@@ -90,6 +91,7 @@ function mapOrgSettingsFromApi(settingsData = {}) {
     stripeLink: settingsData.stripeLink || '',
     venmoQrCodeUrl: settingsData.venmoQrCodeUrl || '',
     venmoHandle: settingsData.venmoHandle || '',
+    orgLogoUrl: settingsData.orgLogoUrl || '',
   };
 }
 
@@ -226,6 +228,31 @@ function SettingsPage() {
       setError('');
     };
     reader.onerror = () => setError('Could not read the Venmo QR image.');
+    reader.readAsDataURL(file);
+    event.target.value = '';
+  }
+
+  function handleOrgLogoUpload(event) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (file.type !== 'image/png' && file.type !== 'image/jpeg') {
+      setError('Logo must be a PNG or JPEG image.');
+      event.target.value = '';
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Logo must be 5MB or smaller.');
+      event.target.value = '';
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      handleOrgFieldChange('orgLogoUrl', reader.result);
+      setError('');
+    };
+    reader.onerror = () => setError('Could not read the logo image.');
     reader.readAsDataURL(file);
     event.target.value = '';
   }
@@ -501,6 +528,43 @@ function SettingsPage() {
                 className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-white"
               />
               <p className="mt-1 text-xs text-slate-500">One line per address row.</p>
+            </label>
+          </div>
+
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
+            <h3 className="text-sm font-bold text-slate-900">Document Logo</h3>
+            <p className="mt-1 text-sm text-slate-600">
+              Appears on the first page header of generated agreement PDFs only. This is separate from the
+              public website logo and does not change anything on the public site.
+            </p>
+
+            <label className="mt-4 block max-w-sm">
+              <span className="mb-1 block text-xs font-medium text-slate-600">Logo (PNG or JPEG)</span>
+              <input
+                type="file"
+                accept="image/png, image/jpeg"
+                onChange={handleOrgLogoUpload}
+                disabled={!canManageOrg}
+                className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm disabled:bg-slate-50"
+              />
+              {orgSettings.orgLogoUrl ? (
+                <div className="mt-3 flex items-start gap-4">
+                  <img
+                    src={orgSettings.orgLogoUrl}
+                    alt="Document logo preview"
+                    className="h-16 w-40 rounded-lg border border-slate-200 bg-white object-contain p-2"
+                  />
+                  {canManageOrg ? (
+                    <button
+                      type="button"
+                      onClick={() => handleOrgFieldChange('orgLogoUrl', '')}
+                      className="text-xs font-semibold text-red-600 hover:underline"
+                    >
+                      Remove logo
+                    </button>
+                  ) : null}
+                </div>
+              ) : null}
             </label>
           </div>
 

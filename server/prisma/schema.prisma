@@ -305,8 +305,15 @@ model Contract {
   applicationId    Int?
   application      Application?   @relation(fields: [applicationId], references: [id], onDelete: SetNull)
   documentVersion  String
+  // Deprecated: legacy signature-image storage, pre-dates signatureImageUrl.
+  // Left populated on old rows for backward compatibility; no longer written to.
   signedPdfUrl     String         @default("")
   signatureAudit   String         @default("{}")
+  signatureImageUrl    String?
+  signerNameAtSigning  String?
+  signedIpAddress      String?
+  frozenAgreementText  String?        @db.Text
+  pdfUrl               String?
   status           ContractStatus @default(SENT)
   signedAt         DateTime?
   createdAt        DateTime       @default(now())
@@ -560,6 +567,10 @@ model Settings {
   id                    Int     @id @default(1)
   orgName               String  @default("Pawsitive Transformations")
   orgEin                String  @default("42-3678960")
+  // Org logo for document (PDF) headers only - separate from the public
+  // site's logo, which is a static asset in PublicLogo.jsx and is
+  // intentionally not sourced from here.
+  orgLogoUrl            String  @default("")
   contactPhone          String  @default("(951) 830-1825")
   contactEmail          String  @default("hello@pawsitivetransformations.org")
   contactAddress        String  @default("12523 Limonite, Suite 440412\nMira Loma, CA 91752\nRiverside County")

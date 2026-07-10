@@ -2,6 +2,8 @@ import prisma from '../lib/prisma.js';
 import { paginatedResponse, parsePagination, wantsPagination } from '../utils/pagination.js';
 import { buildContractAgreementText, getAgreementTemplateBySlug } from '../utils/contractAgreementText.js';
 import { sendContractAgreementEmail } from '../services/emailService.js';
+import { getClientIp } from '../utils/requestIp.js';
+import { generateContractPdf, storeContractPdf } from '../utils/contractPdf.js';
 
 const CONTRACT_INCLUDE = {
   application: {
@@ -346,7 +348,6 @@ export async function markContractSigned(req, res, next) {
     const {
       signatureImage,
       signedAt,
-      ipAddress,
       signedPdfUrl,
       signatureAudit,
     } = req.body;
@@ -367,22 +368,73 @@ export async function markContractSigned(req, res, next) {
       return res.status(400).json({ error: 'signatureImage is required' });
     }
 
+    // Server-derived only. A client-supplied IP is never trusted, whether
+    // sent as a flat body field (no longer even read, above) or smuggled
+    // inside a client-supplied signatureAudit object (guarded below).
+    const clientIp = getClientIp(req);
+    const resolvedSignedAt = signedAt ? new Date(signedAt) : new Date();
+
     const auditPayload = signatureAudit && typeof signatureAudit === 'object'
-      ? signatureAudit
+      ? { ...signatureAudit, ipAddress: clientIp }
       : {
           signatureImage: resolvedSignature,
-          signedAt: signedAt || new Date().toISOString(),
-          ipAddress: ipAddress || 'unknown',
+          signedAt: resolvedSignedAt.toISOString(),
+          ipAddress: clientIp,
           signedVia: 'ContractSigningPad',
         };
+
+    // Freeze the agreement text and signer name at the moment of signing.
+    // A failure here is a real data-integrity problem (broken template,
+    // bad data) and is allowed to fail the request loudly - not wrapped in
+    // a fallback, unlike the PDF/logo steps below.
+    const frozenAgreementText = await buildContractAgreementText(existing);
+    const signerNameAtSigning = existing.signerName;
+
+    // Logo lookup for the PDF header: non-blocking and independent of PDF
+    // generation itself. A failure here costs only the logo - the PDF
+    // still generates without one, since logoImageDataUrl is optional.
+    let logoImageDataUrl = null;
+    try {
+      const settings = await prisma.settings.findUnique({ where: { id: 1 } });
+      logoImageDataUrl = settings?.orgLogoUrl || null;
+    } catch (error) {
+      console.warn('[markContractSigned] Failed to fetch org logo, continuing without it:', error.message);
+    }
+
+    // PDF generation and storage: never allowed to block signing. pdfUrl is
+    // initialized to null before the try so it always has a safe value,
+    // whether generation succeeds, fails, or storage fails after a
+    // successful generation. The catch only logs - no rethrow, no next(),
+    // no return - so execution always continues to the update below with
+    // signing succeeding regardless of PDF outcome.
+    let pdfUrl = null;
+    try {
+      const title = existing.type === 'ADOPTION' ? 'Cat Adoption Agreement' : 'Foster Care Agreement';
+      const pdfBytes = await generateContractPdf({
+        title,
+        agreementText: frozenAgreementText,
+        signatureImageDataUrl: resolvedSignature,
+        signerName: signerNameAtSigning,
+        signerEmail: existing.signerEmail,
+        signedAt: resolvedSignedAt.toISOString(),
+        logoImageDataUrl,
+      });
+      pdfUrl = await storeContractPdf(existing.id, pdfBytes);
+    } catch (error) {
+      console.warn('[markContractSigned] PDF generation/storage failed, continuing without it:', error.message);
+    }
 
     const contract = await prisma.contract.update({
       where: { id },
       data: {
         status: 'SIGNED',
-        signedPdfUrl: resolvedSignature,
+        signatureImageUrl: resolvedSignature,
+        signerNameAtSigning,
+        signedIpAddress: clientIp,
+        frozenAgreementText,
+        pdfUrl,
         signatureAudit: JSON.stringify(auditPayload),
-        signedAt: signedAt ? new Date(signedAt) : new Date(),
+        signedAt: resolvedSignedAt,
       },
       include: CONTRACT_INCLUDE,
     });
