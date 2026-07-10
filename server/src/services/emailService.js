@@ -117,19 +117,28 @@ async function buildRenderedEmail(template, variables) {
 }
 
 function getSmtpTransporter(settings, smtpHost, smtpUser, smtpPass) {
-  const key = `${smtpHost}|${settings.smtpPort}|${settings.smtpSecure}|${smtpUser}`;
+  const port = Number(settings.smtpPort) || 587;
+  // port 465 = direct SSL (secure:true), all others use STARTTLS (secure:false)
+  const secure = settings.smtpSecure === true || port === 465;
+
+  const key = `${smtpHost}|${port}|${secure}|${smtpUser}`;
   if (cachedTransporter && cachedTransporterKey === key) {
     return cachedTransporter;
   }
 
   cachedTransporter = nodemailer.createTransport({
     host: smtpHost,
-    port: settings.smtpPort || 587,
-    secure: settings.smtpSecure,
+    port,
+    secure,
     auth: {
       user: smtpUser,
       pass: smtpPass,
     },
+    // Prevent the "wrong version number" SSL error that occurs when the
+    // connection wrapping (SSL vs STARTTLS) doesn't match the port.
+    // requireTLS forces STARTTLS upgrade on port 587 and never falls back
+    // to plain-text, which is what Gmail App Passwords require.
+    ...(secure ? {} : { requireTLS: true }),
   });
   cachedTransporterKey = key;
   return cachedTransporter;
