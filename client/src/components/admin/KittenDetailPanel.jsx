@@ -536,7 +536,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
           </nav>
         </div>
 
-        <div className="max-h-[calc(100vh-320px)] overflow-y-auto p-5">
+        <div className="p-5">
           {(tabLoading || photosLoading) && (
             <p className="mb-3 text-xs text-gray-500">
               {photosLoading && activeTab === 'profile' ? 'Loading photos...' : 'Loading tab data...'}
