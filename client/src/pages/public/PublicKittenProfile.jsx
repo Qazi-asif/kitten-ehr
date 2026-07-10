@@ -169,16 +169,14 @@ function PublicKittenProfile() {
             <Home className="h-4 w-4" />
             ADOPT ME
           </Link>
-          {showSponsorPanel ? (
-            <button
-              type="button"
-              onClick={() => scrollToRef(sponsorRef)}
-              className="inline-flex min-w-[7.5rem] flex-1 items-center justify-center gap-2 rounded-xl bg-[#6F42C1] px-5 py-3.5 text-xs font-extrabold tracking-wide text-white shadow-md transition hover:bg-[#5a32a3] sm:flex-none sm:text-sm"
-            >
-              <PawPrint className="h-4 w-4" />
-              SPONSOR ME
-            </button>
-          ) : null}
+          <button
+            type="button"
+            onClick={() => scrollToRef(sponsorRef)}
+            className="inline-flex min-w-[7.5rem] flex-1 items-center justify-center gap-2 rounded-xl bg-[#6F42C1] px-5 py-3.5 text-xs font-extrabold tracking-wide text-white shadow-md transition hover:bg-[#5a32a3] sm:flex-none sm:text-sm"
+          >
+            <PawPrint className="h-4 w-4" />
+            SPONSOR ME
+          </button>
           <button
             type="button"
             onClick={() => scrollToRef(wishlistRef)}
@@ -301,44 +299,48 @@ function PublicKittenProfile() {
         </div>
 
         {/* Right — Sponsor panel */}
-        {showSponsorPanel ? (
-          <aside className="lg:sticky lg:top-24 lg:self-start">
-            <div
-              ref={sponsorRef}
-              id="sponsor"
-              className="scroll-mt-24 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm"
-            >
-              <div className="border-b border-slate-200 bg-white px-5 py-4">
-                <h2 className="text-lg font-bold text-slate-900">Sponsor {kitten.name}</h2>
-                <p className="mt-1 text-sm text-slate-600">
-                  Chip in any amount to help cover food, vaccines, and care on the road to adoption day.
-                </p>
-              </div>
+        <aside className="lg:sticky lg:top-24 lg:self-start">
+          <div
+            ref={sponsorRef}
+            id="sponsor"
+            className="scroll-mt-24 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm"
+          >
+            <div className="border-b border-slate-200 bg-white px-5 py-4">
+              <h2 className="text-lg font-bold text-slate-900">Sponsor {kitten.name}</h2>
+              <p className="mt-1 text-sm text-slate-600">
+                Chip in any amount to help cover food, vaccines, and care on the road to adoption day.
+              </p>
+            </div>
 
-              <div className="px-4 py-4">
-                {!sponsorshipComplete ? (
-                  <div className="overflow-hidden rounded-xl border border-slate-200 bg-white p-3">
-                    <GivebutterDonationWidget
-                      code={DEFAULT_GIVEBUTTER_SPONSOR_EMBED}
-                      kittenId={kitten.id}
-                      kittenName={kitten.name}
-                      sponsor
-                      onSuccess={handleSponsorshipSuccess}
-                      className="min-h-[360px] w-full"
-                    />
-                  </div>
-                ) : (
-                  <p className="rounded-xl bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800">
-                    Thank you for sponsoring {kitten.name}!
-                  </p>
-                )}
+            <div className="px-4 py-4">
+              {!showSponsorPanel ? (
+                <p className="rounded-xl border border-slate-200 bg-white px-4 py-5 text-center text-sm leading-relaxed text-slate-600">
+                  Sponsorship for {kitten.name} is coming soon. We&apos;re completing our California charitable registration and will open sponsorships once that process is finished. Thank you for your patience and your heart for these cats.
+                </p>
+              ) : !sponsorshipComplete ? (
+                <div className="overflow-hidden rounded-xl border border-slate-200 bg-white p-3">
+                  <GivebutterDonationWidget
+                    code={DEFAULT_GIVEBUTTER_SPONSOR_EMBED}
+                    kittenId={kitten.id}
+                    kittenName={kitten.name}
+                    sponsor
+                    onSuccess={handleSponsorshipSuccess}
+                    className="min-h-[360px] w-full"
+                  />
+                </div>
+              ) : (
+                <p className="rounded-xl bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800">
+                  Thank you for sponsoring {kitten.name}!
+                </p>
+              )}
+              {showSponsorPanel ? (
                 <p className="mt-3 text-center text-xs text-slate-500">
                   {sponsorshipOverflowDisclosure(kitten.name)}
                 </p>
-              </div>
+              ) : null}
             </div>
-          </aside>
-        ) : null}
+          </div>
+        </aside>
       </div>
     </div>
   );

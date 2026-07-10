@@ -288,6 +288,8 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
         bondedWithName: updated.bondedWithName || '',
         isMedicalSpecialNeeds: Boolean(updated.isMedicalSpecialNeeds),
       });
+    } catch (err) {
+      setError(err.message);
     } finally {
       setSavingProfile(false);
     }

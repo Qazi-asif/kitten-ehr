@@ -239,34 +239,53 @@ export async function markProtocolDoseGiven(req, res, next) {
       return res.status(404).json({ error: 'Protocol dose not found for this kitten' });
     }
 
-    const dose = await prisma.protocolDose.update({
-      where: { id: doseId },
-      data: {
-        status: 'GIVEN',
-        administeredAt: new Date(),
-        administeredById,
-      },
-      include: {
-        protocolDrug: {
-          select: {
-            id: true,
-            drugName: true,
-            dosage: true,
-            route: true,
-            instructions: true,
-          },
+    const dose = await prisma.$transaction(async (tx) => {
+      const updated = await tx.protocolDose.update({
+        where: { id: doseId },
+        data: {
+          status: 'GIVEN',
+          administeredAt: new Date(),
+          administeredById,
         },
-        activeProtocol: {
-          include: {
-            protocol: {
-              select: { id: true, name: true },
+        include: {
+          protocolDrug: {
+            select: {
+              id: true,
+              drugName: true,
+              dosage: true,
+              route: true,
+              instructions: true,
             },
           },
+          activeProtocol: {
+            include: {
+              protocol: {
+                select: { id: true, name: true },
+              },
+            },
+          },
+          administeredBy: {
+            select: { id: true, firstName: true, lastName: true },
+          },
         },
-        administeredBy: {
-          select: { id: true, firstName: true, lastName: true },
+      });
+
+      const remainingDoses = await tx.protocolDose.count({
+        where: {
+          activeProtocolId: updated.activeProtocolId,
+          status: { not: 'GIVEN' },
         },
-      },
+      });
+
+      if (remainingDoses === 0 && updated.activeProtocol.status === 'ACTIVE') {
+        await tx.activeProtocol.update({
+          where: { id: updated.activeProtocolId },
+          data: { status: 'COMPLETED' },
+        });
+        updated.activeProtocol.status = 'COMPLETED';
+      }
+
+      return updated;
     });
 
     res.json(dose);

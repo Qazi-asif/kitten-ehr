@@ -84,6 +84,16 @@ function KittenHealthTab({
     return [...grouped.entries()].sort(([a], [b]) => a.localeCompare(b));
   }, [doses]);
 
+  const currentProtocols = useMemo(
+    () => activeProtocols.filter((entry) => entry.status === 'ACTIVE'),
+    [activeProtocols],
+  );
+
+  const protocolHistory = useMemo(
+    () => activeProtocols.filter((entry) => entry.status !== 'ACTIVE'),
+    [activeProtocols],
+  );
+
   async function handleActivateProtocol(event) {
     event.preventDefault();
     if (!canManageMedical || !selectedProtocolId) return;
@@ -136,11 +146,11 @@ function KittenHealthTab({
           <p className="mt-4 text-sm text-gray-500">Loading protocols...</p>
         ) : (
           <>
-            {activeProtocols.length === 0 ? (
+            {currentProtocols.length === 0 ? (
               <p className="mt-4 text-sm text-gray-600">No active protocols for this kitten yet.</p>
             ) : (
               <div className="mt-4 space-y-3">
-                {activeProtocols.map((entry) => (
+                {currentProtocols.map((entry) => (
                   <div key={entry.id} className="rounded-lg border border-white bg-white p-4 shadow-sm">
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div>
@@ -149,12 +159,7 @@ function KittenHealthTab({
                           Activated {formatDate(entry.activationDate)} by {entry.activatedBy?.firstName} {entry.activatedBy?.lastName}
                         </p>
                       </div>
-                      <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${
-                        entry.status === 'ACTIVE'
-                          ? 'bg-emerald-100 text-emerald-800'
-                          : 'bg-gray-100 text-gray-600'
-                      }`}
-                      >
+                      <span className="inline-flex rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-800">
                         {entry.status}
                       </span>
                     </div>
@@ -203,6 +208,33 @@ function KittenHealthTab({
           </>
         )}
       </section>
+
+      {protocolHistory.length > 0 && (
+        <section className="rounded-xl border border-gray-200 bg-gray-50/60 p-5">
+          <h3 className="text-sm font-bold uppercase tracking-wide text-gray-700">Protocol History</h3>
+          <p className="mt-1 text-sm text-gray-500">
+            Completed or discontinued protocols for this kitten.
+          </p>
+          <div className="mt-4 space-y-3">
+            {protocolHistory.map((entry) => (
+              <div key={entry.id} className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <p className="text-sm font-bold text-gray-900">{entry.protocol?.name}</p>
+                    <p className="mt-1 text-xs text-gray-500">
+                      Activated {formatDate(entry.activationDate)} by {entry.activatedBy?.firstName} {entry.activatedBy?.lastName}
+                    </p>
+                  </div>
+                  <span className="inline-flex rounded-full bg-gray-100 px-2.5 py-1 text-xs font-semibold text-gray-600">
+                    {entry.status}
+                  </span>
+                </div>
+                <p className="mt-2 text-xs text-gray-500">{entry._count?.doses || 0} scheduled doses</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section>
         <h3 className="mb-3 text-xs font-bold uppercase text-gray-700">Dose Checklist</h3>

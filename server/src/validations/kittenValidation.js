@@ -62,7 +62,6 @@ export const updateKittenSchema = z
     isListedOnWebsite: z.boolean().optional(),
     websiteFeaturedComment: z.string().max(2000).optional(),
     publishTargets: publishTargetsField,
-    primaryPhotoUrl: z.string().max(5_000_000).optional().nullable(),
     litterId: z.coerce.number().int().positive().optional().nullable(),
     currentFosterId: z.coerce.number().int().positive().optional().nullable(),
     amazonWishlistUrl: optionalUrl,

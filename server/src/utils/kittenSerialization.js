@@ -22,6 +22,7 @@ export const kittenListSelect = {
   intakeDate: true,
   intakeSource: true,
   primaryPhotoUrl: true,
+  thumbnailUrl: true,
   litterId: true,
   currentFosterId: true,
   isBondedPair: true,

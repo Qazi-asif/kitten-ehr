@@ -431,7 +431,7 @@ function ApplicationForm({ defaultType = 'Adoption', lockType = true, allowPhoto
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-sm font-semibold text-slate-900">Upload exactly {maxPhotos} photos of your home setup</p>
-                  <p className="mt-1 text-sm text-slate-600">JPG, PNG, or HEIC — foster space for cats and kittens, supplies, or safe room.</p>
+                  <p className="mt-1 text-sm text-slate-600">JPG, PNG, or HEIC. Foster space for cats and kittens, supplies, or safe room.</p>
                 </div>
                 <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-brand-dark">
                   <ImagePlus className="h-4 w-4" />

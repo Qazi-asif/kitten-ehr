@@ -81,6 +81,7 @@ model Kitten {
   specialNeeds    String?
   microchipNumber String           @default("")
   primaryPhotoUrl String?
+  thumbnailUrl    String?
   intakeDate      DateTime?
   intakeSource    String           @default("")
   notes           String           @default("")

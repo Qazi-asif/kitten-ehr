@@ -7,6 +7,7 @@ import {
   photoDocumentSelect,
 } from '../utils/photoDocuments.js';
 import { deleteStoredFile, persistKittenFile } from '../utils/fileStorage.js';
+import { generateThumbnailFromBuffer, generateThumbnailFromUrl } from '../utils/thumbnail.js';
 
 const PHOTO_TRANSACTION_OPTIONS = { maxWait: 10000, timeout: 30000 };
 
@@ -140,6 +141,7 @@ export async function uploadPhoto(req, res, next) {
     ]);
     const hasPrimary = Boolean(kitten.primaryPhotoUrl) || hasPrimaryPhotoDoc > 0;
     const shouldSetPrimary = setAsPrimary || !hasPrimary;
+    const thumbnailUrl = shouldSetPrimary ? await generateThumbnailFromBuffer(upload.buffer) : null;
 
     const document = await prisma.$transaction(async (tx) => {
       if (shouldSetPrimary) {
@@ -149,7 +151,7 @@ export async function uploadPhoto(req, res, next) {
         });
         await tx.kitten.update({
           where: { id: kittenId },
-          data: { primaryPhotoUrl: fileUrl },
+          data: { primaryPhotoUrl: fileUrl, thumbnailUrl },
         });
       }
 
@@ -188,6 +190,8 @@ export async function setPrimaryPhoto(req, res, next) {
       return res.status(400).json({ error: 'Document is not a photo' });
     }
 
+    const thumbnailUrl = await generateThumbnailFromUrl(document.fileUrl);
+
     await prisma.$transaction(async (tx) => {
       await tx.document.updateMany({
         where: { kittenId },
@@ -201,7 +205,7 @@ export async function setPrimaryPhoto(req, res, next) {
 
       await tx.kitten.update({
         where: { id: kittenId },
-        data: { primaryPhotoUrl: document.fileUrl },
+        data: { primaryPhotoUrl: document.fileUrl, thumbnailUrl },
       });
     }, PHOTO_TRANSACTION_OPTIONS);
 

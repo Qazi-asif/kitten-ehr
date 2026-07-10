@@ -232,7 +232,10 @@ function KittensPage() {
                   kittens.map((kitten) => (
                     <tr key={kitten.id} className="hover:bg-slate-50/80">
                       <td className="whitespace-nowrap px-5 py-3">
-                        <KittenPhoto kitten={kitten} className="h-10 w-10 rounded-full" />
+                        <KittenPhoto
+                          kitten={kitten.primaryPhotoUrl ? kitten : { ...kitten, primaryPhotoUrl: kitten.thumbnailUrl }}
+                          className="h-10 w-10 rounded-full"
+                        />
                       </td>
                       <td className="whitespace-nowrap px-5 py-3">
                         <Link to={`/admin/kittens/${kitten.id}`} className="text-sm font-semibold text-brand hover:underline">
