@@ -15,6 +15,9 @@ const CONTRACT_INCLUDE = {
   foster: {
     select: { id: true, name: true, email: true },
   },
+  householdAcknowledgments: {
+    select: { id: true, name: true, signatureImageUrl: true, signedAt: true },
+  },
 };
 
 const VALID_TEMPLATE_SLUGS = new Set([
@@ -178,6 +181,8 @@ export async function createContractDraft(req, res, next) {
       kittenId,
       fosterId,
       applicationId,
+      emergencyContactName,
+      emergencyContactPhone,
       documentVersion,
     } = req.body;
 
@@ -188,6 +193,7 @@ export async function createContractDraft(req, res, next) {
     let resolvedKittenName = kittenName?.trim() || '';
     let resolvedKittenId = kittenId ? Number.parseInt(kittenId, 10) : null;
     let resolvedFosterId = fosterId ? Number.parseInt(fosterId, 10) : null;
+    let resolvedApplicationId = applicationId ? Number.parseInt(applicationId, 10) : null;
 
     if (resolvedKittenId) {
       const kitten = await prisma.kitten.findUnique({
@@ -206,6 +212,14 @@ export async function createContractDraft(req, res, next) {
       if (!foster) return res.status(400).json({ error: 'fosterId not found' });
     }
 
+    if (resolvedApplicationId) {
+      const application = await prisma.application.findUnique({
+        where: { id: resolvedApplicationId },
+        select: { id: true },
+      });
+      if (!application) return res.status(400).json({ error: 'applicationId not found' });
+    }
+
     const contract = await prisma.contract.create({
       data: {
         type: resolvedTemplate.type,
@@ -218,7 +232,9 @@ export async function createContractDraft(req, res, next) {
         kittenName: resolvedKittenName,
         kittenId: resolvedKittenId,
         fosterId: resolvedFosterId,
-        applicationId: applicationId ? Number.parseInt(applicationId, 10) : null,
+        applicationId: resolvedApplicationId,
+        emergencyContactName: emergencyContactName?.trim() || '',
+        emergencyContactPhone: emergencyContactPhone?.trim() || '',
         documentVersion: documentVersion?.trim() || '2026.1',
         status: 'SENT',
       },
@@ -350,6 +366,7 @@ export async function markContractSigned(req, res, next) {
       signedAt,
       signedPdfUrl,
       signatureAudit,
+      householdAcknowledgments,
     } = req.body;
 
     const existing = await prisma.contract.findUnique({ where: { id } });
@@ -390,15 +407,20 @@ export async function markContractSigned(req, res, next) {
     const frozenAgreementText = await buildContractAgreementText(existing);
     const signerNameAtSigning = existing.signerName;
 
-    // Logo lookup for the PDF header: non-blocking and independent of PDF
-    // generation itself. A failure here costs only the logo - the PDF
-    // still generates without one, since logoImageDataUrl is optional.
+    // Logo + org signature lookup for the PDF: non-blocking and independent
+    // of PDF generation itself, one shared settings fetch. A failure here
+    // costs only the logo/org-signature block - the PDF still generates
+    // without them, since both are optional generateContractPdf params.
     let logoImageDataUrl = null;
+    let orgSignatureImageDataUrl = null;
+    let orgName = null;
     try {
       const settings = await prisma.settings.findUnique({ where: { id: 1 } });
       logoImageDataUrl = settings?.orgLogoUrl || null;
+      orgSignatureImageDataUrl = settings?.orgSignatureUrl || null;
+      orgName = settings?.orgName || null;
     } catch (error) {
-      console.warn('[markContractSigned] Failed to fetch org logo, continuing without it:', error.message);
+      console.warn('[markContractSigned] Failed to fetch org logo/signature, continuing without them:', error.message);
     }
 
     // PDF generation and storage: never allowed to block signing. pdfUrl is
@@ -418,10 +440,40 @@ export async function markContractSigned(req, res, next) {
         signerEmail: existing.signerEmail,
         signedAt: resolvedSignedAt.toISOString(),
         logoImageDataUrl,
+        orgSignatureImageDataUrl,
+        orgName,
       });
       pdfUrl = await storeContractPdf(existing.id, pdfBytes);
     } catch (error) {
       console.warn('[markContractSigned] PDF generation/storage failed, continuing without it:', error.message);
+    }
+
+    // Adult household member acknowledgments (Foster Care Agreement only,
+    // optional): name + signature image + server-set timestamp, nothing
+    // more. These are acknowledgments, not the primary signer - no IP
+    // capture, no name confirmation, no signatureAudit merge - and a
+    // failure to save them must never block the actual signing below, same
+    // spirit as the logo/PDF steps above. Only well-formed entries (both a
+    // non-empty name and a data-URL signature image) are persisted; the
+    // client already withholds incomplete entries before submitting.
+    if (Array.isArray(householdAcknowledgments) && householdAcknowledgments.length > 0) {
+      try {
+        const validEntries = householdAcknowledgments
+          .filter((entry) => entry && typeof entry === 'object')
+          .filter((entry) => entry.name?.trim() && entry.signatureImage?.startsWith('data:'))
+          .map((entry) => ({
+            contractId: id,
+            name: entry.name.trim(),
+            signatureImageUrl: entry.signatureImage,
+            signedAt: resolvedSignedAt,
+          }));
+
+        if (validEntries.length > 0) {
+          await prisma.contractHouseholdAcknowledgment.createMany({ data: validEntries });
+        }
+      } catch (error) {
+        console.warn('[markContractSigned] Failed to save household acknowledgment(s), continuing without them:', error.message);
+      }
     }
 
     const contract = await prisma.contract.update({

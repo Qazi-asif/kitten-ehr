@@ -13,6 +13,11 @@ export function buildAgreementVariables(contract, kitten = null) {
     signerPhoneEmail: phoneEmail || BLANK,
     kittenName: contract.kittenName?.trim() || kitten?.name || BLANK,
     microchipNumber: contract.microchipNumber?.trim() || kitten?.microchipNumber?.trim() || BLANK,
+    // Foster Care Agreement only (see schema comment on Contract.emergencyContactName) -
+    // always '' rather than null on Adoption contracts, so this renders as BLANK
+    // if a Foster template placeholder is ever used on an Adoption template by mistake.
+    emergencyContactName: contract.emergencyContactName?.trim() || BLANK,
+    emergencyContactPhone: contract.emergencyContactPhone?.trim() || BLANK,
     version: contract.documentVersion?.trim() || '2026.1',
   };
 }

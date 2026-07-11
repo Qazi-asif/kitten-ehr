@@ -308,10 +308,26 @@ exports.Prisma.ContractScalarFieldEnum = {
   kittenId: 'kittenId',
   fosterId: 'fosterId',
   applicationId: 'applicationId',
+  emergencyContactName: 'emergencyContactName',
+  emergencyContactPhone: 'emergencyContactPhone',
   documentVersion: 'documentVersion',
   signedPdfUrl: 'signedPdfUrl',
   signatureAudit: 'signatureAudit',
+  signatureImageUrl: 'signatureImageUrl',
+  signerNameAtSigning: 'signerNameAtSigning',
+  signedIpAddress: 'signedIpAddress',
+  frozenAgreementText: 'frozenAgreementText',
+  pdfUrl: 'pdfUrl',
   status: 'status',
+  signedAt: 'signedAt',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ContractHouseholdAcknowledgmentScalarFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  name: 'name',
+  signatureImageUrl: 'signatureImageUrl',
   signedAt: 'signedAt',
   createdAt: 'createdAt'
 };
@@ -474,6 +490,8 @@ exports.Prisma.SettingsScalarFieldEnum = {
   id: 'id',
   orgName: 'orgName',
   orgEin: 'orgEin',
+  orgLogoUrl: 'orgLogoUrl',
+  orgSignatureUrl: 'orgSignatureUrl',
   contactPhone: 'contactPhone',
   contactEmail: 'contactEmail',
   contactAddress: 'contactAddress',
@@ -650,6 +668,7 @@ exports.Prisma.ModelName = {
   Application: 'Application',
   ContractTemplate: 'ContractTemplate',
   Contract: 'Contract',
+  ContractHouseholdAcknowledgment: 'ContractHouseholdAcknowledgment',
   FosterOnboarding: 'FosterOnboarding',
   OnboardingChecklist: 'OnboardingChecklist',
   ApplicationUpload: 'ApplicationUpload',

@@ -5,19 +5,34 @@ import { Eraser, FileSignature, X } from 'lucide-react';
 const LEGAL_DISCLAIMER =
   'By signing below, you acknowledge that this electronic signature is legally binding and equivalent to a handwritten signature under applicable law. Please read the entire agreement before signing.';
 
+const HOUSEHOLD_SLOT_COUNT = 2;
+
 function ContractSigningPad({
   contractId,
   contractText,
   signerName = '',
+  contractType,
   onClose,
   onSign,
 }) {
   const sigRef = useRef(null);
+  // Refs for the two optional adult-household-member signature canvases
+  // (Foster Care Agreement only). Populated via callback refs since the
+  // count is fixed but SignatureCanvas instances can't live in a single ref.
+  const householdSigRefs = useRef([]);
   const [agreed, setAgreed] = useState(false);
   const [nameConfirmed, setNameConfirmed] = useState(false);
   const [hasSignature, setHasSignature] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [householdNames, setHouseholdNames] = useState(
+    Array.from({ length: HOUSEHOLD_SLOT_COUNT }, () => ''),
+  );
+
+  // These acknowledgment blocks only apply to Foster Care Agreements - not
+  // Adoption. They are entirely optional (not every foster placement has a
+  // second adult in the household) and never gate Sign & Submit.
+  const showHouseholdBlocks = contractType === 'FOSTER';
 
   function handleClear() {
     sigRef.current?.clear();
@@ -28,11 +43,43 @@ function ContractSigningPad({
     setHasSignature(!sigRef.current?.isEmpty());
   }
 
+  function handleHouseholdNameChange(index, value) {
+    setHouseholdNames((prev) => prev.map((name, i) => (i === index ? value : name)));
+  }
+
+  function handleHouseholdClear(index) {
+    householdSigRefs.current[index]?.clear();
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     if (!agreed || !nameConfirmed || !hasSignature || sigRef.current?.isEmpty()) {
       setError('Please confirm your name, agree to the terms, and provide your signature.');
       return;
+    }
+
+    // Each household slot is independently optional - a fully blank slot is
+    // simply skipped. If a slot is half-filled (a name with no signature, or
+    // a signature with no name) we ask the signer to finish or clear it
+    // rather than silently dropping what they entered.
+    const householdAcknowledgments = [];
+    if (showHouseholdBlocks) {
+      for (let i = 0; i < HOUSEHOLD_SLOT_COUNT; i += 1) {
+        const ref = householdSigRefs.current[i];
+        const hasSig = Boolean(ref && !ref.isEmpty());
+        const hasName = Boolean(householdNames[i]?.trim());
+        if (!hasSig && !hasName) continue;
+        if (hasSig !== hasName) {
+          setError(
+            `Please complete or clear the signature block for Adult Household Member #${i + 1} (both a name and a signature are needed, or leave both blank).`,
+          );
+          return;
+        }
+        householdAcknowledgments.push({
+          name: householdNames[i].trim(),
+          signatureImage: ref.toDataURL('image/png'),
+        });
+      }
     }
 
     setSubmitting(true);
@@ -49,6 +96,7 @@ function ContractSigningPad({
         signedAt,
         ipAddress,
         nameConfirmed,
+        householdAcknowledgments,
       });
     } catch (err) {
       setError(err.message || 'Failed to submit signature.');
@@ -149,6 +197,53 @@ function ContractSigningPad({
               Clear Signature
             </button>
           </div>
+
+          {showHouseholdBlocks && (
+            <div className="space-y-4 border-t border-neutral-200 pt-5">
+              <div>
+                <p className="font-serif text-sm font-semibold uppercase tracking-wide text-neutral-700">
+                  Adult Household Member Acknowledgment (optional)
+                </p>
+                <p className="mt-1 text-xs text-neutral-500">
+                  If other adults live in the household, they may sign below to acknowledge this agreement.
+                  Leave blank if not applicable.
+                </p>
+              </div>
+              {Array.from({ length: HOUSEHOLD_SLOT_COUNT }, (_, index) => (
+                <div key={index} className="rounded-lg border border-neutral-300 bg-white p-4">
+                  <label className="block">
+                    <span className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+                      Adult Household Member #{index + 1} Name
+                    </span>
+                    <input
+                      type="text"
+                      value={householdNames[index]}
+                      onChange={(e) => handleHouseholdNameChange(index, e.target.value)}
+                      className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
+                    />
+                  </label>
+                  <div className="mt-3 overflow-hidden rounded-lg border-2 border-dotted border-neutral-400 bg-white">
+                    <SignatureCanvas
+                      ref={(el) => { householdSigRefs.current[index] = el; }}
+                      penColor="#111111"
+                      canvasProps={{
+                        className: 'h-28 w-full touch-none',
+                        'aria-label': `Signature pad for adult household member ${index + 1}`,
+                      }}
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleHouseholdClear(index)}
+                    className="mt-2 inline-flex items-center gap-1.5 text-sm font-medium text-neutral-600 hover:text-neutral-900"
+                  >
+                    <Eraser className="h-4 w-4" />
+                    Clear Signature
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
 
           {error && (
             <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">

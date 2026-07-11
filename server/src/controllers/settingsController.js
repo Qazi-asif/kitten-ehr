@@ -49,6 +49,7 @@ export const DEFAULTS = {
   venmoQrCodeUrl: '',
   venmoHandle: '',
   orgLogoUrl: '',
+  orgSignatureUrl: '',
 };
 
 function sanitizeSettings(settings) {
@@ -146,6 +147,7 @@ export async function updateSettings(req, res, next) {
       venmoQrCodeUrl,
       venmoHandle,
       orgLogoUrl,
+      orgSignatureUrl,
     } = req.body;
 
     const data = {};
@@ -214,6 +216,7 @@ export async function updateSettings(req, res, next) {
     if (venmoQrCodeUrl !== undefined) data.venmoQrCodeUrl = String(venmoQrCodeUrl).trim();
     if (venmoHandle !== undefined) data.venmoHandle = String(venmoHandle).trim();
     if (orgLogoUrl !== undefined) data.orgLogoUrl = String(orgLogoUrl).trim();
+    if (orgSignatureUrl !== undefined) data.orgSignatureUrl = String(orgSignatureUrl).trim();
 
     const settings = await prisma.settings.upsert({
       where: { id: SETTINGS_ID },

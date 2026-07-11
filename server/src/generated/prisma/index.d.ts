@@ -84,6 +84,11 @@ export type ContractTemplate = $Result.DefaultSelection<Prisma.$ContractTemplate
  */
 export type Contract = $Result.DefaultSelection<Prisma.$ContractPayload>
 /**
+ * Model ContractHouseholdAcknowledgment
+ * 
+ */
+export type ContractHouseholdAcknowledgment = $Result.DefaultSelection<Prisma.$ContractHouseholdAcknowledgmentPayload>
+/**
  * Model FosterOnboarding
  * 
  */
@@ -562,6 +567,16 @@ export class PrismaClient<
     * ```
     */
   get contract(): Prisma.ContractDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.contractHouseholdAcknowledgment`: Exposes CRUD operations for the **ContractHouseholdAcknowledgment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ContractHouseholdAcknowledgments
+    * const contractHouseholdAcknowledgments = await prisma.contractHouseholdAcknowledgment.findMany()
+    * ```
+    */
+  get contractHouseholdAcknowledgment(): Prisma.ContractHouseholdAcknowledgmentDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.fosterOnboarding`: Exposes CRUD operations for the **FosterOnboarding** model.
@@ -1237,6 +1252,7 @@ export namespace Prisma {
     Application: 'Application',
     ContractTemplate: 'ContractTemplate',
     Contract: 'Contract',
+    ContractHouseholdAcknowledgment: 'ContractHouseholdAcknowledgment',
     FosterOnboarding: 'FosterOnboarding',
     OnboardingChecklist: 'OnboardingChecklist',
     ApplicationUpload: 'ApplicationUpload',
@@ -1277,7 +1293,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "litter" | "foster" | "kitten" | "update" | "sponsorship" | "placement" | "weightLog" | "vaccine" | "medication" | "vetAppointment" | "document" | "application" | "contractTemplate" | "contract" | "fosterOnboarding" | "onboardingChecklist" | "applicationUpload" | "content" | "contentCompletion" | "event" | "eventRSVP" | "eventCats" | "role" | "permission" | "rolePermission" | "user" | "protocol" | "protocolDrug" | "activeProtocol" | "protocolDose" | "settings" | "emailTemplate" | "emailLog" | "transaction" | "wishlist" | "socialPost"
+      modelProps: "litter" | "foster" | "kitten" | "update" | "sponsorship" | "placement" | "weightLog" | "vaccine" | "medication" | "vetAppointment" | "document" | "application" | "contractTemplate" | "contract" | "contractHouseholdAcknowledgment" | "fosterOnboarding" | "onboardingChecklist" | "applicationUpload" | "content" | "contentCompletion" | "event" | "eventRSVP" | "eventCats" | "role" | "permission" | "rolePermission" | "user" | "protocol" | "protocolDrug" | "activeProtocol" | "protocolDose" | "settings" | "emailTemplate" | "emailLog" | "transaction" | "wishlist" | "socialPost"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2314,6 +2330,80 @@ export namespace Prisma {
           count: {
             args: Prisma.ContractCountArgs<ExtArgs>
             result: $Utils.Optional<ContractCountAggregateOutputType> | number
+          }
+        }
+      }
+      ContractHouseholdAcknowledgment: {
+        payload: Prisma.$ContractHouseholdAcknowledgmentPayload<ExtArgs>
+        fields: Prisma.ContractHouseholdAcknowledgmentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ContractHouseholdAcknowledgmentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractHouseholdAcknowledgmentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ContractHouseholdAcknowledgmentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractHouseholdAcknowledgmentPayload>
+          }
+          findFirst: {
+            args: Prisma.ContractHouseholdAcknowledgmentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractHouseholdAcknowledgmentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ContractHouseholdAcknowledgmentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractHouseholdAcknowledgmentPayload>
+          }
+          findMany: {
+            args: Prisma.ContractHouseholdAcknowledgmentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractHouseholdAcknowledgmentPayload>[]
+          }
+          create: {
+            args: Prisma.ContractHouseholdAcknowledgmentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractHouseholdAcknowledgmentPayload>
+          }
+          createMany: {
+            args: Prisma.ContractHouseholdAcknowledgmentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ContractHouseholdAcknowledgmentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractHouseholdAcknowledgmentPayload>[]
+          }
+          delete: {
+            args: Prisma.ContractHouseholdAcknowledgmentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractHouseholdAcknowledgmentPayload>
+          }
+          update: {
+            args: Prisma.ContractHouseholdAcknowledgmentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractHouseholdAcknowledgmentPayload>
+          }
+          deleteMany: {
+            args: Prisma.ContractHouseholdAcknowledgmentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ContractHouseholdAcknowledgmentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ContractHouseholdAcknowledgmentUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractHouseholdAcknowledgmentPayload>[]
+          }
+          upsert: {
+            args: Prisma.ContractHouseholdAcknowledgmentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContractHouseholdAcknowledgmentPayload>
+          }
+          aggregate: {
+            args: Prisma.ContractHouseholdAcknowledgmentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateContractHouseholdAcknowledgment>
+          }
+          groupBy: {
+            args: Prisma.ContractHouseholdAcknowledgmentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ContractHouseholdAcknowledgmentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ContractHouseholdAcknowledgmentCountArgs<ExtArgs>
+            result: $Utils.Optional<ContractHouseholdAcknowledgmentCountAggregateOutputType> | number
           }
         }
       }
@@ -4055,6 +4145,7 @@ export namespace Prisma {
     application?: ApplicationOmit
     contractTemplate?: ContractTemplateOmit
     contract?: ContractOmit
+    contractHouseholdAcknowledgment?: ContractHouseholdAcknowledgmentOmit
     fosterOnboarding?: FosterOnboardingOmit
     onboardingChecklist?: OnboardingChecklistOmit
     applicationUpload?: ApplicationUploadOmit
@@ -4408,6 +4499,37 @@ export namespace Prisma {
    */
   export type ApplicationCountOutputTypeCountUploadsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ApplicationUploadWhereInput
+  }
+
+
+  /**
+   * Count Type ContractCountOutputType
+   */
+
+  export type ContractCountOutputType = {
+    householdAcknowledgments: number
+  }
+
+  export type ContractCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    householdAcknowledgments?: boolean | ContractCountOutputTypeCountHouseholdAcknowledgmentsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ContractCountOutputType without action
+   */
+  export type ContractCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractCountOutputType
+     */
+    select?: ContractCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ContractCountOutputType without action
+   */
+  export type ContractCountOutputTypeCountHouseholdAcknowledgmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ContractHouseholdAcknowledgmentWhereInput
   }
 
 
@@ -20507,9 +20629,16 @@ export namespace Prisma {
     kittenId: number | null
     fosterId: number | null
     applicationId: number | null
+    emergencyContactName: string | null
+    emergencyContactPhone: string | null
     documentVersion: string | null
     signedPdfUrl: string | null
     signatureAudit: string | null
+    signatureImageUrl: string | null
+    signerNameAtSigning: string | null
+    signedIpAddress: string | null
+    frozenAgreementText: string | null
+    pdfUrl: string | null
     status: $Enums.ContractStatus | null
     signedAt: Date | null
     createdAt: Date | null
@@ -20528,9 +20657,16 @@ export namespace Prisma {
     kittenId: number | null
     fosterId: number | null
     applicationId: number | null
+    emergencyContactName: string | null
+    emergencyContactPhone: string | null
     documentVersion: string | null
     signedPdfUrl: string | null
     signatureAudit: string | null
+    signatureImageUrl: string | null
+    signerNameAtSigning: string | null
+    signedIpAddress: string | null
+    frozenAgreementText: string | null
+    pdfUrl: string | null
     status: $Enums.ContractStatus | null
     signedAt: Date | null
     createdAt: Date | null
@@ -20549,9 +20685,16 @@ export namespace Prisma {
     kittenId: number
     fosterId: number
     applicationId: number
+    emergencyContactName: number
+    emergencyContactPhone: number
     documentVersion: number
     signedPdfUrl: number
     signatureAudit: number
+    signatureImageUrl: number
+    signerNameAtSigning: number
+    signedIpAddress: number
+    frozenAgreementText: number
+    pdfUrl: number
     status: number
     signedAt: number
     createdAt: number
@@ -20586,9 +20729,16 @@ export namespace Prisma {
     kittenId?: true
     fosterId?: true
     applicationId?: true
+    emergencyContactName?: true
+    emergencyContactPhone?: true
     documentVersion?: true
     signedPdfUrl?: true
     signatureAudit?: true
+    signatureImageUrl?: true
+    signerNameAtSigning?: true
+    signedIpAddress?: true
+    frozenAgreementText?: true
+    pdfUrl?: true
     status?: true
     signedAt?: true
     createdAt?: true
@@ -20607,9 +20757,16 @@ export namespace Prisma {
     kittenId?: true
     fosterId?: true
     applicationId?: true
+    emergencyContactName?: true
+    emergencyContactPhone?: true
     documentVersion?: true
     signedPdfUrl?: true
     signatureAudit?: true
+    signatureImageUrl?: true
+    signerNameAtSigning?: true
+    signedIpAddress?: true
+    frozenAgreementText?: true
+    pdfUrl?: true
     status?: true
     signedAt?: true
     createdAt?: true
@@ -20628,9 +20785,16 @@ export namespace Prisma {
     kittenId?: true
     fosterId?: true
     applicationId?: true
+    emergencyContactName?: true
+    emergencyContactPhone?: true
     documentVersion?: true
     signedPdfUrl?: true
     signatureAudit?: true
+    signatureImageUrl?: true
+    signerNameAtSigning?: true
+    signedIpAddress?: true
+    frozenAgreementText?: true
+    pdfUrl?: true
     status?: true
     signedAt?: true
     createdAt?: true
@@ -20736,9 +20900,16 @@ export namespace Prisma {
     kittenId: number | null
     fosterId: number | null
     applicationId: number | null
+    emergencyContactName: string
+    emergencyContactPhone: string
     documentVersion: string
     signedPdfUrl: string
     signatureAudit: string
+    signatureImageUrl: string | null
+    signerNameAtSigning: string | null
+    signedIpAddress: string | null
+    frozenAgreementText: string | null
+    pdfUrl: string | null
     status: $Enums.ContractStatus
     signedAt: Date | null
     createdAt: Date
@@ -20776,15 +20947,24 @@ export namespace Prisma {
     kittenId?: boolean
     fosterId?: boolean
     applicationId?: boolean
+    emergencyContactName?: boolean
+    emergencyContactPhone?: boolean
     documentVersion?: boolean
     signedPdfUrl?: boolean
     signatureAudit?: boolean
+    signatureImageUrl?: boolean
+    signerNameAtSigning?: boolean
+    signedIpAddress?: boolean
+    frozenAgreementText?: boolean
+    pdfUrl?: boolean
     status?: boolean
     signedAt?: boolean
     createdAt?: boolean
     kitten?: boolean | Contract$kittenArgs<ExtArgs>
     foster?: boolean | Contract$fosterArgs<ExtArgs>
     application?: boolean | Contract$applicationArgs<ExtArgs>
+    householdAcknowledgments?: boolean | Contract$householdAcknowledgmentsArgs<ExtArgs>
+    _count?: boolean | ContractCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["contract"]>
 
   export type ContractSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -20800,9 +20980,16 @@ export namespace Prisma {
     kittenId?: boolean
     fosterId?: boolean
     applicationId?: boolean
+    emergencyContactName?: boolean
+    emergencyContactPhone?: boolean
     documentVersion?: boolean
     signedPdfUrl?: boolean
     signatureAudit?: boolean
+    signatureImageUrl?: boolean
+    signerNameAtSigning?: boolean
+    signedIpAddress?: boolean
+    frozenAgreementText?: boolean
+    pdfUrl?: boolean
     status?: boolean
     signedAt?: boolean
     createdAt?: boolean
@@ -20824,9 +21011,16 @@ export namespace Prisma {
     kittenId?: boolean
     fosterId?: boolean
     applicationId?: boolean
+    emergencyContactName?: boolean
+    emergencyContactPhone?: boolean
     documentVersion?: boolean
     signedPdfUrl?: boolean
     signatureAudit?: boolean
+    signatureImageUrl?: boolean
+    signerNameAtSigning?: boolean
+    signedIpAddress?: boolean
+    frozenAgreementText?: boolean
+    pdfUrl?: boolean
     status?: boolean
     signedAt?: boolean
     createdAt?: boolean
@@ -20848,19 +21042,28 @@ export namespace Prisma {
     kittenId?: boolean
     fosterId?: boolean
     applicationId?: boolean
+    emergencyContactName?: boolean
+    emergencyContactPhone?: boolean
     documentVersion?: boolean
     signedPdfUrl?: boolean
     signatureAudit?: boolean
+    signatureImageUrl?: boolean
+    signerNameAtSigning?: boolean
+    signedIpAddress?: boolean
+    frozenAgreementText?: boolean
+    pdfUrl?: boolean
     status?: boolean
     signedAt?: boolean
     createdAt?: boolean
   }
 
-  export type ContractOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "templateSlug" | "signerName" | "signerEmail" | "signerAddress" | "signerPhone" | "microchipNumber" | "kittenName" | "kittenId" | "fosterId" | "applicationId" | "documentVersion" | "signedPdfUrl" | "signatureAudit" | "status" | "signedAt" | "createdAt", ExtArgs["result"]["contract"]>
+  export type ContractOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "templateSlug" | "signerName" | "signerEmail" | "signerAddress" | "signerPhone" | "microchipNumber" | "kittenName" | "kittenId" | "fosterId" | "applicationId" | "emergencyContactName" | "emergencyContactPhone" | "documentVersion" | "signedPdfUrl" | "signatureAudit" | "signatureImageUrl" | "signerNameAtSigning" | "signedIpAddress" | "frozenAgreementText" | "pdfUrl" | "status" | "signedAt" | "createdAt", ExtArgs["result"]["contract"]>
   export type ContractInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     kitten?: boolean | Contract$kittenArgs<ExtArgs>
     foster?: boolean | Contract$fosterArgs<ExtArgs>
     application?: boolean | Contract$applicationArgs<ExtArgs>
+    householdAcknowledgments?: boolean | Contract$householdAcknowledgmentsArgs<ExtArgs>
+    _count?: boolean | ContractCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ContractIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     kitten?: boolean | Contract$kittenArgs<ExtArgs>
@@ -20879,6 +21082,7 @@ export namespace Prisma {
       kitten: Prisma.$KittenPayload<ExtArgs> | null
       foster: Prisma.$FosterPayload<ExtArgs> | null
       application: Prisma.$ApplicationPayload<ExtArgs> | null
+      householdAcknowledgments: Prisma.$ContractHouseholdAcknowledgmentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -20893,9 +21097,16 @@ export namespace Prisma {
       kittenId: number | null
       fosterId: number | null
       applicationId: number | null
+      emergencyContactName: string
+      emergencyContactPhone: string
       documentVersion: string
       signedPdfUrl: string
       signatureAudit: string
+      signatureImageUrl: string | null
+      signerNameAtSigning: string | null
+      signedIpAddress: string | null
+      frozenAgreementText: string | null
+      pdfUrl: string | null
       status: $Enums.ContractStatus
       signedAt: Date | null
       createdAt: Date
@@ -21296,6 +21507,7 @@ export namespace Prisma {
     kitten<T extends Contract$kittenArgs<ExtArgs> = {}>(args?: Subset<T, Contract$kittenArgs<ExtArgs>>): Prisma__KittenClient<$Result.GetResult<Prisma.$KittenPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     foster<T extends Contract$fosterArgs<ExtArgs> = {}>(args?: Subset<T, Contract$fosterArgs<ExtArgs>>): Prisma__FosterClient<$Result.GetResult<Prisma.$FosterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     application<T extends Contract$applicationArgs<ExtArgs> = {}>(args?: Subset<T, Contract$applicationArgs<ExtArgs>>): Prisma__ApplicationClient<$Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    householdAcknowledgments<T extends Contract$householdAcknowledgmentsArgs<ExtArgs> = {}>(args?: Subset<T, Contract$householdAcknowledgmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractHouseholdAcknowledgmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -21337,9 +21549,16 @@ export namespace Prisma {
     readonly kittenId: FieldRef<"Contract", 'Int'>
     readonly fosterId: FieldRef<"Contract", 'Int'>
     readonly applicationId: FieldRef<"Contract", 'Int'>
+    readonly emergencyContactName: FieldRef<"Contract", 'String'>
+    readonly emergencyContactPhone: FieldRef<"Contract", 'String'>
     readonly documentVersion: FieldRef<"Contract", 'String'>
     readonly signedPdfUrl: FieldRef<"Contract", 'String'>
     readonly signatureAudit: FieldRef<"Contract", 'String'>
+    readonly signatureImageUrl: FieldRef<"Contract", 'String'>
+    readonly signerNameAtSigning: FieldRef<"Contract", 'String'>
+    readonly signedIpAddress: FieldRef<"Contract", 'String'>
+    readonly frozenAgreementText: FieldRef<"Contract", 'String'>
+    readonly pdfUrl: FieldRef<"Contract", 'String'>
     readonly status: FieldRef<"Contract", 'ContractStatus'>
     readonly signedAt: FieldRef<"Contract", 'DateTime'>
     readonly createdAt: FieldRef<"Contract", 'DateTime'>
@@ -21796,6 +22015,30 @@ export namespace Prisma {
   }
 
   /**
+   * Contract.householdAcknowledgments
+   */
+  export type Contract$householdAcknowledgmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractHouseholdAcknowledgment
+     */
+    select?: ContractHouseholdAcknowledgmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContractHouseholdAcknowledgment
+     */
+    omit?: ContractHouseholdAcknowledgmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractHouseholdAcknowledgmentInclude<ExtArgs> | null
+    where?: ContractHouseholdAcknowledgmentWhereInput
+    orderBy?: ContractHouseholdAcknowledgmentOrderByWithRelationInput | ContractHouseholdAcknowledgmentOrderByWithRelationInput[]
+    cursor?: ContractHouseholdAcknowledgmentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ContractHouseholdAcknowledgmentScalarFieldEnum | ContractHouseholdAcknowledgmentScalarFieldEnum[]
+  }
+
+  /**
    * Contract without action
    */
   export type ContractDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -21811,6 +22054,1115 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: ContractInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ContractHouseholdAcknowledgment
+   */
+
+  export type AggregateContractHouseholdAcknowledgment = {
+    _count: ContractHouseholdAcknowledgmentCountAggregateOutputType | null
+    _avg: ContractHouseholdAcknowledgmentAvgAggregateOutputType | null
+    _sum: ContractHouseholdAcknowledgmentSumAggregateOutputType | null
+    _min: ContractHouseholdAcknowledgmentMinAggregateOutputType | null
+    _max: ContractHouseholdAcknowledgmentMaxAggregateOutputType | null
+  }
+
+  export type ContractHouseholdAcknowledgmentAvgAggregateOutputType = {
+    id: number | null
+    contractId: number | null
+  }
+
+  export type ContractHouseholdAcknowledgmentSumAggregateOutputType = {
+    id: number | null
+    contractId: number | null
+  }
+
+  export type ContractHouseholdAcknowledgmentMinAggregateOutputType = {
+    id: number | null
+    contractId: number | null
+    name: string | null
+    signatureImageUrl: string | null
+    signedAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type ContractHouseholdAcknowledgmentMaxAggregateOutputType = {
+    id: number | null
+    contractId: number | null
+    name: string | null
+    signatureImageUrl: string | null
+    signedAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type ContractHouseholdAcknowledgmentCountAggregateOutputType = {
+    id: number
+    contractId: number
+    name: number
+    signatureImageUrl: number
+    signedAt: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type ContractHouseholdAcknowledgmentAvgAggregateInputType = {
+    id?: true
+    contractId?: true
+  }
+
+  export type ContractHouseholdAcknowledgmentSumAggregateInputType = {
+    id?: true
+    contractId?: true
+  }
+
+  export type ContractHouseholdAcknowledgmentMinAggregateInputType = {
+    id?: true
+    contractId?: true
+    name?: true
+    signatureImageUrl?: true
+    signedAt?: true
+    createdAt?: true
+  }
+
+  export type ContractHouseholdAcknowledgmentMaxAggregateInputType = {
+    id?: true
+    contractId?: true
+    name?: true
+    signatureImageUrl?: true
+    signedAt?: true
+    createdAt?: true
+  }
+
+  export type ContractHouseholdAcknowledgmentCountAggregateInputType = {
+    id?: true
+    contractId?: true
+    name?: true
+    signatureImageUrl?: true
+    signedAt?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type ContractHouseholdAcknowledgmentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ContractHouseholdAcknowledgment to aggregate.
+     */
+    where?: ContractHouseholdAcknowledgmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ContractHouseholdAcknowledgments to fetch.
+     */
+    orderBy?: ContractHouseholdAcknowledgmentOrderByWithRelationInput | ContractHouseholdAcknowledgmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ContractHouseholdAcknowledgmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ContractHouseholdAcknowledgments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ContractHouseholdAcknowledgments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ContractHouseholdAcknowledgments
+    **/
+    _count?: true | ContractHouseholdAcknowledgmentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ContractHouseholdAcknowledgmentAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ContractHouseholdAcknowledgmentSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ContractHouseholdAcknowledgmentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ContractHouseholdAcknowledgmentMaxAggregateInputType
+  }
+
+  export type GetContractHouseholdAcknowledgmentAggregateType<T extends ContractHouseholdAcknowledgmentAggregateArgs> = {
+        [P in keyof T & keyof AggregateContractHouseholdAcknowledgment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateContractHouseholdAcknowledgment[P]>
+      : GetScalarType<T[P], AggregateContractHouseholdAcknowledgment[P]>
+  }
+
+
+
+
+  export type ContractHouseholdAcknowledgmentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ContractHouseholdAcknowledgmentWhereInput
+    orderBy?: ContractHouseholdAcknowledgmentOrderByWithAggregationInput | ContractHouseholdAcknowledgmentOrderByWithAggregationInput[]
+    by: ContractHouseholdAcknowledgmentScalarFieldEnum[] | ContractHouseholdAcknowledgmentScalarFieldEnum
+    having?: ContractHouseholdAcknowledgmentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ContractHouseholdAcknowledgmentCountAggregateInputType | true
+    _avg?: ContractHouseholdAcknowledgmentAvgAggregateInputType
+    _sum?: ContractHouseholdAcknowledgmentSumAggregateInputType
+    _min?: ContractHouseholdAcknowledgmentMinAggregateInputType
+    _max?: ContractHouseholdAcknowledgmentMaxAggregateInputType
+  }
+
+  export type ContractHouseholdAcknowledgmentGroupByOutputType = {
+    id: number
+    contractId: number
+    name: string
+    signatureImageUrl: string | null
+    signedAt: Date | null
+    createdAt: Date
+    _count: ContractHouseholdAcknowledgmentCountAggregateOutputType | null
+    _avg: ContractHouseholdAcknowledgmentAvgAggregateOutputType | null
+    _sum: ContractHouseholdAcknowledgmentSumAggregateOutputType | null
+    _min: ContractHouseholdAcknowledgmentMinAggregateOutputType | null
+    _max: ContractHouseholdAcknowledgmentMaxAggregateOutputType | null
+  }
+
+  type GetContractHouseholdAcknowledgmentGroupByPayload<T extends ContractHouseholdAcknowledgmentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ContractHouseholdAcknowledgmentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ContractHouseholdAcknowledgmentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ContractHouseholdAcknowledgmentGroupByOutputType[P]>
+            : GetScalarType<T[P], ContractHouseholdAcknowledgmentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ContractHouseholdAcknowledgmentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    contractId?: boolean
+    name?: boolean
+    signatureImageUrl?: boolean
+    signedAt?: boolean
+    createdAt?: boolean
+    contract?: boolean | ContractDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["contractHouseholdAcknowledgment"]>
+
+  export type ContractHouseholdAcknowledgmentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    contractId?: boolean
+    name?: boolean
+    signatureImageUrl?: boolean
+    signedAt?: boolean
+    createdAt?: boolean
+    contract?: boolean | ContractDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["contractHouseholdAcknowledgment"]>
+
+  export type ContractHouseholdAcknowledgmentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    contractId?: boolean
+    name?: boolean
+    signatureImageUrl?: boolean
+    signedAt?: boolean
+    createdAt?: boolean
+    contract?: boolean | ContractDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["contractHouseholdAcknowledgment"]>
+
+  export type ContractHouseholdAcknowledgmentSelectScalar = {
+    id?: boolean
+    contractId?: boolean
+    name?: boolean
+    signatureImageUrl?: boolean
+    signedAt?: boolean
+    createdAt?: boolean
+  }
+
+  export type ContractHouseholdAcknowledgmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "contractId" | "name" | "signatureImageUrl" | "signedAt" | "createdAt", ExtArgs["result"]["contractHouseholdAcknowledgment"]>
+  export type ContractHouseholdAcknowledgmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    contract?: boolean | ContractDefaultArgs<ExtArgs>
+  }
+  export type ContractHouseholdAcknowledgmentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    contract?: boolean | ContractDefaultArgs<ExtArgs>
+  }
+  export type ContractHouseholdAcknowledgmentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    contract?: boolean | ContractDefaultArgs<ExtArgs>
+  }
+
+  export type $ContractHouseholdAcknowledgmentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ContractHouseholdAcknowledgment"
+    objects: {
+      contract: Prisma.$ContractPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      contractId: number
+      name: string
+      signatureImageUrl: string | null
+      signedAt: Date | null
+      createdAt: Date
+    }, ExtArgs["result"]["contractHouseholdAcknowledgment"]>
+    composites: {}
+  }
+
+  type ContractHouseholdAcknowledgmentGetPayload<S extends boolean | null | undefined | ContractHouseholdAcknowledgmentDefaultArgs> = $Result.GetResult<Prisma.$ContractHouseholdAcknowledgmentPayload, S>
+
+  type ContractHouseholdAcknowledgmentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ContractHouseholdAcknowledgmentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ContractHouseholdAcknowledgmentCountAggregateInputType | true
+    }
+
+  export interface ContractHouseholdAcknowledgmentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ContractHouseholdAcknowledgment'], meta: { name: 'ContractHouseholdAcknowledgment' } }
+    /**
+     * Find zero or one ContractHouseholdAcknowledgment that matches the filter.
+     * @param {ContractHouseholdAcknowledgmentFindUniqueArgs} args - Arguments to find a ContractHouseholdAcknowledgment
+     * @example
+     * // Get one ContractHouseholdAcknowledgment
+     * const contractHouseholdAcknowledgment = await prisma.contractHouseholdAcknowledgment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ContractHouseholdAcknowledgmentFindUniqueArgs>(args: SelectSubset<T, ContractHouseholdAcknowledgmentFindUniqueArgs<ExtArgs>>): Prisma__ContractHouseholdAcknowledgmentClient<$Result.GetResult<Prisma.$ContractHouseholdAcknowledgmentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ContractHouseholdAcknowledgment that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ContractHouseholdAcknowledgmentFindUniqueOrThrowArgs} args - Arguments to find a ContractHouseholdAcknowledgment
+     * @example
+     * // Get one ContractHouseholdAcknowledgment
+     * const contractHouseholdAcknowledgment = await prisma.contractHouseholdAcknowledgment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ContractHouseholdAcknowledgmentFindUniqueOrThrowArgs>(args: SelectSubset<T, ContractHouseholdAcknowledgmentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ContractHouseholdAcknowledgmentClient<$Result.GetResult<Prisma.$ContractHouseholdAcknowledgmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ContractHouseholdAcknowledgment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractHouseholdAcknowledgmentFindFirstArgs} args - Arguments to find a ContractHouseholdAcknowledgment
+     * @example
+     * // Get one ContractHouseholdAcknowledgment
+     * const contractHouseholdAcknowledgment = await prisma.contractHouseholdAcknowledgment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ContractHouseholdAcknowledgmentFindFirstArgs>(args?: SelectSubset<T, ContractHouseholdAcknowledgmentFindFirstArgs<ExtArgs>>): Prisma__ContractHouseholdAcknowledgmentClient<$Result.GetResult<Prisma.$ContractHouseholdAcknowledgmentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ContractHouseholdAcknowledgment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractHouseholdAcknowledgmentFindFirstOrThrowArgs} args - Arguments to find a ContractHouseholdAcknowledgment
+     * @example
+     * // Get one ContractHouseholdAcknowledgment
+     * const contractHouseholdAcknowledgment = await prisma.contractHouseholdAcknowledgment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ContractHouseholdAcknowledgmentFindFirstOrThrowArgs>(args?: SelectSubset<T, ContractHouseholdAcknowledgmentFindFirstOrThrowArgs<ExtArgs>>): Prisma__ContractHouseholdAcknowledgmentClient<$Result.GetResult<Prisma.$ContractHouseholdAcknowledgmentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ContractHouseholdAcknowledgments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractHouseholdAcknowledgmentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ContractHouseholdAcknowledgments
+     * const contractHouseholdAcknowledgments = await prisma.contractHouseholdAcknowledgment.findMany()
+     * 
+     * // Get first 10 ContractHouseholdAcknowledgments
+     * const contractHouseholdAcknowledgments = await prisma.contractHouseholdAcknowledgment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const contractHouseholdAcknowledgmentWithIdOnly = await prisma.contractHouseholdAcknowledgment.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ContractHouseholdAcknowledgmentFindManyArgs>(args?: SelectSubset<T, ContractHouseholdAcknowledgmentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractHouseholdAcknowledgmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ContractHouseholdAcknowledgment.
+     * @param {ContractHouseholdAcknowledgmentCreateArgs} args - Arguments to create a ContractHouseholdAcknowledgment.
+     * @example
+     * // Create one ContractHouseholdAcknowledgment
+     * const ContractHouseholdAcknowledgment = await prisma.contractHouseholdAcknowledgment.create({
+     *   data: {
+     *     // ... data to create a ContractHouseholdAcknowledgment
+     *   }
+     * })
+     * 
+     */
+    create<T extends ContractHouseholdAcknowledgmentCreateArgs>(args: SelectSubset<T, ContractHouseholdAcknowledgmentCreateArgs<ExtArgs>>): Prisma__ContractHouseholdAcknowledgmentClient<$Result.GetResult<Prisma.$ContractHouseholdAcknowledgmentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ContractHouseholdAcknowledgments.
+     * @param {ContractHouseholdAcknowledgmentCreateManyArgs} args - Arguments to create many ContractHouseholdAcknowledgments.
+     * @example
+     * // Create many ContractHouseholdAcknowledgments
+     * const contractHouseholdAcknowledgment = await prisma.contractHouseholdAcknowledgment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ContractHouseholdAcknowledgmentCreateManyArgs>(args?: SelectSubset<T, ContractHouseholdAcknowledgmentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ContractHouseholdAcknowledgments and returns the data saved in the database.
+     * @param {ContractHouseholdAcknowledgmentCreateManyAndReturnArgs} args - Arguments to create many ContractHouseholdAcknowledgments.
+     * @example
+     * // Create many ContractHouseholdAcknowledgments
+     * const contractHouseholdAcknowledgment = await prisma.contractHouseholdAcknowledgment.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ContractHouseholdAcknowledgments and only return the `id`
+     * const contractHouseholdAcknowledgmentWithIdOnly = await prisma.contractHouseholdAcknowledgment.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ContractHouseholdAcknowledgmentCreateManyAndReturnArgs>(args?: SelectSubset<T, ContractHouseholdAcknowledgmentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractHouseholdAcknowledgmentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ContractHouseholdAcknowledgment.
+     * @param {ContractHouseholdAcknowledgmentDeleteArgs} args - Arguments to delete one ContractHouseholdAcknowledgment.
+     * @example
+     * // Delete one ContractHouseholdAcknowledgment
+     * const ContractHouseholdAcknowledgment = await prisma.contractHouseholdAcknowledgment.delete({
+     *   where: {
+     *     // ... filter to delete one ContractHouseholdAcknowledgment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ContractHouseholdAcknowledgmentDeleteArgs>(args: SelectSubset<T, ContractHouseholdAcknowledgmentDeleteArgs<ExtArgs>>): Prisma__ContractHouseholdAcknowledgmentClient<$Result.GetResult<Prisma.$ContractHouseholdAcknowledgmentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ContractHouseholdAcknowledgment.
+     * @param {ContractHouseholdAcknowledgmentUpdateArgs} args - Arguments to update one ContractHouseholdAcknowledgment.
+     * @example
+     * // Update one ContractHouseholdAcknowledgment
+     * const contractHouseholdAcknowledgment = await prisma.contractHouseholdAcknowledgment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ContractHouseholdAcknowledgmentUpdateArgs>(args: SelectSubset<T, ContractHouseholdAcknowledgmentUpdateArgs<ExtArgs>>): Prisma__ContractHouseholdAcknowledgmentClient<$Result.GetResult<Prisma.$ContractHouseholdAcknowledgmentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ContractHouseholdAcknowledgments.
+     * @param {ContractHouseholdAcknowledgmentDeleteManyArgs} args - Arguments to filter ContractHouseholdAcknowledgments to delete.
+     * @example
+     * // Delete a few ContractHouseholdAcknowledgments
+     * const { count } = await prisma.contractHouseholdAcknowledgment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ContractHouseholdAcknowledgmentDeleteManyArgs>(args?: SelectSubset<T, ContractHouseholdAcknowledgmentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ContractHouseholdAcknowledgments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractHouseholdAcknowledgmentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ContractHouseholdAcknowledgments
+     * const contractHouseholdAcknowledgment = await prisma.contractHouseholdAcknowledgment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ContractHouseholdAcknowledgmentUpdateManyArgs>(args: SelectSubset<T, ContractHouseholdAcknowledgmentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ContractHouseholdAcknowledgments and returns the data updated in the database.
+     * @param {ContractHouseholdAcknowledgmentUpdateManyAndReturnArgs} args - Arguments to update many ContractHouseholdAcknowledgments.
+     * @example
+     * // Update many ContractHouseholdAcknowledgments
+     * const contractHouseholdAcknowledgment = await prisma.contractHouseholdAcknowledgment.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ContractHouseholdAcknowledgments and only return the `id`
+     * const contractHouseholdAcknowledgmentWithIdOnly = await prisma.contractHouseholdAcknowledgment.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ContractHouseholdAcknowledgmentUpdateManyAndReturnArgs>(args: SelectSubset<T, ContractHouseholdAcknowledgmentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractHouseholdAcknowledgmentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ContractHouseholdAcknowledgment.
+     * @param {ContractHouseholdAcknowledgmentUpsertArgs} args - Arguments to update or create a ContractHouseholdAcknowledgment.
+     * @example
+     * // Update or create a ContractHouseholdAcknowledgment
+     * const contractHouseholdAcknowledgment = await prisma.contractHouseholdAcknowledgment.upsert({
+     *   create: {
+     *     // ... data to create a ContractHouseholdAcknowledgment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ContractHouseholdAcknowledgment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ContractHouseholdAcknowledgmentUpsertArgs>(args: SelectSubset<T, ContractHouseholdAcknowledgmentUpsertArgs<ExtArgs>>): Prisma__ContractHouseholdAcknowledgmentClient<$Result.GetResult<Prisma.$ContractHouseholdAcknowledgmentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ContractHouseholdAcknowledgments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractHouseholdAcknowledgmentCountArgs} args - Arguments to filter ContractHouseholdAcknowledgments to count.
+     * @example
+     * // Count the number of ContractHouseholdAcknowledgments
+     * const count = await prisma.contractHouseholdAcknowledgment.count({
+     *   where: {
+     *     // ... the filter for the ContractHouseholdAcknowledgments we want to count
+     *   }
+     * })
+    **/
+    count<T extends ContractHouseholdAcknowledgmentCountArgs>(
+      args?: Subset<T, ContractHouseholdAcknowledgmentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ContractHouseholdAcknowledgmentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ContractHouseholdAcknowledgment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractHouseholdAcknowledgmentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ContractHouseholdAcknowledgmentAggregateArgs>(args: Subset<T, ContractHouseholdAcknowledgmentAggregateArgs>): Prisma.PrismaPromise<GetContractHouseholdAcknowledgmentAggregateType<T>>
+
+    /**
+     * Group by ContractHouseholdAcknowledgment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContractHouseholdAcknowledgmentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ContractHouseholdAcknowledgmentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ContractHouseholdAcknowledgmentGroupByArgs['orderBy'] }
+        : { orderBy?: ContractHouseholdAcknowledgmentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ContractHouseholdAcknowledgmentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetContractHouseholdAcknowledgmentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ContractHouseholdAcknowledgment model
+   */
+  readonly fields: ContractHouseholdAcknowledgmentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ContractHouseholdAcknowledgment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ContractHouseholdAcknowledgmentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    contract<T extends ContractDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ContractDefaultArgs<ExtArgs>>): Prisma__ContractClient<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ContractHouseholdAcknowledgment model
+   */
+  interface ContractHouseholdAcknowledgmentFieldRefs {
+    readonly id: FieldRef<"ContractHouseholdAcknowledgment", 'Int'>
+    readonly contractId: FieldRef<"ContractHouseholdAcknowledgment", 'Int'>
+    readonly name: FieldRef<"ContractHouseholdAcknowledgment", 'String'>
+    readonly signatureImageUrl: FieldRef<"ContractHouseholdAcknowledgment", 'String'>
+    readonly signedAt: FieldRef<"ContractHouseholdAcknowledgment", 'DateTime'>
+    readonly createdAt: FieldRef<"ContractHouseholdAcknowledgment", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ContractHouseholdAcknowledgment findUnique
+   */
+  export type ContractHouseholdAcknowledgmentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractHouseholdAcknowledgment
+     */
+    select?: ContractHouseholdAcknowledgmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContractHouseholdAcknowledgment
+     */
+    omit?: ContractHouseholdAcknowledgmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractHouseholdAcknowledgmentInclude<ExtArgs> | null
+    /**
+     * Filter, which ContractHouseholdAcknowledgment to fetch.
+     */
+    where: ContractHouseholdAcknowledgmentWhereUniqueInput
+  }
+
+  /**
+   * ContractHouseholdAcknowledgment findUniqueOrThrow
+   */
+  export type ContractHouseholdAcknowledgmentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractHouseholdAcknowledgment
+     */
+    select?: ContractHouseholdAcknowledgmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContractHouseholdAcknowledgment
+     */
+    omit?: ContractHouseholdAcknowledgmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractHouseholdAcknowledgmentInclude<ExtArgs> | null
+    /**
+     * Filter, which ContractHouseholdAcknowledgment to fetch.
+     */
+    where: ContractHouseholdAcknowledgmentWhereUniqueInput
+  }
+
+  /**
+   * ContractHouseholdAcknowledgment findFirst
+   */
+  export type ContractHouseholdAcknowledgmentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractHouseholdAcknowledgment
+     */
+    select?: ContractHouseholdAcknowledgmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContractHouseholdAcknowledgment
+     */
+    omit?: ContractHouseholdAcknowledgmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractHouseholdAcknowledgmentInclude<ExtArgs> | null
+    /**
+     * Filter, which ContractHouseholdAcknowledgment to fetch.
+     */
+    where?: ContractHouseholdAcknowledgmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ContractHouseholdAcknowledgments to fetch.
+     */
+    orderBy?: ContractHouseholdAcknowledgmentOrderByWithRelationInput | ContractHouseholdAcknowledgmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ContractHouseholdAcknowledgments.
+     */
+    cursor?: ContractHouseholdAcknowledgmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ContractHouseholdAcknowledgments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ContractHouseholdAcknowledgments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ContractHouseholdAcknowledgments.
+     */
+    distinct?: ContractHouseholdAcknowledgmentScalarFieldEnum | ContractHouseholdAcknowledgmentScalarFieldEnum[]
+  }
+
+  /**
+   * ContractHouseholdAcknowledgment findFirstOrThrow
+   */
+  export type ContractHouseholdAcknowledgmentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractHouseholdAcknowledgment
+     */
+    select?: ContractHouseholdAcknowledgmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContractHouseholdAcknowledgment
+     */
+    omit?: ContractHouseholdAcknowledgmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractHouseholdAcknowledgmentInclude<ExtArgs> | null
+    /**
+     * Filter, which ContractHouseholdAcknowledgment to fetch.
+     */
+    where?: ContractHouseholdAcknowledgmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ContractHouseholdAcknowledgments to fetch.
+     */
+    orderBy?: ContractHouseholdAcknowledgmentOrderByWithRelationInput | ContractHouseholdAcknowledgmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ContractHouseholdAcknowledgments.
+     */
+    cursor?: ContractHouseholdAcknowledgmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ContractHouseholdAcknowledgments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ContractHouseholdAcknowledgments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ContractHouseholdAcknowledgments.
+     */
+    distinct?: ContractHouseholdAcknowledgmentScalarFieldEnum | ContractHouseholdAcknowledgmentScalarFieldEnum[]
+  }
+
+  /**
+   * ContractHouseholdAcknowledgment findMany
+   */
+  export type ContractHouseholdAcknowledgmentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractHouseholdAcknowledgment
+     */
+    select?: ContractHouseholdAcknowledgmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContractHouseholdAcknowledgment
+     */
+    omit?: ContractHouseholdAcknowledgmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractHouseholdAcknowledgmentInclude<ExtArgs> | null
+    /**
+     * Filter, which ContractHouseholdAcknowledgments to fetch.
+     */
+    where?: ContractHouseholdAcknowledgmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ContractHouseholdAcknowledgments to fetch.
+     */
+    orderBy?: ContractHouseholdAcknowledgmentOrderByWithRelationInput | ContractHouseholdAcknowledgmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ContractHouseholdAcknowledgments.
+     */
+    cursor?: ContractHouseholdAcknowledgmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ContractHouseholdAcknowledgments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ContractHouseholdAcknowledgments.
+     */
+    skip?: number
+    distinct?: ContractHouseholdAcknowledgmentScalarFieldEnum | ContractHouseholdAcknowledgmentScalarFieldEnum[]
+  }
+
+  /**
+   * ContractHouseholdAcknowledgment create
+   */
+  export type ContractHouseholdAcknowledgmentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractHouseholdAcknowledgment
+     */
+    select?: ContractHouseholdAcknowledgmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContractHouseholdAcknowledgment
+     */
+    omit?: ContractHouseholdAcknowledgmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractHouseholdAcknowledgmentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ContractHouseholdAcknowledgment.
+     */
+    data: XOR<ContractHouseholdAcknowledgmentCreateInput, ContractHouseholdAcknowledgmentUncheckedCreateInput>
+  }
+
+  /**
+   * ContractHouseholdAcknowledgment createMany
+   */
+  export type ContractHouseholdAcknowledgmentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ContractHouseholdAcknowledgments.
+     */
+    data: ContractHouseholdAcknowledgmentCreateManyInput | ContractHouseholdAcknowledgmentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ContractHouseholdAcknowledgment createManyAndReturn
+   */
+  export type ContractHouseholdAcknowledgmentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractHouseholdAcknowledgment
+     */
+    select?: ContractHouseholdAcknowledgmentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContractHouseholdAcknowledgment
+     */
+    omit?: ContractHouseholdAcknowledgmentOmit<ExtArgs> | null
+    /**
+     * The data used to create many ContractHouseholdAcknowledgments.
+     */
+    data: ContractHouseholdAcknowledgmentCreateManyInput | ContractHouseholdAcknowledgmentCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractHouseholdAcknowledgmentIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ContractHouseholdAcknowledgment update
+   */
+  export type ContractHouseholdAcknowledgmentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractHouseholdAcknowledgment
+     */
+    select?: ContractHouseholdAcknowledgmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContractHouseholdAcknowledgment
+     */
+    omit?: ContractHouseholdAcknowledgmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractHouseholdAcknowledgmentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ContractHouseholdAcknowledgment.
+     */
+    data: XOR<ContractHouseholdAcknowledgmentUpdateInput, ContractHouseholdAcknowledgmentUncheckedUpdateInput>
+    /**
+     * Choose, which ContractHouseholdAcknowledgment to update.
+     */
+    where: ContractHouseholdAcknowledgmentWhereUniqueInput
+  }
+
+  /**
+   * ContractHouseholdAcknowledgment updateMany
+   */
+  export type ContractHouseholdAcknowledgmentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ContractHouseholdAcknowledgments.
+     */
+    data: XOR<ContractHouseholdAcknowledgmentUpdateManyMutationInput, ContractHouseholdAcknowledgmentUncheckedUpdateManyInput>
+    /**
+     * Filter which ContractHouseholdAcknowledgments to update
+     */
+    where?: ContractHouseholdAcknowledgmentWhereInput
+    /**
+     * Limit how many ContractHouseholdAcknowledgments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ContractHouseholdAcknowledgment updateManyAndReturn
+   */
+  export type ContractHouseholdAcknowledgmentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractHouseholdAcknowledgment
+     */
+    select?: ContractHouseholdAcknowledgmentSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContractHouseholdAcknowledgment
+     */
+    omit?: ContractHouseholdAcknowledgmentOmit<ExtArgs> | null
+    /**
+     * The data used to update ContractHouseholdAcknowledgments.
+     */
+    data: XOR<ContractHouseholdAcknowledgmentUpdateManyMutationInput, ContractHouseholdAcknowledgmentUncheckedUpdateManyInput>
+    /**
+     * Filter which ContractHouseholdAcknowledgments to update
+     */
+    where?: ContractHouseholdAcknowledgmentWhereInput
+    /**
+     * Limit how many ContractHouseholdAcknowledgments to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractHouseholdAcknowledgmentIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ContractHouseholdAcknowledgment upsert
+   */
+  export type ContractHouseholdAcknowledgmentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractHouseholdAcknowledgment
+     */
+    select?: ContractHouseholdAcknowledgmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContractHouseholdAcknowledgment
+     */
+    omit?: ContractHouseholdAcknowledgmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractHouseholdAcknowledgmentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ContractHouseholdAcknowledgment to update in case it exists.
+     */
+    where: ContractHouseholdAcknowledgmentWhereUniqueInput
+    /**
+     * In case the ContractHouseholdAcknowledgment found by the `where` argument doesn't exist, create a new ContractHouseholdAcknowledgment with this data.
+     */
+    create: XOR<ContractHouseholdAcknowledgmentCreateInput, ContractHouseholdAcknowledgmentUncheckedCreateInput>
+    /**
+     * In case the ContractHouseholdAcknowledgment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ContractHouseholdAcknowledgmentUpdateInput, ContractHouseholdAcknowledgmentUncheckedUpdateInput>
+  }
+
+  /**
+   * ContractHouseholdAcknowledgment delete
+   */
+  export type ContractHouseholdAcknowledgmentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractHouseholdAcknowledgment
+     */
+    select?: ContractHouseholdAcknowledgmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContractHouseholdAcknowledgment
+     */
+    omit?: ContractHouseholdAcknowledgmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractHouseholdAcknowledgmentInclude<ExtArgs> | null
+    /**
+     * Filter which ContractHouseholdAcknowledgment to delete.
+     */
+    where: ContractHouseholdAcknowledgmentWhereUniqueInput
+  }
+
+  /**
+   * ContractHouseholdAcknowledgment deleteMany
+   */
+  export type ContractHouseholdAcknowledgmentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ContractHouseholdAcknowledgments to delete
+     */
+    where?: ContractHouseholdAcknowledgmentWhereInput
+    /**
+     * Limit how many ContractHouseholdAcknowledgments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ContractHouseholdAcknowledgment without action
+   */
+  export type ContractHouseholdAcknowledgmentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContractHouseholdAcknowledgment
+     */
+    select?: ContractHouseholdAcknowledgmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContractHouseholdAcknowledgment
+     */
+    omit?: ContractHouseholdAcknowledgmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractHouseholdAcknowledgmentInclude<ExtArgs> | null
   }
 
 
@@ -40196,6 +41548,8 @@ export namespace Prisma {
     id: number | null
     orgName: string | null
     orgEin: string | null
+    orgLogoUrl: string | null
+    orgSignatureUrl: string | null
     contactPhone: string | null
     contactEmail: string | null
     contactAddress: string | null
@@ -40233,6 +41587,8 @@ export namespace Prisma {
     id: number | null
     orgName: string | null
     orgEin: string | null
+    orgLogoUrl: string | null
+    orgSignatureUrl: string | null
     contactPhone: string | null
     contactEmail: string | null
     contactAddress: string | null
@@ -40270,6 +41626,8 @@ export namespace Prisma {
     id: number
     orgName: number
     orgEin: number
+    orgLogoUrl: number
+    orgSignatureUrl: number
     contactPhone: number
     contactEmail: number
     contactAddress: number
@@ -40321,6 +41679,8 @@ export namespace Prisma {
     id?: true
     orgName?: true
     orgEin?: true
+    orgLogoUrl?: true
+    orgSignatureUrl?: true
     contactPhone?: true
     contactEmail?: true
     contactAddress?: true
@@ -40358,6 +41718,8 @@ export namespace Prisma {
     id?: true
     orgName?: true
     orgEin?: true
+    orgLogoUrl?: true
+    orgSignatureUrl?: true
     contactPhone?: true
     contactEmail?: true
     contactAddress?: true
@@ -40395,6 +41757,8 @@ export namespace Prisma {
     id?: true
     orgName?: true
     orgEin?: true
+    orgLogoUrl?: true
+    orgSignatureUrl?: true
     contactPhone?: true
     contactEmail?: true
     contactAddress?: true
@@ -40519,6 +41883,8 @@ export namespace Prisma {
     id: number
     orgName: string
     orgEin: string
+    orgLogoUrl: string
+    orgSignatureUrl: string
     contactPhone: string
     contactEmail: string
     contactAddress: string
@@ -40575,6 +41941,8 @@ export namespace Prisma {
     id?: boolean
     orgName?: boolean
     orgEin?: boolean
+    orgLogoUrl?: boolean
+    orgSignatureUrl?: boolean
     contactPhone?: boolean
     contactEmail?: boolean
     contactAddress?: boolean
@@ -40612,6 +41980,8 @@ export namespace Prisma {
     id?: boolean
     orgName?: boolean
     orgEin?: boolean
+    orgLogoUrl?: boolean
+    orgSignatureUrl?: boolean
     contactPhone?: boolean
     contactEmail?: boolean
     contactAddress?: boolean
@@ -40649,6 +42019,8 @@ export namespace Prisma {
     id?: boolean
     orgName?: boolean
     orgEin?: boolean
+    orgLogoUrl?: boolean
+    orgSignatureUrl?: boolean
     contactPhone?: boolean
     contactEmail?: boolean
     contactAddress?: boolean
@@ -40686,6 +42058,8 @@ export namespace Prisma {
     id?: boolean
     orgName?: boolean
     orgEin?: boolean
+    orgLogoUrl?: boolean
+    orgSignatureUrl?: boolean
     contactPhone?: boolean
     contactEmail?: boolean
     contactAddress?: boolean
@@ -40719,7 +42093,7 @@ export namespace Prisma {
     venmoHandle?: boolean
   }
 
-  export type SettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orgName" | "orgEin" | "contactPhone" | "contactEmail" | "contactAddress" | "missionStatement" | "defaultDonationAmount" | "amazonWishlistUrl" | "chewyWishlistUrl" | "facebookUrl" | "instagramUrl" | "socialPostingEnabled" | "facebookPageId" | "facebookPageAccessToken" | "instagramBusinessAccountId" | "groqApiKey" | "groqModel" | "aiEnabled" | "emailsEnabled" | "smtpHost" | "smtpPort" | "smtpSecure" | "smtpUser" | "smtpPass" | "fromEmail" | "fromName" | "adminNotifyEmail" | "donationWidgetCode" | "donatePageLive" | "paypalLink" | "stripeLink" | "venmoQrCodeUrl" | "venmoHandle", ExtArgs["result"]["settings"]>
+  export type SettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orgName" | "orgEin" | "orgLogoUrl" | "orgSignatureUrl" | "contactPhone" | "contactEmail" | "contactAddress" | "missionStatement" | "defaultDonationAmount" | "amazonWishlistUrl" | "chewyWishlistUrl" | "facebookUrl" | "instagramUrl" | "socialPostingEnabled" | "facebookPageId" | "facebookPageAccessToken" | "instagramBusinessAccountId" | "groqApiKey" | "groqModel" | "aiEnabled" | "emailsEnabled" | "smtpHost" | "smtpPort" | "smtpSecure" | "smtpUser" | "smtpPass" | "fromEmail" | "fromName" | "adminNotifyEmail" | "donationWidgetCode" | "donatePageLive" | "paypalLink" | "stripeLink" | "venmoQrCodeUrl" | "venmoHandle", ExtArgs["result"]["settings"]>
 
   export type $SettingsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Settings"
@@ -40728,6 +42102,8 @@ export namespace Prisma {
       id: number
       orgName: string
       orgEin: string
+      orgLogoUrl: string
+      orgSignatureUrl: string
       contactPhone: string
       contactEmail: string
       contactAddress: string
@@ -41185,6 +42561,8 @@ export namespace Prisma {
     readonly id: FieldRef<"Settings", 'Int'>
     readonly orgName: FieldRef<"Settings", 'String'>
     readonly orgEin: FieldRef<"Settings", 'String'>
+    readonly orgLogoUrl: FieldRef<"Settings", 'String'>
+    readonly orgSignatureUrl: FieldRef<"Settings", 'String'>
     readonly contactPhone: FieldRef<"Settings", 'String'>
     readonly contactEmail: FieldRef<"Settings", 'String'>
     readonly contactAddress: FieldRef<"Settings", 'String'>
@@ -47373,15 +48751,34 @@ export namespace Prisma {
     kittenId: 'kittenId',
     fosterId: 'fosterId',
     applicationId: 'applicationId',
+    emergencyContactName: 'emergencyContactName',
+    emergencyContactPhone: 'emergencyContactPhone',
     documentVersion: 'documentVersion',
     signedPdfUrl: 'signedPdfUrl',
     signatureAudit: 'signatureAudit',
+    signatureImageUrl: 'signatureImageUrl',
+    signerNameAtSigning: 'signerNameAtSigning',
+    signedIpAddress: 'signedIpAddress',
+    frozenAgreementText: 'frozenAgreementText',
+    pdfUrl: 'pdfUrl',
     status: 'status',
     signedAt: 'signedAt',
     createdAt: 'createdAt'
   };
 
   export type ContractScalarFieldEnum = (typeof ContractScalarFieldEnum)[keyof typeof ContractScalarFieldEnum]
+
+
+  export const ContractHouseholdAcknowledgmentScalarFieldEnum: {
+    id: 'id',
+    contractId: 'contractId',
+    name: 'name',
+    signatureImageUrl: 'signatureImageUrl',
+    signedAt: 'signedAt',
+    createdAt: 'createdAt'
+  };
+
+  export type ContractHouseholdAcknowledgmentScalarFieldEnum = (typeof ContractHouseholdAcknowledgmentScalarFieldEnum)[keyof typeof ContractHouseholdAcknowledgmentScalarFieldEnum]
 
 
   export const FosterOnboardingScalarFieldEnum: {
@@ -47590,6 +48987,8 @@ export namespace Prisma {
     id: 'id',
     orgName: 'orgName',
     orgEin: 'orgEin',
+    orgLogoUrl: 'orgLogoUrl',
+    orgSignatureUrl: 'orgSignatureUrl',
     contactPhone: 'contactPhone',
     contactEmail: 'contactEmail',
     contactAddress: 'contactAddress',
@@ -49076,15 +50475,23 @@ export namespace Prisma {
     kittenId?: IntNullableFilter<"Contract"> | number | null
     fosterId?: IntNullableFilter<"Contract"> | number | null
     applicationId?: IntNullableFilter<"Contract"> | number | null
+    emergencyContactName?: StringFilter<"Contract"> | string
+    emergencyContactPhone?: StringFilter<"Contract"> | string
     documentVersion?: StringFilter<"Contract"> | string
     signedPdfUrl?: StringFilter<"Contract"> | string
     signatureAudit?: StringFilter<"Contract"> | string
+    signatureImageUrl?: StringNullableFilter<"Contract"> | string | null
+    signerNameAtSigning?: StringNullableFilter<"Contract"> | string | null
+    signedIpAddress?: StringNullableFilter<"Contract"> | string | null
+    frozenAgreementText?: StringNullableFilter<"Contract"> | string | null
+    pdfUrl?: StringNullableFilter<"Contract"> | string | null
     status?: EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
     signedAt?: DateTimeNullableFilter<"Contract"> | Date | string | null
     createdAt?: DateTimeFilter<"Contract"> | Date | string
     kitten?: XOR<KittenNullableScalarRelationFilter, KittenWhereInput> | null
     foster?: XOR<FosterNullableScalarRelationFilter, FosterWhereInput> | null
     application?: XOR<ApplicationNullableScalarRelationFilter, ApplicationWhereInput> | null
+    householdAcknowledgments?: ContractHouseholdAcknowledgmentListRelationFilter
   }
 
   export type ContractOrderByWithRelationInput = {
@@ -49100,15 +50507,23 @@ export namespace Prisma {
     kittenId?: SortOrderInput | SortOrder
     fosterId?: SortOrderInput | SortOrder
     applicationId?: SortOrderInput | SortOrder
+    emergencyContactName?: SortOrder
+    emergencyContactPhone?: SortOrder
     documentVersion?: SortOrder
     signedPdfUrl?: SortOrder
     signatureAudit?: SortOrder
+    signatureImageUrl?: SortOrderInput | SortOrder
+    signerNameAtSigning?: SortOrderInput | SortOrder
+    signedIpAddress?: SortOrderInput | SortOrder
+    frozenAgreementText?: SortOrderInput | SortOrder
+    pdfUrl?: SortOrderInput | SortOrder
     status?: SortOrder
     signedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     kitten?: KittenOrderByWithRelationInput
     foster?: FosterOrderByWithRelationInput
     application?: ApplicationOrderByWithRelationInput
+    householdAcknowledgments?: ContractHouseholdAcknowledgmentOrderByRelationAggregateInput
   }
 
   export type ContractWhereUniqueInput = Prisma.AtLeast<{
@@ -49127,15 +50542,23 @@ export namespace Prisma {
     kittenId?: IntNullableFilter<"Contract"> | number | null
     fosterId?: IntNullableFilter<"Contract"> | number | null
     applicationId?: IntNullableFilter<"Contract"> | number | null
+    emergencyContactName?: StringFilter<"Contract"> | string
+    emergencyContactPhone?: StringFilter<"Contract"> | string
     documentVersion?: StringFilter<"Contract"> | string
     signedPdfUrl?: StringFilter<"Contract"> | string
     signatureAudit?: StringFilter<"Contract"> | string
+    signatureImageUrl?: StringNullableFilter<"Contract"> | string | null
+    signerNameAtSigning?: StringNullableFilter<"Contract"> | string | null
+    signedIpAddress?: StringNullableFilter<"Contract"> | string | null
+    frozenAgreementText?: StringNullableFilter<"Contract"> | string | null
+    pdfUrl?: StringNullableFilter<"Contract"> | string | null
     status?: EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
     signedAt?: DateTimeNullableFilter<"Contract"> | Date | string | null
     createdAt?: DateTimeFilter<"Contract"> | Date | string
     kitten?: XOR<KittenNullableScalarRelationFilter, KittenWhereInput> | null
     foster?: XOR<FosterNullableScalarRelationFilter, FosterWhereInput> | null
     application?: XOR<ApplicationNullableScalarRelationFilter, ApplicationWhereInput> | null
+    householdAcknowledgments?: ContractHouseholdAcknowledgmentListRelationFilter
   }, "id">
 
   export type ContractOrderByWithAggregationInput = {
@@ -49151,9 +50574,16 @@ export namespace Prisma {
     kittenId?: SortOrderInput | SortOrder
     fosterId?: SortOrderInput | SortOrder
     applicationId?: SortOrderInput | SortOrder
+    emergencyContactName?: SortOrder
+    emergencyContactPhone?: SortOrder
     documentVersion?: SortOrder
     signedPdfUrl?: SortOrder
     signatureAudit?: SortOrder
+    signatureImageUrl?: SortOrderInput | SortOrder
+    signerNameAtSigning?: SortOrderInput | SortOrder
+    signedIpAddress?: SortOrderInput | SortOrder
+    frozenAgreementText?: SortOrderInput | SortOrder
+    pdfUrl?: SortOrderInput | SortOrder
     status?: SortOrder
     signedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -49180,12 +50610,81 @@ export namespace Prisma {
     kittenId?: IntNullableWithAggregatesFilter<"Contract"> | number | null
     fosterId?: IntNullableWithAggregatesFilter<"Contract"> | number | null
     applicationId?: IntNullableWithAggregatesFilter<"Contract"> | number | null
+    emergencyContactName?: StringWithAggregatesFilter<"Contract"> | string
+    emergencyContactPhone?: StringWithAggregatesFilter<"Contract"> | string
     documentVersion?: StringWithAggregatesFilter<"Contract"> | string
     signedPdfUrl?: StringWithAggregatesFilter<"Contract"> | string
     signatureAudit?: StringWithAggregatesFilter<"Contract"> | string
+    signatureImageUrl?: StringNullableWithAggregatesFilter<"Contract"> | string | null
+    signerNameAtSigning?: StringNullableWithAggregatesFilter<"Contract"> | string | null
+    signedIpAddress?: StringNullableWithAggregatesFilter<"Contract"> | string | null
+    frozenAgreementText?: StringNullableWithAggregatesFilter<"Contract"> | string | null
+    pdfUrl?: StringNullableWithAggregatesFilter<"Contract"> | string | null
     status?: EnumContractStatusWithAggregatesFilter<"Contract"> | $Enums.ContractStatus
     signedAt?: DateTimeNullableWithAggregatesFilter<"Contract"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Contract"> | Date | string
+  }
+
+  export type ContractHouseholdAcknowledgmentWhereInput = {
+    AND?: ContractHouseholdAcknowledgmentWhereInput | ContractHouseholdAcknowledgmentWhereInput[]
+    OR?: ContractHouseholdAcknowledgmentWhereInput[]
+    NOT?: ContractHouseholdAcknowledgmentWhereInput | ContractHouseholdAcknowledgmentWhereInput[]
+    id?: IntFilter<"ContractHouseholdAcknowledgment"> | number
+    contractId?: IntFilter<"ContractHouseholdAcknowledgment"> | number
+    name?: StringFilter<"ContractHouseholdAcknowledgment"> | string
+    signatureImageUrl?: StringNullableFilter<"ContractHouseholdAcknowledgment"> | string | null
+    signedAt?: DateTimeNullableFilter<"ContractHouseholdAcknowledgment"> | Date | string | null
+    createdAt?: DateTimeFilter<"ContractHouseholdAcknowledgment"> | Date | string
+    contract?: XOR<ContractScalarRelationFilter, ContractWhereInput>
+  }
+
+  export type ContractHouseholdAcknowledgmentOrderByWithRelationInput = {
+    id?: SortOrder
+    contractId?: SortOrder
+    name?: SortOrder
+    signatureImageUrl?: SortOrderInput | SortOrder
+    signedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    contract?: ContractOrderByWithRelationInput
+  }
+
+  export type ContractHouseholdAcknowledgmentWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: ContractHouseholdAcknowledgmentWhereInput | ContractHouseholdAcknowledgmentWhereInput[]
+    OR?: ContractHouseholdAcknowledgmentWhereInput[]
+    NOT?: ContractHouseholdAcknowledgmentWhereInput | ContractHouseholdAcknowledgmentWhereInput[]
+    contractId?: IntFilter<"ContractHouseholdAcknowledgment"> | number
+    name?: StringFilter<"ContractHouseholdAcknowledgment"> | string
+    signatureImageUrl?: StringNullableFilter<"ContractHouseholdAcknowledgment"> | string | null
+    signedAt?: DateTimeNullableFilter<"ContractHouseholdAcknowledgment"> | Date | string | null
+    createdAt?: DateTimeFilter<"ContractHouseholdAcknowledgment"> | Date | string
+    contract?: XOR<ContractScalarRelationFilter, ContractWhereInput>
+  }, "id">
+
+  export type ContractHouseholdAcknowledgmentOrderByWithAggregationInput = {
+    id?: SortOrder
+    contractId?: SortOrder
+    name?: SortOrder
+    signatureImageUrl?: SortOrderInput | SortOrder
+    signedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: ContractHouseholdAcknowledgmentCountOrderByAggregateInput
+    _avg?: ContractHouseholdAcknowledgmentAvgOrderByAggregateInput
+    _max?: ContractHouseholdAcknowledgmentMaxOrderByAggregateInput
+    _min?: ContractHouseholdAcknowledgmentMinOrderByAggregateInput
+    _sum?: ContractHouseholdAcknowledgmentSumOrderByAggregateInput
+  }
+
+  export type ContractHouseholdAcknowledgmentScalarWhereWithAggregatesInput = {
+    AND?: ContractHouseholdAcknowledgmentScalarWhereWithAggregatesInput | ContractHouseholdAcknowledgmentScalarWhereWithAggregatesInput[]
+    OR?: ContractHouseholdAcknowledgmentScalarWhereWithAggregatesInput[]
+    NOT?: ContractHouseholdAcknowledgmentScalarWhereWithAggregatesInput | ContractHouseholdAcknowledgmentScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"ContractHouseholdAcknowledgment"> | number
+    contractId?: IntWithAggregatesFilter<"ContractHouseholdAcknowledgment"> | number
+    name?: StringWithAggregatesFilter<"ContractHouseholdAcknowledgment"> | string
+    signatureImageUrl?: StringNullableWithAggregatesFilter<"ContractHouseholdAcknowledgment"> | string | null
+    signedAt?: DateTimeNullableWithAggregatesFilter<"ContractHouseholdAcknowledgment"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"ContractHouseholdAcknowledgment"> | Date | string
   }
 
   export type FosterOnboardingWhereInput = {
@@ -50296,6 +51795,8 @@ export namespace Prisma {
     id?: IntFilter<"Settings"> | number
     orgName?: StringFilter<"Settings"> | string
     orgEin?: StringFilter<"Settings"> | string
+    orgLogoUrl?: StringFilter<"Settings"> | string
+    orgSignatureUrl?: StringFilter<"Settings"> | string
     contactPhone?: StringFilter<"Settings"> | string
     contactEmail?: StringFilter<"Settings"> | string
     contactAddress?: StringFilter<"Settings"> | string
@@ -50333,6 +51834,8 @@ export namespace Prisma {
     id?: SortOrder
     orgName?: SortOrder
     orgEin?: SortOrder
+    orgLogoUrl?: SortOrder
+    orgSignatureUrl?: SortOrder
     contactPhone?: SortOrder
     contactEmail?: SortOrder
     contactAddress?: SortOrder
@@ -50373,6 +51876,8 @@ export namespace Prisma {
     NOT?: SettingsWhereInput | SettingsWhereInput[]
     orgName?: StringFilter<"Settings"> | string
     orgEin?: StringFilter<"Settings"> | string
+    orgLogoUrl?: StringFilter<"Settings"> | string
+    orgSignatureUrl?: StringFilter<"Settings"> | string
     contactPhone?: StringFilter<"Settings"> | string
     contactEmail?: StringFilter<"Settings"> | string
     contactAddress?: StringFilter<"Settings"> | string
@@ -50410,6 +51915,8 @@ export namespace Prisma {
     id?: SortOrder
     orgName?: SortOrder
     orgEin?: SortOrder
+    orgLogoUrl?: SortOrder
+    orgSignatureUrl?: SortOrder
     contactPhone?: SortOrder
     contactEmail?: SortOrder
     contactAddress?: SortOrder
@@ -50455,6 +51962,8 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Settings"> | number
     orgName?: StringWithAggregatesFilter<"Settings"> | string
     orgEin?: StringWithAggregatesFilter<"Settings"> | string
+    orgLogoUrl?: StringWithAggregatesFilter<"Settings"> | string
+    orgSignatureUrl?: StringWithAggregatesFilter<"Settings"> | string
     contactPhone?: StringWithAggregatesFilter<"Settings"> | string
     contactEmail?: StringWithAggregatesFilter<"Settings"> | string
     contactAddress?: StringWithAggregatesFilter<"Settings"> | string
@@ -52133,15 +53642,23 @@ export namespace Prisma {
     signerPhone?: string
     microchipNumber?: string
     kittenName?: string
+    emergencyContactName?: string
+    emergencyContactPhone?: string
     documentVersion: string
     signedPdfUrl?: string
     signatureAudit?: string
+    signatureImageUrl?: string | null
+    signerNameAtSigning?: string | null
+    signedIpAddress?: string | null
+    frozenAgreementText?: string | null
+    pdfUrl?: string | null
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
     createdAt?: Date | string
     kitten?: KittenCreateNestedOneWithoutContractsInput
     foster?: FosterCreateNestedOneWithoutContractsInput
     application?: ApplicationCreateNestedOneWithoutContractsInput
+    householdAcknowledgments?: ContractHouseholdAcknowledgmentCreateNestedManyWithoutContractInput
   }
 
   export type ContractUncheckedCreateInput = {
@@ -52157,12 +53674,20 @@ export namespace Prisma {
     kittenId?: number | null
     fosterId?: number | null
     applicationId?: number | null
+    emergencyContactName?: string
+    emergencyContactPhone?: string
     documentVersion: string
     signedPdfUrl?: string
     signatureAudit?: string
+    signatureImageUrl?: string | null
+    signerNameAtSigning?: string | null
+    signedIpAddress?: string | null
+    frozenAgreementText?: string | null
+    pdfUrl?: string | null
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
     createdAt?: Date | string
+    householdAcknowledgments?: ContractHouseholdAcknowledgmentUncheckedCreateNestedManyWithoutContractInput
   }
 
   export type ContractUpdateInput = {
@@ -52174,15 +53699,23 @@ export namespace Prisma {
     signerPhone?: StringFieldUpdateOperationsInput | string
     microchipNumber?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
+    emergencyContactName?: StringFieldUpdateOperationsInput | string
+    emergencyContactPhone?: StringFieldUpdateOperationsInput | string
     documentVersion?: StringFieldUpdateOperationsInput | string
     signedPdfUrl?: StringFieldUpdateOperationsInput | string
     signatureAudit?: StringFieldUpdateOperationsInput | string
+    signatureImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    signerNameAtSigning?: NullableStringFieldUpdateOperationsInput | string | null
+    signedIpAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    frozenAgreementText?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     kitten?: KittenUpdateOneWithoutContractsNestedInput
     foster?: FosterUpdateOneWithoutContractsNestedInput
     application?: ApplicationUpdateOneWithoutContractsNestedInput
+    householdAcknowledgments?: ContractHouseholdAcknowledgmentUpdateManyWithoutContractNestedInput
   }
 
   export type ContractUncheckedUpdateInput = {
@@ -52198,12 +53731,20 @@ export namespace Prisma {
     kittenId?: NullableIntFieldUpdateOperationsInput | number | null
     fosterId?: NullableIntFieldUpdateOperationsInput | number | null
     applicationId?: NullableIntFieldUpdateOperationsInput | number | null
+    emergencyContactName?: StringFieldUpdateOperationsInput | string
+    emergencyContactPhone?: StringFieldUpdateOperationsInput | string
     documentVersion?: StringFieldUpdateOperationsInput | string
     signedPdfUrl?: StringFieldUpdateOperationsInput | string
     signatureAudit?: StringFieldUpdateOperationsInput | string
+    signatureImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    signerNameAtSigning?: NullableStringFieldUpdateOperationsInput | string | null
+    signedIpAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    frozenAgreementText?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    householdAcknowledgments?: ContractHouseholdAcknowledgmentUncheckedUpdateManyWithoutContractNestedInput
   }
 
   export type ContractCreateManyInput = {
@@ -52219,9 +53760,16 @@ export namespace Prisma {
     kittenId?: number | null
     fosterId?: number | null
     applicationId?: number | null
+    emergencyContactName?: string
+    emergencyContactPhone?: string
     documentVersion: string
     signedPdfUrl?: string
     signatureAudit?: string
+    signatureImageUrl?: string | null
+    signerNameAtSigning?: string | null
+    signedIpAddress?: string | null
+    frozenAgreementText?: string | null
+    pdfUrl?: string | null
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
     createdAt?: Date | string
@@ -52236,9 +53784,16 @@ export namespace Prisma {
     signerPhone?: StringFieldUpdateOperationsInput | string
     microchipNumber?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
+    emergencyContactName?: StringFieldUpdateOperationsInput | string
+    emergencyContactPhone?: StringFieldUpdateOperationsInput | string
     documentVersion?: StringFieldUpdateOperationsInput | string
     signedPdfUrl?: StringFieldUpdateOperationsInput | string
     signatureAudit?: StringFieldUpdateOperationsInput | string
+    signatureImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    signerNameAtSigning?: NullableStringFieldUpdateOperationsInput | string | null
+    signedIpAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    frozenAgreementText?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -52257,10 +53812,76 @@ export namespace Prisma {
     kittenId?: NullableIntFieldUpdateOperationsInput | number | null
     fosterId?: NullableIntFieldUpdateOperationsInput | number | null
     applicationId?: NullableIntFieldUpdateOperationsInput | number | null
+    emergencyContactName?: StringFieldUpdateOperationsInput | string
+    emergencyContactPhone?: StringFieldUpdateOperationsInput | string
     documentVersion?: StringFieldUpdateOperationsInput | string
     signedPdfUrl?: StringFieldUpdateOperationsInput | string
     signatureAudit?: StringFieldUpdateOperationsInput | string
+    signatureImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    signerNameAtSigning?: NullableStringFieldUpdateOperationsInput | string | null
+    signedIpAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    frozenAgreementText?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContractHouseholdAcknowledgmentCreateInput = {
+    name: string
+    signatureImageUrl?: string | null
+    signedAt?: Date | string | null
+    createdAt?: Date | string
+    contract: ContractCreateNestedOneWithoutHouseholdAcknowledgmentsInput
+  }
+
+  export type ContractHouseholdAcknowledgmentUncheckedCreateInput = {
+    id?: number
+    contractId: number
+    name: string
+    signatureImageUrl?: string | null
+    signedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type ContractHouseholdAcknowledgmentUpdateInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    signatureImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contract?: ContractUpdateOneRequiredWithoutHouseholdAcknowledgmentsNestedInput
+  }
+
+  export type ContractHouseholdAcknowledgmentUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    contractId?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    signatureImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContractHouseholdAcknowledgmentCreateManyInput = {
+    id?: number
+    contractId: number
+    name: string
+    signatureImageUrl?: string | null
+    signedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type ContractHouseholdAcknowledgmentUpdateManyMutationInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    signatureImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContractHouseholdAcknowledgmentUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    contractId?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    signatureImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -53349,6 +54970,8 @@ export namespace Prisma {
     id?: number
     orgName?: string
     orgEin?: string
+    orgLogoUrl?: string
+    orgSignatureUrl?: string
     contactPhone?: string
     contactEmail?: string
     contactAddress?: string
@@ -53386,6 +55009,8 @@ export namespace Prisma {
     id?: number
     orgName?: string
     orgEin?: string
+    orgLogoUrl?: string
+    orgSignatureUrl?: string
     contactPhone?: string
     contactEmail?: string
     contactAddress?: string
@@ -53423,6 +55048,8 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     orgName?: StringFieldUpdateOperationsInput | string
     orgEin?: StringFieldUpdateOperationsInput | string
+    orgLogoUrl?: StringFieldUpdateOperationsInput | string
+    orgSignatureUrl?: StringFieldUpdateOperationsInput | string
     contactPhone?: StringFieldUpdateOperationsInput | string
     contactEmail?: StringFieldUpdateOperationsInput | string
     contactAddress?: StringFieldUpdateOperationsInput | string
@@ -53460,6 +55087,8 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     orgName?: StringFieldUpdateOperationsInput | string
     orgEin?: StringFieldUpdateOperationsInput | string
+    orgLogoUrl?: StringFieldUpdateOperationsInput | string
+    orgSignatureUrl?: StringFieldUpdateOperationsInput | string
     contactPhone?: StringFieldUpdateOperationsInput | string
     contactEmail?: StringFieldUpdateOperationsInput | string
     contactAddress?: StringFieldUpdateOperationsInput | string
@@ -53497,6 +55126,8 @@ export namespace Prisma {
     id?: number
     orgName?: string
     orgEin?: string
+    orgLogoUrl?: string
+    orgSignatureUrl?: string
     contactPhone?: string
     contactEmail?: string
     contactAddress?: string
@@ -53534,6 +55165,8 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     orgName?: StringFieldUpdateOperationsInput | string
     orgEin?: StringFieldUpdateOperationsInput | string
+    orgLogoUrl?: StringFieldUpdateOperationsInput | string
+    orgSignatureUrl?: StringFieldUpdateOperationsInput | string
     contactPhone?: StringFieldUpdateOperationsInput | string
     contactEmail?: StringFieldUpdateOperationsInput | string
     contactAddress?: StringFieldUpdateOperationsInput | string
@@ -53571,6 +55204,8 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     orgName?: StringFieldUpdateOperationsInput | string
     orgEin?: StringFieldUpdateOperationsInput | string
+    orgLogoUrl?: StringFieldUpdateOperationsInput | string
+    orgSignatureUrl?: StringFieldUpdateOperationsInput | string
     contactPhone?: StringFieldUpdateOperationsInput | string
     contactEmail?: StringFieldUpdateOperationsInput | string
     contactAddress?: StringFieldUpdateOperationsInput | string
@@ -55116,6 +56751,16 @@ export namespace Prisma {
     isNot?: ApplicationWhereInput | null
   }
 
+  export type ContractHouseholdAcknowledgmentListRelationFilter = {
+    every?: ContractHouseholdAcknowledgmentWhereInput
+    some?: ContractHouseholdAcknowledgmentWhereInput
+    none?: ContractHouseholdAcknowledgmentWhereInput
+  }
+
+  export type ContractHouseholdAcknowledgmentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type ContractCountOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
@@ -55129,9 +56774,16 @@ export namespace Prisma {
     kittenId?: SortOrder
     fosterId?: SortOrder
     applicationId?: SortOrder
+    emergencyContactName?: SortOrder
+    emergencyContactPhone?: SortOrder
     documentVersion?: SortOrder
     signedPdfUrl?: SortOrder
     signatureAudit?: SortOrder
+    signatureImageUrl?: SortOrder
+    signerNameAtSigning?: SortOrder
+    signedIpAddress?: SortOrder
+    frozenAgreementText?: SortOrder
+    pdfUrl?: SortOrder
     status?: SortOrder
     signedAt?: SortOrder
     createdAt?: SortOrder
@@ -55157,9 +56809,16 @@ export namespace Prisma {
     kittenId?: SortOrder
     fosterId?: SortOrder
     applicationId?: SortOrder
+    emergencyContactName?: SortOrder
+    emergencyContactPhone?: SortOrder
     documentVersion?: SortOrder
     signedPdfUrl?: SortOrder
     signatureAudit?: SortOrder
+    signatureImageUrl?: SortOrder
+    signerNameAtSigning?: SortOrder
+    signedIpAddress?: SortOrder
+    frozenAgreementText?: SortOrder
+    pdfUrl?: SortOrder
     status?: SortOrder
     signedAt?: SortOrder
     createdAt?: SortOrder
@@ -55178,9 +56837,16 @@ export namespace Prisma {
     kittenId?: SortOrder
     fosterId?: SortOrder
     applicationId?: SortOrder
+    emergencyContactName?: SortOrder
+    emergencyContactPhone?: SortOrder
     documentVersion?: SortOrder
     signedPdfUrl?: SortOrder
     signatureAudit?: SortOrder
+    signatureImageUrl?: SortOrder
+    signerNameAtSigning?: SortOrder
+    signedIpAddress?: SortOrder
+    frozenAgreementText?: SortOrder
+    pdfUrl?: SortOrder
     status?: SortOrder
     signedAt?: SortOrder
     createdAt?: SortOrder
@@ -55201,6 +56867,48 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumContractStatusFilter<$PrismaModel>
     _max?: NestedEnumContractStatusFilter<$PrismaModel>
+  }
+
+  export type ContractScalarRelationFilter = {
+    is?: ContractWhereInput
+    isNot?: ContractWhereInput
+  }
+
+  export type ContractHouseholdAcknowledgmentCountOrderByAggregateInput = {
+    id?: SortOrder
+    contractId?: SortOrder
+    name?: SortOrder
+    signatureImageUrl?: SortOrder
+    signedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ContractHouseholdAcknowledgmentAvgOrderByAggregateInput = {
+    id?: SortOrder
+    contractId?: SortOrder
+  }
+
+  export type ContractHouseholdAcknowledgmentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    contractId?: SortOrder
+    name?: SortOrder
+    signatureImageUrl?: SortOrder
+    signedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ContractHouseholdAcknowledgmentMinOrderByAggregateInput = {
+    id?: SortOrder
+    contractId?: SortOrder
+    name?: SortOrder
+    signatureImageUrl?: SortOrder
+    signedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ContractHouseholdAcknowledgmentSumOrderByAggregateInput = {
+    id?: SortOrder
+    contractId?: SortOrder
   }
 
   export type EnumFosterOnboardingStatusFilter<$PrismaModel = never> = {
@@ -56047,6 +57755,8 @@ export namespace Prisma {
     id?: SortOrder
     orgName?: SortOrder
     orgEin?: SortOrder
+    orgLogoUrl?: SortOrder
+    orgSignatureUrl?: SortOrder
     contactPhone?: SortOrder
     contactEmail?: SortOrder
     contactAddress?: SortOrder
@@ -56090,6 +57800,8 @@ export namespace Prisma {
     id?: SortOrder
     orgName?: SortOrder
     orgEin?: SortOrder
+    orgLogoUrl?: SortOrder
+    orgSignatureUrl?: SortOrder
     contactPhone?: SortOrder
     contactEmail?: SortOrder
     contactAddress?: SortOrder
@@ -56127,6 +57839,8 @@ export namespace Prisma {
     id?: SortOrder
     orgName?: SortOrder
     orgEin?: SortOrder
+    orgLogoUrl?: SortOrder
+    orgSignatureUrl?: SortOrder
     contactPhone?: SortOrder
     contactEmail?: SortOrder
     contactAddress?: SortOrder
@@ -57533,6 +59247,20 @@ export namespace Prisma {
     connect?: ApplicationWhereUniqueInput
   }
 
+  export type ContractHouseholdAcknowledgmentCreateNestedManyWithoutContractInput = {
+    create?: XOR<ContractHouseholdAcknowledgmentCreateWithoutContractInput, ContractHouseholdAcknowledgmentUncheckedCreateWithoutContractInput> | ContractHouseholdAcknowledgmentCreateWithoutContractInput[] | ContractHouseholdAcknowledgmentUncheckedCreateWithoutContractInput[]
+    connectOrCreate?: ContractHouseholdAcknowledgmentCreateOrConnectWithoutContractInput | ContractHouseholdAcknowledgmentCreateOrConnectWithoutContractInput[]
+    createMany?: ContractHouseholdAcknowledgmentCreateManyContractInputEnvelope
+    connect?: ContractHouseholdAcknowledgmentWhereUniqueInput | ContractHouseholdAcknowledgmentWhereUniqueInput[]
+  }
+
+  export type ContractHouseholdAcknowledgmentUncheckedCreateNestedManyWithoutContractInput = {
+    create?: XOR<ContractHouseholdAcknowledgmentCreateWithoutContractInput, ContractHouseholdAcknowledgmentUncheckedCreateWithoutContractInput> | ContractHouseholdAcknowledgmentCreateWithoutContractInput[] | ContractHouseholdAcknowledgmentUncheckedCreateWithoutContractInput[]
+    connectOrCreate?: ContractHouseholdAcknowledgmentCreateOrConnectWithoutContractInput | ContractHouseholdAcknowledgmentCreateOrConnectWithoutContractInput[]
+    createMany?: ContractHouseholdAcknowledgmentCreateManyContractInputEnvelope
+    connect?: ContractHouseholdAcknowledgmentWhereUniqueInput | ContractHouseholdAcknowledgmentWhereUniqueInput[]
+  }
+
   export type EnumContractStatusFieldUpdateOperationsInput = {
     set?: $Enums.ContractStatus
   }
@@ -57565,6 +59293,48 @@ export namespace Prisma {
     delete?: ApplicationWhereInput | boolean
     connect?: ApplicationWhereUniqueInput
     update?: XOR<XOR<ApplicationUpdateToOneWithWhereWithoutContractsInput, ApplicationUpdateWithoutContractsInput>, ApplicationUncheckedUpdateWithoutContractsInput>
+  }
+
+  export type ContractHouseholdAcknowledgmentUpdateManyWithoutContractNestedInput = {
+    create?: XOR<ContractHouseholdAcknowledgmentCreateWithoutContractInput, ContractHouseholdAcknowledgmentUncheckedCreateWithoutContractInput> | ContractHouseholdAcknowledgmentCreateWithoutContractInput[] | ContractHouseholdAcknowledgmentUncheckedCreateWithoutContractInput[]
+    connectOrCreate?: ContractHouseholdAcknowledgmentCreateOrConnectWithoutContractInput | ContractHouseholdAcknowledgmentCreateOrConnectWithoutContractInput[]
+    upsert?: ContractHouseholdAcknowledgmentUpsertWithWhereUniqueWithoutContractInput | ContractHouseholdAcknowledgmentUpsertWithWhereUniqueWithoutContractInput[]
+    createMany?: ContractHouseholdAcknowledgmentCreateManyContractInputEnvelope
+    set?: ContractHouseholdAcknowledgmentWhereUniqueInput | ContractHouseholdAcknowledgmentWhereUniqueInput[]
+    disconnect?: ContractHouseholdAcknowledgmentWhereUniqueInput | ContractHouseholdAcknowledgmentWhereUniqueInput[]
+    delete?: ContractHouseholdAcknowledgmentWhereUniqueInput | ContractHouseholdAcknowledgmentWhereUniqueInput[]
+    connect?: ContractHouseholdAcknowledgmentWhereUniqueInput | ContractHouseholdAcknowledgmentWhereUniqueInput[]
+    update?: ContractHouseholdAcknowledgmentUpdateWithWhereUniqueWithoutContractInput | ContractHouseholdAcknowledgmentUpdateWithWhereUniqueWithoutContractInput[]
+    updateMany?: ContractHouseholdAcknowledgmentUpdateManyWithWhereWithoutContractInput | ContractHouseholdAcknowledgmentUpdateManyWithWhereWithoutContractInput[]
+    deleteMany?: ContractHouseholdAcknowledgmentScalarWhereInput | ContractHouseholdAcknowledgmentScalarWhereInput[]
+  }
+
+  export type ContractHouseholdAcknowledgmentUncheckedUpdateManyWithoutContractNestedInput = {
+    create?: XOR<ContractHouseholdAcknowledgmentCreateWithoutContractInput, ContractHouseholdAcknowledgmentUncheckedCreateWithoutContractInput> | ContractHouseholdAcknowledgmentCreateWithoutContractInput[] | ContractHouseholdAcknowledgmentUncheckedCreateWithoutContractInput[]
+    connectOrCreate?: ContractHouseholdAcknowledgmentCreateOrConnectWithoutContractInput | ContractHouseholdAcknowledgmentCreateOrConnectWithoutContractInput[]
+    upsert?: ContractHouseholdAcknowledgmentUpsertWithWhereUniqueWithoutContractInput | ContractHouseholdAcknowledgmentUpsertWithWhereUniqueWithoutContractInput[]
+    createMany?: ContractHouseholdAcknowledgmentCreateManyContractInputEnvelope
+    set?: ContractHouseholdAcknowledgmentWhereUniqueInput | ContractHouseholdAcknowledgmentWhereUniqueInput[]
+    disconnect?: ContractHouseholdAcknowledgmentWhereUniqueInput | ContractHouseholdAcknowledgmentWhereUniqueInput[]
+    delete?: ContractHouseholdAcknowledgmentWhereUniqueInput | ContractHouseholdAcknowledgmentWhereUniqueInput[]
+    connect?: ContractHouseholdAcknowledgmentWhereUniqueInput | ContractHouseholdAcknowledgmentWhereUniqueInput[]
+    update?: ContractHouseholdAcknowledgmentUpdateWithWhereUniqueWithoutContractInput | ContractHouseholdAcknowledgmentUpdateWithWhereUniqueWithoutContractInput[]
+    updateMany?: ContractHouseholdAcknowledgmentUpdateManyWithWhereWithoutContractInput | ContractHouseholdAcknowledgmentUpdateManyWithWhereWithoutContractInput[]
+    deleteMany?: ContractHouseholdAcknowledgmentScalarWhereInput | ContractHouseholdAcknowledgmentScalarWhereInput[]
+  }
+
+  export type ContractCreateNestedOneWithoutHouseholdAcknowledgmentsInput = {
+    create?: XOR<ContractCreateWithoutHouseholdAcknowledgmentsInput, ContractUncheckedCreateWithoutHouseholdAcknowledgmentsInput>
+    connectOrCreate?: ContractCreateOrConnectWithoutHouseholdAcknowledgmentsInput
+    connect?: ContractWhereUniqueInput
+  }
+
+  export type ContractUpdateOneRequiredWithoutHouseholdAcknowledgmentsNestedInput = {
+    create?: XOR<ContractCreateWithoutHouseholdAcknowledgmentsInput, ContractUncheckedCreateWithoutHouseholdAcknowledgmentsInput>
+    connectOrCreate?: ContractCreateOrConnectWithoutHouseholdAcknowledgmentsInput
+    upsert?: ContractUpsertWithoutHouseholdAcknowledgmentsInput
+    connect?: ContractWhereUniqueInput
+    update?: XOR<XOR<ContractUpdateToOneWithWhereWithoutHouseholdAcknowledgmentsInput, ContractUpdateWithoutHouseholdAcknowledgmentsInput>, ContractUncheckedUpdateWithoutHouseholdAcknowledgmentsInput>
   }
 
   export type OnboardingChecklistCreateNestedManyWithoutOnboardingInput = {
@@ -59206,14 +60976,22 @@ export namespace Prisma {
     signerPhone?: string
     microchipNumber?: string
     kittenName?: string
+    emergencyContactName?: string
+    emergencyContactPhone?: string
     documentVersion: string
     signedPdfUrl?: string
     signatureAudit?: string
+    signatureImageUrl?: string | null
+    signerNameAtSigning?: string | null
+    signedIpAddress?: string | null
+    frozenAgreementText?: string | null
+    pdfUrl?: string | null
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
     createdAt?: Date | string
     kitten?: KittenCreateNestedOneWithoutContractsInput
     application?: ApplicationCreateNestedOneWithoutContractsInput
+    householdAcknowledgments?: ContractHouseholdAcknowledgmentCreateNestedManyWithoutContractInput
   }
 
   export type ContractUncheckedCreateWithoutFosterInput = {
@@ -59228,12 +61006,20 @@ export namespace Prisma {
     kittenName?: string
     kittenId?: number | null
     applicationId?: number | null
+    emergencyContactName?: string
+    emergencyContactPhone?: string
     documentVersion: string
     signedPdfUrl?: string
     signatureAudit?: string
+    signatureImageUrl?: string | null
+    signerNameAtSigning?: string | null
+    signedIpAddress?: string | null
+    frozenAgreementText?: string | null
+    pdfUrl?: string | null
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
     createdAt?: Date | string
+    householdAcknowledgments?: ContractHouseholdAcknowledgmentUncheckedCreateNestedManyWithoutContractInput
   }
 
   export type ContractCreateOrConnectWithoutFosterInput = {
@@ -59323,9 +61109,16 @@ export namespace Prisma {
     kittenId?: IntNullableFilter<"Contract"> | number | null
     fosterId?: IntNullableFilter<"Contract"> | number | null
     applicationId?: IntNullableFilter<"Contract"> | number | null
+    emergencyContactName?: StringFilter<"Contract"> | string
+    emergencyContactPhone?: StringFilter<"Contract"> | string
     documentVersion?: StringFilter<"Contract"> | string
     signedPdfUrl?: StringFilter<"Contract"> | string
     signatureAudit?: StringFilter<"Contract"> | string
+    signatureImageUrl?: StringNullableFilter<"Contract"> | string | null
+    signerNameAtSigning?: StringNullableFilter<"Contract"> | string | null
+    signedIpAddress?: StringNullableFilter<"Contract"> | string | null
+    frozenAgreementText?: StringNullableFilter<"Contract"> | string | null
+    pdfUrl?: StringNullableFilter<"Contract"> | string | null
     status?: EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
     signedAt?: DateTimeNullableFilter<"Contract"> | Date | string | null
     createdAt?: DateTimeFilter<"Contract"> | Date | string
@@ -59868,14 +61661,22 @@ export namespace Prisma {
     signerPhone?: string
     microchipNumber?: string
     kittenName?: string
+    emergencyContactName?: string
+    emergencyContactPhone?: string
     documentVersion: string
     signedPdfUrl?: string
     signatureAudit?: string
+    signatureImageUrl?: string | null
+    signerNameAtSigning?: string | null
+    signedIpAddress?: string | null
+    frozenAgreementText?: string | null
+    pdfUrl?: string | null
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
     createdAt?: Date | string
     foster?: FosterCreateNestedOneWithoutContractsInput
     application?: ApplicationCreateNestedOneWithoutContractsInput
+    householdAcknowledgments?: ContractHouseholdAcknowledgmentCreateNestedManyWithoutContractInput
   }
 
   export type ContractUncheckedCreateWithoutKittenInput = {
@@ -59890,12 +61691,20 @@ export namespace Prisma {
     kittenName?: string
     fosterId?: number | null
     applicationId?: number | null
+    emergencyContactName?: string
+    emergencyContactPhone?: string
     documentVersion: string
     signedPdfUrl?: string
     signatureAudit?: string
+    signatureImageUrl?: string | null
+    signerNameAtSigning?: string | null
+    signedIpAddress?: string | null
+    frozenAgreementText?: string | null
+    pdfUrl?: string | null
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
     createdAt?: Date | string
+    householdAcknowledgments?: ContractHouseholdAcknowledgmentUncheckedCreateNestedManyWithoutContractInput
   }
 
   export type ContractCreateOrConnectWithoutKittenInput = {
@@ -62194,14 +64003,22 @@ export namespace Prisma {
     signerPhone?: string
     microchipNumber?: string
     kittenName?: string
+    emergencyContactName?: string
+    emergencyContactPhone?: string
     documentVersion: string
     signedPdfUrl?: string
     signatureAudit?: string
+    signatureImageUrl?: string | null
+    signerNameAtSigning?: string | null
+    signedIpAddress?: string | null
+    frozenAgreementText?: string | null
+    pdfUrl?: string | null
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
     createdAt?: Date | string
     kitten?: KittenCreateNestedOneWithoutContractsInput
     foster?: FosterCreateNestedOneWithoutContractsInput
+    householdAcknowledgments?: ContractHouseholdAcknowledgmentCreateNestedManyWithoutContractInput
   }
 
   export type ContractUncheckedCreateWithoutApplicationInput = {
@@ -62216,12 +64033,20 @@ export namespace Prisma {
     kittenName?: string
     kittenId?: number | null
     fosterId?: number | null
+    emergencyContactName?: string
+    emergencyContactPhone?: string
     documentVersion: string
     signedPdfUrl?: string
     signatureAudit?: string
+    signatureImageUrl?: string | null
+    signerNameAtSigning?: string | null
+    signedIpAddress?: string | null
+    frozenAgreementText?: string | null
+    pdfUrl?: string | null
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
     createdAt?: Date | string
+    householdAcknowledgments?: ContractHouseholdAcknowledgmentUncheckedCreateNestedManyWithoutContractInput
   }
 
   export type ContractCreateOrConnectWithoutApplicationInput = {
@@ -62522,6 +64347,31 @@ export namespace Prisma {
     create: XOR<ApplicationCreateWithoutContractsInput, ApplicationUncheckedCreateWithoutContractsInput>
   }
 
+  export type ContractHouseholdAcknowledgmentCreateWithoutContractInput = {
+    name: string
+    signatureImageUrl?: string | null
+    signedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type ContractHouseholdAcknowledgmentUncheckedCreateWithoutContractInput = {
+    id?: number
+    name: string
+    signatureImageUrl?: string | null
+    signedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type ContractHouseholdAcknowledgmentCreateOrConnectWithoutContractInput = {
+    where: ContractHouseholdAcknowledgmentWhereUniqueInput
+    create: XOR<ContractHouseholdAcknowledgmentCreateWithoutContractInput, ContractHouseholdAcknowledgmentUncheckedCreateWithoutContractInput>
+  }
+
+  export type ContractHouseholdAcknowledgmentCreateManyContractInputEnvelope = {
+    data: ContractHouseholdAcknowledgmentCreateManyContractInput | ContractHouseholdAcknowledgmentCreateManyContractInput[]
+    skipDuplicates?: boolean
+  }
+
   export type KittenUpsertWithoutContractsInput = {
     update: XOR<KittenUpdateWithoutContractsInput, KittenUncheckedUpdateWithoutContractsInput>
     create: XOR<KittenCreateWithoutContractsInput, KittenUncheckedCreateWithoutContractsInput>
@@ -62708,6 +64558,160 @@ export namespace Prisma {
     rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     uploads?: ApplicationUploadUncheckedUpdateManyWithoutApplicationNestedInput
+  }
+
+  export type ContractHouseholdAcknowledgmentUpsertWithWhereUniqueWithoutContractInput = {
+    where: ContractHouseholdAcknowledgmentWhereUniqueInput
+    update: XOR<ContractHouseholdAcknowledgmentUpdateWithoutContractInput, ContractHouseholdAcknowledgmentUncheckedUpdateWithoutContractInput>
+    create: XOR<ContractHouseholdAcknowledgmentCreateWithoutContractInput, ContractHouseholdAcknowledgmentUncheckedCreateWithoutContractInput>
+  }
+
+  export type ContractHouseholdAcknowledgmentUpdateWithWhereUniqueWithoutContractInput = {
+    where: ContractHouseholdAcknowledgmentWhereUniqueInput
+    data: XOR<ContractHouseholdAcknowledgmentUpdateWithoutContractInput, ContractHouseholdAcknowledgmentUncheckedUpdateWithoutContractInput>
+  }
+
+  export type ContractHouseholdAcknowledgmentUpdateManyWithWhereWithoutContractInput = {
+    where: ContractHouseholdAcknowledgmentScalarWhereInput
+    data: XOR<ContractHouseholdAcknowledgmentUpdateManyMutationInput, ContractHouseholdAcknowledgmentUncheckedUpdateManyWithoutContractInput>
+  }
+
+  export type ContractHouseholdAcknowledgmentScalarWhereInput = {
+    AND?: ContractHouseholdAcknowledgmentScalarWhereInput | ContractHouseholdAcknowledgmentScalarWhereInput[]
+    OR?: ContractHouseholdAcknowledgmentScalarWhereInput[]
+    NOT?: ContractHouseholdAcknowledgmentScalarWhereInput | ContractHouseholdAcknowledgmentScalarWhereInput[]
+    id?: IntFilter<"ContractHouseholdAcknowledgment"> | number
+    contractId?: IntFilter<"ContractHouseholdAcknowledgment"> | number
+    name?: StringFilter<"ContractHouseholdAcknowledgment"> | string
+    signatureImageUrl?: StringNullableFilter<"ContractHouseholdAcknowledgment"> | string | null
+    signedAt?: DateTimeNullableFilter<"ContractHouseholdAcknowledgment"> | Date | string | null
+    createdAt?: DateTimeFilter<"ContractHouseholdAcknowledgment"> | Date | string
+  }
+
+  export type ContractCreateWithoutHouseholdAcknowledgmentsInput = {
+    type: $Enums.ContractType
+    templateSlug?: string
+    signerName: string
+    signerEmail: string
+    signerAddress?: string
+    signerPhone?: string
+    microchipNumber?: string
+    kittenName?: string
+    emergencyContactName?: string
+    emergencyContactPhone?: string
+    documentVersion: string
+    signedPdfUrl?: string
+    signatureAudit?: string
+    signatureImageUrl?: string | null
+    signerNameAtSigning?: string | null
+    signedIpAddress?: string | null
+    frozenAgreementText?: string | null
+    pdfUrl?: string | null
+    status?: $Enums.ContractStatus
+    signedAt?: Date | string | null
+    createdAt?: Date | string
+    kitten?: KittenCreateNestedOneWithoutContractsInput
+    foster?: FosterCreateNestedOneWithoutContractsInput
+    application?: ApplicationCreateNestedOneWithoutContractsInput
+  }
+
+  export type ContractUncheckedCreateWithoutHouseholdAcknowledgmentsInput = {
+    id?: number
+    type: $Enums.ContractType
+    templateSlug?: string
+    signerName: string
+    signerEmail: string
+    signerAddress?: string
+    signerPhone?: string
+    microchipNumber?: string
+    kittenName?: string
+    kittenId?: number | null
+    fosterId?: number | null
+    applicationId?: number | null
+    emergencyContactName?: string
+    emergencyContactPhone?: string
+    documentVersion: string
+    signedPdfUrl?: string
+    signatureAudit?: string
+    signatureImageUrl?: string | null
+    signerNameAtSigning?: string | null
+    signedIpAddress?: string | null
+    frozenAgreementText?: string | null
+    pdfUrl?: string | null
+    status?: $Enums.ContractStatus
+    signedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type ContractCreateOrConnectWithoutHouseholdAcknowledgmentsInput = {
+    where: ContractWhereUniqueInput
+    create: XOR<ContractCreateWithoutHouseholdAcknowledgmentsInput, ContractUncheckedCreateWithoutHouseholdAcknowledgmentsInput>
+  }
+
+  export type ContractUpsertWithoutHouseholdAcknowledgmentsInput = {
+    update: XOR<ContractUpdateWithoutHouseholdAcknowledgmentsInput, ContractUncheckedUpdateWithoutHouseholdAcknowledgmentsInput>
+    create: XOR<ContractCreateWithoutHouseholdAcknowledgmentsInput, ContractUncheckedCreateWithoutHouseholdAcknowledgmentsInput>
+    where?: ContractWhereInput
+  }
+
+  export type ContractUpdateToOneWithWhereWithoutHouseholdAcknowledgmentsInput = {
+    where?: ContractWhereInput
+    data: XOR<ContractUpdateWithoutHouseholdAcknowledgmentsInput, ContractUncheckedUpdateWithoutHouseholdAcknowledgmentsInput>
+  }
+
+  export type ContractUpdateWithoutHouseholdAcknowledgmentsInput = {
+    type?: EnumContractTypeFieldUpdateOperationsInput | $Enums.ContractType
+    templateSlug?: StringFieldUpdateOperationsInput | string
+    signerName?: StringFieldUpdateOperationsInput | string
+    signerEmail?: StringFieldUpdateOperationsInput | string
+    signerAddress?: StringFieldUpdateOperationsInput | string
+    signerPhone?: StringFieldUpdateOperationsInput | string
+    microchipNumber?: StringFieldUpdateOperationsInput | string
+    kittenName?: StringFieldUpdateOperationsInput | string
+    emergencyContactName?: StringFieldUpdateOperationsInput | string
+    emergencyContactPhone?: StringFieldUpdateOperationsInput | string
+    documentVersion?: StringFieldUpdateOperationsInput | string
+    signedPdfUrl?: StringFieldUpdateOperationsInput | string
+    signatureAudit?: StringFieldUpdateOperationsInput | string
+    signatureImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    signerNameAtSigning?: NullableStringFieldUpdateOperationsInput | string | null
+    signedIpAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    frozenAgreementText?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    kitten?: KittenUpdateOneWithoutContractsNestedInput
+    foster?: FosterUpdateOneWithoutContractsNestedInput
+    application?: ApplicationUpdateOneWithoutContractsNestedInput
+  }
+
+  export type ContractUncheckedUpdateWithoutHouseholdAcknowledgmentsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumContractTypeFieldUpdateOperationsInput | $Enums.ContractType
+    templateSlug?: StringFieldUpdateOperationsInput | string
+    signerName?: StringFieldUpdateOperationsInput | string
+    signerEmail?: StringFieldUpdateOperationsInput | string
+    signerAddress?: StringFieldUpdateOperationsInput | string
+    signerPhone?: StringFieldUpdateOperationsInput | string
+    microchipNumber?: StringFieldUpdateOperationsInput | string
+    kittenName?: StringFieldUpdateOperationsInput | string
+    kittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    fosterId?: NullableIntFieldUpdateOperationsInput | number | null
+    applicationId?: NullableIntFieldUpdateOperationsInput | number | null
+    emergencyContactName?: StringFieldUpdateOperationsInput | string
+    emergencyContactPhone?: StringFieldUpdateOperationsInput | string
+    documentVersion?: StringFieldUpdateOperationsInput | string
+    signedPdfUrl?: StringFieldUpdateOperationsInput | string
+    signatureAudit?: StringFieldUpdateOperationsInput | string
+    signatureImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    signerNameAtSigning?: NullableStringFieldUpdateOperationsInput | string | null
+    signedIpAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    frozenAgreementText?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type OnboardingChecklistCreateWithoutOnboardingInput = {
@@ -65369,9 +67373,16 @@ export namespace Prisma {
     kittenName?: string
     kittenId?: number | null
     applicationId?: number | null
+    emergencyContactName?: string
+    emergencyContactPhone?: string
     documentVersion: string
     signedPdfUrl?: string
     signatureAudit?: string
+    signatureImageUrl?: string | null
+    signerNameAtSigning?: string | null
+    signedIpAddress?: string | null
+    frozenAgreementText?: string | null
+    pdfUrl?: string | null
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
     createdAt?: Date | string
@@ -65536,14 +67547,22 @@ export namespace Prisma {
     signerPhone?: StringFieldUpdateOperationsInput | string
     microchipNumber?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
+    emergencyContactName?: StringFieldUpdateOperationsInput | string
+    emergencyContactPhone?: StringFieldUpdateOperationsInput | string
     documentVersion?: StringFieldUpdateOperationsInput | string
     signedPdfUrl?: StringFieldUpdateOperationsInput | string
     signatureAudit?: StringFieldUpdateOperationsInput | string
+    signatureImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    signerNameAtSigning?: NullableStringFieldUpdateOperationsInput | string | null
+    signedIpAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    frozenAgreementText?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     kitten?: KittenUpdateOneWithoutContractsNestedInput
     application?: ApplicationUpdateOneWithoutContractsNestedInput
+    householdAcknowledgments?: ContractHouseholdAcknowledgmentUpdateManyWithoutContractNestedInput
   }
 
   export type ContractUncheckedUpdateWithoutFosterInput = {
@@ -65558,12 +67577,20 @@ export namespace Prisma {
     kittenName?: StringFieldUpdateOperationsInput | string
     kittenId?: NullableIntFieldUpdateOperationsInput | number | null
     applicationId?: NullableIntFieldUpdateOperationsInput | number | null
+    emergencyContactName?: StringFieldUpdateOperationsInput | string
+    emergencyContactPhone?: StringFieldUpdateOperationsInput | string
     documentVersion?: StringFieldUpdateOperationsInput | string
     signedPdfUrl?: StringFieldUpdateOperationsInput | string
     signatureAudit?: StringFieldUpdateOperationsInput | string
+    signatureImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    signerNameAtSigning?: NullableStringFieldUpdateOperationsInput | string | null
+    signedIpAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    frozenAgreementText?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    householdAcknowledgments?: ContractHouseholdAcknowledgmentUncheckedUpdateManyWithoutContractNestedInput
   }
 
   export type ContractUncheckedUpdateManyWithoutFosterInput = {
@@ -65578,9 +67605,16 @@ export namespace Prisma {
     kittenName?: StringFieldUpdateOperationsInput | string
     kittenId?: NullableIntFieldUpdateOperationsInput | number | null
     applicationId?: NullableIntFieldUpdateOperationsInput | number | null
+    emergencyContactName?: StringFieldUpdateOperationsInput | string
+    emergencyContactPhone?: StringFieldUpdateOperationsInput | string
     documentVersion?: StringFieldUpdateOperationsInput | string
     signedPdfUrl?: StringFieldUpdateOperationsInput | string
     signatureAudit?: StringFieldUpdateOperationsInput | string
+    signatureImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    signerNameAtSigning?: NullableStringFieldUpdateOperationsInput | string | null
+    signedIpAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    frozenAgreementText?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -65728,9 +67762,16 @@ export namespace Prisma {
     kittenName?: string
     fosterId?: number | null
     applicationId?: number | null
+    emergencyContactName?: string
+    emergencyContactPhone?: string
     documentVersion: string
     signedPdfUrl?: string
     signatureAudit?: string
+    signatureImageUrl?: string | null
+    signerNameAtSigning?: string | null
+    signedIpAddress?: string | null
+    frozenAgreementText?: string | null
+    pdfUrl?: string | null
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
     createdAt?: Date | string
@@ -66166,14 +68207,22 @@ export namespace Prisma {
     signerPhone?: StringFieldUpdateOperationsInput | string
     microchipNumber?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
+    emergencyContactName?: StringFieldUpdateOperationsInput | string
+    emergencyContactPhone?: StringFieldUpdateOperationsInput | string
     documentVersion?: StringFieldUpdateOperationsInput | string
     signedPdfUrl?: StringFieldUpdateOperationsInput | string
     signatureAudit?: StringFieldUpdateOperationsInput | string
+    signatureImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    signerNameAtSigning?: NullableStringFieldUpdateOperationsInput | string | null
+    signedIpAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    frozenAgreementText?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     foster?: FosterUpdateOneWithoutContractsNestedInput
     application?: ApplicationUpdateOneWithoutContractsNestedInput
+    householdAcknowledgments?: ContractHouseholdAcknowledgmentUpdateManyWithoutContractNestedInput
   }
 
   export type ContractUncheckedUpdateWithoutKittenInput = {
@@ -66188,12 +68237,20 @@ export namespace Prisma {
     kittenName?: StringFieldUpdateOperationsInput | string
     fosterId?: NullableIntFieldUpdateOperationsInput | number | null
     applicationId?: NullableIntFieldUpdateOperationsInput | number | null
+    emergencyContactName?: StringFieldUpdateOperationsInput | string
+    emergencyContactPhone?: StringFieldUpdateOperationsInput | string
     documentVersion?: StringFieldUpdateOperationsInput | string
     signedPdfUrl?: StringFieldUpdateOperationsInput | string
     signatureAudit?: StringFieldUpdateOperationsInput | string
+    signatureImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    signerNameAtSigning?: NullableStringFieldUpdateOperationsInput | string | null
+    signedIpAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    frozenAgreementText?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    householdAcknowledgments?: ContractHouseholdAcknowledgmentUncheckedUpdateManyWithoutContractNestedInput
   }
 
   export type ContractUncheckedUpdateManyWithoutKittenInput = {
@@ -66208,9 +68265,16 @@ export namespace Prisma {
     kittenName?: StringFieldUpdateOperationsInput | string
     fosterId?: NullableIntFieldUpdateOperationsInput | number | null
     applicationId?: NullableIntFieldUpdateOperationsInput | number | null
+    emergencyContactName?: StringFieldUpdateOperationsInput | string
+    emergencyContactPhone?: StringFieldUpdateOperationsInput | string
     documentVersion?: StringFieldUpdateOperationsInput | string
     signedPdfUrl?: StringFieldUpdateOperationsInput | string
     signatureAudit?: StringFieldUpdateOperationsInput | string
+    signatureImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    signerNameAtSigning?: NullableStringFieldUpdateOperationsInput | string | null
+    signedIpAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    frozenAgreementText?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -66273,9 +68337,16 @@ export namespace Prisma {
     kittenName?: string
     kittenId?: number | null
     fosterId?: number | null
+    emergencyContactName?: string
+    emergencyContactPhone?: string
     documentVersion: string
     signedPdfUrl?: string
     signatureAudit?: string
+    signatureImageUrl?: string | null
+    signerNameAtSigning?: string | null
+    signedIpAddress?: string | null
+    frozenAgreementText?: string | null
+    pdfUrl?: string | null
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
     createdAt?: Date | string
@@ -66299,14 +68370,22 @@ export namespace Prisma {
     signerPhone?: StringFieldUpdateOperationsInput | string
     microchipNumber?: StringFieldUpdateOperationsInput | string
     kittenName?: StringFieldUpdateOperationsInput | string
+    emergencyContactName?: StringFieldUpdateOperationsInput | string
+    emergencyContactPhone?: StringFieldUpdateOperationsInput | string
     documentVersion?: StringFieldUpdateOperationsInput | string
     signedPdfUrl?: StringFieldUpdateOperationsInput | string
     signatureAudit?: StringFieldUpdateOperationsInput | string
+    signatureImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    signerNameAtSigning?: NullableStringFieldUpdateOperationsInput | string | null
+    signedIpAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    frozenAgreementText?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     kitten?: KittenUpdateOneWithoutContractsNestedInput
     foster?: FosterUpdateOneWithoutContractsNestedInput
+    householdAcknowledgments?: ContractHouseholdAcknowledgmentUpdateManyWithoutContractNestedInput
   }
 
   export type ContractUncheckedUpdateWithoutApplicationInput = {
@@ -66321,12 +68400,20 @@ export namespace Prisma {
     kittenName?: StringFieldUpdateOperationsInput | string
     kittenId?: NullableIntFieldUpdateOperationsInput | number | null
     fosterId?: NullableIntFieldUpdateOperationsInput | number | null
+    emergencyContactName?: StringFieldUpdateOperationsInput | string
+    emergencyContactPhone?: StringFieldUpdateOperationsInput | string
     documentVersion?: StringFieldUpdateOperationsInput | string
     signedPdfUrl?: StringFieldUpdateOperationsInput | string
     signatureAudit?: StringFieldUpdateOperationsInput | string
+    signatureImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    signerNameAtSigning?: NullableStringFieldUpdateOperationsInput | string | null
+    signedIpAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    frozenAgreementText?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    householdAcknowledgments?: ContractHouseholdAcknowledgmentUncheckedUpdateManyWithoutContractNestedInput
   }
 
   export type ContractUncheckedUpdateManyWithoutApplicationInput = {
@@ -66341,9 +68428,16 @@ export namespace Prisma {
     kittenName?: StringFieldUpdateOperationsInput | string
     kittenId?: NullableIntFieldUpdateOperationsInput | number | null
     fosterId?: NullableIntFieldUpdateOperationsInput | number | null
+    emergencyContactName?: StringFieldUpdateOperationsInput | string
+    emergencyContactPhone?: StringFieldUpdateOperationsInput | string
     documentVersion?: StringFieldUpdateOperationsInput | string
     signedPdfUrl?: StringFieldUpdateOperationsInput | string
     signatureAudit?: StringFieldUpdateOperationsInput | string
+    signatureImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    signerNameAtSigning?: NullableStringFieldUpdateOperationsInput | string | null
+    signedIpAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    frozenAgreementText?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -66372,6 +68466,37 @@ export namespace Prisma {
     docLabel?: StringFieldUpdateOperationsInput | string
     fileUrl?: StringFieldUpdateOperationsInput | string
     fileType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContractHouseholdAcknowledgmentCreateManyContractInput = {
+    id?: number
+    name: string
+    signatureImageUrl?: string | null
+    signedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type ContractHouseholdAcknowledgmentUpdateWithoutContractInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    signatureImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContractHouseholdAcknowledgmentUncheckedUpdateWithoutContractInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    signatureImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContractHouseholdAcknowledgmentUncheckedUpdateManyWithoutContractInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    signatureImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

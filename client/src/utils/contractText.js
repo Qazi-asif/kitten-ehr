@@ -13,6 +13,10 @@ export function buildAgreementVariables(contract) {
     signerPhoneEmail: phoneEmail || BLANK,
     kittenName: contract?.kittenName?.trim() || contract?.kitten?.name || BLANK,
     microchipNumber: contract?.microchipNumber?.trim() || contract?.kitten?.microchipNumber?.trim() || BLANK,
+    // Foster Care Agreement only - mirrors the server-side buildAgreementVariables
+    // in contractAgreementText.js exactly, used for the live preview before signing.
+    emergencyContactName: contract?.emergencyContactName?.trim() || BLANK,
+    emergencyContactPhone: contract?.emergencyContactPhone?.trim() || BLANK,
     version: contract?.documentVersion?.trim() || '2026.1',
   };
 }

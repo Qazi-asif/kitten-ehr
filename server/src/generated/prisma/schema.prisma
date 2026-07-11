@@ -289,27 +289,40 @@ model ContractTemplate {
 }
 
 model Contract {
-  id              Int            @id @default(autoincrement())
-  type            ContractType
-  templateSlug    String         @default("foster_supplies_provided")
-  signerName      String
-  signerEmail     String
-  signerAddress   String         @default("")
-  signerPhone     String         @default("")
-  microchipNumber String         @default("")
-  kittenName      String         @default("")
-  kittenId        Int?
-  kitten          Kitten?        @relation(fields: [kittenId], references: [id], onDelete: SetNull)
-  fosterId        Int?
-  foster          Foster?        @relation(fields: [fosterId], references: [id], onDelete: SetNull)
-  applicationId   Int?
-  application     Application?   @relation(fields: [applicationId], references: [id], onDelete: SetNull)
-  documentVersion String
-  signedPdfUrl    String         @default("")
-  signatureAudit  String         @default("{}")
-  status          ContractStatus @default(SENT)
-  signedAt        DateTime?
-  createdAt       DateTime       @default(now())
+  id                       Int                               @id @default(autoincrement())
+  type                     ContractType
+  templateSlug             String                            @default("foster_supplies_provided")
+  signerName               String
+  signerEmail              String
+  signerAddress            String                            @default("")
+  signerPhone              String                            @default("")
+  microchipNumber          String                            @default("")
+  kittenName               String                            @default("")
+  kittenId                 Int?
+  kitten                   Kitten?                           @relation(fields: [kittenId], references: [id], onDelete: SetNull)
+  fosterId                 Int?
+  foster                   Foster?                           @relation(fields: [fosterId], references: [id], onDelete: SetNull)
+  applicationId            Int?
+  application              Application?                      @relation(fields: [applicationId], references: [id], onDelete: SetNull)
+  // Foster Care Agreement only - not used on Adoption contracts. Entered
+  // fresh at draft time; intentionally not auto-filled from Foster.emergencyContact
+  // (that field is a single free-text blob, not split into name/phone).
+  emergencyContactName     String                            @default("")
+  emergencyContactPhone    String                            @default("")
+  householdAcknowledgments ContractHouseholdAcknowledgment[]
+  documentVersion          String
+  // Deprecated: legacy signature-image storage, pre-dates signatureImageUrl.
+  // Left populated on old rows for backward compatibility; no longer written to.
+  signedPdfUrl             String                            @default("")
+  signatureAudit           String                            @default("{}")
+  signatureImageUrl        String?
+  signerNameAtSigning      String?
+  signedIpAddress          String?
+  frozenAgreementText      String?                           @db.Text
+  pdfUrl                   String?
+  status                   ContractStatus                    @default(SENT)
+  signedAt                 DateTime?
+  createdAt                DateTime                          @default(now())
 
   @@index([applicationId])
   @@index([fosterId])
@@ -320,6 +333,25 @@ model Contract {
   @@index([signedAt])
   @@index([createdAt])
   @@index([templateSlug])
+}
+
+// Adult household member acknowledgment signatures for Foster Care
+// Agreements only (the document has two separate signature lines for this,
+// distinct from the main foster's own signature on Contract). These are
+// acknowledgments, not the primary signer: no IP capture, no name
+// confirmation, no signatureAudit merge - just name + signature image +
+// timestamp, optional (not every foster household has a second adult).
+// Only ever created at signing time, alongside the main signature.
+model ContractHouseholdAcknowledgment {
+  id                Int       @id @default(autoincrement())
+  contractId        Int
+  contract          Contract  @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  name              String
+  signatureImageUrl String?
+  signedAt          DateTime?
+  createdAt         DateTime  @default(now())
+
+  @@index([contractId])
 }
 
 enum FosterOnboardingStatus {
@@ -560,6 +592,15 @@ model Settings {
   id                         Int     @id @default(1)
   orgName                    String  @default("Pawsitive Transformations")
   orgEin                     String  @default("42-3678960")
+  // Org logo for document (PDF) headers only - separate from the public
+  // site's logo, which is a static asset in PublicLogo.jsx and is
+  // intentionally not sourced from here.
+  orgLogoUrl                 String  @default("")
+  // Rescue's "authorized representative" signature - applied automatically
+  // to every contract's generated PDF at signing time as a second signature
+  // block, alongside (not replacing) the foster/adopter's own live-drawn
+  // signature. Same base64-data-URL storage pattern as orgLogoUrl.
+  orgSignatureUrl            String  @default("")
   contactPhone               String  @default("(951) 830-1825")
   contactEmail               String  @default("hello@pawsitivetransformations.org")
   contactAddress             String  @default("12523 Limonite, Suite 440412\nMira Loma, CA 91752\nRiverside County")

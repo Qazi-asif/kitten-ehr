@@ -56,6 +56,8 @@ export async function generateContractPdf({
   signerEmail,
   signedAt,
   logoImageDataUrl,
+  orgSignatureImageDataUrl,
+  orgName,
 }) {
   const pdfDoc = await PDFDocument.create();
   const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
@@ -151,6 +153,40 @@ export async function generateContractPdf({
   drawLine(`Signed by: ${signerName || 'Unknown'}`, { size: 10 });
   if (signerEmail) drawLine(`Email: ${signerEmail}`, { size: 10 });
   if (signedAt) drawLine(`Date: ${new Date(signedAt).toLocaleString()}`, { size: 10 });
+
+  // Org "authorized representative" signature - applied automatically to
+  // every signed contract's PDF as a second signature block, alongside
+  // (not replacing) the foster/adopter's own signature above. Same
+  // embed-and-fall-back-gracefully treatment as the logo: a missing or
+  // malformed image must never block PDF generation. The whole block is
+  // only drawn when an org signature image is actually present and
+  // decodable, mirroring how the logo section only appears when provided -
+  // orgSignatureImageDataUrl is optional, so omitting it produces the same
+  // output as before this parameter existed.
+  try {
+    const decodedOrgSig = decodeDataUrl(orgSignatureImageDataUrl);
+    if (decodedOrgSig) {
+      let orgSigImage = null;
+      if (decodedOrgSig.mimeType.includes('png')) {
+        orgSigImage = await pdfDoc.embedPng(decodedOrgSig.buffer);
+      } else if (decodedOrgSig.mimeType.includes('jpeg') || decodedOrgSig.mimeType.includes('jpg')) {
+        orgSigImage = await pdfDoc.embedJpg(decodedOrgSig.buffer);
+      }
+      if (orgSigImage) {
+        const orgSigHeight = (orgSigImage.height / orgSigImage.width) * SIGNATURE_WIDTH;
+        ensureSpace(orgSigHeight + LINE_HEIGHT + 4 + 24);
+        y -= 14;
+        drawLine('For the Rescue (Authorized Representative)', { font: boldFont, size: 11, gapAfter: LINE_HEIGHT + 4 });
+        ensureSpace(orgSigHeight + 10);
+        page.drawImage(orgSigImage, { x: MARGIN, y: y - orgSigHeight, width: SIGNATURE_WIDTH, height: orgSigHeight });
+        y -= orgSigHeight + 8;
+        if (orgName) drawLine(`Signed by: ${orgName}`, { size: 10 });
+        if (signedAt) drawLine(`Date: ${new Date(signedAt).toLocaleString()}`, { size: 10 });
+      }
+    }
+  } catch (error) {
+    console.warn('[contractPdf] Failed to embed org signature image, continuing without it:', error.message);
+  }
 
   return pdfDoc.save();
 }

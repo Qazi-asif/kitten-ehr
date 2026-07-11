@@ -49,6 +49,7 @@ const EMPTY_ORG = {
   venmoQrCodeUrl: '',
   venmoHandle: '',
   orgLogoUrl: '',
+  orgSignatureUrl: '',
   emailsEnabled: false,
   smtpHost: '',
   smtpPort: 587,
@@ -102,6 +103,7 @@ function mapOrgSettingsFromApi(settingsData = {}) {
     venmoQrCodeUrl: settingsData.venmoQrCodeUrl || '',
     venmoHandle: settingsData.venmoHandle || '',
     orgLogoUrl: settingsData.orgLogoUrl || '',
+    orgSignatureUrl: settingsData.orgSignatureUrl || '',
     emailsEnabled: Boolean(settingsData.emailsEnabled),
     smtpHost: settingsData.smtpHost || '',
     smtpPort: settingsData.smtpPort ?? 587,
@@ -273,6 +275,31 @@ function SettingsPage() {
       setError('');
     };
     reader.onerror = () => setError('Could not read the logo image.');
+    reader.readAsDataURL(file);
+    event.target.value = '';
+  }
+
+  function handleOrgSignatureUpload(event) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (file.type !== 'image/png' && file.type !== 'image/jpeg') {
+      setError('Signature must be a PNG or JPEG image.');
+      event.target.value = '';
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Signature must be 5MB or smaller.');
+      event.target.value = '';
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      handleOrgFieldChange('orgSignatureUrl', reader.result);
+      setError('');
+    };
+    reader.onerror = () => setError('Could not read the signature image.');
     reader.readAsDataURL(file);
     event.target.value = '';
   }
@@ -581,6 +608,44 @@ function SettingsPage() {
                       className="text-xs font-semibold text-red-600 hover:underline"
                     >
                       Remove logo
+                    </button>
+                  ) : null}
+                </div>
+              ) : null}
+            </label>
+          </div>
+
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
+            <h3 className="text-sm font-bold text-slate-900">Document Signature</h3>
+            <p className="mt-1 text-sm text-slate-600">
+              The Rescue's authorized-representative signature, applied automatically to every signed
+              contract's generated PDF - staff never draw this by hand. This is separate from the
+              foster/adopter's own signature, which is still drawn live when they sign.
+            </p>
+
+            <label className="mt-4 block max-w-sm">
+              <span className="mb-1 block text-xs font-medium text-slate-600">Signature (PNG or JPEG)</span>
+              <input
+                type="file"
+                accept="image/png, image/jpeg"
+                onChange={handleOrgSignatureUpload}
+                disabled={!canManageOrg}
+                className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm disabled:bg-slate-50"
+              />
+              {orgSettings.orgSignatureUrl ? (
+                <div className="mt-3 flex items-start gap-4">
+                  <img
+                    src={orgSettings.orgSignatureUrl}
+                    alt="Document signature preview"
+                    className="h-16 w-40 rounded-lg border border-slate-200 bg-white object-contain p-2"
+                  />
+                  {canManageOrg ? (
+                    <button
+                      type="button"
+                      onClick={() => handleOrgFieldChange('orgSignatureUrl', '')}
+                      className="text-xs font-semibold text-red-600 hover:underline"
+                    >
+                      Remove signature
                     </button>
                   ) : null}
                 </div>

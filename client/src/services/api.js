@@ -604,6 +604,13 @@ export async function markContractSigned(id, data) {
         signedVia: 'ContractSigningPad',
         nameConfirmed: Boolean(data.nameConfirmed),
       },
+      // Adult household member acknowledgments (Foster Care Agreement only,
+      // optional) - kept outside signatureAudit since these are not the
+      // primary signer and intentionally don't carry the same audit rigor
+      // (no IP capture, no name confirmation).
+      householdAcknowledgments: Array.isArray(data.householdAcknowledgments)
+        ? data.householdAcknowledgments
+        : [],
     }),
   });
   if (!response.ok) throw new Error(await readApiError(response, 'Failed to mark contract signed'));

@@ -10,15 +10,20 @@ import {
   deleteContract,
   emailContractAgreement,
   emailSignedContractPdf,
+  fetchApplications,
   fetchContractById,
   fetchContracts,
   fetchContractTemplates,
+  fetchFosters,
+  fetchKittenById,
+  fetchKittens,
   markContractSigned,
   updateContract,
 } from '../../services/api';
 import { resolveContractKittenName } from '../../utils/contractAudit';
 import { getDefaultContractText } from '../../utils/contractText';
 import { CONTRACT_TEMPLATES, getContractTemplateLabel } from '../../constants/contractTemplates';
+import { getApplicationSummary, parseApplicationFormData } from '../../utils/applicationFormData';
 
 const STATUS_STYLES = {
   SENT: 'bg-amber-100 text-amber-800',
@@ -34,6 +39,11 @@ const EMPTY_DRAFT = {
   signerPhone: '',
   microchipNumber: '',
   kittenName: '',
+  kittenId: null,
+  fosterId: null,
+  applicationId: null,
+  emergencyContactName: '',
+  emergencyContactPhone: '',
   documentVersion: '2026.1',
 };
 
@@ -63,6 +73,22 @@ function ContractsPage() {
   const [draftForm, setDraftForm] = useState(EMPTY_DRAFT);
   const [creatingDraft, setCreatingDraft] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
+
+  // Kitten/foster/adopter picker state (draft creation only). Selecting a
+  // record auto-fills the corresponding text fields below but never disables
+  // them - staff can still hand-edit anything before sending, per the
+  // approved "auto-fill is editable, not locked" decision.
+  const [kittenQuery, setKittenQuery] = useState('');
+  const [kittenResults, setKittenResults] = useState([]);
+  const [kittenSearching, setKittenSearching] = useState(false);
+  const [kittenResultsOpen, setKittenResultsOpen] = useState(false);
+  const [selectedKittenLabel, setSelectedKittenLabel] = useState('');
+
+  const [personQuery, setPersonQuery] = useState('');
+  const [personOptions, setPersonOptions] = useState([]);
+  const [personLoading, setPersonLoading] = useState(false);
+  const [personResultsOpen, setPersonResultsOpen] = useState(false);
+  const [selectedPersonLabel, setSelectedPersonLabel] = useState('');
 
   const load = useCallback(async (nextFilters = appliedFilters) => {
     setLoading(true);
@@ -170,9 +196,20 @@ function ContractsPage() {
         signerPhone: draftForm.signerPhone.trim(),
         microchipNumber: draftForm.microchipNumber.trim(),
         kittenName: draftForm.kittenName.trim(),
+        kittenId: draftForm.kittenId || undefined,
+        fosterId: draftForm.fosterId || undefined,
+        applicationId: draftForm.applicationId || undefined,
+        emergencyContactName: draftIsAdoption ? '' : draftForm.emergencyContactName.trim(),
+        emergencyContactPhone: draftIsAdoption ? '' : draftForm.emergencyContactPhone.trim(),
         documentVersion: draftForm.documentVersion.trim(),
       });
       setDraftForm(EMPTY_DRAFT);
+      setKittenQuery('');
+      setKittenResults([]);
+      setSelectedKittenLabel('');
+      setPersonQuery('');
+      setPersonOptions([]);
+      setSelectedPersonLabel('');
       setShowDraftForm(false);
       await load();
     } catch (err) {
@@ -265,6 +302,144 @@ function ContractsPage() {
   }
 
   const draftIsAdoption = draftForm.templateSlug === 'adoption';
+
+  // Debounced kitten search - the /kittens endpoint pagination-wraps its
+  // response ({ items, total, ... }) whenever a `search` param is present,
+  // so results are read from data.items, not the raw array.
+  useEffect(() => {
+    if (!showDraftForm) return undefined;
+    const query = kittenQuery.trim();
+    if (query.length < 2) {
+      setKittenResults([]);
+      setKittenSearching(false);
+      return undefined;
+    }
+    let cancelled = false;
+    setKittenSearching(true);
+    const timer = setTimeout(() => {
+      fetchKittens({ search: query })
+        .then((data) => {
+          if (cancelled) return;
+          setKittenResults(Array.isArray(data) ? data : (data?.items || []));
+        })
+        .catch(() => {
+          if (!cancelled) setKittenResults([]);
+        })
+        .finally(() => {
+          if (!cancelled) setKittenSearching(false);
+        });
+    }, 300);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [kittenQuery, showDraftForm]);
+
+  // Foster/applicant options load in full when the draft form opens (or the
+  // template type flips between Foster/Adoption) and are filtered client
+  // side as staff type - fetchFosters() has no server-side search param
+  // today, and fetchApplications() is a small enough list to filter locally.
+  useEffect(() => {
+    if (!showDraftForm) return undefined;
+    let cancelled = false;
+    setPersonLoading(true);
+    const loader = draftIsAdoption ? fetchApplications('Approved') : fetchFosters();
+    loader
+      .then((data) => {
+        if (!cancelled) setPersonOptions(Array.isArray(data) ? data : []);
+      })
+      .catch(() => {
+        if (!cancelled) setPersonOptions([]);
+      })
+      .finally(() => {
+        if (!cancelled) setPersonLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [showDraftForm, draftIsAdoption]);
+
+  const filteredPersonOptions = useMemo(() => {
+    const query = personQuery.trim().toLowerCase();
+    if (!query) return personOptions.slice(0, 8);
+    return personOptions
+      .filter((option) => {
+        const label = draftIsAdoption ? getApplicationSummary(option.formData) : (option.name || '');
+        const email = draftIsAdoption ? (parseApplicationFormData(option.formData).email || '') : (option.email || '');
+        return `${label} ${email}`.toLowerCase().includes(query);
+      })
+      .slice(0, 8);
+  }, [personOptions, personQuery, draftIsAdoption]);
+
+  function handleSelectKitten(kitten) {
+    setKittenResultsOpen(false);
+    setKittenQuery('');
+    setSelectedKittenLabel(kitten.name);
+    setDraftForm((prev) => ({ ...prev, kittenId: kitten.id, kittenName: kitten.name }));
+
+    // microchipNumber isn't included in the search-list payload (kittenListSelect
+    // omits it) - fetch the full record so Adoption drafts still get it auto-filled.
+    if (draftIsAdoption) {
+      fetchKittenById(kitten.id)
+        .then((full) => {
+          if (full?.microchipNumber) {
+            setDraftForm((prev) => ({ ...prev, microchipNumber: full.microchipNumber }));
+          }
+        })
+        .catch(() => {});
+    }
+  }
+
+  function clearSelectedKitten() {
+    setSelectedKittenLabel('');
+    setDraftForm((prev) => ({ ...prev, kittenId: null }));
+  }
+
+  function handleSelectPerson(option) {
+    setPersonResultsOpen(false);
+    setPersonQuery('');
+    if (draftIsAdoption) {
+      const parsed = parseApplicationFormData(option.formData);
+      setSelectedPersonLabel(getApplicationSummary(option.formData));
+      setDraftForm((prev) => ({
+        ...prev,
+        applicationId: option.id,
+        fosterId: null,
+        signerName: parsed.fullName || prev.signerName,
+        signerEmail: parsed.email || prev.signerEmail,
+        signerPhone: parsed.phone || prev.signerPhone,
+        signerAddress: parsed.address || prev.signerAddress,
+      }));
+    } else {
+      setSelectedPersonLabel(option.name || '');
+      setDraftForm((prev) => ({
+        ...prev,
+        fosterId: option.id,
+        applicationId: null,
+        signerName: option.name || prev.signerName,
+        signerEmail: option.email || prev.signerEmail,
+        signerPhone: option.phone || prev.signerPhone,
+        signerAddress: option.address || prev.signerAddress,
+      }));
+    }
+  }
+
+  function clearSelectedPerson() {
+    setSelectedPersonLabel('');
+    setDraftForm((prev) => ({ ...prev, fosterId: null, applicationId: null }));
+  }
+
+  function handleDraftTemplateChange(nextSlug) {
+    const nextIsAdoption = nextSlug === 'adoption';
+    if (nextIsAdoption !== draftIsAdoption) {
+      setSelectedPersonLabel('');
+      setPersonQuery('');
+      setPersonOptions([]);
+      setDraftForm((prev) => ({ ...prev, templateSlug: nextSlug, fosterId: null, applicationId: null }));
+    } else {
+      setDraftForm((prev) => ({ ...prev, templateSlug: nextSlug }));
+    }
+  }
 
   return (
     <div>
@@ -384,7 +559,7 @@ function ContractsPage() {
               <span className="text-xs font-semibold uppercase text-gray-500">Agreement template</span>
               <select
                 value={draftForm.templateSlug}
-                onChange={(e) => setDraftForm((prev) => ({ ...prev, templateSlug: e.target.value }))}
+                onChange={(e) => handleDraftTemplateChange(e.target.value)}
                 className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
               >
                 {templateOptions.map((template) => (
@@ -392,15 +567,111 @@ function ContractsPage() {
                 ))}
               </select>
             </label>
-            <label className="block">
-              <span className="text-xs font-semibold uppercase text-gray-500">Kitten name</span>
-              <input
-                value={draftForm.kittenName}
-                onChange={(e) => setDraftForm((prev) => ({ ...prev, kittenName: e.target.value }))}
-                placeholder="e.g. Biscuit"
-                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
-              />
-            </label>
+
+            <div className="block sm:col-span-2">
+              <span className="text-xs font-semibold uppercase text-gray-500">Find kitten</span>
+              {draftForm.kittenId ? (
+                <div className="mt-1 flex items-center justify-between rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-2 text-sm">
+                  <span className="font-medium text-emerald-900">{selectedKittenLabel || draftForm.kittenName}</span>
+                  <button type="button" onClick={clearSelectedKitten} className="text-xs font-semibold text-emerald-700 hover:underline">
+                    Change
+                  </button>
+                </div>
+              ) : (
+                <div className="relative mt-1">
+                  <input
+                    value={kittenQuery}
+                    onChange={(e) => { setKittenQuery(e.target.value); setKittenResultsOpen(true); }}
+                    onFocus={() => setKittenResultsOpen(true)}
+                    placeholder="Search kittens by name..."
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                  />
+                  {kittenResultsOpen && kittenQuery.trim().length >= 2 && (
+                    <div className="absolute z-10 mt-1 w-full rounded-lg border border-gray-200 bg-white shadow-lg">
+                      {kittenSearching ? (
+                        <p className="px-3 py-2 text-sm text-gray-500">Searching...</p>
+                      ) : kittenResults.length === 0 ? (
+                        <p className="px-3 py-2 text-sm text-gray-500">No kittens found.</p>
+                      ) : (
+                        kittenResults.map((kitten) => (
+                          <button
+                            key={kitten.id}
+                            type="button"
+                            onClick={() => handleSelectKitten(kitten)}
+                            className="block w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                          >
+                            {kitten.name}
+                            <span className="ml-1 text-xs text-gray-400">{kitten.breed || ''}</span>
+                          </button>
+                        ))
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+              <label className="mt-2 block">
+                <span className="text-xs text-gray-400">Or type a kitten name (no linked record)</span>
+                <input
+                  value={draftForm.kittenName}
+                  onChange={(e) => setDraftForm((prev) => ({ ...prev, kittenName: e.target.value }))}
+                  placeholder="e.g. Biscuit"
+                  className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                />
+              </label>
+            </div>
+
+            <div className="block sm:col-span-2">
+              <span className="text-xs font-semibold uppercase text-gray-500">
+                {draftIsAdoption ? 'Find adopter (approved application)' : 'Find foster'}
+              </span>
+              {(draftForm.fosterId || draftForm.applicationId) ? (
+                <div className="mt-1 flex items-center justify-between rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-2 text-sm">
+                  <span className="font-medium text-emerald-900">{selectedPersonLabel}</span>
+                  <button type="button" onClick={clearSelectedPerson} className="text-xs font-semibold text-emerald-700 hover:underline">
+                    Change
+                  </button>
+                </div>
+              ) : (
+                <div className="relative mt-1">
+                  <input
+                    value={personQuery}
+                    onChange={(e) => { setPersonQuery(e.target.value); setPersonResultsOpen(true); }}
+                    onFocus={() => setPersonResultsOpen(true)}
+                    placeholder={draftIsAdoption ? 'Search approved applications...' : 'Search fosters...'}
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                  />
+                  {personResultsOpen && (
+                    <div className="absolute z-10 mt-1 w-full rounded-lg border border-gray-200 bg-white shadow-lg">
+                      {personLoading ? (
+                        <p className="px-3 py-2 text-sm text-gray-500">Loading...</p>
+                      ) : filteredPersonOptions.length === 0 ? (
+                        <p className="px-3 py-2 text-sm text-gray-500">
+                          {draftIsAdoption ? 'No approved applications found.' : 'No fosters found.'}
+                        </p>
+                      ) : (
+                        filteredPersonOptions.map((option) => (
+                          <button
+                            key={option.id}
+                            type="button"
+                            onClick={() => handleSelectPerson(option)}
+                            className="block w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                          >
+                            {draftIsAdoption ? getApplicationSummary(option.formData) : option.name}
+                            <span className="ml-1 text-xs text-gray-400">
+                              {draftIsAdoption ? parseApplicationFormData(option.formData).email : option.email}
+                            </span>
+                          </button>
+                        ))
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+              <p className="mt-1 text-xs text-gray-400">
+                Optional - leave unselected to send a draft without a linked record.
+              </p>
+            </div>
+
             <label className="block">
               <span className="text-xs font-semibold uppercase text-gray-500">Signer name</span>
               <input
@@ -420,29 +691,48 @@ function ContractsPage() {
                 className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
               />
             </label>
+            <label className="block">
+              <span className="text-xs font-semibold uppercase text-gray-500">Address</span>
+              <input
+                value={draftForm.signerAddress}
+                onChange={(e) => setDraftForm((prev) => ({ ...prev, signerAddress: e.target.value }))}
+                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+              />
+            </label>
+            <label className="block">
+              <span className="text-xs font-semibold uppercase text-gray-500">Phone</span>
+              <input
+                value={draftForm.signerPhone}
+                onChange={(e) => setDraftForm((prev) => ({ ...prev, signerPhone: e.target.value }))}
+                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+              />
+            </label>
             {draftIsAdoption && (
+              <label className="block">
+                <span className="text-xs font-semibold uppercase text-gray-500">Microchip number</span>
+                <input
+                  value={draftForm.microchipNumber}
+                  onChange={(e) => setDraftForm((prev) => ({ ...prev, microchipNumber: e.target.value }))}
+                  className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                />
+              </label>
+            )}
+            {!draftIsAdoption && (
               <>
-                <label className="block sm:col-span-2">
-                  <span className="text-xs font-semibold uppercase text-gray-500">Adopter address</span>
+                <label className="block">
+                  <span className="text-xs font-semibold uppercase text-gray-500">Emergency contact name</span>
                   <input
-                    value={draftForm.signerAddress}
-                    onChange={(e) => setDraftForm((prev) => ({ ...prev, signerAddress: e.target.value }))}
+                    value={draftForm.emergencyContactName}
+                    onChange={(e) => setDraftForm((prev) => ({ ...prev, emergencyContactName: e.target.value }))}
+                    placeholder="Foster Care Agreement only"
                     className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
                   />
                 </label>
                 <label className="block">
-                  <span className="text-xs font-semibold uppercase text-gray-500">Phone</span>
+                  <span className="text-xs font-semibold uppercase text-gray-500">Emergency contact phone</span>
                   <input
-                    value={draftForm.signerPhone}
-                    onChange={(e) => setDraftForm((prev) => ({ ...prev, signerPhone: e.target.value }))}
-                    className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
-                  />
-                </label>
-                <label className="block">
-                  <span className="text-xs font-semibold uppercase text-gray-500">Microchip number</span>
-                  <input
-                    value={draftForm.microchipNumber}
-                    onChange={(e) => setDraftForm((prev) => ({ ...prev, microchipNumber: e.target.value }))}
+                    value={draftForm.emergencyContactPhone}
+                    onChange={(e) => setDraftForm((prev) => ({ ...prev, emergencyContactPhone: e.target.value }))}
                     className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
                   />
                 </label>
@@ -616,6 +906,7 @@ function ContractsPage() {
               contractId={signingContract.id}
               contractText={getDefaultContractText(signingContract, agreementTemplates)}
               signerName={signingContract.signerName}
+              contractType={signingContract.type}
               onClose={() => setSigningContract(null)}
               onSign={handleSign}
             />
