@@ -240,6 +240,9 @@ export async function deleteDocument(req, res, next) {
       });
 
       const nextPrimary = nextPhoto && isPhotoDocument(nextPhoto) ? nextPhoto : null;
+      const nextThumbnailUrl = nextPrimary
+        ? await generateThumbnailFromUrl(nextPrimary.fileUrl)
+        : null;
 
       await prisma.$transaction(async (tx) => {
         if (nextPrimary) {
@@ -253,12 +256,12 @@ export async function deleteDocument(req, res, next) {
           });
           await tx.kitten.update({
             where: { id: kittenId },
-            data: { primaryPhotoUrl: nextPrimary.fileUrl },
+            data: { primaryPhotoUrl: nextPrimary.fileUrl, thumbnailUrl: nextThumbnailUrl },
           });
         } else {
           await tx.kitten.update({
             where: { id: kittenId },
-            data: { primaryPhotoUrl: null },
+            data: { primaryPhotoUrl: null, thumbnailUrl: null },
           });
         }
       }, PHOTO_TRANSACTION_OPTIONS);

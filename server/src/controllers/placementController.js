@@ -126,3 +126,57 @@ export async function createFosterPlacement(req, res, next) {
     next(error);
   }
 }
+
+// Standalone "End Placement" action. Distinct from createFosterPlacement's
+// auto-discharge above (which only ever fires as a side effect of
+// reassigning a kitten to a *new* foster) - this is the first explicit way
+// to end an active placement on its own, with no reassignment involved.
+// Does not touch kitten.status; the client prompts staff to confirm/update
+// status separately after a successful discharge, same "prompt, not
+// automatic" pattern used elsewhere. currentFosterId IS cleared here,
+// unconditionally - unlike status, it's a factual fact (which foster
+// currently has this kitten), not a judgment call, so it always gets
+// corrected in the same transaction rather than waiting on a prompt.
+export async function dischargePlacement(req, res, next) {
+  try {
+    const fosterId = Number.parseInt(req.params.id, 10);
+    const placementId = Number.parseInt(req.params.placementId, 10);
+    const { dischargeDate, dischargeType } = req.body;
+
+    const placement = await prisma.placement.findFirst({
+      where: { id: placementId, fosterId },
+    });
+
+    if (!placement) return res.status(404).json({ error: 'Placement not found' });
+    if (placement.dischargeDate) {
+      return res.status(400).json({ error: 'Placement is already discharged' });
+    }
+
+    const discharge = dischargeDate ? new Date(dischargeDate) : new Date();
+    if (Number.isNaN(discharge.getTime())) {
+      return res.status(400).json({ error: 'Invalid discharge date' });
+    }
+
+    const updated = await prisma.$transaction(async (tx) => {
+      const dischargedPlacement = await tx.placement.update({
+        where: { id: placementId },
+        data: {
+          dischargeDate: discharge,
+          dischargeType: dischargeType?.trim() || 'Discharged',
+        },
+        include: placementInclude,
+      });
+
+      await tx.kitten.update({
+        where: { id: placement.kittenId },
+        data: { currentFosterId: null },
+      });
+
+      return dischargedPlacement;
+    });
+
+    res.json(updated);
+  } catch (error) {
+    next(error);
+  }
+}

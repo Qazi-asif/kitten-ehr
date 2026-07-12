@@ -127,7 +127,7 @@ export async function getPublicKittenById(req, res, next) {
     const id = Number.parseInt(req.params.id, 10);
 
     const kitten = await prisma.kitten.findFirst({
-      where: { id, ...publicAvailableKittenFilter },
+      where: { id, ...publicWebsiteFilter },
       select: publicKittenSelect,
     });
 
@@ -224,7 +224,7 @@ export async function getPublicKittenPhotos(req, res, next) {
     const id = Number.parseInt(req.params.id, 10);
 
     const kitten = await prisma.kitten.findFirst({
-      where: { id, ...publicAvailableKittenFilter },
+      where: { id, ...publicWebsiteFilter },
       select: { id: true, primaryPhotoUrl: true },
     });
 
@@ -282,7 +282,7 @@ export async function getPublicKittenUpdates(req, res, next) {
     const id = Number.parseInt(req.params.id, 10);
 
     const kitten = await prisma.kitten.findFirst({
-      where: { id, ...publicAvailableKittenFilter },
+      where: { id, ...publicWebsiteFilter },
       select: { id: true },
     });
 

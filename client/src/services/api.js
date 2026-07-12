@@ -128,6 +128,15 @@ export async function createFosterPlacement(fosterId, data) {
   return response.json();
 }
 
+export async function dischargeFosterPlacement(fosterId, placementId, data = {}) {
+  const response = await adminFetch(`/fosters/${fosterId}/placements/${placementId}/discharge`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to end placement'));
+  return response.json();
+}
+
 export async function fetchKittenPlacements(kittenId) {
   const response = await adminFetch(`/kittens/${kittenId}/placements`);
   if (!response.ok) throw new Error('Failed to load kitten placements');
@@ -561,6 +570,7 @@ export async function fetchContracts(filters = {}) {
   if (filters.dateTo) params.set('dateTo', filters.dateTo);
   if (filters.dateField) params.set('dateField', filters.dateField);
   if (filters.signedOnly) params.set('signedOnly', 'true');
+  if (filters.kittenId) params.set('kittenId', String(filters.kittenId));
 
   const query = params.toString();
   const response = await adminFetch(`/contracts${query ? `?${query}` : ''}`);

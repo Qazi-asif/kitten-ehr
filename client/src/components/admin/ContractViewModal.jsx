@@ -113,6 +113,33 @@ function ContractViewModal({ contract, templates = [], onClose }) {
               </p>
             </div>
           )}
+
+          {Array.isArray(contract.householdAcknowledgments) && contract.householdAcknowledgments.length > 0 && (
+            <div className="mt-5 rounded-xl border border-slate-200 p-4">
+              <h3 className="text-xs font-bold uppercase tracking-wide text-slate-500">
+                Adult Household Member Acknowledgments
+              </h3>
+              <div className="mt-3 space-y-4">
+                {contract.householdAcknowledgments.map((entry) => (
+                  <div key={entry.id} className="flex flex-wrap items-center gap-4">
+                    {entry.signatureImageUrl ? (
+                      <img
+                        src={entry.signatureImageUrl}
+                        alt={`Signature of ${entry.name}`}
+                        className="max-h-24 rounded-lg border border-slate-200 bg-white p-2"
+                      />
+                    ) : (
+                      <p className="text-sm text-slate-500">No signature image on file.</p>
+                    )}
+                    <p className="text-xs text-slate-500">
+                      {entry.name}
+                      {entry.signedAt ? ` · ${new Date(entry.signedAt).toLocaleString()}` : ''}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="border-t border-slate-200 px-6 py-4">

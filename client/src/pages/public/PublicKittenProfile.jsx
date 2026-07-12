@@ -117,6 +117,10 @@ function PublicKittenProfile() {
 
   if (error) return <div className="px-6 py-12 text-red-600">{error}</div>;
 
+  const effectiveStatus = kitten.status || 'Available for Adoption';
+  const isAvailableForAdoption = effectiveStatus === 'Available for Adoption';
+  const isAdopted = effectiveStatus === 'Adopted';
+
   const ageLabel = formatPublicAge(kitten.dateOfBirth);
   const detailParts = [
     kitten.sex || null,
@@ -181,15 +185,30 @@ function PublicKittenProfile() {
                  <p className="text-sm font-bold text-[#d97706]">Medical / Special Needs</p>
               </div>
 
+              {/* Status banner (shown instead of ADOPT ME when the kitten isn't currently available) */}
+              {!isAvailableForAdoption && (
+                <div
+                  className={`mt-6 inline-flex w-max items-center gap-2 rounded-xl px-5 py-3 text-sm font-bold ${
+                    isAdopted ? 'bg-teal-50 text-teal-800' : 'bg-gray-100 text-gray-700'
+                  }`}
+                >
+                  {isAdopted
+                    ? `🎉 ${kitten.name} has found their forever home!`
+                    : `${kitten.name} is not currently available for adoption.`}
+                </div>
+              )}
+
               {/* Buttons */}
               <div className="mt-10 flex flex-col sm:flex-row flex-wrap gap-4">
-                <Link
-                  to={`/adopt/apply?kitten=${encodeURIComponent(kitten.name)}`}
-                  className="inline-flex min-w-[140px] items-center justify-center gap-2 rounded-xl bg-[#0d9488] px-6 py-3.5 text-sm font-bold tracking-wide text-white shadow-md transition hover:bg-[#0f766e]"
-                >
-                  <Home className="h-4 w-4" fill="currentColor" />
-                  ADOPT ME
-                </Link>
+                {isAvailableForAdoption && (
+                  <Link
+                    to={`/adopt/apply?kitten=${encodeURIComponent(kitten.name)}`}
+                    className="inline-flex min-w-[140px] items-center justify-center gap-2 rounded-xl bg-[#0d9488] px-6 py-3.5 text-sm font-bold tracking-wide text-white shadow-md transition hover:bg-[#0f766e]"
+                  >
+                    <Home className="h-4 w-4" fill="currentColor" />
+                    ADOPT ME
+                  </Link>
+                )}
                 <button
                   type="button"
                   onClick={() => scrollToRef(sponsorRef)}

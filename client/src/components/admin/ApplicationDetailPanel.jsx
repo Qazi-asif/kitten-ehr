@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import ApplicationDocumentsSection from './ApplicationDocumentsSection';
 import PersonContractsSection from './PersonContractsSection';
 import {
@@ -90,13 +91,23 @@ function ApplicationDetailPanel({
             Application #{application.id} · Submitted {new Date(application.createdAt).toLocaleString()}
           </p>
         </div>
-        <button
-          type="button"
-          onClick={onClose}
-          className="rounded-lg border border-gray-300 px-3 py-1.5 text-sm font-semibold text-gray-700 hover:bg-gray-50"
-        >
-          Close
-        </button>
+        <div className="flex items-center gap-2">
+          {application.status === 'Approved' && (
+            <Link
+              to={`/admin/contracts?createFor=application:${application.id}`}
+              className="rounded-lg bg-emerald-700 px-3 py-1.5 text-sm font-semibold text-white hover:bg-emerald-800"
+            >
+              Create Contract
+            </Link>
+          )}
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-lg border border-gray-300 px-3 py-1.5 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+          >
+            Close
+          </button>
+        </div>
       </div>
 
       <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">

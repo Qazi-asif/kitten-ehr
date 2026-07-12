@@ -5,11 +5,13 @@ import AgreementTemplatesPanel from '../../components/admin/AgreementTemplatesPa
 import ContractEditModal from '../../components/admin/ContractEditModal';
 import ContractViewModal from '../../components/admin/ContractViewModal';
 import ContractSigningPad from '../../components/ContractSigningPad';
+import StatusConfirmationModal from '../../components/admin/StatusConfirmationModal';
 import {
   createContractDraft,
   deleteContract,
   emailContractAgreement,
   emailSignedContractPdf,
+  fetchApplicationById,
   fetchApplications,
   fetchContractById,
   fetchContracts,
@@ -19,11 +21,16 @@ import {
   fetchKittens,
   markContractSigned,
   updateContract,
+  updateKitten,
 } from '../../services/api';
 import { resolveContractKittenName } from '../../utils/contractAudit';
 import { getDefaultContractText } from '../../utils/contractText';
 import { CONTRACT_TEMPLATES, getContractTemplateLabel } from '../../constants/contractTemplates';
-import { getApplicationSummary, parseApplicationFormData } from '../../utils/applicationFormData';
+import {
+  getApplicationSummary,
+  parseApplicationFormData,
+  resolveKittenOfInterest,
+} from '../../utils/applicationFormData';
 
 const STATUS_STYLES = {
   SENT: 'bg-amber-100 text-amber-800',
@@ -63,6 +70,8 @@ function ContractsPage() {
   const [filters, setFilters] = useState(EMPTY_FILTERS);
   const [appliedFilters, setAppliedFilters] = useState(EMPTY_FILTERS);
   const [signingContract, setSigningContract] = useState(null);
+  const [statusPrompt, setStatusPrompt] = useState(null);
+  const [savingStatus, setSavingStatus] = useState(false);
   const [reviewContract, setReviewContract] = useState(null);
   const [editContract, setEditContract] = useState(null);
   const [agreementTemplates, setAgreementTemplates] = useState([]);
@@ -149,6 +158,43 @@ function ContractsPage() {
       .catch(() => {});
   }, [reviewId, contracts]);
 
+  // Deep link from an approved application's "Create Contract" button
+  // (?createFor=application:<id>) - opens the draft form pre-populated with
+  // the applicant's info. Auto-fill is editable, not locked, same as the
+  // manual kitten/person picker below.
+  const createForParam = searchParams.get('createFor');
+
+  useEffect(() => {
+    if (!createForParam) return;
+    const [kind, idStr] = createForParam.split(':');
+    if (kind !== 'application') return;
+    const applicationId = Number.parseInt(idStr, 10);
+    if (!Number.isInteger(applicationId)) return;
+
+    setShowDraftForm(true);
+    fetchApplicationById(applicationId)
+      .then((application) => {
+        if (!application) return;
+        const parsed = parseApplicationFormData(application.formData);
+        const isAdoptionApp = application.type === 'Adoption';
+        const kittenOfInterest = resolveKittenOfInterest(application.formData, application.kittenOfInterest);
+
+        setDraftForm((prev) => ({
+          ...prev,
+          templateSlug: isAdoptionApp ? 'adoption' : 'foster_supplies_provided',
+          applicationId: application.id,
+          fosterId: null,
+          signerName: parsed.fullName || prev.signerName,
+          signerEmail: parsed.email || prev.signerEmail,
+          signerPhone: parsed.phone || prev.signerPhone,
+          signerAddress: parsed.address || prev.signerAddress,
+          kittenName: kittenOfInterest || prev.kittenName,
+        }));
+        setSelectedPersonLabel(getApplicationSummary(application.formData));
+      })
+      .catch(() => {});
+  }, [createForParam]);
+
   const statusCounts = useMemo(() => {
     const counts = { SENT: 0, SIGNED: 0, VOID: 0 };
     contracts.forEach((c) => {
@@ -178,9 +224,38 @@ function ContractsPage() {
   }
 
   async function handleSign(payload) {
+    const justSignedContract = signingContract;
     await markContractSigned(payload.contractId, payload);
     setSigningContract(null);
     await load();
+
+    if (justSignedContract?.kittenId) {
+      const suggestedStatus = justSignedContract.type === 'ADOPTION' ? 'Adopted' : 'In Foster Care';
+      setStatusPrompt({
+        kittenId: justSignedContract.kittenId,
+        kittenName: justSignedContract.kitten?.name || justSignedContract.kittenName,
+        currentStatus: justSignedContract.kitten?.status,
+        suggestedStatus,
+        reason: 'This contract was just signed. It may affect ',
+      });
+    }
+  }
+
+  async function handleStatusConfirm(newStatus) {
+    if (!statusPrompt) return;
+    setSavingStatus(true);
+    try {
+      await updateKitten(statusPrompt.kittenId, { status: newStatus });
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSavingStatus(false);
+      setStatusPrompt(null);
+    }
+  }
+
+  function handleStatusSkip() {
+    setStatusPrompt(null);
   }
 
   async function handleCreateDraft(e) {
@@ -926,6 +1001,17 @@ function ContractsPage() {
         onClose={() => setEditContract(null)}
         onSave={handleSaveEdit}
         saving={savingEdit}
+      />
+
+      <StatusConfirmationModal
+        open={Boolean(statusPrompt)}
+        kittenName={statusPrompt?.kittenName}
+        currentStatus={statusPrompt?.currentStatus}
+        suggestedStatus={statusPrompt?.suggestedStatus}
+        reason={statusPrompt?.reason}
+        onConfirm={handleStatusConfirm}
+        onSkip={handleStatusSkip}
+        saving={savingStatus}
       />
     </div>
   );

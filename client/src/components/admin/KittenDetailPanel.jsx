@@ -7,6 +7,7 @@ import LitterSelect from './LitterSelect';
 import KittenPlacementTable from './KittenPlacementTable';
 import StatusBadge from './StatusBadge';
 import KittenDocumentsTab from './KittenDocumentsTab';
+import KittenContractsSection from './KittenContractsSection';
 import KittenHealthTab from './KittenHealthTab';
 import MedicalAlertsBanner from './MedicalAlertsBanner';
 import WishlistManager from './WishlistManager';
@@ -48,6 +49,7 @@ const TABS = [
   { id: 'health', label: 'Health' },
   { id: 'documents', label: 'Documents' },
   { id: 'placements', label: 'Placements' },
+  { id: 'contracts', label: 'Contracts' },
   { id: 'notes', label: 'Notes' },
 ];
 
@@ -843,6 +845,10 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
               </div>
               <KittenPlacementTable placements={placements} />
             </div>
+          )}
+
+          {activeTab === 'contracts' && (
+            <KittenContractsSection kittenId={kittenId} title="Agreements for this Kitten" />
           )}
 
           {activeTab === 'notes' && (

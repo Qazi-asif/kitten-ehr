@@ -5,15 +5,18 @@ import AssignKittenForm from '../components/admin/AssignKittenForm';
 import FosterCapabilityBadges from '../components/admin/FosterCapabilityBadges';
 import FosterPlacementTable from '../components/admin/FosterPlacementTable';
 import PersonContractsSection from '../components/admin/PersonContractsSection';
+import StatusConfirmationModal from '../components/admin/StatusConfirmationModal';
 import WishlistManager from '../components/admin/WishlistManager';
 import FosterPhoto from '../components/FosterPhoto';
 import { useAuth } from '../context/AuthContext';
 import { WISHLIST_OWNER_TYPES } from '../constants/wishlists';
 import {
   createFosterPlacement,
+  dischargeFosterPlacement,
   fetchFosterById,
   fetchFosterPlacements,
   fetchKittens,
+  updateKitten,
 } from '../services/api';
 
 function FosterDetailPage() {
@@ -26,6 +29,9 @@ function FosterDetailPage() {
   const [loading, setLoading] = useState(true);
   const [assigning, setAssigning] = useState(false);
   const [error, setError] = useState(null);
+  const [statusPrompt, setStatusPrompt] = useState(null);
+  const [savingStatus, setSavingStatus] = useState(false);
+  const [dischargingId, setDischargingId] = useState(null);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -54,12 +60,80 @@ function FosterDetailPage() {
     setAssigning(true);
     setError(null);
     try {
-      await createFosterPlacement(id, payload);
+      const placement = await createFosterPlacement(id, payload);
       await loadData();
+
+      // Assigning a kitten to this foster auto-discharges its prior open
+      // placement (if any) and auto-sets its status to "In Foster Care" on
+      // the server. This prompt gives staff a chance to confirm or correct
+      // that status rather than leaving it as a silent write.
+      if (placement?.kitten) {
+        setStatusPrompt({
+          kittenId: placement.kitten.id,
+          kittenName: placement.kitten.name,
+          currentStatus: placement.kitten.status,
+          suggestedStatus: placement.kitten.status,
+          reason: 'This kitten was just placed with this foster. Confirm their status:',
+        });
+      }
     } catch (err) {
       setError(err.message);
     } finally {
       setAssigning(false);
+    }
+  }
+
+  async function handleStatusConfirm(newStatus) {
+    if (!statusPrompt) return;
+    setSavingStatus(true);
+    try {
+      await updateKitten(statusPrompt.kittenId, { status: newStatus });
+      await loadData();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSavingStatus(false);
+      setStatusPrompt(null);
+    }
+  }
+
+  function handleStatusSkip() {
+    setStatusPrompt(null);
+  }
+
+  async function handleDischargePlacement(placement) {
+    const confirmed = window.confirm(
+      `End ${placement.kitten?.name || 'this kitten'}'s placement with this foster?`,
+    );
+    if (!confirmed) return;
+
+    const dischargeType = window.prompt(
+      'Optional discharge reason (e.g. Returned to Rescue, Adopted, Transferred). Leave blank for "Discharged":',
+      '',
+    );
+    if (dischargeType === null) return;
+
+    setDischargingId(placement.id);
+    setError(null);
+    try {
+      const updated = await dischargeFosterPlacement(id, placement.id, {
+        dischargeType: dischargeType.trim(),
+      });
+      await loadData();
+
+      if (updated?.kitten) {
+        setStatusPrompt({
+          kittenId: updated.kitten.id,
+          kittenName: updated.kitten.name,
+          currentStatus: updated.kitten.status,
+          suggestedStatus: updated.kitten.status,
+          reason: "This placement was just ended. Confirm the kitten's status:",
+        });
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setDischargingId(null);
     }
   }
 
@@ -176,9 +250,24 @@ function FosterDetailPage() {
         </div>
 
         <div className="mt-5">
-          <FosterPlacementTable placements={placements} />
+          <FosterPlacementTable
+            placements={placements}
+            onDischarge={handleDischargePlacement}
+            dischargingId={dischargingId}
+          />
         </div>
       </section>
+
+      <StatusConfirmationModal
+        open={Boolean(statusPrompt)}
+        kittenName={statusPrompt?.kittenName}
+        currentStatus={statusPrompt?.currentStatus}
+        suggestedStatus={statusPrompt?.suggestedStatus}
+        reason={statusPrompt?.reason}
+        onConfirm={handleStatusConfirm}
+        onSkip={handleStatusSkip}
+        saving={savingStatus}
+      />
     </div>
   );
 }

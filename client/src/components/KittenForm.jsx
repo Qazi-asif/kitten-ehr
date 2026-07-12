@@ -1,14 +1,7 @@
 import { useState } from 'react';
 import ProfilePhotoUpload from './ProfilePhotoUpload';
 import LitterSelect from './admin/LitterSelect';
-
-const STATUS_OPTIONS = [
-  'In Foster Care',
-  'Available for Adoption',
-  'Adopted',
-  'Transferred',
-  'Deceased',
-];
+import { KITTEN_STATUS_OPTIONS } from '../constants/kittenStatuses';
 
 const SEX_OPTIONS = ['', 'Male', 'Female'];
 const FIXED_STATUS_OPTIONS = ['', 'Intact', 'Spayed/Neutered'];
@@ -104,7 +97,7 @@ function KittenForm({ onSubmit, litters = [], onLittersChange, fosters = [], sub
           <label className="block">
             <span className="mb-1 block text-sm font-medium text-slate-700">Status</span>
             <select name="status" value={form.status} onChange={handleChange} className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
-              {STATUS_OPTIONS.map((option) => (
+              {KITTEN_STATUS_OPTIONS.map((option) => (
                 <option key={option} value={option}>{option}</option>
               ))}
             </select>

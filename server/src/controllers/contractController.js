@@ -10,7 +10,7 @@ const CONTRACT_INCLUDE = {
     select: { id: true, type: true, status: true, kittenOfInterest: true },
   },
   kitten: {
-    select: { id: true, name: true, microchipNumber: true },
+    select: { id: true, name: true, microchipNumber: true, status: true },
   },
   foster: {
     select: { id: true, name: true, email: true },
@@ -59,13 +59,18 @@ function parseSignatureAudit(raw) {
 }
 
 function buildContractWhere(query) {
-  const { search, status, dateFrom, dateTo, dateField, signedOnly } = query;
+  const { search, status, dateFrom, dateTo, dateField, signedOnly, kittenId } = query;
   const where = {};
 
   if (status && ['SENT', 'SIGNED', 'VOID'].includes(status)) {
     where.status = status;
   } else if (signedOnly === 'true') {
     where.status = 'SIGNED';
+  }
+
+  const parsedKittenId = Number.parseInt(kittenId, 10);
+  if (Number.isInteger(parsedKittenId)) {
+    where.kittenId = parsedKittenId;
   }
 
   const trimmedSearch = search?.trim();
