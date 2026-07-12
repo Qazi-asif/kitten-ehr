@@ -5,7 +5,7 @@ import {
   buildPublicAvailableKittenWhereClause,
   buildPublicWebsiteWhereClause,
 } from '../utils/publishTargets.js';
-import { isPhotoDocument, photoDocumentOrderBy } from '../utils/photoDocuments.js';
+import { isPhotoDocument, photoDocumentOrderBy, photoDocumentSelect } from '../utils/photoDocuments.js';
 import {
   GENERIC_KITTEN_PHOTO_FALLBACK,
   isResolvablePhotoUrl,
@@ -40,6 +40,22 @@ const publicKittenSelect = {
 const publicWebsiteFilter = buildPublicWebsiteWhereClause();
 const publicAvailableKittenFilter = buildPublicAvailableKittenWhereClause();
 
+// The public API must never embed a kitten's raw base64 photo inline in a
+// JSON response - a single photo can be several MB, which is what caused the
+// public kitten grid/profile pages to take 6-18+s (sometimes indefinitely)
+// to load. When the resolved photo turns out to be a data: URL, point the
+// client at the short image-proxy endpoint instead; it decodes the same
+// base64 blob server-side and streams it back as a real image response.
+// Real URLs (future S3/R2) and local /images or /uploads paths are already
+// short and pass through unchanged - no code change needed here once
+// object storage is actually configured.
+function toPublicPhotoUrl(kittenId, rawUrl) {
+  if (typeof rawUrl === 'string' && rawUrl.startsWith('data:image/')) {
+    return `/api/public/kittens/${kittenId}/photo`;
+  }
+  return rawUrl;
+}
+
 async function enrichPublicKittensWithPhotos(kittens) {
   if (kittens.length === 0) return kittens;
 
@@ -47,9 +63,8 @@ async function enrichPublicKittensWithPhotos(kittens) {
   if (needsDocLookup.length === 0) {
     return kittens.map((kitten) => {
       const normalized = normalizeKittenPhotoUrl(kitten.primaryPhotoUrl, kitten.name);
-      return normalized
-        ? { ...kitten, primaryPhotoUrl: normalized }
-        : { ...kitten, primaryPhotoUrl: normalizeKittenPhotoUrl(null, kitten.name) || GENERIC_KITTEN_PHOTO_FALLBACK };
+      const resolved = normalized || normalizeKittenPhotoUrl(null, kitten.name) || GENERIC_KITTEN_PHOTO_FALLBACK;
+      return { ...kitten, primaryPhotoUrl: toPublicPhotoUrl(kitten.id, resolved) };
     });
   }
 
@@ -74,16 +89,17 @@ async function enrichPublicKittensWithPhotos(kittens) {
   return kittens.map((kitten) => {
     const normalized = normalizeKittenPhotoUrl(kitten.primaryPhotoUrl, kitten.name);
     if (normalized) {
-      return { ...kitten, primaryPhotoUrl: normalized };
+      return { ...kitten, primaryPhotoUrl: toPublicPhotoUrl(kitten.id, normalized) };
     }
 
     const documentPhoto = photoByKittenId.get(kitten.id);
     if (documentPhoto) {
-      return { ...kitten, primaryPhotoUrl: documentPhoto };
+      return { ...kitten, primaryPhotoUrl: toPublicPhotoUrl(kitten.id, documentPhoto) };
     }
 
     const nameFallback = normalizeKittenPhotoUrl(null, kitten.name);
-    return { ...kitten, primaryPhotoUrl: nameFallback || GENERIC_KITTEN_PHOTO_FALLBACK };
+    const resolved = nameFallback || GENERIC_KITTEN_PHOTO_FALLBACK;
+    return { ...kitten, primaryPhotoUrl: toPublicPhotoUrl(kitten.id, resolved) };
   });
 }
 
@@ -137,6 +153,65 @@ export async function getPublicKittenById(req, res, next) {
 
     const [enriched] = await enrichPublicKittensWithPhotos([kitten]);
     res.json(enriched);
+  } catch (error) {
+    next(error);
+  }
+}
+
+function parseDataUrl(dataUrl) {
+  const match = /^data:([^;,]+);base64,(.+)$/s.exec(dataUrl);
+  if (!match) return null;
+  return { mime: match[1], buffer: Buffer.from(match[2], 'base64') };
+}
+
+// Serves a kitten's photo as a real image response, decoding a base64-stored
+// blob server-side so it never has to travel inline inside a JSON payload.
+// Resolution mirrors enrichPublicKittensWithPhotos for a single kitten.
+export async function getPublicKittenPhoto(req, res, next) {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+
+    const kitten = await prisma.kitten.findFirst({
+      where: { id, ...publicWebsiteFilter },
+      select: { id: true, name: true, primaryPhotoUrl: true },
+    });
+
+    if (!kitten) {
+      return res.status(404).end();
+    }
+
+    let resolved = normalizeKittenPhotoUrl(kitten.primaryPhotoUrl, kitten.name);
+
+    if (!resolved) {
+      const documents = await prisma.document.findMany({
+        where: { kittenId: id },
+        orderBy: photoDocumentOrderBy(),
+        select: photoDocumentSelect(),
+      });
+      const photoDocument = documents.find((document) => isPhotoDocument(document));
+      if (photoDocument) {
+        resolved = photoDocument.fileUrl;
+      }
+    }
+
+    if (!resolved) {
+      resolved = normalizeKittenPhotoUrl(null, kitten.name) || GENERIC_KITTEN_PHOTO_FALLBACK;
+    }
+
+    if (resolved.startsWith('data:image/')) {
+      const parsed = parseDataUrl(resolved);
+      if (!parsed) {
+        return res.status(404).end();
+      }
+      res.set('Content-Type', parsed.mime);
+      res.set('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+      return res.send(parsed.buffer);
+    }
+
+    // Already a short reference (real object-storage URL once S3/R2 is
+    // configured, or a local /images or /uploads path) - just point the
+    // browser at it directly rather than re-encoding.
+    return res.redirect(302, resolved);
   } catch (error) {
     next(error);
   }

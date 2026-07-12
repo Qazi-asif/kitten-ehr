@@ -17,6 +17,9 @@ function isResolvablePhotoUrl(url) {
   if (url.startsWith('http://') || url.startsWith('https://')) return true;
   if (url.startsWith('/images/')) return true;
   if (url.startsWith('/uploads/')) return true;
+  // Server-side image-proxy endpoint (e.g. /api/public/kittens/25/photo) -
+  // used in place of inline base64 in public API responses.
+  if (url.startsWith('/api/public/')) return true;
   return false;
 }
 

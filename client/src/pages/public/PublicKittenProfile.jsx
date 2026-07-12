@@ -81,7 +81,9 @@ function PublicKittenProfile() {
   const [donatePageLive, setDonatePageLive] = useState(false);
   const [showAllUpdates, setShowAllUpdates] = useState(false);
 
-  useEffect(() => {
+  const loadProfile = useCallback(() => {
+    setLoading(true);
+    setError(null);
     Promise.all([
       fetchPublicKittenById(id),
       fetchPublicKittenUpdates(id),
@@ -97,6 +99,10 @@ function PublicKittenProfile() {
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, [id]);
+
+  useEffect(() => {
+    loadProfile();
+  }, [loadProfile]);
 
   const handleSponsorshipSuccess = useCallback(() => {
     setSponsorshipComplete(true);
@@ -115,7 +121,20 @@ function PublicKittenProfile() {
     );
   }
 
-  if (error) return <div className="px-6 py-12 text-red-600">{error}</div>;
+  if (error) {
+    return (
+      <div className="flex min-h-[50vh] flex-col items-center justify-center gap-4 bg-white px-6 py-12 text-center">
+        <p className="text-red-600">{error}</p>
+        <button
+          type="button"
+          onClick={loadProfile}
+          className="rounded-lg bg-brand px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-dark"
+        >
+          Try again
+        </button>
+      </div>
+    );
+  }
 
   const effectiveStatus = kitten.status || 'Available for Adoption';
   const isAvailableForAdoption = effectiveStatus === 'Available for Adoption';
@@ -203,7 +222,7 @@ function PublicKittenProfile() {
                 {isAvailableForAdoption && (
                   <Link
                     to={`/adopt/apply?kitten=${encodeURIComponent(kitten.name)}`}
-                    className="inline-flex min-w-[140px] items-center justify-center gap-2 rounded-xl bg-[#0d9488] px-6 py-3.5 text-sm font-bold tracking-wide text-white shadow-md transition hover:bg-[#0f766e]"
+                    className="inline-flex min-w-[140px] items-center justify-center gap-2 rounded-xl bg-brand px-6 py-3.5 text-sm font-bold tracking-wide text-white shadow-md transition hover:bg-brand-dark"
                   >
                     <Home className="h-4 w-4" fill="currentColor" />
                     ADOPT ME

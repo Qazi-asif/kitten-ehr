@@ -115,7 +115,7 @@ function ApplicationDocumentsSection({
         <button
           type="submit"
           disabled={uploading || !file || !docLabel}
-          className="rounded-lg bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800 disabled:opacity-60"
+          className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-60"
         >
           {uploading ? 'Uploading...' : 'Upload Document'}
         </button>

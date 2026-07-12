@@ -161,7 +161,7 @@ function EmailDocumentsModal({ open, onClose, kittenId, documents, onSuccess }) 
             <button
               type="submit"
               disabled={sending || documents.length === 0}
-              className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
+              className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark disabled:cursor-not-allowed disabled:opacity-60"
             >
               {sending ? 'Sending...' : 'Send Email'}
             </button>

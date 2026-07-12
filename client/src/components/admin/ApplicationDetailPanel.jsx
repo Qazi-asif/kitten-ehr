@@ -95,7 +95,7 @@ function ApplicationDetailPanel({
           {application.status === 'Approved' && (
             <Link
               to={`/admin/contracts?createFor=application:${application.id}`}
-              className="rounded-lg bg-emerald-700 px-3 py-1.5 text-sm font-semibold text-white hover:bg-emerald-800"
+              className="rounded-lg bg-brand px-3 py-1.5 text-sm font-semibold text-white hover:bg-brand-dark"
             >
               Create Contract
             </Link>
@@ -178,7 +178,7 @@ function ApplicationDetailPanel({
           rejectionReason: pendingStatus === 'Denied' ? rejectionReason : undefined,
           rejectionNotes: pendingStatus === 'Denied' ? statusNotes : undefined,
         })}
-        className="mt-4 rounded-lg bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800 disabled:opacity-60"
+        className="mt-4 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-60"
       >
         {saving ? 'Saving...' : 'Update Status & Notify Applicant'}
       </button>

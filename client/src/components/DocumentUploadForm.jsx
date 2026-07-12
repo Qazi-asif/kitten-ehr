@@ -115,7 +115,7 @@ function DocumentUploadForm({ onUpload, uploading }) {
       <button
         type="submit"
         disabled={uploading || !file}
-        className="rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
+        className="rounded-lg bg-brand px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-dark disabled:cursor-not-allowed disabled:opacity-50"
       >
         {uploading ? 'Uploading...' : 'Upload Document'}
       </button>

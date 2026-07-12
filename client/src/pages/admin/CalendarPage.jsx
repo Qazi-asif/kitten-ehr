@@ -156,7 +156,7 @@ function CalendarPage() {
         <div className="mt-4 flex gap-3">
           <button
             type="submit"
-            className="rounded-lg bg-teal-600 px-4 py-2 text-sm font-medium text-white hover:bg-teal-700"
+            className="rounded-lg bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand-dark"
           >
             {editingId ? 'Update Event' : 'Add Event'}
           </button>

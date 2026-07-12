@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PublicKittenCard from '../../components/PublicKittenCard';
 import {
@@ -12,22 +12,40 @@ function AvailableKittensPage() {
   const [kittens, setKittens] = useState([]);
   const [successStories, setSuccessStories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [storiesLoading, setStoriesLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState('all');
 
-  useEffect(() => {
-    // Fire both requests in parallel — they are independent
-    Promise.all([
-      fetchPublicKittens(),
-      fetchPublicContent(CONTENT_CATEGORY_SUCCESS_STORY).catch(() => []),
-    ]).then(([kittensData, storiesData]) => {
-      setKittens(kittensData);
-      setSuccessStories(Array.isArray(storiesData) ? storiesData : []);
-    }).finally(() => {
-      setLoading(false);
-      setStoriesLoading(false);
-    });
+  // Kept separate from the success-stories fetch below: a real failure here
+  // (e.g. a timed-out request) needs to surface as a visible error with a
+  // retry action, not silently fall through to "no cats match this filter"
+  // the way an unhandled Promise.all rejection previously did.
+  const loadKittens = useCallback(() => {
+    setLoading(true);
+    setError(null);
+    return fetchPublicKittens()
+      .then((kittensData) => {
+        setKittens(kittensData);
+      })
+      .catch((err) => {
+        setError(err.message || 'Failed to load cats.');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
+
+  useEffect(() => {
+    // Fired in parallel — success stories are non-critical and degrade
+    // silently to an empty list on failure, kittens do not.
+    loadKittens();
+    fetchPublicContent(CONTENT_CATEGORY_SUCCESS_STORY)
+      .then((storiesData) => {
+        setSuccessStories(Array.isArray(storiesData) ? storiesData : []);
+      })
+      .catch(() => setSuccessStories([]))
+      .finally(() => setStoriesLoading(false));
+  }, [loadKittens]);
 
   const filteredKittens = useMemo(
     () => kittens.filter((kitten) => matchesAdoptFilter(kitten, activeFilter)),
@@ -88,6 +106,18 @@ function AvailableKittensPage() {
 
         {loading ? (
           <p className="text-slate-500">Loading cats...</p>
+        ) : error ? (
+          <div className="rounded-xl border border-red-200 bg-red-50 p-12 text-center">
+            <p className="text-lg font-medium text-red-700">Couldn't load cats</p>
+            <p className="mt-2 text-sm text-red-600">{error}</p>
+            <button
+              type="button"
+              onClick={loadKittens}
+              className="mt-5 rounded-lg bg-brand px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-dark"
+            >
+              Try again
+            </button>
+          </div>
         ) : filteredKittens.length === 0 ? (
           <div className="rounded-xl border border-slate-200 bg-white p-12 text-center">
             <p className="text-lg font-medium text-slate-700">No cats match this filter right now</p>

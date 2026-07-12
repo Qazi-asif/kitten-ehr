@@ -32,7 +32,7 @@ function LitterForm({ onSubmit }) {
           <input type="date" name="intakeDate" value={form.intakeDate} onChange={handleChange} required className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
         </label>
       </div>
-      <button type="submit" className="mt-4 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700">
+      <button type="submit" className="mt-4 rounded-lg bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand-dark">
         Save Litter Group
       </button>
     </form>

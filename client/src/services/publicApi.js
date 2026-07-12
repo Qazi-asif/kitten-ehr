@@ -4,8 +4,8 @@ import { cachedRequest, invalidateCache } from '../utils/apiCache.js';
 const PUBLIC_CACHE_TTL_MS = 60_000;
 
 async function publicRequest(path) {
-  return cachedRequest(`public:${path}`, async () => {
-    const response = await publicFetch(`/public${path}`);
+  return cachedRequest(`public:${path}`, async (signal) => {
+    const response = await publicFetch(`/public${path}`, { signal });
     if (!response.ok) throw new Error('Request failed');
     return response.json();
   }, PUBLIC_CACHE_TTL_MS);

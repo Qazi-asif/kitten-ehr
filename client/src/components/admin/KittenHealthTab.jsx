@@ -199,7 +199,7 @@ function KittenHealthTab({
                 <button
                   type="submit"
                   disabled={activating || !selectedProtocolId}
-                  className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-60"
+                  className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-60"
                 >
                   {activating ? 'Activating...' : 'Activate Protocol'}
                 </button>

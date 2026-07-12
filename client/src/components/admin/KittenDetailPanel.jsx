@@ -552,7 +552,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                 <button
                   type="submit"
                   disabled={savingProfile}
-                  className="shrink-0 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-60"
+                  className="shrink-0 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-60"
                 >
                   {savingProfile ? 'Saving...' : 'Save Profile'}
                 </button>
@@ -721,7 +721,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                 <button
                   type="submit"
                   disabled={savingProfile}
-                  className="rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-60"
+                  className="rounded-lg bg-brand px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-60"
                 >
                   {savingProfile ? 'Saving...' : 'Save Profile'}
                 </button>
@@ -762,7 +762,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                 <button
                   type="submit"
                   disabled={savingUpdate}
-                  className="mt-3 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-60"
+                  className="mt-3 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-60"
                 >
                   {savingUpdate ? 'Posting...' : 'Post Update'}
                 </button>
@@ -877,7 +877,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                 type="button"
                 onClick={handleSaveNotes}
                 disabled={savingNotes}
-                className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-60"
+                className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-60"
               >
                 {savingNotes ? 'Saving...' : 'Save Notes'}
               </button>

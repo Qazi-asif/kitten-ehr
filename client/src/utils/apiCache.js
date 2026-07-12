@@ -19,7 +19,13 @@ export function invalidateCache(keyPrefix) {
   }
 }
 
-export async function cachedRequest(key, fetcher, ttlMs = 60_000) {
+// Safety-net ceiling for any single request routed through cachedRequest.
+// Cleared on settle, so it never affects requests that resolve normally -
+// it only exists to recover a request that would otherwise stay pending
+// for the life of the tab (e.g. a stalled connection or wedged function).
+const DEFAULT_TIMEOUT_MS = 20_000;
+
+export async function cachedRequest(key, fetcher, ttlMs = 60_000, timeoutMs = DEFAULT_TIMEOUT_MS) {
   const cached = getCachedValue(key, ttlMs);
   if (cached != null) {
     return cached;
@@ -30,15 +36,23 @@ export async function cachedRequest(key, fetcher, ttlMs = 60_000) {
     return pending.promise;
   }
 
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
   const promise = Promise.resolve()
-    .then(fetcher)
+    .then(() => fetcher(controller.signal))
     .then((data) => {
+      clearTimeout(timeoutId);
       setCachedValue(key, data);
       cache.delete(`${key}:pending`);
       return data;
     })
     .catch((error) => {
+      clearTimeout(timeoutId);
       cache.delete(`${key}:pending`);
+      if (error?.name === 'AbortError') {
+        throw new Error('Request timed out. Please try again.');
+      }
       throw error;
     });
 

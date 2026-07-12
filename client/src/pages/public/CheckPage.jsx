@@ -44,12 +44,12 @@ export default function PawsitiveLandingPage() {
           
           {/* Custom Brand Logo */}
           <div className="flex items-center gap-3">
-            <div className="relative w-14 h-14 text-[#00828a]">
+            <div className="relative w-14 h-14 text-brand">
               <svg viewBox="0 0 100 100" className="w-full h-full" fill="currentColor">
                 {/* Floating Butterflies */}
-                <path d="M68,12 C70,10 74,13 72,15 C70,17 66,13 68,12 Z" fill="#00828a" />
+                <path d="M68,12 C70,10 74,13 72,15 C70,17 66,13 68,12 Z" fill="#00CDCD" />
                 <path d="M78,13 C80,11 84,14 82,17 C80,19 76,15 78,13 Z" fill="#00a8b3" />
-                <path d="M85,25 C87,23 90,26 88,28 C86,30 83,27 85,25 Z" fill="#00828a" />
+                <path d="M85,25 C87,23 90,26 88,28 C86,30 83,27 85,25 Z" fill="#00CDCD" />
                 {/* Paw Toes */}
                 <circle cx="22" cy="45" r="9" />
                 <circle cx="43" cy="28" r="10" />
@@ -73,7 +73,7 @@ export default function PawsitiveLandingPage() {
           {/* Desktop Navigation Links */}
           <nav className="hidden xl:flex items-center gap-7 text-[14px] font-semibold text-[#1c3d3e]">
             {['Home', 'About', 'Adopt', 'Foster', 'Get Involved', 'Education', 'Donate', 'Contact'].map((link) => (
-              <a key={link} href={`#${link.toLowerCase().replace(' ', '-')}`} className="hover:text-[#00828a] transition-colors">
+              <a key={link} href={`#${link.toLowerCase().replace(' ', '-')}`} className="hover:text-brand transition-colors">
                 {link}
               </a>
             ))}
@@ -81,7 +81,7 @@ export default function PawsitiveLandingPage() {
 
           {/* Call to Action Button */}
           <div className="hidden xl:block">
-            <button className="bg-[#00828a] text-white px-7 py-2.5 rounded-full text-[14px] font-bold hover:bg-[#006e75] transition-all shadow-sm hover:shadow-md">
+            <button className="bg-brand text-white px-7 py-2.5 rounded-full text-[14px] font-bold hover:bg-brand-dark transition-all shadow-sm hover:shadow-md">
               Donate
             </button>
           </div>
@@ -108,13 +108,13 @@ export default function PawsitiveLandingPage() {
               <a 
                 key={link} 
                 href={`#${link.toLowerCase().replace(' ', '-')}`}
-                className="block text-slate-700 hover:text-[#00828a] font-semibold py-1.5"
+                className="block text-slate-700 hover:text-brand font-semibold py-1.5"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {link}
               </a>
             ))}
-            <button className="w-full bg-[#00828a] text-white py-2.5 rounded-full font-bold">
+            <button className="w-full bg-brand text-white py-2.5 rounded-full font-bold">
               Donate
             </button>
           </div>
@@ -162,10 +162,10 @@ export default function PawsitiveLandingPage() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <button className="bg-[#00828a] text-white px-8 py-3.5 rounded-xl font-bold text-[15px] hover:bg-[#006e75] transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md">
+              <button className="bg-brand text-white px-8 py-3.5 rounded-xl font-bold text-[15px] hover:bg-brand-dark transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md">
                 Adopt a Cat
               </button>
-              <button className="bg-[#00828a] text-white px-8 py-3.5 rounded-xl font-bold text-[15px] hover:bg-[#006e75] transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md">
+              <button className="bg-brand text-white px-8 py-3.5 rounded-xl font-bold text-[15px] hover:bg-brand-dark transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-5 h-5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
@@ -194,46 +194,46 @@ export default function PawsitiveLandingPage() {
           
           {/* Rescue */}
           <div className="flex flex-col items-center text-center space-y-4">
-            <div className="w-16 h-16 rounded-full border border-teal-500/30 flex items-center justify-center text-[#00828a] bg-teal-50/20">
+            <div className="w-16 h-16 rounded-full border border-teal-500/30 flex items-center justify-center text-brand bg-teal-50/20">
               <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 21c-4.418 0-8-3.582-8-8 0-1.8.6-3.4 1.6-4.8L4 4l4.2 1.6C9.6 4.6 11.2 4 12 4s2.4.6 3.8 1.6L20 4l-1.6 4.2c1 1.4 1.6 3 1.6 4.8 0 4.418-3.582 8-8 8z" />
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h.01M15 12h.01M12 15c-1 0-1.5-.5-1.5-.5h3s-.5.5-1.5.5z" />
               </svg>
             </div>
-            <h3 className="text-[14px] font-bold uppercase tracking-widest text-[#00828a]">Rescue</h3>
+            <h3 className="text-[14px] font-bold uppercase tracking-widest text-brand">Rescue</h3>
             <p className="text-gray-500 text-[13px] font-medium max-w-[160px]">Saving cats and kittens in need.</p>
           </div>
 
           {/* Wellness */}
           <div className="flex flex-col items-center text-center space-y-4">
-            <div className="w-16 h-16 rounded-full border border-teal-500/30 flex items-center justify-center text-[#00828a] bg-teal-50/20">
+            <div className="w-16 h-16 rounded-full border border-teal-500/30 flex items-center justify-center text-brand bg-teal-50/20">
               <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
             </div>
-            <h3 className="text-[14px] font-bold uppercase tracking-widest text-[#00828a]">Wellness</h3>
+            <h3 className="text-[14px] font-bold uppercase tracking-widest text-brand">Wellness</h3>
             <p className="text-gray-500 text-[13px] font-medium max-w-[180px]">Supporting the wellness of cats and people.</p>
           </div>
 
           {/* Educate */}
           <div className="flex flex-col items-center text-center space-y-4">
-            <div className="w-16 h-16 rounded-full border border-teal-500/30 flex items-center justify-center text-[#00828a] bg-teal-50/20">
+            <div className="w-16 h-16 rounded-full border border-teal-500/30 flex items-center justify-center text-brand bg-teal-50/20">
               <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
               </svg>
             </div>
-            <h3 className="text-[14px] font-bold uppercase tracking-widest text-[#00828a]">Educate</h3>
+            <h3 className="text-[14px] font-bold uppercase tracking-widest text-brand">Educate</h3>
             <p className="text-gray-500 text-[13px] font-medium max-w-[160px]">Providing resources for a better future.</p>
           </div>
 
           {/* Community */}
           <div className="flex flex-col items-center text-center space-y-4">
-            <div className="w-16 h-16 rounded-full border border-teal-500/30 flex items-center justify-center text-[#00828a] bg-teal-50/20">
+            <div className="w-16 h-16 rounded-full border border-teal-500/30 flex items-center justify-center text-brand bg-teal-50/20">
               <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
             </div>
-            <h3 className="text-[14px] font-bold uppercase tracking-widest text-[#00828a]">Community</h3>
+            <h3 className="text-[14px] font-bold uppercase tracking-widest text-brand">Community</h3>
             <p className="text-gray-500 text-[13px] font-medium max-w-[180px]">Building a stronger, compassionate community.</p>
           </div>
 
@@ -248,7 +248,7 @@ export default function PawsitiveLandingPage() {
             {/* COLUMN 1: FEATURED CATS */}
             <div className="space-y-8 flex flex-col justify-between items-center text-center lg:px-4">
               <div className="space-y-6 w-full">
-                <div className="flex items-center justify-center gap-2 text-[#00828a]">
+                <div className="flex items-center justify-center gap-2 text-brand">
                   <PawIcon className="w-6 h-6" />
                   <h4 className="text-lg font-bold uppercase tracking-wider">Featured Cats</h4>
                 </div>
@@ -266,7 +266,7 @@ export default function PawsitiveLandingPage() {
                   ))}
                 </div>
               </div>
-              <button className="bg-[#00828a] text-white px-8 py-3 rounded-xl font-bold text-[14px] hover:bg-[#006e75] transition-all w-full sm:w-auto shadow-sm">
+              <button className="bg-brand text-white px-8 py-3 rounded-xl font-bold text-[14px] hover:bg-brand-dark transition-all w-full sm:w-auto shadow-sm">
                 View All Cats
               </button>
             </div>
@@ -274,7 +274,7 @@ export default function PawsitiveLandingPage() {
             {/* COLUMN 2: CURRENT RESCUE NEEDS */}
             <div className="space-y-8 flex flex-col justify-between items-center text-center lg:px-8">
               <div className="space-y-6 w-full">
-                <h4 className="text-lg font-bold uppercase tracking-wider text-[#00828a]">Current Rescue Needs</h4>
+                <h4 className="text-lg font-bold uppercase tracking-wider text-brand">Current Rescue Needs</h4>
                 {/* Clean list with paw print icons */}
                 <ul className="text-left space-y-4 max-w-sm mx-auto font-semibold text-slate-700">
                   {[
@@ -284,7 +284,7 @@ export default function PawsitiveLandingPage() {
                     'Fleece Blankets & Towels'
                   ].map((item, index) => (
                     <li key={index} className="flex items-center gap-3">
-                      <span className="text-[#00828a] shrink-0">
+                      <span className="text-brand shrink-0">
                         <PawIcon className="w-5 h-5" />
                       </span>
                       <span className="text-[14px]">{item}</span>
@@ -292,7 +292,7 @@ export default function PawsitiveLandingPage() {
                   ))}
                 </ul>
               </div>
-              <button className="bg-[#00828a] text-white px-8 py-3 rounded-xl font-bold text-[14px] hover:bg-[#006e75] transition-all w-full sm:w-auto shadow-sm">
+              <button className="bg-brand text-white px-8 py-3 rounded-xl font-bold text-[14px] hover:bg-brand-dark transition-all w-full sm:w-auto shadow-sm">
                 See All Needs
               </button>
             </div>
@@ -300,7 +300,7 @@ export default function PawsitiveLandingPage() {
             {/* COLUMN 3: OUR IMPACT */}
             <div className="space-y-8 flex flex-col justify-between items-center text-center lg:px-4">
               <div className="space-y-6 w-full">
-                <div className="flex items-center justify-center gap-2 text-[#00828a]">
+                <div className="flex items-center justify-center gap-2 text-brand">
                   <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                   </svg>
@@ -309,16 +309,16 @@ export default function PawsitiveLandingPage() {
                 {/* Large visual stats */}
                 <div className="space-y-4">
                   <div>
-                    <span className="block text-4xl lg:text-5xl font-extrabold text-[#00828a] tracking-tight">2,450+</span>
+                    <span className="block text-4xl lg:text-5xl font-extrabold text-brand tracking-tight">2,450+</span>
                     <span className="text-[12px] uppercase tracking-widest text-gray-500 font-bold">Cats Rescued</span>
                   </div>
                   <div>
-                    <span className="block text-4xl lg:text-5xl font-extrabold text-[#00828a] tracking-tight">15,000+</span>
+                    <span className="block text-4xl lg:text-5xl font-extrabold text-brand tracking-tight">15,000+</span>
                     <span className="text-[12px] uppercase tracking-widest text-gray-500 font-bold">Lives Touched</span>
                   </div>
                 </div>
               </div>
-              <button className="bg-[#00828a] text-white px-8 py-3 rounded-xl font-bold text-[14px] hover:bg-[#006e75] transition-all w-full sm:w-auto shadow-sm">
+              <button className="bg-brand text-white px-8 py-3 rounded-xl font-bold text-[14px] hover:bg-brand-dark transition-all w-full sm:w-auto shadow-sm">
                 Our Story
               </button>
             </div>
@@ -338,7 +338,7 @@ export default function PawsitiveLandingPage() {
           <div className="lg:col-span-6 space-y-6 text-center lg:text-left py-6">
             <div className="flex items-center justify-center lg:justify-start gap-4">
               {/* Double Paws */}
-              <div className="flex text-[#00828a]">
+              <div className="flex text-brand">
                 <PawIcon className="w-12 h-12 rotate-[-15deg]" />
                 <PawIcon className="w-8 h-8 rotate-[15deg] translate-y-2 -translate-x-1" />
               </div>
@@ -354,13 +354,13 @@ export default function PawsitiveLandingPage() {
               
               {/* Handwritten and Hand-drawn accents */}
               <div className="flex items-center justify-center lg:justify-start gap-3 pt-2">
-                <span className="text-4xl lg:text-5xl font-script-paws text-[#00828a]">
+                <span className="text-4xl lg:text-5xl font-script-paws text-brand">
                   a cat's and yours.
                 </span>
-                <span className="text-[#00828a]/80 transform rotate-[10deg] shrink-0">
+                <span className="text-brand/80 transform rotate-[10deg] shrink-0">
                   <HandDrawnHeart className="w-8 h-8" />
                 </span>
-                <span className="text-[#00828a]/40 transform -rotate-[15deg] translate-y-2 shrink-0">
+                <span className="text-brand/40 transform -rotate-[15deg] translate-y-2 shrink-0">
                   <HandDrawnHeart className="w-5 h-5" />
                 </span>
               </div>
@@ -381,7 +381,7 @@ export default function PawsitiveLandingPage() {
       </section>
 
       {/* FOOTER BAR */}
-      <footer className="bg-[#00828a] text-white py-6 font-sans-paws text-[13px] font-semibold">
+      <footer className="bg-brand text-white py-6 font-sans-paws text-[13px] font-semibold">
         <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
             EIN: 42-3678960

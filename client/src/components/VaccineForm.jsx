@@ -43,7 +43,7 @@ function VaccineForm({ onSubmit }) {
           <textarea name="notes" value={form.notes} onChange={handleChange} rows={2} className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
         </label>
       </div>
-      <button type="submit" className="mt-3 rounded-lg bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-700">
+      <button type="submit" className="mt-3 rounded-lg bg-brand px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-dark">
         Save Vaccination
       </button>
     </form>
