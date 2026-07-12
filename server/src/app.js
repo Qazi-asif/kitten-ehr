@@ -37,7 +37,9 @@ import protocolLibraryRoutes from './routes/protocolLibraryRoutes.js';
 import socialPostRoutes from './routes/socialPostRoutes.js';
 import wishlistRoutes from './routes/wishlistRoutes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
-import { requireAuth } from './middleware/authMiddleware.js';
+import portalAuthRoutes from './routes/portalAuthRoutes.js';
+import portalRoutes from './routes/portalRoutes.js';
+import { requireAuth, requirePortalAuth } from './middleware/authMiddleware.js';
 import { getUploadRoot } from './utils/fileStorage.js';
 import { createOriginValidator } from './utils/corsOrigins.js';
 
@@ -117,6 +119,11 @@ try {
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
 app.use('/api/auth', authRoutes);
+// Unauthenticated set-password redemption - must be registered before the
+// requirePortalAuth-guarded /api/portal mount below so this sub-path
+// resolves here first, not against the guard.
+app.use('/api/portal/auth', portalAuthRoutes);
+app.use('/api/portal', requirePortalAuth, portalRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/public', publicRoutes);
 app.use('/api/webhooks', webhookRoutes);

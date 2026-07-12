@@ -9,6 +9,7 @@ function FosterListPage() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
+  const [notice, setNotice] = useState(null);
 
   const loadFosters = useCallback(async () => {
     setLoading(true);
@@ -30,13 +31,25 @@ function FosterListPage() {
   async function handleCreateFoster({ photoFile, capabilities, ...formData }) {
     setSubmitting(true);
     setError(null);
+    setNotice(null);
     try {
       const photoUrl = photoFile ? await fileToDataUrl(photoFile) : null;
-      await createFoster({
+      const created = await createFoster({
         ...formData,
         capabilityFlags: buildCapabilityFlags(capabilities, formData.maxKittens),
         photoUrl,
       });
+
+      // portalAccount is only present when the "Also create a portal
+      // account" checkbox was on; ok:false means the Foster itself was
+      // still created successfully, just not the linked account (e.g. no
+      // Foster Portal role configured yet, or the email's already in use).
+      if (created?.portalAccount && !created.portalAccount.ok) {
+        setNotice(`Foster created, but no portal account was set up: ${created.portalAccount.reason}`);
+      } else if (created?.portalAccount?.ok) {
+        setNotice('Foster created, and a portal account invite email was sent.');
+      }
+
       await loadFosters();
     } catch (err) {
       setError(err.message);
@@ -55,6 +68,7 @@ function FosterListPage() {
       <FosterForm onSubmit={handleCreateFoster} submitting={submitting} />
 
       {error && <div className="mb-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}
+      {notice && <div className="mb-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800">{notice}</div>}
       {loading && <p className="text-slate-500">Loading fosters...</p>}
 
       {!loading && !error && fosters.length === 0 && (

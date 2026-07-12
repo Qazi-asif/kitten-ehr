@@ -4,6 +4,7 @@ import {
   formatZodError,
   normalizeCapabilityFlags,
 } from '../validations/fosterValidation.js';
+import { provisionFosterPortalAccount } from '../services/fosterPortalAccountService.js';
 
 export async function getAllFosters(_req, res, next) {
   try {
@@ -41,6 +42,10 @@ export async function createFoster(req, res, next) {
 
     const data = parsed.data;
     const capabilityFlags = normalizeCapabilityFlags(data.capabilityFlags, data.maxKittens);
+    // Not part of the Foster model, so read straight off req.body rather
+    // than through createFosterSchema - keeps this flag's handling
+    // independent of the Foster field-validation schema entirely.
+    const createPortalAccount = Boolean(req.body.createPortalAccount);
 
     const foster = await prisma.foster.create({
       data: {
@@ -57,7 +62,16 @@ export async function createFoster(req, res, next) {
       },
     });
 
-    res.status(201).json(foster);
+    // Best-effort, separate from the Foster write above on purpose - a
+    // problem provisioning the portal account (no portal role configured,
+    // duplicate email) must never roll back or block the Foster record
+    // that staff actually asked to create.
+    let portalAccount = null;
+    if (createPortalAccount) {
+      portalAccount = await provisionFosterPortalAccount(foster, req);
+    }
+
+    res.status(201).json({ ...foster, portalAccount });
   } catch (error) {
     next(error);
   }

@@ -14,6 +14,7 @@ export const EMAIL_TEMPLATE_KEYS = {
   SPONSORSHIP_RECEIVED_ADMIN: 'sponsorship.received.admin',
   CONTRACT_AGREEMENT: 'contract.agreement',
   CONTRACT_SIGNED_PDF: 'contract.signed_pdf',
+  FOSTER_PORTAL_SET_PASSWORD: 'foster.portal.set_password',
 };
 
 export const APPLICATION_REVIEW_STATUSES = ['Approved', 'Denied', 'Under Review'];
@@ -105,6 +106,18 @@ const sponsorshipAdminBody = `
     <p style="margin:0;"><strong>Date:</strong> {{donationDate}}</p>
   </td></tr>
 </table>`;
+
+const fosterPortalSetPasswordBody = `
+<h2 style="margin:0 0 16px;font-size:20px;">Set up your Foster Portal account</h2>
+<p>Hi {{fosterName}},</p>
+<p>{{orgName}} has created a Foster Portal account for you, where you can view your foster kittens' details and upload documents for our team to review.</p>
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:20px 0;">
+  <tr><td style="padding:16px;text-align:center;">
+    <a href="{{setPasswordUrl}}" style="display:inline-block;background:#0f766e;color:#ffffff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;">Set your password</a>
+  </td></tr>
+</table>
+<p style="font-size:13px;color:#64748b;">This link expires in 72 hours. If it expires before you use it, contact us and we can send a new one.</p>
+<p>Thank you,<br>{{orgName}}</p>`;
 
 const donationAdminBody = `
 <h2 style="margin:0 0 16px;font-size:20px;color:#0f172a;">New Donation Received</h2>
@@ -241,6 +254,17 @@ export const DEFAULT_EMAIL_TEMPLATES = [
     description: 'Sent automatically to the admin notification email when a donation is recorded.',
     isSystem: true,
   },
+  {
+    key: EMAIL_TEMPLATE_KEYS.FOSTER_PORTAL_SET_PASSWORD,
+    name: 'Foster Portal - Set Password',
+    category: 'Foster Portal',
+    subject: 'Set up your {{orgName}} Foster Portal account',
+    bodyHtml: fosterPortalSetPasswordBody,
+    bodyText:
+      'Hi {{fosterName}},\n\n{{orgName}} has created a Foster Portal account for you. Set your password here: {{setPasswordUrl}}\n\nThis link expires in 72 hours.\n\n{{orgName}}',
+    description: 'Sent automatically when staff create a portal account for a foster, and when a set-password link is resent.',
+    isSystem: true,
+  },
 ];
 
 export const TEMPLATE_VARIABLES = {
@@ -267,4 +291,5 @@ export const TEMPLATE_VARIABLES = {
     '{{overflowDisclosure}}',
   ],
   General: ['{{orgName}}', '{{content}}'],
+  FosterPortal: ['{{fosterName}}', '{{setPasswordUrl}}', '{{orgName}}'],
 };

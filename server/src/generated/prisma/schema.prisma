@@ -63,6 +63,7 @@ model Foster {
   currentKittens   Kitten[]    @relation("CurrentFoster")
   placements       Placement[]
   contracts        Contract[]
+  portalUser       User?
 }
 
 model Kitten {
@@ -476,13 +477,14 @@ model EventCats {
 }
 
 model Role {
-  id          Int              @id @default(autoincrement())
-  name        String           @unique
-  description String           @default("")
-  isSystem    Boolean          @default(false)
-  createdAt   DateTime         @default(now())
-  users       User[]
-  permissions RolePermission[]
+  id           Int              @id @default(autoincrement())
+  name         String           @unique
+  description  String           @default("")
+  isSystem     Boolean          @default(false)
+  isPortalRole Boolean          @default(false)
+  createdAt    DateTime         @default(now())
+  users        User[]
+  permissions  RolePermission[]
 }
 
 model Permission {
@@ -511,7 +513,8 @@ model User {
   isActive                  Boolean               @default(true)
   roleId                    Int
   role                      Role                  @relation(fields: [roleId], references: [id], onDelete: Restrict)
-  fosterId                  Int?
+  fosterId                  Int?                  @unique
+  foster                    Foster?               @relation(fields: [fosterId], references: [id], onDelete: SetNull)
   createdAt                 DateTime              @default(now())
   updatedAt                 DateTime              @updatedAt
   lastLoginAt               DateTime?
@@ -520,6 +523,27 @@ model User {
   contentCompletions        ContentCompletion[]
   activatedProtocols        ActiveProtocol[]      @relation("ProtocolActivatedBy")
   administeredProtocolDoses ProtocolDose[]        @relation("ProtocolDoseAdministeredBy")
+  passwordResetTokens       PasswordResetToken[]
+}
+
+model PasswordResetToken {
+  id        Int                  @id @default(autoincrement())
+  userId    Int
+  user      User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String               @unique
+  purpose   PasswordTokenPurpose @default(SETUP)
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdIp String?
+  usedIp    String?
+  createdAt DateTime             @default(now())
+
+  @@index([userId])
+}
+
+enum PasswordTokenPurpose {
+  SETUP
+  RESET
 }
 
 model Protocol {

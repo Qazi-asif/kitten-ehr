@@ -11,6 +11,8 @@ const initialFormState = {
   experienceLevel: 'Beginner',
   maxKittens: 2,
   notes: '',
+  // Defaulted on, per the approved plan - staff opt out rather than opt in.
+  createPortalAccount: true,
 };
 
 function FosterForm({ onSubmit, submitting = false }) {
@@ -22,6 +24,11 @@ function FosterForm({ onSubmit, submitting = false }) {
   function handleChange(event) {
     const { name, value } = event.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+  }
+
+  function handleCheckboxChange(event) {
+    const { name, checked } = event.target;
+    setForm((prev) => ({ ...prev, [name]: checked }));
   }
 
   function toggleCapability(value) {
@@ -129,6 +136,22 @@ function FosterForm({ onSubmit, submitting = false }) {
           <label className="block md:col-span-2">
             <span className="mb-1 block text-sm font-medium text-slate-700">Notes</span>
             <textarea name="notes" value={form.notes} onChange={handleChange} rows={3} className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" />
+          </label>
+
+          <label className="flex items-start gap-2 text-sm text-slate-700 md:col-span-2">
+            <input
+              type="checkbox"
+              name="createPortalAccount"
+              checked={form.createPortalAccount}
+              onChange={handleCheckboxChange}
+              className="mt-0.5 rounded border-slate-300"
+            />
+            <span>
+              Also create a portal account for this foster
+              <span className="block text-xs text-slate-500">
+                Sends {form.email || 'the email above'} a link to set up limited-access Foster Portal login.
+              </span>
+            </span>
           </label>
         </div>
       </div>

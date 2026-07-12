@@ -414,6 +414,7 @@ exports.Prisma.RoleScalarFieldEnum = {
   name: 'name',
   description: 'description',
   isSystem: 'isSystem',
+  isPortalRole: 'isPortalRole',
   createdAt: 'createdAt'
 };
 
@@ -441,6 +442,18 @@ exports.Prisma.UserScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   lastLoginAt: 'lastLoginAt'
+};
+
+exports.Prisma.PasswordResetTokenScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  tokenHash: 'tokenHash',
+  purpose: 'purpose',
+  expiresAt: 'expiresAt',
+  usedAt: 'usedAt',
+  createdIp: 'createdIp',
+  usedIp: 'usedIp',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.ProtocolScalarFieldEnum = {
@@ -623,6 +636,11 @@ exports.FosterOnboardingStatus = exports.$Enums.FosterOnboardingStatus = {
   WITHDRAWN: 'WITHDRAWN'
 };
 
+exports.PasswordTokenPurpose = exports.$Enums.PasswordTokenPurpose = {
+  SETUP: 'SETUP',
+  RESET: 'RESET'
+};
+
 exports.ActiveProtocolStatus = exports.$Enums.ActiveProtocolStatus = {
   ACTIVE: 'ACTIVE',
   COMPLETED: 'COMPLETED',
@@ -681,6 +699,7 @@ exports.Prisma.ModelName = {
   Permission: 'Permission',
   RolePermission: 'RolePermission',
   User: 'User',
+  PasswordResetToken: 'PasswordResetToken',
   Protocol: 'Protocol',
   ProtocolDrug: 'ProtocolDrug',
   ActiveProtocol: 'ActiveProtocol',

@@ -20,6 +20,7 @@ export async function listRoles(req, res) {
       name: role.name,
       description: role.description,
       isSystem: role.isSystem,
+      isPortalRole: role.isPortalRole,
       userCount: role._count.users,
       permissions: role.permissions.map((rp) => rp.permission.key),
     })),
@@ -27,7 +28,7 @@ export async function listRoles(req, res) {
 }
 
 export async function createRole(req, res) {
-  const { name, description = '', permissions = [] } = req.body;
+  const { name, description = '', permissions = [], isPortalRole = false } = req.body;
 
   if (!name?.trim()) {
     return res.status(400).json({ error: 'Role name is required' });
@@ -45,6 +46,12 @@ export async function createRole(req, res) {
       name: name.trim(),
       description: description.trim(),
       isSystem: false,
+      // Portal-scoped roles are blanket-rejected from every staff route and
+      // only accepted on /api/portal/* (see requireAuth/requirePortalAuth) -
+      // that enforcement is independent of whatever permissions get
+      // attached below, which is why this flag needs to be settable here
+      // rather than inferred from the permission set.
+      isPortalRole: Boolean(isPortalRole),
       permissions: {
         create: permissionRecords.map((p) => ({ permissionId: p.id })),
       },
@@ -60,6 +67,7 @@ export async function createRole(req, res) {
     name: role.name,
     description: role.description,
     isSystem: role.isSystem,
+    isPortalRole: role.isPortalRole,
     userCount: role._count.users,
     permissions: role.permissions.map((rp) => rp.permission.key),
   });
@@ -67,7 +75,7 @@ export async function createRole(req, res) {
 
 export async function updateRole(req, res) {
   const id = Number.parseInt(req.params.id, 10);
-  const { name, description, permissions } = req.body;
+  const { name, description, permissions, isPortalRole } = req.body;
 
   const existing = await prisma.role.findUnique({ where: { id } });
   if (!existing) {
@@ -77,6 +85,7 @@ export async function updateRole(req, res) {
   const data = {};
   if (name !== undefined) data.name = name.trim();
   if (description !== undefined) data.description = description.trim();
+  if (isPortalRole !== undefined) data.isPortalRole = Boolean(isPortalRole);
 
   await prisma.role.update({ where: { id }, data });
 
@@ -108,6 +117,7 @@ export async function updateRole(req, res) {
     name: role.name,
     description: role.description,
     isSystem: role.isSystem,
+    isPortalRole: role.isPortalRole,
     userCount: role._count.users,
     permissions: role.permissions.map((rp) => rp.permission.key),
   });

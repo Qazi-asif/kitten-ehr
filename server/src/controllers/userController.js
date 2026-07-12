@@ -2,6 +2,7 @@ import prisma from '../lib/prisma.js';
 import { hashPassword, sanitizeUser } from '../utils/authUtils.js';
 import { validatePasswordStrength } from '../utils/passwordPolicy.js';
 import { paginatedResponse, parsePagination, wantsPagination } from '../utils/pagination.js';
+import { clearCachedAuth } from '../utils/authCache.js';
 
 async function validateFosterId(fosterId) {
   if (fosterId == null || fosterId === '') return null;
@@ -125,6 +126,16 @@ export async function updateUser(req, res) {
       data,
       include: { role: true },
     });
+
+    // Role and foster linkage drive the auth/scoping guards (requireAuth's
+    // blanket portal-role rejection, requirePortalAuth's foster scoping).
+    // Both are read from the cached user record, so a change to either must
+    // invalidate that cache immediately - otherwise a just-unlinked or
+    // just-reassigned account keeps its old access for up to the 5-minute
+    // cache TTL instead of the change taking effect on the next request.
+    if (data.roleId !== undefined || data.fosterId !== undefined) {
+      clearCachedAuth(id);
+    }
 
     return res.json(sanitizeUser(user));
   } catch (err) {

@@ -101,4 +101,18 @@ export const DEFAULT_ROLES = [
     isSystem: true,
     permissions: PERMISSION_KEYS.filter((k) => k.endsWith('.view')),
   },
+  {
+    // Deliberately distinct from the pre-existing "Foster Parent" role
+    // above, which is untouched by this addition. This role is consumed by
+    // requireAuth/requirePortalAuth via the isPortalRole flag, not by name -
+    // portal-scoped accounts are blanket-rejected from every staff route
+    // regardless of what's in the permissions list below, so it's left
+    // empty rather than granting staff-style permissions that would never
+    // actually be checked on the portal path.
+    name: 'Foster Self-Service Portal',
+    description: 'Limited-access portal login for fosters - own kittens, placements, and documents only. Not a staff role.',
+    isSystem: true,
+    isPortalRole: true,
+    permissions: [],
+  },
 ];
