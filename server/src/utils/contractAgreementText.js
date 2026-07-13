@@ -127,6 +127,8 @@ export async function debugAgreementTextInputs(contract, options = {}) {
     rawSignerAddress: contract.signerAddress,
     rawSignerPhone: contract.signerPhone,
     variables,
-    bodyTextPreview: (template?.bodyText || getDefaultTemplateBySlug(slug)?.bodyText || '').slice(0, 200),
+    // Full body text, not truncated - the on-screen debug panel needs the
+    // whole thing to be useful, unlike the console.log preview above.
+    bodyTextPreview: template?.bodyText || getDefaultTemplateBySlug(slug)?.bodyText || '',
   };
 }
