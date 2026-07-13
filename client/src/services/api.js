@@ -326,7 +326,7 @@ export async function updateKitten(id, data) {
     method: 'PATCH',
     body: JSON.stringify(data),
   });
-  if (!response.ok) throw new Error('Failed to update kitten');
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to update kitten'));
   return response.json();
 }
 

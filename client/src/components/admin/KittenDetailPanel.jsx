@@ -38,6 +38,7 @@ import {
 } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { WISHLIST_OWNER_TYPES } from '../../constants/wishlists';
+import { KITTEN_STATUS_OPTIONS } from '../../constants/kittenStatuses';
 import { formatKittenAgeDetailed } from '../../utils/kittenAge';
 import { resolvePrimaryPhotoUrl } from '../../utils/kittenImages';
 
@@ -567,7 +568,32 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                   ['breed', 'Breed', 'text'],
                   ['color', 'Color', 'text'],
                   ['sex', 'Sex', 'text'],
-                  ['status', 'Status', 'text'],
+                ].map(([field, label, type]) => (
+                  <label key={field} className="block">
+                    <span className="text-xs font-semibold uppercase text-gray-500">{label}</span>
+                    <input
+                      type={type}
+                      value={profileForm[field] || ''}
+                      onChange={(e) => handleProfileFieldChange(field, e.target.value)}
+                      className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+                    />
+                  </label>
+                ))}
+                <label className="block">
+                  <span className="text-xs font-semibold uppercase text-gray-500">Status</span>
+                  <select
+                    value={profileForm.status || ''}
+                    onChange={(e) => handleProfileFieldChange('status', e.target.value)}
+                    className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+                  >
+                    {KITTEN_STATUS_OPTIONS.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {[
                   ['dateOfBirth', 'Date of Birth', 'date'],
                   ['fivFelvStatus', 'FIV/FeLV Status', 'text'],
                 ].map(([field, label, type]) => (
