@@ -74,7 +74,12 @@ export function getDefaultContractText(contract, templates = []) {
   if (contract?.agreementText) {
     // TEMPORARY DEBUG - remove after diagnosing the blank-placeholder bug.
     // eslint-disable-next-line no-console
-    console.log('[DEBUG-CONTRACT-SUBSTITUTION] using pre-attached contract.agreementText (server-computed), contractId:', contract?.id);
+    console.log(
+      '[DEBUG-CONTRACT-SUBSTITUTION] using pre-attached contract.agreementText (server-computed), contractId:',
+      contract?.id,
+      'server debug info:',
+      contract?._debugAgreementText || '(none - server did not attach _debugAgreementText)',
+    );
     return contract.agreementText;
   }
   return getContractAgreementText(contract, templates);

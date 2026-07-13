@@ -1,6 +1,6 @@
 import prisma from '../lib/prisma.js';
 import { paginatedResponse, parsePagination, wantsPagination } from '../utils/pagination.js';
-import { buildContractAgreementText, getAgreementTemplateBySlug } from '../utils/contractAgreementText.js';
+import { buildContractAgreementText, debugAgreementTextInputs, getAgreementTemplateBySlug } from '../utils/contractAgreementText.js';
 import { sendContractAgreementEmail, sendSignedContractPdfEmail } from '../services/emailService.js';
 import { getClientIp } from '../utils/requestIp.js';
 import { generateContractPdf, storeContractPdf } from '../utils/contractPdf.js';
@@ -166,7 +166,9 @@ export async function getContractById(req, res, next) {
     if (!contract) return res.status(404).json({ error: 'Contract not found' });
 
     const agreementText = await buildContractAgreementText(contract);
-    res.json({ ...contract, agreementText });
+    // TEMPORARY DEBUG - remove after diagnosing the blank-placeholder bug.
+    const _debugAgreementText = await debugAgreementTextInputs(contract);
+    res.json({ ...contract, agreementText, _debugAgreementText });
   } catch (error) {
     next(error);
   }
