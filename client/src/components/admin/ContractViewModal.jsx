@@ -18,7 +18,6 @@ function ContractViewModal({ contract, templates = [], onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm">
-      <h1>DEBUG BOX TEST</h1>
       <div className="absolute inset-0" onClick={onClose} aria-hidden="true" />
       <div className="relative z-10 flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
         <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
@@ -44,47 +43,6 @@ function ContractViewModal({ contract, templates = [], onClose }) {
         </div>
 
         <div className="overflow-y-auto px-6 py-5">
-          <div className="mb-5 rounded-xl border-4 border-dashed border-red-500 bg-red-50 p-4">
-            <p className="text-sm font-black uppercase tracking-wide text-red-700">
-              ⚠ TEMPORARY DEBUG BLOCK - REMOVE BEFORE SHIPPING ⚠
-            </p>
-            {contract._debugAgreementText ? (
-              <>
-                <p className="mt-1 text-xs text-red-600">
-                  This box is not part of the real contract view. It shows exactly what the server
-                  resolved when computing this contract's agreement text.
-                </p>
-                <pre className="mt-3 max-h-96 overflow-auto whitespace-pre-wrap rounded-lg border border-red-200 bg-white p-3 font-mono text-xs text-slate-800">
-                  {JSON.stringify(contract._debugAgreementText, null, 2)}
-                </pre>
-              </>
-            ) : (
-              <>
-                <p className="mt-1 text-xs text-red-600">
-                  No server debug data was attached to this contract object - it was opened
-                  straight from the contracts list, not fetched individually, so the text below
-                  was rendered client-side instead. Raw signer fields on this contract object:
-                </p>
-                <pre className="mt-3 max-h-96 overflow-auto whitespace-pre-wrap rounded-lg border border-red-200 bg-white p-3 font-mono text-xs text-slate-800">
-                  {JSON.stringify(
-                    {
-                      contractId: contract.id,
-                      templateSlug: contract.templateSlug,
-                      signerName: contract.signerName,
-                      signerEmail: contract.signerEmail,
-                      signerAddress: contract.signerAddress,
-                      signerPhone: contract.signerPhone,
-                      emergencyContactName: contract.emergencyContactName,
-                      emergencyContactPhone: contract.emergencyContactPhone,
-                    },
-                    null,
-                    2,
-                  )}
-                </pre>
-              </>
-            )}
-          </div>
-
           <div className="mb-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
             <div className="rounded-lg bg-slate-50 px-3 py-2">
               <p className="text-xs font-semibold uppercase text-slate-500">Status</p>
