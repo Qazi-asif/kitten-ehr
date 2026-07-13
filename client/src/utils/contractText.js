@@ -38,7 +38,24 @@ function resolveTemplateBody(contract, templates = []) {
 
 export function getContractAgreementText(contract, templates = []) {
   const bodyText = resolveTemplateBody(contract, templates);
-  return renderAgreementBody(bodyText, buildAgreementVariables(contract));
+  const variables = buildAgreementVariables(contract);
+
+  // TEMPORARY DEBUG - remove after diagnosing the blank-placeholder bug.
+  // eslint-disable-next-line no-console
+  console.log('[DEBUG-CONTRACT-SUBSTITUTION]', {
+    contractId: contract?.id,
+    templateSlug: contract?.templateSlug,
+    rawSignerName: contract?.signerName,
+    rawSignerEmail: contract?.signerEmail,
+    rawSignerAddress: contract?.signerAddress,
+    rawSignerPhone: contract?.signerPhone,
+    rawEmergencyContactName: contract?.emergencyContactName,
+    rawEmergencyContactPhone: contract?.emergencyContactPhone,
+    resolvedVariables: variables,
+    bodyTextPreview: bodyText.slice(0, 150),
+  });
+
+  return renderAgreementBody(bodyText, variables);
 }
 
 export function getDefaultContractText(contract, templates = []) {
@@ -49,9 +66,17 @@ export function getDefaultContractText(contract, templates = []) {
   // contracts that predate this (no frozenAgreementText) fall through to
   // live rendering below, unchanged from prior behavior.
   if (contract?.status === 'SIGNED' && contract?.frozenAgreementText) {
+    // TEMPORARY DEBUG - remove after diagnosing the blank-placeholder bug.
+    // eslint-disable-next-line no-console
+    console.log('[DEBUG-CONTRACT-SUBSTITUTION] using frozenAgreementText, contractId:', contract?.id);
     return contract.frozenAgreementText;
   }
-  if (contract?.agreementText) return contract.agreementText;
+  if (contract?.agreementText) {
+    // TEMPORARY DEBUG - remove after diagnosing the blank-placeholder bug.
+    // eslint-disable-next-line no-console
+    console.log('[DEBUG-CONTRACT-SUBSTITUTION] using pre-attached contract.agreementText (server-computed), contractId:', contract?.id);
+    return contract.agreementText;
+  }
   return getContractAgreementText(contract, templates);
 }
 
