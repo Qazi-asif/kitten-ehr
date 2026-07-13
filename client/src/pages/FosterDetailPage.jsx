@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Mail, MapPin, Phone, Users } from 'lucide-react';
+import { KeyRound, Mail, MapPin, Phone, Users } from 'lucide-react';
 import AssignKittenForm from '../components/admin/AssignKittenForm';
 import FosterCapabilityBadges from '../components/admin/FosterCapabilityBadges';
 import FosterPlacementTable from '../components/admin/FosterPlacementTable';
@@ -16,6 +16,7 @@ import {
   fetchFosterById,
   fetchFosterPlacements,
   fetchKittens,
+  resendFosterPortalSetupLink,
   updateKitten,
 } from '../services/api';
 
@@ -32,6 +33,8 @@ function FosterDetailPage() {
   const [statusPrompt, setStatusPrompt] = useState(null);
   const [savingStatus, setSavingStatus] = useState(false);
   const [dischargingId, setDischargingId] = useState(null);
+  const [resendingSetupLink, setResendingSetupLink] = useState(false);
+  const [portalNotice, setPortalNotice] = useState(null);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -137,6 +140,29 @@ function FosterDetailPage() {
     }
   }
 
+  async function handleResendSetupLink() {
+    const confirmed = window.confirm(
+      "Resend the set-password link? The foster's previous link (if any) will stop working.",
+    );
+    if (!confirmed) return;
+
+    setResendingSetupLink(true);
+    setPortalNotice(null);
+    try {
+      const result = await resendFosterPortalSetupLink(id);
+      if (result.ok) {
+        setPortalNotice({ type: 'success', message: 'Set-password link resent.' });
+        await loadData();
+      } else {
+        setPortalNotice({ type: 'error', message: result.reason || 'Failed to resend link.' });
+      }
+    } catch (err) {
+      setPortalNotice({ type: 'error', message: err.message });
+    } finally {
+      setResendingSetupLink(false);
+    }
+  }
+
   if (loading) {
     return <p className="text-slate-500">Loading foster dashboard...</p>;
   }
@@ -236,6 +262,58 @@ function FosterDetailPage() {
           title="Foster Wishlists"
           description="Manage Amazon, Chewy, and Walmart wishlist links for this foster home."
         />
+      </section>
+
+      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 className="text-lg font-bold text-slate-900">Foster Portal Account</h2>
+
+        {portalNotice && (
+          <p
+            className={`mt-3 rounded-lg px-3 py-2 text-sm ${
+              portalNotice.type === 'success'
+                ? 'border border-emerald-200 bg-emerald-50 text-emerald-700'
+                : 'border border-red-200 bg-red-50 text-red-700'
+            }`}
+          >
+            {portalNotice.message}
+          </p>
+        )}
+
+        {!foster.portalAccount?.exists ? (
+          <p className="mt-3 text-sm text-slate-500">
+            No portal account has been created for this foster.
+          </p>
+        ) : (
+          <div className="mt-3 flex flex-wrap items-center justify-between gap-4">
+            <div className="space-y-1 text-sm text-slate-700">
+              <p>
+                Status:{' '}
+                <span className="font-semibold text-slate-900">
+                  {foster.portalAccount.isActive ? 'Active' : 'Inactive'}
+                </span>
+              </p>
+              <p>
+                Setup link:{' '}
+                <span className="font-semibold text-slate-900">
+                  {foster.portalAccount.hasPendingSetup
+                    ? `Pending, expires ${new Date(foster.portalAccount.tokenExpiresAt).toLocaleString()}`
+                    : 'None pending'}
+                </span>
+              </p>
+            </div>
+            {canManageFoster && (
+              <button
+                type="button"
+                onClick={handleResendSetupLink}
+                disabled={resendingSetupLink}
+                className="inline-flex items-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-60"
+              >
+                <KeyRound className="h-4 w-4" />
+                {resendingSetupLink ? 'Resending...' : 'Resend Set-Password Link'}
+              </button>
+            )}
+          </div>
+        )}
       </section>
 
       <PersonContractsSection signerEmail={foster.email} title="Foster Agreements" />

@@ -20,10 +20,6 @@ export function fetchPublicKittenById(id) {
   return publicRequest(`/kittens/${id}`);
 }
 
-export function fetchPublicKittenPhotos(id) {
-  return publicRequest(`/kittens/${id}/photos`);
-}
-
 export function fetchPublicKittenUpdates(id) {
   return publicRequest(`/kittens/${id}/updates`);
 }

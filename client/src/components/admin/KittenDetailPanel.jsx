@@ -20,7 +20,6 @@ import {
   createWeightLog,
   deleteDocument,
   fetchDocuments,
-  fetchFosters,
   fetchLitters,
   fetchKittens,
   fetchKittenById,
@@ -99,7 +98,6 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
   const [updates, setUpdates] = useState([]);
   const [updateForm, setUpdateForm] = useState({ content: '', isPublic: false });
   const [savingUpdate, setSavingUpdate] = useState(false);
-  const [fosters, setFosters] = useState([]);
   const [allKittens, setAllKittens] = useState([]);
   const [litters, setLitters] = useState([]);
   const [error, setError] = useState(null);
@@ -120,7 +118,6 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
       rescueStory: data.rescueStory || '',
       fivFelvStatus: data.fivFelvStatus || '',
       specialNeeds: data.specialNeeds || '',
-      currentFosterId: data.currentFosterId ? String(data.currentFosterId) : '',
       litterId: data.litterId ? String(data.litterId) : '',
       isBondedPair: Boolean(data.isBondedPair),
       bondedWithKittenId: data.bondedWithKittenId ? String(data.bondedWithKittenId) : '',
@@ -176,7 +173,6 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
 
     Promise.all([
       loadKitten(),
-      fetchFosters().then(setFosters).catch(() => setFosters([])),
       fetchLitters().then(setLitters).catch(() => setLitters([])),
       fetchKittens().then(setAllKittens).catch(() => setAllKittens([])),
     ])
@@ -260,9 +256,6 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
         rescueStory: profileForm.rescueStory,
         fivFelvStatus: profileForm.fivFelvStatus || null,
         specialNeeds: profileForm.specialNeeds || null,
-        currentFosterId: profileForm.currentFosterId
-          ? Number.parseInt(profileForm.currentFosterId, 10)
-          : null,
         litterId: profileForm.litterId ? Number.parseInt(profileForm.litterId, 10) : null,
         isBondedPair: profileForm.isBondedPair,
         bondedWithKittenId: profileForm.isBondedPair && profileForm.bondedWithKittenId
@@ -283,7 +276,6 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
         rescueStory: updated.rescueStory || '',
         fivFelvStatus: updated.fivFelvStatus || '',
         specialNeeds: updated.specialNeeds || '',
-        currentFosterId: updated.currentFosterId ? String(updated.currentFosterId) : '',
         litterId: updated.litterId ? String(updated.litterId) : '',
         isBondedPair: Boolean(updated.isBondedPair),
         bondedWithKittenId: updated.bondedWithKittenId ? String(updated.bondedWithKittenId) : '',
@@ -609,25 +601,19 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                     ))}
                   </select>
                 </label>
-                <label className="block sm:col-span-2">
+                <div className="block sm:col-span-2">
                   <span className="text-xs font-semibold uppercase text-gray-500">Assigned Foster</span>
-                  <select
-                    value={profileForm.currentFosterId || ''}
-                    onChange={(e) => handleProfileFieldChange('currentFosterId', e.target.value)}
-                    disabled={!canEdit}
-                    className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm disabled:bg-gray-50"
-                  >
-                    <option value="">No foster assigned</option>
-                    {fosters.map((foster) => (
-                      <option key={foster.id} value={String(foster.id)}>
-                        {foster.name}
-                      </option>
-                    ))}
-                  </select>
-                  {fosters.length === 0 && (
-                    <p className="mt-1 text-xs text-amber-600">No fosters available. Add fosters under Admin → Fosters.</p>
-                  )}
-                </label>
+                  <p className="mt-1 rounded-lg border border-gray-100 bg-gray-50 px-3 py-2 text-sm text-gray-800">
+                    {kitten.currentFoster ? (
+                      <Link to={`/admin/fosters/${kitten.currentFoster.id}`} className="font-semibold text-brand hover:underline">
+                        {kitten.currentFoster.name}
+                      </Link>
+                    ) : (
+                      'No foster assigned'
+                    )}
+                  </p>
+                  <p className="mt-1 text-xs text-slate-500">Assign or change foster homes from the Placements tab.</p>
+                </div>
                 <label className="block sm:col-span-2">
                   <span className="text-xs font-semibold uppercase text-gray-500">Litter Group</span>
                   <LitterSelect

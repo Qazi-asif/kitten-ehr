@@ -146,9 +146,9 @@ function KittenHealthTab({
           <p className="mt-4 text-sm text-gray-500">Loading protocols...</p>
         ) : (
           <>
-            {currentProtocols.length === 0 ? (
+            {!error && currentProtocols.length === 0 ? (
               <p className="mt-4 text-sm text-gray-600">No active protocols for this kitten yet.</p>
-            ) : (
+            ) : !error ? (
               <div className="mt-4 space-y-3">
                 {currentProtocols.map((entry) => (
                   <div key={entry.id} className="rounded-lg border border-white bg-white p-4 shadow-sm">
@@ -167,7 +167,7 @@ function KittenHealthTab({
                   </div>
                 ))}
               </div>
-            )}
+            ) : null}
 
             {canManageMedical && (
               <form onSubmit={handleActivateProtocol} className="mt-5 flex flex-col gap-3 rounded-lg border border-emerald-100 bg-white p-4 md:flex-row md:items-end">
@@ -240,11 +240,11 @@ function KittenHealthTab({
         <h3 className="mb-3 text-xs font-bold uppercase text-gray-700">Dose Checklist</h3>
         {loading ? (
           <p className="text-sm text-gray-500">Loading dose checklist...</p>
-        ) : doses.length === 0 ? (
+        ) : !error && doses.length === 0 ? (
           <p className="rounded-lg border border-dashed border-gray-200 bg-gray-50 px-4 py-6 text-sm text-gray-500">
             No protocol doses scheduled yet. Activate a protocol to generate the daily checklist.
           </p>
-        ) : (
+        ) : !error ? (
           <div className="space-y-5">
             {dosesByDate.map(([dateKey, dateDoses]) => (
               <div key={dateKey} className="overflow-hidden rounded-xl border border-gray-200 bg-white">
@@ -290,7 +290,7 @@ function KittenHealthTab({
               </div>
             ))}
           </div>
-        )}
+        ) : null}
       </section>
 
       <section>

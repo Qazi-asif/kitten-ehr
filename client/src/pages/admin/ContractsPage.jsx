@@ -263,6 +263,37 @@ function ContractsPage() {
     setCreatingDraft(true);
     setError('');
     try {
+      let resolvedKittenId = draftForm.kittenId || undefined;
+      const typedName = draftForm.kittenName.trim();
+
+      // Soft-match: staff can type a kitten name directly instead of using
+      // the "Find kitten" picker above. If they did, and never selected a
+      // record, try to resolve that typed name to a real kitten before
+      // submitting - otherwise a contract silently goes out unlinked even
+      // when the kitten already exists in the system. Reuses the same
+      // /kittens search the picker itself calls.
+      if (!resolvedKittenId && typedName) {
+        try {
+          const candidates = await fetchKittens({ search: typedName });
+          const list = Array.isArray(candidates) ? candidates : (candidates?.items || []);
+          const exactMatches = list.filter(
+            (k) => k.name?.trim().toLowerCase() === typedName.toLowerCase(),
+          );
+
+          if (exactMatches.length === 1) {
+            resolvedKittenId = exactMatches[0].id;
+          } else if (exactMatches.length > 1) {
+            const proceed = window.confirm(
+              `${exactMatches.length} kittens are named "${typedName}". Use the "Find kitten" picker above to link the correct one, or click OK to continue without linking (the contract will still be saved with "${typedName}" as text only).`,
+            );
+            if (!proceed) return;
+          }
+        } catch {
+          // A failed soft-match search shouldn't block draft creation -
+          // fall through and submit unlinked, same as if no match was found.
+        }
+      }
+
       await createContractDraft({
         templateSlug: draftForm.templateSlug,
         signerName: draftForm.signerName.trim(),
@@ -271,7 +302,7 @@ function ContractsPage() {
         signerPhone: draftForm.signerPhone.trim(),
         microchipNumber: draftForm.microchipNumber.trim(),
         kittenName: draftForm.kittenName.trim(),
-        kittenId: draftForm.kittenId || undefined,
+        kittenId: resolvedKittenId,
         fosterId: draftForm.fosterId || undefined,
         applicationId: draftForm.applicationId || undefined,
         emergencyContactName: draftIsAdoption ? '' : draftForm.emergencyContactName.trim(),

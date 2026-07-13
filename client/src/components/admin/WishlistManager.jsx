@@ -16,6 +16,7 @@ function WishlistManager({ ownerType, ownerId, canManage = false, title = 'Manag
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const load = useCallback(async () => {
     if (!ownerType || !ownerId) {
@@ -52,12 +53,22 @@ function WishlistManager({ ownerType, ownerId, canManage = false, title = 'Manag
     }
   }, [availableRetailers, form.retailer]);
 
-  async function handleAdd(event) {
-    event.preventDefault();
+  // Plain click handler, not a <form onSubmit> - this component is rendered
+  // inside a larger profile-edit <form> in some parents (e.g.
+  // KittenDetailPanel), and a nested <form> there caused this exact submit
+  // to also bubble up and trigger the outer form's own unrelated save.
+  async function handleAdd() {
     if (!canManage) return;
+
+    if (!form.url.trim()) {
+      setError('A URL is required.');
+      setSuccess('');
+      return;
+    }
 
     setSaving(true);
     setError('');
+    setSuccess('');
     try {
       await createWishlist({
         ownerType,
@@ -68,6 +79,7 @@ function WishlistManager({ ownerType, ownerId, canManage = false, title = 'Manag
       });
       setForm(emptyForm);
       await load();
+      setSuccess('Wishlist link saved.');
     } catch (err) {
       setError(err.message || 'Failed to save wishlist.');
     } finally {
@@ -81,6 +93,7 @@ function WishlistManager({ ownerType, ownerId, canManage = false, title = 'Manag
 
     setDeletingId(id);
     setError('');
+    setSuccess('');
     try {
       await deleteWishlist(id);
       await load();
@@ -99,6 +112,12 @@ function WishlistManager({ ownerType, ownerId, canManage = false, title = 'Manag
       {error && (
         <p className="mt-3 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700">
           {error}
+        </p>
+      )}
+
+      {success && (
+        <p className="mt-3 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-700">
+          {success}
         </p>
       )}
 
@@ -142,7 +161,7 @@ function WishlistManager({ ownerType, ownerId, canManage = false, title = 'Manag
       </div>
 
       {canManage && availableRetailers.length > 0 && (
-        <form onSubmit={handleAdd} className="mt-4 space-y-3 rounded-lg border border-dashed border-gray-300 bg-white p-4">
+        <div className="mt-4 space-y-3 rounded-lg border border-dashed border-gray-300 bg-white p-4">
           <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Add Wishlist Link</p>
           <label className="block">
             <span className="text-xs font-semibold uppercase text-gray-500">Retailer</span>
@@ -165,7 +184,6 @@ function WishlistManager({ ownerType, ownerId, canManage = false, title = 'Manag
               value={form.url}
               onChange={(e) => setForm((prev) => ({ ...prev, url: e.target.value }))}
               placeholder="https://..."
-              required
               className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
             />
           </label>
@@ -180,14 +198,15 @@ function WishlistManager({ ownerType, ownerId, canManage = false, title = 'Manag
             />
           </label>
           <button
-            type="submit"
+            type="button"
+            onClick={handleAdd}
             disabled={saving}
             className="inline-flex items-center gap-2 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-60"
           >
             <Plus className="h-4 w-4" />
             {saving ? 'Saving...' : 'Add Wishlist Link'}
           </button>
-        </form>
+        </div>
       )}
 
       {canManage && !loading && availableRetailers.length === 0 && items.length > 0 && (

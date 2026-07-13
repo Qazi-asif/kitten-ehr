@@ -259,6 +259,110 @@ export async function sendTemplatedEmail({
   }
 }
 
+function describeSmtpError(error) {
+  switch (error.code) {
+    case 'EAUTH':
+      return 'Authentication failed. Check the SMTP username and password.';
+    case 'ECONNREFUSED':
+    case 'ENOTFOUND':
+      return 'Could not reach the SMTP host. Check the host and port.';
+    case 'ETIMEDOUT':
+    case 'ESOCKET':
+      return 'Connection timed out. Check the host, port, and that outbound SMTP is not blocked.';
+    default:
+      return error.message || 'Failed to send test email.';
+  }
+}
+
+// Sends a one-off test message to confirm SMTP settings work, from the
+// Settings page's "Send Test Email" button. Any field left blank/undefined
+// falls back to the currently-saved Settings row - same convention
+// updateSettings already uses for smtpPass (the client never has the real
+// saved password to send back), extended here to every SMTP field so the
+// button works whether staff edited everything, nothing, or just one field.
+//
+// Deliberately does NOT use getSmtpTransporter()'s module-level cache above -
+// a test send may use host/port/credentials that differ from (or haven't yet
+// overwritten) the cached production transporter, and a failed test must
+// never leave a bad transporter cached for real sends to pick up. Uses its
+// own short timeouts so a wrong host or blocked port fails fast instead of
+// hanging on nodemailer's much longer default. Also runs regardless of
+// settings.emailsEnabled - "would sending work if it were on" is exactly
+// what this button answers.
+export async function sendTestEmail({ smtpHost, smtpPort, smtpUser, smtpPass, toEmail }) {
+  const settings = await getEmailSettings();
+
+  const effectiveHost = smtpHost?.trim() || settings.smtpHost;
+  const parsedPort = smtpPort !== undefined && smtpPort !== '' ? Number(smtpPort) : NaN;
+  const effectivePort = Number.isInteger(parsedPort) && parsedPort > 0 ? parsedPort : (settings.smtpPort || 587);
+  const effectiveUser = smtpUser?.trim() || settings.smtpUser;
+  const effectivePass = smtpPass || settings.smtpPass;
+  // Secure is always derived from port, never a trusted flag - same rule as
+  // every other send path in this file (465 = SSL, else STARTTLS).
+  const effectiveSecure = effectivePort === 465;
+  const recipient = (toEmail?.trim() || settings.adminNotifyEmail || '').trim();
+
+  if (!effectiveHost || !effectiveUser || !effectivePass) {
+    return { ok: false, error: 'SMTP host, username, and password are required to send a test email.' };
+  }
+  if (!recipient) {
+    return { ok: false, error: 'A recipient email address is required.' };
+  }
+
+  const templateKey = 'settings.smtp.test';
+  const subject = `${settings.orgName || 'Pawsitive Transformations'} — SMTP Test Email`;
+  const text = `This is a test email from ${settings.orgName || 'Pawsitive Transformations'} to confirm your SMTP settings are working.`;
+  const html = `<p>${escapeHtml(text)}</p>`;
+  const provider = resolveEmailProvider({ ...settings, smtpHost: effectiveHost });
+
+  const transporter = nodemailer.createTransport({
+    host: effectiveHost,
+    port: effectivePort,
+    secure: effectiveSecure,
+    auth: { user: effectiveUser, pass: effectivePass },
+    tls: { rejectUnauthorized: false },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 10000,
+  });
+
+  try {
+    const info = await transporter.sendMail({
+      from: `"${settings.fromName || settings.orgName}" <${settings.fromEmail || effectiveUser}>`,
+      to: recipient,
+      subject,
+      text,
+      html,
+    });
+
+    await logEmailAttempt({
+      templateKey,
+      toEmail: recipient,
+      subject,
+      status: 'sent',
+      provider,
+      externalMessageId: info.messageId || '',
+      relatedType: 'Settings',
+    });
+
+    return { ok: true, messageId: info.messageId };
+  } catch (error) {
+    const friendly = describeSmtpError(error);
+
+    await logEmailAttempt({
+      templateKey,
+      toEmail: recipient,
+      subject,
+      status: 'failed',
+      provider,
+      errorMessage: friendly,
+      relatedType: 'Settings',
+    });
+
+    return { ok: false, error: friendly };
+  }
+}
+
 export async function sendApplicationReceivedEmails(application) {
   const settings = await getEmailSettings();
   const baseVars = buildApplicationVariables(application);

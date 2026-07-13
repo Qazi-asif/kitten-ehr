@@ -3,7 +3,7 @@ import { Building2, Plus, Shield, Trash2, UserCog, Users } from 'lucide-react';
 import WishlistManager from '../../components/admin/WishlistManager';
 import { useAuth } from '../../context/AuthContext';
 import { ORG_SETTINGS_ID, WISHLIST_OWNER_TYPES } from '../../constants/wishlists';
-import { fetchSettings, testSocialSettingsConnection, updateSettings } from '../../services/api';
+import { fetchSettings, testEmailSettingsConnection, testSocialSettingsConnection, updateSettings } from '../../services/api';
 import { invalidatePublicSettingsCache } from '../../services/publicApi';
 import { DEFAULT_GIVEBUTTER_EMBED, ensureGivebutterEmbed } from '../../constants/givebutterDefaults';
 import {
@@ -134,6 +134,9 @@ function SettingsPage() {
   const [socialTesting, setSocialTesting] = useState(false);
   const [socialTestMessage, setSocialTestMessage] = useState('');
   const [donationStatusMessage, setDonationStatusMessage] = useState('');
+  const [emailTesting, setEmailTesting] = useState(false);
+  const [emailTestMessage, setEmailTestMessage] = useState(null);
+  const [emailTestRecipient, setEmailTestRecipient] = useState('');
 
   const canManageUsers = hasPermission('users.manage');
   const canManageRoles = hasPermission('roles.manage');
@@ -315,6 +318,30 @@ function SettingsPage() {
       setError(err.message);
     } finally {
       setSocialTesting(false);
+    }
+  }
+
+  // Tests whatever is currently in the SMTP form fields, not just what's
+  // saved - the server falls back to the saved value for any field left
+  // blank (same "blank means keep existing" rule updateSettings already
+  // uses for smtpPass), so this works whether or not the form has been
+  // saved yet.
+  async function handleTestEmailConnection() {
+    setEmailTesting(true);
+    setEmailTestMessage(null);
+    try {
+      await testEmailSettingsConnection({
+        smtpHost: orgSettings.smtpHost,
+        smtpPort: orgSettings.smtpPort,
+        smtpUser: orgSettings.smtpUser,
+        smtpPass: orgSettings.smtpPass,
+        toEmail: emailTestRecipient || orgSettings.adminNotifyEmail,
+      });
+      setEmailTestMessage({ type: 'success', text: 'Test email sent successfully.' });
+    } catch (err) {
+      setEmailTestMessage({ type: 'error', text: err.message });
+    } finally {
+      setEmailTesting(false);
     }
   }
 
@@ -1020,6 +1047,45 @@ function SettingsPage() {
                 />
               </label>
             </div>
+
+            {canManageOrg && (
+              <div className="mt-4 rounded-lg border border-dashed border-slate-300 bg-white p-4">
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Send Test Email</p>
+                <p className="mt-1 text-xs text-slate-500">
+                  Tests the SMTP fields above as currently entered, even if not yet saved. Any field left blank
+                  falls back to the saved value.
+                </p>
+                <div className="mt-3 flex flex-wrap items-end gap-3">
+                  <label className="block flex-1 min-w-[220px]">
+                    <span className="mb-1 block text-xs font-medium text-slate-600">Send To</span>
+                    <input
+                      type="email"
+                      value={emailTestRecipient || orgSettings.adminNotifyEmail}
+                      onChange={(e) => setEmailTestRecipient(e.target.value)}
+                      placeholder="test-recipient@example.com"
+                      className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+                    />
+                  </label>
+                  <button
+                    type="button"
+                    onClick={handleTestEmailConnection}
+                    disabled={emailTesting}
+                    className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 disabled:opacity-60"
+                  >
+                    {emailTesting ? 'Sending...' : 'Send Test Email'}
+                  </button>
+                </div>
+                {emailTestMessage && (
+                  <p
+                    className={`mt-3 text-sm ${
+                      emailTestMessage.type === 'success' ? 'text-emerald-700' : 'text-red-600'
+                    }`}
+                  >
+                    {emailTestMessage.text}
+                  </p>
+                )}
+              </div>
+            )}
           </div>
 
           <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">

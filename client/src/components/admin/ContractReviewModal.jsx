@@ -1,4 +1,5 @@
 import { Eye, X } from 'lucide-react';
+import ContractStatusBadge from './ContractStatusBadge';
 import { getDefaultContractText } from '../../utils/contractText';
 import {
   parseSignatureAudit,
@@ -41,7 +42,9 @@ function ContractReviewModal({ contract, onClose }) {
           <div className="mb-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
             <div className="rounded-lg bg-slate-50 px-3 py-2">
               <p className="text-xs font-semibold uppercase text-slate-500">Status</p>
-              <p className="text-sm font-semibold text-emerald-700">{contract.status}</p>
+              <div className="mt-1">
+                <ContractStatusBadge status={contract.status} />
+              </div>
             </div>
             <div className="rounded-lg bg-slate-50 px-3 py-2">
               <p className="text-xs font-semibold uppercase text-slate-500">Signed</p>

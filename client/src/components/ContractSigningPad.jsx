@@ -88,13 +88,11 @@ function ContractSigningPad({
     try {
       const signatureImage = sigRef.current.toDataURL('image/png');
       const signedAt = new Date().toISOString();
-      const ipAddress = '192.0.2.1';
 
       await onSign({
         contractId,
         signatureImage,
         signedAt,
-        ipAddress,
         nameConfirmed,
         householdAcknowledgments,
       });

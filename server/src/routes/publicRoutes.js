@@ -8,7 +8,6 @@ import {
   getPublicEvents,
   getPublicKittenById,
   getPublicKittenPhoto,
-  getPublicKittenPhotos,
   getPublicKittenUpdates,
   getPublicKittens,
   getPublicSettings,
@@ -30,7 +29,6 @@ router.use((req, res, next) => {
 router.get('/wishlists', getPublicWishlists);
 router.get('/kittens', getPublicKittens);
 router.get('/kittens/:id/wishlists', getPublicKittenWishlists);
-router.get('/kittens/:id/photos', getPublicKittenPhotos);
 router.get('/kittens/:id/photo', getPublicKittenPhoto);
 router.get('/kittens/:id/updates', getPublicKittenUpdates);
 router.get('/kittens/:id', getPublicKittenById);

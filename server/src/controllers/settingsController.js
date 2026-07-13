@@ -1,5 +1,6 @@
 import prisma from '../lib/prisma.js';
 import { testSocialConnection } from '../services/socialMediaService.js';
+import { sendTestEmail } from '../services/emailService.js';
 import { isAiKeyConfiguredInEnv } from '../utils/aiProvider.js';
 import { PUBLIC_CONTACT_DEFAULTS } from '../utils/publicSettings.js';
 
@@ -233,6 +234,19 @@ export async function updateSettings(req, res, next) {
 export async function testSocialSettings(_req, res, next) {
   try {
     const result = await testSocialConnection();
+    if (!result.ok) {
+      return res.status(400).json(result);
+    }
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function testEmailSettings(req, res, next) {
+  try {
+    const { smtpHost, smtpPort, smtpUser, smtpPass, toEmail } = req.body;
+    const result = await sendTestEmail({ smtpHost, smtpPort, smtpUser, smtpPass, toEmail });
     if (!result.ok) {
       return res.status(400).json(result);
     }

@@ -103,3 +103,79 @@ export async function provisionFosterPortalAccount(foster, req) {
     return { ok: false, reason: 'Portal account creation failed unexpectedly.' };
   }
 }
+
+// Reissues a SETUP link for a foster's existing portal account - covers the
+// 72-hour expiry window lapsing, or the original email failing to deliver.
+// Reuses the exact same token-generation and email-sending logic as
+// provisionFosterPortalAccount above, applied to an already-existing User
+// row instead of creating a new one. Any previously-issued, still-unused
+// tokens for this user are invalidated (usedAt set) in the same transaction
+// as the new token is created, so only the newest link is ever redeemable -
+// setPassword already rejects a token with usedAt set ("This link has
+// already been used"), so this needs no new schema or new check there.
+export async function resendFosterPortalSetupLink(foster, req) {
+  const email = (foster.email || '').trim().toLowerCase();
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { fosterId: foster.id },
+      include: { role: true },
+    });
+
+    if (!user) {
+      return { ok: false, reason: 'No portal account exists for this foster yet.' };
+    }
+    if (!user.role.isPortalRole) {
+      return { ok: false, reason: 'The linked account is not a Foster Portal account.' };
+    }
+    if (!user.isActive) {
+      return { ok: false, reason: 'The linked portal account is inactive.' };
+    }
+
+    const createdIp = getClientIp(req);
+
+    const rawToken = await prisma.$transaction(async (tx) => {
+      await tx.passwordResetToken.updateMany({
+        where: { userId: user.id, usedAt: null },
+        data: { usedAt: new Date() },
+      });
+
+      const token = generatePasswordResetToken();
+
+      await tx.passwordResetToken.create({
+        data: {
+          userId: user.id,
+          tokenHash: token.tokenHash,
+          purpose: 'SETUP',
+          expiresAt: token.expiresAt,
+          createdIp,
+        },
+      });
+
+      return token.rawToken;
+    });
+
+    const baseUrl = (process.env.CLIENT_URL || '').replace(/\/$/, '');
+    const setPasswordUrl = `${baseUrl}/portal/set-password?token=${rawToken}`;
+
+    // Fire-and-forget, same as provisionFosterPortalAccount - failures land
+    // in EmailLog for staff to find later rather than blocking the response.
+    sendTemplatedEmail({
+      templateKey: EMAIL_TEMPLATE_KEYS.FOSTER_PORTAL_SET_PASSWORD,
+      toEmail: email,
+      variables: {
+        fosterName: foster.name,
+        setPasswordUrl,
+      },
+      relatedType: 'Foster',
+      relatedId: foster.id,
+    }).catch((error) => {
+      console.error('Foster portal resend-setup email failed:', error.message);
+    });
+
+    return { ok: true };
+  } catch (error) {
+    console.error('Foster portal setup-link resend failed:', error);
+    return { ok: false, reason: 'Failed to resend the set-password link unexpectedly.' };
+  }
+}

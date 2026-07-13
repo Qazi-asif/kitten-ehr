@@ -1,5 +1,10 @@
 import { Router } from 'express';
-import { getAllFosters, createFoster, getFosterById } from '../controllers/fosterController.js';
+import {
+  getAllFosters,
+  createFoster,
+  getFosterById,
+  resendPortalSetupLink,
+} from '../controllers/fosterController.js';
 import {
   createFosterPlacement,
   dischargePlacement,
@@ -13,13 +18,18 @@ import { requirePermission } from '../middleware/authMiddleware.js';
 
 const router = Router();
 
-router.get('/', getAllFosters);
-router.post('/', createFoster);
-router.get('/:id/placements', getFosterPlacements);
-router.post('/:id/placements', createFosterPlacement);
+router.get('/', requirePermission('fosters.view'), getAllFosters);
+router.post('/', requirePermission('fosters.manage'), createFoster);
+router.get('/:id/placements', requirePermission('fosters.view'), getFosterPlacements);
+router.post('/:id/placements', requirePermission('fosters.manage'), createFosterPlacement);
 router.post('/:id/placements/:placementId/discharge', requirePermission('fosters.manage'), dischargePlacement);
 router.get('/:id/wishlists', requirePermission('fosters.view'), getFosterWishlists);
 router.post('/:id/wishlists', requirePermission('fosters.manage'), createFosterWishlist);
-router.get('/:id', getFosterById);
+router.get('/:id', requirePermission('fosters.view'), getFosterById);
+router.post(
+  '/:id/portal-account/resend-setup',
+  requirePermission('fosters.manage'),
+  resendPortalSetupLink,
+);
 
 export default router;

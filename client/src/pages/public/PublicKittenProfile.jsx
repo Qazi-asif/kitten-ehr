@@ -335,6 +335,40 @@ function PublicKittenProfile() {
                 </div>
               )}
             </section>
+
+            <section ref={wishlistRef} className="scroll-mt-24">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Wishlist</h2>
+              {wishlists.length === 0 ? (
+                <p className="text-sm font-medium text-gray-500">No wishlist yet. Check back soon!</p>
+              ) : (
+                <div className="space-y-3">
+                  {wishlists.map((item) => {
+                    const meta = WISHLIST_RETAILER_META[item.retailer] || {
+                      label: item.label || 'Wishlist',
+                      description: '',
+                      buttonClass: 'border-gray-300 bg-gray-50 text-gray-900 hover:bg-gray-100',
+                    };
+                    return (
+                      <a
+                        key={item.id}
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`flex items-center justify-between rounded-xl border px-5 py-4 text-sm font-bold transition ${meta.buttonClass}`}
+                      >
+                        <span>
+                          <span className="block">{item.label || meta.label}</span>
+                          {meta.description ? (
+                            <span className="mt-0.5 block text-xs font-medium opacity-80">{meta.description}</span>
+                          ) : null}
+                        </span>
+                        <ShoppingBag className="h-4 w-4 shrink-0" />
+                      </a>
+                    );
+                  })}
+                </div>
+              )}
+            </section>
           </div>
 
           {/* Right — Sponsor panel */}

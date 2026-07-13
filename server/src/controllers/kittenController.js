@@ -227,9 +227,6 @@ export async function updateKitten(req, res, next) {
     if (body.litterId !== undefined) {
       data.litterId = body.litterId ?? null;
     }
-    if (body.currentFosterId !== undefined) {
-      data.currentFosterId = body.currentFosterId ?? null;
-    }
     if (body.amazonWishlistUrl !== undefined) {
       data.amazonWishlistUrl = body.amazonWishlistUrl?.trim() || null;
     }

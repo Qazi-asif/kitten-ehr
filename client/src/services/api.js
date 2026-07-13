@@ -137,6 +137,14 @@ export async function dischargeFosterPlacement(fosterId, placementId, data = {})
   return response.json();
 }
 
+export async function resendFosterPortalSetupLink(fosterId) {
+  const response = await adminFetch(`/fosters/${fosterId}/portal-account/resend-setup`, {
+    method: 'POST',
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to resend set-password link'));
+  return response.json();
+}
+
 export async function fetchKittenPlacements(kittenId) {
   const response = await adminFetch(`/kittens/${kittenId}/placements`);
   if (!response.ok) throw new Error('Failed to load kitten placements');
@@ -478,6 +486,16 @@ export async function testSocialSettingsConnection() {
   return payload;
 }
 
+export async function testEmailSettingsConnection(payload) {
+  const response = await adminFetch('/settings/email/test', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.error || 'Test email failed');
+  return data;
+}
+
 export async function generateAiCaption(data) {
   const response = await adminFetch('/generate-caption', {
     method: 'POST',
@@ -605,12 +623,10 @@ export async function markContractSigned(id, data) {
     body: JSON.stringify({
       signatureImage: data.signatureImage,
       signedAt: data.signedAt,
-      ipAddress: data.ipAddress,
       signedPdfUrl: data.signatureImage,
       signatureAudit: {
         signatureImage: data.signatureImage,
         signedAt: data.signedAt,
-        ipAddress: data.ipAddress,
         signedVia: 'ContractSigningPad',
         nameConfirmed: Boolean(data.nameConfirmed),
       },

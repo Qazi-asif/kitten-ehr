@@ -1,12 +1,21 @@
 import { Router } from 'express';
+import {
+  getMyKittenDocuments,
+  getMyPlacements,
+  uploadMyKittenDocument,
+} from '../controllers/portalDataController.js';
+import { upload } from '../middleware/uploadMiddleware.js';
 
 // Foster Portal data routes. Mounted behind requirePortalAuth in app.js, so
 // every handler here can trust req.user.fosterId is present and belongs to
-// a real, active portal account. No routes yet - own-profile, own-kittens,
-// own-placements, and document upload/list land here in the next build
-// step. Every handler added must filter exclusively by req.user.fosterId,
-// never a client-supplied foster/placement/kitten id, per the approved
-// data-scoping plan.
+// a real, active portal account. Own-profile routes are not built yet.
+// Every handler added must filter exclusively by req.user.fosterId, never a
+// client-supplied foster/placement/kitten id, per the approved data-scoping
+// plan - see portalDataController.js for how each handler enforces this.
 const router = Router();
+
+router.get('/placements', getMyPlacements);
+router.get('/kittens/:kittenId/documents', getMyKittenDocuments);
+router.post('/kittens/:kittenId/documents', upload.single('file'), uploadMyKittenDocument);
 
 export default router;

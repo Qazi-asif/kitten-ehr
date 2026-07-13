@@ -63,7 +63,6 @@ export const updateKittenSchema = z
     websiteFeaturedComment: z.string().max(2000).optional(),
     publishTargets: publishTargetsField,
     litterId: z.coerce.number().int().positive().optional().nullable(),
-    currentFosterId: z.coerce.number().int().positive().optional().nullable(),
     amazonWishlistUrl: optionalUrl,
     walmartWishlistUrl: optionalUrl,
     chewyWishlistUrl: optionalUrl,
