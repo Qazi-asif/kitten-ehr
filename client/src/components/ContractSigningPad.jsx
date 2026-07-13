@@ -107,6 +107,7 @@ function ContractSigningPad({
 
   return (
     <div className="flex h-full max-h-[90vh] flex-col bg-white text-neutral-900">
+      <h1>DEBUG BOX TEST (SIGNING PAD)</h1>
       <div className="flex items-start justify-between border-b border-neutral-200 px-6 py-4">
         <div>
           <div className="flex items-center gap-2 text-neutral-900">

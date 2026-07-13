@@ -18,6 +18,7 @@ function ContractViewModal({ contract, templates = [], onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm">
+      <h1>DEBUG BOX TEST</h1>
       <div className="absolute inset-0" onClick={onClose} aria-hidden="true" />
       <div className="relative z-10 flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
         <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
