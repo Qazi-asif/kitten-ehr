@@ -80,7 +80,13 @@ export async function loginRequest(email, password) {
   }
 
   if (!response.ok) {
-    throw new Error(data.error || 'Login failed');
+    const error = new Error(data.error || 'Login failed');
+    // Set only when the server rejects a Foster Portal account on this
+    // staff login endpoint (see authController.js) - lets LoginPage.jsx
+    // render an actual clickable link to /portal/login instead of just
+    // mentioning the path in plain error text.
+    if (data.portalLoginUrl) error.portalLoginUrl = data.portalLoginUrl;
+    throw error;
   }
 
   return data;

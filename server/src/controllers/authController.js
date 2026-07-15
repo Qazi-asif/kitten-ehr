@@ -54,6 +54,20 @@ export async function login(req, res, next) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
+    // Foster Portal accounts must sign in at /portal/login, not here.
+    // Checked only after password validation, so an invalid password never
+    // reveals an email's account type. This mirrors the isPortalRole check
+    // requireAuth already performs on every subsequent staff API call - the
+    // gap this closes is that, before this check, a portal account could
+    // still receive a valid *staff* token right here at login and only find
+    // out something was wrong once every admin page came back empty/403.
+    if (user.role.isPortalRole) {
+      return res.status(403).json({
+        error: 'This account uses the Foster Portal login. Please sign in at /portal/login instead.',
+        portalLoginUrl: '/portal/login',
+      });
+    }
+
     await prisma.user.update({
       where: { id: user.id },
       data: { lastLoginAt: new Date() },

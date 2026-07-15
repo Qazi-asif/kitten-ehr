@@ -12,6 +12,7 @@ function LoginPage() {
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
+  const [portalLoginUrl, setPortalLoginUrl] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
   const legacyAdminPaths = new Set([
@@ -34,11 +35,13 @@ function LoginPage() {
     event.preventDefault();
     setSubmitting(true);
     setError('');
+    setPortalLoginUrl('');
     try {
       await login(email, password, rememberMe);
       navigate(redirectTo, { replace: true });
     } catch (err) {
       setError(err.message || 'Login failed');
+      if (err.portalLoginUrl) setPortalLoginUrl(err.portalLoginUrl);
     } finally {
       setSubmitting(false);
     }
@@ -72,7 +75,17 @@ function LoginPage() {
               </div>
             )}
             {error && (
-              <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>
+              <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+                {error}
+                {portalLoginUrl && (
+                  <>
+                    {' '}
+                    <Link to={portalLoginUrl} className="font-semibold underline hover:text-red-900">
+                      Go to Foster Portal login
+                    </Link>
+                  </>
+                )}
+              </div>
             )}
             <label className="block">
               <span className="mb-1 block text-sm font-medium text-slate-700">Email</span>
