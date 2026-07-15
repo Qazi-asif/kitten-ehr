@@ -6,6 +6,14 @@ import { generatePasswordResetToken } from '../utils/passwordResetTokens.js';
 import { getClientIp } from '../utils/requestIp.js';
 import { sendTemplatedEmail } from './emailService.js';
 import { EMAIL_TEMPLATE_KEYS } from '../constants/emailTemplates.js';
+// Reuses the same PUBLIC_SITE_URL -> CLIENT_URL -> VERCEL_URL -> request
+// host -> localhost fallback chain that CORS and social-share/asset links
+// already rely on, instead of a bare process.env.CLIENT_URL read with no
+// fallback - that gap was the actual cause of the broken
+// "http:///portal/set-password?token=..." invite links (CLIENT_URL was
+// unset in production; every other usage was masked by its own fallbacks,
+// this was the only one with none).
+import { getPublicSiteBase } from './socialMediaService.js';
 
 // Creates a limited-access portal User account for a just-created Foster,
 // plus a SETUP PasswordResetToken, and fires the set-password email.
@@ -71,7 +79,7 @@ export async function provisionFosterPortalAccount(foster, req) {
       return { user: createdUser, rawToken: token.rawToken };
     });
 
-    const baseUrl = (process.env.CLIENT_URL || '').replace(/\/$/, '');
+    const baseUrl = getPublicSiteBase(req);
     const setPasswordUrl = `${baseUrl}/portal/set-password?token=${rawToken}`;
 
     // Fire-and-forget, after the transaction has committed - matches the
@@ -155,7 +163,7 @@ export async function resendFosterPortalSetupLink(foster, req) {
       return token.rawToken;
     });
 
-    const baseUrl = (process.env.CLIENT_URL || '').replace(/\/$/, '');
+    const baseUrl = getPublicSiteBase(req);
     const setPasswordUrl = `${baseUrl}/portal/set-password?token=${rawToken}`;
 
     // Fire-and-forget, same as provisionFosterPortalAccount - failures land
