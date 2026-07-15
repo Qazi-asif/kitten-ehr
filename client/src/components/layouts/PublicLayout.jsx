@@ -70,6 +70,7 @@ const FOOTER_LINK_COLUMNS = [
     links: [
       { label: 'Why Foster', path: '/get-involved' },
       { label: 'Foster Application', path: '/foster' },
+      { label: 'Foster Login', path: '/portal/login' },
     ],
   },
   {
@@ -315,6 +316,12 @@ function PublicLayout() {
               {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
             <Link
+              to="/portal/login"
+              className="hidden rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-600 transition-colors hover:border-brand hover:text-brand md:inline-block"
+            >
+              Foster Login
+            </Link>
+            <Link
               to="/login"
               className="hidden rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-600 transition-colors hover:border-brand hover:text-brand md:inline-block"
             >
@@ -343,6 +350,13 @@ function PublicLayout() {
                   Donate
                 </Link>
               ) : null}
+              <Link
+                to="/portal/login"
+                onClick={closeMobileMenu}
+                className="rounded-full border border-slate-200 px-3 py-2.5 text-center text-sm font-semibold text-slate-700"
+              >
+                Foster Login
+              </Link>
               <Link
                 to="/login"
                 onClick={closeMobileMenu}

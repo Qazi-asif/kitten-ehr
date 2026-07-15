@@ -44,7 +44,6 @@ const EventDetailPage = lazy(() => import('./pages/public/EventDetailPage'));
 const FosterPage = lazy(() => import('./pages/public/FosterPage'));
 const FosterFormPage = lazy(() => import('./pages/public/FosterFormPage'));
 const HomePage = lazy(() => import('./pages/public/HomePage'));
-const CheckPage = lazy(() => import('./pages/public/CheckPage'));
 const PublicKittenProfile = lazy(() => import('./pages/public/PublicKittenProfile'));
 
 function PageLoader() {
@@ -73,7 +72,6 @@ function App() {
 
             <Route element={<PublicLayout />}>
               <Route path="/" element={<HomePage />} />
-              <Route path="/check" element={<CheckPage />} />
               <Route path="/kittens" element={<AvailableKittensPage />} />
               <Route path="/kittens/:id" element={<PublicKittenProfile />} />
               <Route path="/adopt" element={<AdoptionProcessPage />} />
