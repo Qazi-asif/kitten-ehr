@@ -44,10 +44,16 @@ function FosterListPage() {
       // account" checkbox was on; ok:false means the Foster itself was
       // still created successfully, just not the linked account (e.g. no
       // Foster Portal role configured yet, or the email's already in use).
+      // ok:true only confirms the portal User + set-password token were
+      // created - the invite email itself is sent fire-and-forget by
+      // provisionFosterPortalAccount (see that file's comment) and its
+      // result never reaches this response, so this message must not
+      // assert delivery as a confirmed fact. Failures land in EmailLog
+      // for staff to check under Settings -> Email Logs.
       if (created?.portalAccount && !created.portalAccount.ok) {
         setNotice(`Foster created, but no portal account was set up: ${created.portalAccount.reason}`);
       } else if (created?.portalAccount?.ok) {
-        setNotice('Foster created, and a portal account invite email was sent.');
+        setNotice('Foster created, and the portal account was set up. The invite email is being sent.');
       }
 
       await loadFosters();
