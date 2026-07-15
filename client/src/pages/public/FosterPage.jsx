@@ -25,9 +25,10 @@ const WHO_CAN_FOSTER = [
 
 const HOW_IT_WORKS = [
   { step: '1', title: 'Apply.', text: 'Tell us about your home, your schedule, and your pets.' },
-  { step: '2', title: 'Train.', text: 'A short online training, under 30 minutes, matched to the kind of cats you\'ll foster.' },
-  { step: '3', title: 'Welcome.', text: 'We match you with a placement that fits your setup and send the cat home with a care plan.' },
-  { step: '4', title: 'Launch.', text: 'You get them healthy and confident, we find their person, and you get your room back. Until the next one.' },
+  { step: '2', title: 'Screen.', text: 'Our team reviews your application and schedules a conversation to answer questions and learn.' },
+  { step: '3', title: 'Train.', text: 'A short online training, under 30 minutes, matched to the kind of cats you\'ll foster.' },
+  { step: '4', title: 'Placement.', text: 'We match you with a placement that fits your setup and send the cat home with a care plan.' },
+  { step: '5', title: 'Foster.', text: 'You get them healthy and confident, we find their person, and you get your room back. Until the next one.' },
 ];
 
 const FOSTER_FAQ = [
@@ -45,7 +46,7 @@ const FOSTER_FAQ = [
   },
   {
     q: 'How long does a placement last?',
-    a: 'It varies. Neonates need weeks of care before they\'re adoption-ready; a healthy adult might be with you a shorter time. We\'ll give you an honest estimate up front and keep you posted.',
+    a: 'It varies. Neonates need weeks of care before they\'re adoption-ready; a healthy adult might be with you for a shorter time. We\'ll give you an honest estimate up front and keep you posted.',
   },
   {
     q: 'What if there\'s a medical emergency?',
