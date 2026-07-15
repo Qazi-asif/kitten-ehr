@@ -2,26 +2,23 @@ import { useEffect, useState, useCallback, useMemo } from 'react';
 import { Link, useOutletContext, useSearchParams } from 'react-router-dom';
 import DonationConfirmation from '../../components/DonationConfirmation';
 import GivebutterDonationWidget from '../../components/GivebutterDonationWidget';
+import SecureWidget from '../../components/SecureWidget';
 import { isDonatePageLive } from '../../constants/siteFeatures';
 import { fetchPublicSettings, invalidatePublicSettingsCache } from '../../services/publicApi';
 import { DONATE_PAGE_EIN } from '../../constants/siteCopy';
 import {
   DEFAULT_GIVEBUTTER_EMBED,
   DEFAULT_GIVEBUTTER_NINE_LIVES_EMBED,
-  DEFAULT_PAYPAL_URL,
 } from '../../constants/givebutterDefaults';
 import { markCheckoutSuccessParam } from '../../hooks/useGivebutterCheckout';
 
+const PAYPAL_DONATE_EMBED = `<form action="https://www.paypal.com/donate" method="post" target="_top">
+<input type="hidden" name="hosted_button_id" value="2D7222ATY9EDQ" />
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+</form>`;
+
 const OTHER_WAYS = [
-  {
-    key: 'paypal',
-    label: 'PayPal',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
-        <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106z" />
-      </svg>
-    ),
-  },
   {
     key: 'amazon',
     label: 'Amazon Wishlist',
@@ -68,6 +65,15 @@ const OTHER_WAYS = [
     ),
   },
 ];
+
+function VenmoIcon({ className = 'h-5 w-5' }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className}>
+      <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.12" />
+      <text x="12" y="16" textAnchor="middle" fontSize="12" fontWeight="700" fill="currentColor">V</text>
+    </svg>
+  );
+}
 
 function PawIcon({ className = 'h-5 w-5' }) {
   return (
@@ -120,12 +126,19 @@ function DonatePage() {
   const orgEin = DONATE_PAGE_EIN;
 
   const otherWayLinks = useMemo(() => ({
-    paypal: settings.paypalLink?.trim() || DEFAULT_PAYPAL_URL,
     amazon: settings.amazonWishlistUrl?.trim() || null,
     chewy: settings.chewyWishlistUrl?.trim() || null,
     planned: '/contact',
     corporate: '/contact',
   }), [settings]);
+
+  // Venmo has no embeddable donate button (unlike PayPal/Givebutter) - the
+  // standard approach is a profile link plus an optional QR code for the
+  // Venmo app's scan-to-pay flow. venmoHandle/venmoQrCodeUrl already exist
+  // as Settings fields (Admin -> Settings -> Organization) and are already
+  // exposed on the public settings payload; this just surfaces them.
+  const venmoUsername = settings.venmoHandle?.trim().replace(/^@+/, '') || '';
+  const venmoQrCodeUrl = settings.venmoQrCodeUrl?.trim() || '';
 
   if (!isDonatePageLive(settings)) {
     return (
@@ -217,6 +230,47 @@ function DonatePage() {
 
           <div className="rounded-2xl border border-brand/30 bg-white p-7 shadow-sm">
             <h2 className="text-center text-lg font-extrabold leading-snug text-brand">Other Ways to Give</h2>
+
+            {(PAYPAL_DONATE_EMBED || venmoUsername) && (
+              <div className="mt-6">
+                <h3 className="text-xs font-bold uppercase tracking-wide text-slate-500">Give Directly</h3>
+                <div className="mt-3 space-y-4">
+                  {PAYPAL_DONATE_EMBED ? (
+                    <div className="overflow-hidden rounded-lg border border-slate-100 bg-slate-50/50 p-4">
+                      <SecureWidget code={PAYPAL_DONATE_EMBED} />
+                    </div>
+                  ) : null}
+
+                  {venmoUsername ? (
+                    <a
+                      href={`https://venmo.com/u/${venmoUsername}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center gap-4 rounded-lg border border-slate-100 p-3 transition hover:bg-brand/5"
+                    >
+                      {venmoQrCodeUrl ? (
+                        <img
+                          src={venmoQrCodeUrl}
+                          alt="Venmo QR code"
+                          className="h-14 w-14 shrink-0 rounded-md border border-slate-200 bg-white object-contain p-1"
+                        />
+                      ) : (
+                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-brand/20 bg-brand/5 text-brand">
+                          <VenmoIcon />
+                        </span>
+                      )}
+                      <span>
+                        <span className="block text-sm font-semibold text-slate-700">Venmo</span>
+                        <span className="block text-xs text-slate-500">@{venmoUsername}</span>
+                      </span>
+                    </a>
+                  ) : null}
+                </div>
+
+                <div className="mt-6 border-t border-slate-100" />
+              </div>
+            )}
+
             <ul className="mt-6 space-y-4">
               {OTHER_WAYS.map((way) => {
                 const href = otherWayLinks[way.key];
