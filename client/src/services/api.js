@@ -217,9 +217,12 @@ export async function createWeightLog(logData) {
   return response.json();
 }
 
-export async function fetchApplications(status) {
-  const query = status ? `?status=${encodeURIComponent(status)}` : '';
-  const response = await adminFetch(`/applications${query}`);
+export async function fetchApplications(status, options = {}) {
+  const params = new URLSearchParams();
+  if (status) params.set('status', status);
+  if (options.pendingContract) params.set('pendingContract', 'true');
+  const query = params.toString();
+  const response = await adminFetch(`/applications${query ? `?${query}` : ''}`);
   if (!response.ok) throw new Error('Failed to load applications');
   return response.json();
 }

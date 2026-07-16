@@ -71,9 +71,19 @@ async function saveApplicationUploads(applicationId, files = []) {
 
 export async function getApplications(req, res, next) {
   try {
-    const { status } = req.query;
+    const { status, pendingContract } = req.query;
+    const where = {};
+    if (status) where.status = status;
+
+    // Used by the Contracts page's "Pending Contracts" queue: Approved
+    // applications with no Contract row pointing back at them yet, via the
+    // real Application.contracts relation - not a text/email match, an exact
+    // relational filter (mirrors why PersonContractsSection was fixed to use
+    // applicationId/fosterId instead of a fuzzy signerEmail search).
+    if (pendingContract === 'true') where.contracts = { none: {} };
+
     const applications = await prisma.application.findMany({
-      where: status ? { status } : undefined,
+      where: Object.keys(where).length > 0 ? where : undefined,
       orderBy: { createdAt: 'desc' },
       include: applicationListInclude,
     });

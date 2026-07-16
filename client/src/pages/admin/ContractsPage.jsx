@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Eye, FileSignature, Mail, Paperclip, Pencil, Plus, Search, Trash2 } from 'lucide-react';
+import { ChevronDown, Eye, FileSignature, Mail, Paperclip, Pencil, Plus, Search, Trash2 } from 'lucide-react';
 import AgreementTemplatesPanel from '../../components/admin/AgreementTemplatesPanel';
 import ContractEditModal from '../../components/admin/ContractEditModal';
 import ContractViewModal from '../../components/admin/ContractViewModal';
@@ -99,6 +99,16 @@ function ContractsPage() {
   const [personResultsOpen, setPersonResultsOpen] = useState(false);
   const [selectedPersonLabel, setSelectedPersonLabel] = useState('');
 
+  // Pending Contracts queue: Approved applications with no linked Contract
+  // yet (server-side exact relational filter, see getApplications). Separate
+  // from the general `error` banner below so a stale contract-list error
+  // never gets confused with an application-load failure, or vice versa.
+  const [pendingApplications, setPendingApplications] = useState([]);
+  const [pendingLoading, setPendingLoading] = useState(true);
+  const [pendingQueueOpen, setPendingQueueOpen] = useState(true);
+  const [completingApplicationId, setCompletingApplicationId] = useState(null);
+  const [applicationLoadError, setApplicationLoadError] = useState('');
+
   const load = useCallback(async (nextFilters = appliedFilters) => {
     setLoading(true);
     setError('');
@@ -158,10 +168,53 @@ function ContractsPage() {
       .catch(() => {});
   }, [reviewId, contracts]);
 
+  // Shared by both entry points that pre-populate a draft from an
+  // Application: the ?createFor=application:<id> deep link (below) and the
+  // Pending Contracts queue's "Complete Contract" button. Fetches the real
+  // record before touching any UI state - the draft form is only opened once
+  // the fetch actually succeeds, and a visible error is shown otherwise
+  // instead of leaving staff looking at a silently-blank form.
+  async function populateDraftFromApplication(applicationId) {
+    setApplicationLoadError('');
+    setCompletingApplicationId(applicationId);
+    try {
+      const application = await fetchApplicationById(applicationId);
+      if (!application) {
+        throw new Error('empty response');
+      }
+
+      const parsed = parseApplicationFormData(application.formData);
+      const isAdoptionApp = application.type === 'Adoption';
+      const kittenOfInterest = resolveKittenOfInterest(application.formData, application.kittenOfInterest);
+
+      setDraftForm((prev) => ({
+        ...prev,
+        templateSlug: isAdoptionApp ? 'adoption' : 'foster_supplies_provided',
+        applicationId: application.id,
+        fosterId: null,
+        signerName: parsed.fullName || prev.signerName,
+        signerEmail: parsed.email || prev.signerEmail,
+        signerPhone: parsed.phone || prev.signerPhone,
+        signerAddress: parsed.address || prev.signerAddress,
+        kittenName: kittenOfInterest || prev.kittenName,
+      }));
+      setSelectedPersonLabel(getApplicationSummary(application.formData));
+      setShowDraftForm(true);
+    } catch {
+      setApplicationLoadError(
+        `Could not load application #${applicationId} — it may have been deleted or the link is invalid.`,
+      );
+    } finally {
+      setCompletingApplicationId(null);
+    }
+  }
+
   // Deep link from an approved application's "Create Contract" button
   // (?createFor=application:<id>) - opens the draft form pre-populated with
   // the applicant's info. Auto-fill is editable, not locked, same as the
-  // manual kitten/person picker below.
+  // manual kitten/person picker below. No equivalent foster-side deep link
+  // exists today (grepped the client tree) - this is the only entry point,
+  // besides the queue below, that needs the load-before-open guard.
   const createForParam = searchParams.get('createFor');
 
   useEffect(() => {
@@ -171,29 +224,24 @@ function ContractsPage() {
     const applicationId = Number.parseInt(idStr, 10);
     if (!Number.isInteger(applicationId)) return;
 
-    setShowDraftForm(true);
-    fetchApplicationById(applicationId)
-      .then((application) => {
-        if (!application) return;
-        const parsed = parseApplicationFormData(application.formData);
-        const isAdoptionApp = application.type === 'Adoption';
-        const kittenOfInterest = resolveKittenOfInterest(application.formData, application.kittenOfInterest);
+    populateDraftFromApplication(applicationId);
+  }, [createForParam]); // eslint-disable-line react-hooks/exhaustive-deps
 
-        setDraftForm((prev) => ({
-          ...prev,
-          templateSlug: isAdoptionApp ? 'adoption' : 'foster_supplies_provided',
-          applicationId: application.id,
-          fosterId: null,
-          signerName: parsed.fullName || prev.signerName,
-          signerEmail: parsed.email || prev.signerEmail,
-          signerPhone: parsed.phone || prev.signerPhone,
-          signerAddress: parsed.address || prev.signerAddress,
-          kittenName: kittenOfInterest || prev.kittenName,
-        }));
-        setSelectedPersonLabel(getApplicationSummary(application.formData));
-      })
-      .catch(() => {});
-  }, [createForParam]);
+  const loadPendingApplications = useCallback(async () => {
+    setPendingLoading(true);
+    try {
+      const data = await fetchApplications('Approved', { pendingContract: true });
+      setPendingApplications(Array.isArray(data) ? data : []);
+    } catch {
+      setPendingApplications([]);
+    } finally {
+      setPendingLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadPendingApplications();
+  }, [loadPendingApplications]);
 
   const statusCounts = useMemo(() => {
     const counts = { SENT: 0, SIGNED: 0, VOID: 0 };
@@ -318,6 +366,7 @@ function ContractsPage() {
       setSelectedPersonLabel('');
       setShowDraftForm(false);
       await load();
+      await loadPendingApplications();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -574,6 +623,62 @@ function ContractsPage() {
           </div>
         ))}
       </div>
+
+      <div className="mb-6 overflow-hidden rounded-xl border border-amber-200 bg-amber-50/40 shadow-sm">
+        <button
+          type="button"
+          onClick={() => setPendingQueueOpen((open) => !open)}
+          className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left"
+          aria-expanded={pendingQueueOpen}
+        >
+          <span className="text-sm font-bold text-amber-900">
+            Pending Contracts ({pendingApplications.length}) — Approved applications with no contract yet
+          </span>
+          <ChevronDown className={`h-4 w-4 flex-shrink-0 text-amber-700 transition-transform ${pendingQueueOpen ? 'rotate-180' : ''}`} />
+        </button>
+        {pendingQueueOpen && (
+          <div className="border-t border-amber-200 px-4 py-3">
+            {pendingLoading ? (
+              <p className="text-sm text-amber-800">Loading...</p>
+            ) : pendingApplications.length === 0 ? (
+              <p className="text-sm text-amber-800">Every approved application already has a contract.</p>
+            ) : (
+              <ul className="divide-y divide-amber-100">
+                {pendingApplications.map((application) => (
+                  <li key={application.id} className="flex flex-wrap items-center justify-between gap-3 py-2.5">
+                    <div>
+                      <p className="text-sm font-semibold text-amber-950">
+                        {getApplicationSummary(application.formData)}
+                        <span className="ml-2 rounded-full bg-amber-200/70 px-2 py-0.5 text-xs font-semibold text-amber-900">
+                          {application.type}
+                        </span>
+                      </p>
+                      <p className="text-xs text-amber-700">
+                        Application #{application.id} · Approved{' '}
+                        {new Date(application.statusUpdatedAt || application.createdAt).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => populateDraftFromApplication(application.id)}
+                      disabled={completingApplicationId === application.id}
+                      className="inline-flex items-center gap-1 rounded-lg bg-amber-900 px-3 py-1.5 text-xs font-semibold text-white hover:bg-amber-950 disabled:opacity-60"
+                    >
+                      {completingApplicationId === application.id ? 'Loading...' : 'Complete Contract'}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
+      </div>
+
+      {applicationLoadError && (
+        <div className="mb-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
+          {applicationLoadError}
+        </div>
+      )}
 
       <form
         onSubmit={applyFilters}
