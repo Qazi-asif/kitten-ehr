@@ -67,7 +67,7 @@ function AvailableKittensPage() {
                 <path d="M 52,43 C 33,43 21,57 21,72 C 21,87 34,96 52,96 C 70,96 83,87 83,72 C 83,57 71,43 52,43 Z" />
               </svg>
             </h1>
-            <p className="mt-3 text-lg font-medium leading-relaxed text-slate-600">
+            <p className="mt-3 max-w-md text-lg font-medium leading-relaxed text-slate-600">
               Every cat here lives with a foster who knows them: their quirks, their favorite spot, their whole personality. Ask us anything.
             </p>
           </div>

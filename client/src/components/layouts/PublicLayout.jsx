@@ -102,35 +102,36 @@ function SocialLinks({ settings }) {
 
   return (
     <div className="flex items-center gap-4">
-      <a href={facebookUrl} target="_blank" rel="noreferrer" className="text-white/70 transition-colors hover:text-brand-light" aria-label="Facebook">
+      <a href={facebookUrl} target="_blank" rel="noreferrer" className="text-gray-500 transition-colors hover:text-gray-900" aria-label="Facebook">
         <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
           <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
         </svg>
       </a>
-      <a href={instagramUrl} target="_blank" rel="noreferrer" className="text-white/70 transition-colors hover:text-brand-light" aria-label="Instagram">
+      <a href={instagramUrl} target="_blank" rel="noreferrer" className="text-gray-500 transition-colors hover:text-gray-900" aria-label="Instagram">
         <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
           <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
           <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" />
           <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
         </svg>
       </a>
-      <a href={xUrl} target="_blank" rel="noreferrer" className="text-white/70 transition-colors hover:text-brand-light" aria-label="X">
+      <a href={xUrl} target="_blank" rel="noreferrer" className="text-gray-500 transition-colors hover:text-gray-900" aria-label="X">
         <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
           <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
         </svg>
       </a>
-      <a href={tiktokUrl} target="_blank" rel="noreferrer" className="text-white/70 transition-colors hover:text-brand-light" aria-label="TikTok">
+      <a href={tiktokUrl} target="_blank" rel="noreferrer" className="text-gray-500 transition-colors hover:text-gray-900" aria-label="TikTok">
         <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
           <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.02 1.59 4.23.85.97 1.99 1.66 3.25 1.95v3.91c-1.21-.16-2.36-.67-3.34-1.39-.77-.55-1.4-1.28-1.84-2.14v7.7c0 5.04-4.22 8.78-9.29 8.29-3.9-.38-7.07-3.56-7.44-7.46C-.2 10.02 3.51 5.8 8.55 5.8c.45 0 .9.03 1.35.1v3.96c-1.39-.42-2.92-.09-4.04.83-1.42 1.17-1.78 3.25-.86 4.82.93 1.59 3.01 2.21 4.67 1.41.97-.47 1.58-1.47 1.58-2.55V.02h.27z" />
         </svg>
       </a>
-      <a href={`mailto:${contactEmail}`} className="text-white/70 transition-colors hover:text-brand-light" aria-label="Email">
+      <a href={`mailto:${contactEmail}`} className="text-gray-500 transition-colors hover:text-gray-900" aria-label="Email">
         <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
           <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
           <polyline points="22,6 12,13 2,6" />
         </svg>
       </a>
     </div>
+
   );
 }
 
@@ -373,12 +374,12 @@ function PublicLayout() {
         <Outlet context={{ settings }} />
       </main>
 
-      <footer className="border-t border-brand-dark/20 bg-brand-dark text-white">
+      <footer className="border-t border-gray-200 bg-white text-gray-900">
         <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
-          <div className="mb-10 flex flex-col items-start justify-between gap-6 border-b border-white/15 pb-10 sm:flex-row sm:items-center">
+          <div className="mb-10 flex flex-col items-start justify-between gap-6 border-b border-gray-200 pb-10 sm:flex-row sm:items-center">
             <div>
-              <p className="text-lg font-semibold text-white">Pawsitive Transformations</p>
-              <p className="mt-1 text-sm text-brand-light/90">Cat Rescue &amp; Human Wellness</p>
+              <p className="text-lg font-semibold text-gray-900">Pawsitive Transformations</p>
+              <p className="mt-1 text-sm text-gray-500">Cat Rescue &amp; Human Wellness</p>
             </div>
             <SocialLinks settings={settings} />
           </div>
@@ -386,13 +387,13 @@ function PublicLayout() {
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
             {FOOTER_LINK_COLUMNS.map((column) => (
               <div key={column.title}>
-                <h3 className="text-sm font-semibold uppercase tracking-wide text-brand-light">{column.title}</h3>
+                <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-900">{column.title}</h3>
                 <ul className="mt-4 space-y-2.5">
                   {column.links.map((link) => (
                     <li key={link.path}>
                       <Link
                         to={link.path}
-                        className="text-sm text-white/75 transition-colors hover:text-white"
+                        className="text-sm text-gray-600 transition-colors hover:text-gray-900"
                       >
                         {link.label}
                       </Link>
@@ -404,14 +405,14 @@ function PublicLayout() {
           </div>
         </div>
 
-        <div className="border-t border-white/10 bg-brand px-6 py-4 lg:px-8">
-          <div className="mx-auto max-w-7xl space-y-2 text-center text-xs text-white/80">
+        <div className="border-t border-gray-200 bg-white px-6 py-4 lg:px-8">
+          <div className="mx-auto max-w-7xl space-y-2 text-center text-xs text-gray-500">
             <p>
               &copy; 2026 Pawsitive Transformations. All rights reserved. Pawsitive Transformations is a 501(c)(3) non-profit organization. EIN {displayEin()}.
             </p>
             <p>
               This site uses AI-assisted tools to support our operations.{' '}
-              <Link to="/privacy" className="text-brand-light underline-offset-2 transition-colors hover:text-white hover:underline">
+              <Link to="/privacy" className="text-brand underline-offset-2 transition-colors hover:text-brand-dark hover:underline">
                 Learn more in our Privacy Policy
               </Link>
               .
@@ -419,9 +420,9 @@ function PublicLayout() {
           </div>
         </div>
 
-        <div className="border-t border-white/10 bg-brand-dark px-6 py-3 lg:px-8">
-          <p className="mx-auto max-w-7xl text-right text-[11px] text-brand-light/90">
-            <span className="transition-colors hover:text-white">Engineered by Wolke Consultancy LLC</span>
+        <div className="border-t border-gray-200 bg-white px-6 py-3 lg:px-8">
+          <p className="mx-auto max-w-7xl text-right text-[11px] text-gray-400">
+            <span className="transition-colors hover:text-gray-700">Engineered by Wolke Consultancy LLC</span>
           </p>
         </div>
       </footer>
