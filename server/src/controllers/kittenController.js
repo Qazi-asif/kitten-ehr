@@ -227,15 +227,6 @@ export async function updateKitten(req, res, next) {
     if (body.litterId !== undefined) {
       data.litterId = body.litterId ?? null;
     }
-    if (body.amazonWishlistUrl !== undefined) {
-      data.amazonWishlistUrl = body.amazonWishlistUrl?.trim() || null;
-    }
-    if (body.walmartWishlistUrl !== undefined) {
-      data.walmartWishlistUrl = body.walmartWishlistUrl?.trim() || null;
-    }
-    if (body.chewyWishlistUrl !== undefined) {
-      data.chewyWishlistUrl = body.chewyWishlistUrl?.trim() || null;
-    }
     if (body.isBondedPair !== undefined) {
       data.isBondedPair = body.isBondedPair;
       if (!body.isBondedPair) {

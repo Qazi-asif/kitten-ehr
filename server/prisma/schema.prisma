@@ -91,9 +91,6 @@ model Kitten {
   isListedOnWebsite Boolean        @default(false)
   websiteFeaturedComment String     @default("")
   publishTargets  String[]         @default([])
-  amazonWishlistUrl  String?
-  walmartWishlistUrl String?
-  chewyWishlistUrl   String?
   isBondedPair           Boolean  @default(false)
   bondedWithKittenId     Int?
   bondedWithKitten       Kitten?  @relation("KittenBondedPair", fields: [bondedWithKittenId], references: [id], onDelete: SetNull)
