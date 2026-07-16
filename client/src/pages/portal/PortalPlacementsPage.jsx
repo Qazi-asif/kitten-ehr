@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { PawPrint } from 'lucide-react';
 import PortalNav from '../../components/portal/PortalNav';
 import { fetchMyPlacements } from '../../services/portalDataApi';
+import { getKittenImageUrl } from '../../utils/kittenImages';
 
 function formatDate(value) {
   if (!value) return '—';
@@ -9,11 +10,23 @@ function formatDate(value) {
 }
 
 function PlacementCard({ placement }) {
+  // allowFallback: false - a missing/unresolvable photo renders the PawPrint
+  // icon placeholder below, not the generic silhouette image used elsewhere.
+  const photoUrl = getKittenImageUrl(placement.kitten, { allowFallback: false });
+
   return (
     <div className="flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-4">
-      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand">
-        <PawPrint className="h-5 w-5" />
-      </div>
+      {photoUrl ? (
+        <img
+          src={photoUrl}
+          alt={placement.kitten?.name ? `${placement.kitten.name} photo` : 'Kitten photo'}
+          className="h-12 w-12 shrink-0 rounded-full object-cover"
+        />
+      ) : (
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand">
+          <PawPrint className="h-5 w-5" />
+        </div>
+      )}
       <div className="min-w-0 flex-1">
         <p className="font-semibold text-slate-900">{placement.kitten?.name || 'Unknown kitten'}</p>
         <p className="text-xs text-slate-500">
