@@ -28,7 +28,7 @@ function formatAuthResponse(user) {
 
 export async function login(req, res, next) {
   try {
-    const { email, password } = req.body;
+    const { email, password, flow } = req.body;
 
     if (!email?.trim() || !password) {
       return res.status(400).json({ error: 'Email and password are required' });
@@ -54,14 +54,29 @@ export async function login(req, res, next) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    // Foster Portal accounts must sign in at /portal/login, not here.
+    // Two flows share this one endpoint - portalAuthApi.js deliberately
+    // posts here (with flow: 'portal') instead of a separate portal route.
+    // `flow` is the only signal distinguishing which frontend sent the
+    // request, so the isPortalRole check must be symmetric and flow-aware,
+    // not a blanket rejection. A blanket rejection was the exact regression:
+    // legitimate portal accounts got rejected even when submitting through
+    // /portal/login itself, because the check didn't know which page it was.
+    //
     // Checked only after password validation, so an invalid password never
     // reveals an email's account type. This mirrors the isPortalRole check
     // requireAuth already performs on every subsequent staff API call - the
     // gap this closes is that, before this check, a portal account could
     // still receive a valid *staff* token right here at login and only find
     // out something was wrong once every admin page came back empty/403.
-    if (user.role.isPortalRole) {
+    const isPortalFlow = flow === 'portal';
+
+    if (isPortalFlow && !user.role.isPortalRole) {
+      return res.status(403).json({
+        error: 'This account uses the staff login, not the Foster Portal login.',
+      });
+    }
+
+    if (!isPortalFlow && user.role.isPortalRole) {
       return res.status(403).json({
         error: 'This account uses the Foster Portal login. Please sign in at /portal/login instead.',
         portalLoginUrl: '/portal/login',

@@ -60,7 +60,10 @@ export async function portalLoginRequest(email, password) {
     response = await fetch(`${API_BASE}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
+      // flow: 'portal' tells the shared /auth/login endpoint which frontend
+      // this request came from, so it can apply the isPortalRole check in
+      // the correct direction. See authController.js's login().
+      body: JSON.stringify({ email, password, flow: 'portal' }),
     });
   } catch {
     throw new Error('Cannot reach the API server. Check your internet connection and try again.');
