@@ -48,22 +48,23 @@ model Litter {
 }
 
 model Foster {
-  id               Int         @id @default(autoincrement())
-  name             String
-  phone            String
-  email            String
-  address          String
-  emergencyContact String      @default("")
-  experienceLevel  String      @default("")
-  capabilityFlags  String      @default("")
-  maxKittens       Int         @default(0)
-  photoUrl         String?
-  notes            String      @default("")
-  createdAt        DateTime    @default(now())
-  currentKittens   Kitten[]    @relation("CurrentFoster")
-  placements       Placement[]
-  contracts        Contract[]
-  portalUser       User?
+  id                 Int         @id @default(autoincrement())
+  name               String
+  phone              String
+  email              String
+  address            String
+  emergencyContact   String      @default("")
+  experienceLevel    String      @default("")
+  capabilityFlags    String      @default("")
+  maxKittens         Int         @default(0)
+  photoUrl           String?
+  notes              String      @default("")
+  createdAt          DateTime    @default(now())
+  currentKittens     Kitten[]    @relation("CurrentFoster")
+  placements         Placement[]
+  contracts          Contract[]
+  portalUser         User?
+  submittedDocuments Document[]  @relation("DocumentSubmittedByFoster")
 }
 
 model Kitten {
@@ -90,9 +91,6 @@ model Kitten {
   isListedOnWebsite      Boolean          @default(false)
   websiteFeaturedComment String           @default("")
   publishTargets         String[]         @default([])
-  amazonWishlistUrl      String?
-  walmartWishlistUrl     String?
-  chewyWishlistUrl       String?
   isBondedPair           Boolean          @default(false)
   bondedWithKittenId     Int?
   bondedWithKitten       Kitten?          @relation("KittenBondedPair", fields: [bondedWithKittenId], references: [id], onDelete: SetNull)
@@ -229,16 +227,25 @@ model VetAppointment {
 }
 
 model Document {
-  id             Int      @id @default(autoincrement())
-  kittenId       Int
-  kitten         Kitten   @relation(fields: [kittenId], references: [id], onDelete: Cascade)
-  fileName       String
-  fileUrl        String
-  docType        String   @default("")
-  description    String   @default("")
-  isPrimaryPhoto Boolean  @default(false)
-  sortOrder      Int      @default(0)
-  uploadedAt     DateTime @default(now())
+  id                  Int      @id @default(autoincrement())
+  kittenId            Int
+  kitten              Kitten   @relation(fields: [kittenId], references: [id], onDelete: Cascade)
+  fileName            String
+  fileUrl             String
+  docType             String   @default("")
+  description         String   @default("")
+  isPrimaryPhoto      Boolean  @default(false)
+  sortOrder           Int      @default(0)
+  uploadedAt          DateTime @default(now())
+  // Set only when a Foster Portal account uploaded this document via
+  // POST /api/portal/kittens/:kittenId/documents - null for every staff
+  // upload (documentController.js never sets this). NOT YET MIGRATED as of
+  // this write - schema.prisma has the field, but the DB column does not
+  // exist until `prisma migrate dev` (or equivalent) is run. Every read/write
+  // path in portalDataController.js that touches this field will fail
+  // against the live DB until that migration is applied.
+  submittedByFosterId Int?
+  submittedByFoster   Foster?  @relation("DocumentSubmittedByFoster", fields: [submittedByFosterId], references: [id], onDelete: SetNull)
 
   @@index([kittenId])
   @@index([kittenId, isPrimaryPhoto])

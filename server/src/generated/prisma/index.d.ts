@@ -4385,12 +4385,14 @@ export namespace Prisma {
     currentKittens: number
     placements: number
     contracts: number
+    submittedDocuments: number
   }
 
   export type FosterCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     currentKittens?: boolean | FosterCountOutputTypeCountCurrentKittensArgs
     placements?: boolean | FosterCountOutputTypeCountPlacementsArgs
     contracts?: boolean | FosterCountOutputTypeCountContractsArgs
+    submittedDocuments?: boolean | FosterCountOutputTypeCountSubmittedDocumentsArgs
   }
 
   // Custom InputTypes
@@ -4423,6 +4425,13 @@ export namespace Prisma {
    */
   export type FosterCountOutputTypeCountContractsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ContractWhereInput
+  }
+
+  /**
+   * FosterCountOutputType without action
+   */
+  export type FosterCountOutputTypeCountSubmittedDocumentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DocumentWhereInput
   }
 
 
@@ -6344,6 +6353,7 @@ export namespace Prisma {
     placements?: boolean | Foster$placementsArgs<ExtArgs>
     contracts?: boolean | Foster$contractsArgs<ExtArgs>
     portalUser?: boolean | Foster$portalUserArgs<ExtArgs>
+    submittedDocuments?: boolean | Foster$submittedDocumentsArgs<ExtArgs>
     _count?: boolean | FosterCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["foster"]>
 
@@ -6398,6 +6408,7 @@ export namespace Prisma {
     placements?: boolean | Foster$placementsArgs<ExtArgs>
     contracts?: boolean | Foster$contractsArgs<ExtArgs>
     portalUser?: boolean | Foster$portalUserArgs<ExtArgs>
+    submittedDocuments?: boolean | Foster$submittedDocumentsArgs<ExtArgs>
     _count?: boolean | FosterCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type FosterIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -6410,6 +6421,7 @@ export namespace Prisma {
       placements: Prisma.$PlacementPayload<ExtArgs>[]
       contracts: Prisma.$ContractPayload<ExtArgs>[]
       portalUser: Prisma.$UserPayload<ExtArgs> | null
+      submittedDocuments: Prisma.$DocumentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -6822,6 +6834,7 @@ export namespace Prisma {
     placements<T extends Foster$placementsArgs<ExtArgs> = {}>(args?: Subset<T, Foster$placementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlacementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     contracts<T extends Foster$contractsArgs<ExtArgs> = {}>(args?: Subset<T, Foster$contractsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     portalUser<T extends Foster$portalUserArgs<ExtArgs> = {}>(args?: Subset<T, Foster$portalUserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    submittedDocuments<T extends Foster$submittedDocumentsArgs<ExtArgs> = {}>(args?: Subset<T, Foster$submittedDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7342,6 +7355,30 @@ export namespace Prisma {
   }
 
   /**
+   * Foster.submittedDocuments
+   */
+  export type Foster$submittedDocumentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Document
+     */
+    select?: DocumentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Document
+     */
+    omit?: DocumentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocumentInclude<ExtArgs> | null
+    where?: DocumentWhereInput
+    orderBy?: DocumentOrderByWithRelationInput | DocumentOrderByWithRelationInput[]
+    cursor?: DocumentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DocumentScalarFieldEnum | DocumentScalarFieldEnum[]
+  }
+
+  /**
    * Foster without action
    */
   export type FosterDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7408,9 +7445,6 @@ export namespace Prisma {
     internalNotes: string | null
     isListedOnWebsite: boolean | null
     websiteFeaturedComment: string | null
-    amazonWishlistUrl: string | null
-    walmartWishlistUrl: string | null
-    chewyWishlistUrl: string | null
     isBondedPair: boolean | null
     bondedWithKittenId: number | null
     bondedWithName: string | null
@@ -7441,9 +7475,6 @@ export namespace Prisma {
     internalNotes: string | null
     isListedOnWebsite: boolean | null
     websiteFeaturedComment: string | null
-    amazonWishlistUrl: string | null
-    walmartWishlistUrl: string | null
-    chewyWishlistUrl: string | null
     isBondedPair: boolean | null
     bondedWithKittenId: number | null
     bondedWithName: string | null
@@ -7475,9 +7506,6 @@ export namespace Prisma {
     isListedOnWebsite: number
     websiteFeaturedComment: number
     publishTargets: number
-    amazonWishlistUrl: number
-    walmartWishlistUrl: number
-    chewyWishlistUrl: number
     isBondedPair: number
     bondedWithKittenId: number
     bondedWithName: number
@@ -7524,9 +7552,6 @@ export namespace Prisma {
     internalNotes?: true
     isListedOnWebsite?: true
     websiteFeaturedComment?: true
-    amazonWishlistUrl?: true
-    walmartWishlistUrl?: true
-    chewyWishlistUrl?: true
     isBondedPair?: true
     bondedWithKittenId?: true
     bondedWithName?: true
@@ -7557,9 +7582,6 @@ export namespace Prisma {
     internalNotes?: true
     isListedOnWebsite?: true
     websiteFeaturedComment?: true
-    amazonWishlistUrl?: true
-    walmartWishlistUrl?: true
-    chewyWishlistUrl?: true
     isBondedPair?: true
     bondedWithKittenId?: true
     bondedWithName?: true
@@ -7591,9 +7613,6 @@ export namespace Prisma {
     isListedOnWebsite?: true
     websiteFeaturedComment?: true
     publishTargets?: true
-    amazonWishlistUrl?: true
-    walmartWishlistUrl?: true
-    chewyWishlistUrl?: true
     isBondedPair?: true
     bondedWithKittenId?: true
     bondedWithName?: true
@@ -7712,9 +7731,6 @@ export namespace Prisma {
     isListedOnWebsite: boolean
     websiteFeaturedComment: string
     publishTargets: string[]
-    amazonWishlistUrl: string | null
-    walmartWishlistUrl: string | null
-    chewyWishlistUrl: string | null
     isBondedPair: boolean
     bondedWithKittenId: number | null
     bondedWithName: string
@@ -7765,9 +7781,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: boolean
     publishTargets?: boolean
-    amazonWishlistUrl?: boolean
-    walmartWishlistUrl?: boolean
-    chewyWishlistUrl?: boolean
     isBondedPair?: boolean
     bondedWithKittenId?: boolean
     bondedWithName?: boolean
@@ -7816,9 +7829,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: boolean
     publishTargets?: boolean
-    amazonWishlistUrl?: boolean
-    walmartWishlistUrl?: boolean
-    chewyWishlistUrl?: boolean
     isBondedPair?: boolean
     bondedWithKittenId?: boolean
     bondedWithName?: boolean
@@ -7853,9 +7863,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: boolean
     publishTargets?: boolean
-    amazonWishlistUrl?: boolean
-    walmartWishlistUrl?: boolean
-    chewyWishlistUrl?: boolean
     isBondedPair?: boolean
     bondedWithKittenId?: boolean
     bondedWithName?: boolean
@@ -7890,9 +7897,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: boolean
     publishTargets?: boolean
-    amazonWishlistUrl?: boolean
-    walmartWishlistUrl?: boolean
-    chewyWishlistUrl?: boolean
     isBondedPair?: boolean
     bondedWithKittenId?: boolean
     bondedWithName?: boolean
@@ -7901,7 +7905,7 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-  export type KittenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "litterId" | "status" | "rescueStory" | "dateOfBirth" | "sex" | "fixedStatus" | "breed" | "color" | "fivFelvStatus" | "specialNeeds" | "microchipNumber" | "primaryPhotoUrl" | "thumbnailUrl" | "intakeDate" | "intakeSource" | "notes" | "internalNotes" | "isListedOnWebsite" | "websiteFeaturedComment" | "publishTargets" | "amazonWishlistUrl" | "walmartWishlistUrl" | "chewyWishlistUrl" | "isBondedPair" | "bondedWithKittenId" | "bondedWithName" | "isMedicalSpecialNeeds" | "currentFosterId" | "createdAt", ExtArgs["result"]["kitten"]>
+  export type KittenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "litterId" | "status" | "rescueStory" | "dateOfBirth" | "sex" | "fixedStatus" | "breed" | "color" | "fivFelvStatus" | "specialNeeds" | "microchipNumber" | "primaryPhotoUrl" | "thumbnailUrl" | "intakeDate" | "intakeSource" | "notes" | "internalNotes" | "isListedOnWebsite" | "websiteFeaturedComment" | "publishTargets" | "isBondedPair" | "bondedWithKittenId" | "bondedWithName" | "isMedicalSpecialNeeds" | "currentFosterId" | "createdAt", ExtArgs["result"]["kitten"]>
   export type KittenInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     litter?: boolean | Kitten$litterArgs<ExtArgs>
     bondedWithKitten?: boolean | Kitten$bondedWithKittenArgs<ExtArgs>
@@ -7975,9 +7979,6 @@ export namespace Prisma {
       isListedOnWebsite: boolean
       websiteFeaturedComment: string
       publishTargets: string[]
-      amazonWishlistUrl: string | null
-      walmartWishlistUrl: string | null
-      chewyWishlistUrl: string | null
       isBondedPair: boolean
       bondedWithKittenId: number | null
       bondedWithName: string
@@ -8445,9 +8446,6 @@ export namespace Prisma {
     readonly isListedOnWebsite: FieldRef<"Kitten", 'Boolean'>
     readonly websiteFeaturedComment: FieldRef<"Kitten", 'String'>
     readonly publishTargets: FieldRef<"Kitten", 'String[]'>
-    readonly amazonWishlistUrl: FieldRef<"Kitten", 'String'>
-    readonly walmartWishlistUrl: FieldRef<"Kitten", 'String'>
-    readonly chewyWishlistUrl: FieldRef<"Kitten", 'String'>
     readonly isBondedPair: FieldRef<"Kitten", 'Boolean'>
     readonly bondedWithKittenId: FieldRef<"Kitten", 'Int'>
     readonly bondedWithName: FieldRef<"Kitten", 'String'>
@@ -17257,12 +17255,14 @@ export namespace Prisma {
     id: number | null
     kittenId: number | null
     sortOrder: number | null
+    submittedByFosterId: number | null
   }
 
   export type DocumentSumAggregateOutputType = {
     id: number | null
     kittenId: number | null
     sortOrder: number | null
+    submittedByFosterId: number | null
   }
 
   export type DocumentMinAggregateOutputType = {
@@ -17275,6 +17275,7 @@ export namespace Prisma {
     isPrimaryPhoto: boolean | null
     sortOrder: number | null
     uploadedAt: Date | null
+    submittedByFosterId: number | null
   }
 
   export type DocumentMaxAggregateOutputType = {
@@ -17287,6 +17288,7 @@ export namespace Prisma {
     isPrimaryPhoto: boolean | null
     sortOrder: number | null
     uploadedAt: Date | null
+    submittedByFosterId: number | null
   }
 
   export type DocumentCountAggregateOutputType = {
@@ -17299,6 +17301,7 @@ export namespace Prisma {
     isPrimaryPhoto: number
     sortOrder: number
     uploadedAt: number
+    submittedByFosterId: number
     _all: number
   }
 
@@ -17307,12 +17310,14 @@ export namespace Prisma {
     id?: true
     kittenId?: true
     sortOrder?: true
+    submittedByFosterId?: true
   }
 
   export type DocumentSumAggregateInputType = {
     id?: true
     kittenId?: true
     sortOrder?: true
+    submittedByFosterId?: true
   }
 
   export type DocumentMinAggregateInputType = {
@@ -17325,6 +17330,7 @@ export namespace Prisma {
     isPrimaryPhoto?: true
     sortOrder?: true
     uploadedAt?: true
+    submittedByFosterId?: true
   }
 
   export type DocumentMaxAggregateInputType = {
@@ -17337,6 +17343,7 @@ export namespace Prisma {
     isPrimaryPhoto?: true
     sortOrder?: true
     uploadedAt?: true
+    submittedByFosterId?: true
   }
 
   export type DocumentCountAggregateInputType = {
@@ -17349,6 +17356,7 @@ export namespace Prisma {
     isPrimaryPhoto?: true
     sortOrder?: true
     uploadedAt?: true
+    submittedByFosterId?: true
     _all?: true
   }
 
@@ -17448,6 +17456,7 @@ export namespace Prisma {
     isPrimaryPhoto: boolean
     sortOrder: number
     uploadedAt: Date
+    submittedByFosterId: number | null
     _count: DocumentCountAggregateOutputType | null
     _avg: DocumentAvgAggregateOutputType | null
     _sum: DocumentSumAggregateOutputType | null
@@ -17479,7 +17488,9 @@ export namespace Prisma {
     isPrimaryPhoto?: boolean
     sortOrder?: boolean
     uploadedAt?: boolean
+    submittedByFosterId?: boolean
     kitten?: boolean | KittenDefaultArgs<ExtArgs>
+    submittedByFoster?: boolean | Document$submittedByFosterArgs<ExtArgs>
   }, ExtArgs["result"]["document"]>
 
   export type DocumentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -17492,7 +17503,9 @@ export namespace Prisma {
     isPrimaryPhoto?: boolean
     sortOrder?: boolean
     uploadedAt?: boolean
+    submittedByFosterId?: boolean
     kitten?: boolean | KittenDefaultArgs<ExtArgs>
+    submittedByFoster?: boolean | Document$submittedByFosterArgs<ExtArgs>
   }, ExtArgs["result"]["document"]>
 
   export type DocumentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -17505,7 +17518,9 @@ export namespace Prisma {
     isPrimaryPhoto?: boolean
     sortOrder?: boolean
     uploadedAt?: boolean
+    submittedByFosterId?: boolean
     kitten?: boolean | KittenDefaultArgs<ExtArgs>
+    submittedByFoster?: boolean | Document$submittedByFosterArgs<ExtArgs>
   }, ExtArgs["result"]["document"]>
 
   export type DocumentSelectScalar = {
@@ -17518,23 +17533,28 @@ export namespace Prisma {
     isPrimaryPhoto?: boolean
     sortOrder?: boolean
     uploadedAt?: boolean
+    submittedByFosterId?: boolean
   }
 
-  export type DocumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "kittenId" | "fileName" | "fileUrl" | "docType" | "description" | "isPrimaryPhoto" | "sortOrder" | "uploadedAt", ExtArgs["result"]["document"]>
+  export type DocumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "kittenId" | "fileName" | "fileUrl" | "docType" | "description" | "isPrimaryPhoto" | "sortOrder" | "uploadedAt" | "submittedByFosterId", ExtArgs["result"]["document"]>
   export type DocumentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     kitten?: boolean | KittenDefaultArgs<ExtArgs>
+    submittedByFoster?: boolean | Document$submittedByFosterArgs<ExtArgs>
   }
   export type DocumentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     kitten?: boolean | KittenDefaultArgs<ExtArgs>
+    submittedByFoster?: boolean | Document$submittedByFosterArgs<ExtArgs>
   }
   export type DocumentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     kitten?: boolean | KittenDefaultArgs<ExtArgs>
+    submittedByFoster?: boolean | Document$submittedByFosterArgs<ExtArgs>
   }
 
   export type $DocumentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Document"
     objects: {
       kitten: Prisma.$KittenPayload<ExtArgs>
+      submittedByFoster: Prisma.$FosterPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -17546,6 +17566,7 @@ export namespace Prisma {
       isPrimaryPhoto: boolean
       sortOrder: number
       uploadedAt: Date
+      submittedByFosterId: number | null
     }, ExtArgs["result"]["document"]>
     composites: {}
   }
@@ -17941,6 +17962,7 @@ export namespace Prisma {
   export interface Prisma__DocumentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     kitten<T extends KittenDefaultArgs<ExtArgs> = {}>(args?: Subset<T, KittenDefaultArgs<ExtArgs>>): Prisma__KittenClient<$Result.GetResult<Prisma.$KittenPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    submittedByFoster<T extends Document$submittedByFosterArgs<ExtArgs> = {}>(args?: Subset<T, Document$submittedByFosterArgs<ExtArgs>>): Prisma__FosterClient<$Result.GetResult<Prisma.$FosterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -17979,6 +18001,7 @@ export namespace Prisma {
     readonly isPrimaryPhoto: FieldRef<"Document", 'Boolean'>
     readonly sortOrder: FieldRef<"Document", 'Int'>
     readonly uploadedAt: FieldRef<"Document", 'DateTime'>
+    readonly submittedByFosterId: FieldRef<"Document", 'Int'>
   }
     
 
@@ -18372,6 +18395,25 @@ export namespace Prisma {
      * Limit how many Documents to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Document.submittedByFoster
+   */
+  export type Document$submittedByFosterArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Foster
+     */
+    select?: FosterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Foster
+     */
+    omit?: FosterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FosterInclude<ExtArgs> | null
+    where?: FosterWhereInput
   }
 
   /**
@@ -21192,11 +21234,7 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-<<<<<<< HEAD
   export type ContractOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "templateSlug" | "signerName" | "signerEmail" | "signerAddress" | "signerPhone" | "microchipNumber" | "kittenName" | "kittenId" | "fosterId" | "applicationId" | "emergencyContactName" | "emergencyContactPhone" | "documentVersion" | "signedPdfUrl" | "signatureAudit" | "signatureImageUrl" | "signerNameAtSigning" | "signedIpAddress" | "frozenAgreementText" | "pdfUrl" | "status" | "signedAt" | "createdAt", ExtArgs["result"]["contract"]>
-=======
-  export type ContractOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "templateSlug" | "signerName" | "signerEmail" | "signerAddress" | "signerPhone" | "microchipNumber" | "kittenName" | "kittenId" | "fosterId" | "applicationId" | "documentVersion" | "signedPdfUrl" | "signatureAudit" | "signatureImageUrl" | "signerNameAtSigning" | "signedIpAddress" | "frozenAgreementText" | "pdfUrl" | "status" | "signedAt" | "createdAt", ExtArgs["result"]["contract"]>
->>>>>>> c8e7b44 (fixes)
   export type ContractInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     kitten?: boolean | Contract$kittenArgs<ExtArgs>
     foster?: boolean | Contract$fosterArgs<ExtArgs>
@@ -42904,10 +42942,7 @@ export namespace Prisma {
     orgName: string | null
     orgEin: string | null
     orgLogoUrl: string | null
-<<<<<<< HEAD
     orgSignatureUrl: string | null
-=======
->>>>>>> c8e7b44 (fixes)
     contactPhone: string | null
     contactEmail: string | null
     contactAddress: string | null
@@ -42946,10 +42981,7 @@ export namespace Prisma {
     orgName: string | null
     orgEin: string | null
     orgLogoUrl: string | null
-<<<<<<< HEAD
     orgSignatureUrl: string | null
-=======
->>>>>>> c8e7b44 (fixes)
     contactPhone: string | null
     contactEmail: string | null
     contactAddress: string | null
@@ -42988,10 +43020,7 @@ export namespace Prisma {
     orgName: number
     orgEin: number
     orgLogoUrl: number
-<<<<<<< HEAD
     orgSignatureUrl: number
-=======
->>>>>>> c8e7b44 (fixes)
     contactPhone: number
     contactEmail: number
     contactAddress: number
@@ -43044,10 +43073,7 @@ export namespace Prisma {
     orgName?: true
     orgEin?: true
     orgLogoUrl?: true
-<<<<<<< HEAD
     orgSignatureUrl?: true
-=======
->>>>>>> c8e7b44 (fixes)
     contactPhone?: true
     contactEmail?: true
     contactAddress?: true
@@ -43086,10 +43112,7 @@ export namespace Prisma {
     orgName?: true
     orgEin?: true
     orgLogoUrl?: true
-<<<<<<< HEAD
     orgSignatureUrl?: true
-=======
->>>>>>> c8e7b44 (fixes)
     contactPhone?: true
     contactEmail?: true
     contactAddress?: true
@@ -43128,10 +43151,7 @@ export namespace Prisma {
     orgName?: true
     orgEin?: true
     orgLogoUrl?: true
-<<<<<<< HEAD
     orgSignatureUrl?: true
-=======
->>>>>>> c8e7b44 (fixes)
     contactPhone?: true
     contactEmail?: true
     contactAddress?: true
@@ -43257,10 +43277,7 @@ export namespace Prisma {
     orgName: string
     orgEin: string
     orgLogoUrl: string
-<<<<<<< HEAD
     orgSignatureUrl: string
-=======
->>>>>>> c8e7b44 (fixes)
     contactPhone: string
     contactEmail: string
     contactAddress: string
@@ -43318,10 +43335,7 @@ export namespace Prisma {
     orgName?: boolean
     orgEin?: boolean
     orgLogoUrl?: boolean
-<<<<<<< HEAD
     orgSignatureUrl?: boolean
-=======
->>>>>>> c8e7b44 (fixes)
     contactPhone?: boolean
     contactEmail?: boolean
     contactAddress?: boolean
@@ -43360,10 +43374,7 @@ export namespace Prisma {
     orgName?: boolean
     orgEin?: boolean
     orgLogoUrl?: boolean
-<<<<<<< HEAD
     orgSignatureUrl?: boolean
-=======
->>>>>>> c8e7b44 (fixes)
     contactPhone?: boolean
     contactEmail?: boolean
     contactAddress?: boolean
@@ -43402,10 +43413,7 @@ export namespace Prisma {
     orgName?: boolean
     orgEin?: boolean
     orgLogoUrl?: boolean
-<<<<<<< HEAD
     orgSignatureUrl?: boolean
-=======
->>>>>>> c8e7b44 (fixes)
     contactPhone?: boolean
     contactEmail?: boolean
     contactAddress?: boolean
@@ -43444,10 +43452,7 @@ export namespace Prisma {
     orgName?: boolean
     orgEin?: boolean
     orgLogoUrl?: boolean
-<<<<<<< HEAD
     orgSignatureUrl?: boolean
-=======
->>>>>>> c8e7b44 (fixes)
     contactPhone?: boolean
     contactEmail?: boolean
     contactAddress?: boolean
@@ -43481,11 +43486,7 @@ export namespace Prisma {
     venmoHandle?: boolean
   }
 
-<<<<<<< HEAD
   export type SettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orgName" | "orgEin" | "orgLogoUrl" | "orgSignatureUrl" | "contactPhone" | "contactEmail" | "contactAddress" | "missionStatement" | "defaultDonationAmount" | "amazonWishlistUrl" | "chewyWishlistUrl" | "facebookUrl" | "instagramUrl" | "socialPostingEnabled" | "facebookPageId" | "facebookPageAccessToken" | "instagramBusinessAccountId" | "groqApiKey" | "groqModel" | "aiEnabled" | "emailsEnabled" | "smtpHost" | "smtpPort" | "smtpSecure" | "smtpUser" | "smtpPass" | "fromEmail" | "fromName" | "adminNotifyEmail" | "donationWidgetCode" | "donatePageLive" | "paypalLink" | "stripeLink" | "venmoQrCodeUrl" | "venmoHandle", ExtArgs["result"]["settings"]>
-=======
-  export type SettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orgName" | "orgEin" | "orgLogoUrl" | "contactPhone" | "contactEmail" | "contactAddress" | "missionStatement" | "defaultDonationAmount" | "amazonWishlistUrl" | "chewyWishlistUrl" | "facebookUrl" | "instagramUrl" | "socialPostingEnabled" | "facebookPageId" | "facebookPageAccessToken" | "instagramBusinessAccountId" | "groqApiKey" | "groqModel" | "aiEnabled" | "emailsEnabled" | "smtpHost" | "smtpPort" | "smtpSecure" | "smtpUser" | "smtpPass" | "fromEmail" | "fromName" | "adminNotifyEmail" | "donationWidgetCode" | "donatePageLive" | "paypalLink" | "stripeLink" | "venmoQrCodeUrl" | "venmoHandle", ExtArgs["result"]["settings"]>
->>>>>>> c8e7b44 (fixes)
 
   export type $SettingsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Settings"
@@ -43495,10 +43496,7 @@ export namespace Prisma {
       orgName: string
       orgEin: string
       orgLogoUrl: string
-<<<<<<< HEAD
       orgSignatureUrl: string
-=======
->>>>>>> c8e7b44 (fixes)
       contactPhone: string
       contactEmail: string
       contactAddress: string
@@ -43957,10 +43955,7 @@ export namespace Prisma {
     readonly orgName: FieldRef<"Settings", 'String'>
     readonly orgEin: FieldRef<"Settings", 'String'>
     readonly orgLogoUrl: FieldRef<"Settings", 'String'>
-<<<<<<< HEAD
     readonly orgSignatureUrl: FieldRef<"Settings", 'String'>
-=======
->>>>>>> c8e7b44 (fixes)
     readonly contactPhone: FieldRef<"Settings", 'String'>
     readonly contactEmail: FieldRef<"Settings", 'String'>
     readonly contactAddress: FieldRef<"Settings", 'String'>
@@ -49974,9 +49969,6 @@ export namespace Prisma {
     isListedOnWebsite: 'isListedOnWebsite',
     websiteFeaturedComment: 'websiteFeaturedComment',
     publishTargets: 'publishTargets',
-    amazonWishlistUrl: 'amazonWishlistUrl',
-    walmartWishlistUrl: 'walmartWishlistUrl',
-    chewyWishlistUrl: 'chewyWishlistUrl',
     isBondedPair: 'isBondedPair',
     bondedWithKittenId: 'bondedWithKittenId',
     bondedWithName: 'bondedWithName',
@@ -50098,7 +50090,8 @@ export namespace Prisma {
     description: 'description',
     isPrimaryPhoto: 'isPrimaryPhoto',
     sortOrder: 'sortOrder',
-    uploadedAt: 'uploadedAt'
+    uploadedAt: 'uploadedAt',
+    submittedByFosterId: 'submittedByFosterId'
   };
 
   export type DocumentScalarFieldEnum = (typeof DocumentScalarFieldEnum)[keyof typeof DocumentScalarFieldEnum]
@@ -50402,10 +50395,7 @@ export namespace Prisma {
     orgName: 'orgName',
     orgEin: 'orgEin',
     orgLogoUrl: 'orgLogoUrl',
-<<<<<<< HEAD
     orgSignatureUrl: 'orgSignatureUrl',
-=======
->>>>>>> c8e7b44 (fixes)
     contactPhone: 'contactPhone',
     contactEmail: 'contactEmail',
     contactAddress: 'contactAddress',
@@ -50814,6 +50804,7 @@ export namespace Prisma {
     placements?: PlacementListRelationFilter
     contracts?: ContractListRelationFilter
     portalUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    submittedDocuments?: DocumentListRelationFilter
   }
 
   export type FosterOrderByWithRelationInput = {
@@ -50833,6 +50824,7 @@ export namespace Prisma {
     placements?: PlacementOrderByRelationAggregateInput
     contracts?: ContractOrderByRelationAggregateInput
     portalUser?: UserOrderByWithRelationInput
+    submittedDocuments?: DocumentOrderByRelationAggregateInput
   }
 
   export type FosterWhereUniqueInput = Prisma.AtLeast<{
@@ -50855,6 +50847,7 @@ export namespace Prisma {
     placements?: PlacementListRelationFilter
     contracts?: ContractListRelationFilter
     portalUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    submittedDocuments?: DocumentListRelationFilter
   }, "id">
 
   export type FosterOrderByWithAggregationInput = {
@@ -50921,9 +50914,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFilter<"Kitten"> | boolean
     websiteFeaturedComment?: StringFilter<"Kitten"> | string
     publishTargets?: StringNullableListFilter<"Kitten">
-    amazonWishlistUrl?: StringNullableFilter<"Kitten"> | string | null
-    walmartWishlistUrl?: StringNullableFilter<"Kitten"> | string | null
-    chewyWishlistUrl?: StringNullableFilter<"Kitten"> | string | null
     isBondedPair?: BoolFilter<"Kitten"> | boolean
     bondedWithKittenId?: IntNullableFilter<"Kitten"> | number | null
     bondedWithName?: StringFilter<"Kitten"> | string
@@ -50971,9 +50961,6 @@ export namespace Prisma {
     isListedOnWebsite?: SortOrder
     websiteFeaturedComment?: SortOrder
     publishTargets?: SortOrder
-    amazonWishlistUrl?: SortOrderInput | SortOrder
-    walmartWishlistUrl?: SortOrderInput | SortOrder
-    chewyWishlistUrl?: SortOrderInput | SortOrder
     isBondedPair?: SortOrder
     bondedWithKittenId?: SortOrderInput | SortOrder
     bondedWithName?: SortOrder
@@ -51024,9 +51011,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFilter<"Kitten"> | boolean
     websiteFeaturedComment?: StringFilter<"Kitten"> | string
     publishTargets?: StringNullableListFilter<"Kitten">
-    amazonWishlistUrl?: StringNullableFilter<"Kitten"> | string | null
-    walmartWishlistUrl?: StringNullableFilter<"Kitten"> | string | null
-    chewyWishlistUrl?: StringNullableFilter<"Kitten"> | string | null
     isBondedPair?: BoolFilter<"Kitten"> | boolean
     bondedWithKittenId?: IntNullableFilter<"Kitten"> | number | null
     bondedWithName?: StringFilter<"Kitten"> | string
@@ -51074,9 +51058,6 @@ export namespace Prisma {
     isListedOnWebsite?: SortOrder
     websiteFeaturedComment?: SortOrder
     publishTargets?: SortOrder
-    amazonWishlistUrl?: SortOrderInput | SortOrder
-    walmartWishlistUrl?: SortOrderInput | SortOrder
-    chewyWishlistUrl?: SortOrderInput | SortOrder
     isBondedPair?: SortOrder
     bondedWithKittenId?: SortOrderInput | SortOrder
     bondedWithName?: SortOrder
@@ -51116,9 +51097,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolWithAggregatesFilter<"Kitten"> | boolean
     websiteFeaturedComment?: StringWithAggregatesFilter<"Kitten"> | string
     publishTargets?: StringNullableListFilter<"Kitten">
-    amazonWishlistUrl?: StringNullableWithAggregatesFilter<"Kitten"> | string | null
-    walmartWishlistUrl?: StringNullableWithAggregatesFilter<"Kitten"> | string | null
-    chewyWishlistUrl?: StringNullableWithAggregatesFilter<"Kitten"> | string | null
     isBondedPair?: BoolWithAggregatesFilter<"Kitten"> | boolean
     bondedWithKittenId?: IntNullableWithAggregatesFilter<"Kitten"> | number | null
     bondedWithName?: StringWithAggregatesFilter<"Kitten"> | string
@@ -51662,7 +51640,9 @@ export namespace Prisma {
     isPrimaryPhoto?: BoolFilter<"Document"> | boolean
     sortOrder?: IntFilter<"Document"> | number
     uploadedAt?: DateTimeFilter<"Document"> | Date | string
+    submittedByFosterId?: IntNullableFilter<"Document"> | number | null
     kitten?: XOR<KittenScalarRelationFilter, KittenWhereInput>
+    submittedByFoster?: XOR<FosterNullableScalarRelationFilter, FosterWhereInput> | null
   }
 
   export type DocumentOrderByWithRelationInput = {
@@ -51675,7 +51655,9 @@ export namespace Prisma {
     isPrimaryPhoto?: SortOrder
     sortOrder?: SortOrder
     uploadedAt?: SortOrder
+    submittedByFosterId?: SortOrderInput | SortOrder
     kitten?: KittenOrderByWithRelationInput
+    submittedByFoster?: FosterOrderByWithRelationInput
   }
 
   export type DocumentWhereUniqueInput = Prisma.AtLeast<{
@@ -51691,7 +51673,9 @@ export namespace Prisma {
     isPrimaryPhoto?: BoolFilter<"Document"> | boolean
     sortOrder?: IntFilter<"Document"> | number
     uploadedAt?: DateTimeFilter<"Document"> | Date | string
+    submittedByFosterId?: IntNullableFilter<"Document"> | number | null
     kitten?: XOR<KittenScalarRelationFilter, KittenWhereInput>
+    submittedByFoster?: XOR<FosterNullableScalarRelationFilter, FosterWhereInput> | null
   }, "id">
 
   export type DocumentOrderByWithAggregationInput = {
@@ -51704,6 +51688,7 @@ export namespace Prisma {
     isPrimaryPhoto?: SortOrder
     sortOrder?: SortOrder
     uploadedAt?: SortOrder
+    submittedByFosterId?: SortOrderInput | SortOrder
     _count?: DocumentCountOrderByAggregateInput
     _avg?: DocumentAvgOrderByAggregateInput
     _max?: DocumentMaxOrderByAggregateInput
@@ -51724,6 +51709,7 @@ export namespace Prisma {
     isPrimaryPhoto?: BoolWithAggregatesFilter<"Document"> | boolean
     sortOrder?: IntWithAggregatesFilter<"Document"> | number
     uploadedAt?: DateTimeWithAggregatesFilter<"Document"> | Date | string
+    submittedByFosterId?: IntNullableWithAggregatesFilter<"Document"> | number | null
   }
 
   export type ApplicationWhereInput = {
@@ -53318,10 +53304,7 @@ export namespace Prisma {
     orgName?: StringFilter<"Settings"> | string
     orgEin?: StringFilter<"Settings"> | string
     orgLogoUrl?: StringFilter<"Settings"> | string
-<<<<<<< HEAD
     orgSignatureUrl?: StringFilter<"Settings"> | string
-=======
->>>>>>> c8e7b44 (fixes)
     contactPhone?: StringFilter<"Settings"> | string
     contactEmail?: StringFilter<"Settings"> | string
     contactAddress?: StringFilter<"Settings"> | string
@@ -53360,10 +53343,7 @@ export namespace Prisma {
     orgName?: SortOrder
     orgEin?: SortOrder
     orgLogoUrl?: SortOrder
-<<<<<<< HEAD
     orgSignatureUrl?: SortOrder
-=======
->>>>>>> c8e7b44 (fixes)
     contactPhone?: SortOrder
     contactEmail?: SortOrder
     contactAddress?: SortOrder
@@ -53405,10 +53385,7 @@ export namespace Prisma {
     orgName?: StringFilter<"Settings"> | string
     orgEin?: StringFilter<"Settings"> | string
     orgLogoUrl?: StringFilter<"Settings"> | string
-<<<<<<< HEAD
     orgSignatureUrl?: StringFilter<"Settings"> | string
-=======
->>>>>>> c8e7b44 (fixes)
     contactPhone?: StringFilter<"Settings"> | string
     contactEmail?: StringFilter<"Settings"> | string
     contactAddress?: StringFilter<"Settings"> | string
@@ -53447,10 +53424,7 @@ export namespace Prisma {
     orgName?: SortOrder
     orgEin?: SortOrder
     orgLogoUrl?: SortOrder
-<<<<<<< HEAD
     orgSignatureUrl?: SortOrder
-=======
->>>>>>> c8e7b44 (fixes)
     contactPhone?: SortOrder
     contactEmail?: SortOrder
     contactAddress?: SortOrder
@@ -53497,10 +53471,7 @@ export namespace Prisma {
     orgName?: StringWithAggregatesFilter<"Settings"> | string
     orgEin?: StringWithAggregatesFilter<"Settings"> | string
     orgLogoUrl?: StringWithAggregatesFilter<"Settings"> | string
-<<<<<<< HEAD
     orgSignatureUrl?: StringWithAggregatesFilter<"Settings"> | string
-=======
->>>>>>> c8e7b44 (fixes)
     contactPhone?: StringWithAggregatesFilter<"Settings"> | string
     contactEmail?: StringWithAggregatesFilter<"Settings"> | string
     contactAddress?: StringWithAggregatesFilter<"Settings"> | string
@@ -53994,6 +53965,7 @@ export namespace Prisma {
     placements?: PlacementCreateNestedManyWithoutFosterInput
     contracts?: ContractCreateNestedManyWithoutFosterInput
     portalUser?: UserCreateNestedOneWithoutFosterInput
+    submittedDocuments?: DocumentCreateNestedManyWithoutSubmittedByFosterInput
   }
 
   export type FosterUncheckedCreateInput = {
@@ -54013,6 +53985,7 @@ export namespace Prisma {
     placements?: PlacementUncheckedCreateNestedManyWithoutFosterInput
     contracts?: ContractUncheckedCreateNestedManyWithoutFosterInput
     portalUser?: UserUncheckedCreateNestedOneWithoutFosterInput
+    submittedDocuments?: DocumentUncheckedCreateNestedManyWithoutSubmittedByFosterInput
   }
 
   export type FosterUpdateInput = {
@@ -54031,6 +54004,7 @@ export namespace Prisma {
     placements?: PlacementUpdateManyWithoutFosterNestedInput
     contracts?: ContractUpdateManyWithoutFosterNestedInput
     portalUser?: UserUpdateOneWithoutFosterNestedInput
+    submittedDocuments?: DocumentUpdateManyWithoutSubmittedByFosterNestedInput
   }
 
   export type FosterUncheckedUpdateInput = {
@@ -54050,6 +54024,7 @@ export namespace Prisma {
     placements?: PlacementUncheckedUpdateManyWithoutFosterNestedInput
     contracts?: ContractUncheckedUpdateManyWithoutFosterNestedInput
     portalUser?: UserUncheckedUpdateOneWithoutFosterNestedInput
+    submittedDocuments?: DocumentUncheckedUpdateManyWithoutSubmittedByFosterNestedInput
   }
 
   export type FosterCreateManyInput = {
@@ -54117,9 +54092,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
@@ -54165,9 +54137,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
@@ -54210,9 +54179,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
@@ -54258,9 +54224,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
@@ -54305,9 +54268,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
@@ -54337,9 +54297,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
@@ -54369,9 +54326,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
@@ -54920,6 +54874,7 @@ export namespace Prisma {
     sortOrder?: number
     uploadedAt?: Date | string
     kitten: KittenCreateNestedOneWithoutDocumentsInput
+    submittedByFoster?: FosterCreateNestedOneWithoutSubmittedDocumentsInput
   }
 
   export type DocumentUncheckedCreateInput = {
@@ -54932,6 +54887,7 @@ export namespace Prisma {
     isPrimaryPhoto?: boolean
     sortOrder?: number
     uploadedAt?: Date | string
+    submittedByFosterId?: number | null
   }
 
   export type DocumentUpdateInput = {
@@ -54943,6 +54899,7 @@ export namespace Prisma {
     sortOrder?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     kitten?: KittenUpdateOneRequiredWithoutDocumentsNestedInput
+    submittedByFoster?: FosterUpdateOneWithoutSubmittedDocumentsNestedInput
   }
 
   export type DocumentUncheckedUpdateInput = {
@@ -54955,6 +54912,7 @@ export namespace Prisma {
     isPrimaryPhoto?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedByFosterId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type DocumentCreateManyInput = {
@@ -54967,6 +54925,7 @@ export namespace Prisma {
     isPrimaryPhoto?: boolean
     sortOrder?: number
     uploadedAt?: Date | string
+    submittedByFosterId?: number | null
   }
 
   export type DocumentUpdateManyMutationInput = {
@@ -54989,6 +54948,7 @@ export namespace Prisma {
     isPrimaryPhoto?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedByFosterId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type ApplicationCreateInput = {
@@ -56602,10 +56562,7 @@ export namespace Prisma {
     orgName?: string
     orgEin?: string
     orgLogoUrl?: string
-<<<<<<< HEAD
     orgSignatureUrl?: string
-=======
->>>>>>> c8e7b44 (fixes)
     contactPhone?: string
     contactEmail?: string
     contactAddress?: string
@@ -56644,10 +56601,7 @@ export namespace Prisma {
     orgName?: string
     orgEin?: string
     orgLogoUrl?: string
-<<<<<<< HEAD
     orgSignatureUrl?: string
-=======
->>>>>>> c8e7b44 (fixes)
     contactPhone?: string
     contactEmail?: string
     contactAddress?: string
@@ -56686,10 +56640,7 @@ export namespace Prisma {
     orgName?: StringFieldUpdateOperationsInput | string
     orgEin?: StringFieldUpdateOperationsInput | string
     orgLogoUrl?: StringFieldUpdateOperationsInput | string
-<<<<<<< HEAD
     orgSignatureUrl?: StringFieldUpdateOperationsInput | string
-=======
->>>>>>> c8e7b44 (fixes)
     contactPhone?: StringFieldUpdateOperationsInput | string
     contactEmail?: StringFieldUpdateOperationsInput | string
     contactAddress?: StringFieldUpdateOperationsInput | string
@@ -56728,10 +56679,7 @@ export namespace Prisma {
     orgName?: StringFieldUpdateOperationsInput | string
     orgEin?: StringFieldUpdateOperationsInput | string
     orgLogoUrl?: StringFieldUpdateOperationsInput | string
-<<<<<<< HEAD
     orgSignatureUrl?: StringFieldUpdateOperationsInput | string
-=======
->>>>>>> c8e7b44 (fixes)
     contactPhone?: StringFieldUpdateOperationsInput | string
     contactEmail?: StringFieldUpdateOperationsInput | string
     contactAddress?: StringFieldUpdateOperationsInput | string
@@ -56770,10 +56718,7 @@ export namespace Prisma {
     orgName?: string
     orgEin?: string
     orgLogoUrl?: string
-<<<<<<< HEAD
     orgSignatureUrl?: string
-=======
->>>>>>> c8e7b44 (fixes)
     contactPhone?: string
     contactEmail?: string
     contactAddress?: string
@@ -56812,10 +56757,7 @@ export namespace Prisma {
     orgName?: StringFieldUpdateOperationsInput | string
     orgEin?: StringFieldUpdateOperationsInput | string
     orgLogoUrl?: StringFieldUpdateOperationsInput | string
-<<<<<<< HEAD
     orgSignatureUrl?: StringFieldUpdateOperationsInput | string
-=======
->>>>>>> c8e7b44 (fixes)
     contactPhone?: StringFieldUpdateOperationsInput | string
     contactEmail?: StringFieldUpdateOperationsInput | string
     contactAddress?: StringFieldUpdateOperationsInput | string
@@ -56854,10 +56796,7 @@ export namespace Prisma {
     orgName?: StringFieldUpdateOperationsInput | string
     orgEin?: StringFieldUpdateOperationsInput | string
     orgLogoUrl?: StringFieldUpdateOperationsInput | string
-<<<<<<< HEAD
     orgSignatureUrl?: StringFieldUpdateOperationsInput | string
-=======
->>>>>>> c8e7b44 (fixes)
     contactPhone?: StringFieldUpdateOperationsInput | string
     contactEmail?: StringFieldUpdateOperationsInput | string
     contactAddress?: StringFieldUpdateOperationsInput | string
@@ -57479,6 +57418,12 @@ export namespace Prisma {
     isNot?: UserWhereInput | null
   }
 
+  export type DocumentListRelationFilter = {
+    every?: DocumentWhereInput
+    some?: DocumentWhereInput
+    none?: DocumentWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -57489,6 +57434,10 @@ export namespace Prisma {
   }
 
   export type ContractOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DocumentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -57639,12 +57588,6 @@ export namespace Prisma {
     none?: VetAppointmentWhereInput
   }
 
-  export type DocumentListRelationFilter = {
-    every?: DocumentWhereInput
-    some?: DocumentWhereInput
-    none?: DocumentWhereInput
-  }
-
   export type SponsorshipListRelationFilter = {
     every?: SponsorshipWhereInput
     some?: SponsorshipWhereInput
@@ -57691,10 +57634,6 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type DocumentOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type SponsorshipOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -57738,9 +57677,6 @@ export namespace Prisma {
     isListedOnWebsite?: SortOrder
     websiteFeaturedComment?: SortOrder
     publishTargets?: SortOrder
-    amazonWishlistUrl?: SortOrder
-    walmartWishlistUrl?: SortOrder
-    chewyWishlistUrl?: SortOrder
     isBondedPair?: SortOrder
     bondedWithKittenId?: SortOrder
     bondedWithName?: SortOrder
@@ -57778,9 +57714,6 @@ export namespace Prisma {
     internalNotes?: SortOrder
     isListedOnWebsite?: SortOrder
     websiteFeaturedComment?: SortOrder
-    amazonWishlistUrl?: SortOrder
-    walmartWishlistUrl?: SortOrder
-    chewyWishlistUrl?: SortOrder
     isBondedPair?: SortOrder
     bondedWithKittenId?: SortOrder
     bondedWithName?: SortOrder
@@ -57811,9 +57744,6 @@ export namespace Prisma {
     internalNotes?: SortOrder
     isListedOnWebsite?: SortOrder
     websiteFeaturedComment?: SortOrder
-    amazonWishlistUrl?: SortOrder
-    walmartWishlistUrl?: SortOrder
-    chewyWishlistUrl?: SortOrder
     isBondedPair?: SortOrder
     bondedWithKittenId?: SortOrder
     bondedWithName?: SortOrder
@@ -58230,12 +58160,14 @@ export namespace Prisma {
     isPrimaryPhoto?: SortOrder
     sortOrder?: SortOrder
     uploadedAt?: SortOrder
+    submittedByFosterId?: SortOrder
   }
 
   export type DocumentAvgOrderByAggregateInput = {
     id?: SortOrder
     kittenId?: SortOrder
     sortOrder?: SortOrder
+    submittedByFosterId?: SortOrder
   }
 
   export type DocumentMaxOrderByAggregateInput = {
@@ -58248,6 +58180,7 @@ export namespace Prisma {
     isPrimaryPhoto?: SortOrder
     sortOrder?: SortOrder
     uploadedAt?: SortOrder
+    submittedByFosterId?: SortOrder
   }
 
   export type DocumentMinOrderByAggregateInput = {
@@ -58260,12 +58193,14 @@ export namespace Prisma {
     isPrimaryPhoto?: SortOrder
     sortOrder?: SortOrder
     uploadedAt?: SortOrder
+    submittedByFosterId?: SortOrder
   }
 
   export type DocumentSumOrderByAggregateInput = {
     id?: SortOrder
     kittenId?: SortOrder
     sortOrder?: SortOrder
+    submittedByFosterId?: SortOrder
   }
 
   export type ApplicationUploadListRelationFilter = {
@@ -59484,10 +59419,7 @@ export namespace Prisma {
     orgName?: SortOrder
     orgEin?: SortOrder
     orgLogoUrl?: SortOrder
-<<<<<<< HEAD
     orgSignatureUrl?: SortOrder
-=======
->>>>>>> c8e7b44 (fixes)
     contactPhone?: SortOrder
     contactEmail?: SortOrder
     contactAddress?: SortOrder
@@ -59532,10 +59464,7 @@ export namespace Prisma {
     orgName?: SortOrder
     orgEin?: SortOrder
     orgLogoUrl?: SortOrder
-<<<<<<< HEAD
     orgSignatureUrl?: SortOrder
-=======
->>>>>>> c8e7b44 (fixes)
     contactPhone?: SortOrder
     contactEmail?: SortOrder
     contactAddress?: SortOrder
@@ -59574,10 +59503,7 @@ export namespace Prisma {
     orgName?: SortOrder
     orgEin?: SortOrder
     orgLogoUrl?: SortOrder
-<<<<<<< HEAD
     orgSignatureUrl?: SortOrder
-=======
->>>>>>> c8e7b44 (fixes)
     contactPhone?: SortOrder
     contactEmail?: SortOrder
     contactAddress?: SortOrder
@@ -59997,6 +59923,13 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type DocumentCreateNestedManyWithoutSubmittedByFosterInput = {
+    create?: XOR<DocumentCreateWithoutSubmittedByFosterInput, DocumentUncheckedCreateWithoutSubmittedByFosterInput> | DocumentCreateWithoutSubmittedByFosterInput[] | DocumentUncheckedCreateWithoutSubmittedByFosterInput[]
+    connectOrCreate?: DocumentCreateOrConnectWithoutSubmittedByFosterInput | DocumentCreateOrConnectWithoutSubmittedByFosterInput[]
+    createMany?: DocumentCreateManySubmittedByFosterInputEnvelope
+    connect?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
+  }
+
   export type KittenUncheckedCreateNestedManyWithoutCurrentFosterInput = {
     create?: XOR<KittenCreateWithoutCurrentFosterInput, KittenUncheckedCreateWithoutCurrentFosterInput> | KittenCreateWithoutCurrentFosterInput[] | KittenUncheckedCreateWithoutCurrentFosterInput[]
     connectOrCreate?: KittenCreateOrConnectWithoutCurrentFosterInput | KittenCreateOrConnectWithoutCurrentFosterInput[]
@@ -60022,6 +59955,13 @@ export namespace Prisma {
     create?: XOR<UserCreateWithoutFosterInput, UserUncheckedCreateWithoutFosterInput>
     connectOrCreate?: UserCreateOrConnectWithoutFosterInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type DocumentUncheckedCreateNestedManyWithoutSubmittedByFosterInput = {
+    create?: XOR<DocumentCreateWithoutSubmittedByFosterInput, DocumentUncheckedCreateWithoutSubmittedByFosterInput> | DocumentCreateWithoutSubmittedByFosterInput[] | DocumentUncheckedCreateWithoutSubmittedByFosterInput[]
+    connectOrCreate?: DocumentCreateOrConnectWithoutSubmittedByFosterInput | DocumentCreateOrConnectWithoutSubmittedByFosterInput[]
+    createMany?: DocumentCreateManySubmittedByFosterInputEnvelope
+    connect?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -60080,6 +60020,20 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFosterInput, UserUpdateWithoutFosterInput>, UserUncheckedUpdateWithoutFosterInput>
   }
 
+  export type DocumentUpdateManyWithoutSubmittedByFosterNestedInput = {
+    create?: XOR<DocumentCreateWithoutSubmittedByFosterInput, DocumentUncheckedCreateWithoutSubmittedByFosterInput> | DocumentCreateWithoutSubmittedByFosterInput[] | DocumentUncheckedCreateWithoutSubmittedByFosterInput[]
+    connectOrCreate?: DocumentCreateOrConnectWithoutSubmittedByFosterInput | DocumentCreateOrConnectWithoutSubmittedByFosterInput[]
+    upsert?: DocumentUpsertWithWhereUniqueWithoutSubmittedByFosterInput | DocumentUpsertWithWhereUniqueWithoutSubmittedByFosterInput[]
+    createMany?: DocumentCreateManySubmittedByFosterInputEnvelope
+    set?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
+    disconnect?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
+    delete?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
+    connect?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
+    update?: DocumentUpdateWithWhereUniqueWithoutSubmittedByFosterInput | DocumentUpdateWithWhereUniqueWithoutSubmittedByFosterInput[]
+    updateMany?: DocumentUpdateManyWithWhereWithoutSubmittedByFosterInput | DocumentUpdateManyWithWhereWithoutSubmittedByFosterInput[]
+    deleteMany?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
+  }
+
   export type KittenUncheckedUpdateManyWithoutCurrentFosterNestedInput = {
     create?: XOR<KittenCreateWithoutCurrentFosterInput, KittenUncheckedCreateWithoutCurrentFosterInput> | KittenCreateWithoutCurrentFosterInput[] | KittenUncheckedCreateWithoutCurrentFosterInput[]
     connectOrCreate?: KittenCreateOrConnectWithoutCurrentFosterInput | KittenCreateOrConnectWithoutCurrentFosterInput[]
@@ -60130,6 +60084,20 @@ export namespace Prisma {
     delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFosterInput, UserUpdateWithoutFosterInput>, UserUncheckedUpdateWithoutFosterInput>
+  }
+
+  export type DocumentUncheckedUpdateManyWithoutSubmittedByFosterNestedInput = {
+    create?: XOR<DocumentCreateWithoutSubmittedByFosterInput, DocumentUncheckedCreateWithoutSubmittedByFosterInput> | DocumentCreateWithoutSubmittedByFosterInput[] | DocumentUncheckedCreateWithoutSubmittedByFosterInput[]
+    connectOrCreate?: DocumentCreateOrConnectWithoutSubmittedByFosterInput | DocumentCreateOrConnectWithoutSubmittedByFosterInput[]
+    upsert?: DocumentUpsertWithWhereUniqueWithoutSubmittedByFosterInput | DocumentUpsertWithWhereUniqueWithoutSubmittedByFosterInput[]
+    createMany?: DocumentCreateManySubmittedByFosterInputEnvelope
+    set?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
+    disconnect?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
+    delete?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
+    connect?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
+    update?: DocumentUpdateWithWhereUniqueWithoutSubmittedByFosterInput | DocumentUpdateWithWhereUniqueWithoutSubmittedByFosterInput[]
+    updateMany?: DocumentUpdateManyWithWhereWithoutSubmittedByFosterInput | DocumentUpdateManyWithWhereWithoutSubmittedByFosterInput[]
+    deleteMany?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
   }
 
   export type KittenCreatepublishTargetsInput = {
@@ -60886,12 +60854,28 @@ export namespace Prisma {
     connect?: KittenWhereUniqueInput
   }
 
+  export type FosterCreateNestedOneWithoutSubmittedDocumentsInput = {
+    create?: XOR<FosterCreateWithoutSubmittedDocumentsInput, FosterUncheckedCreateWithoutSubmittedDocumentsInput>
+    connectOrCreate?: FosterCreateOrConnectWithoutSubmittedDocumentsInput
+    connect?: FosterWhereUniqueInput
+  }
+
   export type KittenUpdateOneRequiredWithoutDocumentsNestedInput = {
     create?: XOR<KittenCreateWithoutDocumentsInput, KittenUncheckedCreateWithoutDocumentsInput>
     connectOrCreate?: KittenCreateOrConnectWithoutDocumentsInput
     upsert?: KittenUpsertWithoutDocumentsInput
     connect?: KittenWhereUniqueInput
     update?: XOR<XOR<KittenUpdateToOneWithWhereWithoutDocumentsInput, KittenUpdateWithoutDocumentsInput>, KittenUncheckedUpdateWithoutDocumentsInput>
+  }
+
+  export type FosterUpdateOneWithoutSubmittedDocumentsNestedInput = {
+    create?: XOR<FosterCreateWithoutSubmittedDocumentsInput, FosterUncheckedCreateWithoutSubmittedDocumentsInput>
+    connectOrCreate?: FosterCreateOrConnectWithoutSubmittedDocumentsInput
+    upsert?: FosterUpsertWithoutSubmittedDocumentsInput
+    disconnect?: FosterWhereInput | boolean
+    delete?: FosterWhereInput | boolean
+    connect?: FosterWhereUniqueInput
+    update?: XOR<XOR<FosterUpdateToOneWithWhereWithoutSubmittedDocumentsInput, FosterUpdateWithoutSubmittedDocumentsInput>, FosterUncheckedUpdateWithoutSubmittedDocumentsInput>
   }
 
   export type UserCreateNestedOneWithoutRejectedApplicationsInput = {
@@ -62568,9 +62552,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
@@ -62614,9 +62595,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
@@ -62690,9 +62668,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFilter<"Kitten"> | boolean
     websiteFeaturedComment?: StringFilter<"Kitten"> | string
     publishTargets?: StringNullableListFilter<"Kitten">
-    amazonWishlistUrl?: StringNullableFilter<"Kitten"> | string | null
-    walmartWishlistUrl?: StringNullableFilter<"Kitten"> | string | null
-    chewyWishlistUrl?: StringNullableFilter<"Kitten"> | string | null
     isBondedPair?: BoolFilter<"Kitten"> | boolean
     bondedWithKittenId?: IntNullableFilter<"Kitten"> | number | null
     bondedWithName?: StringFilter<"Kitten"> | string
@@ -62722,9 +62697,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
@@ -62769,9 +62741,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
@@ -62936,6 +62905,39 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutFosterInput, UserUncheckedCreateWithoutFosterInput>
   }
 
+  export type DocumentCreateWithoutSubmittedByFosterInput = {
+    fileName: string
+    fileUrl: string
+    docType?: string
+    description?: string
+    isPrimaryPhoto?: boolean
+    sortOrder?: number
+    uploadedAt?: Date | string
+    kitten: KittenCreateNestedOneWithoutDocumentsInput
+  }
+
+  export type DocumentUncheckedCreateWithoutSubmittedByFosterInput = {
+    id?: number
+    kittenId: number
+    fileName: string
+    fileUrl: string
+    docType?: string
+    description?: string
+    isPrimaryPhoto?: boolean
+    sortOrder?: number
+    uploadedAt?: Date | string
+  }
+
+  export type DocumentCreateOrConnectWithoutSubmittedByFosterInput = {
+    where: DocumentWhereUniqueInput
+    create: XOR<DocumentCreateWithoutSubmittedByFosterInput, DocumentUncheckedCreateWithoutSubmittedByFosterInput>
+  }
+
+  export type DocumentCreateManySubmittedByFosterInputEnvelope = {
+    data: DocumentCreateManySubmittedByFosterInput | DocumentCreateManySubmittedByFosterInput[]
+    skipDuplicates?: boolean
+  }
+
   export type KittenUpsertWithWhereUniqueWithoutCurrentFosterInput = {
     where: KittenWhereUniqueInput
     update: XOR<KittenUpdateWithoutCurrentFosterInput, KittenUncheckedUpdateWithoutCurrentFosterInput>
@@ -63076,6 +63078,38 @@ export namespace Prisma {
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   }
 
+  export type DocumentUpsertWithWhereUniqueWithoutSubmittedByFosterInput = {
+    where: DocumentWhereUniqueInput
+    update: XOR<DocumentUpdateWithoutSubmittedByFosterInput, DocumentUncheckedUpdateWithoutSubmittedByFosterInput>
+    create: XOR<DocumentCreateWithoutSubmittedByFosterInput, DocumentUncheckedCreateWithoutSubmittedByFosterInput>
+  }
+
+  export type DocumentUpdateWithWhereUniqueWithoutSubmittedByFosterInput = {
+    where: DocumentWhereUniqueInput
+    data: XOR<DocumentUpdateWithoutSubmittedByFosterInput, DocumentUncheckedUpdateWithoutSubmittedByFosterInput>
+  }
+
+  export type DocumentUpdateManyWithWhereWithoutSubmittedByFosterInput = {
+    where: DocumentScalarWhereInput
+    data: XOR<DocumentUpdateManyMutationInput, DocumentUncheckedUpdateManyWithoutSubmittedByFosterInput>
+  }
+
+  export type DocumentScalarWhereInput = {
+    AND?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
+    OR?: DocumentScalarWhereInput[]
+    NOT?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
+    id?: IntFilter<"Document"> | number
+    kittenId?: IntFilter<"Document"> | number
+    fileName?: StringFilter<"Document"> | string
+    fileUrl?: StringFilter<"Document"> | string
+    docType?: StringFilter<"Document"> | string
+    description?: StringFilter<"Document"> | string
+    isPrimaryPhoto?: BoolFilter<"Document"> | boolean
+    sortOrder?: IntFilter<"Document"> | number
+    uploadedAt?: DateTimeFilter<"Document"> | Date | string
+    submittedByFosterId?: IntNullableFilter<"Document"> | number | null
+  }
+
   export type LitterCreateWithoutKittensInput = {
     name: string
     intakeDate: Date | string
@@ -63115,9 +63149,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
@@ -63162,9 +63193,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
@@ -63211,9 +63239,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
@@ -63258,9 +63283,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
@@ -63306,6 +63328,7 @@ export namespace Prisma {
     placements?: PlacementCreateNestedManyWithoutFosterInput
     contracts?: ContractCreateNestedManyWithoutFosterInput
     portalUser?: UserCreateNestedOneWithoutFosterInput
+    submittedDocuments?: DocumentCreateNestedManyWithoutSubmittedByFosterInput
   }
 
   export type FosterUncheckedCreateWithoutCurrentKittensInput = {
@@ -63324,6 +63347,7 @@ export namespace Prisma {
     placements?: PlacementUncheckedCreateNestedManyWithoutFosterInput
     contracts?: ContractUncheckedCreateNestedManyWithoutFosterInput
     portalUser?: UserUncheckedCreateNestedOneWithoutFosterInput
+    submittedDocuments?: DocumentUncheckedCreateNestedManyWithoutSubmittedByFosterInput
   }
 
   export type FosterCreateOrConnectWithoutCurrentKittensInput = {
@@ -63494,6 +63518,7 @@ export namespace Prisma {
     isPrimaryPhoto?: boolean
     sortOrder?: number
     uploadedAt?: Date | string
+    submittedByFoster?: FosterCreateNestedOneWithoutSubmittedDocumentsInput
   }
 
   export type DocumentUncheckedCreateWithoutKittenInput = {
@@ -63505,6 +63530,7 @@ export namespace Prisma {
     isPrimaryPhoto?: boolean
     sortOrder?: number
     uploadedAt?: Date | string
+    submittedByFosterId?: number | null
   }
 
   export type DocumentCreateOrConnectWithoutKittenInput = {
@@ -63777,9 +63803,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
@@ -63824,9 +63847,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
@@ -63889,6 +63909,7 @@ export namespace Prisma {
     placements?: PlacementUpdateManyWithoutFosterNestedInput
     contracts?: ContractUpdateManyWithoutFosterNestedInput
     portalUser?: UserUpdateOneWithoutFosterNestedInput
+    submittedDocuments?: DocumentUpdateManyWithoutSubmittedByFosterNestedInput
   }
 
   export type FosterUncheckedUpdateWithoutCurrentKittensInput = {
@@ -63907,6 +63928,7 @@ export namespace Prisma {
     placements?: PlacementUncheckedUpdateManyWithoutFosterNestedInput
     contracts?: ContractUncheckedUpdateManyWithoutFosterNestedInput
     portalUser?: UserUncheckedUpdateOneWithoutFosterNestedInput
+    submittedDocuments?: DocumentUncheckedUpdateManyWithoutSubmittedByFosterNestedInput
   }
 
   export type PlacementUpsertWithWhereUniqueWithoutKittenInput = {
@@ -64065,21 +64087,6 @@ export namespace Prisma {
   export type DocumentUpdateManyWithWhereWithoutKittenInput = {
     where: DocumentScalarWhereInput
     data: XOR<DocumentUpdateManyMutationInput, DocumentUncheckedUpdateManyWithoutKittenInput>
-  }
-
-  export type DocumentScalarWhereInput = {
-    AND?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
-    OR?: DocumentScalarWhereInput[]
-    NOT?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
-    id?: IntFilter<"Document"> | number
-    kittenId?: IntFilter<"Document"> | number
-    fileName?: StringFilter<"Document"> | string
-    fileUrl?: StringFilter<"Document"> | string
-    docType?: StringFilter<"Document"> | string
-    description?: StringFilter<"Document"> | string
-    isPrimaryPhoto?: BoolFilter<"Document"> | boolean
-    sortOrder?: IntFilter<"Document"> | number
-    uploadedAt?: DateTimeFilter<"Document"> | Date | string
   }
 
   export type SponsorshipUpsertWithWhereUniqueWithoutKittenInput = {
@@ -64265,9 +64272,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
@@ -64312,9 +64316,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
@@ -64372,9 +64373,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
@@ -64419,9 +64417,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
@@ -64463,9 +64458,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
@@ -64510,9 +64502,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
@@ -64570,9 +64559,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
@@ -64617,9 +64603,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
@@ -64661,9 +64644,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
@@ -64708,9 +64688,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
@@ -64751,6 +64728,7 @@ export namespace Prisma {
     currentKittens?: KittenCreateNestedManyWithoutCurrentFosterInput
     contracts?: ContractCreateNestedManyWithoutFosterInput
     portalUser?: UserCreateNestedOneWithoutFosterInput
+    submittedDocuments?: DocumentCreateNestedManyWithoutSubmittedByFosterInput
   }
 
   export type FosterUncheckedCreateWithoutPlacementsInput = {
@@ -64769,6 +64747,7 @@ export namespace Prisma {
     currentKittens?: KittenUncheckedCreateNestedManyWithoutCurrentFosterInput
     contracts?: ContractUncheckedCreateNestedManyWithoutFosterInput
     portalUser?: UserUncheckedCreateNestedOneWithoutFosterInput
+    submittedDocuments?: DocumentUncheckedCreateNestedManyWithoutSubmittedByFosterInput
   }
 
   export type FosterCreateOrConnectWithoutPlacementsInput = {
@@ -64808,9 +64787,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
@@ -64855,9 +64831,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
@@ -64904,6 +64877,7 @@ export namespace Prisma {
     currentKittens?: KittenUpdateManyWithoutCurrentFosterNestedInput
     contracts?: ContractUpdateManyWithoutFosterNestedInput
     portalUser?: UserUpdateOneWithoutFosterNestedInput
+    submittedDocuments?: DocumentUpdateManyWithoutSubmittedByFosterNestedInput
   }
 
   export type FosterUncheckedUpdateWithoutPlacementsInput = {
@@ -64922,6 +64896,7 @@ export namespace Prisma {
     currentKittens?: KittenUncheckedUpdateManyWithoutCurrentFosterNestedInput
     contracts?: ContractUncheckedUpdateManyWithoutFosterNestedInput
     portalUser?: UserUncheckedUpdateOneWithoutFosterNestedInput
+    submittedDocuments?: DocumentUncheckedUpdateManyWithoutSubmittedByFosterNestedInput
   }
 
   export type KittenCreateWithoutWeightLogsInput = {
@@ -64945,9 +64920,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
@@ -64992,9 +64964,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
@@ -65052,9 +65021,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
@@ -65099,9 +65065,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
@@ -65143,9 +65106,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
@@ -65190,9 +65150,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
@@ -65250,9 +65207,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
@@ -65297,9 +65251,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
@@ -65341,9 +65292,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
@@ -65388,9 +65336,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
@@ -65448,9 +65393,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
@@ -65495,9 +65437,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
@@ -65539,9 +65478,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
@@ -65586,9 +65522,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
@@ -65646,9 +65579,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
@@ -65693,9 +65623,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
@@ -65737,9 +65664,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
@@ -65784,9 +65708,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
@@ -65810,6 +65731,48 @@ export namespace Prisma {
   export type KittenCreateOrConnectWithoutDocumentsInput = {
     where: KittenWhereUniqueInput
     create: XOR<KittenCreateWithoutDocumentsInput, KittenUncheckedCreateWithoutDocumentsInput>
+  }
+
+  export type FosterCreateWithoutSubmittedDocumentsInput = {
+    name: string
+    phone: string
+    email: string
+    address: string
+    emergencyContact?: string
+    experienceLevel?: string
+    capabilityFlags?: string
+    maxKittens?: number
+    photoUrl?: string | null
+    notes?: string
+    createdAt?: Date | string
+    currentKittens?: KittenCreateNestedManyWithoutCurrentFosterInput
+    placements?: PlacementCreateNestedManyWithoutFosterInput
+    contracts?: ContractCreateNestedManyWithoutFosterInput
+    portalUser?: UserCreateNestedOneWithoutFosterInput
+  }
+
+  export type FosterUncheckedCreateWithoutSubmittedDocumentsInput = {
+    id?: number
+    name: string
+    phone: string
+    email: string
+    address: string
+    emergencyContact?: string
+    experienceLevel?: string
+    capabilityFlags?: string
+    maxKittens?: number
+    photoUrl?: string | null
+    notes?: string
+    createdAt?: Date | string
+    currentKittens?: KittenUncheckedCreateNestedManyWithoutCurrentFosterInput
+    placements?: PlacementUncheckedCreateNestedManyWithoutFosterInput
+    contracts?: ContractUncheckedCreateNestedManyWithoutFosterInput
+    portalUser?: UserUncheckedCreateNestedOneWithoutFosterInput
+  }
+
+  export type FosterCreateOrConnectWithoutSubmittedDocumentsInput = {
+    where: FosterWhereUniqueInput
+    create: XOR<FosterCreateWithoutSubmittedDocumentsInput, FosterUncheckedCreateWithoutSubmittedDocumentsInput>
   }
 
   export type KittenUpsertWithoutDocumentsInput = {
@@ -65844,9 +65807,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
@@ -65891,9 +65851,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
@@ -65912,6 +65869,54 @@ export namespace Prisma {
     contracts?: ContractUncheckedUpdateManyWithoutKittenNestedInput
     activeProtocols?: ActiveProtocolUncheckedUpdateManyWithoutKittenNestedInput
     eventCats?: EventCatsUncheckedUpdateManyWithoutKittenNestedInput
+  }
+
+  export type FosterUpsertWithoutSubmittedDocumentsInput = {
+    update: XOR<FosterUpdateWithoutSubmittedDocumentsInput, FosterUncheckedUpdateWithoutSubmittedDocumentsInput>
+    create: XOR<FosterCreateWithoutSubmittedDocumentsInput, FosterUncheckedCreateWithoutSubmittedDocumentsInput>
+    where?: FosterWhereInput
+  }
+
+  export type FosterUpdateToOneWithWhereWithoutSubmittedDocumentsInput = {
+    where?: FosterWhereInput
+    data: XOR<FosterUpdateWithoutSubmittedDocumentsInput, FosterUncheckedUpdateWithoutSubmittedDocumentsInput>
+  }
+
+  export type FosterUpdateWithoutSubmittedDocumentsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    emergencyContact?: StringFieldUpdateOperationsInput | string
+    experienceLevel?: StringFieldUpdateOperationsInput | string
+    capabilityFlags?: StringFieldUpdateOperationsInput | string
+    maxKittens?: IntFieldUpdateOperationsInput | number
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentKittens?: KittenUpdateManyWithoutCurrentFosterNestedInput
+    placements?: PlacementUpdateManyWithoutFosterNestedInput
+    contracts?: ContractUpdateManyWithoutFosterNestedInput
+    portalUser?: UserUpdateOneWithoutFosterNestedInput
+  }
+
+  export type FosterUncheckedUpdateWithoutSubmittedDocumentsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    emergencyContact?: StringFieldUpdateOperationsInput | string
+    experienceLevel?: StringFieldUpdateOperationsInput | string
+    capabilityFlags?: StringFieldUpdateOperationsInput | string
+    maxKittens?: IntFieldUpdateOperationsInput | number
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentKittens?: KittenUncheckedUpdateManyWithoutCurrentFosterNestedInput
+    placements?: PlacementUncheckedUpdateManyWithoutFosterNestedInput
+    contracts?: ContractUncheckedUpdateManyWithoutFosterNestedInput
+    portalUser?: UserUncheckedUpdateOneWithoutFosterNestedInput
   }
 
   export type UserCreateWithoutRejectedApplicationsInput = {
@@ -66162,9 +66167,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
@@ -66209,9 +66211,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
@@ -66252,6 +66251,7 @@ export namespace Prisma {
     currentKittens?: KittenCreateNestedManyWithoutCurrentFosterInput
     placements?: PlacementCreateNestedManyWithoutFosterInput
     portalUser?: UserCreateNestedOneWithoutFosterInput
+    submittedDocuments?: DocumentCreateNestedManyWithoutSubmittedByFosterInput
   }
 
   export type FosterUncheckedCreateWithoutContractsInput = {
@@ -66270,6 +66270,7 @@ export namespace Prisma {
     currentKittens?: KittenUncheckedCreateNestedManyWithoutCurrentFosterInput
     placements?: PlacementUncheckedCreateNestedManyWithoutFosterInput
     portalUser?: UserUncheckedCreateNestedOneWithoutFosterInput
+    submittedDocuments?: DocumentUncheckedCreateNestedManyWithoutSubmittedByFosterInput
   }
 
   export type FosterCreateOrConnectWithoutContractsInput = {
@@ -66370,9 +66371,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
@@ -66417,9 +66415,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
@@ -66466,6 +66461,7 @@ export namespace Prisma {
     currentKittens?: KittenUpdateManyWithoutCurrentFosterNestedInput
     placements?: PlacementUpdateManyWithoutFosterNestedInput
     portalUser?: UserUpdateOneWithoutFosterNestedInput
+    submittedDocuments?: DocumentUpdateManyWithoutSubmittedByFosterNestedInput
   }
 
   export type FosterUncheckedUpdateWithoutContractsInput = {
@@ -66484,6 +66480,7 @@ export namespace Prisma {
     currentKittens?: KittenUncheckedUpdateManyWithoutCurrentFosterNestedInput
     placements?: PlacementUncheckedUpdateManyWithoutFosterNestedInput
     portalUser?: UserUncheckedUpdateOneWithoutFosterNestedInput
+    submittedDocuments?: DocumentUncheckedUpdateManyWithoutSubmittedByFosterNestedInput
   }
 
   export type ApplicationUpsertWithoutContractsInput = {
@@ -67369,9 +67366,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
@@ -67416,9 +67410,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
@@ -67516,9 +67507,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
@@ -67563,9 +67551,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
@@ -67877,6 +67862,7 @@ export namespace Prisma {
     currentKittens?: KittenCreateNestedManyWithoutCurrentFosterInput
     placements?: PlacementCreateNestedManyWithoutFosterInput
     contracts?: ContractCreateNestedManyWithoutFosterInput
+    submittedDocuments?: DocumentCreateNestedManyWithoutSubmittedByFosterInput
   }
 
   export type FosterUncheckedCreateWithoutPortalUserInput = {
@@ -67895,6 +67881,7 @@ export namespace Prisma {
     currentKittens?: KittenUncheckedCreateNestedManyWithoutCurrentFosterInput
     placements?: PlacementUncheckedCreateNestedManyWithoutFosterInput
     contracts?: ContractUncheckedCreateNestedManyWithoutFosterInput
+    submittedDocuments?: DocumentUncheckedCreateNestedManyWithoutSubmittedByFosterInput
   }
 
   export type FosterCreateOrConnectWithoutPortalUserInput = {
@@ -68136,6 +68123,7 @@ export namespace Prisma {
     currentKittens?: KittenUpdateManyWithoutCurrentFosterNestedInput
     placements?: PlacementUpdateManyWithoutFosterNestedInput
     contracts?: ContractUpdateManyWithoutFosterNestedInput
+    submittedDocuments?: DocumentUpdateManyWithoutSubmittedByFosterNestedInput
   }
 
   export type FosterUncheckedUpdateWithoutPortalUserInput = {
@@ -68154,6 +68142,7 @@ export namespace Prisma {
     currentKittens?: KittenUncheckedUpdateManyWithoutCurrentFosterNestedInput
     placements?: PlacementUncheckedUpdateManyWithoutFosterNestedInput
     contracts?: ContractUncheckedUpdateManyWithoutFosterNestedInput
+    submittedDocuments?: DocumentUncheckedUpdateManyWithoutSubmittedByFosterNestedInput
   }
 
   export type ApplicationUpsertWithWhereUniqueWithoutRejectedByInput = {
@@ -68646,9 +68635,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
@@ -68693,9 +68679,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
@@ -68856,9 +68839,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
@@ -68903,9 +68883,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
@@ -69217,9 +69194,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
@@ -69264,9 +69238,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
@@ -69324,9 +69295,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
@@ -69371,9 +69339,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
@@ -69416,9 +69381,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
@@ -69448,9 +69410,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
@@ -69494,9 +69453,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
@@ -69540,9 +69496,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
@@ -69574,9 +69527,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
@@ -69620,6 +69570,18 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type DocumentCreateManySubmittedByFosterInput = {
+    id?: number
+    kittenId: number
+    fileName: string
+    fileUrl: string
+    docType?: string
+    description?: string
+    isPrimaryPhoto?: boolean
+    sortOrder?: number
+    uploadedAt?: Date | string
+  }
+
   export type KittenUpdateWithoutCurrentFosterInput = {
     name?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
@@ -69641,9 +69603,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
@@ -69688,9 +69647,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
@@ -69734,9 +69690,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
@@ -69852,6 +69805,41 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type DocumentUpdateWithoutSubmittedByFosterInput = {
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    docType?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    isPrimaryPhoto?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    kitten?: KittenUpdateOneRequiredWithoutDocumentsNestedInput
+  }
+
+  export type DocumentUncheckedUpdateWithoutSubmittedByFosterInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    kittenId?: IntFieldUpdateOperationsInput | number
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    docType?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    isPrimaryPhoto?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DocumentUncheckedUpdateManyWithoutSubmittedByFosterInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    kittenId?: IntFieldUpdateOperationsInput | number
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    docType?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    isPrimaryPhoto?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type KittenCreateManyBondedWithKittenInput = {
     id?: number
     name: string
@@ -69875,9 +69863,6 @@ export namespace Prisma {
     isListedOnWebsite?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
-    amazonWishlistUrl?: string | null
-    walmartWishlistUrl?: string | null
-    chewyWishlistUrl?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
@@ -69949,6 +69934,7 @@ export namespace Prisma {
     isPrimaryPhoto?: boolean
     sortOrder?: number
     uploadedAt?: Date | string
+    submittedByFosterId?: number | null
   }
 
   export type SponsorshipCreateManyKittenInput = {
@@ -70045,9 +70031,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
@@ -70092,9 +70075,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
@@ -70138,9 +70118,6 @@ export namespace Prisma {
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
-    amazonWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    walmartWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    chewyWishlistUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
@@ -70316,6 +70293,7 @@ export namespace Prisma {
     isPrimaryPhoto?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedByFoster?: FosterUpdateOneWithoutSubmittedDocumentsNestedInput
   }
 
   export type DocumentUncheckedUpdateWithoutKittenInput = {
@@ -70327,6 +70305,7 @@ export namespace Prisma {
     isPrimaryPhoto?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedByFosterId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type DocumentUncheckedUpdateManyWithoutKittenInput = {
@@ -70338,6 +70317,7 @@ export namespace Prisma {
     isPrimaryPhoto?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submittedByFosterId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type SponsorshipUpdateWithoutKittenInput = {
