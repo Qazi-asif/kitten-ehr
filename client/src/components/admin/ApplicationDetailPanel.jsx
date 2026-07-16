@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ApplicationDocumentsSection from './ApplicationDocumentsSection';
 import PersonContractsSection from './PersonContractsSection';
+import FosterProvisionModal from './FosterProvisionModal';
 import {
   getApplicationDisplaySections,
   getApplicationSummary,
@@ -82,7 +83,8 @@ function ApplicationDetailPanel({
   if (!application) return null;
 
   return (
-    <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+    <>
+      <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
       <div className="flex flex-wrap items-start justify-between gap-4 border-b border-gray-100 pb-5">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700">{application.type} Application</p>
@@ -241,6 +243,8 @@ function ApplicationDetailPanel({
         />
       </div>
     </section>
+    <FosterProvisionModal application={application} />
+    </>
   );
 }
 

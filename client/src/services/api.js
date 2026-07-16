@@ -107,6 +107,15 @@ export async function createFoster(fosterData) {
   return response.json();
 }
 
+export async function provisionFosterFromApplication(applicationId, payload) {
+  const response = await adminFetch(`/fosters/from-application/${applicationId}`, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to create foster from application'));
+  return response.json();
+}
+
 export async function fetchFosterById(id) {
   const response = await adminFetch(`/fosters/${id}`);
   if (!response.ok) throw new Error(response.status === 404 ? 'Foster not found' : 'Failed to fetch foster');
