@@ -20,6 +20,67 @@ const CONTRACT_INCLUDE = {
   },
 };
 
+// List-only projection (GET /contracts, used by ContractsPage's table and
+// PersonContractsSection's linked/fuzzy lookups) - deliberately a `select`,
+// not `include`, so it does NOT inherit every scalar field the way
+// CONTRACT_INCLUDE does. Omits signatureImageUrl, signedPdfUrl,
+// frozenAgreementText, signatureAudit (all can carry a full base64
+// image/PDF/text blob per row - see contractPdf.js's base64 fallback, used
+// since S3/R2 isn't configured) and householdAcknowledgments.signatureImageUrl,
+// none of which the list view ever displays. pdfUrl IS selected here, but
+// only to compute the `hasPdf` boolean below - the raw value is stripped
+// before the response goes out via toContractListItem(). Every other
+// endpoint (getContractById, createContractDraft, updateContract,
+// markContractSigned, emailContractAgreement, emailSignedPdf) keeps using
+// CONTRACT_INCLUDE unchanged - they operate on one contract at a time and
+// genuinely need the full record, and getContractById is what
+// ContractsPage's "View" modal now always calls fresh (see
+// ContractsPage.jsx) instead of reusing a list row.
+const CONTRACT_LIST_SELECT = {
+  id: true,
+  type: true,
+  templateSlug: true,
+  signerName: true,
+  signerEmail: true,
+  signerAddress: true,
+  signerPhone: true,
+  microchipNumber: true,
+  kittenName: true,
+  kittenId: true,
+  fosterId: true,
+  applicationId: true,
+  emergencyContactName: true,
+  emergencyContactPhone: true,
+  documentVersion: true,
+  signerNameAtSigning: true,
+  signedIpAddress: true,
+  status: true,
+  signedAt: true,
+  createdAt: true,
+  pdfUrl: true,
+  application: {
+    select: { id: true, type: true, status: true, kittenOfInterest: true },
+  },
+  kitten: {
+    select: { id: true, name: true, microchipNumber: true, status: true },
+  },
+  foster: {
+    select: { id: true, name: true, email: true },
+  },
+  householdAcknowledgments: {
+    select: { id: true, name: true, signedAt: true },
+  },
+};
+
+// Replaces the (possibly huge) raw pdfUrl with a lightweight boolean before
+// the list response is serialized - the only thing the UI checks is
+// truthiness (to enable/disable the "Email Signed PDF" button), it never
+// renders the value itself.
+function toContractListItem(contract) {
+  const { pdfUrl, ...rest } = contract;
+  return { ...rest, hasPdf: Boolean(pdfUrl) };
+}
+
 const VALID_TEMPLATE_SLUGS = new Set([
   'foster_supplies_provided',
   'foster_supplies_not_provided',
@@ -117,10 +178,10 @@ export async function getContracts(req, res, next) {
       const contracts = await prisma.contract.findMany({
         where,
         orderBy: { createdAt: 'desc' },
-        include: CONTRACT_INCLUDE,
+        select: CONTRACT_LIST_SELECT,
         take: 100,
       });
-      return res.json(contracts);
+      return res.json(contracts.map(toContractListItem));
     }
 
     const { page, limit, skip } = parsePagination(req.query, 50);
@@ -129,13 +190,13 @@ export async function getContracts(req, res, next) {
       prisma.contract.findMany({
         where,
         orderBy: { createdAt: 'desc' },
-        include: CONTRACT_INCLUDE,
+        select: CONTRACT_LIST_SELECT,
         skip,
         take: limit,
       }),
     ]);
 
-    return res.json(paginatedResponse(contracts, total, page, limit));
+    return res.json(paginatedResponse(contracts.map(toContractListItem), total, page, limit));
   } catch (error) {
     next(error);
   }

@@ -154,19 +154,21 @@ function ContractsPage() {
 
   const reviewId = searchParams.get('review') || searchParams.get('view');
 
+  // Always fetches the full record (getContractById, which still uses
+  // CONTRACT_INCLUDE) rather than reusing the row already in `contracts` -
+  // the list is now select-limited (see contractController.js's
+  // CONTRACT_LIST_SELECT) and no longer carries frozenAgreementText,
+  // signatureImageUrl/signedPdfUrl, signatureAudit, or household signature
+  // images, all of which ContractViewModal needs to render correctly
+  // (frozenAgreementText in particular is the legally-accurate snapshot for
+  // signed contracts - a live re-render from the current template is wrong).
   useEffect(() => {
     if (!reviewId) return;
-
-    const match = contracts.find((c) => String(c.id) === reviewId);
-    if (match) {
-      setReviewContract(match);
-      return;
-    }
 
     fetchContractById(reviewId)
       .then((contract) => setReviewContract(contract))
       .catch(() => {});
-  }, [reviewId, contracts]);
+  }, [reviewId]);
 
   // Shared by both entry points that pre-populate a draft from an
   // Application: the ?createFor=application:<id> deep link (below) and the
@@ -1051,8 +1053,8 @@ function ContractsPage() {
                             <button
                               type="button"
                               onClick={() => handleEmailPdf(contract)}
-                              disabled={emailingPdfId === contract.id || !contract.pdfUrl}
-                              title={!contract.pdfUrl ? 'No PDF available for this contract' : undefined}
+                              disabled={emailingPdfId === contract.id || !contract.hasPdf}
+                              title={!contract.hasPdf ? 'No PDF available for this contract' : undefined}
                               className="inline-flex items-center gap-1 font-semibold text-indigo-700 hover:underline disabled:opacity-50"
                             >
                               <Paperclip className="h-4 w-4" />
