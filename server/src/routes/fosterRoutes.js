@@ -4,6 +4,7 @@ import {
   createFoster,
   getFosterById,
   resendPortalSetupLink,
+  provisionFosterFromApplication,
 } from '../controllers/fosterController.js';
 import {
   createFosterPlacement,
@@ -20,6 +21,11 @@ const router = Router();
 
 router.get('/', requirePermission('fosters.view'), getAllFosters);
 router.post('/', requirePermission('fosters.manage'), createFoster);
+router.post(
+  '/from-application/:applicationId',
+  requirePermission('fosters.manage'),
+  provisionFosterFromApplication,
+);
 router.get('/:id/placements', requirePermission('fosters.view'), getFosterPlacements);
 router.post('/:id/placements', requirePermission('fosters.manage'), createFosterPlacement);
 router.post('/:id/placements/:placementId/discharge', requirePermission('fosters.manage'), dischargePlacement);

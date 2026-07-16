@@ -138,6 +138,98 @@ export async function createFoster(req, res, next) {
   }
 }
 
+// Write path for the Foster-application approval auto-provision feature
+// (see foster-auto-provision-plan.md). Called only when staff click the
+// confirmation modal's primary button after reviewing/editing the mapped
+// preview - updateApplicationStatus never calls this itself, it only
+// returns the preview data. Mirrors createFoster's structure deliberately:
+// the Foster write and the portal-account step are sequential and NOT
+// wrapped in one transaction together, same reasoning as createFoster - a
+// portal-account problem must never roll back or block the Foster record.
+// The duplicate-Foster-by-email check is re-run here at write time rather
+// than trusted from the earlier preview, since time may have passed between
+// Approve and this confirm click (another staff member could have created
+// the Foster manually in the meantime).
+export async function provisionFosterFromApplication(req, res, next) {
+  try {
+    const applicationId = Number.parseInt(req.params.applicationId, 10);
+    if (!Number.isInteger(applicationId)) {
+      return res.status(400).json({ error: 'A valid applicationId is required' });
+    }
+
+    const application = await prisma.application.findUnique({ where: { id: applicationId } });
+    if (!application) {
+      return res.status(404).json({ error: 'Application not found' });
+    }
+    if (application.type !== 'Foster') {
+      return res.status(400).json({ error: 'This action is only available for Foster-type applications' });
+    }
+
+    const parsed = createFosterSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ error: formatZodError(parsed.error) });
+    }
+
+    const data = parsed.data;
+    const createPortalAccount = Boolean(req.body.createPortalAccount);
+    const email = data.email.trim().toLowerCase();
+
+    const existingFoster = await prisma.foster.findFirst({
+      where: { email: { equals: email, mode: 'insensitive' } },
+    });
+
+    let foster;
+    let fosterWasExisting;
+
+    if (existingFoster) {
+      // Do not create a duplicate Foster row - reuse the existing record
+      // as-is. sourceApplicationId is intentionally left untouched here:
+      // this application did not originate that Foster's creation, so
+      // rewriting its provenance would be misleading.
+      foster = existingFoster;
+      fosterWasExisting = true;
+    } else {
+      const capabilityFlags = normalizeCapabilityFlags(data.capabilityFlags, data.maxKittens);
+      foster = await prisma.foster.create({
+        data: {
+          name: data.name,
+          phone: data.phone,
+          email: data.email,
+          address: data.address,
+          emergencyContact: data.emergencyContact,
+          experienceLevel: data.experienceLevel,
+          capabilityFlags,
+          maxKittens: data.maxKittens,
+          photoUrl: data.photoUrl || null,
+          notes: data.notes,
+          sourceApplicationId: applicationId,
+        },
+      });
+      fosterWasExisting = false;
+    }
+
+    // Best-effort, separate from the Foster write above on purpose - same
+    // non-blocking contract as createFoster. provisionFosterPortalAccount
+    // is reused completely unmodified; it never throws, always returns
+    // { ok, reason } or { ok, userId }.
+    let portalAccount = null;
+    if (createPortalAccount) {
+      if (fosterWasExisting) {
+        const existingPortalUser = await prisma.user.findFirst({ where: { fosterId: foster.id } });
+        portalAccount = existingPortalUser
+          ? { ok: false, reason: 'A portal account already exists for this foster.' }
+          : await provisionFosterPortalAccount(foster, req);
+      } else {
+        portalAccount = await provisionFosterPortalAccount(foster, req);
+      }
+    }
+
+    res.status(fosterWasExisting ? 200 : 201).json({ foster, fosterWasExisting, portalAccount });
+  } catch (error) {
+    next(error);
+  }
+}
+
 export async function getFosterById(req, res, next) {
   try {
     const id = Number.parseInt(req.params.id, 10);
