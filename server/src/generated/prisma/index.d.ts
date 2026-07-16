@@ -21192,7 +21192,11 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
+<<<<<<< HEAD
   export type ContractOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "templateSlug" | "signerName" | "signerEmail" | "signerAddress" | "signerPhone" | "microchipNumber" | "kittenName" | "kittenId" | "fosterId" | "applicationId" | "emergencyContactName" | "emergencyContactPhone" | "documentVersion" | "signedPdfUrl" | "signatureAudit" | "signatureImageUrl" | "signerNameAtSigning" | "signedIpAddress" | "frozenAgreementText" | "pdfUrl" | "status" | "signedAt" | "createdAt", ExtArgs["result"]["contract"]>
+=======
+  export type ContractOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "templateSlug" | "signerName" | "signerEmail" | "signerAddress" | "signerPhone" | "microchipNumber" | "kittenName" | "kittenId" | "fosterId" | "applicationId" | "documentVersion" | "signedPdfUrl" | "signatureAudit" | "signatureImageUrl" | "signerNameAtSigning" | "signedIpAddress" | "frozenAgreementText" | "pdfUrl" | "status" | "signedAt" | "createdAt", ExtArgs["result"]["contract"]>
+>>>>>>> c8e7b44 (fixes)
   export type ContractInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     kitten?: boolean | Contract$kittenArgs<ExtArgs>
     foster?: boolean | Contract$fosterArgs<ExtArgs>
@@ -42900,7 +42904,10 @@ export namespace Prisma {
     orgName: string | null
     orgEin: string | null
     orgLogoUrl: string | null
+<<<<<<< HEAD
     orgSignatureUrl: string | null
+=======
+>>>>>>> c8e7b44 (fixes)
     contactPhone: string | null
     contactEmail: string | null
     contactAddress: string | null
@@ -42939,7 +42946,10 @@ export namespace Prisma {
     orgName: string | null
     orgEin: string | null
     orgLogoUrl: string | null
+<<<<<<< HEAD
     orgSignatureUrl: string | null
+=======
+>>>>>>> c8e7b44 (fixes)
     contactPhone: string | null
     contactEmail: string | null
     contactAddress: string | null
@@ -42978,7 +42988,10 @@ export namespace Prisma {
     orgName: number
     orgEin: number
     orgLogoUrl: number
+<<<<<<< HEAD
     orgSignatureUrl: number
+=======
+>>>>>>> c8e7b44 (fixes)
     contactPhone: number
     contactEmail: number
     contactAddress: number
@@ -43031,7 +43044,10 @@ export namespace Prisma {
     orgName?: true
     orgEin?: true
     orgLogoUrl?: true
+<<<<<<< HEAD
     orgSignatureUrl?: true
+=======
+>>>>>>> c8e7b44 (fixes)
     contactPhone?: true
     contactEmail?: true
     contactAddress?: true
@@ -43070,7 +43086,10 @@ export namespace Prisma {
     orgName?: true
     orgEin?: true
     orgLogoUrl?: true
+<<<<<<< HEAD
     orgSignatureUrl?: true
+=======
+>>>>>>> c8e7b44 (fixes)
     contactPhone?: true
     contactEmail?: true
     contactAddress?: true
@@ -43109,7 +43128,10 @@ export namespace Prisma {
     orgName?: true
     orgEin?: true
     orgLogoUrl?: true
+<<<<<<< HEAD
     orgSignatureUrl?: true
+=======
+>>>>>>> c8e7b44 (fixes)
     contactPhone?: true
     contactEmail?: true
     contactAddress?: true
@@ -43235,7 +43257,10 @@ export namespace Prisma {
     orgName: string
     orgEin: string
     orgLogoUrl: string
+<<<<<<< HEAD
     orgSignatureUrl: string
+=======
+>>>>>>> c8e7b44 (fixes)
     contactPhone: string
     contactEmail: string
     contactAddress: string
@@ -43293,7 +43318,10 @@ export namespace Prisma {
     orgName?: boolean
     orgEin?: boolean
     orgLogoUrl?: boolean
+<<<<<<< HEAD
     orgSignatureUrl?: boolean
+=======
+>>>>>>> c8e7b44 (fixes)
     contactPhone?: boolean
     contactEmail?: boolean
     contactAddress?: boolean
@@ -43332,7 +43360,10 @@ export namespace Prisma {
     orgName?: boolean
     orgEin?: boolean
     orgLogoUrl?: boolean
+<<<<<<< HEAD
     orgSignatureUrl?: boolean
+=======
+>>>>>>> c8e7b44 (fixes)
     contactPhone?: boolean
     contactEmail?: boolean
     contactAddress?: boolean
@@ -43371,7 +43402,10 @@ export namespace Prisma {
     orgName?: boolean
     orgEin?: boolean
     orgLogoUrl?: boolean
+<<<<<<< HEAD
     orgSignatureUrl?: boolean
+=======
+>>>>>>> c8e7b44 (fixes)
     contactPhone?: boolean
     contactEmail?: boolean
     contactAddress?: boolean
@@ -43410,7 +43444,10 @@ export namespace Prisma {
     orgName?: boolean
     orgEin?: boolean
     orgLogoUrl?: boolean
+<<<<<<< HEAD
     orgSignatureUrl?: boolean
+=======
+>>>>>>> c8e7b44 (fixes)
     contactPhone?: boolean
     contactEmail?: boolean
     contactAddress?: boolean
@@ -43444,7 +43481,11 @@ export namespace Prisma {
     venmoHandle?: boolean
   }
 
+<<<<<<< HEAD
   export type SettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orgName" | "orgEin" | "orgLogoUrl" | "orgSignatureUrl" | "contactPhone" | "contactEmail" | "contactAddress" | "missionStatement" | "defaultDonationAmount" | "amazonWishlistUrl" | "chewyWishlistUrl" | "facebookUrl" | "instagramUrl" | "socialPostingEnabled" | "facebookPageId" | "facebookPageAccessToken" | "instagramBusinessAccountId" | "groqApiKey" | "groqModel" | "aiEnabled" | "emailsEnabled" | "smtpHost" | "smtpPort" | "smtpSecure" | "smtpUser" | "smtpPass" | "fromEmail" | "fromName" | "adminNotifyEmail" | "donationWidgetCode" | "donatePageLive" | "paypalLink" | "stripeLink" | "venmoQrCodeUrl" | "venmoHandle", ExtArgs["result"]["settings"]>
+=======
+  export type SettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orgName" | "orgEin" | "orgLogoUrl" | "contactPhone" | "contactEmail" | "contactAddress" | "missionStatement" | "defaultDonationAmount" | "amazonWishlistUrl" | "chewyWishlistUrl" | "facebookUrl" | "instagramUrl" | "socialPostingEnabled" | "facebookPageId" | "facebookPageAccessToken" | "instagramBusinessAccountId" | "groqApiKey" | "groqModel" | "aiEnabled" | "emailsEnabled" | "smtpHost" | "smtpPort" | "smtpSecure" | "smtpUser" | "smtpPass" | "fromEmail" | "fromName" | "adminNotifyEmail" | "donationWidgetCode" | "donatePageLive" | "paypalLink" | "stripeLink" | "venmoQrCodeUrl" | "venmoHandle", ExtArgs["result"]["settings"]>
+>>>>>>> c8e7b44 (fixes)
 
   export type $SettingsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Settings"
@@ -43454,7 +43495,10 @@ export namespace Prisma {
       orgName: string
       orgEin: string
       orgLogoUrl: string
+<<<<<<< HEAD
       orgSignatureUrl: string
+=======
+>>>>>>> c8e7b44 (fixes)
       contactPhone: string
       contactEmail: string
       contactAddress: string
@@ -43913,7 +43957,10 @@ export namespace Prisma {
     readonly orgName: FieldRef<"Settings", 'String'>
     readonly orgEin: FieldRef<"Settings", 'String'>
     readonly orgLogoUrl: FieldRef<"Settings", 'String'>
+<<<<<<< HEAD
     readonly orgSignatureUrl: FieldRef<"Settings", 'String'>
+=======
+>>>>>>> c8e7b44 (fixes)
     readonly contactPhone: FieldRef<"Settings", 'String'>
     readonly contactEmail: FieldRef<"Settings", 'String'>
     readonly contactAddress: FieldRef<"Settings", 'String'>
@@ -50355,7 +50402,10 @@ export namespace Prisma {
     orgName: 'orgName',
     orgEin: 'orgEin',
     orgLogoUrl: 'orgLogoUrl',
+<<<<<<< HEAD
     orgSignatureUrl: 'orgSignatureUrl',
+=======
+>>>>>>> c8e7b44 (fixes)
     contactPhone: 'contactPhone',
     contactEmail: 'contactEmail',
     contactAddress: 'contactAddress',
@@ -53268,7 +53318,10 @@ export namespace Prisma {
     orgName?: StringFilter<"Settings"> | string
     orgEin?: StringFilter<"Settings"> | string
     orgLogoUrl?: StringFilter<"Settings"> | string
+<<<<<<< HEAD
     orgSignatureUrl?: StringFilter<"Settings"> | string
+=======
+>>>>>>> c8e7b44 (fixes)
     contactPhone?: StringFilter<"Settings"> | string
     contactEmail?: StringFilter<"Settings"> | string
     contactAddress?: StringFilter<"Settings"> | string
@@ -53307,7 +53360,10 @@ export namespace Prisma {
     orgName?: SortOrder
     orgEin?: SortOrder
     orgLogoUrl?: SortOrder
+<<<<<<< HEAD
     orgSignatureUrl?: SortOrder
+=======
+>>>>>>> c8e7b44 (fixes)
     contactPhone?: SortOrder
     contactEmail?: SortOrder
     contactAddress?: SortOrder
@@ -53349,7 +53405,10 @@ export namespace Prisma {
     orgName?: StringFilter<"Settings"> | string
     orgEin?: StringFilter<"Settings"> | string
     orgLogoUrl?: StringFilter<"Settings"> | string
+<<<<<<< HEAD
     orgSignatureUrl?: StringFilter<"Settings"> | string
+=======
+>>>>>>> c8e7b44 (fixes)
     contactPhone?: StringFilter<"Settings"> | string
     contactEmail?: StringFilter<"Settings"> | string
     contactAddress?: StringFilter<"Settings"> | string
@@ -53388,7 +53447,10 @@ export namespace Prisma {
     orgName?: SortOrder
     orgEin?: SortOrder
     orgLogoUrl?: SortOrder
+<<<<<<< HEAD
     orgSignatureUrl?: SortOrder
+=======
+>>>>>>> c8e7b44 (fixes)
     contactPhone?: SortOrder
     contactEmail?: SortOrder
     contactAddress?: SortOrder
@@ -53435,7 +53497,10 @@ export namespace Prisma {
     orgName?: StringWithAggregatesFilter<"Settings"> | string
     orgEin?: StringWithAggregatesFilter<"Settings"> | string
     orgLogoUrl?: StringWithAggregatesFilter<"Settings"> | string
+<<<<<<< HEAD
     orgSignatureUrl?: StringWithAggregatesFilter<"Settings"> | string
+=======
+>>>>>>> c8e7b44 (fixes)
     contactPhone?: StringWithAggregatesFilter<"Settings"> | string
     contactEmail?: StringWithAggregatesFilter<"Settings"> | string
     contactAddress?: StringWithAggregatesFilter<"Settings"> | string
@@ -56537,7 +56602,10 @@ export namespace Prisma {
     orgName?: string
     orgEin?: string
     orgLogoUrl?: string
+<<<<<<< HEAD
     orgSignatureUrl?: string
+=======
+>>>>>>> c8e7b44 (fixes)
     contactPhone?: string
     contactEmail?: string
     contactAddress?: string
@@ -56576,7 +56644,10 @@ export namespace Prisma {
     orgName?: string
     orgEin?: string
     orgLogoUrl?: string
+<<<<<<< HEAD
     orgSignatureUrl?: string
+=======
+>>>>>>> c8e7b44 (fixes)
     contactPhone?: string
     contactEmail?: string
     contactAddress?: string
@@ -56615,7 +56686,10 @@ export namespace Prisma {
     orgName?: StringFieldUpdateOperationsInput | string
     orgEin?: StringFieldUpdateOperationsInput | string
     orgLogoUrl?: StringFieldUpdateOperationsInput | string
+<<<<<<< HEAD
     orgSignatureUrl?: StringFieldUpdateOperationsInput | string
+=======
+>>>>>>> c8e7b44 (fixes)
     contactPhone?: StringFieldUpdateOperationsInput | string
     contactEmail?: StringFieldUpdateOperationsInput | string
     contactAddress?: StringFieldUpdateOperationsInput | string
@@ -56654,7 +56728,10 @@ export namespace Prisma {
     orgName?: StringFieldUpdateOperationsInput | string
     orgEin?: StringFieldUpdateOperationsInput | string
     orgLogoUrl?: StringFieldUpdateOperationsInput | string
+<<<<<<< HEAD
     orgSignatureUrl?: StringFieldUpdateOperationsInput | string
+=======
+>>>>>>> c8e7b44 (fixes)
     contactPhone?: StringFieldUpdateOperationsInput | string
     contactEmail?: StringFieldUpdateOperationsInput | string
     contactAddress?: StringFieldUpdateOperationsInput | string
@@ -56693,7 +56770,10 @@ export namespace Prisma {
     orgName?: string
     orgEin?: string
     orgLogoUrl?: string
+<<<<<<< HEAD
     orgSignatureUrl?: string
+=======
+>>>>>>> c8e7b44 (fixes)
     contactPhone?: string
     contactEmail?: string
     contactAddress?: string
@@ -56732,7 +56812,10 @@ export namespace Prisma {
     orgName?: StringFieldUpdateOperationsInput | string
     orgEin?: StringFieldUpdateOperationsInput | string
     orgLogoUrl?: StringFieldUpdateOperationsInput | string
+<<<<<<< HEAD
     orgSignatureUrl?: StringFieldUpdateOperationsInput | string
+=======
+>>>>>>> c8e7b44 (fixes)
     contactPhone?: StringFieldUpdateOperationsInput | string
     contactEmail?: StringFieldUpdateOperationsInput | string
     contactAddress?: StringFieldUpdateOperationsInput | string
@@ -56771,7 +56854,10 @@ export namespace Prisma {
     orgName?: StringFieldUpdateOperationsInput | string
     orgEin?: StringFieldUpdateOperationsInput | string
     orgLogoUrl?: StringFieldUpdateOperationsInput | string
+<<<<<<< HEAD
     orgSignatureUrl?: StringFieldUpdateOperationsInput | string
+=======
+>>>>>>> c8e7b44 (fixes)
     contactPhone?: StringFieldUpdateOperationsInput | string
     contactEmail?: StringFieldUpdateOperationsInput | string
     contactAddress?: StringFieldUpdateOperationsInput | string
@@ -59398,7 +59484,10 @@ export namespace Prisma {
     orgName?: SortOrder
     orgEin?: SortOrder
     orgLogoUrl?: SortOrder
+<<<<<<< HEAD
     orgSignatureUrl?: SortOrder
+=======
+>>>>>>> c8e7b44 (fixes)
     contactPhone?: SortOrder
     contactEmail?: SortOrder
     contactAddress?: SortOrder
@@ -59443,7 +59532,10 @@ export namespace Prisma {
     orgName?: SortOrder
     orgEin?: SortOrder
     orgLogoUrl?: SortOrder
+<<<<<<< HEAD
     orgSignatureUrl?: SortOrder
+=======
+>>>>>>> c8e7b44 (fixes)
     contactPhone?: SortOrder
     contactEmail?: SortOrder
     contactAddress?: SortOrder
@@ -59482,7 +59574,10 @@ export namespace Prisma {
     orgName?: SortOrder
     orgEin?: SortOrder
     orgLogoUrl?: SortOrder
+<<<<<<< HEAD
     orgSignatureUrl?: SortOrder
+=======
+>>>>>>> c8e7b44 (fixes)
     contactPhone?: SortOrder
     contactEmail?: SortOrder
     contactAddress?: SortOrder
