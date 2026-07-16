@@ -235,6 +235,7 @@ function ApplicationDetailPanel({
         />
 
         <PersonContractsSection
+          applicationId={application.id}
           signerEmail={applicantEmail}
           title={application.type === 'Foster' ? 'Foster Agreements' : 'Adoption Agreements'}
         />

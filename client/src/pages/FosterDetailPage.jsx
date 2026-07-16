@@ -316,7 +316,7 @@ function FosterDetailPage() {
         )}
       </section>
 
-      <PersonContractsSection signerEmail={foster.email} title="Foster Agreements" />
+      <PersonContractsSection fosterId={foster.id} signerEmail={foster.email} title="Foster Agreements" />
 
       <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-4">

@@ -59,7 +59,7 @@ function parseSignatureAudit(raw) {
 }
 
 function buildContractWhere(query) {
-  const { search, status, dateFrom, dateTo, dateField, signedOnly, kittenId } = query;
+  const { search, status, dateFrom, dateTo, dateField, signedOnly, kittenId, applicationId, fosterId } = query;
   const where = {};
 
   if (status && ['SENT', 'SIGNED', 'VOID'].includes(status)) {
@@ -71,6 +71,21 @@ function buildContractWhere(query) {
   const parsedKittenId = Number.parseInt(kittenId, 10);
   if (Number.isInteger(parsedKittenId)) {
     where.kittenId = parsedKittenId;
+  }
+
+  // Exact relational filters - deliberately separate from the fuzzy `search`
+  // OR-match below. Used by PersonContractsSection to fetch the trusted,
+  // genuinely-linked list for a specific Application or Foster record,
+  // rather than relying on an email text match that can pull in unrelated
+  // contracts that merely share a signerEmail.
+  const parsedApplicationId = Number.parseInt(applicationId, 10);
+  if (Number.isInteger(parsedApplicationId)) {
+    where.applicationId = parsedApplicationId;
+  }
+
+  const parsedFosterId = Number.parseInt(fosterId, 10);
+  if (Number.isInteger(parsedFosterId)) {
+    where.fosterId = parsedFosterId;
   }
 
   const trimmedSearch = search?.trim();

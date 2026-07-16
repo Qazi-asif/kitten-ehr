@@ -589,6 +589,8 @@ export async function fetchContracts(filters = {}) {
   if (filters.dateField) params.set('dateField', filters.dateField);
   if (filters.signedOnly) params.set('signedOnly', 'true');
   if (filters.kittenId) params.set('kittenId', String(filters.kittenId));
+  if (filters.applicationId) params.set('applicationId', String(filters.applicationId));
+  if (filters.fosterId) params.set('fosterId', String(filters.fosterId));
 
   const query = params.toString();
   const response = await adminFetch(`/contracts${query ? `?${query}` : ''}`);
