@@ -1,3 +1,13 @@
+// Capture crashes that happen before any other code runs (e.g. bad native module, wrong Prisma binary)
+process.on('uncaughtException', (err) => {
+  console.error('[FATAL uncaughtException]', err);
+  process.exit(1);
+});
+process.on('unhandledRejection', (reason) => {
+  console.error('[FATAL unhandledRejection]', reason);
+  process.exit(1);
+});
+
 import './loadEnv.js';
 
 if (!process.env.DATABASE_URL) {
