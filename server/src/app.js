@@ -162,6 +162,13 @@ app.use('/api/transactions', requireAuth, financeRoutes);
 app.use('/api/email-templates', emailTemplateRoutes);
 app.use('/api', requireAuth, aiRoutes);
 
+const clientDistPath = path.join(__dirname, '../../client/dist');
+app.use(express.static(clientDistPath));
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api')) { return next(); }
+  res.sendFile(path.join(clientDistPath, 'index.html'));
+});
+
 app.use((err, _req, res, _next) => {
   console.error(err.stack || err.message || err);
 
