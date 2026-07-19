@@ -153,18 +153,6 @@ function PublicKittenProfile() {
   const hasMoreUpdates = updates.length > PREVIEW_UPDATE_COUNT;
   const showSponsorPanel = isDonatePageLive({ donatePageLive });
 
-  const sponsorTiers = [
-    { label: "One Meal", price: 5 },
-    { label: "One Week Food", price: 25 },
-    { label: "One Month Food", price: 75 },
-    { label: "Spay Surgery", price: 125 },
-    { label: "Full Sponsor", price: 200 },
-  ];
-
-  const raised = 125;
-  const goal = 1000;
-  const percent = Math.round((raised / goal) * 100);
-
   return (
     <div className="min-h-screen bg-white font-sans text-gray-900 pb-16">
       
@@ -380,40 +368,14 @@ function PublicKittenProfile() {
               className="scroll-mt-24 rounded-3xl border border-gray-100 bg-[#f8f9fa] p-6 sm:p-8 shadow-sm"
             >
               <h3 className="text-xl font-bold text-gray-900 mb-1">Sponsor {kitten.name}</h3>
-              <p className="text-xs font-bold text-gray-500 mb-2 tracking-wide uppercase">June Care Goal</p>
-              <p className="text-base font-bold text-gray-900">
-                ${raised} of ${goal}
+              <p className="mt-2 text-sm leading-relaxed text-gray-600">
+                Help cover {kitten.name}&apos;s vet care, food, and everyday needs.
               </p>
 
-              <div className="w-full bg-gray-200 rounded-full h-3 mt-4 overflow-hidden">
-                <div
-                  className="bg-teal-500 h-3 rounded-full"
-                  style={{ width: `${percent}%` }}
-                />
-              </div>
-              <p className="text-right text-xs font-bold text-gray-500 mt-2">{percent}%</p>
-
-              <div className="mt-8 space-y-4">
-                {sponsorTiers.map((tier, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center justify-between text-sm font-semibold text-gray-700"
-                  >
-                    <span className="flex items-center gap-2.5">
-                      <PawPrint size={16} className="text-teal-500" fill="currentColor" />
-                      {tier.label}
-                    </span>
-                    <span className="font-bold text-gray-900 text-base">
-                      ${tier.price}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
               {!showSponsorPanel ? (
-                <button className="w-full bg-[#8b3dff] text-white font-bold text-sm py-4 rounded-xl mt-8 opacity-50 cursor-not-allowed">
-                  DONATE NOW
-                </button>
+                <p className="mt-8 rounded-xl bg-gray-100 px-4 py-4 text-center text-sm font-medium text-gray-600">
+                  Online giving is coming soon. We&apos;re completing our California charitable registration and will open sponsorship once that process is finished.
+                </p>
               ) : !sponsorshipComplete ? (
                 <div className="mt-8">
                   <GivebutterDonationWidget

@@ -48,6 +48,12 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const isOriginAllowed = createOriginValidator();
 
+// Hostinger's Node hosting sits behind one reverse proxy hop (Passenger).
+// Without this, req.ip resolves to the proxy's address for every request,
+// which silently breaks per-visitor rate limiting (everyone shares one
+// bucket) - not just a nicety, it's load-bearing for the limiters below.
+app.set('trust proxy', 1);
+
 app.use(helmet());
 app.use(compression());
 
@@ -65,13 +71,43 @@ app.use(
   }),
 );
 
+// Public GET reads (kitten list/detail/photo, settings, content, events,
+// stats, wishlists) are cacheable, non-abuse-prone traffic - a single
+// visitor browsing a handful of kittens fires a photo request per card plus
+// a settings refetch per page nav, so the general-purpose limiter below is
+// far too tight for them. POST routes under /api/public (applications,
+// donations, contact, rsvp) are NOT skipped here and stay governed by
+// globalLimiter (plus their own stricter limiters below where present).
+// /uploads is included because getPublicKittenPhoto 302-redirects there for
+// non-base64-stored photos - without this, that redirect target would still
+// burn a slot from the tight 100/window budget even though the request that
+// triggered it was correctly exempted.
+const isPublicRead = (req) => req.method === 'GET'
+  && (req.path.startsWith('/api/public') || req.path.startsWith('/uploads'));
+
 const globalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Too many requests. Please try again later.' },
-  skip: (req) => req.headers.authorization?.startsWith('Bearer '),
+  skip: (req) => req.headers.authorization?.startsWith('Bearer ') || isPublicRead(req),
+});
+
+// Sized for realistic browsing, not just a single page load: loading
+// /available (list + one photo request per card) then clicking into ~10-15
+// kitten detail pages (each firing its own kitten/photo/updates/wishlist
+// fetches plus a settings refetch on every route change) realistically adds
+// up to roughly 80-100 requests for one very engaged visitor. 400 leaves
+// ~4x headroom over that - generous for shared-IP traffic, while still
+// bounding a runaway scraper.
+const publicReadLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 400,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests. Please try again later.' },
+  skip: (req) => req.method !== 'GET',
 });
 
 const applicationLimiter = rateLimit({
@@ -91,6 +127,8 @@ const donationLimiter = rateLimit({
 });
 
 app.use(globalLimiter);
+app.use('/api/public', publicReadLimiter);
+app.use('/uploads', publicReadLimiter);
 app.use('/api/public/applications', applicationLimiter);
 app.use('/api/public/donations', donationLimiter);
 
