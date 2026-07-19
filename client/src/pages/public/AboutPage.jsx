@@ -69,13 +69,13 @@ function AboutPage() {
 
             <div className="mt-10 flex flex-wrap gap-4">
               <Link
-                to="/kittens"
+                to="/available"
                 className="rounded-xl bg-brand px-8 py-3.5 text-base font-bold text-white shadow-sm transition-colors hover:bg-brand-dark"
               >
                 Meet Our Cats
               </Link>
               <Link
-                to="/get-involved"
+                to="/whyfoster"
                 className="rounded-xl border-2 border-brand/20 bg-white px-8 py-3.5 text-base font-bold text-brand transition-colors hover:border-brand"
               >
                 Get Involved

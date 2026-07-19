@@ -150,9 +150,9 @@ function DonatePage() {
           </p>
           <p className="mt-4 text-sm text-slate-500">
             Want to foster or adopt in the meantime?{' '}
-            <a href="/get-involved" className="font-semibold text-brand hover:underline">Become a Foster</a>
+            <a href="/whyfoster" className="font-semibold text-brand hover:underline">Become a Foster</a>
             {' '}or{' '}
-            <a href="/kittens" className="font-semibold text-brand hover:underline">Meet the Cats</a>.
+            <a href="/available" className="font-semibold text-brand hover:underline">Meet the Cats</a>.
           </p>
         </div>
       </div>

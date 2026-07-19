@@ -10,14 +10,14 @@ const navItems = [
   {
     label: 'Adopt',
     children: [
-      { label: 'Available Cats', path: '/kittens' },
+      { label: 'Available Cats', path: '/available' },
       { label: 'Adoption Process', path: '/adopt' },
     ],
   },
   {
     label: 'Foster',
     children: [
-      { label: 'Why Foster', path: '/get-involved' },
+      { label: 'Why Foster', path: '/whyfoster' },
       { label: 'Foster Application', path: '/foster' },
     ],
   },
@@ -61,14 +61,14 @@ const FOOTER_LINK_COLUMNS = [
   {
     title: 'Adopt',
     links: [
-      { label: 'Available Cats', path: '/kittens' },
+      { label: 'Available Cats', path: '/available' },
       { label: 'Adoption Process', path: '/adopt' },
     ],
   },
   {
     title: 'Foster',
     links: [
-      { label: 'Why Foster', path: '/get-involved' },
+      { label: 'Why Foster', path: '/whyfoster' },
       { label: 'Foster Application', path: '/foster' },
       { label: 'Foster Login', path: '/portal/login' },
     ],
@@ -89,8 +89,8 @@ const FOOTER_LINK_COLUMNS = [
   },
 ];
 
-function displayEin() {
-  return FOOTER_EIN_DISPLAY;
+function displayEin(settings) {
+  return settings.orgEin?.trim() || FOOTER_EIN_DISPLAY;
 }
 
 function SocialLinks({ settings }) {
@@ -408,7 +408,7 @@ function PublicLayout() {
         <div className="border-t border-gray-200 bg-white px-6 py-4 lg:px-8">
           <div className="mx-auto max-w-7xl space-y-2 text-center text-xs text-gray-500">
             <p>
-              &copy; 2026 Pawsitive Transformations. All rights reserved. Pawsitive Transformations is a 501(c)(3) non-profit organization. EIN {displayEin()}.
+              &copy; 2026 Pawsitive Transformations. All rights reserved. Pawsitive Transformations is a 501(c)(3) non-profit organization. EIN {displayEin(settings)}.
             </p>
             <p>
               This site uses AI-assisted tools to support our operations.{' '}

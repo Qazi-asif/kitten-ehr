@@ -180,7 +180,7 @@ function PublicKittenProfile() {
             
             {/* Left Column: Details */}
             <div className="flex flex-col justify-center order-2 lg:order-1 relative z-10">
-              <Link to="/kittens" className="text-sm font-bold text-[#0d9488] hover:underline mb-4 inline-block w-max">
+              <Link to="/available" className="text-sm font-bold text-[#0d9488] hover:underline mb-4 inline-block w-max">
                 ← Back to Adopt
               </Link>
               <h1 className="text-5xl font-extrabold tracking-tight text-gray-900 sm:text-6xl lg:text-7xl mb-2">

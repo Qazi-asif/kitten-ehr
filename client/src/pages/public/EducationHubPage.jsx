@@ -71,7 +71,7 @@ function EducationHubPage() {
 
   return (
     <div className="overflow-hidden bg-white">
-      <div className="flex items-start">
+      <div className="mx-auto flex max-w-7xl items-start">
         <div className="min-w-0 flex-1">
           <div className="px-6 pt-10 pb-6 lg:px-8">
             <h1 className="flex items-center gap-3 text-6xl font-extrabold tracking-tight text-brand">

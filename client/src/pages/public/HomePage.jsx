@@ -89,13 +89,13 @@ function HomePage() {
 
               <div className="mt-10 flex flex-wrap gap-4">
                 <Link
-                  to="/kittens"
+                  to="/available"
                   className="inline-flex items-center justify-center rounded-lg bg-brand px-6 py-3.5 text-sm font-bold text-white shadow-md transition-all hover:bg-brand-dark hover:shadow-lg"
                 >
                   Meet the Cats
                 </Link>
                 <Link
-                  to="/get-involved"
+                  to="/whyfoster"
                   className="inline-flex items-center justify-center rounded-lg bg-brand px-6 py-3.5 text-sm font-bold text-white shadow-md transition-all hover:bg-brand-dark hover:shadow-lg"
                 >
                   Become a Foster
@@ -151,7 +151,7 @@ function HomePage() {
             You provide the spare room and the love; we cover the rest. One foster home can save a dozen lives a year.
           </p>
           <Link
-            to="/get-involved"
+            to="/whyfoster"
             className="mt-8 inline-flex rounded-lg bg-brand px-6 py-3.5 text-sm font-bold text-white shadow-md transition hover:bg-brand-dark"
           >
             Become a Foster
@@ -201,7 +201,7 @@ function HomePage() {
               ))}
             </div>
             <Link
-              to="/kittens"
+              to="/available"
               className="inline-flex rounded-lg bg-brand px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-sm transition hover:bg-brand-dark"
             >
               Meet the Cats

@@ -72,12 +72,14 @@ function App() {
 
             <Route element={<PublicLayout />}>
               <Route path="/" element={<HomePage />} />
-              <Route path="/kittens" element={<AvailableKittensPage />} />
+              <Route path="/available" element={<AvailableKittensPage />} />
+              <Route path="/kittens" element={<Navigate to="/available" replace />} />
               <Route path="/kittens/:id" element={<PublicKittenProfile />} />
               <Route path="/adopt" element={<AdoptionProcessPage />} />
               <Route path="/adopt/apply" element={<AdoptionFormPage />} />
               <Route path="/foster" element={<FosterFormPage />} />
-              <Route path="/get-involved" element={<FosterPage />} />
+              <Route path="/whyfoster" element={<FosterPage />} />
+              <Route path="/get-involved" element={<Navigate to="/whyfoster" replace />} />
               <Route path="/education" element={<EducationHubPage />} />
               <Route path="/education/:slug" element={<ArticlePage />} />
               <Route path="/events" element={<EventsPage />} />
