@@ -7,6 +7,7 @@ export const createApplicationSchema = z.object({
     z.record(z.unknown()),
   ]),
   kittenOfInterest: z.string().trim().max(200).optional().nullable(),
+  kittenId: z.coerce.number().int().positive().optional(),
 });
 
 export function formatZodError(error) {

@@ -65,6 +65,8 @@ model Foster {
   contracts        Contract[]
   portalUser       User?
   submittedDocuments Document[] @relation("DocumentSubmittedByFoster")
+  sourceApplicationId Int?
+  sourceApplication   Application? @relation(fields: [sourceApplicationId], references: [id], onDelete: SetNull)
 }
 
 model Kitten {
@@ -258,6 +260,7 @@ model Application {
   statusNotes      String              @default("")
   statusUpdatedAt  DateTime?
   kittenOfInterest String?
+  kittenStatusAtSubmission String?
   formData         String              @default("{}")
   rejectionReason  String?
   rejectionNotes   String?
@@ -267,6 +270,7 @@ model Application {
   createdAt        DateTime            @default(now())
   contracts        Contract[]
   uploads          ApplicationUpload[]
+  sourcedFosters   Foster[]
 
   @@index([rejectedById])
   @@index([status, createdAt])

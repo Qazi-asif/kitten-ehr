@@ -20,7 +20,7 @@ export function buildPublicWebsiteWhereClause() {
 
 export function buildPublicAvailableKittenWhereClause() {
   return {
-    status: 'Available for Adoption',
+    status: { in: ['Available for Adoption', 'In Foster Care'] },
     ...buildPublicWebsiteWhereClause(),
   };
 }

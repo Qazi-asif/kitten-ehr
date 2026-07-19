@@ -20,12 +20,19 @@ function PublicKittenCard({ kitten }) {
             {kitten.breed}{kitten.color ? ` · ${kitten.color}` : ''}
           </p>
         </div>
-        <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-brand shadow-sm">
-          Available
-        </span>
+        {kitten.status === 'Available for Adoption' && (
+          <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-brand shadow-sm">
+            Available
+          </span>
+        )}
       </div>
       <div className="p-5">
         <div className="flex flex-wrap gap-2">
+          {kitten.status === 'In Foster Care' && (
+            <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-800">
+              In Foster Care
+            </span>
+          )}
           {kitten.sex && (
             <span className="rounded-full bg-brand-light px-2.5 py-1 text-xs font-medium text-brand-dark">
               {kitten.sex}

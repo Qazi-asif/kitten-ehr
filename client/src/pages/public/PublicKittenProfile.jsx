@@ -138,6 +138,7 @@ function PublicKittenProfile() {
 
   const effectiveStatus = kitten.status || 'Available for Adoption';
   const isAvailableForAdoption = effectiveStatus === 'Available for Adoption';
+  const isInFosterCare = effectiveStatus === 'In Foster Care';
   const isAdopted = effectiveStatus === 'Adopted';
 
   const ageLabel = formatPublicAge(kitten.dateOfBirth);
@@ -205,7 +206,7 @@ function PublicKittenProfile() {
               </div>
 
               {/* Status banner (shown instead of ADOPT ME when the kitten isn't currently available) */}
-              {!isAvailableForAdoption && (
+              {!isAvailableForAdoption && !isInFosterCare && (
                 <div
                   className={`mt-6 inline-flex w-max items-center gap-2 rounded-xl px-5 py-3 text-sm font-bold ${
                     isAdopted ? 'bg-teal-50 text-teal-800' : 'bg-gray-100 text-gray-700'
@@ -219,13 +220,13 @@ function PublicKittenProfile() {
 
               {/* Buttons */}
               <div className="mt-10 flex flex-col sm:flex-row flex-wrap gap-4">
-                {isAvailableForAdoption && (
+                {(isAvailableForAdoption || isInFosterCare) && (
                   <Link
-                    to={`/adopt/apply?kitten=${encodeURIComponent(kitten.name)}`}
+                    to={`/adopt/apply?kitten=${encodeURIComponent(kitten.name)}&kittenId=${kitten.id}`}
                     className="inline-flex min-w-[140px] items-center justify-center gap-2 rounded-xl bg-brand px-6 py-3.5 text-sm font-bold tracking-wide text-white shadow-md transition hover:bg-brand-dark"
                   >
                     <Home className="h-4 w-4" fill="currentColor" />
-                    ADOPT ME
+                    {isInFosterCare ? 'PRE-ADOPT ME' : 'ADOPT ME'}
                   </Link>
                 )}
                 <button

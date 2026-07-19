@@ -8,6 +8,8 @@ import { sendApplicationReceivedEmails, sendApplicationStatusChangedEmail } from
 import { APPLICATION_REVIEW_STATUSES } from '../constants/emailTemplates.js';
 import { validateUploadedFile } from '../utils/fileValidation.js';
 import { persistApplicationFile } from '../utils/fileStorage.js';
+import { parseApplicationFormData } from '../utils/applicationFormData.js';
+import { translateExperienceLevel, translateCapabilityFlags } from '../utils/fosterApplicationMapping.js';
 
 const VALID_STATUSES = ['New', 'Under Review', 'Approved', 'Denied'];
 const MAX_APPLICATION_PHOTOS = 3;
@@ -119,7 +121,7 @@ export async function createApplication(req, res, next) {
       return res.status(400).json({ error: formatZodError(parsed.error) });
     }
 
-    const { type, formData, kittenOfInterest } = parsed.data;
+    const { type, formData, kittenOfInterest, kittenId } = parsed.data;
     const serializedFormData = typeof formData === 'string' ? formData : JSON.stringify(formData);
     const resolvedKittenOfInterest = extractKittenOfInterest(formData, kittenOfInterest);
     const photoFiles = Array.isArray(req.files) ? req.files : [];
@@ -128,11 +130,16 @@ export async function createApplication(req, res, next) {
       return res.status(400).json({ error: `Maximum ${MAX_APPLICATION_PHOTOS} photos allowed.` });
     }
 
+    const kitten = kittenId
+      ? await prisma.kitten.findUnique({ where: { id: kittenId }, select: { status: true } })
+      : null;
+
     const application = await prisma.application.create({
       data: {
         type,
         formData: serializedFormData,
         kittenOfInterest: resolvedKittenOfInterest,
+        kittenStatusAtSubmission: kitten?.status ?? null,
       },
     });
 
@@ -154,6 +161,46 @@ export async function createApplication(req, res, next) {
   } catch (error) {
     next(error);
   }
+}
+
+// Builds the preview payload the (future) confirmation modal renders after
+// a Foster application is Approved. Read-only - never creates a Foster or
+// portal account itself. See foster-auto-provision-plan.md §2/§3/§4.
+async function buildFosterProvisionPreview(application) {
+  const parsed = parseApplicationFormData(application.formData);
+  const email = (parsed.email || '').trim().toLowerCase();
+
+  const existingFoster = email
+    ? await prisma.foster.findFirst({
+        where: { email: { equals: email, mode: 'insensitive' } },
+      })
+    : null;
+
+  let existingFosterHasPortalAccount = false;
+  if (existingFoster) {
+    const portalUser = await prisma.user.findFirst({ where: { fosterId: existingFoster.id } });
+    existingFosterHasPortalAccount = Boolean(portalUser);
+  }
+
+  return {
+    applicationId: application.id,
+    existingFoster: existingFoster
+      ? { id: existingFoster.id, name: existingFoster.name, email: existingFoster.email }
+      : null,
+    existingFosterHasPortalAccount,
+    mapped: {
+      name: parsed.fullName || '',
+      phone: parsed.phone || '',
+      email: parsed.email || '',
+      address: parsed.address || '',
+      experienceLevel: translateExperienceLevel(parsed.experienceLevel),
+      capabilityFlags: translateCapabilityFlags(parsed.capacity),
+      notes: parsed.message || '',
+      maxKittens: 0,
+      emergencyContact: '',
+      photoUrl: null,
+    },
+  };
 }
 
 export async function updateApplicationStatus(req, res, next) {
@@ -201,7 +248,12 @@ export async function updateApplicationStatus(req, res, next) {
       });
     }
 
-    res.json(application);
+    let fosterProvisionPreview = null;
+    if (statusChanged && application.status === 'Approved' && application.type === 'Foster') {
+      fosterProvisionPreview = await buildFosterProvisionPreview(application);
+    }
+
+    res.json({ ...application, fosterProvisionPreview });
   } catch (error) {
     if (error.code === 'P2025') {
       return res.status(404).json({ error: 'Application not found' });

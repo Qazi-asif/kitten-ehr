@@ -68,6 +68,7 @@ function ApplicationForm({ defaultType = 'Adoption', lockType = true, allowPhoto
   const [params] = useSearchParams();
   const prefilledKitten = getPrefilledKittenInterest(params);
   const lockedKitten = Boolean(prefilledKitten);
+  const prefilledKittenId = Number.parseInt(params.get('kittenId'), 10) || undefined;
   const applicationType = defaultType === 'Foster' ? 'Foster' : 'Adoption';
   const copy = FORM_COPY[applicationType];
   const [submitted, setSubmitted] = useState(false);
@@ -177,7 +178,7 @@ function ApplicationForm({ defaultType = 'Adoption', lockType = true, allowPhoto
         payload.unexpectedStopPlan = form.unexpectedStopPlan;
       }
 
-      await submitApplication(applicationType, payload, allowPhotoUpload ? photoFiles : []);
+      await submitApplication(applicationType, payload, allowPhotoUpload ? photoFiles : [], prefilledKittenId);
       setSubmitted(true);
     } catch (err) {
       setError(err.message || 'Failed to submit application');

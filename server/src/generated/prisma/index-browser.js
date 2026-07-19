@@ -140,7 +140,8 @@ exports.Prisma.FosterScalarFieldEnum = {
   maxKittens: 'maxKittens',
   photoUrl: 'photoUrl',
   notes: 'notes',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  sourceApplicationId: 'sourceApplicationId'
 };
 
 exports.Prisma.KittenScalarFieldEnum = {
@@ -274,6 +275,7 @@ exports.Prisma.ApplicationScalarFieldEnum = {
   statusNotes: 'statusNotes',
   statusUpdatedAt: 'statusUpdatedAt',
   kittenOfInterest: 'kittenOfInterest',
+  kittenStatusAtSubmission: 'kittenStatusAtSubmission',
   formData: 'formData',
   rejectionReason: 'rejectionReason',
   rejectionNotes: 'rejectionNotes',

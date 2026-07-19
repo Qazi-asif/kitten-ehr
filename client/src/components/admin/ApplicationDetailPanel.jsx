@@ -201,6 +201,11 @@ function ApplicationDetailPanel({
             ) : (
               <p className="text-sm text-gray-500">Unspecified</p>
             )}
+            {application?.kittenStatusAtSubmission && (
+              <p className="mt-1 text-xs text-gray-500">
+                Applied while: {application.kittenStatusAtSubmission}
+              </p>
+            )}
           </div>
         </div>
 

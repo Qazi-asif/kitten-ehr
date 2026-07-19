@@ -64,7 +64,7 @@ export function fetchPublicSettings() {
   return publicRequest('/settings');
 }
 
-export async function submitApplication(type, formData, photos = []) {
+export async function submitApplication(type, formData, photos = [], kittenId) {
   const kittenOfInterest = formData.kittenOfInterest || formData.kittenInterest || '';
 
   if (photos.length > 0) {
@@ -72,6 +72,7 @@ export async function submitApplication(type, formData, photos = []) {
     body.append('type', type);
     body.append('formData', JSON.stringify(formData));
     if (kittenOfInterest) body.append('kittenOfInterest', kittenOfInterest);
+    if (kittenId) body.append('kittenId', String(kittenId));
     photos.slice(0, 3).forEach((file) => body.append('photos', file));
 
     const response = await publicFetch('/public/applications', {
@@ -88,6 +89,7 @@ export async function submitApplication(type, formData, photos = []) {
       type,
       formData: JSON.stringify(formData),
       kittenOfInterest: kittenOfInterest || undefined,
+      kittenId: kittenId || undefined,
     }),
   });
   if (!response.ok) throw new Error('Failed to submit application');

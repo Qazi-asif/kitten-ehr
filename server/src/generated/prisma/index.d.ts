@@ -4581,11 +4581,13 @@ export namespace Prisma {
   export type ApplicationCountOutputType = {
     contracts: number
     uploads: number
+    sourcedFosters: number
   }
 
   export type ApplicationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     contracts?: boolean | ApplicationCountOutputTypeCountContractsArgs
     uploads?: boolean | ApplicationCountOutputTypeCountUploadsArgs
+    sourcedFosters?: boolean | ApplicationCountOutputTypeCountSourcedFostersArgs
   }
 
   // Custom InputTypes
@@ -4611,6 +4613,13 @@ export namespace Prisma {
    */
   export type ApplicationCountOutputTypeCountUploadsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ApplicationUploadWhereInput
+  }
+
+  /**
+   * ApplicationCountOutputType without action
+   */
+  export type ApplicationCountOutputTypeCountSourcedFostersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FosterWhereInput
   }
 
 
@@ -6106,11 +6115,13 @@ export namespace Prisma {
   export type FosterAvgAggregateOutputType = {
     id: number | null
     maxKittens: number | null
+    sourceApplicationId: number | null
   }
 
   export type FosterSumAggregateOutputType = {
     id: number | null
     maxKittens: number | null
+    sourceApplicationId: number | null
   }
 
   export type FosterMinAggregateOutputType = {
@@ -6126,6 +6137,7 @@ export namespace Prisma {
     photoUrl: string | null
     notes: string | null
     createdAt: Date | null
+    sourceApplicationId: number | null
   }
 
   export type FosterMaxAggregateOutputType = {
@@ -6141,6 +6153,7 @@ export namespace Prisma {
     photoUrl: string | null
     notes: string | null
     createdAt: Date | null
+    sourceApplicationId: number | null
   }
 
   export type FosterCountAggregateOutputType = {
@@ -6156,6 +6169,7 @@ export namespace Prisma {
     photoUrl: number
     notes: number
     createdAt: number
+    sourceApplicationId: number
     _all: number
   }
 
@@ -6163,11 +6177,13 @@ export namespace Prisma {
   export type FosterAvgAggregateInputType = {
     id?: true
     maxKittens?: true
+    sourceApplicationId?: true
   }
 
   export type FosterSumAggregateInputType = {
     id?: true
     maxKittens?: true
+    sourceApplicationId?: true
   }
 
   export type FosterMinAggregateInputType = {
@@ -6183,6 +6199,7 @@ export namespace Prisma {
     photoUrl?: true
     notes?: true
     createdAt?: true
+    sourceApplicationId?: true
   }
 
   export type FosterMaxAggregateInputType = {
@@ -6198,6 +6215,7 @@ export namespace Prisma {
     photoUrl?: true
     notes?: true
     createdAt?: true
+    sourceApplicationId?: true
   }
 
   export type FosterCountAggregateInputType = {
@@ -6213,6 +6231,7 @@ export namespace Prisma {
     photoUrl?: true
     notes?: true
     createdAt?: true
+    sourceApplicationId?: true
     _all?: true
   }
 
@@ -6315,6 +6334,7 @@ export namespace Prisma {
     photoUrl: string | null
     notes: string
     createdAt: Date
+    sourceApplicationId: number | null
     _count: FosterCountAggregateOutputType | null
     _avg: FosterAvgAggregateOutputType | null
     _sum: FosterSumAggregateOutputType | null
@@ -6349,11 +6369,13 @@ export namespace Prisma {
     photoUrl?: boolean
     notes?: boolean
     createdAt?: boolean
+    sourceApplicationId?: boolean
     currentKittens?: boolean | Foster$currentKittensArgs<ExtArgs>
     placements?: boolean | Foster$placementsArgs<ExtArgs>
     contracts?: boolean | Foster$contractsArgs<ExtArgs>
     portalUser?: boolean | Foster$portalUserArgs<ExtArgs>
     submittedDocuments?: boolean | Foster$submittedDocumentsArgs<ExtArgs>
+    sourceApplication?: boolean | Foster$sourceApplicationArgs<ExtArgs>
     _count?: boolean | FosterCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["foster"]>
 
@@ -6370,6 +6392,8 @@ export namespace Prisma {
     photoUrl?: boolean
     notes?: boolean
     createdAt?: boolean
+    sourceApplicationId?: boolean
+    sourceApplication?: boolean | Foster$sourceApplicationArgs<ExtArgs>
   }, ExtArgs["result"]["foster"]>
 
   export type FosterSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -6385,6 +6409,8 @@ export namespace Prisma {
     photoUrl?: boolean
     notes?: boolean
     createdAt?: boolean
+    sourceApplicationId?: boolean
+    sourceApplication?: boolean | Foster$sourceApplicationArgs<ExtArgs>
   }, ExtArgs["result"]["foster"]>
 
   export type FosterSelectScalar = {
@@ -6400,19 +6426,25 @@ export namespace Prisma {
     photoUrl?: boolean
     notes?: boolean
     createdAt?: boolean
+    sourceApplicationId?: boolean
   }
 
-  export type FosterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "phone" | "email" | "address" | "emergencyContact" | "experienceLevel" | "capabilityFlags" | "maxKittens" | "photoUrl" | "notes" | "createdAt", ExtArgs["result"]["foster"]>
+  export type FosterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "phone" | "email" | "address" | "emergencyContact" | "experienceLevel" | "capabilityFlags" | "maxKittens" | "photoUrl" | "notes" | "createdAt" | "sourceApplicationId", ExtArgs["result"]["foster"]>
   export type FosterInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     currentKittens?: boolean | Foster$currentKittensArgs<ExtArgs>
     placements?: boolean | Foster$placementsArgs<ExtArgs>
     contracts?: boolean | Foster$contractsArgs<ExtArgs>
     portalUser?: boolean | Foster$portalUserArgs<ExtArgs>
     submittedDocuments?: boolean | Foster$submittedDocumentsArgs<ExtArgs>
+    sourceApplication?: boolean | Foster$sourceApplicationArgs<ExtArgs>
     _count?: boolean | FosterCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type FosterIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type FosterIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type FosterIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sourceApplication?: boolean | Foster$sourceApplicationArgs<ExtArgs>
+  }
+  export type FosterIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sourceApplication?: boolean | Foster$sourceApplicationArgs<ExtArgs>
+  }
 
   export type $FosterPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Foster"
@@ -6422,6 +6454,7 @@ export namespace Prisma {
       contracts: Prisma.$ContractPayload<ExtArgs>[]
       portalUser: Prisma.$UserPayload<ExtArgs> | null
       submittedDocuments: Prisma.$DocumentPayload<ExtArgs>[]
+      sourceApplication: Prisma.$ApplicationPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -6436,6 +6469,7 @@ export namespace Prisma {
       photoUrl: string | null
       notes: string
       createdAt: Date
+      sourceApplicationId: number | null
     }, ExtArgs["result"]["foster"]>
     composites: {}
   }
@@ -6835,6 +6869,7 @@ export namespace Prisma {
     contracts<T extends Foster$contractsArgs<ExtArgs> = {}>(args?: Subset<T, Foster$contractsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     portalUser<T extends Foster$portalUserArgs<ExtArgs> = {}>(args?: Subset<T, Foster$portalUserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     submittedDocuments<T extends Foster$submittedDocumentsArgs<ExtArgs> = {}>(args?: Subset<T, Foster$submittedDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sourceApplication<T extends Foster$sourceApplicationArgs<ExtArgs> = {}>(args?: Subset<T, Foster$sourceApplicationArgs<ExtArgs>>): Prisma__ApplicationClient<$Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6876,6 +6911,7 @@ export namespace Prisma {
     readonly photoUrl: FieldRef<"Foster", 'String'>
     readonly notes: FieldRef<"Foster", 'String'>
     readonly createdAt: FieldRef<"Foster", 'DateTime'>
+    readonly sourceApplicationId: FieldRef<"Foster", 'Int'>
   }
     
 
@@ -7125,6 +7161,10 @@ export namespace Prisma {
      */
     data: FosterCreateManyInput | FosterCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FosterIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -7195,6 +7235,10 @@ export namespace Prisma {
      * Limit how many Fosters to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FosterIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -7376,6 +7420,25 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DocumentScalarFieldEnum | DocumentScalarFieldEnum[]
+  }
+
+  /**
+   * Foster.sourceApplication
+   */
+  export type Foster$sourceApplicationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Application
+     */
+    select?: ApplicationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Application
+     */
+    omit?: ApplicationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApplicationInclude<ExtArgs> | null
+    where?: ApplicationWhereInput
   }
 
   /**
@@ -18464,6 +18527,7 @@ export namespace Prisma {
     statusNotes: string | null
     statusUpdatedAt: Date | null
     kittenOfInterest: string | null
+    kittenStatusAtSubmission: string | null
     formData: string | null
     rejectionReason: string | null
     rejectionNotes: string | null
@@ -18479,6 +18543,7 @@ export namespace Prisma {
     statusNotes: string | null
     statusUpdatedAt: Date | null
     kittenOfInterest: string | null
+    kittenStatusAtSubmission: string | null
     formData: string | null
     rejectionReason: string | null
     rejectionNotes: string | null
@@ -18494,6 +18559,7 @@ export namespace Prisma {
     statusNotes: number
     statusUpdatedAt: number
     kittenOfInterest: number
+    kittenStatusAtSubmission: number
     formData: number
     rejectionReason: number
     rejectionNotes: number
@@ -18521,6 +18587,7 @@ export namespace Prisma {
     statusNotes?: true
     statusUpdatedAt?: true
     kittenOfInterest?: true
+    kittenStatusAtSubmission?: true
     formData?: true
     rejectionReason?: true
     rejectionNotes?: true
@@ -18536,6 +18603,7 @@ export namespace Prisma {
     statusNotes?: true
     statusUpdatedAt?: true
     kittenOfInterest?: true
+    kittenStatusAtSubmission?: true
     formData?: true
     rejectionReason?: true
     rejectionNotes?: true
@@ -18551,6 +18619,7 @@ export namespace Prisma {
     statusNotes?: true
     statusUpdatedAt?: true
     kittenOfInterest?: true
+    kittenStatusAtSubmission?: true
     formData?: true
     rejectionReason?: true
     rejectionNotes?: true
@@ -18653,6 +18722,7 @@ export namespace Prisma {
     statusNotes: string
     statusUpdatedAt: Date | null
     kittenOfInterest: string | null
+    kittenStatusAtSubmission: string | null
     formData: string
     rejectionReason: string | null
     rejectionNotes: string | null
@@ -18687,6 +18757,7 @@ export namespace Prisma {
     statusNotes?: boolean
     statusUpdatedAt?: boolean
     kittenOfInterest?: boolean
+    kittenStatusAtSubmission?: boolean
     formData?: boolean
     rejectionReason?: boolean
     rejectionNotes?: boolean
@@ -18696,6 +18767,7 @@ export namespace Prisma {
     rejectedBy?: boolean | Application$rejectedByArgs<ExtArgs>
     contracts?: boolean | Application$contractsArgs<ExtArgs>
     uploads?: boolean | Application$uploadsArgs<ExtArgs>
+    sourcedFosters?: boolean | Application$sourcedFostersArgs<ExtArgs>
     _count?: boolean | ApplicationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["application"]>
 
@@ -18706,6 +18778,7 @@ export namespace Prisma {
     statusNotes?: boolean
     statusUpdatedAt?: boolean
     kittenOfInterest?: boolean
+    kittenStatusAtSubmission?: boolean
     formData?: boolean
     rejectionReason?: boolean
     rejectionNotes?: boolean
@@ -18722,6 +18795,7 @@ export namespace Prisma {
     statusNotes?: boolean
     statusUpdatedAt?: boolean
     kittenOfInterest?: boolean
+    kittenStatusAtSubmission?: boolean
     formData?: boolean
     rejectionReason?: boolean
     rejectionNotes?: boolean
@@ -18738,6 +18812,7 @@ export namespace Prisma {
     statusNotes?: boolean
     statusUpdatedAt?: boolean
     kittenOfInterest?: boolean
+    kittenStatusAtSubmission?: boolean
     formData?: boolean
     rejectionReason?: boolean
     rejectionNotes?: boolean
@@ -18746,11 +18821,12 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-  export type ApplicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "status" | "statusNotes" | "statusUpdatedAt" | "kittenOfInterest" | "formData" | "rejectionReason" | "rejectionNotes" | "rejectedById" | "rejectedAt" | "createdAt", ExtArgs["result"]["application"]>
+  export type ApplicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "status" | "statusNotes" | "statusUpdatedAt" | "kittenOfInterest" | "kittenStatusAtSubmission" | "formData" | "rejectionReason" | "rejectionNotes" | "rejectedById" | "rejectedAt" | "createdAt", ExtArgs["result"]["application"]>
   export type ApplicationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     rejectedBy?: boolean | Application$rejectedByArgs<ExtArgs>
     contracts?: boolean | Application$contractsArgs<ExtArgs>
     uploads?: boolean | Application$uploadsArgs<ExtArgs>
+    sourcedFosters?: boolean | Application$sourcedFostersArgs<ExtArgs>
     _count?: boolean | ApplicationCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ApplicationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -18766,6 +18842,7 @@ export namespace Prisma {
       rejectedBy: Prisma.$UserPayload<ExtArgs> | null
       contracts: Prisma.$ContractPayload<ExtArgs>[]
       uploads: Prisma.$ApplicationUploadPayload<ExtArgs>[]
+      sourcedFosters: Prisma.$FosterPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -18774,6 +18851,7 @@ export namespace Prisma {
       statusNotes: string
       statusUpdatedAt: Date | null
       kittenOfInterest: string | null
+      kittenStatusAtSubmission: string | null
       formData: string
       rejectionReason: string | null
       rejectionNotes: string | null
@@ -19177,6 +19255,7 @@ export namespace Prisma {
     rejectedBy<T extends Application$rejectedByArgs<ExtArgs> = {}>(args?: Subset<T, Application$rejectedByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     contracts<T extends Application$contractsArgs<ExtArgs> = {}>(args?: Subset<T, Application$contractsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     uploads<T extends Application$uploadsArgs<ExtArgs> = {}>(args?: Subset<T, Application$uploadsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ApplicationUploadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sourcedFosters<T extends Application$sourcedFostersArgs<ExtArgs> = {}>(args?: Subset<T, Application$sourcedFostersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FosterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -19212,6 +19291,7 @@ export namespace Prisma {
     readonly statusNotes: FieldRef<"Application", 'String'>
     readonly statusUpdatedAt: FieldRef<"Application", 'DateTime'>
     readonly kittenOfInterest: FieldRef<"Application", 'String'>
+    readonly kittenStatusAtSubmission: FieldRef<"Application", 'String'>
     readonly formData: FieldRef<"Application", 'String'>
     readonly rejectionReason: FieldRef<"Application", 'String'>
     readonly rejectionNotes: FieldRef<"Application", 'String'>
@@ -19678,6 +19758,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ApplicationUploadScalarFieldEnum | ApplicationUploadScalarFieldEnum[]
+  }
+
+  /**
+   * Application.sourcedFosters
+   */
+  export type Application$sourcedFostersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Foster
+     */
+    select?: FosterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Foster
+     */
+    omit?: FosterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FosterInclude<ExtArgs> | null
+    where?: FosterWhereInput
+    orderBy?: FosterOrderByWithRelationInput | FosterOrderByWithRelationInput[]
+    cursor?: FosterWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FosterScalarFieldEnum | FosterScalarFieldEnum[]
   }
 
   /**
@@ -49940,7 +50044,8 @@ export namespace Prisma {
     maxKittens: 'maxKittens',
     photoUrl: 'photoUrl',
     notes: 'notes',
-    createdAt: 'createdAt'
+    createdAt: 'createdAt',
+    sourceApplicationId: 'sourceApplicationId'
   };
 
   export type FosterScalarFieldEnum = (typeof FosterScalarFieldEnum)[keyof typeof FosterScalarFieldEnum]
@@ -50104,6 +50209,7 @@ export namespace Prisma {
     statusNotes: 'statusNotes',
     statusUpdatedAt: 'statusUpdatedAt',
     kittenOfInterest: 'kittenOfInterest',
+    kittenStatusAtSubmission: 'kittenStatusAtSubmission',
     formData: 'formData',
     rejectionReason: 'rejectionReason',
     rejectionNotes: 'rejectionNotes',
@@ -50800,11 +50906,13 @@ export namespace Prisma {
     photoUrl?: StringNullableFilter<"Foster"> | string | null
     notes?: StringFilter<"Foster"> | string
     createdAt?: DateTimeFilter<"Foster"> | Date | string
+    sourceApplicationId?: IntNullableFilter<"Foster"> | number | null
     currentKittens?: KittenListRelationFilter
     placements?: PlacementListRelationFilter
     contracts?: ContractListRelationFilter
     portalUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     submittedDocuments?: DocumentListRelationFilter
+    sourceApplication?: XOR<ApplicationNullableScalarRelationFilter, ApplicationWhereInput> | null
   }
 
   export type FosterOrderByWithRelationInput = {
@@ -50820,11 +50928,13 @@ export namespace Prisma {
     photoUrl?: SortOrderInput | SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
+    sourceApplicationId?: SortOrderInput | SortOrder
     currentKittens?: KittenOrderByRelationAggregateInput
     placements?: PlacementOrderByRelationAggregateInput
     contracts?: ContractOrderByRelationAggregateInput
     portalUser?: UserOrderByWithRelationInput
     submittedDocuments?: DocumentOrderByRelationAggregateInput
+    sourceApplication?: ApplicationOrderByWithRelationInput
   }
 
   export type FosterWhereUniqueInput = Prisma.AtLeast<{
@@ -50843,11 +50953,13 @@ export namespace Prisma {
     photoUrl?: StringNullableFilter<"Foster"> | string | null
     notes?: StringFilter<"Foster"> | string
     createdAt?: DateTimeFilter<"Foster"> | Date | string
+    sourceApplicationId?: IntNullableFilter<"Foster"> | number | null
     currentKittens?: KittenListRelationFilter
     placements?: PlacementListRelationFilter
     contracts?: ContractListRelationFilter
     portalUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     submittedDocuments?: DocumentListRelationFilter
+    sourceApplication?: XOR<ApplicationNullableScalarRelationFilter, ApplicationWhereInput> | null
   }, "id">
 
   export type FosterOrderByWithAggregationInput = {
@@ -50863,6 +50975,7 @@ export namespace Prisma {
     photoUrl?: SortOrderInput | SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
+    sourceApplicationId?: SortOrderInput | SortOrder
     _count?: FosterCountOrderByAggregateInput
     _avg?: FosterAvgOrderByAggregateInput
     _max?: FosterMaxOrderByAggregateInput
@@ -50886,6 +50999,7 @@ export namespace Prisma {
     photoUrl?: StringNullableWithAggregatesFilter<"Foster"> | string | null
     notes?: StringWithAggregatesFilter<"Foster"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Foster"> | Date | string
+    sourceApplicationId?: IntNullableWithAggregatesFilter<"Foster"> | number | null
   }
 
   export type KittenWhereInput = {
@@ -51722,6 +51836,7 @@ export namespace Prisma {
     statusNotes?: StringFilter<"Application"> | string
     statusUpdatedAt?: DateTimeNullableFilter<"Application"> | Date | string | null
     kittenOfInterest?: StringNullableFilter<"Application"> | string | null
+    kittenStatusAtSubmission?: StringNullableFilter<"Application"> | string | null
     formData?: StringFilter<"Application"> | string
     rejectionReason?: StringNullableFilter<"Application"> | string | null
     rejectionNotes?: StringNullableFilter<"Application"> | string | null
@@ -51731,6 +51846,7 @@ export namespace Prisma {
     rejectedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     contracts?: ContractListRelationFilter
     uploads?: ApplicationUploadListRelationFilter
+    sourcedFosters?: FosterListRelationFilter
   }
 
   export type ApplicationOrderByWithRelationInput = {
@@ -51740,6 +51856,7 @@ export namespace Prisma {
     statusNotes?: SortOrder
     statusUpdatedAt?: SortOrderInput | SortOrder
     kittenOfInterest?: SortOrderInput | SortOrder
+    kittenStatusAtSubmission?: SortOrderInput | SortOrder
     formData?: SortOrder
     rejectionReason?: SortOrderInput | SortOrder
     rejectionNotes?: SortOrderInput | SortOrder
@@ -51749,6 +51866,7 @@ export namespace Prisma {
     rejectedBy?: UserOrderByWithRelationInput
     contracts?: ContractOrderByRelationAggregateInput
     uploads?: ApplicationUploadOrderByRelationAggregateInput
+    sourcedFosters?: FosterOrderByRelationAggregateInput
   }
 
   export type ApplicationWhereUniqueInput = Prisma.AtLeast<{
@@ -51761,6 +51879,7 @@ export namespace Prisma {
     statusNotes?: StringFilter<"Application"> | string
     statusUpdatedAt?: DateTimeNullableFilter<"Application"> | Date | string | null
     kittenOfInterest?: StringNullableFilter<"Application"> | string | null
+    kittenStatusAtSubmission?: StringNullableFilter<"Application"> | string | null
     formData?: StringFilter<"Application"> | string
     rejectionReason?: StringNullableFilter<"Application"> | string | null
     rejectionNotes?: StringNullableFilter<"Application"> | string | null
@@ -51770,6 +51889,7 @@ export namespace Prisma {
     rejectedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     contracts?: ContractListRelationFilter
     uploads?: ApplicationUploadListRelationFilter
+    sourcedFosters?: FosterListRelationFilter
   }, "id">
 
   export type ApplicationOrderByWithAggregationInput = {
@@ -51779,6 +51899,7 @@ export namespace Prisma {
     statusNotes?: SortOrder
     statusUpdatedAt?: SortOrderInput | SortOrder
     kittenOfInterest?: SortOrderInput | SortOrder
+    kittenStatusAtSubmission?: SortOrderInput | SortOrder
     formData?: SortOrder
     rejectionReason?: SortOrderInput | SortOrder
     rejectionNotes?: SortOrderInput | SortOrder
@@ -51802,6 +51923,7 @@ export namespace Prisma {
     statusNotes?: StringWithAggregatesFilter<"Application"> | string
     statusUpdatedAt?: DateTimeNullableWithAggregatesFilter<"Application"> | Date | string | null
     kittenOfInterest?: StringNullableWithAggregatesFilter<"Application"> | string | null
+    kittenStatusAtSubmission?: StringNullableWithAggregatesFilter<"Application"> | string | null
     formData?: StringWithAggregatesFilter<"Application"> | string
     rejectionReason?: StringNullableWithAggregatesFilter<"Application"> | string | null
     rejectionNotes?: StringNullableWithAggregatesFilter<"Application"> | string | null
@@ -53966,6 +54088,7 @@ export namespace Prisma {
     contracts?: ContractCreateNestedManyWithoutFosterInput
     portalUser?: UserCreateNestedOneWithoutFosterInput
     submittedDocuments?: DocumentCreateNestedManyWithoutSubmittedByFosterInput
+    sourceApplication?: ApplicationCreateNestedOneWithoutSourcedFostersInput
   }
 
   export type FosterUncheckedCreateInput = {
@@ -53981,6 +54104,7 @@ export namespace Prisma {
     photoUrl?: string | null
     notes?: string
     createdAt?: Date | string
+    sourceApplicationId?: number | null
     currentKittens?: KittenUncheckedCreateNestedManyWithoutCurrentFosterInput
     placements?: PlacementUncheckedCreateNestedManyWithoutFosterInput
     contracts?: ContractUncheckedCreateNestedManyWithoutFosterInput
@@ -54005,6 +54129,7 @@ export namespace Prisma {
     contracts?: ContractUpdateManyWithoutFosterNestedInput
     portalUser?: UserUpdateOneWithoutFosterNestedInput
     submittedDocuments?: DocumentUpdateManyWithoutSubmittedByFosterNestedInput
+    sourceApplication?: ApplicationUpdateOneWithoutSourcedFostersNestedInput
   }
 
   export type FosterUncheckedUpdateInput = {
@@ -54020,6 +54145,7 @@ export namespace Prisma {
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sourceApplicationId?: NullableIntFieldUpdateOperationsInput | number | null
     currentKittens?: KittenUncheckedUpdateManyWithoutCurrentFosterNestedInput
     placements?: PlacementUncheckedUpdateManyWithoutFosterNestedInput
     contracts?: ContractUncheckedUpdateManyWithoutFosterNestedInput
@@ -54040,6 +54166,7 @@ export namespace Prisma {
     photoUrl?: string | null
     notes?: string
     createdAt?: Date | string
+    sourceApplicationId?: number | null
   }
 
   export type FosterUpdateManyMutationInput = {
@@ -54069,6 +54196,7 @@ export namespace Prisma {
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sourceApplicationId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type KittenCreateInput = {
@@ -54957,6 +55085,7 @@ export namespace Prisma {
     statusNotes?: string
     statusUpdatedAt?: Date | string | null
     kittenOfInterest?: string | null
+    kittenStatusAtSubmission?: string | null
     formData?: string
     rejectionReason?: string | null
     rejectionNotes?: string | null
@@ -54965,6 +55094,7 @@ export namespace Prisma {
     rejectedBy?: UserCreateNestedOneWithoutRejectedApplicationsInput
     contracts?: ContractCreateNestedManyWithoutApplicationInput
     uploads?: ApplicationUploadCreateNestedManyWithoutApplicationInput
+    sourcedFosters?: FosterCreateNestedManyWithoutSourceApplicationInput
   }
 
   export type ApplicationUncheckedCreateInput = {
@@ -54974,6 +55104,7 @@ export namespace Prisma {
     statusNotes?: string
     statusUpdatedAt?: Date | string | null
     kittenOfInterest?: string | null
+    kittenStatusAtSubmission?: string | null
     formData?: string
     rejectionReason?: string | null
     rejectionNotes?: string | null
@@ -54982,6 +55113,7 @@ export namespace Prisma {
     createdAt?: Date | string
     contracts?: ContractUncheckedCreateNestedManyWithoutApplicationInput
     uploads?: ApplicationUploadUncheckedCreateNestedManyWithoutApplicationInput
+    sourcedFosters?: FosterUncheckedCreateNestedManyWithoutSourceApplicationInput
   }
 
   export type ApplicationUpdateInput = {
@@ -54990,6 +55122,7 @@ export namespace Prisma {
     statusNotes?: StringFieldUpdateOperationsInput | string
     statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
+    kittenStatusAtSubmission?: NullableStringFieldUpdateOperationsInput | string | null
     formData?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     rejectionNotes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -54998,6 +55131,7 @@ export namespace Prisma {
     rejectedBy?: UserUpdateOneWithoutRejectedApplicationsNestedInput
     contracts?: ContractUpdateManyWithoutApplicationNestedInput
     uploads?: ApplicationUploadUpdateManyWithoutApplicationNestedInput
+    sourcedFosters?: FosterUpdateManyWithoutSourceApplicationNestedInput
   }
 
   export type ApplicationUncheckedUpdateInput = {
@@ -55007,6 +55141,7 @@ export namespace Prisma {
     statusNotes?: StringFieldUpdateOperationsInput | string
     statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
+    kittenStatusAtSubmission?: NullableStringFieldUpdateOperationsInput | string | null
     formData?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     rejectionNotes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -55015,6 +55150,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     contracts?: ContractUncheckedUpdateManyWithoutApplicationNestedInput
     uploads?: ApplicationUploadUncheckedUpdateManyWithoutApplicationNestedInput
+    sourcedFosters?: FosterUncheckedUpdateManyWithoutSourceApplicationNestedInput
   }
 
   export type ApplicationCreateManyInput = {
@@ -55024,6 +55160,7 @@ export namespace Prisma {
     statusNotes?: string
     statusUpdatedAt?: Date | string | null
     kittenOfInterest?: string | null
+    kittenStatusAtSubmission?: string | null
     formData?: string
     rejectionReason?: string | null
     rejectionNotes?: string | null
@@ -55038,6 +55175,7 @@ export namespace Prisma {
     statusNotes?: StringFieldUpdateOperationsInput | string
     statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
+    kittenStatusAtSubmission?: NullableStringFieldUpdateOperationsInput | string | null
     formData?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     rejectionNotes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -55052,6 +55190,7 @@ export namespace Prisma {
     statusNotes?: StringFieldUpdateOperationsInput | string
     statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
+    kittenStatusAtSubmission?: NullableStringFieldUpdateOperationsInput | string | null
     formData?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     rejectionNotes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -57401,6 +57540,17 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type PlacementListRelationFilter = {
     every?: PlacementWhereInput
     some?: PlacementWhereInput
@@ -57422,6 +57572,11 @@ export namespace Prisma {
     every?: DocumentWhereInput
     some?: DocumentWhereInput
     none?: DocumentWhereInput
+  }
+
+  export type ApplicationNullableScalarRelationFilter = {
+    is?: ApplicationWhereInput | null
+    isNot?: ApplicationWhereInput | null
   }
 
   export type SortOrderInput = {
@@ -57454,11 +57609,13 @@ export namespace Prisma {
     photoUrl?: SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
+    sourceApplicationId?: SortOrder
   }
 
   export type FosterAvgOrderByAggregateInput = {
     id?: SortOrder
     maxKittens?: SortOrder
+    sourceApplicationId?: SortOrder
   }
 
   export type FosterMaxOrderByAggregateInput = {
@@ -57474,6 +57631,7 @@ export namespace Prisma {
     photoUrl?: SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
+    sourceApplicationId?: SortOrder
   }
 
   export type FosterMinOrderByAggregateInput = {
@@ -57489,11 +57647,13 @@ export namespace Prisma {
     photoUrl?: SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
+    sourceApplicationId?: SortOrder
   }
 
   export type FosterSumOrderByAggregateInput = {
     id?: SortOrder
     maxKittens?: SortOrder
+    sourceApplicationId?: SortOrder
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -57514,7 +57674,7 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type IntNullableFilter<$PrismaModel = never> = {
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
     notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -57522,7 +57682,12 @@ export namespace Prisma {
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type DateTimeNullableFilter<$PrismaModel = never> = {
@@ -57757,22 +57922,6 @@ export namespace Prisma {
     litterId?: SortOrder
     bondedWithKittenId?: SortOrder
     currentFosterId?: SortOrder
-  }
-
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -58209,7 +58358,17 @@ export namespace Prisma {
     none?: ApplicationUploadWhereInput
   }
 
+  export type FosterListRelationFilter = {
+    every?: FosterWhereInput
+    some?: FosterWhereInput
+    none?: FosterWhereInput
+  }
+
   export type ApplicationUploadOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FosterOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -58220,6 +58379,7 @@ export namespace Prisma {
     statusNotes?: SortOrder
     statusUpdatedAt?: SortOrder
     kittenOfInterest?: SortOrder
+    kittenStatusAtSubmission?: SortOrder
     formData?: SortOrder
     rejectionReason?: SortOrder
     rejectionNotes?: SortOrder
@@ -58240,6 +58400,7 @@ export namespace Prisma {
     statusNotes?: SortOrder
     statusUpdatedAt?: SortOrder
     kittenOfInterest?: SortOrder
+    kittenStatusAtSubmission?: SortOrder
     formData?: SortOrder
     rejectionReason?: SortOrder
     rejectionNotes?: SortOrder
@@ -58255,6 +58416,7 @@ export namespace Prisma {
     statusNotes?: SortOrder
     statusUpdatedAt?: SortOrder
     kittenOfInterest?: SortOrder
+    kittenStatusAtSubmission?: SortOrder
     formData?: SortOrder
     rejectionReason?: SortOrder
     rejectionNotes?: SortOrder
@@ -58331,11 +58493,6 @@ export namespace Prisma {
     in?: $Enums.ContractStatus[] | ListEnumContractStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.ContractStatus[] | ListEnumContractStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumContractStatusFilter<$PrismaModel> | $Enums.ContractStatus
-  }
-
-  export type ApplicationNullableScalarRelationFilter = {
-    is?: ApplicationWhereInput | null
-    isNot?: ApplicationWhereInput | null
   }
 
   export type ContractHouseholdAcknowledgmentListRelationFilter = {
@@ -59930,6 +60087,12 @@ export namespace Prisma {
     connect?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
   }
 
+  export type ApplicationCreateNestedOneWithoutSourcedFostersInput = {
+    create?: XOR<ApplicationCreateWithoutSourcedFostersInput, ApplicationUncheckedCreateWithoutSourcedFostersInput>
+    connectOrCreate?: ApplicationCreateOrConnectWithoutSourcedFostersInput
+    connect?: ApplicationWhereUniqueInput
+  }
+
   export type KittenUncheckedCreateNestedManyWithoutCurrentFosterInput = {
     create?: XOR<KittenCreateWithoutCurrentFosterInput, KittenUncheckedCreateWithoutCurrentFosterInput> | KittenCreateWithoutCurrentFosterInput[] | KittenUncheckedCreateWithoutCurrentFosterInput[]
     connectOrCreate?: KittenCreateOrConnectWithoutCurrentFosterInput | KittenCreateOrConnectWithoutCurrentFosterInput[]
@@ -60032,6 +60195,24 @@ export namespace Prisma {
     update?: DocumentUpdateWithWhereUniqueWithoutSubmittedByFosterInput | DocumentUpdateWithWhereUniqueWithoutSubmittedByFosterInput[]
     updateMany?: DocumentUpdateManyWithWhereWithoutSubmittedByFosterInput | DocumentUpdateManyWithWhereWithoutSubmittedByFosterInput[]
     deleteMany?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
+  }
+
+  export type ApplicationUpdateOneWithoutSourcedFostersNestedInput = {
+    create?: XOR<ApplicationCreateWithoutSourcedFostersInput, ApplicationUncheckedCreateWithoutSourcedFostersInput>
+    connectOrCreate?: ApplicationCreateOrConnectWithoutSourcedFostersInput
+    upsert?: ApplicationUpsertWithoutSourcedFostersInput
+    disconnect?: ApplicationWhereInput | boolean
+    delete?: ApplicationWhereInput | boolean
+    connect?: ApplicationWhereUniqueInput
+    update?: XOR<XOR<ApplicationUpdateToOneWithWhereWithoutSourcedFostersInput, ApplicationUpdateWithoutSourcedFostersInput>, ApplicationUncheckedUpdateWithoutSourcedFostersInput>
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type KittenUncheckedUpdateManyWithoutCurrentFosterNestedInput = {
@@ -60529,14 +60710,6 @@ export namespace Prisma {
     deleteMany?: EventCatsScalarWhereInput | EventCatsScalarWhereInput[]
   }
 
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
   export type KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput = {
     create?: XOR<KittenCreateWithoutBondedWithKittenInput, KittenUncheckedCreateWithoutBondedWithKittenInput> | KittenCreateWithoutBondedWithKittenInput[] | KittenUncheckedCreateWithoutBondedWithKittenInput[]
     connectOrCreate?: KittenCreateOrConnectWithoutBondedWithKittenInput | KittenCreateOrConnectWithoutBondedWithKittenInput[]
@@ -60898,6 +61071,13 @@ export namespace Prisma {
     connect?: ApplicationUploadWhereUniqueInput | ApplicationUploadWhereUniqueInput[]
   }
 
+  export type FosterCreateNestedManyWithoutSourceApplicationInput = {
+    create?: XOR<FosterCreateWithoutSourceApplicationInput, FosterUncheckedCreateWithoutSourceApplicationInput> | FosterCreateWithoutSourceApplicationInput[] | FosterUncheckedCreateWithoutSourceApplicationInput[]
+    connectOrCreate?: FosterCreateOrConnectWithoutSourceApplicationInput | FosterCreateOrConnectWithoutSourceApplicationInput[]
+    createMany?: FosterCreateManySourceApplicationInputEnvelope
+    connect?: FosterWhereUniqueInput | FosterWhereUniqueInput[]
+  }
+
   export type ContractUncheckedCreateNestedManyWithoutApplicationInput = {
     create?: XOR<ContractCreateWithoutApplicationInput, ContractUncheckedCreateWithoutApplicationInput> | ContractCreateWithoutApplicationInput[] | ContractUncheckedCreateWithoutApplicationInput[]
     connectOrCreate?: ContractCreateOrConnectWithoutApplicationInput | ContractCreateOrConnectWithoutApplicationInput[]
@@ -60910,6 +61090,13 @@ export namespace Prisma {
     connectOrCreate?: ApplicationUploadCreateOrConnectWithoutApplicationInput | ApplicationUploadCreateOrConnectWithoutApplicationInput[]
     createMany?: ApplicationUploadCreateManyApplicationInputEnvelope
     connect?: ApplicationUploadWhereUniqueInput | ApplicationUploadWhereUniqueInput[]
+  }
+
+  export type FosterUncheckedCreateNestedManyWithoutSourceApplicationInput = {
+    create?: XOR<FosterCreateWithoutSourceApplicationInput, FosterUncheckedCreateWithoutSourceApplicationInput> | FosterCreateWithoutSourceApplicationInput[] | FosterUncheckedCreateWithoutSourceApplicationInput[]
+    connectOrCreate?: FosterCreateOrConnectWithoutSourceApplicationInput | FosterCreateOrConnectWithoutSourceApplicationInput[]
+    createMany?: FosterCreateManySourceApplicationInputEnvelope
+    connect?: FosterWhereUniqueInput | FosterWhereUniqueInput[]
   }
 
   export type UserUpdateOneWithoutRejectedApplicationsNestedInput = {
@@ -60950,6 +61137,20 @@ export namespace Prisma {
     deleteMany?: ApplicationUploadScalarWhereInput | ApplicationUploadScalarWhereInput[]
   }
 
+  export type FosterUpdateManyWithoutSourceApplicationNestedInput = {
+    create?: XOR<FosterCreateWithoutSourceApplicationInput, FosterUncheckedCreateWithoutSourceApplicationInput> | FosterCreateWithoutSourceApplicationInput[] | FosterUncheckedCreateWithoutSourceApplicationInput[]
+    connectOrCreate?: FosterCreateOrConnectWithoutSourceApplicationInput | FosterCreateOrConnectWithoutSourceApplicationInput[]
+    upsert?: FosterUpsertWithWhereUniqueWithoutSourceApplicationInput | FosterUpsertWithWhereUniqueWithoutSourceApplicationInput[]
+    createMany?: FosterCreateManySourceApplicationInputEnvelope
+    set?: FosterWhereUniqueInput | FosterWhereUniqueInput[]
+    disconnect?: FosterWhereUniqueInput | FosterWhereUniqueInput[]
+    delete?: FosterWhereUniqueInput | FosterWhereUniqueInput[]
+    connect?: FosterWhereUniqueInput | FosterWhereUniqueInput[]
+    update?: FosterUpdateWithWhereUniqueWithoutSourceApplicationInput | FosterUpdateWithWhereUniqueWithoutSourceApplicationInput[]
+    updateMany?: FosterUpdateManyWithWhereWithoutSourceApplicationInput | FosterUpdateManyWithWhereWithoutSourceApplicationInput[]
+    deleteMany?: FosterScalarWhereInput | FosterScalarWhereInput[]
+  }
+
   export type ContractUncheckedUpdateManyWithoutApplicationNestedInput = {
     create?: XOR<ContractCreateWithoutApplicationInput, ContractUncheckedCreateWithoutApplicationInput> | ContractCreateWithoutApplicationInput[] | ContractUncheckedCreateWithoutApplicationInput[]
     connectOrCreate?: ContractCreateOrConnectWithoutApplicationInput | ContractCreateOrConnectWithoutApplicationInput[]
@@ -60976,6 +61177,20 @@ export namespace Prisma {
     update?: ApplicationUploadUpdateWithWhereUniqueWithoutApplicationInput | ApplicationUploadUpdateWithWhereUniqueWithoutApplicationInput[]
     updateMany?: ApplicationUploadUpdateManyWithWhereWithoutApplicationInput | ApplicationUploadUpdateManyWithWhereWithoutApplicationInput[]
     deleteMany?: ApplicationUploadScalarWhereInput | ApplicationUploadScalarWhereInput[]
+  }
+
+  export type FosterUncheckedUpdateManyWithoutSourceApplicationNestedInput = {
+    create?: XOR<FosterCreateWithoutSourceApplicationInput, FosterUncheckedCreateWithoutSourceApplicationInput> | FosterCreateWithoutSourceApplicationInput[] | FosterUncheckedCreateWithoutSourceApplicationInput[]
+    connectOrCreate?: FosterCreateOrConnectWithoutSourceApplicationInput | FosterCreateOrConnectWithoutSourceApplicationInput[]
+    upsert?: FosterUpsertWithWhereUniqueWithoutSourceApplicationInput | FosterUpsertWithWhereUniqueWithoutSourceApplicationInput[]
+    createMany?: FosterCreateManySourceApplicationInputEnvelope
+    set?: FosterWhereUniqueInput | FosterWhereUniqueInput[]
+    disconnect?: FosterWhereUniqueInput | FosterWhereUniqueInput[]
+    delete?: FosterWhereUniqueInput | FosterWhereUniqueInput[]
+    connect?: FosterWhereUniqueInput | FosterWhereUniqueInput[]
+    update?: FosterUpdateWithWhereUniqueWithoutSourceApplicationInput | FosterUpdateWithWhereUniqueWithoutSourceApplicationInput[]
+    updateMany?: FosterUpdateManyWithWhereWithoutSourceApplicationInput | FosterUpdateManyWithWhereWithoutSourceApplicationInput[]
+    deleteMany?: FosterScalarWhereInput | FosterScalarWhereInput[]
   }
 
   export type EnumContractTypeFieldUpdateOperationsInput = {
@@ -62269,6 +62484,17 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -62284,33 +62510,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -62338,6 +62537,22 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -62938,6 +63153,46 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ApplicationCreateWithoutSourcedFostersInput = {
+    type: string
+    status?: string
+    statusNotes?: string
+    statusUpdatedAt?: Date | string | null
+    kittenOfInterest?: string | null
+    kittenStatusAtSubmission?: string | null
+    formData?: string
+    rejectionReason?: string | null
+    rejectionNotes?: string | null
+    rejectedAt?: Date | string | null
+    createdAt?: Date | string
+    rejectedBy?: UserCreateNestedOneWithoutRejectedApplicationsInput
+    contracts?: ContractCreateNestedManyWithoutApplicationInput
+    uploads?: ApplicationUploadCreateNestedManyWithoutApplicationInput
+  }
+
+  export type ApplicationUncheckedCreateWithoutSourcedFostersInput = {
+    id?: number
+    type: string
+    status?: string
+    statusNotes?: string
+    statusUpdatedAt?: Date | string | null
+    kittenOfInterest?: string | null
+    kittenStatusAtSubmission?: string | null
+    formData?: string
+    rejectionReason?: string | null
+    rejectionNotes?: string | null
+    rejectedById?: number | null
+    rejectedAt?: Date | string | null
+    createdAt?: Date | string
+    contracts?: ContractUncheckedCreateNestedManyWithoutApplicationInput
+    uploads?: ApplicationUploadUncheckedCreateNestedManyWithoutApplicationInput
+  }
+
+  export type ApplicationCreateOrConnectWithoutSourcedFostersInput = {
+    where: ApplicationWhereUniqueInput
+    create: XOR<ApplicationCreateWithoutSourcedFostersInput, ApplicationUncheckedCreateWithoutSourcedFostersInput>
+  }
+
   export type KittenUpsertWithWhereUniqueWithoutCurrentFosterInput = {
     where: KittenWhereUniqueInput
     update: XOR<KittenUpdateWithoutCurrentFosterInput, KittenUncheckedUpdateWithoutCurrentFosterInput>
@@ -63108,6 +63363,52 @@ export namespace Prisma {
     sortOrder?: IntFilter<"Document"> | number
     uploadedAt?: DateTimeFilter<"Document"> | Date | string
     submittedByFosterId?: IntNullableFilter<"Document"> | number | null
+  }
+
+  export type ApplicationUpsertWithoutSourcedFostersInput = {
+    update: XOR<ApplicationUpdateWithoutSourcedFostersInput, ApplicationUncheckedUpdateWithoutSourcedFostersInput>
+    create: XOR<ApplicationCreateWithoutSourcedFostersInput, ApplicationUncheckedCreateWithoutSourcedFostersInput>
+    where?: ApplicationWhereInput
+  }
+
+  export type ApplicationUpdateToOneWithWhereWithoutSourcedFostersInput = {
+    where?: ApplicationWhereInput
+    data: XOR<ApplicationUpdateWithoutSourcedFostersInput, ApplicationUncheckedUpdateWithoutSourcedFostersInput>
+  }
+
+  export type ApplicationUpdateWithoutSourcedFostersInput = {
+    type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    statusNotes?: StringFieldUpdateOperationsInput | string
+    statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
+    kittenStatusAtSubmission?: NullableStringFieldUpdateOperationsInput | string | null
+    formData?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedBy?: UserUpdateOneWithoutRejectedApplicationsNestedInput
+    contracts?: ContractUpdateManyWithoutApplicationNestedInput
+    uploads?: ApplicationUploadUpdateManyWithoutApplicationNestedInput
+  }
+
+  export type ApplicationUncheckedUpdateWithoutSourcedFostersInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    statusNotes?: StringFieldUpdateOperationsInput | string
+    statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
+    kittenStatusAtSubmission?: NullableStringFieldUpdateOperationsInput | string | null
+    formData?: StringFieldUpdateOperationsInput | string
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectedById?: NullableIntFieldUpdateOperationsInput | number | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contracts?: ContractUncheckedUpdateManyWithoutApplicationNestedInput
+    uploads?: ApplicationUploadUncheckedUpdateManyWithoutApplicationNestedInput
   }
 
   export type LitterCreateWithoutKittensInput = {
@@ -63329,6 +63630,7 @@ export namespace Prisma {
     contracts?: ContractCreateNestedManyWithoutFosterInput
     portalUser?: UserCreateNestedOneWithoutFosterInput
     submittedDocuments?: DocumentCreateNestedManyWithoutSubmittedByFosterInput
+    sourceApplication?: ApplicationCreateNestedOneWithoutSourcedFostersInput
   }
 
   export type FosterUncheckedCreateWithoutCurrentKittensInput = {
@@ -63344,6 +63646,7 @@ export namespace Prisma {
     photoUrl?: string | null
     notes?: string
     createdAt?: Date | string
+    sourceApplicationId?: number | null
     placements?: PlacementUncheckedCreateNestedManyWithoutFosterInput
     contracts?: ContractUncheckedCreateNestedManyWithoutFosterInput
     portalUser?: UserUncheckedCreateNestedOneWithoutFosterInput
@@ -63910,6 +64213,7 @@ export namespace Prisma {
     contracts?: ContractUpdateManyWithoutFosterNestedInput
     portalUser?: UserUpdateOneWithoutFosterNestedInput
     submittedDocuments?: DocumentUpdateManyWithoutSubmittedByFosterNestedInput
+    sourceApplication?: ApplicationUpdateOneWithoutSourcedFostersNestedInput
   }
 
   export type FosterUncheckedUpdateWithoutCurrentKittensInput = {
@@ -63925,6 +64229,7 @@ export namespace Prisma {
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sourceApplicationId?: NullableIntFieldUpdateOperationsInput | number | null
     placements?: PlacementUncheckedUpdateManyWithoutFosterNestedInput
     contracts?: ContractUncheckedUpdateManyWithoutFosterNestedInput
     portalUser?: UserUncheckedUpdateOneWithoutFosterNestedInput
@@ -64729,6 +65034,7 @@ export namespace Prisma {
     contracts?: ContractCreateNestedManyWithoutFosterInput
     portalUser?: UserCreateNestedOneWithoutFosterInput
     submittedDocuments?: DocumentCreateNestedManyWithoutSubmittedByFosterInput
+    sourceApplication?: ApplicationCreateNestedOneWithoutSourcedFostersInput
   }
 
   export type FosterUncheckedCreateWithoutPlacementsInput = {
@@ -64744,6 +65050,7 @@ export namespace Prisma {
     photoUrl?: string | null
     notes?: string
     createdAt?: Date | string
+    sourceApplicationId?: number | null
     currentKittens?: KittenUncheckedCreateNestedManyWithoutCurrentFosterInput
     contracts?: ContractUncheckedCreateNestedManyWithoutFosterInput
     portalUser?: UserUncheckedCreateNestedOneWithoutFosterInput
@@ -64878,6 +65185,7 @@ export namespace Prisma {
     contracts?: ContractUpdateManyWithoutFosterNestedInput
     portalUser?: UserUpdateOneWithoutFosterNestedInput
     submittedDocuments?: DocumentUpdateManyWithoutSubmittedByFosterNestedInput
+    sourceApplication?: ApplicationUpdateOneWithoutSourcedFostersNestedInput
   }
 
   export type FosterUncheckedUpdateWithoutPlacementsInput = {
@@ -64893,6 +65201,7 @@ export namespace Prisma {
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sourceApplicationId?: NullableIntFieldUpdateOperationsInput | number | null
     currentKittens?: KittenUncheckedUpdateManyWithoutCurrentFosterNestedInput
     contracts?: ContractUncheckedUpdateManyWithoutFosterNestedInput
     portalUser?: UserUncheckedUpdateOneWithoutFosterNestedInput
@@ -65749,6 +66058,7 @@ export namespace Prisma {
     placements?: PlacementCreateNestedManyWithoutFosterInput
     contracts?: ContractCreateNestedManyWithoutFosterInput
     portalUser?: UserCreateNestedOneWithoutFosterInput
+    sourceApplication?: ApplicationCreateNestedOneWithoutSourcedFostersInput
   }
 
   export type FosterUncheckedCreateWithoutSubmittedDocumentsInput = {
@@ -65764,6 +66074,7 @@ export namespace Prisma {
     photoUrl?: string | null
     notes?: string
     createdAt?: Date | string
+    sourceApplicationId?: number | null
     currentKittens?: KittenUncheckedCreateNestedManyWithoutCurrentFosterInput
     placements?: PlacementUncheckedCreateNestedManyWithoutFosterInput
     contracts?: ContractUncheckedCreateNestedManyWithoutFosterInput
@@ -65898,6 +66209,7 @@ export namespace Prisma {
     placements?: PlacementUpdateManyWithoutFosterNestedInput
     contracts?: ContractUpdateManyWithoutFosterNestedInput
     portalUser?: UserUpdateOneWithoutFosterNestedInput
+    sourceApplication?: ApplicationUpdateOneWithoutSourcedFostersNestedInput
   }
 
   export type FosterUncheckedUpdateWithoutSubmittedDocumentsInput = {
@@ -65913,6 +66225,7 @@ export namespace Prisma {
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sourceApplicationId?: NullableIntFieldUpdateOperationsInput | number | null
     currentKittens?: KittenUncheckedUpdateManyWithoutCurrentFosterNestedInput
     placements?: PlacementUncheckedUpdateManyWithoutFosterNestedInput
     contracts?: ContractUncheckedUpdateManyWithoutFosterNestedInput
@@ -66053,6 +66366,55 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type FosterCreateWithoutSourceApplicationInput = {
+    name: string
+    phone: string
+    email: string
+    address: string
+    emergencyContact?: string
+    experienceLevel?: string
+    capabilityFlags?: string
+    maxKittens?: number
+    photoUrl?: string | null
+    notes?: string
+    createdAt?: Date | string
+    currentKittens?: KittenCreateNestedManyWithoutCurrentFosterInput
+    placements?: PlacementCreateNestedManyWithoutFosterInput
+    contracts?: ContractCreateNestedManyWithoutFosterInput
+    portalUser?: UserCreateNestedOneWithoutFosterInput
+    submittedDocuments?: DocumentCreateNestedManyWithoutSubmittedByFosterInput
+  }
+
+  export type FosterUncheckedCreateWithoutSourceApplicationInput = {
+    id?: number
+    name: string
+    phone: string
+    email: string
+    address: string
+    emergencyContact?: string
+    experienceLevel?: string
+    capabilityFlags?: string
+    maxKittens?: number
+    photoUrl?: string | null
+    notes?: string
+    createdAt?: Date | string
+    currentKittens?: KittenUncheckedCreateNestedManyWithoutCurrentFosterInput
+    placements?: PlacementUncheckedCreateNestedManyWithoutFosterInput
+    contracts?: ContractUncheckedCreateNestedManyWithoutFosterInput
+    portalUser?: UserUncheckedCreateNestedOneWithoutFosterInput
+    submittedDocuments?: DocumentUncheckedCreateNestedManyWithoutSubmittedByFosterInput
+  }
+
+  export type FosterCreateOrConnectWithoutSourceApplicationInput = {
+    where: FosterWhereUniqueInput
+    create: XOR<FosterCreateWithoutSourceApplicationInput, FosterUncheckedCreateWithoutSourceApplicationInput>
+  }
+
+  export type FosterCreateManySourceApplicationInputEnvelope = {
+    data: FosterCreateManySourceApplicationInput | FosterCreateManySourceApplicationInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutRejectedApplicationsInput = {
     update: XOR<UserUpdateWithoutRejectedApplicationsInput, UserUncheckedUpdateWithoutRejectedApplicationsInput>
     create: XOR<UserCreateWithoutRejectedApplicationsInput, UserUncheckedCreateWithoutRejectedApplicationsInput>
@@ -66144,6 +66506,41 @@ export namespace Prisma {
     fileUrl?: StringFilter<"ApplicationUpload"> | string
     fileType?: StringFilter<"ApplicationUpload"> | string
     createdAt?: DateTimeFilter<"ApplicationUpload"> | Date | string
+  }
+
+  export type FosterUpsertWithWhereUniqueWithoutSourceApplicationInput = {
+    where: FosterWhereUniqueInput
+    update: XOR<FosterUpdateWithoutSourceApplicationInput, FosterUncheckedUpdateWithoutSourceApplicationInput>
+    create: XOR<FosterCreateWithoutSourceApplicationInput, FosterUncheckedCreateWithoutSourceApplicationInput>
+  }
+
+  export type FosterUpdateWithWhereUniqueWithoutSourceApplicationInput = {
+    where: FosterWhereUniqueInput
+    data: XOR<FosterUpdateWithoutSourceApplicationInput, FosterUncheckedUpdateWithoutSourceApplicationInput>
+  }
+
+  export type FosterUpdateManyWithWhereWithoutSourceApplicationInput = {
+    where: FosterScalarWhereInput
+    data: XOR<FosterUpdateManyMutationInput, FosterUncheckedUpdateManyWithoutSourceApplicationInput>
+  }
+
+  export type FosterScalarWhereInput = {
+    AND?: FosterScalarWhereInput | FosterScalarWhereInput[]
+    OR?: FosterScalarWhereInput[]
+    NOT?: FosterScalarWhereInput | FosterScalarWhereInput[]
+    id?: IntFilter<"Foster"> | number
+    name?: StringFilter<"Foster"> | string
+    phone?: StringFilter<"Foster"> | string
+    email?: StringFilter<"Foster"> | string
+    address?: StringFilter<"Foster"> | string
+    emergencyContact?: StringFilter<"Foster"> | string
+    experienceLevel?: StringFilter<"Foster"> | string
+    capabilityFlags?: StringFilter<"Foster"> | string
+    maxKittens?: IntFilter<"Foster"> | number
+    photoUrl?: StringNullableFilter<"Foster"> | string | null
+    notes?: StringFilter<"Foster"> | string
+    createdAt?: DateTimeFilter<"Foster"> | Date | string
+    sourceApplicationId?: IntNullableFilter<"Foster"> | number | null
   }
 
   export type KittenCreateWithoutContractsInput = {
@@ -66252,6 +66649,7 @@ export namespace Prisma {
     placements?: PlacementCreateNestedManyWithoutFosterInput
     portalUser?: UserCreateNestedOneWithoutFosterInput
     submittedDocuments?: DocumentCreateNestedManyWithoutSubmittedByFosterInput
+    sourceApplication?: ApplicationCreateNestedOneWithoutSourcedFostersInput
   }
 
   export type FosterUncheckedCreateWithoutContractsInput = {
@@ -66267,6 +66665,7 @@ export namespace Prisma {
     photoUrl?: string | null
     notes?: string
     createdAt?: Date | string
+    sourceApplicationId?: number | null
     currentKittens?: KittenUncheckedCreateNestedManyWithoutCurrentFosterInput
     placements?: PlacementUncheckedCreateNestedManyWithoutFosterInput
     portalUser?: UserUncheckedCreateNestedOneWithoutFosterInput
@@ -66284,6 +66683,7 @@ export namespace Prisma {
     statusNotes?: string
     statusUpdatedAt?: Date | string | null
     kittenOfInterest?: string | null
+    kittenStatusAtSubmission?: string | null
     formData?: string
     rejectionReason?: string | null
     rejectionNotes?: string | null
@@ -66291,6 +66691,7 @@ export namespace Prisma {
     createdAt?: Date | string
     rejectedBy?: UserCreateNestedOneWithoutRejectedApplicationsInput
     uploads?: ApplicationUploadCreateNestedManyWithoutApplicationInput
+    sourcedFosters?: FosterCreateNestedManyWithoutSourceApplicationInput
   }
 
   export type ApplicationUncheckedCreateWithoutContractsInput = {
@@ -66300,6 +66701,7 @@ export namespace Prisma {
     statusNotes?: string
     statusUpdatedAt?: Date | string | null
     kittenOfInterest?: string | null
+    kittenStatusAtSubmission?: string | null
     formData?: string
     rejectionReason?: string | null
     rejectionNotes?: string | null
@@ -66307,6 +66709,7 @@ export namespace Prisma {
     rejectedAt?: Date | string | null
     createdAt?: Date | string
     uploads?: ApplicationUploadUncheckedCreateNestedManyWithoutApplicationInput
+    sourcedFosters?: FosterUncheckedCreateNestedManyWithoutSourceApplicationInput
   }
 
   export type ApplicationCreateOrConnectWithoutContractsInput = {
@@ -66462,6 +66865,7 @@ export namespace Prisma {
     placements?: PlacementUpdateManyWithoutFosterNestedInput
     portalUser?: UserUpdateOneWithoutFosterNestedInput
     submittedDocuments?: DocumentUpdateManyWithoutSubmittedByFosterNestedInput
+    sourceApplication?: ApplicationUpdateOneWithoutSourcedFostersNestedInput
   }
 
   export type FosterUncheckedUpdateWithoutContractsInput = {
@@ -66477,6 +66881,7 @@ export namespace Prisma {
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sourceApplicationId?: NullableIntFieldUpdateOperationsInput | number | null
     currentKittens?: KittenUncheckedUpdateManyWithoutCurrentFosterNestedInput
     placements?: PlacementUncheckedUpdateManyWithoutFosterNestedInput
     portalUser?: UserUncheckedUpdateOneWithoutFosterNestedInput
@@ -66500,6 +66905,7 @@ export namespace Prisma {
     statusNotes?: StringFieldUpdateOperationsInput | string
     statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
+    kittenStatusAtSubmission?: NullableStringFieldUpdateOperationsInput | string | null
     formData?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     rejectionNotes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -66507,6 +66913,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rejectedBy?: UserUpdateOneWithoutRejectedApplicationsNestedInput
     uploads?: ApplicationUploadUpdateManyWithoutApplicationNestedInput
+    sourcedFosters?: FosterUpdateManyWithoutSourceApplicationNestedInput
   }
 
   export type ApplicationUncheckedUpdateWithoutContractsInput = {
@@ -66516,6 +66923,7 @@ export namespace Prisma {
     statusNotes?: StringFieldUpdateOperationsInput | string
     statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
+    kittenStatusAtSubmission?: NullableStringFieldUpdateOperationsInput | string | null
     formData?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     rejectionNotes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -66523,6 +66931,7 @@ export namespace Prisma {
     rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     uploads?: ApplicationUploadUncheckedUpdateManyWithoutApplicationNestedInput
+    sourcedFosters?: FosterUncheckedUpdateManyWithoutSourceApplicationNestedInput
   }
 
   export type ContractHouseholdAcknowledgmentUpsertWithWhereUniqueWithoutContractInput = {
@@ -66881,6 +67290,7 @@ export namespace Prisma {
     statusNotes?: string
     statusUpdatedAt?: Date | string | null
     kittenOfInterest?: string | null
+    kittenStatusAtSubmission?: string | null
     formData?: string
     rejectionReason?: string | null
     rejectionNotes?: string | null
@@ -66888,6 +67298,7 @@ export namespace Prisma {
     createdAt?: Date | string
     rejectedBy?: UserCreateNestedOneWithoutRejectedApplicationsInput
     contracts?: ContractCreateNestedManyWithoutApplicationInput
+    sourcedFosters?: FosterCreateNestedManyWithoutSourceApplicationInput
   }
 
   export type ApplicationUncheckedCreateWithoutUploadsInput = {
@@ -66897,6 +67308,7 @@ export namespace Prisma {
     statusNotes?: string
     statusUpdatedAt?: Date | string | null
     kittenOfInterest?: string | null
+    kittenStatusAtSubmission?: string | null
     formData?: string
     rejectionReason?: string | null
     rejectionNotes?: string | null
@@ -66904,6 +67316,7 @@ export namespace Prisma {
     rejectedAt?: Date | string | null
     createdAt?: Date | string
     contracts?: ContractUncheckedCreateNestedManyWithoutApplicationInput
+    sourcedFosters?: FosterUncheckedCreateNestedManyWithoutSourceApplicationInput
   }
 
   export type ApplicationCreateOrConnectWithoutUploadsInput = {
@@ -66928,6 +67341,7 @@ export namespace Prisma {
     statusNotes?: StringFieldUpdateOperationsInput | string
     statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
+    kittenStatusAtSubmission?: NullableStringFieldUpdateOperationsInput | string | null
     formData?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     rejectionNotes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -66935,6 +67349,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rejectedBy?: UserUpdateOneWithoutRejectedApplicationsNestedInput
     contracts?: ContractUpdateManyWithoutApplicationNestedInput
+    sourcedFosters?: FosterUpdateManyWithoutSourceApplicationNestedInput
   }
 
   export type ApplicationUncheckedUpdateWithoutUploadsInput = {
@@ -66944,6 +67359,7 @@ export namespace Prisma {
     statusNotes?: StringFieldUpdateOperationsInput | string
     statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
+    kittenStatusAtSubmission?: NullableStringFieldUpdateOperationsInput | string | null
     formData?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     rejectionNotes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -66951,6 +67367,7 @@ export namespace Prisma {
     rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     contracts?: ContractUncheckedUpdateManyWithoutApplicationNestedInput
+    sourcedFosters?: FosterUncheckedUpdateManyWithoutSourceApplicationNestedInput
   }
 
   export type ContentCompletionCreateWithoutContentInput = {
@@ -67863,6 +68280,7 @@ export namespace Prisma {
     placements?: PlacementCreateNestedManyWithoutFosterInput
     contracts?: ContractCreateNestedManyWithoutFosterInput
     submittedDocuments?: DocumentCreateNestedManyWithoutSubmittedByFosterInput
+    sourceApplication?: ApplicationCreateNestedOneWithoutSourcedFostersInput
   }
 
   export type FosterUncheckedCreateWithoutPortalUserInput = {
@@ -67878,6 +68296,7 @@ export namespace Prisma {
     photoUrl?: string | null
     notes?: string
     createdAt?: Date | string
+    sourceApplicationId?: number | null
     currentKittens?: KittenUncheckedCreateNestedManyWithoutCurrentFosterInput
     placements?: PlacementUncheckedCreateNestedManyWithoutFosterInput
     contracts?: ContractUncheckedCreateNestedManyWithoutFosterInput
@@ -67895,6 +68314,7 @@ export namespace Prisma {
     statusNotes?: string
     statusUpdatedAt?: Date | string | null
     kittenOfInterest?: string | null
+    kittenStatusAtSubmission?: string | null
     formData?: string
     rejectionReason?: string | null
     rejectionNotes?: string | null
@@ -67902,6 +68322,7 @@ export namespace Prisma {
     createdAt?: Date | string
     contracts?: ContractCreateNestedManyWithoutApplicationInput
     uploads?: ApplicationUploadCreateNestedManyWithoutApplicationInput
+    sourcedFosters?: FosterCreateNestedManyWithoutSourceApplicationInput
   }
 
   export type ApplicationUncheckedCreateWithoutRejectedByInput = {
@@ -67911,6 +68332,7 @@ export namespace Prisma {
     statusNotes?: string
     statusUpdatedAt?: Date | string | null
     kittenOfInterest?: string | null
+    kittenStatusAtSubmission?: string | null
     formData?: string
     rejectionReason?: string | null
     rejectionNotes?: string | null
@@ -67918,6 +68340,7 @@ export namespace Prisma {
     createdAt?: Date | string
     contracts?: ContractUncheckedCreateNestedManyWithoutApplicationInput
     uploads?: ApplicationUploadUncheckedCreateNestedManyWithoutApplicationInput
+    sourcedFosters?: FosterUncheckedCreateNestedManyWithoutSourceApplicationInput
   }
 
   export type ApplicationCreateOrConnectWithoutRejectedByInput = {
@@ -68124,6 +68547,7 @@ export namespace Prisma {
     placements?: PlacementUpdateManyWithoutFosterNestedInput
     contracts?: ContractUpdateManyWithoutFosterNestedInput
     submittedDocuments?: DocumentUpdateManyWithoutSubmittedByFosterNestedInput
+    sourceApplication?: ApplicationUpdateOneWithoutSourcedFostersNestedInput
   }
 
   export type FosterUncheckedUpdateWithoutPortalUserInput = {
@@ -68139,6 +68563,7 @@ export namespace Prisma {
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sourceApplicationId?: NullableIntFieldUpdateOperationsInput | number | null
     currentKittens?: KittenUncheckedUpdateManyWithoutCurrentFosterNestedInput
     placements?: PlacementUncheckedUpdateManyWithoutFosterNestedInput
     contracts?: ContractUncheckedUpdateManyWithoutFosterNestedInput
@@ -68171,6 +68596,7 @@ export namespace Prisma {
     statusNotes?: StringFilter<"Application"> | string
     statusUpdatedAt?: DateTimeNullableFilter<"Application"> | Date | string | null
     kittenOfInterest?: StringNullableFilter<"Application"> | string | null
+    kittenStatusAtSubmission?: StringNullableFilter<"Application"> | string | null
     formData?: StringFilter<"Application"> | string
     rejectionReason?: StringNullableFilter<"Application"> | string | null
     rejectionNotes?: StringNullableFilter<"Application"> | string | null
@@ -70573,6 +70999,21 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type FosterCreateManySourceApplicationInput = {
+    id?: number
+    name: string
+    phone: string
+    email: string
+    address: string
+    emergencyContact?: string
+    experienceLevel?: string
+    capabilityFlags?: string
+    maxKittens?: number
+    photoUrl?: string | null
+    notes?: string
+    createdAt?: Date | string
+  }
+
   export type ContractUpdateWithoutApplicationInput = {
     type?: EnumContractTypeFieldUpdateOperationsInput | $Enums.ContractType
     templateSlug?: StringFieldUpdateOperationsInput | string
@@ -70678,6 +71119,60 @@ export namespace Prisma {
     docLabel?: StringFieldUpdateOperationsInput | string
     fileUrl?: StringFieldUpdateOperationsInput | string
     fileType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FosterUpdateWithoutSourceApplicationInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    emergencyContact?: StringFieldUpdateOperationsInput | string
+    experienceLevel?: StringFieldUpdateOperationsInput | string
+    capabilityFlags?: StringFieldUpdateOperationsInput | string
+    maxKittens?: IntFieldUpdateOperationsInput | number
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentKittens?: KittenUpdateManyWithoutCurrentFosterNestedInput
+    placements?: PlacementUpdateManyWithoutFosterNestedInput
+    contracts?: ContractUpdateManyWithoutFosterNestedInput
+    portalUser?: UserUpdateOneWithoutFosterNestedInput
+    submittedDocuments?: DocumentUpdateManyWithoutSubmittedByFosterNestedInput
+  }
+
+  export type FosterUncheckedUpdateWithoutSourceApplicationInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    emergencyContact?: StringFieldUpdateOperationsInput | string
+    experienceLevel?: StringFieldUpdateOperationsInput | string
+    capabilityFlags?: StringFieldUpdateOperationsInput | string
+    maxKittens?: IntFieldUpdateOperationsInput | number
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentKittens?: KittenUncheckedUpdateManyWithoutCurrentFosterNestedInput
+    placements?: PlacementUncheckedUpdateManyWithoutFosterNestedInput
+    contracts?: ContractUncheckedUpdateManyWithoutFosterNestedInput
+    portalUser?: UserUncheckedUpdateOneWithoutFosterNestedInput
+    submittedDocuments?: DocumentUncheckedUpdateManyWithoutSubmittedByFosterNestedInput
+  }
+
+  export type FosterUncheckedUpdateManyWithoutSourceApplicationInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    emergencyContact?: StringFieldUpdateOperationsInput | string
+    experienceLevel?: StringFieldUpdateOperationsInput | string
+    capabilityFlags?: StringFieldUpdateOperationsInput | string
+    maxKittens?: IntFieldUpdateOperationsInput | number
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -70926,6 +71421,7 @@ export namespace Prisma {
     statusNotes?: string
     statusUpdatedAt?: Date | string | null
     kittenOfInterest?: string | null
+    kittenStatusAtSubmission?: string | null
     formData?: string
     rejectionReason?: string | null
     rejectionNotes?: string | null
@@ -70984,6 +71480,7 @@ export namespace Prisma {
     statusNotes?: StringFieldUpdateOperationsInput | string
     statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
+    kittenStatusAtSubmission?: NullableStringFieldUpdateOperationsInput | string | null
     formData?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     rejectionNotes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70991,6 +71488,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     contracts?: ContractUpdateManyWithoutApplicationNestedInput
     uploads?: ApplicationUploadUpdateManyWithoutApplicationNestedInput
+    sourcedFosters?: FosterUpdateManyWithoutSourceApplicationNestedInput
   }
 
   export type ApplicationUncheckedUpdateWithoutRejectedByInput = {
@@ -71000,6 +71498,7 @@ export namespace Prisma {
     statusNotes?: StringFieldUpdateOperationsInput | string
     statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
+    kittenStatusAtSubmission?: NullableStringFieldUpdateOperationsInput | string | null
     formData?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     rejectionNotes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -71007,6 +71506,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     contracts?: ContractUncheckedUpdateManyWithoutApplicationNestedInput
     uploads?: ApplicationUploadUncheckedUpdateManyWithoutApplicationNestedInput
+    sourcedFosters?: FosterUncheckedUpdateManyWithoutSourceApplicationNestedInput
   }
 
   export type ApplicationUncheckedUpdateManyWithoutRejectedByInput = {
@@ -71016,6 +71516,7 @@ export namespace Prisma {
     statusNotes?: StringFieldUpdateOperationsInput | string
     statusUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     kittenOfInterest?: NullableStringFieldUpdateOperationsInput | string | null
+    kittenStatusAtSubmission?: NullableStringFieldUpdateOperationsInput | string | null
     formData?: StringFieldUpdateOperationsInput | string
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     rejectionNotes?: NullableStringFieldUpdateOperationsInput | string | null
