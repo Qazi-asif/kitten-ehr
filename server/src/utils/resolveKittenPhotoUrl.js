@@ -1,13 +1,13 @@
 const LEGACY_UPLOAD_PATTERN = /^\/uploads\/(.+)\.(jpg|jpeg|png|webp|gif)$/i;
 
 export const KITTEN_NAME_PHOTO_FALLBACKS = {
-  biscuit: '/images/kittens/cute.png',
-  gravy: '/images/kittens/vect.jpg',
-  nugget: '/images/kittens/cato.png',
-  pumpkin: '/images/kittens/cato.png',
+  biscuit: '/images/kittens/no-photo.svg',
+  gravy: '/images/kittens/no-photo.svg',
+  nugget: '/images/kittens/no-photo.svg',
+  pumpkin: '/images/kittens/no-photo.svg',
 };
 
-export const GENERIC_KITTEN_PHOTO_FALLBACK = '/images/kittens/cute.png';
+export const GENERIC_KITTEN_PHOTO_FALLBACK = '/images/kittens/no-photo.svg';
 
 export function isResolvablePhotoUrl(url) {
   if (!url) return false;

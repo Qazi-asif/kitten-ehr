@@ -3,13 +3,13 @@ import { getFileUrl } from '../services/api';
 const LEGACY_UPLOAD_PATTERN = /^\/uploads\/(.+)\.(jpg|jpeg|png|webp|gif)$/i;
 
 const KITTEN_FALLBACKS = {
-  biscuit: '/images/kittens/cute.png',
-  gravy: '/images/kittens/vect.jpg',
-  nugget: '/images/kittens/cato.png',
-  pumpkin: '/images/kittens/cato.png',
+  biscuit: '/images/kittens/no-photo.svg',
+  gravy: '/images/kittens/no-photo.svg',
+  nugget: '/images/kittens/no-photo.svg',
+  pumpkin: '/images/kittens/no-photo.svg',
 };
 
-const GENERIC_FALLBACK = '/images/kittens/cute.png';
+const GENERIC_FALLBACK = '/images/kittens/no-photo.svg';
 
 function isResolvablePhotoUrl(url) {
   if (!url) return false;

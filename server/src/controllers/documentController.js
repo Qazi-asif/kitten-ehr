@@ -8,6 +8,7 @@ import {
 } from '../utils/photoDocuments.js';
 import { deleteStoredFile, persistKittenFile } from '../utils/fileStorage.js';
 import { generateThumbnailFromBuffer, generateThumbnailFromUrl } from '../utils/thumbnail.js';
+import { invalidateCacheByPrefix } from '../utils/responseCache.js';
 
 const PHOTO_TRANSACTION_OPTIONS = { maxWait: 10000, timeout: 30000 };
 
@@ -169,6 +170,12 @@ export async function uploadPhoto(req, res, next) {
       });
     }, PHOTO_TRANSACTION_OPTIONS);
 
+    if (shouldSetPrimary) {
+      // Bust cached public kittens list/stats - primaryPhotoUrl just changed
+      invalidateCacheByPrefix('public-kittens');
+      invalidateCacheByPrefix('public-stats');
+    }
+
     const kittenAfter = await findKitten(kittenId);
     res.status(201).json({ photo: document, primaryPhotoUrl: kittenAfter.primaryPhotoUrl });
   } catch (error) {
@@ -208,6 +215,10 @@ export async function setPrimaryPhoto(req, res, next) {
         data: { primaryPhotoUrl: document.fileUrl, thumbnailUrl },
       });
     }, PHOTO_TRANSACTION_OPTIONS);
+
+    // Bust cached public kittens list/stats - primaryPhotoUrl just changed
+    invalidateCacheByPrefix('public-kittens');
+    invalidateCacheByPrefix('public-stats');
 
     const kitten = await findKitten(kittenId);
     res.json({ primaryPhotoUrl: kitten.primaryPhotoUrl, photoId: id });
@@ -265,6 +276,10 @@ export async function deleteDocument(req, res, next) {
           });
         }
       }, PHOTO_TRANSACTION_OPTIONS);
+
+      // Bust cached public kittens list/stats - primaryPhotoUrl just changed
+      invalidateCacheByPrefix('public-kittens');
+      invalidateCacheByPrefix('public-stats');
     }
 
     res.status(204).send();
