@@ -123,6 +123,7 @@ export async function createKitten(req, res, next) {
       sex,
       fixedStatus,
       rescueStory,
+      intakeDate,
     } = parsed.data;
 
     const parsedLitterId = litterId ?? null;
@@ -150,6 +151,7 @@ export async function createKitten(req, res, next) {
         sex,
         fixedStatus,
         rescueStory,
+        intakeDate: intakeDate ?? new Date(),
       },
       include: kittenIncludes,
     });

@@ -21,6 +21,7 @@ import {
   deleteDocument,
   fetchDocuments,
   fetchLitters,
+  fetchFosters,
   fetchKittens,
   fetchKittenById,
   fetchKittenPhotos,
@@ -54,6 +55,7 @@ const TABS = [
 ];
 
 const FIXED_STATUS_OPTIONS = ['', 'Intact', 'Spayed/Neutered'];
+const SEX_OPTIONS = ['', 'Male', 'Female'];
 
 function formatDate(value) {
   if (!value) return '—';
@@ -101,6 +103,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
   const [savingUpdate, setSavingUpdate] = useState(false);
   const [allKittens, setAllKittens] = useState([]);
   const [litters, setLitters] = useState([]);
+  const [fosters, setFosters] = useState([]);
   const [error, setError] = useState(null);
   const [alertsDismissed, setAlertsDismissed] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -116,6 +119,8 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
       sex: data.sex || '',
       fixedStatus: normalizeFixedStatus(data.fixedStatus),
       dateOfBirth: data.dateOfBirth ? data.dateOfBirth.slice(0, 10) : '',
+      intakeDate: data.intakeDate ? data.intakeDate.slice(0, 10) : '',
+      currentFosterId: data.currentFosterId ? String(data.currentFosterId) : '',
       rescueStory: data.rescueStory || '',
       fivFelvStatus: data.fivFelvStatus || '',
       specialNeeds: data.specialNeeds || '',
@@ -176,6 +181,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
       loadKitten(),
       fetchLitters().then(setLitters).catch(() => setLitters([])),
       fetchKittens().then(setAllKittens).catch(() => setAllKittens([])),
+      fetchFosters().then(setFosters).catch(() => setFosters([])),
     ])
       .then(() => setLoading(false))
       .catch((err) => {
@@ -254,6 +260,8 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
         sex: profileForm.sex,
         fixedStatus: profileForm.fixedStatus,
         dateOfBirth: profileForm.dateOfBirth || null,
+        intakeDate: profileForm.intakeDate || null,
+        currentFosterId: profileForm.currentFosterId ? Number.parseInt(profileForm.currentFosterId, 10) : null,
         rescueStory: profileForm.rescueStory,
         fivFelvStatus: profileForm.fivFelvStatus || null,
         specialNeeds: profileForm.specialNeeds || null,
@@ -274,6 +282,8 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
         sex: updated.sex || '',
         fixedStatus: normalizeFixedStatus(updated.fixedStatus),
         dateOfBirth: updated.dateOfBirth ? updated.dateOfBirth.slice(0, 10) : '',
+        intakeDate: updated.intakeDate ? updated.intakeDate.slice(0, 10) : '',
+        currentFosterId: updated.currentFosterId ? String(updated.currentFosterId) : '',
         rescueStory: updated.rescueStory || '',
         fivFelvStatus: updated.fivFelvStatus || '',
         specialNeeds: updated.specialNeeds || '',
@@ -567,7 +577,6 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                   ['name', 'Name', 'text'],
                   ['breed', 'Breed', 'text'],
                   ['color', 'Color', 'text'],
-                  ['sex', 'Sex', 'text'],
                 ].map(([field, label, type]) => (
                   <label key={field} className="block">
                     <span className="text-xs font-semibold uppercase text-gray-500">{label}</span>
@@ -579,6 +588,20 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                     />
                   </label>
                 ))}
+                <label className="block">
+                  <span className="text-xs font-semibold uppercase text-gray-500">Sex</span>
+                  <select
+                    value={profileForm.sex || ''}
+                    onChange={(e) => handleProfileFieldChange('sex', e.target.value)}
+                    className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+                  >
+                    {SEX_OPTIONS.map((option) => (
+                      <option key={option || 'unset'} value={option}>
+                        {option || 'Not specified'}
+                      </option>
+                    ))}
+                  </select>
+                </label>
                 <label className="block">
                   <span className="text-xs font-semibold uppercase text-gray-500">Status</span>
                   <select
@@ -595,6 +618,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                 </label>
                 {[
                   ['dateOfBirth', 'Date of Birth', 'date'],
+                  ['intakeDate', 'Intake Date', 'date'],
                   ['fivFelvStatus', 'FIV/FeLV Status', 'text'],
                 ].map(([field, label, type]) => (
                   <label key={field} className="block">
@@ -627,19 +651,25 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                     ))}
                   </select>
                 </label>
-                <div className="block sm:col-span-2">
+                <label className="block sm:col-span-2">
                   <span className="text-xs font-semibold uppercase text-gray-500">Assigned Foster</span>
-                  <p className="mt-1 rounded-lg border border-gray-100 bg-gray-50 px-3 py-2 text-sm text-gray-800">
-                    {kitten.currentFoster ? (
-                      <Link to={`/admin/fosters/${kitten.currentFoster.id}`} className="font-semibold text-brand hover:underline">
-                        {kitten.currentFoster.name}
-                      </Link>
-                    ) : (
-                      'No foster assigned'
-                    )}
-                  </p>
-                  <p className="mt-1 text-xs text-slate-500">Assign or change foster homes from the Placements tab.</p>
-                </div>
+                  <select
+                    value={profileForm.currentFosterId || ''}
+                    onChange={(e) => handleProfileFieldChange('currentFosterId', e.target.value)}
+                    disabled={!canEdit}
+                    className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm disabled:bg-gray-50"
+                  >
+                    <option value="">No foster assigned</option>
+                    {fosters.map((foster) => (
+                      <option key={foster.id} value={String(foster.id)}>
+                        {foster.name}
+                      </option>
+                    ))}
+                  </select>
+                  {fosters.length === 0 && (
+                    <p className="mt-1 text-xs text-amber-600">No fosters available. Add fosters under Admin → Fosters.</p>
+                  )}
+                </label>
                 <label className="block sm:col-span-2">
                   <span className="text-xs font-semibold uppercase text-gray-500">Litter Group</span>
                   <LitterSelect

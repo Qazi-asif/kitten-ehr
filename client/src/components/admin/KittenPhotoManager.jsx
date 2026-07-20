@@ -15,7 +15,7 @@ function KittenPhotoManager({
 
   return (
     <div className="space-y-4">
-      <div className="overflow-hidden rounded-xl border border-slate-200 bg-slate-100">
+      <div className="max-w-sm overflow-hidden rounded-xl border border-slate-200 bg-slate-100">
         <KittenPhoto kitten={kitten} allowFallback className="aspect-square w-full" />
         {editMode && (
           <div className="border-t border-slate-200 bg-white px-4 py-3">

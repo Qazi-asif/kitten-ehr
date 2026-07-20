@@ -17,6 +17,7 @@ const initialFormState = {
   sex: '',
   fixedStatus: '',
   rescueStory: '',
+  intakeDate: new Date().toISOString().slice(0, 10),
 };
 
 function KittenForm({ onSubmit, litters = [], onLittersChange, fosters = [], submitting = false }) {
@@ -42,6 +43,7 @@ function KittenForm({ onSubmit, litters = [], onLittersChange, fosters = [], sub
         rescueStory: form.rescueStory,
         litterId: form.litterId ? Number.parseInt(form.litterId, 10) : null,
         currentFosterId: form.fosterId ? Number.parseInt(form.fosterId, 10) : null,
+        intakeDate: form.intakeDate || null,
       },
       photoFile,
     });
@@ -77,6 +79,10 @@ function KittenForm({ onSubmit, litters = [], onLittersChange, fosters = [], sub
           <label className="block">
             <span className="mb-1 block text-sm font-medium text-slate-700">Date of Birth</span>
             <input type="date" name="dateOfBirth" value={form.dateOfBirth} onChange={handleChange} className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" />
+          </label>
+          <label className="block">
+            <span className="mb-1 block text-sm font-medium text-slate-700">Intake Date</span>
+            <input type="date" name="intakeDate" value={form.intakeDate} onChange={handleChange} className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" />
           </label>
           <label className="block">
             <span className="mb-1 block text-sm font-medium text-slate-700">Sex</span>

@@ -38,6 +38,7 @@ export const createKittenSchema = z.object({
   rescueStory: z.string().max(5000).optional().default(''),
   publishTargets: publishTargetsField,
   weightGrams: z.coerce.number().positive('Weight must be a positive number').optional(),
+  intakeDate: optionalDate,
 });
 
 const optionalUrl = z.string().trim().max(500).optional().nullable();
@@ -63,6 +64,7 @@ export const updateKittenSchema = z
     websiteFeaturedComment: z.string().max(2000).optional(),
     publishTargets: publishTargetsField,
     litterId: z.coerce.number().int().positive().optional().nullable(),
+    currentFosterId: z.coerce.number().int().positive().optional().nullable(),
     isBondedPair: z.boolean().optional(),
     bondedWithKittenId: z.coerce.number().int().positive().optional().nullable(),
     bondedWithName: z.string().max(200).optional(),
