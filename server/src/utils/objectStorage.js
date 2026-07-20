@@ -36,6 +36,7 @@ function getClient(config) {
       secretAccessKey: config.secretAccessKey,
     },
     forcePathStyle: Boolean(config.endpoint),
+    requestChecksumCalculation: 'WHEN_REQUIRED',
   });
   cachedConfigKey = configKey;
   return cachedClient;
