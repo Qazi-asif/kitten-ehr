@@ -3,12 +3,19 @@ export const CONTENT_CATEGORY_SUCCESS_STORY = 'success-story';
 
 export const EDUCATION_TOPIC_CATEGORIES = [
   'Kitten Care 101',
+  'Colony & Feral',
+  'Foster Education',
+  'Toxins/Health',
+];
+
+const LEGACY_TOPIC_CATEGORIES = [
+  'Kitten Care',
+  'Adoption',
+  'Fostering',
   'Colony & Feral Care',
   'Becoming A Foster',
   'Health & Emergencies',
 ];
-
-const LEGACY_TOPIC_CATEGORIES = ['Kitten Care', 'Adoption', 'Fostering'];
 
 export const ALLOWED_CONTENT_CATEGORIES = [
   CONTENT_CATEGORY_EDUCATION,
