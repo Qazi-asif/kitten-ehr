@@ -110,6 +110,26 @@ const publicReadLimiter = rateLimit({
   skip: (req) => req.method !== 'GET',
 });
 
+// Authenticated staff traffic (/api/* except /api/public/*) gets its own
+// generous ceiling instead of relying solely on globalLimiter's Bearer-token
+// skip. That skip is correctly implemented and works in the common case, but
+// this is defense-in-depth against two real failure modes: a request that
+// briefly loses its Authorization header (session edge cases), and - the
+// stronger suspect for the "heavy daily US-based admin use trips this, testing
+// from Pakistan rarely does" pattern - trust proxy resolving req.ip to a
+// shared regional edge/CDN address rather than each visitor's real IP, which
+// would silently bucket unrelated traffic together. 1000/15min comfortably
+// absorbs a full day of real admin work regardless of which mechanism is at
+// play, without requiring the exact proxy hop count to be nailed down first.
+const authenticatedLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 1000,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests. Please try again later.' },
+  skip: (req) => !req.path.startsWith('/api') || req.path.startsWith('/api/public'),
+});
+
 const applicationLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 5,
@@ -129,6 +149,7 @@ const donationLimiter = rateLimit({
 app.use(globalLimiter);
 app.use('/api/public', publicReadLimiter);
 app.use('/uploads', publicReadLimiter);
+app.use(authenticatedLimiter);
 app.use('/api/public/applications', applicationLimiter);
 app.use('/api/public/donations', donationLimiter);
 
