@@ -1,7 +1,12 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { createMarketingPost, fetchSocialPosts } from '../../services/marketingApi';
+import {
+  createMarketingPost,
+  deleteMarketingPost,
+  fetchSocialPosts,
+  updateMarketingPost,
+} from '../../services/marketingApi';
 
 const PLATFORM_OPTIONS = [
   { id: 'FACEBOOK', label: 'Facebook' },
@@ -32,6 +37,14 @@ function formatDateTime(value) {
   });
 }
 
+function toDateTimeLocalValue(value) {
+  if (!value) return '';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
 function readImageFile(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -44,11 +57,14 @@ function readImageFile(file) {
 function MarketingPage() {
   const { hasPermission } = useAuth();
   const canManage = hasPermission('events.manage');
+  const formRef = useRef(null);
   const [posts, setPosts] = useState([]);
   const [form, setForm] = useState(emptyForm);
+  const [editingId, setEditingId] = useState(null);
   const [statusFilter, setStatusFilter] = useState('all');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [deletingId, setDeletingId] = useState(null);
   const [error, setError] = useState('');
 
   const load = useCallback(async () => {
@@ -68,6 +84,18 @@ function MarketingPage() {
   useEffect(() => {
     load();
   }, [load]);
+
+  useEffect(() => {
+    if (editingId && formRef.current) {
+      formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [editingId]);
+
+  function resetForm() {
+    setForm(emptyForm);
+    setEditingId(null);
+    setError('');
+  }
 
   function togglePlatform(platformId) {
     setForm((prev) => ({
@@ -100,18 +128,52 @@ function MarketingPage() {
     setSaving(true);
     setError('');
     try {
-      await createMarketingPost({
+      const payload = {
         body: form.body,
         imageUrl: form.imageUrl,
         platforms: form.platforms,
         scheduledFor: form.scheduledFor || null,
-      });
-      setForm(emptyForm);
+      };
+      if (editingId) {
+        await updateMarketingPost(editingId, payload);
+      } else {
+        await createMarketingPost(payload);
+      }
+      resetForm();
       await load();
     } catch (err) {
-      setError(err.message || 'Failed to create post.');
+      setError(err.message || 'Failed to save post.');
     } finally {
       setSaving(false);
+    }
+  }
+
+  function startEdit(post) {
+    if (!canManage) return;
+    setEditingId(post.id);
+    setForm({
+      body: post.body ?? '',
+      imageUrl: post.imageUrl ?? '',
+      platforms: Array.isArray(post.platforms) && post.platforms.length > 0 ? post.platforms : ['FACEBOOK'],
+      scheduledFor: toDateTimeLocalValue(post.scheduledFor),
+    });
+    setError('');
+  }
+
+  async function handleDelete(id) {
+    if (!canManage) return;
+    if (!window.confirm('Delete this social post? This cannot be undone.')) return;
+
+    setDeletingId(id);
+    setError('');
+    try {
+      await deleteMarketingPost(id);
+      if (editingId === id) resetForm();
+      await load();
+    } catch (err) {
+      setError(err.message || 'Failed to delete post.');
+    } finally {
+      setDeletingId(null);
     }
   }
 
@@ -146,8 +208,16 @@ function MarketingPage() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="mb-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h3 className="text-lg font-semibold text-slate-900">Create Post</h3>
+      <form
+        ref={formRef}
+        onSubmit={handleSubmit}
+        className={`mb-8 rounded-xl border bg-white p-6 shadow-sm ${
+          editingId ? 'border-brand ring-2 ring-brand/20' : 'border-slate-200'
+        }`}
+      >
+        <h3 className="text-lg font-semibold text-slate-900">
+          {editingId ? 'Edit Post' : 'Create Post'}
+        </h3>
         <div className="mt-4 space-y-4">
           <label className="block">
             <span className="mb-1 block text-sm font-medium text-slate-700">Post Body</span>
@@ -203,13 +273,25 @@ function MarketingPage() {
           </label>
         </div>
 
-        <button
-          type="submit"
-          disabled={!canManage || saving || form.platforms.length === 0}
-          className="mt-5 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-60"
-        >
-          {saving ? 'Saving...' : 'Save Post'}
-        </button>
+        <div className="mt-5 flex flex-wrap gap-3">
+          <button
+            type="submit"
+            disabled={!canManage || saving || form.platforms.length === 0}
+            className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-60"
+          >
+            {saving ? 'Saving...' : editingId ? 'Update Post' : 'Save Post'}
+          </button>
+          {editingId && (
+            <button
+              type="button"
+              onClick={resetForm}
+              disabled={saving}
+              className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-60"
+            >
+              Cancel
+            </button>
+          )}
+        </div>
       </form>
 
       <div className="mb-4 flex flex-wrap gap-2">
@@ -237,20 +319,24 @@ function MarketingPage() {
               <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Platforms</th>
               <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Scheduled For</th>
               <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Status</th>
+              <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200">
             {loading ? (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-sm text-slate-500">Loading posts...</td>
+                <td colSpan={5} className="px-4 py-8 text-center text-sm text-slate-500">Loading posts...</td>
               </tr>
             ) : posts.length === 0 ? (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-sm text-slate-500">No posts yet.</td>
+                <td colSpan={5} className="px-4 py-8 text-center text-sm text-slate-500">No posts yet.</td>
               </tr>
             ) : (
               posts.map((post) => (
-                <tr key={post.id} className="align-top hover:bg-slate-50">
+                <tr
+                  key={post.id}
+                  className={`align-top ${editingId === post.id ? 'bg-brand-light/40' : 'hover:bg-slate-50'}`}
+                >
                   <td className="max-w-md px-4 py-3 text-sm text-slate-700">
                     <p className="line-clamp-3 whitespace-pre-wrap">{post.body}</p>
                     {post.imageUrl && (
@@ -269,6 +355,24 @@ function MarketingPage() {
                     <span className="inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold uppercase text-slate-700">
                       {post.status}
                     </span>
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-3 text-sm">
+                    <button
+                      type="button"
+                      onClick={() => startEdit(post)}
+                      disabled={!canManage || saving || deletingId === post.id}
+                      className="mr-3 font-medium text-brand hover:underline disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(post.id)}
+                      disabled={!canManage || saving || deletingId === post.id}
+                      className="font-medium text-red-600 hover:underline disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      {deletingId === post.id ? 'Deleting...' : 'Delete'}
+                    </button>
                   </td>
                 </tr>
               ))

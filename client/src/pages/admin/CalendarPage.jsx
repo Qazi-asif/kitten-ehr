@@ -9,7 +9,7 @@ const initialForm = {
   date: '',
   location: '',
   description: '',
-  publishTargets: [],
+  publishTargets: ['WEBSITE'],
   kittenIds: [],
 };
 

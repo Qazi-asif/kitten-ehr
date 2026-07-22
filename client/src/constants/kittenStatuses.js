@@ -8,4 +8,5 @@ export const KITTEN_STATUS_OPTIONS = [
   'Medical Hold',
   'Transferred',
   'Deceased',
+  'Released',
 ];

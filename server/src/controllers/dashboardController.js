@@ -198,10 +198,13 @@ export async function getDashboardMetrics(_req, res, next) {
       recentIntakes,
       recentAdoptions,
       pendingApplications,
+      upcomingEvents,
     ] = await Promise.all([
       prisma.kitten.count(),
       prisma.kitten.count({ where: { status: 'Available for Adoption' } }),
-      prisma.foster.count(),
+      // "Total Fosters" on the dashboard means currently-active fosters, not
+      // every foster ever created — Foster.isActive tracks that directly.
+      prisma.foster.count({ where: { isActive: true } }),
       prisma.kitten.count({ where: { status: 'Adopted' } }),
       prisma.kitten.count({ where: { intakeSource: { contains: 'Euthanasia' } } }),
       prisma.activeProtocol.count(),
@@ -235,6 +238,24 @@ export async function getDashboardMetrics(_req, res, next) {
           createdAt: true,
         },
       }),
+      // Next 5 events published to the public website - same isPublic/status
+      // filter getPublicEventBySlug uses for what counts as "live" on the site.
+      prisma.event.findMany({
+        where: {
+          isPublic: true,
+          status: 'PUBLISHED',
+          date: { gte: new Date() },
+        },
+        orderBy: { date: 'asc' },
+        take: 5,
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          date: true,
+          location: true,
+        },
+      }),
     ]);
 
     const statusCounts = Object.fromEntries(
@@ -255,6 +276,7 @@ export async function getDashboardMetrics(_req, res, next) {
       recentIntakes: recentIntakes.map(serializeDashboardKitten),
       recentAdoptions: recentAdoptions.map(serializeDashboardKitten),
       pendingApplications,
+      upcomingEvents,
       ...alerts,
     };
 

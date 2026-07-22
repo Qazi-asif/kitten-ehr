@@ -27,3 +27,30 @@ export function matchesAdoptFilter(kitten, filterId) {
   if (filterId === 'seniors') return months >= 96;
   return true;
 }
+
+export const ADOPT_SEX_FILTERS = [
+  { id: 'all', label: 'Any Sex' },
+  { id: 'Male', label: 'Male' },
+  { id: 'Female', label: 'Female' },
+];
+
+export function matchesSexFilter(kitten, sexFilter) {
+  if (!sexFilter || sexFilter === 'all') return true;
+  return (kitten.sex || '').toLowerCase() === sexFilter.toLowerCase();
+}
+
+export function matchesColorFilter(kitten, colorFilter) {
+  const query = colorFilter?.trim().toLowerCase();
+  if (!query) return true;
+  return (kitten.color || '').toLowerCase().includes(query);
+}
+
+// Applies the age-bucket filter, the sex filter, and the color filter
+// together (AND). Any filter left at its "no restriction" value is skipped.
+export function matchesAllAdoptFilters(kitten, { ageFilter, sexFilter, colorFilter } = {}) {
+  return (
+    matchesAdoptFilter(kitten, ageFilter)
+    && matchesSexFilter(kitten, sexFilter)
+    && matchesColorFilter(kitten, colorFilter)
+  );
+}

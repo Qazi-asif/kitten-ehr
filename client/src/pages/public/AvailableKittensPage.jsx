@@ -5,7 +5,7 @@ import {
   CONTENT_CATEGORY_SUCCESS_STORY,
   articleExcerpt,
 } from '../../constants/educationCategories';
-import { ADOPT_CAT_FILTERS, matchesAdoptFilter } from '../../utils/kittenFilters';
+import { ADOPT_CAT_FILTERS, ADOPT_SEX_FILTERS, matchesAllAdoptFilters } from '../../utils/kittenFilters';
 import { fetchPublicContent, fetchPublicKittens } from '../../services/publicApi';
 
 function AvailableKittensPage() {
@@ -15,6 +15,8 @@ function AvailableKittensPage() {
   const [error, setError] = useState(null);
   const [storiesLoading, setStoriesLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState('all');
+  const [sexFilter, setSexFilter] = useState('all');
+  const [colorFilter, setColorFilter] = useState('');
 
   // Kept separate from the success-stories fetch below: a real failure here
   // (e.g. a timed-out request) needs to surface as a visible error with a
@@ -48,8 +50,12 @@ function AvailableKittensPage() {
   }, [loadKittens]);
 
   const filteredKittens = useMemo(
-    () => kittens.filter((kitten) => matchesAdoptFilter(kitten, activeFilter)),
-    [kittens, activeFilter],
+    () => kittens.filter((kitten) => matchesAllAdoptFilters(kitten, {
+      ageFilter: activeFilter,
+      sexFilter,
+      colorFilter,
+    })),
+    [kittens, activeFilter, sexFilter, colorFilter],
   );
 
   return (
@@ -87,7 +93,7 @@ function AvailableKittensPage() {
           Every cat below is vetted, vaccinated, microchipped, and ready. Tap Meet Me to start.
         </p>
 
-        <div className="mb-8 flex flex-wrap gap-2">
+        <div className="mb-4 flex flex-wrap gap-2">
           {ADOPT_CAT_FILTERS.map((filter) => (
             <button
               key={filter.id}
@@ -102,6 +108,31 @@ function AvailableKittensPage() {
               {filter.label}
             </button>
           ))}
+        </div>
+
+        <div className="mb-8 flex flex-wrap items-center gap-3">
+          <label className="flex items-center gap-2 text-sm font-medium text-slate-600">
+            Sex
+            <select
+              value={sexFilter}
+              onChange={(e) => setSexFilter(e.target.value)}
+              className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-brand focus:ring-brand"
+            >
+              {ADOPT_SEX_FILTERS.map((filter) => (
+                <option key={filter.id} value={filter.id}>{filter.label}</option>
+              ))}
+            </select>
+          </label>
+          <label className="flex items-center gap-2 text-sm font-medium text-slate-600">
+            Color
+            <input
+              type="text"
+              value={colorFilter}
+              onChange={(e) => setColorFilter(e.target.value)}
+              placeholder="e.g. orange, tabby"
+              className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 placeholder:text-slate-400 focus:border-brand focus:ring-brand"
+            />
+          </label>
         </div>
 
         {loading ? (

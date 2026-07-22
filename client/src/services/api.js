@@ -117,6 +117,21 @@ export async function provisionFosterFromApplication(applicationId, payload) {
   return response.json();
 }
 
+export async function updateFoster(id, data) {
+  const response = await adminFetch(`/fosters/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to update foster'));
+  return response.json();
+}
+
+export async function deactivateFoster(id) {
+  const response = await adminFetch(`/fosters/${id}/deactivate`, { method: 'POST' });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to deactivate foster'));
+  return response.json();
+}
+
 export async function fetchFosterById(id) {
   const response = await adminFetch(`/fosters/${id}`);
   if (!response.ok) throw new Error(response.status === 404 ? 'Foster not found' : 'Failed to fetch foster');
@@ -294,6 +309,32 @@ export async function openApplicationUploadFile(applicationId, uploadId) {
 
 export function fetchDocuments(kittenId) {
   return adminRequest(`/kittens/${kittenId}/documents`);
+}
+
+export async function openKittenDocumentFile(kittenId, documentId) {
+  const response = await adminFetch(`/kittens/${kittenId}/documents/${documentId}/file`);
+  if (!response.ok) {
+    throw new Error(await readApiError(response, 'Failed to open document'));
+  }
+  const blob = await response.blob();
+  const objectUrl = URL.createObjectURL(blob);
+  window.open(objectUrl, '_blank', 'noopener,noreferrer');
+  // Revoke after the new tab has a chance to load the blob.
+  window.setTimeout(() => URL.revokeObjectURL(objectUrl), 60_000);
+}
+
+export async function downloadKittenDocumentFile(kittenId, documentId, fileName) {
+  const response = await adminFetch(`/kittens/${kittenId}/documents/${documentId}/file`);
+  if (!response.ok) {
+    throw new Error(await readApiError(response, 'Failed to download document'));
+  }
+  const blob = await response.blob();
+  const objectUrl = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = objectUrl;
+  link.download = fileName || 'document';
+  link.click();
+  window.setTimeout(() => URL.revokeObjectURL(objectUrl), 60_000);
 }
 
 export function fetchKittenPhotos(kittenId) {

@@ -6,7 +6,7 @@ import {
   photoDocumentOrderBy,
   photoDocumentSelect,
 } from '../utils/photoDocuments.js';
-import { deleteStoredFile, persistKittenFile } from '../utils/fileStorage.js';
+import { deleteStoredFile, persistKittenFile, isStoredFileUrl, resolveStoredFileAbsolutePath } from '../utils/fileStorage.js';
 import { generateThumbnailFromBuffer, generateThumbnailFromUrl } from '../utils/thumbnail.js';
 import { invalidateCacheByPrefix } from '../utils/responseCache.js';
 
@@ -32,6 +32,72 @@ export async function getDocumentsByKitten(req, res, next) {
     });
 
     res.json(documents);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function streamDocumentFile(req, res, next) {
+  try {
+    const kittenId = Number.parseInt(req.params.kittenId, 10);
+    const documentId = Number.parseInt(req.params.id, 10);
+
+    const document = await prisma.document.findFirst({
+      where: { id: documentId, kittenId },
+    });
+
+    if (!document) {
+      return res.status(404).json({ error: 'Document not found' });
+    }
+
+    const fileUrl = document.fileUrl || '';
+    const fileName = document.fileName || 'document';
+    const disposition = `inline; filename*=UTF-8''${encodeURIComponent(fileName)}`;
+
+    if (fileUrl.startsWith('data:')) {
+      const match = /^data:([^;,]+);base64,(.+)$/s.exec(fileUrl);
+      if (!match) {
+        return res.status(404).json({ error: 'File not found' });
+      }
+      res.setHeader('Content-Type', match[1] || 'application/octet-stream');
+      res.setHeader('Content-Disposition', disposition);
+      res.setHeader('Cache-Control', 'private, no-store');
+      return res.send(Buffer.from(match[2], 'base64'));
+    }
+
+    if (isStoredFileUrl(fileUrl)) {
+      const absolutePath = resolveStoredFileAbsolutePath(fileUrl);
+      if (!absolutePath) {
+        return res.status(404).json({ error: 'File not found' });
+      }
+      const ext = fileUrl.split('.').pop()?.toLowerCase();
+      const mimeByExt = {
+        jpg: 'image/jpeg',
+        jpeg: 'image/jpeg',
+        png: 'image/png',
+        webp: 'image/webp',
+        gif: 'image/gif',
+        pdf: 'application/pdf',
+      };
+      return res.sendFile(absolutePath, {
+        headers: {
+          'Content-Type': mimeByExt[ext] || 'application/octet-stream',
+          'Content-Disposition': disposition,
+          'Cache-Control': 'private, no-store',
+        },
+      }, (err) => {
+        if (err && !res.headersSent) {
+          res.status(404).json({ error: 'File not found' });
+        }
+      });
+    }
+
+    if (/^https?:\/\//i.test(fileUrl)) {
+      res.setHeader('Cache-Control', 'private, no-store');
+      return res.redirect(302, fileUrl);
+    }
+
+    return res.status(404).json({ error: 'File not found' });
   } catch (error) {
     next(error);
   }

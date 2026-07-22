@@ -26,8 +26,8 @@ export const STATUS_EMAIL_TEMPLATE_MAP = {
 };
 
 const approvedBody = `
-<h2 style="margin:0 0 16px;font-size:20px;color:#059669;">Congratulations, {{applicantName}}!</h2>
-<p>We are delighted to inform you that your <strong>{{applicationType}}</strong> application has been <strong style="color:#059669;">Approved</strong>.</p>
+<h2 style="margin:0 0 16px;font-size:20px;color:#00A3A3;">Congratulations, {{applicantName}}!</h2>
+<p>We are delighted to inform you that your <strong>{{applicationType}}</strong> application has been <strong style="color:#00A3A3;">Approved</strong>.</p>
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:20px 0;background:#ecfdf5;border-radius:8px;border:1px solid #a7f3d0;">
   <tr><td style="padding:16px;font-size:14px;">
     <p style="margin:0 0 8px;"><strong>Application ID:</strong> #{{applicationId}}</p>
@@ -67,7 +67,7 @@ const underReviewBody = `
 <p>We appreciate your patience while our team completes the review process.</p>`;
 
 const donationThankYouBody = `
-<h2 style="margin:0 0 16px;font-size:20px;color:#059669;">Thank you.</h2>
+<h2 style="margin:0 0 16px;font-size:20px;color:#00A3A3;">Thank you.</h2>
 <p>Dear {{donorName}},</p>
 <p>Thank you. You just moved a cat closer to a couch. Watch your inbox; we love sharing where the help goes.</p>
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:20px 0;background:#ecfdf5;border-radius:8px;border:1px solid #a7f3d0;">
@@ -81,7 +81,7 @@ const donationThankYouBody = `
 <p>With gratitude,<br/>The {{orgName}} Team</p>`;
 
 const sponsorshipThankYouBody = `
-<h2 style="margin:0 0 16px;font-size:20px;color:#059669;">You&apos;re officially in {{kittenName}}&apos;s corner.</h2>
+<h2 style="margin:0 0 16px;font-size:20px;color:#00A3A3;">You&apos;re officially in {{kittenName}}&apos;s corner.</h2>
 <p>Dear {{donorName}},</p>
 <p>Thank you. We&apos;ll keep you posted on how {{kittenName}}&apos;s doing. Welcome to the rescue.</p>
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:20px 0;background:#ecfdf5;border-radius:8px;border:1px solid #a7f3d0;">

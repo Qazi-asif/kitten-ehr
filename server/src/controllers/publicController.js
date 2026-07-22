@@ -12,6 +12,7 @@ import {
   normalizeKittenPhotoUrl,
 } from '../utils/resolveKittenPhotoUrl.js';
 import { getCachedResponse, setCachedResponse } from '../utils/responseCache.js';
+import { resolveStoredFileAbsolutePath } from '../utils/fileStorage.js';
 import nodemailer from 'nodemailer';
 import { escapeHtml } from '../utils/htmlEscape.js';
 
@@ -131,6 +132,21 @@ export async function getPublicKittens(req, res, next) {
   }
 }
 
+// Builds the list of public gallery photo URLs for a kitten - one short
+// image-proxy reference per photo document, same rationale as
+// toPublicPhotoUrl above: never embed raw base64 blobs inline in JSON.
+async function buildGalleryPhotoUrls(kittenId) {
+  const documents = await prisma.document.findMany({
+    where: { kittenId },
+    orderBy: photoDocumentOrderBy(),
+    select: photoDocumentSelect(),
+  });
+
+  return documents
+    .filter((document) => isPhotoDocument(document))
+    .map((document) => `/api/public/kittens/${kittenId}/photos/${document.id}`);
+}
+
 export async function getPublicKittenById(req, res, next) {
   try {
     const id = Number.parseInt(req.params.id, 10);
@@ -145,7 +161,8 @@ export async function getPublicKittenById(req, res, next) {
     }
 
     const [enriched] = await enrichPublicKittensWithPhotos([kitten]);
-    res.json(enriched);
+    const galleryPhotoUrls = await buildGalleryPhotoUrls(id);
+    res.json({ ...enriched, galleryPhotoUrls });
   } catch (error) {
     next(error);
   }
@@ -201,9 +218,99 @@ export async function getPublicKittenPhoto(req, res, next) {
       return res.send(parsed.buffer);
     }
 
+    // Prefer serving local disk bytes here so public cards do not depend on
+    // anonymous /uploads static access for non-image or locked paths.
+    if (resolved.startsWith('/uploads/')) {
+      const absolutePath = resolveStoredFileAbsolutePath(resolved);
+      if (!absolutePath) {
+        return res.status(404).end();
+      }
+      const ext = resolved.split('.').pop()?.toLowerCase();
+      const mimeByExt = {
+        jpg: 'image/jpeg',
+        jpeg: 'image/jpeg',
+        png: 'image/png',
+        webp: 'image/webp',
+        gif: 'image/gif',
+      };
+      res.set('Content-Type', mimeByExt[ext] || 'application/octet-stream');
+      res.set('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+      return res.sendFile(absolutePath, (err) => {
+        if (err && !res.headersSent) res.status(404).end();
+      });
+    }
+
     // Already a short reference (real object-storage URL once S3/R2 is
-    // configured, or a local /images or /uploads path) - just point the
+    // configured, or a local /images path) - just point the
     // browser at it directly rather than re-encoding.
+    return res.redirect(302, resolved);
+  } catch (error) {
+    next(error);
+  }
+}
+
+// Streams a single gallery photo document, scoped to a publicly listed
+// kitten. Mirrors getPublicKittenPhoto's resolution logic (data URL vs.
+// local /uploads path vs. already-short URL) but for an explicit docId
+// instead of resolving "the" primary photo.
+export async function getPublicKittenGalleryPhoto(req, res, next) {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+    const docId = Number.parseInt(req.params.docId, 10);
+
+    const kitten = await prisma.kitten.findFirst({
+      where: { id, ...publicWebsiteFilter },
+      select: { id: true },
+    });
+
+    if (!kitten) {
+      return res.status(404).end();
+    }
+
+    const document = await prisma.document.findFirst({
+      where: { id: docId, kittenId: id },
+      select: photoDocumentSelect(),
+    });
+
+    if (!document || !isPhotoDocument(document)) {
+      return res.status(404).end();
+    }
+
+    const resolved = document.fileUrl;
+    if (!resolved) {
+      return res.status(404).end();
+    }
+
+    if (resolved.startsWith('data:image/')) {
+      const parsed = parseDataUrl(resolved);
+      if (!parsed) {
+        return res.status(404).end();
+      }
+      res.set('Content-Type', parsed.mime);
+      res.set('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+      return res.send(parsed.buffer);
+    }
+
+    if (resolved.startsWith('/uploads/')) {
+      const absolutePath = resolveStoredFileAbsolutePath(resolved);
+      if (!absolutePath) {
+        return res.status(404).end();
+      }
+      const ext = resolved.split('.').pop()?.toLowerCase();
+      const mimeByExt = {
+        jpg: 'image/jpeg',
+        jpeg: 'image/jpeg',
+        png: 'image/png',
+        webp: 'image/webp',
+        gif: 'image/gif',
+      };
+      res.set('Content-Type', mimeByExt[ext] || 'application/octet-stream');
+      res.set('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+      return res.sendFile(absolutePath, (err) => {
+        if (err && !res.headersSent) res.status(404).end();
+      });
+    }
+
     return res.redirect(302, resolved);
   } catch (error) {
     next(error);

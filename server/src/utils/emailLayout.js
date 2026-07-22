@@ -14,8 +14,8 @@ export function buildDefaultEmailLayout() {
       <td align="center">
         <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(15,23,42,0.08);">
           <tr>
-            <td style="background:linear-gradient(135deg,#059669 0%,#047857 100%);padding:28px 32px;text-align:center;">
-              <p style="margin:0;font-size:11px;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:#d1fae5;">Pawsitive Rescue</p>
+            <td style="background:linear-gradient(135deg,#00CDCD 0%,#00A3A3 100%);padding:28px 32px;text-align:center;">
+              <p style="margin:0;font-size:11px;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:#E0F9F9;">Pawsitive Rescue</p>
               <h1 style="margin:8px 0 0;font-size:24px;line-height:1.3;color:#ffffff;">{{orgName}}</h1>
             </td>
           </tr>

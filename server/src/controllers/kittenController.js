@@ -23,7 +23,11 @@ const TERMINAL_DISCHARGE_TYPE = {
   Adopted: 'Adopted',
   Transferred: 'Transferred',
   Deceased: 'Deceased',
+  Released: 'Released',
 };
+
+/** Terminal statuses that default outcomeDate to now when not explicitly provided. */
+const OUTCOME_DATE_STATUSES = ['Adopted', 'Deceased', 'Released'];
 
 const kittenIncludes = {
   litter: { select: { id: true, name: true } },
@@ -163,6 +167,7 @@ export async function createKitten(req, res, next) {
       fixedStatus,
       rescueStory,
       intakeDate,
+      intakeSource,
     } = parsed.data;
 
     const parsedLitterId = litterId ?? null;
@@ -192,6 +197,7 @@ export async function createKitten(req, res, next) {
           fixedStatus,
           rescueStory,
           intakeDate: intakeDate ?? new Date(),
+          intakeSource: intakeSource ?? '',
         },
         include: kittenIncludes,
       });
@@ -322,9 +328,26 @@ export async function updateKitten(req, res, next) {
     const nextStatus = data.status ?? existing.status;
     const becomingTerminal = TERMINAL_KITTEN_STATUSES.includes(nextStatus)
       && nextStatus !== existing.status;
+    const leavingTerminal = TERMINAL_KITTEN_STATUSES.includes(existing.status)
+      && nextStatus !== existing.status
+      && !TERMINAL_KITTEN_STATUSES.includes(nextStatus);
 
     if (becomingTerminal) {
       data.currentFosterId = null;
+
+      if (OUTCOME_DATE_STATUSES.includes(nextStatus) && data.outcomeDate === undefined) {
+        data.outcomeDate = new Date();
+      }
+    }
+
+    if (nextStatus === 'Transferred' && data.outcomeDetail !== undefined) {
+      // Transferred tracks a free-text detail, not a date.
+      data.outcomeDate = null;
+    }
+
+    if (leavingTerminal) {
+      data.outcomeDate = null;
+      data.outcomeDetail = null;
     }
 
     let kitten;

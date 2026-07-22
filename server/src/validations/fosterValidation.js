@@ -17,6 +17,10 @@ export const createFosterSchema = z.object({
   notes: z.string().max(5000).optional().default(''),
 });
 
+export const updateFosterSchema = createFosterSchema.partial().extend({
+  isActive: z.boolean().optional(),
+});
+
 export const createPlacementSchema = z.object({
   kittenId: z.coerce.number().int().positive('A valid kitten is required'),
   intakeDate: z.string().min(1, 'Intake date is required'),

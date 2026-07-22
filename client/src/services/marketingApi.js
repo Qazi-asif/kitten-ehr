@@ -24,3 +24,17 @@ export async function createMarketingPost(payload) {
   if (!response.ok) throw new Error(await readApiError(response, 'Failed to create social post'));
   return response.json();
 }
+
+export async function updateMarketingPost(id, payload) {
+  const response = await adminFetch(`/social-posts/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(payload),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to update social post'));
+  return response.json();
+}
+
+export async function deleteMarketingPost(id) {
+  const response = await adminFetch(`/social-posts/${id}`, { method: 'DELETE' });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to delete social post'));
+}

@@ -140,6 +140,7 @@ exports.Prisma.FosterScalarFieldEnum = {
   maxKittens: 'maxKittens',
   photoUrl: 'photoUrl',
   notes: 'notes',
+  isActive: 'isActive',
   createdAt: 'createdAt',
   sourceApplicationId: 'sourceApplicationId'
 };
@@ -162,6 +163,8 @@ exports.Prisma.KittenScalarFieldEnum = {
   thumbnailUrl: 'thumbnailUrl',
   intakeDate: 'intakeDate',
   intakeSource: 'intakeSource',
+  outcomeDate: 'outcomeDate',
+  outcomeDetail: 'outcomeDetail',
   notes: 'notes',
   internalNotes: 'internalNotes',
   isListedOnWebsite: 'isListedOnWebsite',
@@ -532,6 +535,7 @@ exports.Prisma.SettingsScalarFieldEnum = {
   adminNotifyEmail: 'adminNotifyEmail',
   donationWidgetCode: 'donationWidgetCode',
   donatePageLive: 'donatePageLive',
+  showCurrentPetsOnAdoptionForm: 'showCurrentPetsOnAdoptionForm',
   paypalLink: 'paypalLink',
   stripeLink: 'stripeLink',
   venmoQrCodeUrl: 'venmoQrCodeUrl',

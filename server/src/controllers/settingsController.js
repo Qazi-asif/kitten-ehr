@@ -45,6 +45,7 @@ export const DEFAULTS = {
   adminNotifyEmail: process.env.SMTP_USER || '',
   donationWidgetCode: '',
   donatePageLive: false,
+  showCurrentPetsOnAdoptionForm: false,
   paypalLink: '',
   stripeLink: '',
   venmoQrCodeUrl: '',
@@ -143,6 +144,7 @@ export async function updateSettings(req, res, next) {
       adminNotifyEmail,
       donationWidgetCode,
       donatePageLive,
+      showCurrentPetsOnAdoptionForm,
       paypalLink,
       stripeLink,
       venmoQrCodeUrl,
@@ -212,6 +214,9 @@ export async function updateSettings(req, res, next) {
       data.donationWidgetCode = String(donationWidgetCode).slice(0, 10000);
     }
     if (donatePageLive !== undefined) data.donatePageLive = Boolean(donatePageLive);
+    if (showCurrentPetsOnAdoptionForm !== undefined) {
+      data.showCurrentPetsOnAdoptionForm = Boolean(showCurrentPetsOnAdoptionForm);
+    }
     if (paypalLink !== undefined) data.paypalLink = normalizeOptionalUrl(paypalLink);
     if (stripeLink !== undefined) data.stripeLink = normalizeOptionalUrl(stripeLink);
     if (venmoQrCodeUrl !== undefined) data.venmoQrCodeUrl = String(venmoQrCodeUrl).trim();

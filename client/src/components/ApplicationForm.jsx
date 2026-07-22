@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import HouseholdPetsSection from './HouseholdPetsSection';
-import { submitApplication } from '../services/publicApi';
+import PhoneInput from './PhoneInput';
+import { fetchPublicSettings, submitApplication } from '../services/publicApi';
 import { CheckCircle2, ImagePlus, Send, X } from 'lucide-react';
 
 const OWN_OR_RENT_OPTIONS = ['', 'Own', 'Rent'];
@@ -84,6 +85,7 @@ function ApplicationForm({
   const [photoFiles, setPhotoFiles] = useState([]);
   const [photoPreviews, setPhotoPreviews] = useState([]);
   const [selectedKittenId, setSelectedKittenId] = useState(prefilledKittenId);
+  const [showCurrentPetsOnAdoptionForm, setShowCurrentPetsOnAdoptionForm] = useState(false);
   const [form, setForm] = useState({
     fullName: '',
     email: '',
@@ -102,6 +104,21 @@ function ApplicationForm({
     unexpectedStopPlan: '',
     message: '',
   });
+
+  useEffect(() => {
+    if (applicationType !== 'Adoption') return;
+    let cancelled = false;
+    fetchPublicSettings()
+      .then((settings) => {
+        if (!cancelled) setShowCurrentPetsOnAdoptionForm(Boolean(settings?.showCurrentPetsOnAdoptionForm));
+      })
+      .catch(() => {
+        if (!cancelled) setShowCurrentPetsOnAdoptionForm(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [applicationType]);
 
   function handleKittenSelect(e) {
     const raw = e.target.value;
@@ -262,7 +279,11 @@ function ApplicationForm({
           </label>
           <label className="block">
             <span className="mb-2 block text-sm font-semibold text-slate-800">Phone *</span>
-            <input type="tel" name="phone" value={form.phone} onChange={handleChange} required className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm focus:border-brand focus:ring-brand" />
+            <PhoneInput
+              value={form.phone}
+              onChange={(phone) => setForm((prev) => ({ ...prev, phone }))}
+              required
+            />
           </label>
           <label className="block sm:col-span-2">
             <span className="mb-2 block text-sm font-semibold text-slate-800">Full Address *</span>
@@ -443,17 +464,22 @@ function ApplicationForm({
           )}
         </div>
 
-        {/* Section: Current Pets */}
-        <h3 className="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
-          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand/10 text-brand text-xs">3</span>
-          Current Pets
-        </h3>
-        <div className="mb-10 bg-slate-50 rounded-2xl p-6 border border-slate-100">
-           <HouseholdPetsSection
-             pets={form.currentPets}
-             onChange={(currentPets) => setForm((prev) => ({ ...prev, currentPets }))}
-           />
-        </div>
+        {/* Section: Current Pets - Foster applications always ask; Adoption
+            applications only ask when the org has enabled it in Settings. */}
+        {(applicationType === 'Foster' || showCurrentPetsOnAdoptionForm) && (
+          <>
+            <h3 className="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand/10 text-brand text-xs">3</span>
+              Current Pets
+            </h3>
+            <div className="mb-10 bg-slate-50 rounded-2xl p-6 border border-slate-100">
+               <HouseholdPetsSection
+                 pets={form.currentPets}
+                 onChange={(currentPets) => setForm((prev) => ({ ...prev, currentPets }))}
+               />
+            </div>
+          </>
+        )}
         
         {/* Section: Additional Message */}
         <h3 className="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">

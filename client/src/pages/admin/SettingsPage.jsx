@@ -44,6 +44,7 @@ const EMPTY_ORG = {
   aiEnabled: true,
   donationWidgetCode: '',
   donatePageLive: false,
+  showCurrentPetsOnAdoptionForm: false,
   paypalLink: '',
   stripeLink: '',
   venmoQrCodeUrl: '',
@@ -98,6 +99,7 @@ function mapOrgSettingsFromApi(settingsData = {}) {
     aiEnabled: settingsData.aiEnabled !== false,
     donationWidgetCode: settingsData.donationWidgetCode || '',
     donatePageLive: Boolean(settingsData.donatePageLive),
+    showCurrentPetsOnAdoptionForm: Boolean(settingsData.showCurrentPetsOnAdoptionForm),
     paypalLink: settingsData.paypalLink || '',
     stripeLink: settingsData.stripeLink || '',
     venmoQrCodeUrl: settingsData.venmoQrCodeUrl || '',
@@ -778,6 +780,29 @@ function SettingsPage() {
             {donationStatusMessage ? (
               <p className="mt-3 text-sm font-medium text-emerald-700">{donationStatusMessage}</p>
             ) : null}
+
+            <div className="mt-5 flex flex-wrap items-start justify-between gap-4 rounded-lg border border-slate-200 bg-white p-4">
+              <div>
+                <h4 className="text-sm font-bold text-slate-900">Show Current Pets on Adoption Form</h4>
+                <p className="mt-1 text-sm text-slate-600">
+                  When on, the public Adoption Application also asks about current household pets
+                  (Foster Applications always ask this, regardless of this setting).
+                </p>
+              </div>
+              <label className="flex cursor-pointer items-center gap-3">
+                <span className="relative inline-flex h-6 w-11 shrink-0">
+                  <input
+                    type="checkbox"
+                    checked={orgSettings.showCurrentPetsOnAdoptionForm}
+                    onChange={(e) => handleOrgFieldChange('showCurrentPetsOnAdoptionForm', e.target.checked)}
+                    disabled={!canManageOrg}
+                    className="peer sr-only"
+                  />
+                  <span className="absolute inset-0 rounded-full bg-slate-300 transition peer-checked:bg-emerald-600 peer-disabled:opacity-50" />
+                  <span className="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-5" />
+                </span>
+              </label>
+            </div>
 
             <p className="mt-4 text-sm text-slate-600">
               Paste the full embed from Givebutter Dashboard → Sharing → Widgets (Form). It must include

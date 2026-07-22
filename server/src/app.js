@@ -211,15 +211,35 @@ app.use('/api/public/donations', donationLimiter);
 app.use(express.json({ limit: '2mb' }));
 
 // Application uploads are sensitive (IDs, forms). Never serve them anonymously.
-// Staff/portal must use authenticated API download paths (Phase 2.3 expands this).
-// Kitten photo paths under /uploads/kittens remain reachable so public photo
-// redirects keep working until signed-URL migration.
 app.use('/uploads/applications', (req, res) => {
   res.status(401).json({ error: 'Authentication required' });
 });
 
-// fallthrough:false → missing files 404 instead of leaking into the SPA shell.
+// Anonymous /uploads is limited to kitten *image* files only (public cards / admin
+// thumbnails). PDFs and other docs require authenticated document stream routes.
+const PUBLIC_UPLOAD_IMAGE_EXT = /\.(jpe?g|png|webp|gif)$/i;
+app.use('/uploads', (req, res, next) => {
+  if (req.method !== 'GET' && req.method !== 'HEAD') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+  const relativePath = decodeURIComponent(req.path || '');
+  const isKittenImage = relativePath.startsWith('/kittens/') && PUBLIC_UPLOAD_IMAGE_EXT.test(relativePath);
+  if (!isKittenImage) {
+    return res.status(401).json({ error: 'Authentication required' });
+  }
+  return next();
+});
+
+// fallthrough:false → missing files should 404 (not leak into SPA). With
+// fallthrough:false express.static may pass ENOENT to the error handler —
+// map that to a clean 404 instead of a 500 JSON body.
 app.use('/uploads', express.static(getUploadRoot(), { fallthrough: false }));
+app.use('/uploads', (err, _req, res, next) => {
+  if (err && (err.code === 'ENOENT' || err.status === 404)) {
+    return res.status(404).end();
+  }
+  return next(err);
+});
 
 let spec = {
   openapi: '3.0.0',
@@ -301,6 +321,10 @@ app.use((err, _req, res, _next) => {
 
   if (err.code === 'LIMIT_FILE_SIZE') {
     return res.status(413).json({ error: 'File too large. Max 5MB.' });
+  }
+
+  if (err.code === 'ENOENT') {
+    return res.status(404).json({ error: 'Not found' });
   }
 
   if (err.name === 'MulterError') {

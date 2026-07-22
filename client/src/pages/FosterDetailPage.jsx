@@ -10,15 +10,32 @@ import WishlistManager from '../components/admin/WishlistManager';
 import FosterPhoto from '../components/FosterPhoto';
 import { useAuth } from '../context/AuthContext';
 import { WISHLIST_OWNER_TYPES } from '../constants/wishlists';
+import { CAPABILITY_OPTIONS, EXPERIENCE_LEVELS, parseCapabilityFlags } from '../utils/fosterCapabilities';
 import {
   createFosterPlacement,
+  deactivateFoster,
   dischargeFosterPlacement,
   fetchFosterById,
   fetchFosterPlacements,
   fetchKittens,
   resendFosterPortalSetupLink,
+  updateFoster,
   updateKitten,
 } from '../services/api';
+
+function buildFosterFormFromFoster(foster) {
+  return {
+    name: foster.name || '',
+    phone: foster.phone || '',
+    email: foster.email || '',
+    address: foster.address || '',
+    emergencyContact: foster.emergencyContact || '',
+    experienceLevel: foster.experienceLevel || 'Beginner',
+    maxKittens: foster.maxKittens ?? 0,
+    notes: foster.notes || '',
+    capabilities: parseCapabilityFlags(foster.capabilityFlags).filter((flag) => flag !== 'large_capacity'),
+  };
+}
 
 function FosterDetailPage() {
   const { id } = useParams();
@@ -35,6 +52,10 @@ function FosterDetailPage() {
   const [dischargingId, setDischargingId] = useState(null);
   const [resendingSetupLink, setResendingSetupLink] = useState(false);
   const [portalNotice, setPortalNotice] = useState(null);
+  const [editingFoster, setEditingFoster] = useState(false);
+  const [fosterForm, setFosterForm] = useState(null);
+  const [savingFoster, setSavingFoster] = useState(false);
+  const [deactivating, setDeactivating] = useState(false);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -163,6 +184,62 @@ function FosterDetailPage() {
     }
   }
 
+  function openEditFoster() {
+    setFosterForm(buildFosterFormFromFoster(foster));
+    setEditingFoster(true);
+  }
+
+  function handleFosterFieldChange(field, value) {
+    setFosterForm((prev) => ({ ...prev, [field]: value }));
+  }
+
+  function toggleFosterCapability(value) {
+    setFosterForm((prev) => ({
+      ...prev,
+      capabilities: prev.capabilities.includes(value)
+        ? prev.capabilities.filter((flag) => flag !== value)
+        : [...prev.capabilities, value],
+    }));
+  }
+
+  async function handleSaveFoster(event) {
+    event.preventDefault();
+    setSavingFoster(true);
+    setError(null);
+    try {
+      const { capabilities, maxKittens, ...rest } = fosterForm;
+      await updateFoster(id, {
+        ...rest,
+        maxKittens: Number.parseInt(maxKittens, 10) || 0,
+        capabilityFlags: capabilities.join(','),
+      });
+      setEditingFoster(false);
+      setFosterForm(null);
+      await loadData();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSavingFoster(false);
+    }
+  }
+
+  async function handleDeactivateFoster() {
+    if (!foster) return;
+    const confirmed = window.confirm(`Deactivate ${foster.name}? They will be marked inactive and hidden from new placement assignment.`);
+    if (!confirmed) return;
+
+    setDeactivating(true);
+    setError(null);
+    try {
+      await deactivateFoster(id);
+      await loadData();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setDeactivating(false);
+    }
+  }
+
   if (loading) {
     return <p className="text-slate-500">Loading foster dashboard...</p>;
   }
@@ -195,16 +272,120 @@ function FosterDetailPage() {
           <div>
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
-                <h1 className="text-3xl font-bold text-slate-900">{foster.name}</h1>
+                <div className="flex flex-wrap items-center gap-2">
+                  <h1 className="text-3xl font-bold text-slate-900">{foster.name}</h1>
+                  <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${foster.isActive === false ? 'bg-slate-100 text-slate-500' : 'bg-emerald-50 text-emerald-700'}`}>
+                    {foster.isActive === false ? 'Inactive' : 'Active'}
+                  </span>
+                </div>
                 <p className="mt-1 text-sm text-slate-500">
                   {foster.experienceLevel || 'Experience not set'} · Capacity {activePlacements}
                   {foster.maxKittens ? ` / ${foster.maxKittens}` : ''}
                 </p>
               </div>
-              <div className="rounded-full bg-brand-light px-4 py-2 text-sm font-semibold text-brand-dark">
-                {foster._count?.placements ?? placements.length} total placements
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="rounded-full bg-brand-light px-4 py-2 text-sm font-semibold text-brand-dark">
+                  {foster._count?.placements ?? placements.length} total placements
+                </div>
+                {canManageFoster && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={openEditFoster}
+                      className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                    >
+                      Edit Foster
+                    </button>
+                    {foster.isActive !== false && (
+                      <button
+                        type="button"
+                        onClick={handleDeactivateFoster}
+                        disabled={deactivating}
+                        className="rounded-lg border border-red-200 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50 disabled:opacity-60"
+                      >
+                        {deactivating ? 'Deactivating...' : 'Deactivate Foster'}
+                      </button>
+                    )}
+                  </>
+                )}
               </div>
             </div>
+
+            {editingFoster && fosterForm && (
+              <form onSubmit={handleSaveFoster} className="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-4">
+                <h3 className="text-sm font-bold text-slate-900">Edit Foster Details</h3>
+                <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <label className="block">
+                    <span className="mb-1 block text-xs font-medium text-slate-600">Name</span>
+                    <input value={fosterForm.name} onChange={(e) => handleFosterFieldChange('name', e.target.value)} required className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm" />
+                  </label>
+                  <label className="block">
+                    <span className="mb-1 block text-xs font-medium text-slate-600">Phone</span>
+                    <input type="tel" value={fosterForm.phone} onChange={(e) => handleFosterFieldChange('phone', e.target.value)} required className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm" />
+                  </label>
+                  <label className="block">
+                    <span className="mb-1 block text-xs font-medium text-slate-600">Email</span>
+                    <input type="email" value={fosterForm.email} onChange={(e) => handleFosterFieldChange('email', e.target.value)} required className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm" />
+                  </label>
+                  <label className="block">
+                    <span className="mb-1 block text-xs font-medium text-slate-600">Emergency Contact</span>
+                    <input value={fosterForm.emergencyContact} onChange={(e) => handleFosterFieldChange('emergencyContact', e.target.value)} className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm" />
+                  </label>
+                  <label className="block sm:col-span-2">
+                    <span className="mb-1 block text-xs font-medium text-slate-600">Address</span>
+                    <input value={fosterForm.address} onChange={(e) => handleFosterFieldChange('address', e.target.value)} required className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm" />
+                  </label>
+                  <label className="block">
+                    <span className="mb-1 block text-xs font-medium text-slate-600">Experience Level</span>
+                    <select value={fosterForm.experienceLevel} onChange={(e) => handleFosterFieldChange('experienceLevel', e.target.value)} className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm">
+                      {EXPERIENCE_LEVELS.map((level) => (
+                        <option key={level} value={level}>{level}</option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="block">
+                    <span className="mb-1 block text-xs font-medium text-slate-600">Max Kittens Capacity</span>
+                    <input type="number" min="0" max="50" value={fosterForm.maxKittens} onChange={(e) => handleFosterFieldChange('maxKittens', e.target.value)} className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm" />
+                  </label>
+                  <fieldset className="sm:col-span-2">
+                    <legend className="mb-2 text-xs font-medium text-slate-600">Capabilities</legend>
+                    <div className="flex flex-wrap gap-4">
+                      {CAPABILITY_OPTIONS.map((option) => (
+                        <label key={option.value} className="flex items-center gap-2 text-sm text-slate-700">
+                          <input
+                            type="checkbox"
+                            checked={fosterForm.capabilities.includes(option.value)}
+                            onChange={() => toggleFosterCapability(option.value)}
+                            className="rounded border-slate-300"
+                          />
+                          {option.label}
+                        </label>
+                      ))}
+                    </div>
+                  </fieldset>
+                  <label className="block sm:col-span-2">
+                    <span className="mb-1 block text-xs font-medium text-slate-600">Notes</span>
+                    <textarea value={fosterForm.notes} onChange={(e) => handleFosterFieldChange('notes', e.target.value)} rows={3} className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm" />
+                  </label>
+                </div>
+                <div className="mt-4 flex justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={() => { setEditingFoster(false); setFosterForm(null); }}
+                    className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={savingFoster}
+                    className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-60"
+                  >
+                    {savingFoster ? 'Saving...' : 'Save Changes'}
+                  </button>
+                </div>
+              </form>
+            )}
 
             <div className="mt-5">
               <h2 className="text-xs font-bold uppercase tracking-wide text-slate-500">Capabilities</h2>

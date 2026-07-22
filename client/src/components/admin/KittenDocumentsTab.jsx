@@ -44,7 +44,7 @@ function KittenDocumentsTab({ kittenId, documents, onUpload, uploading, onDelete
 
       <DocumentUploadForm onUpload={onUpload} uploading={uploading} />
 
-      <DocumentsList documents={documents} onDelete={onDelete} />
+      <DocumentsList kittenId={kittenId} documents={documents} onDelete={onDelete} />
 
       <EmailDocumentsModal
         open={emailOpen}

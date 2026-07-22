@@ -1,12 +1,22 @@
 import { useCallback, useEffect, useState } from 'react';
 import { formatArticleBody } from '../../utils/articleFormatting';
-import { CheckCircle2, Circle } from 'lucide-react';
+import { CheckCircle2, Circle, Plus } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 import {
+  createOnboardingRecord,
   fetchFosterChecklistContent,
+  fetchFosters,
   fetchOnboardingById,
   fetchOnboardingList,
   updateOnboardingChecklistItem,
 } from '../../services/api';
+
+const emptyForm = {
+  fosterId: '',
+  applicantName: '',
+  applicantEmail: '',
+  notes: '',
+};
 
 const STATUS_STYLES = {
   APPLIED: 'bg-blue-100 text-blue-800',
@@ -18,13 +28,19 @@ const STATUS_STYLES = {
 };
 
 function OnboardingPage() {
+  const { hasPermission } = useAuth();
+  const canManage = hasPermission('onboarding.manage');
   const [records, setRecords] = useState([]);
+  const [fosters, setFosters] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
   const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(true);
   const [detailLoading, setDetailLoading] = useState(false);
   const [savingItemId, setSavingItemId] = useState(null);
   const [fosterArticles, setFosterArticles] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [form, setForm] = useState(emptyForm);
+  const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
   const loadList = useCallback(async () => {
@@ -45,7 +61,48 @@ function OnboardingPage() {
     fetchFosterChecklistContent()
       .then(setFosterArticles)
       .catch(() => setFosterArticles([]));
+    fetchFosters()
+      .then((data) => setFosters(Array.isArray(data) ? data : []))
+      .catch(() => setFosters([]));
   }, [loadList]);
+
+  function resetForm() {
+    setForm(emptyForm);
+    setShowForm(false);
+    setError('');
+  }
+
+  function handleFosterSelect(fosterId) {
+    const foster = fosters.find((item) => String(item.id) === String(fosterId));
+    setForm((prev) => ({
+      ...prev,
+      fosterId,
+      applicantName: foster ? foster.name : prev.applicantName,
+      applicantEmail: foster ? foster.email : prev.applicantEmail,
+    }));
+  }
+
+  async function handleCreateOnboarding(event) {
+    event.preventDefault();
+    if (!canManage) return;
+
+    setSaving(true);
+    setError('');
+    try {
+      const created = await createOnboardingRecord({
+        applicantName: form.applicantName,
+        applicantEmail: form.applicantEmail,
+        notes: form.notes,
+      });
+      resetForm();
+      await loadList();
+      openRecord(created.id);
+    } catch (err) {
+      setError(err.message || 'Failed to create onboarding record.');
+    } finally {
+      setSaving(false);
+    }
+  }
 
   async function openRecord(id) {
     setSelectedId(id);
@@ -81,10 +138,97 @@ function OnboardingPage() {
 
   return (
     <div>
-      <h1 className="mb-2 text-2xl font-bold text-gray-900">Foster Onboarding</h1>
-      <p className="mb-6 text-sm text-gray-500">Track prospective fosters through the intake checklist.</p>
+      <div className="mb-6 flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h1 className="mb-2 text-2xl font-bold text-gray-900">Foster Onboarding</h1>
+          <p className="text-sm text-gray-500">Track prospective fosters through the intake checklist.</p>
+        </div>
+        {canManage && (
+          <button
+            type="button"
+            onClick={() => (showForm ? resetForm() : setShowForm(true))}
+            className="inline-flex items-center gap-2 rounded-lg bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800"
+          >
+            <Plus className="h-4 w-4" />
+            {showForm ? 'Hide Form' : 'New Onboarding'}
+          </button>
+        )}
+      </div>
 
       {error && <div className="mb-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}
+
+      {showForm && canManage && (
+        <form onSubmit={handleCreateOnboarding} className="mb-6 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+          <h2 className="text-lg font-semibold text-gray-900">New Onboarding Record</h2>
+          <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+            <label className="block md:col-span-2">
+              <span className="text-xs font-semibold uppercase text-gray-500">Link to Existing Foster (optional)</span>
+              <select
+                value={form.fosterId}
+                onChange={(e) => handleFosterSelect(e.target.value)}
+                disabled={saving}
+                className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm disabled:bg-slate-50"
+              >
+                <option value="">— Select a foster —</option>
+                {fosters.map((foster) => (
+                  <option key={foster.id} value={foster.id}>
+                    {foster.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="block">
+              <span className="text-xs font-semibold uppercase text-gray-500">Applicant Name</span>
+              <input
+                value={form.applicantName}
+                onChange={(e) => setForm((prev) => ({ ...prev, applicantName: e.target.value }))}
+                required
+                disabled={saving}
+                className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm disabled:bg-slate-50"
+              />
+            </label>
+            <label className="block">
+              <span className="text-xs font-semibold uppercase text-gray-500">Applicant Email</span>
+              <input
+                type="email"
+                value={form.applicantEmail}
+                onChange={(e) => setForm((prev) => ({ ...prev, applicantEmail: e.target.value }))}
+                required
+                disabled={saving}
+                className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm disabled:bg-slate-50"
+              />
+            </label>
+            <label className="block md:col-span-2">
+              <span className="text-xs font-semibold uppercase text-gray-500">Notes</span>
+              <textarea
+                rows={3}
+                value={form.notes}
+                onChange={(e) => setForm((prev) => ({ ...prev, notes: e.target.value }))}
+                disabled={saving}
+                className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm disabled:bg-slate-50"
+              />
+            </label>
+          </div>
+
+          <div className="mt-5 flex flex-wrap gap-3">
+            <button
+              type="submit"
+              disabled={saving}
+              className="rounded-lg bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800 disabled:opacity-60"
+            >
+              {saving ? 'Saving...' : 'Create Onboarding Record'}
+            </button>
+            <button
+              type="button"
+              onClick={resetForm}
+              disabled={saving}
+              className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 disabled:opacity-60"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      )}
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
         <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">

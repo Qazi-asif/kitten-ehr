@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import FosterForm from '../components/FosterForm';
-import { createFoster, fetchFosters } from '../services/api';
+import { createFoster, deactivateFoster, fetchFosters } from '../services/api';
 import { buildCapabilityFlags, fileToDataUrl, parseCapabilityFlags } from '../utils/fosterCapabilities';
 
 function FosterListPage() {
@@ -64,6 +64,19 @@ function FosterListPage() {
     }
   }
 
+  async function handleDeactivateFoster(foster) {
+    const confirmed = window.confirm(`Deactivate ${foster.name}? They will be marked inactive and hidden from new placement assignment.`);
+    if (!confirmed) return;
+
+    setError(null);
+    try {
+      await deactivateFoster(foster.id);
+      await loadFosters();
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
   return (
     <div>
       <div className="mb-6">
@@ -94,6 +107,7 @@ function FosterListPage() {
                 <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Capacity</th>
                 <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Capabilities</th>
                 <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Active</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Status</th>
                 <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Actions</th>
               </tr>
             </thead>
@@ -121,12 +135,28 @@ function FosterListPage() {
                   </td>
                   <td className="whitespace-nowrap px-6 py-4 text-sm text-slate-600">{foster._count?.currentKittens ?? 0}</td>
                   <td className="whitespace-nowrap px-6 py-4 text-sm">
-                    <Link
-                      to={`/admin/fosters/${foster.id}`}
-                      className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50"
-                    >
-                      Open Dashboard
-                    </Link>
+                    <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${foster.isActive === false ? 'bg-slate-100 text-slate-500' : 'bg-emerald-50 text-emerald-700'}`}>
+                      {foster.isActive === false ? 'Inactive' : 'Active'}
+                    </span>
+                  </td>
+                  <td className="whitespace-nowrap px-6 py-4 text-sm">
+                    <div className="flex items-center gap-3">
+                      <Link
+                        to={`/admin/fosters/${foster.id}`}
+                        className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50"
+                      >
+                        Open Dashboard
+                      </Link>
+                      {foster.isActive !== false && (
+                        <button
+                          type="button"
+                          onClick={() => handleDeactivateFoster(foster)}
+                          className="text-xs font-medium text-red-600 hover:underline"
+                        >
+                          Deactivate
+                        </button>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}

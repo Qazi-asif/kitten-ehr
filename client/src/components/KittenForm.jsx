@@ -18,6 +18,7 @@ const initialFormState = {
   fixedStatus: '',
   rescueStory: '',
   intakeDate: new Date().toISOString().slice(0, 10),
+  isEuthanasiaPull: false,
 };
 
 function KittenForm({ onSubmit, litters = [], onLittersChange, fosters = [], submitting = false }) {
@@ -25,8 +26,8 @@ function KittenForm({ onSubmit, litters = [], onLittersChange, fosters = [], sub
   const [photoFile, setPhotoFile] = useState(null);
 
   function handleChange(event) {
-    const { name, value } = event.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = event.target;
+    setForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
   }
 
   function handleSubmit(event) {
@@ -44,6 +45,7 @@ function KittenForm({ onSubmit, litters = [], onLittersChange, fosters = [], sub
         litterId: form.litterId ? Number.parseInt(form.litterId, 10) : null,
         currentFosterId: form.fosterId ? Number.parseInt(form.fosterId, 10) : null,
         intakeDate: form.intakeDate || null,
+        intakeSource: form.isEuthanasiaPull ? 'Euthanasia-Pull Rescue' : '',
       },
       photoFile,
     });
@@ -83,6 +85,16 @@ function KittenForm({ onSubmit, litters = [], onLittersChange, fosters = [], sub
           <label className="block">
             <span className="mb-1 block text-sm font-medium text-slate-700">Intake Date</span>
             <input type="date" name="intakeDate" value={form.intakeDate} onChange={handleChange} className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" />
+          </label>
+          <label className="flex items-center gap-2 md:col-span-2">
+            <input
+              type="checkbox"
+              name="isEuthanasiaPull"
+              checked={form.isEuthanasiaPull}
+              onChange={handleChange}
+              className="h-4 w-4 rounded border-slate-300 text-brand focus:ring-brand"
+            />
+            <span className="text-sm font-medium text-slate-700">Euthanasia-Pull Rescue</span>
           </label>
           <label className="block">
             <span className="mb-1 block text-sm font-medium text-slate-700">Sex</span>

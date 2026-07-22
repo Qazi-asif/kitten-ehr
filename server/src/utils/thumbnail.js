@@ -1,7 +1,6 @@
 import fs from 'fs/promises';
-import path from 'path';
 import sharp from 'sharp';
-import { getUploadRoot } from './fileStorage.js';
+import { resolveStoredFileAbsolutePath } from './fileStorage.js';
 
 const THUMBNAIL_SIZE = 128;
 const THUMBNAIL_QUALITY = 70;
@@ -38,8 +37,8 @@ async function loadImageBuffer(fileUrl) {
 
   if (fileUrl.startsWith('/uploads/')) {
     try {
-      const relative = fileUrl.replace(/^\/uploads\//, '');
-      const absolutePath = path.join(getUploadRoot(), relative);
+      const absolutePath = resolveStoredFileAbsolutePath(fileUrl);
+      if (!absolutePath) return null;
       return await fs.readFile(absolutePath);
     } catch (error) {
       console.warn('[thumbnail] Failed to read stored file for thumbnail:', error.message);
@@ -62,15 +61,7 @@ async function loadImageBuffer(fileUrl) {
   return null;
 }
 
-/**
- * Generates a thumbnail data URL from an existing fileUrl reference
- * (inline data: URL, local /uploads/ path, or a remote https:// object
- * storage URL). Returns null if the source can't be read or resized -
- * callers should treat that as "no thumbnail available" rather than fail
- * the request.
- */
 export async function generateThumbnailFromUrl(fileUrl) {
   const buffer = await loadImageBuffer(fileUrl);
-  if (!buffer) return null;
   return generateThumbnailFromBuffer(buffer);
 }

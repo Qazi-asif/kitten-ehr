@@ -1,7 +1,12 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Plus, Trash2 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { createProtocol, fetchProtocols } from '../../services/protocolApi';
+import {
+  createProtocol,
+  deactivateProtocol,
+  fetchProtocols,
+  updateProtocol,
+} from '../../services/protocolApi';
 
 const emptyDrug = {
   drugName: '',
@@ -26,11 +31,14 @@ function formatDate(value) {
 function ProtocolLibrary() {
   const { hasPermission } = useAuth();
   const canManage = hasPermission('medical.manage');
+  const formRef = useRef(null);
   const [protocols, setProtocols] = useState([]);
   const [form, setForm] = useState(emptyForm);
+  const [editingId, setEditingId] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [deletingId, setDeletingId] = useState(null);
   const [error, setError] = useState('');
 
   const load = useCallback(async () => {
@@ -50,6 +58,12 @@ function ProtocolLibrary() {
   useEffect(() => {
     load();
   }, [load]);
+
+  useEffect(() => {
+    if (showForm && formRef.current) {
+      formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [showForm]);
 
   function updateDrug(index, field, value) {
     setForm((prev) => ({
@@ -76,6 +90,7 @@ function ProtocolLibrary() {
 
   function resetForm() {
     setForm(emptyForm);
+    setEditingId(null);
     setShowForm(false);
     setError('');
   }
@@ -87,10 +102,11 @@ function ProtocolLibrary() {
     setSaving(true);
     setError('');
     try {
-      await createProtocol({
+      const payload = {
         name: form.name,
         description: form.description,
         drugs: form.drugs.map((drug) => ({
+          id: drug.id,
           drugName: drug.drugName,
           dosage: drug.dosage,
           route: drug.route,
@@ -98,13 +114,58 @@ function ProtocolLibrary() {
           endDayOffset: Number.parseInt(drug.endDayOffset, 10),
           frequencyPerDay: Number.parseInt(drug.frequencyPerDay, 10),
         })),
-      });
+      };
+
+      if (editingId) {
+        await updateProtocol(editingId, payload);
+      } else {
+        await createProtocol(payload);
+      }
       resetForm();
       await load();
     } catch (err) {
-      setError(err.message || 'Failed to create protocol.');
+      setError(err.message || 'Failed to save protocol.');
     } finally {
       setSaving(false);
+    }
+  }
+
+  function startEdit(protocol) {
+    if (!canManage) return;
+    setEditingId(protocol.id);
+    setForm({
+      name: protocol.name ?? '',
+      description: protocol.description ?? '',
+      drugs: (protocol.drugs || []).length > 0
+        ? protocol.drugs.map((drug) => ({
+            id: drug.id,
+            drugName: drug.drugName ?? '',
+            dosage: drug.dosage ?? '',
+            route: drug.route ?? '',
+            startDayOffset: drug.startDayOffset ?? 0,
+            endDayOffset: drug.endDayOffset ?? 0,
+            frequencyPerDay: drug.frequencyPerDay ?? 1,
+          }))
+        : [{ ...emptyDrug }],
+    });
+    setShowForm(true);
+    setError('');
+  }
+
+  async function handleDeactivate(id) {
+    if (!canManage) return;
+    if (!window.confirm('Deactivate this protocol? It will be hidden from the active library.')) return;
+
+    setDeletingId(id);
+    setError('');
+    try {
+      await deactivateProtocol(id);
+      if (editingId === id) resetForm();
+      await load();
+    } catch (err) {
+      setError(err.message || 'Failed to deactivate protocol.');
+    } finally {
+      setDeletingId(null);
     }
   }
 
@@ -123,7 +184,7 @@ function ProtocolLibrary() {
         {canManage && (
           <button
             type="button"
-            onClick={() => setShowForm((prev) => !prev)}
+            onClick={() => (showForm ? resetForm() : setShowForm(true))}
             className="inline-flex items-center gap-2 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark"
           >
             <Plus className="h-4 w-4" />
@@ -145,8 +206,16 @@ function ProtocolLibrary() {
       )}
 
       {showForm && canManage && (
-        <form onSubmit={handleSubmit} className="mb-8 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-          <h3 className="text-lg font-semibold text-slate-900">New Protocol</h3>
+        <form
+          ref={formRef}
+          onSubmit={handleSubmit}
+          className={`mb-8 rounded-xl border bg-white p-6 shadow-sm ${
+            editingId ? 'border-brand ring-2 ring-brand/20' : 'border-gray-200'
+          }`}
+        >
+          <h3 className="text-lg font-semibold text-slate-900">
+            {editingId ? `Edit Protocol: ${form.name || 'Untitled'}` : 'New Protocol'}
+          </h3>
           <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
             <label className="block md:col-span-2">
               <span className="text-xs font-semibold uppercase text-gray-500">Name</span>
@@ -266,7 +335,7 @@ function ProtocolLibrary() {
               disabled={saving}
               className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-60"
             >
-              {saving ? 'Saving...' : 'Save Protocol'}
+              {saving ? 'Saving...' : editingId ? 'Update Protocol' : 'Save Protocol'}
             </button>
             <button
               type="button"
@@ -289,25 +358,48 @@ function ProtocolLibrary() {
               <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Drugs</th>
               <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Activations</th>
               <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Updated</th>
+              <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
             {loading ? (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-sm text-gray-500">Loading protocols...</td>
+                <td colSpan={6} className="px-4 py-8 text-center text-sm text-gray-500">Loading protocols...</td>
               </tr>
             ) : protocols.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-sm text-gray-500">No protocols yet.</td>
+                <td colSpan={6} className="px-4 py-8 text-center text-sm text-gray-500">No protocols yet.</td>
               </tr>
             ) : (
               protocols.map((protocol) => (
-                <tr key={protocol.id}>
+                <tr key={protocol.id} className={editingId === protocol.id ? 'bg-brand-light/40' : undefined}>
                   <td className="px-4 py-3 text-sm font-semibold text-gray-900">{protocol.name}</td>
                   <td className="px-4 py-3 text-sm text-gray-600">{protocol.description || '—'}</td>
                   <td className="px-4 py-3 text-sm text-gray-600">{protocol.drugs?.length || 0}</td>
                   <td className="px-4 py-3 text-sm text-gray-600">{protocol._count?.activeProtocols || 0}</td>
                   <td className="px-4 py-3 text-sm text-gray-500">{formatDate(protocol.updatedAt)}</td>
+                  <td className="whitespace-nowrap px-4 py-3 text-sm">
+                    {canManage && (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => startEdit(protocol)}
+                          disabled={saving || deletingId === protocol.id}
+                          className="mr-3 font-medium text-brand hover:underline disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleDeactivate(protocol.id)}
+                          disabled={saving || deletingId === protocol.id}
+                          className="font-medium text-red-600 hover:underline disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          {deletingId === protocol.id ? 'Deactivating...' : 'Deactivate'}
+                        </button>
+                      </>
+                    )}
+                  </td>
                 </tr>
               ))
             )}

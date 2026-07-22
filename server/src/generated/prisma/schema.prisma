@@ -60,6 +60,7 @@ model Foster {
   maxKittens          Int          @default(0)
   photoUrl            String?
   notes               String       @default("")
+  isActive            Boolean      @default(true)
   createdAt           DateTime     @default(now())
   currentKittens      Kitten[]     @relation("CurrentFoster")
   placements          Placement[]
@@ -89,6 +90,9 @@ model Kitten {
   thumbnailUrl           String?
   intakeDate             DateTime?
   intakeSource           String           @default("")
+  // Outcome fields: date for Adopted/Deceased/Released; detail text for Transferred.
+  outcomeDate            DateTime?
+  outcomeDetail          String?
   notes                  String           @default("")
   internalNotes          String           @default("")
   isListedOnWebsite      Boolean          @default(false)
@@ -625,49 +629,50 @@ model ProtocolDose {
 }
 
 model Settings {
-  id                         Int     @id @default(1)
-  orgName                    String  @default("Pawsitive Transformations")
-  orgEin                     String  @default("42-3678960")
+  id                            Int     @id @default(1)
+  orgName                       String  @default("Pawsitive Transformations")
+  orgEin                        String  @default("42-3678960")
   // Org logo for document (PDF) headers only - separate from the public
   // site's logo, which is a static asset in PublicLogo.jsx and is
   // intentionally not sourced from here.
-  orgLogoUrl                 String  @default("")
+  orgLogoUrl                    String  @default("")
   // Rescue's "authorized representative" signature - applied automatically
   // to every contract's generated PDF at signing time as a second signature
   // block, alongside (not replacing) the foster/adopter's own live-drawn
   // signature. Same base64-data-URL storage pattern as orgLogoUrl.
-  orgSignatureUrl            String  @default("")
-  contactPhone               String  @default("(951) 830-1825")
-  contactEmail               String  @default("hello@pawsitivetransformations.org")
-  contactAddress             String  @default("12523 Limonite, Suite 440412\nMira Loma, CA 91752\nRiverside County")
-  missionStatement           String  @default("")
-  defaultDonationAmount      Int     @default(50)
-  amazonWishlistUrl          String  @default("")
-  chewyWishlistUrl           String  @default("")
-  facebookUrl                String  @default("")
-  instagramUrl               String  @default("")
-  socialPostingEnabled       Boolean @default(false)
-  facebookPageId             String  @default("")
-  facebookPageAccessToken    String  @default("")
-  instagramBusinessAccountId String  @default("")
-  groqApiKey                 String  @default("") @map("xaiApiKey")
-  groqModel                  String  @default("llama-3.3-70b-versatile") @map("grokModel")
-  aiEnabled                  Boolean @default(true)
-  emailsEnabled              Boolean @default(false)
-  smtpHost                   String  @default("")
-  smtpPort                   Int     @default(587)
-  smtpSecure                 Boolean @default(false)
-  smtpUser                   String  @default("")
-  smtpPass                   String  @default("")
-  fromEmail                  String  @default("")
-  fromName                   String  @default("")
-  adminNotifyEmail           String  @default("")
-  donationWidgetCode         String  @default("")
-  donatePageLive             Boolean @default(false)
-  paypalLink                 String  @default("")
-  stripeLink                 String  @default("")
-  venmoQrCodeUrl             String  @default("")
-  venmoHandle                String  @default("")
+  orgSignatureUrl               String  @default("")
+  contactPhone                  String  @default("(951) 830-1825")
+  contactEmail                  String  @default("hello@pawsitivetransformations.org")
+  contactAddress                String  @default("12523 Limonite, Suite 440412\nMira Loma, CA 91752\nRiverside County")
+  missionStatement              String  @default("")
+  defaultDonationAmount         Int     @default(50)
+  amazonWishlistUrl             String  @default("")
+  chewyWishlistUrl              String  @default("")
+  facebookUrl                   String  @default("")
+  instagramUrl                  String  @default("")
+  socialPostingEnabled          Boolean @default(false)
+  facebookPageId                String  @default("")
+  facebookPageAccessToken       String  @default("")
+  instagramBusinessAccountId    String  @default("")
+  groqApiKey                    String  @default("") @map("xaiApiKey")
+  groqModel                     String  @default("llama-3.3-70b-versatile") @map("grokModel")
+  aiEnabled                     Boolean @default(true)
+  emailsEnabled                 Boolean @default(false)
+  smtpHost                      String  @default("")
+  smtpPort                      Int     @default(587)
+  smtpSecure                    Boolean @default(false)
+  smtpUser                      String  @default("")
+  smtpPass                      String  @default("")
+  fromEmail                     String  @default("")
+  fromName                      String  @default("")
+  adminNotifyEmail              String  @default("")
+  donationWidgetCode            String  @default("")
+  donatePageLive                Boolean @default(false)
+  showCurrentPetsOnAdoptionForm Boolean @default(false)
+  paypalLink                    String  @default("")
+  stripeLink                    String  @default("")
+  venmoQrCodeUrl                String  @default("")
+  venmoHandle                   String  @default("")
 }
 
 model EmailTemplate {

@@ -8,10 +8,11 @@ export const KITTEN_STATUSES = [
   'Medical Hold',
   'Transferred',
   'Deceased',
+  'Released',
 ];
 
 /** Statuses that end an open foster placement and clear currentFosterId. */
-export const TERMINAL_KITTEN_STATUSES = ['Adopted', 'Transferred', 'Deceased'];
+export const TERMINAL_KITTEN_STATUSES = ['Adopted', 'Transferred', 'Deceased', 'Released'];
 
 export const FIXED_STATUS_OPTIONS = ['Intact', 'Spayed/Neutered'];
 
@@ -42,6 +43,7 @@ export const createKittenSchema = z.object({
   publishTargets: publishTargetsField,
   weightGrams: z.coerce.number().positive('Weight must be a positive number').optional(),
   intakeDate: optionalDate,
+  intakeSource: z.string().max(200).optional().default(''),
 });
 
 const optionalUrl = z.string().trim().max(500).optional().nullable();
@@ -72,6 +74,9 @@ export const updateKittenSchema = z
     bondedWithName: z.string().max(200).optional(),
     isMedicalSpecialNeeds: z.boolean().optional(),
     weightGrams: z.coerce.number().positive('Weight must be a positive number').optional(),
+    // Outcome fields: date for Adopted/Deceased/Released; detail text for Transferred.
+    outcomeDate: optionalDate,
+    outcomeDetail: z.string().max(500).optional().nullable(),
   })
   .strict();
 

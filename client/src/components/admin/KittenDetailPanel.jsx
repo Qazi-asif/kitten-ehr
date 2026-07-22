@@ -118,6 +118,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
       fixedStatus: normalizeFixedStatus(data.fixedStatus),
       dateOfBirth: data.dateOfBirth ? data.dateOfBirth.slice(0, 10) : '',
       intakeDate: data.intakeDate ? data.intakeDate.slice(0, 10) : '',
+      intakeSource: data.intakeSource || '',
       rescueStory: data.rescueStory || '',
       fivFelvStatus: data.fivFelvStatus || '',
       specialNeeds: data.specialNeeds || '',
@@ -126,6 +127,8 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
       bondedWithKittenId: data.bondedWithKittenId ? String(data.bondedWithKittenId) : '',
       bondedWithName: data.bondedWithName || '',
       isMedicalSpecialNeeds: Boolean(data.isMedicalSpecialNeeds),
+      outcomeDate: data.outcomeDate ? data.outcomeDate.slice(0, 10) : '',
+      outcomeDetail: data.outcomeDetail || '',
     });
     setNotesForm({
       notes: data.notes || '',
@@ -248,7 +251,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
     event.preventDefault();
     setSavingProfile(true);
     try {
-      const updated = await updateKitten(kittenId, {
+      const payload = {
         name: profileForm.name,
         status: profileForm.status,
         breed: profileForm.breed,
@@ -257,6 +260,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
         fixedStatus: profileForm.fixedStatus,
         dateOfBirth: profileForm.dateOfBirth || null,
         intakeDate: profileForm.intakeDate || null,
+        intakeSource: profileForm.intakeSource || '',
         rescueStory: profileForm.rescueStory,
         fivFelvStatus: profileForm.fivFelvStatus || null,
         specialNeeds: profileForm.specialNeeds || null,
@@ -267,7 +271,18 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
           : null,
         bondedWithName: profileForm.isBondedPair ? profileForm.bondedWithName : '',
         isMedicalSpecialNeeds: profileForm.isMedicalSpecialNeeds,
-      });
+      };
+
+      if (['Adopted', 'Deceased', 'Released'].includes(profileForm.status)) {
+        // Omit entirely when blank so the server can default it to now.
+        if (profileForm.outcomeDate) {
+          payload.outcomeDate = profileForm.outcomeDate;
+        }
+      } else if (profileForm.status === 'Transferred') {
+        payload.outcomeDetail = profileForm.outcomeDetail || null;
+      }
+
+      const updated = await updateKitten(kittenId, payload);
       setKitten(updated);
       setProfileForm({
         name: updated.name || '',
@@ -278,6 +293,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
         fixedStatus: normalizeFixedStatus(updated.fixedStatus),
         dateOfBirth: updated.dateOfBirth ? updated.dateOfBirth.slice(0, 10) : '',
         intakeDate: updated.intakeDate ? updated.intakeDate.slice(0, 10) : '',
+        intakeSource: updated.intakeSource || '',
         rescueStory: updated.rescueStory || '',
         fivFelvStatus: updated.fivFelvStatus || '',
         specialNeeds: updated.specialNeeds || '',
@@ -286,6 +302,8 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
         bondedWithKittenId: updated.bondedWithKittenId ? String(updated.bondedWithKittenId) : '',
         bondedWithName: updated.bondedWithName || '',
         isMedicalSpecialNeeds: Boolean(updated.isMedicalSpecialNeeds),
+        outcomeDate: updated.outcomeDate ? updated.outcomeDate.slice(0, 10) : '',
+        outcomeDetail: updated.outcomeDetail || '',
       });
     } catch (err) {
       setError(err.message);
@@ -610,6 +628,32 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                     ))}
                   </select>
                 </label>
+                {['Adopted', 'Deceased', 'Released'].includes(profileForm.status) && (
+                  <label className="block">
+                    <span className="text-xs font-semibold uppercase text-gray-500">
+                      {profileForm.status === 'Deceased' ? 'Date of Death' : 'Outcome Date'}
+                    </span>
+                    <input
+                      type="date"
+                      value={profileForm.outcomeDate || ''}
+                      onChange={(e) => handleProfileFieldChange('outcomeDate', e.target.value)}
+                      className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+                    />
+                  </label>
+                )}
+                {profileForm.status === 'Transferred' && (
+                  <label className="block sm:col-span-2">
+                    <span className="text-xs font-semibold uppercase text-gray-500">Transfer Detail</span>
+                    <input
+                      type="text"
+                      value={profileForm.outcomeDetail || ''}
+                      onChange={(e) => handleProfileFieldChange('outcomeDetail', e.target.value)}
+                      placeholder="Where was this kitten transferred to?"
+                      maxLength={500}
+                      className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+                    />
+                  </label>
+                )}
                 {[
                   ['dateOfBirth', 'Date of Birth', 'date'],
                   ['intakeDate', 'Intake Date', 'date'],
@@ -727,6 +771,18 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                     disabled={!canEdit}
                   />
                   <span className="text-sm font-medium text-gray-800">Medical / Special Needs</span>
+                </label>
+                <label className="flex items-center gap-2 sm:col-span-2">
+                  <input
+                    type="checkbox"
+                    checked={(profileForm.intakeSource || '').includes('Euthanasia')}
+                    onChange={(e) => handleProfileFieldChange(
+                      'intakeSource',
+                      e.target.checked ? 'Euthanasia-Pull Rescue' : '',
+                    )}
+                    disabled={!canEdit}
+                  />
+                  <span className="text-sm font-medium text-gray-800">Euthanasia-Pull Rescue</span>
                 </label>
               </div>
               <label className="block">

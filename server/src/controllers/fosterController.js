@@ -1,6 +1,7 @@
 import prisma from '../lib/prisma.js';
 import {
   createFosterSchema,
+  updateFosterSchema,
   formatZodError,
   normalizeCapabilityFlags,
 } from '../validations/fosterValidation.js';
@@ -63,6 +64,7 @@ export async function getAllFosters(_req, res, next) {
           capabilityFlags: true,
           maxKittens: true,
           notes: true,
+          isActive: true,
           createdAt: true,
           _count: { select: { placements: true } },
         },
@@ -258,6 +260,68 @@ export async function getFosterById(req, res, next) {
     const portalAccount = await loadPortalAccountSummary(id);
 
     res.json({ ...foster, portalAccount });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function updateFoster(req, res, next) {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+    const parsed = updateFosterSchema.safeParse(req.body);
+
+    if (!parsed.success) {
+      return res.status(400).json({ error: formatZodError(parsed.error) });
+    }
+
+    const existing = await prisma.foster.findUnique({ where: { id } });
+    if (!existing) {
+      return res.status(404).json({ error: 'Foster not found' });
+    }
+
+    const data = parsed.data;
+    const updateData = { ...data };
+
+    if (data.capabilityFlags !== undefined || data.maxKittens !== undefined) {
+      updateData.capabilityFlags = normalizeCapabilityFlags(
+        data.capabilityFlags ?? existing.capabilityFlags,
+        data.maxKittens ?? existing.maxKittens,
+      );
+    }
+    if (data.photoUrl !== undefined) {
+      updateData.photoUrl = data.photoUrl || null;
+    }
+
+    const foster = await prisma.foster.update({
+      where: { id },
+      data: updateData,
+    });
+
+    res.json(foster);
+  } catch (error) {
+    next(error);
+  }
+}
+
+// Soft-deactivate only - fosters are never hard-deleted, since their
+// placement/contract history must remain intact. Staff can still view
+// deactivated fosters; they're just flagged as no longer active for new
+// placements.
+export async function deactivateFoster(req, res, next) {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+
+    const existing = await prisma.foster.findUnique({ where: { id } });
+    if (!existing) {
+      return res.status(404).json({ error: 'Foster not found' });
+    }
+
+    const foster = await prisma.foster.update({
+      where: { id },
+      data: { isActive: false },
+    });
+
+    res.json(foster);
   } catch (error) {
     next(error);
   }

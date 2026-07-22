@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useOutletContext } from 'react-router-dom';
 import { Mail, MapPin, Phone, Send } from 'lucide-react';
+import PhoneInput from '../../components/PhoneInput';
 import { fetchPublicSettings, submitContact } from '../../services/publicApi';
 
 const FALLBACK_CONTACT = {
@@ -186,7 +187,12 @@ function ContactPage() {
                     </label>
                     <label className="block">
                       <span className="mb-2 block text-sm font-semibold text-slate-800">Phone Number</span>
-                      <input type="tel" name="phone" value={form.phone} onChange={handleChange} className="w-full rounded-md border border-slate-300 px-4 py-2.5 text-sm focus:border-brand focus:ring-brand" />
+                      <PhoneInput
+                        value={form.phone}
+                        onChange={(phone) => setForm((prev) => ({ ...prev, phone }))}
+                        selectClassName="w-[92px] shrink-0 rounded-md border border-slate-300 bg-white px-2 py-2.5 text-sm focus:border-brand focus:ring-brand"
+                        inputClassName="flex-1 rounded-md border border-slate-300 px-4 py-2.5 text-sm focus:border-brand focus:ring-brand"
+                      />
                     </label>
                   </div>
 

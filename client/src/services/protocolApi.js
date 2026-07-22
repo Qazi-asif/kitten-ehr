@@ -9,8 +9,9 @@ async function readApiError(response, fallback) {
   }
 }
 
-export async function fetchProtocols() {
-  const response = await adminFetch('/protocols');
+export async function fetchProtocols(includeInactive = false) {
+  const query = includeInactive ? '?includeInactive=true' : '';
+  const response = await adminFetch(`/protocols${query}`);
   if (!response.ok) throw new Error(await readApiError(response, 'Failed to load protocols'));
   return response.json();
 }
@@ -21,6 +22,21 @@ export async function createProtocol(payload) {
     body: JSON.stringify(payload),
   });
   if (!response.ok) throw new Error(await readApiError(response, 'Failed to create protocol'));
+  return response.json();
+}
+
+export async function updateProtocol(id, payload) {
+  const response = await adminFetch(`/protocols/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(payload),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to update protocol'));
+  return response.json();
+}
+
+export async function deactivateProtocol(id) {
+  const response = await adminFetch(`/protocols/${id}`, { method: 'DELETE' });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to deactivate protocol'));
   return response.json();
 }
 

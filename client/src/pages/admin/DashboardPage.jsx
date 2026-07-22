@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ClipboardList, FileSignature, HeartHandshake } from 'lucide-react';
+import { CalendarDays, ClipboardList, FileSignature, HeartHandshake } from 'lucide-react';
 import { Cat, Heart, Users } from 'lucide-react';
 import KittenPhoto from '../../components/KittenPhoto';
 import {
@@ -187,6 +187,11 @@ function DashboardPage() {
     [metrics],
   );
 
+  const upcomingEvents = useMemo(
+    () => metrics?.upcomingEvents ?? [],
+    [metrics],
+  );
+
   const medicalConcerns = metrics?.medicalConcerns ?? [];
   const summaryAlerts = metrics?.summaryAlerts ?? [];
 
@@ -329,6 +334,40 @@ function DashboardPage() {
               </tbody>
             </table>
           </div>
+        )}
+      </div>
+
+      <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="mb-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <CalendarDays className="h-5 w-5 text-brand" />
+            <h2 className="text-base font-bold text-slate-900">Upcoming Events</h2>
+          </div>
+          <Link to="/admin/calendar" className="text-sm font-semibold text-brand hover:underline">
+            View calendar
+          </Link>
+        </div>
+        {loading ? (
+          <p className="text-sm text-slate-500">Loading events...</p>
+        ) : upcomingEvents.length === 0 ? (
+          <p className="text-sm text-slate-500">No upcoming events published to the website.</p>
+        ) : (
+          <ul className="space-y-2">
+            {upcomingEvents.map((event) => (
+              <li
+                key={event.id}
+                className="flex items-center justify-between gap-3 rounded-lg border border-slate-100 px-4 py-2.5"
+              >
+                <div>
+                  <p className="text-sm font-semibold text-slate-900">{event.title}</p>
+                  <p className="text-xs text-slate-500">{event.location || 'Location TBD'}</p>
+                </div>
+                <p className="whitespace-nowrap text-xs font-medium text-slate-600">
+                  {new Date(event.date).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}
+                </p>
+              </li>
+            ))}
+          </ul>
         )}
       </div>
 

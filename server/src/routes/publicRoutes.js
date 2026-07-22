@@ -7,6 +7,7 @@ import {
   getPublicContentBySlug,
   getPublicEvents,
   getPublicKittenById,
+  getPublicKittenGalleryPhoto,
   getPublicKittenPhoto,
   getPublicKittenUpdates,
   getPublicKittens,
@@ -30,6 +31,7 @@ router.get('/wishlists', getPublicWishlists);
 router.get('/kittens', getPublicKittens);
 router.get('/kittens/:id/wishlists', getPublicKittenWishlists);
 router.get('/kittens/:id/photo', getPublicKittenPhoto);
+router.get('/kittens/:id/photos/:docId', getPublicKittenGalleryPhoto);
 router.get('/kittens/:id/updates', getPublicKittenUpdates);
 router.get('/kittens/:id', getPublicKittenById);
 router.get('/stats', getPublicStats);

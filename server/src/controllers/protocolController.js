@@ -67,10 +67,12 @@ function normalizeDrugPayload(drug, index) {
   };
 }
 
-export async function getAllProtocols(_req, res, next) {
+export async function getAllProtocols(req, res, next) {
   try {
+    const includeInactive = req.query.includeInactive === 'true' || req.query.includeInactive === '1';
+
     const protocols = await prisma.protocol.findMany({
-      where: { isActive: true },
+      where: includeInactive ? undefined : { isActive: true },
       include: {
         drugs: {
           orderBy: { sortOrder: 'asc' },
@@ -127,6 +129,138 @@ export async function createProtocol(req, res, next) {
 
     res.status(201).json(protocol);
   } catch (error) {
+    next(error);
+  }
+}
+
+// Updates a protocol's name/description and, optionally, its drug lines.
+// Drug lines are matched by id: existing lines with a matching id are
+// updated in place, lines without an id are created, and existing lines
+// left out of the payload are removed - but ONLY if no ProtocolDose rows
+// reference them yet. ProtocolDrug.doses uses onDelete: Restrict, so
+// deleting an in-use drug line would fail at the database level anyway;
+// we check first and return a clear 400 instead of letting that surface
+// as a raw FK error. Once a protocol has been activated on a kitten,
+// deactivateProtocol (soft delete) is the safe way to retire it.
+export async function updateProtocol(req, res, next) {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({ error: 'Valid protocol id is required' });
+    }
+
+    const existing = await prisma.protocol.findUnique({
+      where: { id },
+      include: { drugs: true },
+    });
+    if (!existing) return res.status(404).json({ error: 'Protocol not found' });
+
+    const { name, description, drugs } = req.body;
+    const data = {};
+
+    if (name !== undefined) {
+      const trimmedName = typeof name === 'string' ? name.trim() : '';
+      if (!trimmedName) return res.status(400).json({ error: 'name is required' });
+      data.name = trimmedName;
+    }
+
+    if (description !== undefined) {
+      data.description = typeof description === 'string' ? description.trim() : '';
+    }
+
+    let drugRows = null;
+    let removedIds = [];
+
+    if (drugs !== undefined) {
+      if (!Array.isArray(drugs) || drugs.length === 0) {
+        return res.status(400).json({ error: 'At least one drug line is required' });
+      }
+
+      drugRows = [];
+      for (let index = 0; index < drugs.length; index += 1) {
+        const result = normalizeDrugPayload(drugs[index], index);
+        if (result.error) {
+          return res.status(400).json({ error: result.error });
+        }
+        const existingId = Number.parseInt(drugs[index]?.id, 10);
+        drugRows.push({
+          id: Number.isInteger(existingId) && existingId > 0 ? existingId : null,
+          data: result.data,
+        });
+      }
+
+      const existingDrugIds = existing.drugs.map((drug) => drug.id);
+      const keptIds = drugRows
+        .filter((row) => row.id !== null && existingDrugIds.includes(row.id))
+        .map((row) => row.id);
+      removedIds = existingDrugIds.filter((drugId) => !keptIds.includes(drugId));
+    }
+
+    const protocol = await prisma.$transaction(async (tx) => {
+      if (removedIds.length > 0) {
+        const dosesInUse = await tx.protocolDose.count({
+          where: { protocolDrugId: { in: removedIds } },
+        });
+        if (dosesInUse > 0) {
+          throw Object.assign(
+            new Error(
+              'One or more drug lines already have recorded doses and cannot be removed. Deactivate the protocol instead.',
+            ),
+            { statusCode: 400 },
+          );
+        }
+        await tx.protocolDrug.deleteMany({ where: { id: { in: removedIds } } });
+      }
+
+      if (drugRows) {
+        for (const row of drugRows) {
+          if (row.id) {
+            await tx.protocolDrug.update({ where: { id: row.id }, data: row.data });
+          } else {
+            await tx.protocolDrug.create({ data: { ...row.data, protocolId: id } });
+          }
+        }
+      }
+
+      return tx.protocol.update({
+        where: { id },
+        data,
+        include: {
+          drugs: { orderBy: { sortOrder: 'asc' } },
+        },
+      });
+    });
+
+    res.json(protocol);
+  } catch (error) {
+    if (error.statusCode) return res.status(error.statusCode).json({ error: error.message });
+    if (error.code === 'P2025') return res.status(404).json({ error: 'Protocol not found' });
+    next(error);
+  }
+}
+
+// Soft delete - Protocol has activeProtocols on onDelete: Restrict, so a
+// hard delete would fail anyway once a protocol has ever been activated on
+// a kitten. Flips isActive to false; getAllProtocols excludes inactive
+// protocols by default (pass ?includeInactive=true to see them).
+export async function deactivateProtocol(req, res, next) {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({ error: 'Valid protocol id is required' });
+    }
+
+    const protocol = await prisma.protocol.update({
+      where: { id },
+      data: { isActive: false },
+      include: {
+        drugs: { orderBy: { sortOrder: 'asc' } },
+      },
+    });
+
+    res.json(protocol);
+  } catch (error) {
+    if (error.code === 'P2025') return res.status(404).json({ error: 'Protocol not found' });
     next(error);
   }
 }

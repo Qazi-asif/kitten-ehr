@@ -572,6 +572,39 @@ export async function markContractSigned(req, res, next) {
       include: CONTRACT_INCLUDE,
     });
 
+    // Auto-discharge on Adoption contract signing: the signed agreement is
+    // the moment of adoption, so the kitten's status/foster assignment and
+    // any still-open placement should reflect that automatically rather
+    // than relying on staff to remember a second manual step. Never allowed
+    // to fail the signing itself - the contract is already SIGNED above.
+    if (existing.type === 'ADOPTION' && existing.kittenId) {
+      try {
+        await prisma.$transaction(async (tx) => {
+          const kitten = await tx.kitten.findUnique({
+            where: { id: existing.kittenId },
+            select: { outcomeDate: true },
+          });
+          if (!kitten) return;
+
+          await tx.placement.updateMany({
+            where: { kittenId: existing.kittenId, dischargeDate: null },
+            data: { dischargeDate: resolvedSignedAt, dischargeType: 'Adopted' },
+          });
+
+          await tx.kitten.update({
+            where: { id: existing.kittenId },
+            data: {
+              status: 'Adopted',
+              currentFosterId: null,
+              outcomeDate: kitten.outcomeDate ?? resolvedSignedAt,
+            },
+          });
+        });
+      } catch (error) {
+        console.warn('[markContractSigned] Auto-discharge on Adoption contract signing failed, continuing:', error.message);
+      }
+    }
+
     res.json(contract);
   } catch (error) {
     if (error.code === 'P2025') return res.status(404).json({ error: 'Contract not found' });

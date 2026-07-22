@@ -60,6 +60,7 @@ model Foster {
   maxKittens       Int         @default(0)
   photoUrl         String?
   notes            String      @default("")
+  isActive         Boolean     @default(true)
   createdAt        DateTime    @default(now())
   currentKittens   Kitten[]    @relation("CurrentFoster")
   placements       Placement[]
@@ -89,6 +90,9 @@ model Kitten {
   thumbnailUrl    String?
   intakeDate      DateTime?
   intakeSource    String           @default("")
+  // Outcome fields: date for Adopted/Deceased/Released; detail text for Transferred.
+  outcomeDate     DateTime?
+  outcomeDetail   String?
   notes           String           @default("")
   internalNotes   String           @default("")
   isListedOnWebsite Boolean        @default(false)
@@ -664,6 +668,7 @@ model Settings {
   adminNotifyEmail      String  @default("")
   donationWidgetCode    String  @default("")
   donatePageLive        Boolean @default(false)
+  showCurrentPetsOnAdoptionForm Boolean @default(false)
   paypalLink            String  @default("")
   stripeLink            String  @default("")
   venmoQrCodeUrl        String  @default("")

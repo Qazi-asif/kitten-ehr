@@ -2,6 +2,8 @@ import { Router } from 'express';
 import {
   getAllFosters,
   createFoster,
+  updateFoster,
+  deactivateFoster,
   getFosterById,
   resendPortalSetupLink,
   provisionFosterFromApplication,
@@ -32,6 +34,8 @@ router.post('/:id/placements/:placementId/discharge', requirePermission('fosters
 router.get('/:id/wishlists', requirePermission('fosters.view'), getFosterWishlists);
 router.post('/:id/wishlists', requirePermission('fosters.manage'), createFosterWishlist);
 router.get('/:id', requirePermission('fosters.view'), getFosterById);
+router.patch('/:id', requirePermission('fosters.manage'), updateFoster);
+router.post('/:id/deactivate', requirePermission('fosters.manage'), deactivateFoster);
 router.post(
   '/:id/portal-account/resend-setup',
   requirePermission('fosters.manage'),

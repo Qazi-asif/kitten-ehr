@@ -6136,6 +6136,7 @@ export namespace Prisma {
     maxKittens: number | null
     photoUrl: string | null
     notes: string | null
+    isActive: boolean | null
     createdAt: Date | null
     sourceApplicationId: number | null
   }
@@ -6152,6 +6153,7 @@ export namespace Prisma {
     maxKittens: number | null
     photoUrl: string | null
     notes: string | null
+    isActive: boolean | null
     createdAt: Date | null
     sourceApplicationId: number | null
   }
@@ -6168,6 +6170,7 @@ export namespace Prisma {
     maxKittens: number
     photoUrl: number
     notes: number
+    isActive: number
     createdAt: number
     sourceApplicationId: number
     _all: number
@@ -6198,6 +6201,7 @@ export namespace Prisma {
     maxKittens?: true
     photoUrl?: true
     notes?: true
+    isActive?: true
     createdAt?: true
     sourceApplicationId?: true
   }
@@ -6214,6 +6218,7 @@ export namespace Prisma {
     maxKittens?: true
     photoUrl?: true
     notes?: true
+    isActive?: true
     createdAt?: true
     sourceApplicationId?: true
   }
@@ -6230,6 +6235,7 @@ export namespace Prisma {
     maxKittens?: true
     photoUrl?: true
     notes?: true
+    isActive?: true
     createdAt?: true
     sourceApplicationId?: true
     _all?: true
@@ -6333,6 +6339,7 @@ export namespace Prisma {
     maxKittens: number
     photoUrl: string | null
     notes: string
+    isActive: boolean
     createdAt: Date
     sourceApplicationId: number | null
     _count: FosterCountAggregateOutputType | null
@@ -6368,6 +6375,7 @@ export namespace Prisma {
     maxKittens?: boolean
     photoUrl?: boolean
     notes?: boolean
+    isActive?: boolean
     createdAt?: boolean
     sourceApplicationId?: boolean
     currentKittens?: boolean | Foster$currentKittensArgs<ExtArgs>
@@ -6391,6 +6399,7 @@ export namespace Prisma {
     maxKittens?: boolean
     photoUrl?: boolean
     notes?: boolean
+    isActive?: boolean
     createdAt?: boolean
     sourceApplicationId?: boolean
     sourceApplication?: boolean | Foster$sourceApplicationArgs<ExtArgs>
@@ -6408,6 +6417,7 @@ export namespace Prisma {
     maxKittens?: boolean
     photoUrl?: boolean
     notes?: boolean
+    isActive?: boolean
     createdAt?: boolean
     sourceApplicationId?: boolean
     sourceApplication?: boolean | Foster$sourceApplicationArgs<ExtArgs>
@@ -6425,11 +6435,12 @@ export namespace Prisma {
     maxKittens?: boolean
     photoUrl?: boolean
     notes?: boolean
+    isActive?: boolean
     createdAt?: boolean
     sourceApplicationId?: boolean
   }
 
-  export type FosterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "phone" | "email" | "address" | "emergencyContact" | "experienceLevel" | "capabilityFlags" | "maxKittens" | "photoUrl" | "notes" | "createdAt" | "sourceApplicationId", ExtArgs["result"]["foster"]>
+  export type FosterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "phone" | "email" | "address" | "emergencyContact" | "experienceLevel" | "capabilityFlags" | "maxKittens" | "photoUrl" | "notes" | "isActive" | "createdAt" | "sourceApplicationId", ExtArgs["result"]["foster"]>
   export type FosterInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     currentKittens?: boolean | Foster$currentKittensArgs<ExtArgs>
     placements?: boolean | Foster$placementsArgs<ExtArgs>
@@ -6468,6 +6479,7 @@ export namespace Prisma {
       maxKittens: number
       photoUrl: string | null
       notes: string
+      isActive: boolean
       createdAt: Date
       sourceApplicationId: number | null
     }, ExtArgs["result"]["foster"]>
@@ -6910,6 +6922,7 @@ export namespace Prisma {
     readonly maxKittens: FieldRef<"Foster", 'Int'>
     readonly photoUrl: FieldRef<"Foster", 'String'>
     readonly notes: FieldRef<"Foster", 'String'>
+    readonly isActive: FieldRef<"Foster", 'Boolean'>
     readonly createdAt: FieldRef<"Foster", 'DateTime'>
     readonly sourceApplicationId: FieldRef<"Foster", 'Int'>
   }
@@ -7504,6 +7517,8 @@ export namespace Prisma {
     thumbnailUrl: string | null
     intakeDate: Date | null
     intakeSource: string | null
+    outcomeDate: Date | null
+    outcomeDetail: string | null
     notes: string | null
     internalNotes: string | null
     isListedOnWebsite: boolean | null
@@ -7534,6 +7549,8 @@ export namespace Prisma {
     thumbnailUrl: string | null
     intakeDate: Date | null
     intakeSource: string | null
+    outcomeDate: Date | null
+    outcomeDetail: string | null
     notes: string | null
     internalNotes: string | null
     isListedOnWebsite: boolean | null
@@ -7564,6 +7581,8 @@ export namespace Prisma {
     thumbnailUrl: number
     intakeDate: number
     intakeSource: number
+    outcomeDate: number
+    outcomeDetail: number
     notes: number
     internalNotes: number
     isListedOnWebsite: number
@@ -7611,6 +7630,8 @@ export namespace Prisma {
     thumbnailUrl?: true
     intakeDate?: true
     intakeSource?: true
+    outcomeDate?: true
+    outcomeDetail?: true
     notes?: true
     internalNotes?: true
     isListedOnWebsite?: true
@@ -7641,6 +7662,8 @@ export namespace Prisma {
     thumbnailUrl?: true
     intakeDate?: true
     intakeSource?: true
+    outcomeDate?: true
+    outcomeDetail?: true
     notes?: true
     internalNotes?: true
     isListedOnWebsite?: true
@@ -7671,6 +7694,8 @@ export namespace Prisma {
     thumbnailUrl?: true
     intakeDate?: true
     intakeSource?: true
+    outcomeDate?: true
+    outcomeDetail?: true
     notes?: true
     internalNotes?: true
     isListedOnWebsite?: true
@@ -7789,6 +7814,8 @@ export namespace Prisma {
     thumbnailUrl: string | null
     intakeDate: Date | null
     intakeSource: string
+    outcomeDate: Date | null
+    outcomeDetail: string | null
     notes: string
     internalNotes: string
     isListedOnWebsite: boolean
@@ -7839,6 +7866,8 @@ export namespace Prisma {
     thumbnailUrl?: boolean
     intakeDate?: boolean
     intakeSource?: boolean
+    outcomeDate?: boolean
+    outcomeDetail?: boolean
     notes?: boolean
     internalNotes?: boolean
     isListedOnWebsite?: boolean
@@ -7887,6 +7916,8 @@ export namespace Prisma {
     thumbnailUrl?: boolean
     intakeDate?: boolean
     intakeSource?: boolean
+    outcomeDate?: boolean
+    outcomeDetail?: boolean
     notes?: boolean
     internalNotes?: boolean
     isListedOnWebsite?: boolean
@@ -7921,6 +7952,8 @@ export namespace Prisma {
     thumbnailUrl?: boolean
     intakeDate?: boolean
     intakeSource?: boolean
+    outcomeDate?: boolean
+    outcomeDetail?: boolean
     notes?: boolean
     internalNotes?: boolean
     isListedOnWebsite?: boolean
@@ -7955,6 +7988,8 @@ export namespace Prisma {
     thumbnailUrl?: boolean
     intakeDate?: boolean
     intakeSource?: boolean
+    outcomeDate?: boolean
+    outcomeDetail?: boolean
     notes?: boolean
     internalNotes?: boolean
     isListedOnWebsite?: boolean
@@ -7968,7 +8003,7 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-  export type KittenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "litterId" | "status" | "rescueStory" | "dateOfBirth" | "sex" | "fixedStatus" | "breed" | "color" | "fivFelvStatus" | "specialNeeds" | "microchipNumber" | "primaryPhotoUrl" | "thumbnailUrl" | "intakeDate" | "intakeSource" | "notes" | "internalNotes" | "isListedOnWebsite" | "websiteFeaturedComment" | "publishTargets" | "isBondedPair" | "bondedWithKittenId" | "bondedWithName" | "isMedicalSpecialNeeds" | "currentFosterId" | "createdAt", ExtArgs["result"]["kitten"]>
+  export type KittenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "litterId" | "status" | "rescueStory" | "dateOfBirth" | "sex" | "fixedStatus" | "breed" | "color" | "fivFelvStatus" | "specialNeeds" | "microchipNumber" | "primaryPhotoUrl" | "thumbnailUrl" | "intakeDate" | "intakeSource" | "outcomeDate" | "outcomeDetail" | "notes" | "internalNotes" | "isListedOnWebsite" | "websiteFeaturedComment" | "publishTargets" | "isBondedPair" | "bondedWithKittenId" | "bondedWithName" | "isMedicalSpecialNeeds" | "currentFosterId" | "createdAt", ExtArgs["result"]["kitten"]>
   export type KittenInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     litter?: boolean | Kitten$litterArgs<ExtArgs>
     bondedWithKitten?: boolean | Kitten$bondedWithKittenArgs<ExtArgs>
@@ -8037,6 +8072,8 @@ export namespace Prisma {
       thumbnailUrl: string | null
       intakeDate: Date | null
       intakeSource: string
+      outcomeDate: Date | null
+      outcomeDetail: string | null
       notes: string
       internalNotes: string
       isListedOnWebsite: boolean
@@ -8504,6 +8541,8 @@ export namespace Prisma {
     readonly thumbnailUrl: FieldRef<"Kitten", 'String'>
     readonly intakeDate: FieldRef<"Kitten", 'DateTime'>
     readonly intakeSource: FieldRef<"Kitten", 'String'>
+    readonly outcomeDate: FieldRef<"Kitten", 'DateTime'>
+    readonly outcomeDetail: FieldRef<"Kitten", 'String'>
     readonly notes: FieldRef<"Kitten", 'String'>
     readonly internalNotes: FieldRef<"Kitten", 'String'>
     readonly isListedOnWebsite: FieldRef<"Kitten", 'Boolean'>
@@ -43074,6 +43113,7 @@ export namespace Prisma {
     adminNotifyEmail: string | null
     donationWidgetCode: string | null
     donatePageLive: boolean | null
+    showCurrentPetsOnAdoptionForm: boolean | null
     paypalLink: string | null
     stripeLink: string | null
     venmoQrCodeUrl: string | null
@@ -43113,6 +43153,7 @@ export namespace Prisma {
     adminNotifyEmail: string | null
     donationWidgetCode: string | null
     donatePageLive: boolean | null
+    showCurrentPetsOnAdoptionForm: boolean | null
     paypalLink: string | null
     stripeLink: string | null
     venmoQrCodeUrl: string | null
@@ -43152,6 +43193,7 @@ export namespace Prisma {
     adminNotifyEmail: number
     donationWidgetCode: number
     donatePageLive: number
+    showCurrentPetsOnAdoptionForm: number
     paypalLink: number
     stripeLink: number
     venmoQrCodeUrl: number
@@ -43205,6 +43247,7 @@ export namespace Prisma {
     adminNotifyEmail?: true
     donationWidgetCode?: true
     donatePageLive?: true
+    showCurrentPetsOnAdoptionForm?: true
     paypalLink?: true
     stripeLink?: true
     venmoQrCodeUrl?: true
@@ -43244,6 +43287,7 @@ export namespace Prisma {
     adminNotifyEmail?: true
     donationWidgetCode?: true
     donatePageLive?: true
+    showCurrentPetsOnAdoptionForm?: true
     paypalLink?: true
     stripeLink?: true
     venmoQrCodeUrl?: true
@@ -43283,6 +43327,7 @@ export namespace Prisma {
     adminNotifyEmail?: true
     donationWidgetCode?: true
     donatePageLive?: true
+    showCurrentPetsOnAdoptionForm?: true
     paypalLink?: true
     stripeLink?: true
     venmoQrCodeUrl?: true
@@ -43409,6 +43454,7 @@ export namespace Prisma {
     adminNotifyEmail: string
     donationWidgetCode: string
     donatePageLive: boolean
+    showCurrentPetsOnAdoptionForm: boolean
     paypalLink: string
     stripeLink: string
     venmoQrCodeUrl: string
@@ -43467,6 +43513,7 @@ export namespace Prisma {
     adminNotifyEmail?: boolean
     donationWidgetCode?: boolean
     donatePageLive?: boolean
+    showCurrentPetsOnAdoptionForm?: boolean
     paypalLink?: boolean
     stripeLink?: boolean
     venmoQrCodeUrl?: boolean
@@ -43506,6 +43553,7 @@ export namespace Prisma {
     adminNotifyEmail?: boolean
     donationWidgetCode?: boolean
     donatePageLive?: boolean
+    showCurrentPetsOnAdoptionForm?: boolean
     paypalLink?: boolean
     stripeLink?: boolean
     venmoQrCodeUrl?: boolean
@@ -43545,6 +43593,7 @@ export namespace Prisma {
     adminNotifyEmail?: boolean
     donationWidgetCode?: boolean
     donatePageLive?: boolean
+    showCurrentPetsOnAdoptionForm?: boolean
     paypalLink?: boolean
     stripeLink?: boolean
     venmoQrCodeUrl?: boolean
@@ -43584,13 +43633,14 @@ export namespace Prisma {
     adminNotifyEmail?: boolean
     donationWidgetCode?: boolean
     donatePageLive?: boolean
+    showCurrentPetsOnAdoptionForm?: boolean
     paypalLink?: boolean
     stripeLink?: boolean
     venmoQrCodeUrl?: boolean
     venmoHandle?: boolean
   }
 
-  export type SettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orgName" | "orgEin" | "orgLogoUrl" | "orgSignatureUrl" | "contactPhone" | "contactEmail" | "contactAddress" | "missionStatement" | "defaultDonationAmount" | "amazonWishlistUrl" | "chewyWishlistUrl" | "facebookUrl" | "instagramUrl" | "socialPostingEnabled" | "facebookPageId" | "facebookPageAccessToken" | "instagramBusinessAccountId" | "groqApiKey" | "groqModel" | "aiEnabled" | "emailsEnabled" | "smtpHost" | "smtpPort" | "smtpSecure" | "smtpUser" | "smtpPass" | "fromEmail" | "fromName" | "adminNotifyEmail" | "donationWidgetCode" | "donatePageLive" | "paypalLink" | "stripeLink" | "venmoQrCodeUrl" | "venmoHandle", ExtArgs["result"]["settings"]>
+  export type SettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orgName" | "orgEin" | "orgLogoUrl" | "orgSignatureUrl" | "contactPhone" | "contactEmail" | "contactAddress" | "missionStatement" | "defaultDonationAmount" | "amazonWishlistUrl" | "chewyWishlistUrl" | "facebookUrl" | "instagramUrl" | "socialPostingEnabled" | "facebookPageId" | "facebookPageAccessToken" | "instagramBusinessAccountId" | "groqApiKey" | "groqModel" | "aiEnabled" | "emailsEnabled" | "smtpHost" | "smtpPort" | "smtpSecure" | "smtpUser" | "smtpPass" | "fromEmail" | "fromName" | "adminNotifyEmail" | "donationWidgetCode" | "donatePageLive" | "showCurrentPetsOnAdoptionForm" | "paypalLink" | "stripeLink" | "venmoQrCodeUrl" | "venmoHandle", ExtArgs["result"]["settings"]>
 
   export type $SettingsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Settings"
@@ -43628,6 +43678,7 @@ export namespace Prisma {
       adminNotifyEmail: string
       donationWidgetCode: string
       donatePageLive: boolean
+      showCurrentPetsOnAdoptionForm: boolean
       paypalLink: string
       stripeLink: string
       venmoQrCodeUrl: string
@@ -44087,6 +44138,7 @@ export namespace Prisma {
     readonly adminNotifyEmail: FieldRef<"Settings", 'String'>
     readonly donationWidgetCode: FieldRef<"Settings", 'String'>
     readonly donatePageLive: FieldRef<"Settings", 'Boolean'>
+    readonly showCurrentPetsOnAdoptionForm: FieldRef<"Settings", 'Boolean'>
     readonly paypalLink: FieldRef<"Settings", 'String'>
     readonly stripeLink: FieldRef<"Settings", 'String'>
     readonly venmoQrCodeUrl: FieldRef<"Settings", 'String'>
@@ -50044,6 +50096,7 @@ export namespace Prisma {
     maxKittens: 'maxKittens',
     photoUrl: 'photoUrl',
     notes: 'notes',
+    isActive: 'isActive',
     createdAt: 'createdAt',
     sourceApplicationId: 'sourceApplicationId'
   };
@@ -50069,6 +50122,8 @@ export namespace Prisma {
     thumbnailUrl: 'thumbnailUrl',
     intakeDate: 'intakeDate',
     intakeSource: 'intakeSource',
+    outcomeDate: 'outcomeDate',
+    outcomeDetail: 'outcomeDetail',
     notes: 'notes',
     internalNotes: 'internalNotes',
     isListedOnWebsite: 'isListedOnWebsite',
@@ -50529,6 +50584,7 @@ export namespace Prisma {
     adminNotifyEmail: 'adminNotifyEmail',
     donationWidgetCode: 'donationWidgetCode',
     donatePageLive: 'donatePageLive',
+    showCurrentPetsOnAdoptionForm: 'showCurrentPetsOnAdoptionForm',
     paypalLink: 'paypalLink',
     stripeLink: 'stripeLink',
     venmoQrCodeUrl: 'venmoQrCodeUrl',
@@ -50905,6 +50961,7 @@ export namespace Prisma {
     maxKittens?: IntFilter<"Foster"> | number
     photoUrl?: StringNullableFilter<"Foster"> | string | null
     notes?: StringFilter<"Foster"> | string
+    isActive?: BoolFilter<"Foster"> | boolean
     createdAt?: DateTimeFilter<"Foster"> | Date | string
     sourceApplicationId?: IntNullableFilter<"Foster"> | number | null
     currentKittens?: KittenListRelationFilter
@@ -50927,6 +50984,7 @@ export namespace Prisma {
     maxKittens?: SortOrder
     photoUrl?: SortOrderInput | SortOrder
     notes?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     sourceApplicationId?: SortOrderInput | SortOrder
     currentKittens?: KittenOrderByRelationAggregateInput
@@ -50952,6 +51010,7 @@ export namespace Prisma {
     maxKittens?: IntFilter<"Foster"> | number
     photoUrl?: StringNullableFilter<"Foster"> | string | null
     notes?: StringFilter<"Foster"> | string
+    isActive?: BoolFilter<"Foster"> | boolean
     createdAt?: DateTimeFilter<"Foster"> | Date | string
     sourceApplicationId?: IntNullableFilter<"Foster"> | number | null
     currentKittens?: KittenListRelationFilter
@@ -50974,6 +51033,7 @@ export namespace Prisma {
     maxKittens?: SortOrder
     photoUrl?: SortOrderInput | SortOrder
     notes?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     sourceApplicationId?: SortOrderInput | SortOrder
     _count?: FosterCountOrderByAggregateInput
@@ -50998,6 +51058,7 @@ export namespace Prisma {
     maxKittens?: IntWithAggregatesFilter<"Foster"> | number
     photoUrl?: StringNullableWithAggregatesFilter<"Foster"> | string | null
     notes?: StringWithAggregatesFilter<"Foster"> | string
+    isActive?: BoolWithAggregatesFilter<"Foster"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Foster"> | Date | string
     sourceApplicationId?: IntNullableWithAggregatesFilter<"Foster"> | number | null
   }
@@ -51023,6 +51084,8 @@ export namespace Prisma {
     thumbnailUrl?: StringNullableFilter<"Kitten"> | string | null
     intakeDate?: DateTimeNullableFilter<"Kitten"> | Date | string | null
     intakeSource?: StringFilter<"Kitten"> | string
+    outcomeDate?: DateTimeNullableFilter<"Kitten"> | Date | string | null
+    outcomeDetail?: StringNullableFilter<"Kitten"> | string | null
     notes?: StringFilter<"Kitten"> | string
     internalNotes?: StringFilter<"Kitten"> | string
     isListedOnWebsite?: BoolFilter<"Kitten"> | boolean
@@ -51070,6 +51133,8 @@ export namespace Prisma {
     thumbnailUrl?: SortOrderInput | SortOrder
     intakeDate?: SortOrderInput | SortOrder
     intakeSource?: SortOrder
+    outcomeDate?: SortOrderInput | SortOrder
+    outcomeDetail?: SortOrderInput | SortOrder
     notes?: SortOrder
     internalNotes?: SortOrder
     isListedOnWebsite?: SortOrder
@@ -51120,6 +51185,8 @@ export namespace Prisma {
     thumbnailUrl?: StringNullableFilter<"Kitten"> | string | null
     intakeDate?: DateTimeNullableFilter<"Kitten"> | Date | string | null
     intakeSource?: StringFilter<"Kitten"> | string
+    outcomeDate?: DateTimeNullableFilter<"Kitten"> | Date | string | null
+    outcomeDetail?: StringNullableFilter<"Kitten"> | string | null
     notes?: StringFilter<"Kitten"> | string
     internalNotes?: StringFilter<"Kitten"> | string
     isListedOnWebsite?: BoolFilter<"Kitten"> | boolean
@@ -51167,6 +51234,8 @@ export namespace Prisma {
     thumbnailUrl?: SortOrderInput | SortOrder
     intakeDate?: SortOrderInput | SortOrder
     intakeSource?: SortOrder
+    outcomeDate?: SortOrderInput | SortOrder
+    outcomeDetail?: SortOrderInput | SortOrder
     notes?: SortOrder
     internalNotes?: SortOrder
     isListedOnWebsite?: SortOrder
@@ -51206,6 +51275,8 @@ export namespace Prisma {
     thumbnailUrl?: StringNullableWithAggregatesFilter<"Kitten"> | string | null
     intakeDate?: DateTimeNullableWithAggregatesFilter<"Kitten"> | Date | string | null
     intakeSource?: StringWithAggregatesFilter<"Kitten"> | string
+    outcomeDate?: DateTimeNullableWithAggregatesFilter<"Kitten"> | Date | string | null
+    outcomeDetail?: StringNullableWithAggregatesFilter<"Kitten"> | string | null
     notes?: StringWithAggregatesFilter<"Kitten"> | string
     internalNotes?: StringWithAggregatesFilter<"Kitten"> | string
     isListedOnWebsite?: BoolWithAggregatesFilter<"Kitten"> | boolean
@@ -53454,6 +53525,7 @@ export namespace Prisma {
     adminNotifyEmail?: StringFilter<"Settings"> | string
     donationWidgetCode?: StringFilter<"Settings"> | string
     donatePageLive?: BoolFilter<"Settings"> | boolean
+    showCurrentPetsOnAdoptionForm?: BoolFilter<"Settings"> | boolean
     paypalLink?: StringFilter<"Settings"> | string
     stripeLink?: StringFilter<"Settings"> | string
     venmoQrCodeUrl?: StringFilter<"Settings"> | string
@@ -53493,6 +53565,7 @@ export namespace Prisma {
     adminNotifyEmail?: SortOrder
     donationWidgetCode?: SortOrder
     donatePageLive?: SortOrder
+    showCurrentPetsOnAdoptionForm?: SortOrder
     paypalLink?: SortOrder
     stripeLink?: SortOrder
     venmoQrCodeUrl?: SortOrder
@@ -53535,6 +53608,7 @@ export namespace Prisma {
     adminNotifyEmail?: StringFilter<"Settings"> | string
     donationWidgetCode?: StringFilter<"Settings"> | string
     donatePageLive?: BoolFilter<"Settings"> | boolean
+    showCurrentPetsOnAdoptionForm?: BoolFilter<"Settings"> | boolean
     paypalLink?: StringFilter<"Settings"> | string
     stripeLink?: StringFilter<"Settings"> | string
     venmoQrCodeUrl?: StringFilter<"Settings"> | string
@@ -53574,6 +53648,7 @@ export namespace Prisma {
     adminNotifyEmail?: SortOrder
     donationWidgetCode?: SortOrder
     donatePageLive?: SortOrder
+    showCurrentPetsOnAdoptionForm?: SortOrder
     paypalLink?: SortOrder
     stripeLink?: SortOrder
     venmoQrCodeUrl?: SortOrder
@@ -53621,6 +53696,7 @@ export namespace Prisma {
     adminNotifyEmail?: StringWithAggregatesFilter<"Settings"> | string
     donationWidgetCode?: StringWithAggregatesFilter<"Settings"> | string
     donatePageLive?: BoolWithAggregatesFilter<"Settings"> | boolean
+    showCurrentPetsOnAdoptionForm?: BoolWithAggregatesFilter<"Settings"> | boolean
     paypalLink?: StringWithAggregatesFilter<"Settings"> | string
     stripeLink?: StringWithAggregatesFilter<"Settings"> | string
     venmoQrCodeUrl?: StringWithAggregatesFilter<"Settings"> | string
@@ -54082,6 +54158,7 @@ export namespace Prisma {
     maxKittens?: number
     photoUrl?: string | null
     notes?: string
+    isActive?: boolean
     createdAt?: Date | string
     currentKittens?: KittenCreateNestedManyWithoutCurrentFosterInput
     placements?: PlacementCreateNestedManyWithoutFosterInput
@@ -54103,6 +54180,7 @@ export namespace Prisma {
     maxKittens?: number
     photoUrl?: string | null
     notes?: string
+    isActive?: boolean
     createdAt?: Date | string
     sourceApplicationId?: number | null
     currentKittens?: KittenUncheckedCreateNestedManyWithoutCurrentFosterInput
@@ -54123,6 +54201,7 @@ export namespace Prisma {
     maxKittens?: IntFieldUpdateOperationsInput | number
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     currentKittens?: KittenUpdateManyWithoutCurrentFosterNestedInput
     placements?: PlacementUpdateManyWithoutFosterNestedInput
@@ -54144,6 +54223,7 @@ export namespace Prisma {
     maxKittens?: IntFieldUpdateOperationsInput | number
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sourceApplicationId?: NullableIntFieldUpdateOperationsInput | number | null
     currentKittens?: KittenUncheckedUpdateManyWithoutCurrentFosterNestedInput
@@ -54165,6 +54245,7 @@ export namespace Prisma {
     maxKittens?: number
     photoUrl?: string | null
     notes?: string
+    isActive?: boolean
     createdAt?: Date | string
     sourceApplicationId?: number | null
   }
@@ -54180,6 +54261,7 @@ export namespace Prisma {
     maxKittens?: IntFieldUpdateOperationsInput | number
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -54195,6 +54277,7 @@ export namespace Prisma {
     maxKittens?: IntFieldUpdateOperationsInput | number
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sourceApplicationId?: NullableIntFieldUpdateOperationsInput | number | null
   }
@@ -54215,6 +54298,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -54260,6 +54345,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -54302,6 +54389,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -54347,6 +54436,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -54391,6 +54482,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -54420,6 +54513,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -54449,6 +54544,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -56729,6 +56826,7 @@ export namespace Prisma {
     adminNotifyEmail?: string
     donationWidgetCode?: string
     donatePageLive?: boolean
+    showCurrentPetsOnAdoptionForm?: boolean
     paypalLink?: string
     stripeLink?: string
     venmoQrCodeUrl?: string
@@ -56768,6 +56866,7 @@ export namespace Prisma {
     adminNotifyEmail?: string
     donationWidgetCode?: string
     donatePageLive?: boolean
+    showCurrentPetsOnAdoptionForm?: boolean
     paypalLink?: string
     stripeLink?: string
     venmoQrCodeUrl?: string
@@ -56807,6 +56906,7 @@ export namespace Prisma {
     adminNotifyEmail?: StringFieldUpdateOperationsInput | string
     donationWidgetCode?: StringFieldUpdateOperationsInput | string
     donatePageLive?: BoolFieldUpdateOperationsInput | boolean
+    showCurrentPetsOnAdoptionForm?: BoolFieldUpdateOperationsInput | boolean
     paypalLink?: StringFieldUpdateOperationsInput | string
     stripeLink?: StringFieldUpdateOperationsInput | string
     venmoQrCodeUrl?: StringFieldUpdateOperationsInput | string
@@ -56846,6 +56946,7 @@ export namespace Prisma {
     adminNotifyEmail?: StringFieldUpdateOperationsInput | string
     donationWidgetCode?: StringFieldUpdateOperationsInput | string
     donatePageLive?: BoolFieldUpdateOperationsInput | boolean
+    showCurrentPetsOnAdoptionForm?: BoolFieldUpdateOperationsInput | boolean
     paypalLink?: StringFieldUpdateOperationsInput | string
     stripeLink?: StringFieldUpdateOperationsInput | string
     venmoQrCodeUrl?: StringFieldUpdateOperationsInput | string
@@ -56885,6 +56986,7 @@ export namespace Prisma {
     adminNotifyEmail?: string
     donationWidgetCode?: string
     donatePageLive?: boolean
+    showCurrentPetsOnAdoptionForm?: boolean
     paypalLink?: string
     stripeLink?: string
     venmoQrCodeUrl?: string
@@ -56924,6 +57026,7 @@ export namespace Prisma {
     adminNotifyEmail?: StringFieldUpdateOperationsInput | string
     donationWidgetCode?: StringFieldUpdateOperationsInput | string
     donatePageLive?: BoolFieldUpdateOperationsInput | boolean
+    showCurrentPetsOnAdoptionForm?: BoolFieldUpdateOperationsInput | boolean
     paypalLink?: StringFieldUpdateOperationsInput | string
     stripeLink?: StringFieldUpdateOperationsInput | string
     venmoQrCodeUrl?: StringFieldUpdateOperationsInput | string
@@ -56963,6 +57066,7 @@ export namespace Prisma {
     adminNotifyEmail?: StringFieldUpdateOperationsInput | string
     donationWidgetCode?: StringFieldUpdateOperationsInput | string
     donatePageLive?: BoolFieldUpdateOperationsInput | boolean
+    showCurrentPetsOnAdoptionForm?: BoolFieldUpdateOperationsInput | boolean
     paypalLink?: StringFieldUpdateOperationsInput | string
     stripeLink?: StringFieldUpdateOperationsInput | string
     venmoQrCodeUrl?: StringFieldUpdateOperationsInput | string
@@ -57540,6 +57644,11 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type IntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -57608,6 +57717,7 @@ export namespace Prisma {
     maxKittens?: SortOrder
     photoUrl?: SortOrder
     notes?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     sourceApplicationId?: SortOrder
   }
@@ -57630,6 +57740,7 @@ export namespace Prisma {
     maxKittens?: SortOrder
     photoUrl?: SortOrder
     notes?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     sourceApplicationId?: SortOrder
   }
@@ -57646,6 +57757,7 @@ export namespace Prisma {
     maxKittens?: SortOrder
     photoUrl?: SortOrder
     notes?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     sourceApplicationId?: SortOrder
   }
@@ -57674,6 +57786,14 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -57699,11 +57819,6 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type StringNullableListFilter<$PrismaModel = never> = {
@@ -57837,6 +57952,8 @@ export namespace Prisma {
     thumbnailUrl?: SortOrder
     intakeDate?: SortOrder
     intakeSource?: SortOrder
+    outcomeDate?: SortOrder
+    outcomeDetail?: SortOrder
     notes?: SortOrder
     internalNotes?: SortOrder
     isListedOnWebsite?: SortOrder
@@ -57875,6 +57992,8 @@ export namespace Prisma {
     thumbnailUrl?: SortOrder
     intakeDate?: SortOrder
     intakeSource?: SortOrder
+    outcomeDate?: SortOrder
+    outcomeDetail?: SortOrder
     notes?: SortOrder
     internalNotes?: SortOrder
     isListedOnWebsite?: SortOrder
@@ -57905,6 +58024,8 @@ export namespace Prisma {
     thumbnailUrl?: SortOrder
     intakeDate?: SortOrder
     intakeSource?: SortOrder
+    outcomeDate?: SortOrder
+    outcomeDetail?: SortOrder
     notes?: SortOrder
     internalNotes?: SortOrder
     isListedOnWebsite?: SortOrder
@@ -57936,14 +58057,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type KittenScalarRelationFilter = {
@@ -59604,6 +59717,7 @@ export namespace Prisma {
     adminNotifyEmail?: SortOrder
     donationWidgetCode?: SortOrder
     donatePageLive?: SortOrder
+    showCurrentPetsOnAdoptionForm?: SortOrder
     paypalLink?: SortOrder
     stripeLink?: SortOrder
     venmoQrCodeUrl?: SortOrder
@@ -59649,6 +59763,7 @@ export namespace Prisma {
     adminNotifyEmail?: SortOrder
     donationWidgetCode?: SortOrder
     donatePageLive?: SortOrder
+    showCurrentPetsOnAdoptionForm?: SortOrder
     paypalLink?: SortOrder
     stripeLink?: SortOrder
     venmoQrCodeUrl?: SortOrder
@@ -59688,6 +59803,7 @@ export namespace Prisma {
     adminNotifyEmail?: SortOrder
     donationWidgetCode?: SortOrder
     donatePageLive?: SortOrder
+    showCurrentPetsOnAdoptionForm?: SortOrder
     paypalLink?: SortOrder
     stripeLink?: SortOrder
     venmoQrCodeUrl?: SortOrder
@@ -60131,6 +60247,10 @@ export namespace Prisma {
     set?: string | null
   }
 
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
   export type KittenUpdateManyWithoutCurrentFosterNestedInput = {
     create?: XOR<KittenCreateWithoutCurrentFosterInput, KittenUncheckedCreateWithoutCurrentFosterInput> | KittenCreateWithoutCurrentFosterInput[] | KittenUncheckedCreateWithoutCurrentFosterInput[]
     connectOrCreate?: KittenCreateOrConnectWithoutCurrentFosterInput | KittenCreateOrConnectWithoutCurrentFosterInput[]
@@ -60487,10 +60607,6 @@ export namespace Prisma {
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
-  }
-
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
   }
 
   export type KittenUpdatepublishTargetsInput = {
@@ -62484,6 +62600,11 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedIntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -62510,6 +62631,14 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -62550,11 +62679,6 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -62567,14 +62691,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -62762,6 +62878,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -62805,6 +62923,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -62878,6 +62998,8 @@ export namespace Prisma {
     thumbnailUrl?: StringNullableFilter<"Kitten"> | string | null
     intakeDate?: DateTimeNullableFilter<"Kitten"> | Date | string | null
     intakeSource?: StringFilter<"Kitten"> | string
+    outcomeDate?: DateTimeNullableFilter<"Kitten"> | Date | string | null
+    outcomeDetail?: StringNullableFilter<"Kitten"> | string | null
     notes?: StringFilter<"Kitten"> | string
     internalNotes?: StringFilter<"Kitten"> | string
     isListedOnWebsite?: BoolFilter<"Kitten"> | boolean
@@ -62907,6 +63029,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -62951,6 +63075,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -63445,6 +63571,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -63489,6 +63617,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -63535,6 +63665,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -63579,6 +63711,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -63625,6 +63759,7 @@ export namespace Prisma {
     maxKittens?: number
     photoUrl?: string | null
     notes?: string
+    isActive?: boolean
     createdAt?: Date | string
     placements?: PlacementCreateNestedManyWithoutFosterInput
     contracts?: ContractCreateNestedManyWithoutFosterInput
@@ -63645,6 +63780,7 @@ export namespace Prisma {
     maxKittens?: number
     photoUrl?: string | null
     notes?: string
+    isActive?: boolean
     createdAt?: Date | string
     sourceApplicationId?: number | null
     placements?: PlacementUncheckedCreateNestedManyWithoutFosterInput
@@ -64101,6 +64237,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -64145,6 +64283,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -64208,6 +64348,7 @@ export namespace Prisma {
     maxKittens?: IntFieldUpdateOperationsInput | number
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUpdateManyWithoutFosterNestedInput
     contracts?: ContractUpdateManyWithoutFosterNestedInput
@@ -64228,6 +64369,7 @@ export namespace Prisma {
     maxKittens?: IntFieldUpdateOperationsInput | number
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sourceApplicationId?: NullableIntFieldUpdateOperationsInput | number | null
     placements?: PlacementUncheckedUpdateManyWithoutFosterNestedInput
@@ -64572,6 +64714,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -64616,6 +64760,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -64673,6 +64819,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -64717,6 +64865,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -64758,6 +64908,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -64802,6 +64954,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -64859,6 +65013,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -64903,6 +65059,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -64944,6 +65102,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -64988,6 +65148,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -65029,6 +65191,7 @@ export namespace Prisma {
     maxKittens?: number
     photoUrl?: string | null
     notes?: string
+    isActive?: boolean
     createdAt?: Date | string
     currentKittens?: KittenCreateNestedManyWithoutCurrentFosterInput
     contracts?: ContractCreateNestedManyWithoutFosterInput
@@ -65049,6 +65212,7 @@ export namespace Prisma {
     maxKittens?: number
     photoUrl?: string | null
     notes?: string
+    isActive?: boolean
     createdAt?: Date | string
     sourceApplicationId?: number | null
     currentKittens?: KittenUncheckedCreateNestedManyWithoutCurrentFosterInput
@@ -65089,6 +65253,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -65133,6 +65299,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -65180,6 +65348,7 @@ export namespace Prisma {
     maxKittens?: IntFieldUpdateOperationsInput | number
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     currentKittens?: KittenUpdateManyWithoutCurrentFosterNestedInput
     contracts?: ContractUpdateManyWithoutFosterNestedInput
@@ -65200,6 +65369,7 @@ export namespace Prisma {
     maxKittens?: IntFieldUpdateOperationsInput | number
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sourceApplicationId?: NullableIntFieldUpdateOperationsInput | number | null
     currentKittens?: KittenUncheckedUpdateManyWithoutCurrentFosterNestedInput
@@ -65224,6 +65394,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -65268,6 +65440,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -65325,6 +65499,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -65369,6 +65545,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -65410,6 +65588,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -65454,6 +65634,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -65511,6 +65693,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -65555,6 +65739,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -65596,6 +65782,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -65640,6 +65828,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -65697,6 +65887,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -65741,6 +65933,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -65782,6 +65976,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -65826,6 +66022,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -65883,6 +66081,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -65927,6 +66127,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -65968,6 +66170,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -66012,6 +66216,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -66053,6 +66259,7 @@ export namespace Prisma {
     maxKittens?: number
     photoUrl?: string | null
     notes?: string
+    isActive?: boolean
     createdAt?: Date | string
     currentKittens?: KittenCreateNestedManyWithoutCurrentFosterInput
     placements?: PlacementCreateNestedManyWithoutFosterInput
@@ -66073,6 +66280,7 @@ export namespace Prisma {
     maxKittens?: number
     photoUrl?: string | null
     notes?: string
+    isActive?: boolean
     createdAt?: Date | string
     sourceApplicationId?: number | null
     currentKittens?: KittenUncheckedCreateNestedManyWithoutCurrentFosterInput
@@ -66113,6 +66321,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -66157,6 +66367,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -66204,6 +66416,7 @@ export namespace Prisma {
     maxKittens?: IntFieldUpdateOperationsInput | number
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     currentKittens?: KittenUpdateManyWithoutCurrentFosterNestedInput
     placements?: PlacementUpdateManyWithoutFosterNestedInput
@@ -66224,6 +66437,7 @@ export namespace Prisma {
     maxKittens?: IntFieldUpdateOperationsInput | number
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sourceApplicationId?: NullableIntFieldUpdateOperationsInput | number | null
     currentKittens?: KittenUncheckedUpdateManyWithoutCurrentFosterNestedInput
@@ -66377,6 +66591,7 @@ export namespace Prisma {
     maxKittens?: number
     photoUrl?: string | null
     notes?: string
+    isActive?: boolean
     createdAt?: Date | string
     currentKittens?: KittenCreateNestedManyWithoutCurrentFosterInput
     placements?: PlacementCreateNestedManyWithoutFosterInput
@@ -66397,6 +66612,7 @@ export namespace Prisma {
     maxKittens?: number
     photoUrl?: string | null
     notes?: string
+    isActive?: boolean
     createdAt?: Date | string
     currentKittens?: KittenUncheckedCreateNestedManyWithoutCurrentFosterInput
     placements?: PlacementUncheckedCreateNestedManyWithoutFosterInput
@@ -66539,6 +66755,7 @@ export namespace Prisma {
     maxKittens?: IntFilter<"Foster"> | number
     photoUrl?: StringNullableFilter<"Foster"> | string | null
     notes?: StringFilter<"Foster"> | string
+    isActive?: BoolFilter<"Foster"> | boolean
     createdAt?: DateTimeFilter<"Foster"> | Date | string
     sourceApplicationId?: IntNullableFilter<"Foster"> | number | null
   }
@@ -66559,6 +66776,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -66603,6 +66822,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -66644,6 +66865,7 @@ export namespace Prisma {
     maxKittens?: number
     photoUrl?: string | null
     notes?: string
+    isActive?: boolean
     createdAt?: Date | string
     currentKittens?: KittenCreateNestedManyWithoutCurrentFosterInput
     placements?: PlacementCreateNestedManyWithoutFosterInput
@@ -66664,6 +66886,7 @@ export namespace Prisma {
     maxKittens?: number
     photoUrl?: string | null
     notes?: string
+    isActive?: boolean
     createdAt?: Date | string
     sourceApplicationId?: number | null
     currentKittens?: KittenUncheckedCreateNestedManyWithoutCurrentFosterInput
@@ -66769,6 +66992,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -66813,6 +67038,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -66860,6 +67087,7 @@ export namespace Prisma {
     maxKittens?: IntFieldUpdateOperationsInput | number
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     currentKittens?: KittenUpdateManyWithoutCurrentFosterNestedInput
     placements?: PlacementUpdateManyWithoutFosterNestedInput
@@ -66880,6 +67108,7 @@ export namespace Prisma {
     maxKittens?: IntFieldUpdateOperationsInput | number
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sourceApplicationId?: NullableIntFieldUpdateOperationsInput | number | null
     currentKittens?: KittenUncheckedUpdateManyWithoutCurrentFosterNestedInput
@@ -67778,6 +68007,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -67822,6 +68053,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -67919,6 +68152,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -67963,6 +68198,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -68275,6 +68512,7 @@ export namespace Prisma {
     maxKittens?: number
     photoUrl?: string | null
     notes?: string
+    isActive?: boolean
     createdAt?: Date | string
     currentKittens?: KittenCreateNestedManyWithoutCurrentFosterInput
     placements?: PlacementCreateNestedManyWithoutFosterInput
@@ -68295,6 +68533,7 @@ export namespace Prisma {
     maxKittens?: number
     photoUrl?: string | null
     notes?: string
+    isActive?: boolean
     createdAt?: Date | string
     sourceApplicationId?: number | null
     currentKittens?: KittenUncheckedCreateNestedManyWithoutCurrentFosterInput
@@ -68542,6 +68781,7 @@ export namespace Prisma {
     maxKittens?: IntFieldUpdateOperationsInput | number
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     currentKittens?: KittenUpdateManyWithoutCurrentFosterNestedInput
     placements?: PlacementUpdateManyWithoutFosterNestedInput
@@ -68562,6 +68802,7 @@ export namespace Prisma {
     maxKittens?: IntFieldUpdateOperationsInput | number
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sourceApplicationId?: NullableIntFieldUpdateOperationsInput | number | null
     currentKittens?: KittenUncheckedUpdateManyWithoutCurrentFosterNestedInput
@@ -69056,6 +69297,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -69100,6 +69343,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -69260,6 +69505,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -69304,6 +69551,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -69615,6 +69864,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -69659,6 +69910,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -69716,6 +69969,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -69760,6 +70015,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -69802,6 +70059,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -69831,6 +70090,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -69874,6 +70135,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -69917,6 +70180,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -69948,6 +70213,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -70024,6 +70291,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -70068,6 +70337,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -70111,6 +70382,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -70284,6 +70557,8 @@ export namespace Prisma {
     thumbnailUrl?: string | null
     intakeDate?: Date | string | null
     intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
@@ -70452,6 +70727,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -70496,6 +70773,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -70539,6 +70818,8 @@ export namespace Prisma {
     thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
@@ -71011,6 +71292,7 @@ export namespace Prisma {
     maxKittens?: number
     photoUrl?: string | null
     notes?: string
+    isActive?: boolean
     createdAt?: Date | string
   }
 
@@ -71133,6 +71415,7 @@ export namespace Prisma {
     maxKittens?: IntFieldUpdateOperationsInput | number
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     currentKittens?: KittenUpdateManyWithoutCurrentFosterNestedInput
     placements?: PlacementUpdateManyWithoutFosterNestedInput
@@ -71153,6 +71436,7 @@ export namespace Prisma {
     maxKittens?: IntFieldUpdateOperationsInput | number
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     currentKittens?: KittenUncheckedUpdateManyWithoutCurrentFosterNestedInput
     placements?: PlacementUncheckedUpdateManyWithoutFosterNestedInput
@@ -71173,6 +71457,7 @@ export namespace Prisma {
     maxKittens?: IntFieldUpdateOperationsInput | number
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

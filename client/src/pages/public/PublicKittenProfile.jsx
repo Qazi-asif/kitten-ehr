@@ -11,6 +11,7 @@ import {
   fetchPublicKittenUpdates,
   fetchPublicSettings,
   fetchPublicWishlists,
+  invalidatePublicSettingsCache,
 } from '../../services/publicApi';
 import { markCheckoutSuccessParam } from '../../hooks/useGivebutterCheckout';
 import KittenPhoto from '../../components/KittenPhoto';
@@ -80,10 +81,12 @@ function PublicKittenProfile() {
   const [sponsorshipComplete, setSponsorshipComplete] = useState(false);
   const [donatePageLive, setDonatePageLive] = useState(false);
   const [showAllUpdates, setShowAllUpdates] = useState(false);
+  const [lightboxUrl, setLightboxUrl] = useState(null);
 
   const loadProfile = useCallback(() => {
     setLoading(true);
     setError(null);
+    invalidatePublicSettingsCache();
     Promise.all([
       fetchPublicKittenById(id),
       fetchPublicKittenUpdates(id),
@@ -225,14 +228,16 @@ function PublicKittenProfile() {
                   <PawPrint className="h-4 w-4" fill="currentColor" />
                   SPONSOR ME
                 </button>
-                <button
-                  type="button"
-                  onClick={() => scrollToRef(wishlistRef)}
-                  className="inline-flex min-w-[140px] items-center justify-center gap-2 rounded-xl bg-[#ffb703] px-6 py-3.5 text-sm font-bold tracking-wide text-gray-900 shadow-md transition hover:bg-[#e6a500]"
-                >
-                  <Heart className="h-4 w-4" />
-                  WISHLIST
-                </button>
+                {wishlists.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => scrollToRef(wishlistRef)}
+                    className="inline-flex min-w-[140px] items-center justify-center gap-2 rounded-xl bg-[#ffb703] px-6 py-3.5 text-sm font-bold tracking-wide text-gray-900 shadow-md transition hover:bg-[#e6a500]"
+                  >
+                    <Heart className="h-4 w-4" />
+                    WISHLIST
+                  </button>
+                )}
               </div>
             </div>
 
@@ -269,6 +274,29 @@ function PublicKittenProfile() {
                   `${kitten.name} was found with her littermates in a cardboard box behind a grocery store. She is sweet, playful, and loves other kittens. ${kitten.name} is spayed, vaccinated, and ready for her forever home!`}
               </p>
             </section>
+
+            {kitten.galleryPhotoUrls?.length > 0 && (
+              <section>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Photos</h2>
+                <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
+                  {kitten.galleryPhotoUrls.map((url, index) => (
+                    <button
+                      key={url}
+                      type="button"
+                      onClick={() => setLightboxUrl(url)}
+                      className="aspect-square overflow-hidden rounded-xl border border-gray-200 shadow-sm transition hover:opacity-90"
+                    >
+                      <img
+                        src={url}
+                        alt={`${kitten.name} photo ${index + 1}`}
+                        className="h-full w-full object-cover"
+                        loading="lazy"
+                      />
+                    </button>
+                  ))}
+                </div>
+              </section>
+            )}
 
             <section ref={updatesRef}>
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Recent Updates</h2>
@@ -399,6 +427,23 @@ function PublicKittenProfile() {
           </aside>
         </div>
       </div>
+
+      {lightboxUrl && (
+        <div
+          role="button"
+          tabIndex={0}
+          aria-label="Close enlarged photo"
+          onClick={() => setLightboxUrl(null)}
+          onKeyDown={(e) => e.key === 'Escape' && setLightboxUrl(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-6"
+        >
+          <img
+            src={lightboxUrl}
+            alt={`${kitten.name} enlarged photo`}
+            className="max-h-full max-w-full rounded-xl object-contain shadow-2xl"
+          />
+        </div>
+      )}
     </div>
   );
 }

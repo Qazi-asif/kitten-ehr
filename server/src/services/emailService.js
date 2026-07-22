@@ -553,10 +553,22 @@ export async function sendSignedContractPdfEmail({ contract }) {
     return { ok: false, skipped: true, errorMessage: 'No PDF is available for this contract' };
   }
 
+  const signedAtFormatted = contract.signedAt
+    ? new Date(contract.signedAt).toLocaleString('en-US', {
+        dateStyle: 'long',
+        timeStyle: 'short',
+      })
+    : '';
+  const fosterName = contract.foster?.name || '';
+
   const innerHtml = `
 <h2 style="margin:0 0 16px;font-size:20px;">Your Signed Agreement for ${escapeHtml(kittenName)}</h2>
 <p>Hi ${escapeHtml(contract.signerName)},</p>
 <p>Attached is your signed ${escapeHtml(agreementLabel)} from ${escapeHtml(settings.orgName || 'Pawsitive Transformations')}, for your records.</p>
+<p>
+  Signed by: ${escapeHtml(contract.signerName)}${signedAtFormatted ? `<br>Signed on: ${escapeHtml(signedAtFormatted)}` : ''}${fosterName ? `<br>Foster: ${escapeHtml(fosterName)}` : ''}
+</p>
+<p>Your signature is captured on the attached PDF.</p>
 <p>If you have questions, reply to this email or contact us directly.</p>
 <p>Thank you,<br>${escapeHtml(settings.orgName || 'Pawsitive Transformations')}</p>`;
 
