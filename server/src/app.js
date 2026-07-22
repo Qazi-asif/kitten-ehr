@@ -126,7 +126,7 @@ app.use(
 // globalLimiter (plus their own stricter limiters below where present).
 // /uploads is included because getPublicKittenPhoto 302-redirects there for
 // non-base64-stored photos - without this, that redirect target would still
-// burn a slot from the tight 100/window budget even though the request that
+// burn a slot from the tight budget even though the request that
 // triggered it was correctly exempted.
 const isPublicRead = (req) => req.method === 'GET'
   && (req.path.startsWith('/api/public') || req.path.startsWith('/uploads'));
@@ -138,45 +138,39 @@ const isPublicRead = (req) => req.method === 'GET'
 const isAuthenticatedApiPath = (req) =>
   req.path.startsWith('/api') && !req.path.startsWith('/api/public');
 
+// Catch-all for traffic that is neither a public GET nor an authenticated API
+// path (e.g. public POSTs that don't have a dedicated limiter). Sized for a
+// production Hostinger deploy where reverse-proxy IP bucketing can still
+// share a bucket across visitors if hop count is imperfect.
 const globalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100,
+  max: 2500,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Too many requests. Please try again later.' },
   skip: (req) => isPublicRead(req) || isAuthenticatedApiPath(req),
 });
 
-// Sized for realistic browsing, not just a single page load: loading
-// /available (list + one photo request per card) then clicking into ~10-15
-// kitten detail pages (each firing its own kitten/photo/updates/wishlist
-// fetches plus a settings refetch on every route change) realistically adds
-// up to roughly 80-100 requests for one very engaged visitor. 400 leaves
-// ~4x headroom over that - generous for shared-IP traffic, while still
-// bounding a runaway scraper.
+// Public browsing: list + per-card photos + detail (kitten/photo/updates/
+// wishlist/settings) across many page navigations. 1500/15min is production
+// headroom for shared NAT / CDN edge IPs without opening a scraper floodgate.
 const publicReadLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 400,
+  max: 1500,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Too many requests. Please try again later.' },
   skip: (req) => req.method !== 'GET',
 });
 
-// Authenticated staff traffic (/api/* except /api/public/*) gets its own
-// generous ceiling instead of relying solely on globalLimiter's Bearer-token
-// skip. That skip is correctly implemented and works in the common case, but
-// this is defense-in-depth against two real failure modes: a request that
-// briefly loses its Authorization header (session edge cases), and - the
-// stronger suspect for the "heavy daily US-based admin use trips this, testing
-// from Pakistan rarely does" pattern - trust proxy resolving req.ip to a
-// shared regional edge/CDN address rather than each visitor's real IP, which
-// would silently bucket unrelated traffic together. 1000/15min comfortably
-// absorbs a full day of real admin work regardless of which mechanism is at
-// play, without requiring the exact proxy hop count to be nailed down first.
+// Staff dashboard / admin SPA: a single page can fire 20–50 concurrent GETs
+// (kittens, fosters, alerts, contracts, settings, photos). Multiple admins
+// behind Hostinger's proxy can share a bucket if req.ip collapses — 3000/15min
+// absorbs real concurrent admin work. Login / password-reset stay on their
+// own strict limiters in authRoutes / portalAuthRoutes.
 const authenticatedLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 1000,
+  max: 3000,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Too many requests. Please try again later.' },
