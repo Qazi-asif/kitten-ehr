@@ -131,13 +131,20 @@ app.use(
 const isPublicRead = (req) => req.method === 'GET'
   && (req.path.startsWith('/api/public') || req.path.startsWith('/uploads'));
 
+// Do NOT skip on a bare "Authorization: Bearer …" header — any client can
+// send a fake Bearer and bypass the global budget, amplifying Hostinger load.
+// Authenticated /api traffic is covered by authenticatedLimiter below; public
+// GETs stay exempt via isPublicRead.
+const isAuthenticatedApiPath = (req) =>
+  req.path.startsWith('/api') && !req.path.startsWith('/api/public');
+
 const globalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Too many requests. Please try again later.' },
-  skip: (req) => req.headers.authorization?.startsWith('Bearer ') || isPublicRead(req),
+  skip: (req) => isPublicRead(req) || isAuthenticatedApiPath(req),
 });
 
 // Sized for realistic browsing, not just a single page load: loading
@@ -199,7 +206,9 @@ app.use(authenticatedLimiter);
 app.use('/api/public/applications', applicationLimiter);
 app.use('/api/public/donations', donationLimiter);
 
-app.use(express.json({ limit: '10mb' }));
+// 2mb covers signature data URLs without allowing multi-photo JSON bombs that
+// spike Hostinger RAM. File uploads still go through multer (5mb/file).
+app.use(express.json({ limit: '2mb' }));
 
 app.use('/uploads', express.static(getUploadRoot(), { fallthrough: true }));
 
@@ -289,11 +298,19 @@ app.use((err, _req, res, _next) => {
     return res.status(400).json({ error: err.message || 'File upload failed' });
   }
 
+  if (err.status === 503 || err.statusCode === 503) {
+    return res.status(503).json({ error: err.message || 'Service unavailable' });
+  }
+
   if (err.code?.startsWith('P')) {
     const hint = err.message?.includes('does not exist')
       ? ' Database schema may be out of date — run: cd server && npx prisma db push'
       : '';
-    return res.status(500).json({ error: `Database error:${hint} ${err.message}` });
+    // Never leak Prisma internals to clients in production (Hostinger).
+    const isDev = process.env.NODE_ENV !== 'production';
+    return res.status(500).json({
+      error: isDev ? `Database error:${hint} ${err.message}` : 'Database error',
+    });
   }
 
   // In development expose the real error message; in production keep it generic

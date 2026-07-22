@@ -3,6 +3,9 @@ node_modules
 server/uploads/*
 *.db
 *.tmp*
+*.zip
+client/dist*.zip
+client/node_modules.zip
 
 .cursorrules
 .cursor/

@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "start": "node --max-old-space-size=400 src/index.js",
     "dev": "node --watch src/index.js",
-    "start": "node src/index.js",
     "build": "prisma generate",
     "postinstall": "prisma generate",
     "vercel:prepare": "node scripts/vercel-postinstall.cjs",

@@ -93,8 +93,8 @@ export async function uploadMyKittenDocument(req, res, next) {
     }
 
     const { docType, description } = req.body;
-    // Same storage pipeline staff uploads use (persistKittenFile - S3/R2 if
-    // configured, else disk, else base64 fallback with a console warning).
+    // Same storage pipeline as staff uploads (S3/R2 if configured, else disk).
+    // Base64-in-DB fallback was removed — it OOM'd the Hostinger process.
     const fileUrl = await persistKittenFile(kittenId, req.file);
 
     const document = await prisma.document.create({

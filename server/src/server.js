@@ -1,11 +1,13 @@
-// Capture crashes that happen before any other code runs (e.g. bad native module, wrong Prisma binary)
+// Fatal sync failures (bad native module, corrupt heap) still exit so Passenger
+// can restart cleanly. Transient async failures (SMTP, AI, DB blips) must NOT
+// kill the process on Hostinger — exit-on-rejection was causing intermittent
+// outages under the plan resource ceiling.
 process.on('uncaughtException', (err) => {
   console.error('[FATAL uncaughtException]', err);
   process.exit(1);
 });
 process.on('unhandledRejection', (reason) => {
-  console.error('[FATAL unhandledRejection]', reason);
-  process.exit(1);
+  console.error('[unhandledRejection]', reason);
 });
 
 import './loadEnv.js';

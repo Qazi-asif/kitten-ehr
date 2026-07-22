@@ -127,13 +127,15 @@ export async function updateUser(req, res) {
       include: { role: true },
     });
 
-    // Role and foster linkage drive the auth/scoping guards (requireAuth's
-    // blanket portal-role rejection, requirePortalAuth's foster scoping).
-    // Both are read from the cached user record, so a change to either must
-    // invalidate that cache immediately - otherwise a just-unlinked or
-    // just-reassigned account keeps its old access for up to the 5-minute
-    // cache TTL instead of the change taking effect on the next request.
-    if (data.roleId !== undefined || data.fosterId !== undefined) {
+    // Role, foster linkage, and active flag drive auth middleware. All three
+    // are read from the cached user record on Hostinger (cache is enabled when
+    // VERCEL is unset), so invalidate immediately on any of these changes.
+    if (
+      data.roleId !== undefined
+      || data.fosterId !== undefined
+      || data.isActive !== undefined
+      || data.passwordHash !== undefined
+    ) {
       clearCachedAuth(id);
     }
 
@@ -162,6 +164,8 @@ export async function deleteUser(req, res) {
     where: { id },
     data: { isActive: false },
   });
+
+  clearCachedAuth(id);
 
   return res.json({ message: 'User deactivated' });
 }

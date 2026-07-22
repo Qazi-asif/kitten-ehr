@@ -1,6 +1,7 @@
 import prisma from '../lib/prisma.js';
 import { comparePassword, hashPassword, sanitizeUser, signToken } from '../utils/authUtils.js';
 import { validatePasswordStrength } from '../utils/passwordPolicy.js';
+import { clearCachedAuth } from '../utils/authCache.js';
 
 function userPermissions(user) {
   return user.role.permissions.map((rp) => rp.permission.key);
@@ -159,6 +160,8 @@ export async function changePassword(req, res, next) {
       where: { id: req.user.id },
       data: { passwordHash: await hashPassword(newPassword) },
     });
+
+    clearCachedAuth(req.user.id);
 
     return res.json({ message: 'Password updated' });
   } catch (error) {

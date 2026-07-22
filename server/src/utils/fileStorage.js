@@ -21,13 +21,15 @@ const MIME_EXTENSIONS = {
 };
 
 function extensionForFile(originalName, mimeType) {
-  const fromName = path.extname(originalName || '');
-  if (fromName) return fromName.toLowerCase();
-  return MIME_EXTENSIONS[mimeType] || '';
-}
-
-function toDataUrl(file) {
-  return `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
+  // Prefer MIME → extension so a claimed image/jpeg named "x.html" cannot
+  // land as a publicly served .html under /uploads.
+  const fromMime = MIME_EXTENSIONS[mimeType];
+  if (fromMime) return fromMime;
+  const fromName = path.extname(originalName || '').toLowerCase();
+  if (fromName && Object.values(MIME_EXTENSIONS).includes(fromName)) {
+    return fromName;
+  }
+  return '';
 }
 
 export function getUploadRoot() {
@@ -77,17 +79,25 @@ async function persistScopedFile(scope, scopeId, file) {
     return saveApplicationFile(scopeId, file.buffer, file.originalname, file.mimetype);
   }
 
-  console.warn(
-    `[fileStorage] Storing ${scope}/${scopeId} file as base64 in the database. `
-    + 'Configure S3/R2 env vars (S3_BUCKET, S3_ACCESS_KEY_ID, S3_SECRET_ACCESS_KEY, S3_PUBLIC_URL) for production.',
+  // Never embed multi-MB base64 blobs in Postgres — that balloons RAM on every
+  // list/detail read and is a primary Hostinger OOM vector. Require R2/S3
+  // (or local disk outside Vercel) instead.
+  const err = new Error(
+    'File storage is not configured. Set S3/R2 env vars (S3_BUCKET, S3_ACCESS_KEY_ID, S3_SECRET_ACCESS_KEY, S3_PUBLIC_URL) or run on a host with local disk uploads.',
   );
-  return toDataUrl(file);
+  err.status = 503;
+  throw err;
 }
 
 export async function deleteStoredFile(fileUrl) {
   if (isStoredFileUrl(fileUrl)) {
     const relative = fileUrl.replace(/^\/uploads\//, '');
-    const absolutePath = path.join(UPLOAD_ROOT, relative);
+    const absolutePath = path.resolve(UPLOAD_ROOT, relative);
+    const rootResolved = path.resolve(UPLOAD_ROOT);
+    if (!absolutePath.startsWith(rootResolved + path.sep) && absolutePath !== rootResolved) {
+      console.warn('[fileStorage] Refused delete outside upload root:', fileUrl);
+      return;
+    }
     await fs.unlink(absolutePath).catch(() => {});
     return;
   }
