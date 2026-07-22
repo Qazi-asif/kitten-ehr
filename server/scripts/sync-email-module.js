@@ -1,8 +1,8 @@
-import { PrismaClient } from '../src/generated/prisma/index.js';
+import { createPrismaClient } from '../src/lib/prisma.js';
 import { DEFAULT_EMAIL_TEMPLATES } from '../src/constants/emailTemplates.js';
 import { PERMISSIONS } from '../src/constants/permissions.js';
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 
 async function syncPermissions() {
   for (const perm of PERMISSIONS) {

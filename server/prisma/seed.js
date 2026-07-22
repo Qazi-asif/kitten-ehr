@@ -1,9 +1,9 @@
-import { PrismaClient } from '../src/generated/prisma/index.js';
+import { createPrismaClient } from '../src/lib/prisma.js';
 import bcrypt from 'bcryptjs';
 import { DEFAULT_ROLES, PERMISSIONS } from '../src/constants/permissions.js';
 import { DEFAULT_EMAIL_TEMPLATES } from '../src/constants/emailTemplates.js';
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 
 async function seedAuth() {
   await prisma.user.deleteMany();

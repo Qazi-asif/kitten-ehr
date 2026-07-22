@@ -1,6 +1,6 @@
-import { PrismaClient } from '../src/generated/prisma/index.js';
+import { createPrismaClient } from '../src/lib/prisma.js';
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 const IDS = [28, 30, 32, 34];
 
 function summarizeField(name, value) {

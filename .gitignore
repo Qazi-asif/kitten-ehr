@@ -10,3 +10,8 @@ client/node_modules.zip
 .cursorrules
 .cursor/
 .vscode/
+
+# Legacy Prisma Rust engines (Rust-free client uses query_compiler instead)
+server/src/generated/prisma/query_engine-*.node
+server/src/generated/prisma/libquery_engine-*.node
+server/src/generated/prisma/*.node.tmp*

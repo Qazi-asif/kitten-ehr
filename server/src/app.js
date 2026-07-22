@@ -311,18 +311,18 @@ app.use((err, _req, res, _next) => {
     return res.status(503).json({ error: err.message || 'Service unavailable' });
   }
 
-  // Prisma query-engine panics (e.g. "timer has gone away" on Hostinger when
-  // process/thread limits are hit) leave the client permanently dead. Keep
-  // serving 500s forever would lock users out; ask Passenger to restart.
+  // Prisma Rust-engine panics (e.g. "timer has gone away" on Hostinger) leave
+  // the native query engine dead. Do NOT process.exit here — on low-ulimit
+  // hosts that causes a Passenger restart loop and perpetual 503s. Return 503
+  // and rely on the Rust-free client engine (engineType=client) to avoid the
+  // panic class entirely.
   const isPrismaPanic = err?.name === 'PrismaClientRustPanicError'
     || /PrismaClientRustPanicError|timer has gone away|PANIC:/i.test(String(err?.message || err || ''));
   if (isPrismaPanic) {
-    res.status(503).json({ error: 'Database engine restarting. Please try again in a moment.' });
-    setTimeout(() => {
-      console.error('[FATAL] Prisma engine panic — exiting so the host can restart the process');
-      process.exit(1);
-    }, 50);
-    return undefined;
+    console.error('[prisma] Query engine panic — respond 503 without killing the process');
+    return res.status(503).json({
+      error: 'Database temporarily unavailable. Please wait a few seconds and try again.',
+    });
   }
 
   if (err.code?.startsWith('P')) {
