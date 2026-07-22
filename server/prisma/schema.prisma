@@ -562,19 +562,58 @@ model User {
   activatedProtocols    ActiveProtocol[]      @relation("ProtocolActivatedBy")
   administeredProtocolDoses ProtocolDose[]      @relation("ProtocolDoseAdministeredBy")
   passwordResetTokens   PasswordResetToken[]
-  staffChatMessages     StaffChatMessage[]
+  staffChatMessages     StaffChatMessage[]       @relation("StaffChatMessageSender")
+  staffChatMemberships  StaffChatMember[]
+  staffChatCreated      StaffChatConversation[]  @relation("StaffChatCreatedBy")
+}
+
+enum StaffChatType {
+  DIRECT
+  GROUP
+}
+
+model StaffChatConversation {
+  id            String          @id @default(cuid())
+  type          StaffChatType
+  name          String?
+  isSystem      Boolean         @default(false)
+  createdById   Int?
+  createdBy     User?           @relation("StaffChatCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  members       StaffChatMember[]
+  messages      StaffChatMessage[]
+  directKey     String?         @unique
+
+  @@index([type, updatedAt])
+}
+
+model StaffChatMember {
+  id             String                @id @default(cuid())
+  conversationId String
+  conversation   StaffChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  userId         Int
+  user           User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  joinedAt       DateTime              @default(now())
+  lastReadAt     DateTime?
+  @@unique([conversationId, userId])
+  @@index([userId])
 }
 
 model StaffChatMessage {
-  id        String   @id @default(cuid())
-  content   String
-  senderId  Int
-  sender    User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
-  channelId String   @default("general")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String                 @id @default(cuid())
+  content        String
+  senderId       Int
+  sender         User                   @relation("StaffChatMessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  // Legacy single-channel field — removed after migrate-staff-chat.mjs
+  channelId      String?                @default("general")
+  conversationId String?
+  conversation   StaffChatConversation? @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime               @updatedAt
 
   @@index([channelId, createdAt])
+  @@index([conversationId, createdAt])
   @@index([senderId])
 }
 

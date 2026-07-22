@@ -2,19 +2,23 @@ import { WebSocketServer } from 'ws';
 import prisma from '../lib/prisma.js';
 import { verifyToken } from '../utils/authUtils.js';
 import {
-  createStaffChatMessage,
-  DEFAULT_CHAT_CHANNEL,
+  createMessage,
+  getConversationMemberIds,
 } from '../controllers/staffChatController.js';
 
 const WS_PATH = '/ws/staff-chat';
-const MAX_SOCKETS_TOTAL = 30;
-const MAX_SOCKETS_PER_USER = 2;
+const MAX_SOCKETS_TOTAL = 40;
+const MAX_SOCKETS_PER_USER = 3;
 const PING_INTERVAL_MS = 30_000;
 const MESSAGE_RATE_WINDOW_MS = 1000;
 const MESSAGE_RATE_MAX = 5;
 
 /** @type {Map<import('ws').WebSocket, { userId: number, name: string, lastMessageAt: number[], lastTypingAt: number }>} */
 const clients = new Map();
+
+function getOnlineUserIds() {
+  return new Set([...clients.values()].map((m) => m.userId));
+}
 
 function getOnlineUsers() {
   const byId = new Map();
@@ -24,23 +28,30 @@ function getOnlineUsers() {
   return [...byId.values()].sort((a, b) => a.name.localeCompare(b.name));
 }
 
-function broadcast(payload, except = null) {
-  const raw = JSON.stringify(payload);
-  for (const [socket] of clients) {
-    if (socket === except) continue;
-    if (socket.readyState === 1) {
-      socket.send(raw);
-    }
-  }
-}
-
-function broadcastOnline() {
-  broadcast({ type: 'online', users: getOnlineUsers() });
-}
-
 function send(socket, payload) {
   if (socket.readyState === 1) {
     socket.send(JSON.stringify(payload));
+  }
+}
+
+export function broadcastToConversation(conversationId, payload, exceptUserId = null) {
+  getConversationMemberIds(conversationId)
+    .then((memberIds) => {
+      const memberSet = new Set(memberIds);
+      const raw = JSON.stringify(payload);
+      for (const [socket, meta] of clients) {
+        if (!memberSet.has(meta.userId)) continue;
+        if (exceptUserId != null && meta.userId === exceptUserId) continue;
+        if (socket.readyState === 1) socket.send(raw);
+      }
+    })
+    .catch((err) => console.error('[staff-chat] broadcast failed', err?.message || err));
+}
+
+function broadcastOnline() {
+  const payload = JSON.stringify({ type: 'online', users: getOnlineUsers() });
+  for (const [socket] of clients) {
+    if (socket.readyState === 1) socket.send(payload);
   }
 }
 
@@ -76,7 +87,6 @@ async function authenticateSocket(req) {
   });
 
   if (!user?.isActive || user.role?.isPortalRole) return null;
-
   const permissions = user.role.permissions.map((rp) => rp.permission.key);
   if (!permissions.includes('chat.view')) return null;
 
@@ -92,6 +102,11 @@ export function attachStaffChatWebSocket(server) {
     path: WS_PATH,
     maxPayload: 8 * 1024,
   });
+
+  // Expose online set to REST serializers
+  if (server && typeof server.on === 'function') {
+    // no-op placeholder
+  }
 
   const pingTimer = setInterval(() => {
     for (const [socket] of clients) {
@@ -113,7 +128,6 @@ export function attachStaffChatWebSocket(server) {
     }
     broadcastOnline();
   }, PING_INTERVAL_MS);
-
   if (typeof pingTimer.unref === 'function') pingTimer.unref();
 
   wss.on('connection', async (socket, req) => {
@@ -132,20 +146,17 @@ export function attachStaffChatWebSocket(server) {
     }
 
     const userSockets = [...clients.entries()].filter(([, m]) => m.userId === user.id);
-    if (clients.size >= MAX_SOCKETS_TOTAL || userSockets.length >= MAX_SOCKETS_PER_USER) {
-      // Drop oldest socket for this user, or reject if at global cap
-      if (userSockets.length >= MAX_SOCKETS_PER_USER) {
-        const [oldSocket] = userSockets[0];
-        clients.delete(oldSocket);
-        try {
-          oldSocket.close(1000, 'Replaced');
-        } catch {
-          /* ignore */
-        }
-      } else if (clients.size >= MAX_SOCKETS_TOTAL) {
-        socket.close(1013, 'Too many connections');
-        return;
+    if (userSockets.length >= MAX_SOCKETS_PER_USER) {
+      const [oldSocket] = userSockets[0];
+      clients.delete(oldSocket);
+      try {
+        oldSocket.close(1000, 'Replaced');
+      } catch {
+        /* ignore */
       }
+    } else if (clients.size >= MAX_SOCKETS_TOTAL) {
+      socket.close(1013, 'Too many connections');
+      return;
     }
 
     socket.isAlive = true;
@@ -176,12 +187,15 @@ export function attachStaffChatWebSocket(server) {
       }
 
       if (payload?.type === 'typing') {
+        const conversationId = payload.conversationId;
+        if (!conversationId) return;
         const now = Date.now();
         if (now - meta.lastTypingAt < 800) return;
         meta.lastTypingAt = now;
-        broadcast(
-          { type: 'typing', userId: meta.userId, name: meta.name },
-          socket,
+        broadcastToConversation(
+          conversationId,
+          { type: 'typing', conversationId, userId: meta.userId, name: meta.name },
+          meta.userId,
         );
         return;
       }
@@ -191,14 +205,18 @@ export function attachStaffChatWebSocket(server) {
           send(socket, { type: 'error', message: 'Slow down — too many messages' });
           return;
         }
+        if (!payload.conversationId) {
+          send(socket, { type: 'error', message: 'conversationId required' });
+          return;
+        }
 
         try {
-          const message = await createStaffChatMessage({
-            content: payload.content,
+          const message = await createMessage({
+            conversationId: payload.conversationId,
             senderId: meta.userId,
-            channelId: payload.channelId || DEFAULT_CHAT_CHANNEL,
+            content: payload.content,
           });
-          broadcast({ type: 'message', message });
+          broadcastToConversation(message.conversationId, { type: 'message', message });
         } catch (err) {
           console.error('[staff-chat] message error', err);
           send(socket, {
@@ -227,7 +245,12 @@ export function attachStaffChatWebSocket(server) {
   return wss;
 }
 
+export function getStaffChatOnlineIds() {
+  return getOnlineUserIds();
+}
+
 /** Notify WS clients after a REST-created message (same process). */
 export function broadcastStaffChatMessage(message) {
-  broadcast({ type: 'message', message });
+  if (!message?.conversationId) return;
+  broadcastToConversation(message.conversationId, { type: 'message', message });
 }

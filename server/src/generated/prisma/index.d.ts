@@ -149,6 +149,16 @@ export type RolePermission = $Result.DefaultSelection<Prisma.$RolePermissionPayl
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
+ * Model StaffChatConversation
+ * 
+ */
+export type StaffChatConversation = $Result.DefaultSelection<Prisma.$StaffChatConversationPayload>
+/**
+ * Model StaffChatMember
+ * 
+ */
+export type StaffChatMember = $Result.DefaultSelection<Prisma.$StaffChatMemberPayload>
+/**
  * Model StaffChatMessage
  * 
  */
@@ -319,6 +329,14 @@ export const FosterOnboardingStatus: {
 export type FosterOnboardingStatus = (typeof FosterOnboardingStatus)[keyof typeof FosterOnboardingStatus]
 
 
+export const StaffChatType: {
+  DIRECT: 'DIRECT',
+  GROUP: 'GROUP'
+};
+
+export type StaffChatType = (typeof StaffChatType)[keyof typeof StaffChatType]
+
+
 export const PasswordTokenPurpose: {
   SETUP: 'SETUP',
   RESET: 'RESET'
@@ -371,6 +389,10 @@ export const ContractStatus: typeof $Enums.ContractStatus
 export type FosterOnboardingStatus = $Enums.FosterOnboardingStatus
 
 export const FosterOnboardingStatus: typeof $Enums.FosterOnboardingStatus
+
+export type StaffChatType = $Enums.StaffChatType
+
+export const StaffChatType: typeof $Enums.StaffChatType
 
 export type PasswordTokenPurpose = $Enums.PasswordTokenPurpose
 
@@ -763,6 +785,26 @@ export class PrismaClient<
     * ```
     */
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.staffChatConversation`: Exposes CRUD operations for the **StaffChatConversation** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more StaffChatConversations
+    * const staffChatConversations = await prisma.staffChatConversation.findMany()
+    * ```
+    */
+  get staffChatConversation(): Prisma.StaffChatConversationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.staffChatMember`: Exposes CRUD operations for the **StaffChatMember** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more StaffChatMembers
+    * const staffChatMembers = await prisma.staffChatMember.findMany()
+    * ```
+    */
+  get staffChatMember(): Prisma.StaffChatMemberDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.staffChatMessage`: Exposes CRUD operations for the **StaffChatMessage** model.
@@ -1361,6 +1403,8 @@ export namespace Prisma {
     Permission: 'Permission',
     RolePermission: 'RolePermission',
     User: 'User',
+    StaffChatConversation: 'StaffChatConversation',
+    StaffChatMember: 'StaffChatMember',
     StaffChatMessage: 'StaffChatMessage',
     PasswordResetToken: 'PasswordResetToken',
     Protocol: 'Protocol',
@@ -1392,7 +1436,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "litter" | "foster" | "kitten" | "update" | "sponsorship" | "placement" | "weightLog" | "vaccine" | "medication" | "vetAppointment" | "document" | "application" | "contractTemplate" | "contract" | "contractHouseholdAcknowledgment" | "fosterOnboarding" | "onboardingChecklist" | "applicationUpload" | "content" | "contentCompletion" | "event" | "eventRSVP" | "eventCats" | "role" | "permission" | "rolePermission" | "user" | "staffChatMessage" | "passwordResetToken" | "protocol" | "protocolDrug" | "activeProtocol" | "protocolDose" | "activeProtocolDrugLink" | "settings" | "emailTemplate" | "emailLog" | "transaction" | "wishlist" | "socialPost"
+      modelProps: "litter" | "foster" | "kitten" | "update" | "sponsorship" | "placement" | "weightLog" | "vaccine" | "medication" | "vetAppointment" | "document" | "application" | "contractTemplate" | "contract" | "contractHouseholdAcknowledgment" | "fosterOnboarding" | "onboardingChecklist" | "applicationUpload" | "content" | "contentCompletion" | "event" | "eventRSVP" | "eventCats" | "role" | "permission" | "rolePermission" | "user" | "staffChatConversation" | "staffChatMember" | "staffChatMessage" | "passwordResetToken" | "protocol" | "protocolDrug" | "activeProtocol" | "protocolDose" | "activeProtocolDrugLink" | "settings" | "emailTemplate" | "emailLog" | "transaction" | "wishlist" | "socialPost"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3394,6 +3438,154 @@ export namespace Prisma {
           }
         }
       }
+      StaffChatConversation: {
+        payload: Prisma.$StaffChatConversationPayload<ExtArgs>
+        fields: Prisma.StaffChatConversationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.StaffChatConversationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatConversationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.StaffChatConversationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatConversationPayload>
+          }
+          findFirst: {
+            args: Prisma.StaffChatConversationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatConversationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.StaffChatConversationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatConversationPayload>
+          }
+          findMany: {
+            args: Prisma.StaffChatConversationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatConversationPayload>[]
+          }
+          create: {
+            args: Prisma.StaffChatConversationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatConversationPayload>
+          }
+          createMany: {
+            args: Prisma.StaffChatConversationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.StaffChatConversationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatConversationPayload>[]
+          }
+          delete: {
+            args: Prisma.StaffChatConversationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatConversationPayload>
+          }
+          update: {
+            args: Prisma.StaffChatConversationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatConversationPayload>
+          }
+          deleteMany: {
+            args: Prisma.StaffChatConversationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.StaffChatConversationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.StaffChatConversationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatConversationPayload>[]
+          }
+          upsert: {
+            args: Prisma.StaffChatConversationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatConversationPayload>
+          }
+          aggregate: {
+            args: Prisma.StaffChatConversationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateStaffChatConversation>
+          }
+          groupBy: {
+            args: Prisma.StaffChatConversationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<StaffChatConversationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.StaffChatConversationCountArgs<ExtArgs>
+            result: $Utils.Optional<StaffChatConversationCountAggregateOutputType> | number
+          }
+        }
+      }
+      StaffChatMember: {
+        payload: Prisma.$StaffChatMemberPayload<ExtArgs>
+        fields: Prisma.StaffChatMemberFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.StaffChatMemberFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatMemberPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.StaffChatMemberFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatMemberPayload>
+          }
+          findFirst: {
+            args: Prisma.StaffChatMemberFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatMemberPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.StaffChatMemberFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatMemberPayload>
+          }
+          findMany: {
+            args: Prisma.StaffChatMemberFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatMemberPayload>[]
+          }
+          create: {
+            args: Prisma.StaffChatMemberCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatMemberPayload>
+          }
+          createMany: {
+            args: Prisma.StaffChatMemberCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.StaffChatMemberCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatMemberPayload>[]
+          }
+          delete: {
+            args: Prisma.StaffChatMemberDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatMemberPayload>
+          }
+          update: {
+            args: Prisma.StaffChatMemberUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatMemberPayload>
+          }
+          deleteMany: {
+            args: Prisma.StaffChatMemberDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.StaffChatMemberUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.StaffChatMemberUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatMemberPayload>[]
+          }
+          upsert: {
+            args: Prisma.StaffChatMemberUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatMemberPayload>
+          }
+          aggregate: {
+            args: Prisma.StaffChatMemberAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateStaffChatMember>
+          }
+          groupBy: {
+            args: Prisma.StaffChatMemberGroupByArgs<ExtArgs>
+            result: $Utils.Optional<StaffChatMemberGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.StaffChatMemberCountArgs<ExtArgs>
+            result: $Utils.Optional<StaffChatMemberCountAggregateOutputType> | number
+          }
+        }
+      }
       StaffChatMessage: {
         payload: Prisma.$StaffChatMessagePayload<ExtArgs>
         fields: Prisma.StaffChatMessageFieldRefs
@@ -4479,6 +4671,8 @@ export namespace Prisma {
     permission?: PermissionOmit
     rolePermission?: RolePermissionOmit
     user?: UserOmit
+    staffChatConversation?: StaffChatConversationOmit
+    staffChatMember?: StaffChatMemberOmit
     staffChatMessage?: StaffChatMessageOmit
     passwordResetToken?: PasswordResetTokenOmit
     protocol?: ProtocolOmit
@@ -5131,6 +5325,8 @@ export namespace Prisma {
     administeredProtocolDoses: number
     passwordResetTokens: number
     staffChatMessages: number
+    staffChatMemberships: number
+    staffChatCreated: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5141,6 +5337,8 @@ export namespace Prisma {
     administeredProtocolDoses?: boolean | UserCountOutputTypeCountAdministeredProtocolDosesArgs
     passwordResetTokens?: boolean | UserCountOutputTypeCountPasswordResetTokensArgs
     staffChatMessages?: boolean | UserCountOutputTypeCountStaffChatMessagesArgs
+    staffChatMemberships?: boolean | UserCountOutputTypeCountStaffChatMembershipsArgs
+    staffChatCreated?: boolean | UserCountOutputTypeCountStaffChatCreatedArgs
   }
 
   // Custom InputTypes
@@ -5200,6 +5398,60 @@ export namespace Prisma {
    * UserCountOutputType without action
    */
   export type UserCountOutputTypeCountStaffChatMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StaffChatMessageWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountStaffChatMembershipsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StaffChatMemberWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountStaffChatCreatedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StaffChatConversationWhereInput
+  }
+
+
+  /**
+   * Count Type StaffChatConversationCountOutputType
+   */
+
+  export type StaffChatConversationCountOutputType = {
+    members: number
+    messages: number
+  }
+
+  export type StaffChatConversationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    members?: boolean | StaffChatConversationCountOutputTypeCountMembersArgs
+    messages?: boolean | StaffChatConversationCountOutputTypeCountMessagesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * StaffChatConversationCountOutputType without action
+   */
+  export type StaffChatConversationCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatConversationCountOutputType
+     */
+    select?: StaffChatConversationCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * StaffChatConversationCountOutputType without action
+   */
+  export type StaffChatConversationCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StaffChatMemberWhereInput
+  }
+
+  /**
+   * StaffChatConversationCountOutputType without action
+   */
+  export type StaffChatConversationCountOutputTypeCountMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: StaffChatMessageWhereInput
   }
 
@@ -36506,6 +36758,8 @@ export namespace Prisma {
     administeredProtocolDoses?: boolean | User$administeredProtocolDosesArgs<ExtArgs>
     passwordResetTokens?: boolean | User$passwordResetTokensArgs<ExtArgs>
     staffChatMessages?: boolean | User$staffChatMessagesArgs<ExtArgs>
+    staffChatMemberships?: boolean | User$staffChatMembershipsArgs<ExtArgs>
+    staffChatCreated?: boolean | User$staffChatCreatedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -36566,6 +36820,8 @@ export namespace Prisma {
     administeredProtocolDoses?: boolean | User$administeredProtocolDosesArgs<ExtArgs>
     passwordResetTokens?: boolean | User$passwordResetTokensArgs<ExtArgs>
     staffChatMessages?: boolean | User$staffChatMessagesArgs<ExtArgs>
+    staffChatMemberships?: boolean | User$staffChatMembershipsArgs<ExtArgs>
+    staffChatCreated?: boolean | User$staffChatCreatedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -36589,6 +36845,8 @@ export namespace Prisma {
       administeredProtocolDoses: Prisma.$ProtocolDosePayload<ExtArgs>[]
       passwordResetTokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[]
       staffChatMessages: Prisma.$StaffChatMessagePayload<ExtArgs>[]
+      staffChatMemberships: Prisma.$StaffChatMemberPayload<ExtArgs>[]
+      staffChatCreated: Prisma.$StaffChatConversationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -37005,6 +37263,8 @@ export namespace Prisma {
     administeredProtocolDoses<T extends User$administeredProtocolDosesArgs<ExtArgs> = {}>(args?: Subset<T, User$administeredProtocolDosesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProtocolDosePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     passwordResetTokens<T extends User$passwordResetTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$passwordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     staffChatMessages<T extends User$staffChatMessagesArgs<ExtArgs> = {}>(args?: Subset<T, User$staffChatMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StaffChatMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    staffChatMemberships<T extends User$staffChatMembershipsArgs<ExtArgs> = {}>(args?: Subset<T, User$staffChatMembershipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StaffChatMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    staffChatCreated<T extends User$staffChatCreatedArgs<ExtArgs> = {}>(args?: Subset<T, User$staffChatCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StaffChatConversationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -37628,6 +37888,54 @@ export namespace Prisma {
   }
 
   /**
+   * User.staffChatMemberships
+   */
+  export type User$staffChatMembershipsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMember
+     */
+    select?: StaffChatMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMember
+     */
+    omit?: StaffChatMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMemberInclude<ExtArgs> | null
+    where?: StaffChatMemberWhereInput
+    orderBy?: StaffChatMemberOrderByWithRelationInput | StaffChatMemberOrderByWithRelationInput[]
+    cursor?: StaffChatMemberWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: StaffChatMemberScalarFieldEnum | StaffChatMemberScalarFieldEnum[]
+  }
+
+  /**
+   * User.staffChatCreated
+   */
+  export type User$staffChatCreatedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatConversation
+     */
+    select?: StaffChatConversationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatConversation
+     */
+    omit?: StaffChatConversationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatConversationInclude<ExtArgs> | null
+    where?: StaffChatConversationWhereInput
+    orderBy?: StaffChatConversationOrderByWithRelationInput | StaffChatConversationOrderByWithRelationInput[]
+    cursor?: StaffChatConversationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: StaffChatConversationScalarFieldEnum | StaffChatConversationScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -37643,6 +37951,2314 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model StaffChatConversation
+   */
+
+  export type AggregateStaffChatConversation = {
+    _count: StaffChatConversationCountAggregateOutputType | null
+    _avg: StaffChatConversationAvgAggregateOutputType | null
+    _sum: StaffChatConversationSumAggregateOutputType | null
+    _min: StaffChatConversationMinAggregateOutputType | null
+    _max: StaffChatConversationMaxAggregateOutputType | null
+  }
+
+  export type StaffChatConversationAvgAggregateOutputType = {
+    createdById: number | null
+  }
+
+  export type StaffChatConversationSumAggregateOutputType = {
+    createdById: number | null
+  }
+
+  export type StaffChatConversationMinAggregateOutputType = {
+    id: string | null
+    type: $Enums.StaffChatType | null
+    name: string | null
+    isSystem: boolean | null
+    createdById: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    directKey: string | null
+  }
+
+  export type StaffChatConversationMaxAggregateOutputType = {
+    id: string | null
+    type: $Enums.StaffChatType | null
+    name: string | null
+    isSystem: boolean | null
+    createdById: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    directKey: string | null
+  }
+
+  export type StaffChatConversationCountAggregateOutputType = {
+    id: number
+    type: number
+    name: number
+    isSystem: number
+    createdById: number
+    createdAt: number
+    updatedAt: number
+    directKey: number
+    _all: number
+  }
+
+
+  export type StaffChatConversationAvgAggregateInputType = {
+    createdById?: true
+  }
+
+  export type StaffChatConversationSumAggregateInputType = {
+    createdById?: true
+  }
+
+  export type StaffChatConversationMinAggregateInputType = {
+    id?: true
+    type?: true
+    name?: true
+    isSystem?: true
+    createdById?: true
+    createdAt?: true
+    updatedAt?: true
+    directKey?: true
+  }
+
+  export type StaffChatConversationMaxAggregateInputType = {
+    id?: true
+    type?: true
+    name?: true
+    isSystem?: true
+    createdById?: true
+    createdAt?: true
+    updatedAt?: true
+    directKey?: true
+  }
+
+  export type StaffChatConversationCountAggregateInputType = {
+    id?: true
+    type?: true
+    name?: true
+    isSystem?: true
+    createdById?: true
+    createdAt?: true
+    updatedAt?: true
+    directKey?: true
+    _all?: true
+  }
+
+  export type StaffChatConversationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which StaffChatConversation to aggregate.
+     */
+    where?: StaffChatConversationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StaffChatConversations to fetch.
+     */
+    orderBy?: StaffChatConversationOrderByWithRelationInput | StaffChatConversationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: StaffChatConversationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StaffChatConversations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StaffChatConversations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned StaffChatConversations
+    **/
+    _count?: true | StaffChatConversationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: StaffChatConversationAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: StaffChatConversationSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: StaffChatConversationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: StaffChatConversationMaxAggregateInputType
+  }
+
+  export type GetStaffChatConversationAggregateType<T extends StaffChatConversationAggregateArgs> = {
+        [P in keyof T & keyof AggregateStaffChatConversation]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateStaffChatConversation[P]>
+      : GetScalarType<T[P], AggregateStaffChatConversation[P]>
+  }
+
+
+
+
+  export type StaffChatConversationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StaffChatConversationWhereInput
+    orderBy?: StaffChatConversationOrderByWithAggregationInput | StaffChatConversationOrderByWithAggregationInput[]
+    by: StaffChatConversationScalarFieldEnum[] | StaffChatConversationScalarFieldEnum
+    having?: StaffChatConversationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: StaffChatConversationCountAggregateInputType | true
+    _avg?: StaffChatConversationAvgAggregateInputType
+    _sum?: StaffChatConversationSumAggregateInputType
+    _min?: StaffChatConversationMinAggregateInputType
+    _max?: StaffChatConversationMaxAggregateInputType
+  }
+
+  export type StaffChatConversationGroupByOutputType = {
+    id: string
+    type: $Enums.StaffChatType
+    name: string | null
+    isSystem: boolean
+    createdById: number | null
+    createdAt: Date
+    updatedAt: Date
+    directKey: string | null
+    _count: StaffChatConversationCountAggregateOutputType | null
+    _avg: StaffChatConversationAvgAggregateOutputType | null
+    _sum: StaffChatConversationSumAggregateOutputType | null
+    _min: StaffChatConversationMinAggregateOutputType | null
+    _max: StaffChatConversationMaxAggregateOutputType | null
+  }
+
+  type GetStaffChatConversationGroupByPayload<T extends StaffChatConversationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<StaffChatConversationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof StaffChatConversationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], StaffChatConversationGroupByOutputType[P]>
+            : GetScalarType<T[P], StaffChatConversationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type StaffChatConversationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    name?: boolean
+    isSystem?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    directKey?: boolean
+    createdBy?: boolean | StaffChatConversation$createdByArgs<ExtArgs>
+    members?: boolean | StaffChatConversation$membersArgs<ExtArgs>
+    messages?: boolean | StaffChatConversation$messagesArgs<ExtArgs>
+    _count?: boolean | StaffChatConversationCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["staffChatConversation"]>
+
+  export type StaffChatConversationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    name?: boolean
+    isSystem?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    directKey?: boolean
+    createdBy?: boolean | StaffChatConversation$createdByArgs<ExtArgs>
+  }, ExtArgs["result"]["staffChatConversation"]>
+
+  export type StaffChatConversationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    name?: boolean
+    isSystem?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    directKey?: boolean
+    createdBy?: boolean | StaffChatConversation$createdByArgs<ExtArgs>
+  }, ExtArgs["result"]["staffChatConversation"]>
+
+  export type StaffChatConversationSelectScalar = {
+    id?: boolean
+    type?: boolean
+    name?: boolean
+    isSystem?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    directKey?: boolean
+  }
+
+  export type StaffChatConversationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "name" | "isSystem" | "createdById" | "createdAt" | "updatedAt" | "directKey", ExtArgs["result"]["staffChatConversation"]>
+  export type StaffChatConversationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | StaffChatConversation$createdByArgs<ExtArgs>
+    members?: boolean | StaffChatConversation$membersArgs<ExtArgs>
+    messages?: boolean | StaffChatConversation$messagesArgs<ExtArgs>
+    _count?: boolean | StaffChatConversationCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type StaffChatConversationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | StaffChatConversation$createdByArgs<ExtArgs>
+  }
+  export type StaffChatConversationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | StaffChatConversation$createdByArgs<ExtArgs>
+  }
+
+  export type $StaffChatConversationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "StaffChatConversation"
+    objects: {
+      createdBy: Prisma.$UserPayload<ExtArgs> | null
+      members: Prisma.$StaffChatMemberPayload<ExtArgs>[]
+      messages: Prisma.$StaffChatMessagePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      type: $Enums.StaffChatType
+      name: string | null
+      isSystem: boolean
+      createdById: number | null
+      createdAt: Date
+      updatedAt: Date
+      directKey: string | null
+    }, ExtArgs["result"]["staffChatConversation"]>
+    composites: {}
+  }
+
+  type StaffChatConversationGetPayload<S extends boolean | null | undefined | StaffChatConversationDefaultArgs> = $Result.GetResult<Prisma.$StaffChatConversationPayload, S>
+
+  type StaffChatConversationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<StaffChatConversationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: StaffChatConversationCountAggregateInputType | true
+    }
+
+  export interface StaffChatConversationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['StaffChatConversation'], meta: { name: 'StaffChatConversation' } }
+    /**
+     * Find zero or one StaffChatConversation that matches the filter.
+     * @param {StaffChatConversationFindUniqueArgs} args - Arguments to find a StaffChatConversation
+     * @example
+     * // Get one StaffChatConversation
+     * const staffChatConversation = await prisma.staffChatConversation.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends StaffChatConversationFindUniqueArgs>(args: SelectSubset<T, StaffChatConversationFindUniqueArgs<ExtArgs>>): Prisma__StaffChatConversationClient<$Result.GetResult<Prisma.$StaffChatConversationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one StaffChatConversation that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {StaffChatConversationFindUniqueOrThrowArgs} args - Arguments to find a StaffChatConversation
+     * @example
+     * // Get one StaffChatConversation
+     * const staffChatConversation = await prisma.staffChatConversation.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends StaffChatConversationFindUniqueOrThrowArgs>(args: SelectSubset<T, StaffChatConversationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__StaffChatConversationClient<$Result.GetResult<Prisma.$StaffChatConversationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first StaffChatConversation that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StaffChatConversationFindFirstArgs} args - Arguments to find a StaffChatConversation
+     * @example
+     * // Get one StaffChatConversation
+     * const staffChatConversation = await prisma.staffChatConversation.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends StaffChatConversationFindFirstArgs>(args?: SelectSubset<T, StaffChatConversationFindFirstArgs<ExtArgs>>): Prisma__StaffChatConversationClient<$Result.GetResult<Prisma.$StaffChatConversationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first StaffChatConversation that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StaffChatConversationFindFirstOrThrowArgs} args - Arguments to find a StaffChatConversation
+     * @example
+     * // Get one StaffChatConversation
+     * const staffChatConversation = await prisma.staffChatConversation.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends StaffChatConversationFindFirstOrThrowArgs>(args?: SelectSubset<T, StaffChatConversationFindFirstOrThrowArgs<ExtArgs>>): Prisma__StaffChatConversationClient<$Result.GetResult<Prisma.$StaffChatConversationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more StaffChatConversations that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StaffChatConversationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all StaffChatConversations
+     * const staffChatConversations = await prisma.staffChatConversation.findMany()
+     * 
+     * // Get first 10 StaffChatConversations
+     * const staffChatConversations = await prisma.staffChatConversation.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const staffChatConversationWithIdOnly = await prisma.staffChatConversation.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends StaffChatConversationFindManyArgs>(args?: SelectSubset<T, StaffChatConversationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StaffChatConversationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a StaffChatConversation.
+     * @param {StaffChatConversationCreateArgs} args - Arguments to create a StaffChatConversation.
+     * @example
+     * // Create one StaffChatConversation
+     * const StaffChatConversation = await prisma.staffChatConversation.create({
+     *   data: {
+     *     // ... data to create a StaffChatConversation
+     *   }
+     * })
+     * 
+     */
+    create<T extends StaffChatConversationCreateArgs>(args: SelectSubset<T, StaffChatConversationCreateArgs<ExtArgs>>): Prisma__StaffChatConversationClient<$Result.GetResult<Prisma.$StaffChatConversationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many StaffChatConversations.
+     * @param {StaffChatConversationCreateManyArgs} args - Arguments to create many StaffChatConversations.
+     * @example
+     * // Create many StaffChatConversations
+     * const staffChatConversation = await prisma.staffChatConversation.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends StaffChatConversationCreateManyArgs>(args?: SelectSubset<T, StaffChatConversationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many StaffChatConversations and returns the data saved in the database.
+     * @param {StaffChatConversationCreateManyAndReturnArgs} args - Arguments to create many StaffChatConversations.
+     * @example
+     * // Create many StaffChatConversations
+     * const staffChatConversation = await prisma.staffChatConversation.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many StaffChatConversations and only return the `id`
+     * const staffChatConversationWithIdOnly = await prisma.staffChatConversation.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends StaffChatConversationCreateManyAndReturnArgs>(args?: SelectSubset<T, StaffChatConversationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StaffChatConversationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a StaffChatConversation.
+     * @param {StaffChatConversationDeleteArgs} args - Arguments to delete one StaffChatConversation.
+     * @example
+     * // Delete one StaffChatConversation
+     * const StaffChatConversation = await prisma.staffChatConversation.delete({
+     *   where: {
+     *     // ... filter to delete one StaffChatConversation
+     *   }
+     * })
+     * 
+     */
+    delete<T extends StaffChatConversationDeleteArgs>(args: SelectSubset<T, StaffChatConversationDeleteArgs<ExtArgs>>): Prisma__StaffChatConversationClient<$Result.GetResult<Prisma.$StaffChatConversationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one StaffChatConversation.
+     * @param {StaffChatConversationUpdateArgs} args - Arguments to update one StaffChatConversation.
+     * @example
+     * // Update one StaffChatConversation
+     * const staffChatConversation = await prisma.staffChatConversation.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends StaffChatConversationUpdateArgs>(args: SelectSubset<T, StaffChatConversationUpdateArgs<ExtArgs>>): Prisma__StaffChatConversationClient<$Result.GetResult<Prisma.$StaffChatConversationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more StaffChatConversations.
+     * @param {StaffChatConversationDeleteManyArgs} args - Arguments to filter StaffChatConversations to delete.
+     * @example
+     * // Delete a few StaffChatConversations
+     * const { count } = await prisma.staffChatConversation.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends StaffChatConversationDeleteManyArgs>(args?: SelectSubset<T, StaffChatConversationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more StaffChatConversations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StaffChatConversationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many StaffChatConversations
+     * const staffChatConversation = await prisma.staffChatConversation.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends StaffChatConversationUpdateManyArgs>(args: SelectSubset<T, StaffChatConversationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more StaffChatConversations and returns the data updated in the database.
+     * @param {StaffChatConversationUpdateManyAndReturnArgs} args - Arguments to update many StaffChatConversations.
+     * @example
+     * // Update many StaffChatConversations
+     * const staffChatConversation = await prisma.staffChatConversation.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more StaffChatConversations and only return the `id`
+     * const staffChatConversationWithIdOnly = await prisma.staffChatConversation.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends StaffChatConversationUpdateManyAndReturnArgs>(args: SelectSubset<T, StaffChatConversationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StaffChatConversationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one StaffChatConversation.
+     * @param {StaffChatConversationUpsertArgs} args - Arguments to update or create a StaffChatConversation.
+     * @example
+     * // Update or create a StaffChatConversation
+     * const staffChatConversation = await prisma.staffChatConversation.upsert({
+     *   create: {
+     *     // ... data to create a StaffChatConversation
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the StaffChatConversation we want to update
+     *   }
+     * })
+     */
+    upsert<T extends StaffChatConversationUpsertArgs>(args: SelectSubset<T, StaffChatConversationUpsertArgs<ExtArgs>>): Prisma__StaffChatConversationClient<$Result.GetResult<Prisma.$StaffChatConversationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of StaffChatConversations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StaffChatConversationCountArgs} args - Arguments to filter StaffChatConversations to count.
+     * @example
+     * // Count the number of StaffChatConversations
+     * const count = await prisma.staffChatConversation.count({
+     *   where: {
+     *     // ... the filter for the StaffChatConversations we want to count
+     *   }
+     * })
+    **/
+    count<T extends StaffChatConversationCountArgs>(
+      args?: Subset<T, StaffChatConversationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], StaffChatConversationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a StaffChatConversation.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StaffChatConversationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends StaffChatConversationAggregateArgs>(args: Subset<T, StaffChatConversationAggregateArgs>): Prisma.PrismaPromise<GetStaffChatConversationAggregateType<T>>
+
+    /**
+     * Group by StaffChatConversation.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StaffChatConversationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends StaffChatConversationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: StaffChatConversationGroupByArgs['orderBy'] }
+        : { orderBy?: StaffChatConversationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, StaffChatConversationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetStaffChatConversationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the StaffChatConversation model
+   */
+  readonly fields: StaffChatConversationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for StaffChatConversation.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__StaffChatConversationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    createdBy<T extends StaffChatConversation$createdByArgs<ExtArgs> = {}>(args?: Subset<T, StaffChatConversation$createdByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    members<T extends StaffChatConversation$membersArgs<ExtArgs> = {}>(args?: Subset<T, StaffChatConversation$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StaffChatMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    messages<T extends StaffChatConversation$messagesArgs<ExtArgs> = {}>(args?: Subset<T, StaffChatConversation$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StaffChatMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the StaffChatConversation model
+   */
+  interface StaffChatConversationFieldRefs {
+    readonly id: FieldRef<"StaffChatConversation", 'String'>
+    readonly type: FieldRef<"StaffChatConversation", 'StaffChatType'>
+    readonly name: FieldRef<"StaffChatConversation", 'String'>
+    readonly isSystem: FieldRef<"StaffChatConversation", 'Boolean'>
+    readonly createdById: FieldRef<"StaffChatConversation", 'Int'>
+    readonly createdAt: FieldRef<"StaffChatConversation", 'DateTime'>
+    readonly updatedAt: FieldRef<"StaffChatConversation", 'DateTime'>
+    readonly directKey: FieldRef<"StaffChatConversation", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * StaffChatConversation findUnique
+   */
+  export type StaffChatConversationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatConversation
+     */
+    select?: StaffChatConversationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatConversation
+     */
+    omit?: StaffChatConversationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatConversationInclude<ExtArgs> | null
+    /**
+     * Filter, which StaffChatConversation to fetch.
+     */
+    where: StaffChatConversationWhereUniqueInput
+  }
+
+  /**
+   * StaffChatConversation findUniqueOrThrow
+   */
+  export type StaffChatConversationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatConversation
+     */
+    select?: StaffChatConversationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatConversation
+     */
+    omit?: StaffChatConversationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatConversationInclude<ExtArgs> | null
+    /**
+     * Filter, which StaffChatConversation to fetch.
+     */
+    where: StaffChatConversationWhereUniqueInput
+  }
+
+  /**
+   * StaffChatConversation findFirst
+   */
+  export type StaffChatConversationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatConversation
+     */
+    select?: StaffChatConversationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatConversation
+     */
+    omit?: StaffChatConversationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatConversationInclude<ExtArgs> | null
+    /**
+     * Filter, which StaffChatConversation to fetch.
+     */
+    where?: StaffChatConversationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StaffChatConversations to fetch.
+     */
+    orderBy?: StaffChatConversationOrderByWithRelationInput | StaffChatConversationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for StaffChatConversations.
+     */
+    cursor?: StaffChatConversationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StaffChatConversations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StaffChatConversations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StaffChatConversations.
+     */
+    distinct?: StaffChatConversationScalarFieldEnum | StaffChatConversationScalarFieldEnum[]
+  }
+
+  /**
+   * StaffChatConversation findFirstOrThrow
+   */
+  export type StaffChatConversationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatConversation
+     */
+    select?: StaffChatConversationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatConversation
+     */
+    omit?: StaffChatConversationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatConversationInclude<ExtArgs> | null
+    /**
+     * Filter, which StaffChatConversation to fetch.
+     */
+    where?: StaffChatConversationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StaffChatConversations to fetch.
+     */
+    orderBy?: StaffChatConversationOrderByWithRelationInput | StaffChatConversationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for StaffChatConversations.
+     */
+    cursor?: StaffChatConversationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StaffChatConversations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StaffChatConversations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StaffChatConversations.
+     */
+    distinct?: StaffChatConversationScalarFieldEnum | StaffChatConversationScalarFieldEnum[]
+  }
+
+  /**
+   * StaffChatConversation findMany
+   */
+  export type StaffChatConversationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatConversation
+     */
+    select?: StaffChatConversationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatConversation
+     */
+    omit?: StaffChatConversationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatConversationInclude<ExtArgs> | null
+    /**
+     * Filter, which StaffChatConversations to fetch.
+     */
+    where?: StaffChatConversationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StaffChatConversations to fetch.
+     */
+    orderBy?: StaffChatConversationOrderByWithRelationInput | StaffChatConversationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing StaffChatConversations.
+     */
+    cursor?: StaffChatConversationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StaffChatConversations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StaffChatConversations.
+     */
+    skip?: number
+    distinct?: StaffChatConversationScalarFieldEnum | StaffChatConversationScalarFieldEnum[]
+  }
+
+  /**
+   * StaffChatConversation create
+   */
+  export type StaffChatConversationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatConversation
+     */
+    select?: StaffChatConversationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatConversation
+     */
+    omit?: StaffChatConversationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatConversationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a StaffChatConversation.
+     */
+    data: XOR<StaffChatConversationCreateInput, StaffChatConversationUncheckedCreateInput>
+  }
+
+  /**
+   * StaffChatConversation createMany
+   */
+  export type StaffChatConversationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many StaffChatConversations.
+     */
+    data: StaffChatConversationCreateManyInput | StaffChatConversationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * StaffChatConversation createManyAndReturn
+   */
+  export type StaffChatConversationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatConversation
+     */
+    select?: StaffChatConversationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatConversation
+     */
+    omit?: StaffChatConversationOmit<ExtArgs> | null
+    /**
+     * The data used to create many StaffChatConversations.
+     */
+    data: StaffChatConversationCreateManyInput | StaffChatConversationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatConversationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * StaffChatConversation update
+   */
+  export type StaffChatConversationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatConversation
+     */
+    select?: StaffChatConversationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatConversation
+     */
+    omit?: StaffChatConversationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatConversationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a StaffChatConversation.
+     */
+    data: XOR<StaffChatConversationUpdateInput, StaffChatConversationUncheckedUpdateInput>
+    /**
+     * Choose, which StaffChatConversation to update.
+     */
+    where: StaffChatConversationWhereUniqueInput
+  }
+
+  /**
+   * StaffChatConversation updateMany
+   */
+  export type StaffChatConversationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update StaffChatConversations.
+     */
+    data: XOR<StaffChatConversationUpdateManyMutationInput, StaffChatConversationUncheckedUpdateManyInput>
+    /**
+     * Filter which StaffChatConversations to update
+     */
+    where?: StaffChatConversationWhereInput
+    /**
+     * Limit how many StaffChatConversations to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * StaffChatConversation updateManyAndReturn
+   */
+  export type StaffChatConversationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatConversation
+     */
+    select?: StaffChatConversationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatConversation
+     */
+    omit?: StaffChatConversationOmit<ExtArgs> | null
+    /**
+     * The data used to update StaffChatConversations.
+     */
+    data: XOR<StaffChatConversationUpdateManyMutationInput, StaffChatConversationUncheckedUpdateManyInput>
+    /**
+     * Filter which StaffChatConversations to update
+     */
+    where?: StaffChatConversationWhereInput
+    /**
+     * Limit how many StaffChatConversations to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatConversationIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * StaffChatConversation upsert
+   */
+  export type StaffChatConversationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatConversation
+     */
+    select?: StaffChatConversationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatConversation
+     */
+    omit?: StaffChatConversationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatConversationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the StaffChatConversation to update in case it exists.
+     */
+    where: StaffChatConversationWhereUniqueInput
+    /**
+     * In case the StaffChatConversation found by the `where` argument doesn't exist, create a new StaffChatConversation with this data.
+     */
+    create: XOR<StaffChatConversationCreateInput, StaffChatConversationUncheckedCreateInput>
+    /**
+     * In case the StaffChatConversation was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<StaffChatConversationUpdateInput, StaffChatConversationUncheckedUpdateInput>
+  }
+
+  /**
+   * StaffChatConversation delete
+   */
+  export type StaffChatConversationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatConversation
+     */
+    select?: StaffChatConversationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatConversation
+     */
+    omit?: StaffChatConversationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatConversationInclude<ExtArgs> | null
+    /**
+     * Filter which StaffChatConversation to delete.
+     */
+    where: StaffChatConversationWhereUniqueInput
+  }
+
+  /**
+   * StaffChatConversation deleteMany
+   */
+  export type StaffChatConversationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which StaffChatConversations to delete
+     */
+    where?: StaffChatConversationWhereInput
+    /**
+     * Limit how many StaffChatConversations to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * StaffChatConversation.createdBy
+   */
+  export type StaffChatConversation$createdByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * StaffChatConversation.members
+   */
+  export type StaffChatConversation$membersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMember
+     */
+    select?: StaffChatMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMember
+     */
+    omit?: StaffChatMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMemberInclude<ExtArgs> | null
+    where?: StaffChatMemberWhereInput
+    orderBy?: StaffChatMemberOrderByWithRelationInput | StaffChatMemberOrderByWithRelationInput[]
+    cursor?: StaffChatMemberWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: StaffChatMemberScalarFieldEnum | StaffChatMemberScalarFieldEnum[]
+  }
+
+  /**
+   * StaffChatConversation.messages
+   */
+  export type StaffChatConversation$messagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMessage
+     */
+    select?: StaffChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMessage
+     */
+    omit?: StaffChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMessageInclude<ExtArgs> | null
+    where?: StaffChatMessageWhereInput
+    orderBy?: StaffChatMessageOrderByWithRelationInput | StaffChatMessageOrderByWithRelationInput[]
+    cursor?: StaffChatMessageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: StaffChatMessageScalarFieldEnum | StaffChatMessageScalarFieldEnum[]
+  }
+
+  /**
+   * StaffChatConversation without action
+   */
+  export type StaffChatConversationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatConversation
+     */
+    select?: StaffChatConversationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatConversation
+     */
+    omit?: StaffChatConversationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatConversationInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model StaffChatMember
+   */
+
+  export type AggregateStaffChatMember = {
+    _count: StaffChatMemberCountAggregateOutputType | null
+    _avg: StaffChatMemberAvgAggregateOutputType | null
+    _sum: StaffChatMemberSumAggregateOutputType | null
+    _min: StaffChatMemberMinAggregateOutputType | null
+    _max: StaffChatMemberMaxAggregateOutputType | null
+  }
+
+  export type StaffChatMemberAvgAggregateOutputType = {
+    userId: number | null
+  }
+
+  export type StaffChatMemberSumAggregateOutputType = {
+    userId: number | null
+  }
+
+  export type StaffChatMemberMinAggregateOutputType = {
+    id: string | null
+    conversationId: string | null
+    userId: number | null
+    joinedAt: Date | null
+    lastReadAt: Date | null
+  }
+
+  export type StaffChatMemberMaxAggregateOutputType = {
+    id: string | null
+    conversationId: string | null
+    userId: number | null
+    joinedAt: Date | null
+    lastReadAt: Date | null
+  }
+
+  export type StaffChatMemberCountAggregateOutputType = {
+    id: number
+    conversationId: number
+    userId: number
+    joinedAt: number
+    lastReadAt: number
+    _all: number
+  }
+
+
+  export type StaffChatMemberAvgAggregateInputType = {
+    userId?: true
+  }
+
+  export type StaffChatMemberSumAggregateInputType = {
+    userId?: true
+  }
+
+  export type StaffChatMemberMinAggregateInputType = {
+    id?: true
+    conversationId?: true
+    userId?: true
+    joinedAt?: true
+    lastReadAt?: true
+  }
+
+  export type StaffChatMemberMaxAggregateInputType = {
+    id?: true
+    conversationId?: true
+    userId?: true
+    joinedAt?: true
+    lastReadAt?: true
+  }
+
+  export type StaffChatMemberCountAggregateInputType = {
+    id?: true
+    conversationId?: true
+    userId?: true
+    joinedAt?: true
+    lastReadAt?: true
+    _all?: true
+  }
+
+  export type StaffChatMemberAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which StaffChatMember to aggregate.
+     */
+    where?: StaffChatMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StaffChatMembers to fetch.
+     */
+    orderBy?: StaffChatMemberOrderByWithRelationInput | StaffChatMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: StaffChatMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StaffChatMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StaffChatMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned StaffChatMembers
+    **/
+    _count?: true | StaffChatMemberCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: StaffChatMemberAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: StaffChatMemberSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: StaffChatMemberMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: StaffChatMemberMaxAggregateInputType
+  }
+
+  export type GetStaffChatMemberAggregateType<T extends StaffChatMemberAggregateArgs> = {
+        [P in keyof T & keyof AggregateStaffChatMember]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateStaffChatMember[P]>
+      : GetScalarType<T[P], AggregateStaffChatMember[P]>
+  }
+
+
+
+
+  export type StaffChatMemberGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StaffChatMemberWhereInput
+    orderBy?: StaffChatMemberOrderByWithAggregationInput | StaffChatMemberOrderByWithAggregationInput[]
+    by: StaffChatMemberScalarFieldEnum[] | StaffChatMemberScalarFieldEnum
+    having?: StaffChatMemberScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: StaffChatMemberCountAggregateInputType | true
+    _avg?: StaffChatMemberAvgAggregateInputType
+    _sum?: StaffChatMemberSumAggregateInputType
+    _min?: StaffChatMemberMinAggregateInputType
+    _max?: StaffChatMemberMaxAggregateInputType
+  }
+
+  export type StaffChatMemberGroupByOutputType = {
+    id: string
+    conversationId: string
+    userId: number
+    joinedAt: Date
+    lastReadAt: Date | null
+    _count: StaffChatMemberCountAggregateOutputType | null
+    _avg: StaffChatMemberAvgAggregateOutputType | null
+    _sum: StaffChatMemberSumAggregateOutputType | null
+    _min: StaffChatMemberMinAggregateOutputType | null
+    _max: StaffChatMemberMaxAggregateOutputType | null
+  }
+
+  type GetStaffChatMemberGroupByPayload<T extends StaffChatMemberGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<StaffChatMemberGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof StaffChatMemberGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], StaffChatMemberGroupByOutputType[P]>
+            : GetScalarType<T[P], StaffChatMemberGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type StaffChatMemberSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    conversationId?: boolean
+    userId?: boolean
+    joinedAt?: boolean
+    lastReadAt?: boolean
+    conversation?: boolean | StaffChatConversationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["staffChatMember"]>
+
+  export type StaffChatMemberSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    conversationId?: boolean
+    userId?: boolean
+    joinedAt?: boolean
+    lastReadAt?: boolean
+    conversation?: boolean | StaffChatConversationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["staffChatMember"]>
+
+  export type StaffChatMemberSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    conversationId?: boolean
+    userId?: boolean
+    joinedAt?: boolean
+    lastReadAt?: boolean
+    conversation?: boolean | StaffChatConversationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["staffChatMember"]>
+
+  export type StaffChatMemberSelectScalar = {
+    id?: boolean
+    conversationId?: boolean
+    userId?: boolean
+    joinedAt?: boolean
+    lastReadAt?: boolean
+  }
+
+  export type StaffChatMemberOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "conversationId" | "userId" | "joinedAt" | "lastReadAt", ExtArgs["result"]["staffChatMember"]>
+  export type StaffChatMemberInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    conversation?: boolean | StaffChatConversationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type StaffChatMemberIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    conversation?: boolean | StaffChatConversationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type StaffChatMemberIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    conversation?: boolean | StaffChatConversationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $StaffChatMemberPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "StaffChatMember"
+    objects: {
+      conversation: Prisma.$StaffChatConversationPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      conversationId: string
+      userId: number
+      joinedAt: Date
+      lastReadAt: Date | null
+    }, ExtArgs["result"]["staffChatMember"]>
+    composites: {}
+  }
+
+  type StaffChatMemberGetPayload<S extends boolean | null | undefined | StaffChatMemberDefaultArgs> = $Result.GetResult<Prisma.$StaffChatMemberPayload, S>
+
+  type StaffChatMemberCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<StaffChatMemberFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: StaffChatMemberCountAggregateInputType | true
+    }
+
+  export interface StaffChatMemberDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['StaffChatMember'], meta: { name: 'StaffChatMember' } }
+    /**
+     * Find zero or one StaffChatMember that matches the filter.
+     * @param {StaffChatMemberFindUniqueArgs} args - Arguments to find a StaffChatMember
+     * @example
+     * // Get one StaffChatMember
+     * const staffChatMember = await prisma.staffChatMember.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends StaffChatMemberFindUniqueArgs>(args: SelectSubset<T, StaffChatMemberFindUniqueArgs<ExtArgs>>): Prisma__StaffChatMemberClient<$Result.GetResult<Prisma.$StaffChatMemberPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one StaffChatMember that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {StaffChatMemberFindUniqueOrThrowArgs} args - Arguments to find a StaffChatMember
+     * @example
+     * // Get one StaffChatMember
+     * const staffChatMember = await prisma.staffChatMember.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends StaffChatMemberFindUniqueOrThrowArgs>(args: SelectSubset<T, StaffChatMemberFindUniqueOrThrowArgs<ExtArgs>>): Prisma__StaffChatMemberClient<$Result.GetResult<Prisma.$StaffChatMemberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first StaffChatMember that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StaffChatMemberFindFirstArgs} args - Arguments to find a StaffChatMember
+     * @example
+     * // Get one StaffChatMember
+     * const staffChatMember = await prisma.staffChatMember.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends StaffChatMemberFindFirstArgs>(args?: SelectSubset<T, StaffChatMemberFindFirstArgs<ExtArgs>>): Prisma__StaffChatMemberClient<$Result.GetResult<Prisma.$StaffChatMemberPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first StaffChatMember that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StaffChatMemberFindFirstOrThrowArgs} args - Arguments to find a StaffChatMember
+     * @example
+     * // Get one StaffChatMember
+     * const staffChatMember = await prisma.staffChatMember.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends StaffChatMemberFindFirstOrThrowArgs>(args?: SelectSubset<T, StaffChatMemberFindFirstOrThrowArgs<ExtArgs>>): Prisma__StaffChatMemberClient<$Result.GetResult<Prisma.$StaffChatMemberPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more StaffChatMembers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StaffChatMemberFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all StaffChatMembers
+     * const staffChatMembers = await prisma.staffChatMember.findMany()
+     * 
+     * // Get first 10 StaffChatMembers
+     * const staffChatMembers = await prisma.staffChatMember.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const staffChatMemberWithIdOnly = await prisma.staffChatMember.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends StaffChatMemberFindManyArgs>(args?: SelectSubset<T, StaffChatMemberFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StaffChatMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a StaffChatMember.
+     * @param {StaffChatMemberCreateArgs} args - Arguments to create a StaffChatMember.
+     * @example
+     * // Create one StaffChatMember
+     * const StaffChatMember = await prisma.staffChatMember.create({
+     *   data: {
+     *     // ... data to create a StaffChatMember
+     *   }
+     * })
+     * 
+     */
+    create<T extends StaffChatMemberCreateArgs>(args: SelectSubset<T, StaffChatMemberCreateArgs<ExtArgs>>): Prisma__StaffChatMemberClient<$Result.GetResult<Prisma.$StaffChatMemberPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many StaffChatMembers.
+     * @param {StaffChatMemberCreateManyArgs} args - Arguments to create many StaffChatMembers.
+     * @example
+     * // Create many StaffChatMembers
+     * const staffChatMember = await prisma.staffChatMember.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends StaffChatMemberCreateManyArgs>(args?: SelectSubset<T, StaffChatMemberCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many StaffChatMembers and returns the data saved in the database.
+     * @param {StaffChatMemberCreateManyAndReturnArgs} args - Arguments to create many StaffChatMembers.
+     * @example
+     * // Create many StaffChatMembers
+     * const staffChatMember = await prisma.staffChatMember.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many StaffChatMembers and only return the `id`
+     * const staffChatMemberWithIdOnly = await prisma.staffChatMember.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends StaffChatMemberCreateManyAndReturnArgs>(args?: SelectSubset<T, StaffChatMemberCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StaffChatMemberPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a StaffChatMember.
+     * @param {StaffChatMemberDeleteArgs} args - Arguments to delete one StaffChatMember.
+     * @example
+     * // Delete one StaffChatMember
+     * const StaffChatMember = await prisma.staffChatMember.delete({
+     *   where: {
+     *     // ... filter to delete one StaffChatMember
+     *   }
+     * })
+     * 
+     */
+    delete<T extends StaffChatMemberDeleteArgs>(args: SelectSubset<T, StaffChatMemberDeleteArgs<ExtArgs>>): Prisma__StaffChatMemberClient<$Result.GetResult<Prisma.$StaffChatMemberPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one StaffChatMember.
+     * @param {StaffChatMemberUpdateArgs} args - Arguments to update one StaffChatMember.
+     * @example
+     * // Update one StaffChatMember
+     * const staffChatMember = await prisma.staffChatMember.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends StaffChatMemberUpdateArgs>(args: SelectSubset<T, StaffChatMemberUpdateArgs<ExtArgs>>): Prisma__StaffChatMemberClient<$Result.GetResult<Prisma.$StaffChatMemberPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more StaffChatMembers.
+     * @param {StaffChatMemberDeleteManyArgs} args - Arguments to filter StaffChatMembers to delete.
+     * @example
+     * // Delete a few StaffChatMembers
+     * const { count } = await prisma.staffChatMember.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends StaffChatMemberDeleteManyArgs>(args?: SelectSubset<T, StaffChatMemberDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more StaffChatMembers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StaffChatMemberUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many StaffChatMembers
+     * const staffChatMember = await prisma.staffChatMember.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends StaffChatMemberUpdateManyArgs>(args: SelectSubset<T, StaffChatMemberUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more StaffChatMembers and returns the data updated in the database.
+     * @param {StaffChatMemberUpdateManyAndReturnArgs} args - Arguments to update many StaffChatMembers.
+     * @example
+     * // Update many StaffChatMembers
+     * const staffChatMember = await prisma.staffChatMember.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more StaffChatMembers and only return the `id`
+     * const staffChatMemberWithIdOnly = await prisma.staffChatMember.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends StaffChatMemberUpdateManyAndReturnArgs>(args: SelectSubset<T, StaffChatMemberUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StaffChatMemberPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one StaffChatMember.
+     * @param {StaffChatMemberUpsertArgs} args - Arguments to update or create a StaffChatMember.
+     * @example
+     * // Update or create a StaffChatMember
+     * const staffChatMember = await prisma.staffChatMember.upsert({
+     *   create: {
+     *     // ... data to create a StaffChatMember
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the StaffChatMember we want to update
+     *   }
+     * })
+     */
+    upsert<T extends StaffChatMemberUpsertArgs>(args: SelectSubset<T, StaffChatMemberUpsertArgs<ExtArgs>>): Prisma__StaffChatMemberClient<$Result.GetResult<Prisma.$StaffChatMemberPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of StaffChatMembers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StaffChatMemberCountArgs} args - Arguments to filter StaffChatMembers to count.
+     * @example
+     * // Count the number of StaffChatMembers
+     * const count = await prisma.staffChatMember.count({
+     *   where: {
+     *     // ... the filter for the StaffChatMembers we want to count
+     *   }
+     * })
+    **/
+    count<T extends StaffChatMemberCountArgs>(
+      args?: Subset<T, StaffChatMemberCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], StaffChatMemberCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a StaffChatMember.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StaffChatMemberAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends StaffChatMemberAggregateArgs>(args: Subset<T, StaffChatMemberAggregateArgs>): Prisma.PrismaPromise<GetStaffChatMemberAggregateType<T>>
+
+    /**
+     * Group by StaffChatMember.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StaffChatMemberGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends StaffChatMemberGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: StaffChatMemberGroupByArgs['orderBy'] }
+        : { orderBy?: StaffChatMemberGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, StaffChatMemberGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetStaffChatMemberGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the StaffChatMember model
+   */
+  readonly fields: StaffChatMemberFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for StaffChatMember.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__StaffChatMemberClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    conversation<T extends StaffChatConversationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, StaffChatConversationDefaultArgs<ExtArgs>>): Prisma__StaffChatConversationClient<$Result.GetResult<Prisma.$StaffChatConversationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the StaffChatMember model
+   */
+  interface StaffChatMemberFieldRefs {
+    readonly id: FieldRef<"StaffChatMember", 'String'>
+    readonly conversationId: FieldRef<"StaffChatMember", 'String'>
+    readonly userId: FieldRef<"StaffChatMember", 'Int'>
+    readonly joinedAt: FieldRef<"StaffChatMember", 'DateTime'>
+    readonly lastReadAt: FieldRef<"StaffChatMember", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * StaffChatMember findUnique
+   */
+  export type StaffChatMemberFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMember
+     */
+    select?: StaffChatMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMember
+     */
+    omit?: StaffChatMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which StaffChatMember to fetch.
+     */
+    where: StaffChatMemberWhereUniqueInput
+  }
+
+  /**
+   * StaffChatMember findUniqueOrThrow
+   */
+  export type StaffChatMemberFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMember
+     */
+    select?: StaffChatMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMember
+     */
+    omit?: StaffChatMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which StaffChatMember to fetch.
+     */
+    where: StaffChatMemberWhereUniqueInput
+  }
+
+  /**
+   * StaffChatMember findFirst
+   */
+  export type StaffChatMemberFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMember
+     */
+    select?: StaffChatMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMember
+     */
+    omit?: StaffChatMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which StaffChatMember to fetch.
+     */
+    where?: StaffChatMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StaffChatMembers to fetch.
+     */
+    orderBy?: StaffChatMemberOrderByWithRelationInput | StaffChatMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for StaffChatMembers.
+     */
+    cursor?: StaffChatMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StaffChatMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StaffChatMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StaffChatMembers.
+     */
+    distinct?: StaffChatMemberScalarFieldEnum | StaffChatMemberScalarFieldEnum[]
+  }
+
+  /**
+   * StaffChatMember findFirstOrThrow
+   */
+  export type StaffChatMemberFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMember
+     */
+    select?: StaffChatMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMember
+     */
+    omit?: StaffChatMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which StaffChatMember to fetch.
+     */
+    where?: StaffChatMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StaffChatMembers to fetch.
+     */
+    orderBy?: StaffChatMemberOrderByWithRelationInput | StaffChatMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for StaffChatMembers.
+     */
+    cursor?: StaffChatMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StaffChatMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StaffChatMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StaffChatMembers.
+     */
+    distinct?: StaffChatMemberScalarFieldEnum | StaffChatMemberScalarFieldEnum[]
+  }
+
+  /**
+   * StaffChatMember findMany
+   */
+  export type StaffChatMemberFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMember
+     */
+    select?: StaffChatMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMember
+     */
+    omit?: StaffChatMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which StaffChatMembers to fetch.
+     */
+    where?: StaffChatMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StaffChatMembers to fetch.
+     */
+    orderBy?: StaffChatMemberOrderByWithRelationInput | StaffChatMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing StaffChatMembers.
+     */
+    cursor?: StaffChatMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StaffChatMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StaffChatMembers.
+     */
+    skip?: number
+    distinct?: StaffChatMemberScalarFieldEnum | StaffChatMemberScalarFieldEnum[]
+  }
+
+  /**
+   * StaffChatMember create
+   */
+  export type StaffChatMemberCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMember
+     */
+    select?: StaffChatMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMember
+     */
+    omit?: StaffChatMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMemberInclude<ExtArgs> | null
+    /**
+     * The data needed to create a StaffChatMember.
+     */
+    data: XOR<StaffChatMemberCreateInput, StaffChatMemberUncheckedCreateInput>
+  }
+
+  /**
+   * StaffChatMember createMany
+   */
+  export type StaffChatMemberCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many StaffChatMembers.
+     */
+    data: StaffChatMemberCreateManyInput | StaffChatMemberCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * StaffChatMember createManyAndReturn
+   */
+  export type StaffChatMemberCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMember
+     */
+    select?: StaffChatMemberSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMember
+     */
+    omit?: StaffChatMemberOmit<ExtArgs> | null
+    /**
+     * The data used to create many StaffChatMembers.
+     */
+    data: StaffChatMemberCreateManyInput | StaffChatMemberCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMemberIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * StaffChatMember update
+   */
+  export type StaffChatMemberUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMember
+     */
+    select?: StaffChatMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMember
+     */
+    omit?: StaffChatMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMemberInclude<ExtArgs> | null
+    /**
+     * The data needed to update a StaffChatMember.
+     */
+    data: XOR<StaffChatMemberUpdateInput, StaffChatMemberUncheckedUpdateInput>
+    /**
+     * Choose, which StaffChatMember to update.
+     */
+    where: StaffChatMemberWhereUniqueInput
+  }
+
+  /**
+   * StaffChatMember updateMany
+   */
+  export type StaffChatMemberUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update StaffChatMembers.
+     */
+    data: XOR<StaffChatMemberUpdateManyMutationInput, StaffChatMemberUncheckedUpdateManyInput>
+    /**
+     * Filter which StaffChatMembers to update
+     */
+    where?: StaffChatMemberWhereInput
+    /**
+     * Limit how many StaffChatMembers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * StaffChatMember updateManyAndReturn
+   */
+  export type StaffChatMemberUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMember
+     */
+    select?: StaffChatMemberSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMember
+     */
+    omit?: StaffChatMemberOmit<ExtArgs> | null
+    /**
+     * The data used to update StaffChatMembers.
+     */
+    data: XOR<StaffChatMemberUpdateManyMutationInput, StaffChatMemberUncheckedUpdateManyInput>
+    /**
+     * Filter which StaffChatMembers to update
+     */
+    where?: StaffChatMemberWhereInput
+    /**
+     * Limit how many StaffChatMembers to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMemberIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * StaffChatMember upsert
+   */
+  export type StaffChatMemberUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMember
+     */
+    select?: StaffChatMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMember
+     */
+    omit?: StaffChatMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMemberInclude<ExtArgs> | null
+    /**
+     * The filter to search for the StaffChatMember to update in case it exists.
+     */
+    where: StaffChatMemberWhereUniqueInput
+    /**
+     * In case the StaffChatMember found by the `where` argument doesn't exist, create a new StaffChatMember with this data.
+     */
+    create: XOR<StaffChatMemberCreateInput, StaffChatMemberUncheckedCreateInput>
+    /**
+     * In case the StaffChatMember was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<StaffChatMemberUpdateInput, StaffChatMemberUncheckedUpdateInput>
+  }
+
+  /**
+   * StaffChatMember delete
+   */
+  export type StaffChatMemberDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMember
+     */
+    select?: StaffChatMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMember
+     */
+    omit?: StaffChatMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMemberInclude<ExtArgs> | null
+    /**
+     * Filter which StaffChatMember to delete.
+     */
+    where: StaffChatMemberWhereUniqueInput
+  }
+
+  /**
+   * StaffChatMember deleteMany
+   */
+  export type StaffChatMemberDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which StaffChatMembers to delete
+     */
+    where?: StaffChatMemberWhereInput
+    /**
+     * Limit how many StaffChatMembers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * StaffChatMember without action
+   */
+  export type StaffChatMemberDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMember
+     */
+    select?: StaffChatMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMember
+     */
+    omit?: StaffChatMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMemberInclude<ExtArgs> | null
   }
 
 
@@ -37671,6 +40287,7 @@ export namespace Prisma {
     content: string | null
     senderId: number | null
     channelId: string | null
+    conversationId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -37680,6 +40297,7 @@ export namespace Prisma {
     content: string | null
     senderId: number | null
     channelId: string | null
+    conversationId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -37689,6 +40307,7 @@ export namespace Prisma {
     content: number
     senderId: number
     channelId: number
+    conversationId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -37708,6 +40327,7 @@ export namespace Prisma {
     content?: true
     senderId?: true
     channelId?: true
+    conversationId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -37717,6 +40337,7 @@ export namespace Prisma {
     content?: true
     senderId?: true
     channelId?: true
+    conversationId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -37726,6 +40347,7 @@ export namespace Prisma {
     content?: true
     senderId?: true
     channelId?: true
+    conversationId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -37821,7 +40443,8 @@ export namespace Prisma {
     id: string
     content: string
     senderId: number
-    channelId: string
+    channelId: string | null
+    conversationId: string | null
     createdAt: Date
     updatedAt: Date
     _count: StaffChatMessageCountAggregateOutputType | null
@@ -37850,9 +40473,11 @@ export namespace Prisma {
     content?: boolean
     senderId?: boolean
     channelId?: boolean
+    conversationId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     sender?: boolean | UserDefaultArgs<ExtArgs>
+    conversation?: boolean | StaffChatMessage$conversationArgs<ExtArgs>
   }, ExtArgs["result"]["staffChatMessage"]>
 
   export type StaffChatMessageSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -37860,9 +40485,11 @@ export namespace Prisma {
     content?: boolean
     senderId?: boolean
     channelId?: boolean
+    conversationId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     sender?: boolean | UserDefaultArgs<ExtArgs>
+    conversation?: boolean | StaffChatMessage$conversationArgs<ExtArgs>
   }, ExtArgs["result"]["staffChatMessage"]>
 
   export type StaffChatMessageSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -37870,9 +40497,11 @@ export namespace Prisma {
     content?: boolean
     senderId?: boolean
     channelId?: boolean
+    conversationId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     sender?: boolean | UserDefaultArgs<ExtArgs>
+    conversation?: boolean | StaffChatMessage$conversationArgs<ExtArgs>
   }, ExtArgs["result"]["staffChatMessage"]>
 
   export type StaffChatMessageSelectScalar = {
@@ -37880,31 +40509,37 @@ export namespace Prisma {
     content?: boolean
     senderId?: boolean
     channelId?: boolean
+    conversationId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type StaffChatMessageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "content" | "senderId" | "channelId" | "createdAt" | "updatedAt", ExtArgs["result"]["staffChatMessage"]>
+  export type StaffChatMessageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "content" | "senderId" | "channelId" | "conversationId" | "createdAt" | "updatedAt", ExtArgs["result"]["staffChatMessage"]>
   export type StaffChatMessageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sender?: boolean | UserDefaultArgs<ExtArgs>
+    conversation?: boolean | StaffChatMessage$conversationArgs<ExtArgs>
   }
   export type StaffChatMessageIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sender?: boolean | UserDefaultArgs<ExtArgs>
+    conversation?: boolean | StaffChatMessage$conversationArgs<ExtArgs>
   }
   export type StaffChatMessageIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sender?: boolean | UserDefaultArgs<ExtArgs>
+    conversation?: boolean | StaffChatMessage$conversationArgs<ExtArgs>
   }
 
   export type $StaffChatMessagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "StaffChatMessage"
     objects: {
       sender: Prisma.$UserPayload<ExtArgs>
+      conversation: Prisma.$StaffChatConversationPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       content: string
       senderId: number
-      channelId: string
+      channelId: string | null
+      conversationId: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["staffChatMessage"]>
@@ -38302,6 +40937,7 @@ export namespace Prisma {
   export interface Prisma__StaffChatMessageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     sender<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    conversation<T extends StaffChatMessage$conversationArgs<ExtArgs> = {}>(args?: Subset<T, StaffChatMessage$conversationArgs<ExtArgs>>): Prisma__StaffChatConversationClient<$Result.GetResult<Prisma.$StaffChatConversationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -38335,6 +40971,7 @@ export namespace Prisma {
     readonly content: FieldRef<"StaffChatMessage", 'String'>
     readonly senderId: FieldRef<"StaffChatMessage", 'Int'>
     readonly channelId: FieldRef<"StaffChatMessage", 'String'>
+    readonly conversationId: FieldRef<"StaffChatMessage", 'String'>
     readonly createdAt: FieldRef<"StaffChatMessage", 'DateTime'>
     readonly updatedAt: FieldRef<"StaffChatMessage", 'DateTime'>
   }
@@ -38730,6 +41367,25 @@ export namespace Prisma {
      * Limit how many StaffChatMessages to delete.
      */
     limit?: number
+  }
+
+  /**
+   * StaffChatMessage.conversation
+   */
+  export type StaffChatMessage$conversationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatConversation
+     */
+    select?: StaffChatConversationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatConversation
+     */
+    omit?: StaffChatConversationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatConversationInclude<ExtArgs> | null
+    where?: StaffChatConversationWhereInput
   }
 
   /**
@@ -53381,11 +56037,37 @@ export namespace Prisma {
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+  export const StaffChatConversationScalarFieldEnum: {
+    id: 'id',
+    type: 'type',
+    name: 'name',
+    isSystem: 'isSystem',
+    createdById: 'createdById',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    directKey: 'directKey'
+  };
+
+  export type StaffChatConversationScalarFieldEnum = (typeof StaffChatConversationScalarFieldEnum)[keyof typeof StaffChatConversationScalarFieldEnum]
+
+
+  export const StaffChatMemberScalarFieldEnum: {
+    id: 'id',
+    conversationId: 'conversationId',
+    userId: 'userId',
+    joinedAt: 'joinedAt',
+    lastReadAt: 'lastReadAt'
+  };
+
+  export type StaffChatMemberScalarFieldEnum = (typeof StaffChatMemberScalarFieldEnum)[keyof typeof StaffChatMemberScalarFieldEnum]
+
+
   export const StaffChatMessageScalarFieldEnum: {
     id: 'id',
     content: 'content',
     senderId: 'senderId',
     channelId: 'channelId',
+    conversationId: 'conversationId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -53735,6 +56417,20 @@ export namespace Prisma {
    * Reference to a field of type 'FosterOnboardingStatus[]'
    */
   export type ListEnumFosterOnboardingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FosterOnboardingStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'StaffChatType'
+   */
+  export type EnumStaffChatTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StaffChatType'>
+    
+
+
+  /**
+   * Reference to a field of type 'StaffChatType[]'
+   */
+  export type ListEnumStaffChatTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StaffChatType[]'>
     
 
 
@@ -56010,6 +58706,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseListRelationFilter
     passwordResetTokens?: PasswordResetTokenListRelationFilter
     staffChatMessages?: StaffChatMessageListRelationFilter
+    staffChatMemberships?: StaffChatMemberListRelationFilter
+    staffChatCreated?: StaffChatConversationListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -56033,6 +58731,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseOrderByRelationAggregateInput
     passwordResetTokens?: PasswordResetTokenOrderByRelationAggregateInput
     staffChatMessages?: StaffChatMessageOrderByRelationAggregateInput
+    staffChatMemberships?: StaffChatMemberOrderByRelationAggregateInput
+    staffChatCreated?: StaffChatConversationOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -56059,6 +58759,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseListRelationFilter
     passwordResetTokens?: PasswordResetTokenListRelationFilter
     staffChatMessages?: StaffChatMessageListRelationFilter
+    staffChatMemberships?: StaffChatMemberListRelationFilter
+    staffChatCreated?: StaffChatConversationListRelationFilter
   }, "id" | "email" | "fosterId">
 
   export type UserOrderByWithAggregationInput = {
@@ -56097,6 +58799,145 @@ export namespace Prisma {
     lastLoginAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   }
 
+  export type StaffChatConversationWhereInput = {
+    AND?: StaffChatConversationWhereInput | StaffChatConversationWhereInput[]
+    OR?: StaffChatConversationWhereInput[]
+    NOT?: StaffChatConversationWhereInput | StaffChatConversationWhereInput[]
+    id?: StringFilter<"StaffChatConversation"> | string
+    type?: EnumStaffChatTypeFilter<"StaffChatConversation"> | $Enums.StaffChatType
+    name?: StringNullableFilter<"StaffChatConversation"> | string | null
+    isSystem?: BoolFilter<"StaffChatConversation"> | boolean
+    createdById?: IntNullableFilter<"StaffChatConversation"> | number | null
+    createdAt?: DateTimeFilter<"StaffChatConversation"> | Date | string
+    updatedAt?: DateTimeFilter<"StaffChatConversation"> | Date | string
+    directKey?: StringNullableFilter<"StaffChatConversation"> | string | null
+    createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    members?: StaffChatMemberListRelationFilter
+    messages?: StaffChatMessageListRelationFilter
+  }
+
+  export type StaffChatConversationOrderByWithRelationInput = {
+    id?: SortOrder
+    type?: SortOrder
+    name?: SortOrderInput | SortOrder
+    isSystem?: SortOrder
+    createdById?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    directKey?: SortOrderInput | SortOrder
+    createdBy?: UserOrderByWithRelationInput
+    members?: StaffChatMemberOrderByRelationAggregateInput
+    messages?: StaffChatMessageOrderByRelationAggregateInput
+  }
+
+  export type StaffChatConversationWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    directKey?: string
+    AND?: StaffChatConversationWhereInput | StaffChatConversationWhereInput[]
+    OR?: StaffChatConversationWhereInput[]
+    NOT?: StaffChatConversationWhereInput | StaffChatConversationWhereInput[]
+    type?: EnumStaffChatTypeFilter<"StaffChatConversation"> | $Enums.StaffChatType
+    name?: StringNullableFilter<"StaffChatConversation"> | string | null
+    isSystem?: BoolFilter<"StaffChatConversation"> | boolean
+    createdById?: IntNullableFilter<"StaffChatConversation"> | number | null
+    createdAt?: DateTimeFilter<"StaffChatConversation"> | Date | string
+    updatedAt?: DateTimeFilter<"StaffChatConversation"> | Date | string
+    createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    members?: StaffChatMemberListRelationFilter
+    messages?: StaffChatMessageListRelationFilter
+  }, "id" | "directKey">
+
+  export type StaffChatConversationOrderByWithAggregationInput = {
+    id?: SortOrder
+    type?: SortOrder
+    name?: SortOrderInput | SortOrder
+    isSystem?: SortOrder
+    createdById?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    directKey?: SortOrderInput | SortOrder
+    _count?: StaffChatConversationCountOrderByAggregateInput
+    _avg?: StaffChatConversationAvgOrderByAggregateInput
+    _max?: StaffChatConversationMaxOrderByAggregateInput
+    _min?: StaffChatConversationMinOrderByAggregateInput
+    _sum?: StaffChatConversationSumOrderByAggregateInput
+  }
+
+  export type StaffChatConversationScalarWhereWithAggregatesInput = {
+    AND?: StaffChatConversationScalarWhereWithAggregatesInput | StaffChatConversationScalarWhereWithAggregatesInput[]
+    OR?: StaffChatConversationScalarWhereWithAggregatesInput[]
+    NOT?: StaffChatConversationScalarWhereWithAggregatesInput | StaffChatConversationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"StaffChatConversation"> | string
+    type?: EnumStaffChatTypeWithAggregatesFilter<"StaffChatConversation"> | $Enums.StaffChatType
+    name?: StringNullableWithAggregatesFilter<"StaffChatConversation"> | string | null
+    isSystem?: BoolWithAggregatesFilter<"StaffChatConversation"> | boolean
+    createdById?: IntNullableWithAggregatesFilter<"StaffChatConversation"> | number | null
+    createdAt?: DateTimeWithAggregatesFilter<"StaffChatConversation"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"StaffChatConversation"> | Date | string
+    directKey?: StringNullableWithAggregatesFilter<"StaffChatConversation"> | string | null
+  }
+
+  export type StaffChatMemberWhereInput = {
+    AND?: StaffChatMemberWhereInput | StaffChatMemberWhereInput[]
+    OR?: StaffChatMemberWhereInput[]
+    NOT?: StaffChatMemberWhereInput | StaffChatMemberWhereInput[]
+    id?: StringFilter<"StaffChatMember"> | string
+    conversationId?: StringFilter<"StaffChatMember"> | string
+    userId?: IntFilter<"StaffChatMember"> | number
+    joinedAt?: DateTimeFilter<"StaffChatMember"> | Date | string
+    lastReadAt?: DateTimeNullableFilter<"StaffChatMember"> | Date | string | null
+    conversation?: XOR<StaffChatConversationScalarRelationFilter, StaffChatConversationWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type StaffChatMemberOrderByWithRelationInput = {
+    id?: SortOrder
+    conversationId?: SortOrder
+    userId?: SortOrder
+    joinedAt?: SortOrder
+    lastReadAt?: SortOrderInput | SortOrder
+    conversation?: StaffChatConversationOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type StaffChatMemberWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    conversationId_userId?: StaffChatMemberConversationIdUserIdCompoundUniqueInput
+    AND?: StaffChatMemberWhereInput | StaffChatMemberWhereInput[]
+    OR?: StaffChatMemberWhereInput[]
+    NOT?: StaffChatMemberWhereInput | StaffChatMemberWhereInput[]
+    conversationId?: StringFilter<"StaffChatMember"> | string
+    userId?: IntFilter<"StaffChatMember"> | number
+    joinedAt?: DateTimeFilter<"StaffChatMember"> | Date | string
+    lastReadAt?: DateTimeNullableFilter<"StaffChatMember"> | Date | string | null
+    conversation?: XOR<StaffChatConversationScalarRelationFilter, StaffChatConversationWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "conversationId_userId">
+
+  export type StaffChatMemberOrderByWithAggregationInput = {
+    id?: SortOrder
+    conversationId?: SortOrder
+    userId?: SortOrder
+    joinedAt?: SortOrder
+    lastReadAt?: SortOrderInput | SortOrder
+    _count?: StaffChatMemberCountOrderByAggregateInput
+    _avg?: StaffChatMemberAvgOrderByAggregateInput
+    _max?: StaffChatMemberMaxOrderByAggregateInput
+    _min?: StaffChatMemberMinOrderByAggregateInput
+    _sum?: StaffChatMemberSumOrderByAggregateInput
+  }
+
+  export type StaffChatMemberScalarWhereWithAggregatesInput = {
+    AND?: StaffChatMemberScalarWhereWithAggregatesInput | StaffChatMemberScalarWhereWithAggregatesInput[]
+    OR?: StaffChatMemberScalarWhereWithAggregatesInput[]
+    NOT?: StaffChatMemberScalarWhereWithAggregatesInput | StaffChatMemberScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"StaffChatMember"> | string
+    conversationId?: StringWithAggregatesFilter<"StaffChatMember"> | string
+    userId?: IntWithAggregatesFilter<"StaffChatMember"> | number
+    joinedAt?: DateTimeWithAggregatesFilter<"StaffChatMember"> | Date | string
+    lastReadAt?: DateTimeNullableWithAggregatesFilter<"StaffChatMember"> | Date | string | null
+  }
+
   export type StaffChatMessageWhereInput = {
     AND?: StaffChatMessageWhereInput | StaffChatMessageWhereInput[]
     OR?: StaffChatMessageWhereInput[]
@@ -56104,20 +58945,24 @@ export namespace Prisma {
     id?: StringFilter<"StaffChatMessage"> | string
     content?: StringFilter<"StaffChatMessage"> | string
     senderId?: IntFilter<"StaffChatMessage"> | number
-    channelId?: StringFilter<"StaffChatMessage"> | string
+    channelId?: StringNullableFilter<"StaffChatMessage"> | string | null
+    conversationId?: StringNullableFilter<"StaffChatMessage"> | string | null
     createdAt?: DateTimeFilter<"StaffChatMessage"> | Date | string
     updatedAt?: DateTimeFilter<"StaffChatMessage"> | Date | string
     sender?: XOR<UserScalarRelationFilter, UserWhereInput>
+    conversation?: XOR<StaffChatConversationNullableScalarRelationFilter, StaffChatConversationWhereInput> | null
   }
 
   export type StaffChatMessageOrderByWithRelationInput = {
     id?: SortOrder
     content?: SortOrder
     senderId?: SortOrder
-    channelId?: SortOrder
+    channelId?: SortOrderInput | SortOrder
+    conversationId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     sender?: UserOrderByWithRelationInput
+    conversation?: StaffChatConversationOrderByWithRelationInput
   }
 
   export type StaffChatMessageWhereUniqueInput = Prisma.AtLeast<{
@@ -56127,17 +58972,20 @@ export namespace Prisma {
     NOT?: StaffChatMessageWhereInput | StaffChatMessageWhereInput[]
     content?: StringFilter<"StaffChatMessage"> | string
     senderId?: IntFilter<"StaffChatMessage"> | number
-    channelId?: StringFilter<"StaffChatMessage"> | string
+    channelId?: StringNullableFilter<"StaffChatMessage"> | string | null
+    conversationId?: StringNullableFilter<"StaffChatMessage"> | string | null
     createdAt?: DateTimeFilter<"StaffChatMessage"> | Date | string
     updatedAt?: DateTimeFilter<"StaffChatMessage"> | Date | string
     sender?: XOR<UserScalarRelationFilter, UserWhereInput>
+    conversation?: XOR<StaffChatConversationNullableScalarRelationFilter, StaffChatConversationWhereInput> | null
   }, "id">
 
   export type StaffChatMessageOrderByWithAggregationInput = {
     id?: SortOrder
     content?: SortOrder
     senderId?: SortOrder
-    channelId?: SortOrder
+    channelId?: SortOrderInput | SortOrder
+    conversationId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: StaffChatMessageCountOrderByAggregateInput
@@ -56154,7 +59002,8 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"StaffChatMessage"> | string
     content?: StringWithAggregatesFilter<"StaffChatMessage"> | string
     senderId?: IntWithAggregatesFilter<"StaffChatMessage"> | number
-    channelId?: StringWithAggregatesFilter<"StaffChatMessage"> | string
+    channelId?: StringNullableWithAggregatesFilter<"StaffChatMessage"> | string | null
+    conversationId?: StringNullableWithAggregatesFilter<"StaffChatMessage"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"StaffChatMessage"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"StaffChatMessage"> | Date | string
   }
@@ -59503,6 +62352,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     staffChatMessages?: StaffChatMessageCreateNestedManyWithoutSenderInput
+    staffChatMemberships?: StaffChatMemberCreateNestedManyWithoutUserInput
+    staffChatCreated?: StaffChatConversationCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -59524,6 +62375,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     staffChatMessages?: StaffChatMessageUncheckedCreateNestedManyWithoutSenderInput
+    staffChatMemberships?: StaffChatMemberUncheckedCreateNestedManyWithoutUserInput
+    staffChatCreated?: StaffChatConversationUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUpdateInput = {
@@ -59544,6 +62397,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     staffChatMessages?: StaffChatMessageUpdateManyWithoutSenderNestedInput
+    staffChatMemberships?: StaffChatMemberUpdateManyWithoutUserNestedInput
+    staffChatCreated?: StaffChatConversationUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -59565,6 +62420,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     staffChatMessages?: StaffChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+    staffChatMemberships?: StaffChatMemberUncheckedUpdateManyWithoutUserNestedInput
+    staffChatCreated?: StaffChatConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -59606,20 +62463,160 @@ export namespace Prisma {
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type StaffChatConversationCreateInput = {
+    id?: string
+    type: $Enums.StaffChatType
+    name?: string | null
+    isSystem?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    directKey?: string | null
+    createdBy?: UserCreateNestedOneWithoutStaffChatCreatedInput
+    members?: StaffChatMemberCreateNestedManyWithoutConversationInput
+    messages?: StaffChatMessageCreateNestedManyWithoutConversationInput
+  }
+
+  export type StaffChatConversationUncheckedCreateInput = {
+    id?: string
+    type: $Enums.StaffChatType
+    name?: string | null
+    isSystem?: boolean
+    createdById?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    directKey?: string | null
+    members?: StaffChatMemberUncheckedCreateNestedManyWithoutConversationInput
+    messages?: StaffChatMessageUncheckedCreateNestedManyWithoutConversationInput
+  }
+
+  export type StaffChatConversationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumStaffChatTypeFieldUpdateOperationsInput | $Enums.StaffChatType
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: UserUpdateOneWithoutStaffChatCreatedNestedInput
+    members?: StaffChatMemberUpdateManyWithoutConversationNestedInput
+    messages?: StaffChatMessageUpdateManyWithoutConversationNestedInput
+  }
+
+  export type StaffChatConversationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumStaffChatTypeFieldUpdateOperationsInput | $Enums.StaffChatType
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdById?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directKey?: NullableStringFieldUpdateOperationsInput | string | null
+    members?: StaffChatMemberUncheckedUpdateManyWithoutConversationNestedInput
+    messages?: StaffChatMessageUncheckedUpdateManyWithoutConversationNestedInput
+  }
+
+  export type StaffChatConversationCreateManyInput = {
+    id?: string
+    type: $Enums.StaffChatType
+    name?: string | null
+    isSystem?: boolean
+    createdById?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    directKey?: string | null
+  }
+
+  export type StaffChatConversationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumStaffChatTypeFieldUpdateOperationsInput | $Enums.StaffChatType
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directKey?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type StaffChatConversationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumStaffChatTypeFieldUpdateOperationsInput | $Enums.StaffChatType
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdById?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directKey?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type StaffChatMemberCreateInput = {
+    id?: string
+    joinedAt?: Date | string
+    lastReadAt?: Date | string | null
+    conversation: StaffChatConversationCreateNestedOneWithoutMembersInput
+    user: UserCreateNestedOneWithoutStaffChatMembershipsInput
+  }
+
+  export type StaffChatMemberUncheckedCreateInput = {
+    id?: string
+    conversationId: string
+    userId: number
+    joinedAt?: Date | string
+    lastReadAt?: Date | string | null
+  }
+
+  export type StaffChatMemberUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    conversation?: StaffChatConversationUpdateOneRequiredWithoutMembersNestedInput
+    user?: UserUpdateOneRequiredWithoutStaffChatMembershipsNestedInput
+  }
+
+  export type StaffChatMemberUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    conversationId?: StringFieldUpdateOperationsInput | string
+    userId?: IntFieldUpdateOperationsInput | number
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type StaffChatMemberCreateManyInput = {
+    id?: string
+    conversationId: string
+    userId: number
+    joinedAt?: Date | string
+    lastReadAt?: Date | string | null
+  }
+
+  export type StaffChatMemberUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type StaffChatMemberUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    conversationId?: StringFieldUpdateOperationsInput | string
+    userId?: IntFieldUpdateOperationsInput | number
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type StaffChatMessageCreateInput = {
     id?: string
     content: string
-    channelId?: string
+    channelId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sender: UserCreateNestedOneWithoutStaffChatMessagesInput
+    conversation?: StaffChatConversationCreateNestedOneWithoutMessagesInput
   }
 
   export type StaffChatMessageUncheckedCreateInput = {
     id?: string
     content: string
     senderId: number
-    channelId?: string
+    channelId?: string | null
+    conversationId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -59627,17 +62624,19 @@ export namespace Prisma {
   export type StaffChatMessageUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
-    channelId?: StringFieldUpdateOperationsInput | string
+    channelId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sender?: UserUpdateOneRequiredWithoutStaffChatMessagesNestedInput
+    conversation?: StaffChatConversationUpdateOneWithoutMessagesNestedInput
   }
 
   export type StaffChatMessageUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     senderId?: IntFieldUpdateOperationsInput | number
-    channelId?: StringFieldUpdateOperationsInput | string
+    channelId?: NullableStringFieldUpdateOperationsInput | string | null
+    conversationId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -59646,7 +62645,8 @@ export namespace Prisma {
     id?: string
     content: string
     senderId: number
-    channelId?: string
+    channelId?: string | null
+    conversationId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -59654,7 +62654,7 @@ export namespace Prisma {
   export type StaffChatMessageUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
-    channelId?: StringFieldUpdateOperationsInput | string
+    channelId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -59663,7 +62663,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     senderId?: IntFieldUpdateOperationsInput | number
-    channelId?: StringFieldUpdateOperationsInput | string
+    channelId?: NullableStringFieldUpdateOperationsInput | string | null
+    conversationId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -62692,6 +65693,18 @@ export namespace Prisma {
     none?: StaffChatMessageWhereInput
   }
 
+  export type StaffChatMemberListRelationFilter = {
+    every?: StaffChatMemberWhereInput
+    some?: StaffChatMemberWhereInput
+    none?: StaffChatMemberWhereInput
+  }
+
+  export type StaffChatConversationListRelationFilter = {
+    every?: StaffChatConversationWhereInput
+    some?: StaffChatConversationWhereInput
+    none?: StaffChatConversationWhereInput
+  }
+
   export type ApplicationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -62701,6 +65714,14 @@ export namespace Prisma {
   }
 
   export type StaffChatMessageOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type StaffChatMemberOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type StaffChatConversationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -62758,11 +65779,117 @@ export namespace Prisma {
     fosterId?: SortOrder
   }
 
+  export type EnumStaffChatTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.StaffChatType | EnumStaffChatTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.StaffChatType[] | ListEnumStaffChatTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.StaffChatType[] | ListEnumStaffChatTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumStaffChatTypeFilter<$PrismaModel> | $Enums.StaffChatType
+  }
+
+  export type StaffChatConversationCountOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    name?: SortOrder
+    isSystem?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    directKey?: SortOrder
+  }
+
+  export type StaffChatConversationAvgOrderByAggregateInput = {
+    createdById?: SortOrder
+  }
+
+  export type StaffChatConversationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    name?: SortOrder
+    isSystem?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    directKey?: SortOrder
+  }
+
+  export type StaffChatConversationMinOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    name?: SortOrder
+    isSystem?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    directKey?: SortOrder
+  }
+
+  export type StaffChatConversationSumOrderByAggregateInput = {
+    createdById?: SortOrder
+  }
+
+  export type EnumStaffChatTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.StaffChatType | EnumStaffChatTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.StaffChatType[] | ListEnumStaffChatTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.StaffChatType[] | ListEnumStaffChatTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumStaffChatTypeWithAggregatesFilter<$PrismaModel> | $Enums.StaffChatType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumStaffChatTypeFilter<$PrismaModel>
+    _max?: NestedEnumStaffChatTypeFilter<$PrismaModel>
+  }
+
+  export type StaffChatConversationScalarRelationFilter = {
+    is?: StaffChatConversationWhereInput
+    isNot?: StaffChatConversationWhereInput
+  }
+
+  export type StaffChatMemberConversationIdUserIdCompoundUniqueInput = {
+    conversationId: string
+    userId: number
+  }
+
+  export type StaffChatMemberCountOrderByAggregateInput = {
+    id?: SortOrder
+    conversationId?: SortOrder
+    userId?: SortOrder
+    joinedAt?: SortOrder
+    lastReadAt?: SortOrder
+  }
+
+  export type StaffChatMemberAvgOrderByAggregateInput = {
+    userId?: SortOrder
+  }
+
+  export type StaffChatMemberMaxOrderByAggregateInput = {
+    id?: SortOrder
+    conversationId?: SortOrder
+    userId?: SortOrder
+    joinedAt?: SortOrder
+    lastReadAt?: SortOrder
+  }
+
+  export type StaffChatMemberMinOrderByAggregateInput = {
+    id?: SortOrder
+    conversationId?: SortOrder
+    userId?: SortOrder
+    joinedAt?: SortOrder
+    lastReadAt?: SortOrder
+  }
+
+  export type StaffChatMemberSumOrderByAggregateInput = {
+    userId?: SortOrder
+  }
+
+  export type StaffChatConversationNullableScalarRelationFilter = {
+    is?: StaffChatConversationWhereInput | null
+    isNot?: StaffChatConversationWhereInput | null
+  }
+
   export type StaffChatMessageCountOrderByAggregateInput = {
     id?: SortOrder
     content?: SortOrder
     senderId?: SortOrder
     channelId?: SortOrder
+    conversationId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -62776,6 +65903,7 @@ export namespace Prisma {
     content?: SortOrder
     senderId?: SortOrder
     channelId?: SortOrder
+    conversationId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -62785,6 +65913,7 @@ export namespace Prisma {
     content?: SortOrder
     senderId?: SortOrder
     channelId?: SortOrder
+    conversationId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -65628,6 +68757,20 @@ export namespace Prisma {
     connect?: StaffChatMessageWhereUniqueInput | StaffChatMessageWhereUniqueInput[]
   }
 
+  export type StaffChatMemberCreateNestedManyWithoutUserInput = {
+    create?: XOR<StaffChatMemberCreateWithoutUserInput, StaffChatMemberUncheckedCreateWithoutUserInput> | StaffChatMemberCreateWithoutUserInput[] | StaffChatMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: StaffChatMemberCreateOrConnectWithoutUserInput | StaffChatMemberCreateOrConnectWithoutUserInput[]
+    createMany?: StaffChatMemberCreateManyUserInputEnvelope
+    connect?: StaffChatMemberWhereUniqueInput | StaffChatMemberWhereUniqueInput[]
+  }
+
+  export type StaffChatConversationCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<StaffChatConversationCreateWithoutCreatedByInput, StaffChatConversationUncheckedCreateWithoutCreatedByInput> | StaffChatConversationCreateWithoutCreatedByInput[] | StaffChatConversationUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: StaffChatConversationCreateOrConnectWithoutCreatedByInput | StaffChatConversationCreateOrConnectWithoutCreatedByInput[]
+    createMany?: StaffChatConversationCreateManyCreatedByInputEnvelope
+    connect?: StaffChatConversationWhereUniqueInput | StaffChatConversationWhereUniqueInput[]
+  }
+
   export type ApplicationUncheckedCreateNestedManyWithoutRejectedByInput = {
     create?: XOR<ApplicationCreateWithoutRejectedByInput, ApplicationUncheckedCreateWithoutRejectedByInput> | ApplicationCreateWithoutRejectedByInput[] | ApplicationUncheckedCreateWithoutRejectedByInput[]
     connectOrCreate?: ApplicationCreateOrConnectWithoutRejectedByInput | ApplicationCreateOrConnectWithoutRejectedByInput[]
@@ -65675,6 +68818,20 @@ export namespace Prisma {
     connectOrCreate?: StaffChatMessageCreateOrConnectWithoutSenderInput | StaffChatMessageCreateOrConnectWithoutSenderInput[]
     createMany?: StaffChatMessageCreateManySenderInputEnvelope
     connect?: StaffChatMessageWhereUniqueInput | StaffChatMessageWhereUniqueInput[]
+  }
+
+  export type StaffChatMemberUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<StaffChatMemberCreateWithoutUserInput, StaffChatMemberUncheckedCreateWithoutUserInput> | StaffChatMemberCreateWithoutUserInput[] | StaffChatMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: StaffChatMemberCreateOrConnectWithoutUserInput | StaffChatMemberCreateOrConnectWithoutUserInput[]
+    createMany?: StaffChatMemberCreateManyUserInputEnvelope
+    connect?: StaffChatMemberWhereUniqueInput | StaffChatMemberWhereUniqueInput[]
+  }
+
+  export type StaffChatConversationUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<StaffChatConversationCreateWithoutCreatedByInput, StaffChatConversationUncheckedCreateWithoutCreatedByInput> | StaffChatConversationCreateWithoutCreatedByInput[] | StaffChatConversationUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: StaffChatConversationCreateOrConnectWithoutCreatedByInput | StaffChatConversationCreateOrConnectWithoutCreatedByInput[]
+    createMany?: StaffChatConversationCreateManyCreatedByInputEnvelope
+    connect?: StaffChatConversationWhereUniqueInput | StaffChatConversationWhereUniqueInput[]
   }
 
   export type RoleUpdateOneRequiredWithoutUsersNestedInput = {
@@ -65793,6 +68950,34 @@ export namespace Prisma {
     deleteMany?: StaffChatMessageScalarWhereInput | StaffChatMessageScalarWhereInput[]
   }
 
+  export type StaffChatMemberUpdateManyWithoutUserNestedInput = {
+    create?: XOR<StaffChatMemberCreateWithoutUserInput, StaffChatMemberUncheckedCreateWithoutUserInput> | StaffChatMemberCreateWithoutUserInput[] | StaffChatMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: StaffChatMemberCreateOrConnectWithoutUserInput | StaffChatMemberCreateOrConnectWithoutUserInput[]
+    upsert?: StaffChatMemberUpsertWithWhereUniqueWithoutUserInput | StaffChatMemberUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: StaffChatMemberCreateManyUserInputEnvelope
+    set?: StaffChatMemberWhereUniqueInput | StaffChatMemberWhereUniqueInput[]
+    disconnect?: StaffChatMemberWhereUniqueInput | StaffChatMemberWhereUniqueInput[]
+    delete?: StaffChatMemberWhereUniqueInput | StaffChatMemberWhereUniqueInput[]
+    connect?: StaffChatMemberWhereUniqueInput | StaffChatMemberWhereUniqueInput[]
+    update?: StaffChatMemberUpdateWithWhereUniqueWithoutUserInput | StaffChatMemberUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: StaffChatMemberUpdateManyWithWhereWithoutUserInput | StaffChatMemberUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: StaffChatMemberScalarWhereInput | StaffChatMemberScalarWhereInput[]
+  }
+
+  export type StaffChatConversationUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<StaffChatConversationCreateWithoutCreatedByInput, StaffChatConversationUncheckedCreateWithoutCreatedByInput> | StaffChatConversationCreateWithoutCreatedByInput[] | StaffChatConversationUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: StaffChatConversationCreateOrConnectWithoutCreatedByInput | StaffChatConversationCreateOrConnectWithoutCreatedByInput[]
+    upsert?: StaffChatConversationUpsertWithWhereUniqueWithoutCreatedByInput | StaffChatConversationUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: StaffChatConversationCreateManyCreatedByInputEnvelope
+    set?: StaffChatConversationWhereUniqueInput | StaffChatConversationWhereUniqueInput[]
+    disconnect?: StaffChatConversationWhereUniqueInput | StaffChatConversationWhereUniqueInput[]
+    delete?: StaffChatConversationWhereUniqueInput | StaffChatConversationWhereUniqueInput[]
+    connect?: StaffChatConversationWhereUniqueInput | StaffChatConversationWhereUniqueInput[]
+    update?: StaffChatConversationUpdateWithWhereUniqueWithoutCreatedByInput | StaffChatConversationUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: StaffChatConversationUpdateManyWithWhereWithoutCreatedByInput | StaffChatConversationUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: StaffChatConversationScalarWhereInput | StaffChatConversationScalarWhereInput[]
+  }
+
   export type ApplicationUncheckedUpdateManyWithoutRejectedByNestedInput = {
     create?: XOR<ApplicationCreateWithoutRejectedByInput, ApplicationUncheckedCreateWithoutRejectedByInput> | ApplicationCreateWithoutRejectedByInput[] | ApplicationUncheckedCreateWithoutRejectedByInput[]
     connectOrCreate?: ApplicationCreateOrConnectWithoutRejectedByInput | ApplicationCreateOrConnectWithoutRejectedByInput[]
@@ -65891,10 +69076,176 @@ export namespace Prisma {
     deleteMany?: StaffChatMessageScalarWhereInput | StaffChatMessageScalarWhereInput[]
   }
 
+  export type StaffChatMemberUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<StaffChatMemberCreateWithoutUserInput, StaffChatMemberUncheckedCreateWithoutUserInput> | StaffChatMemberCreateWithoutUserInput[] | StaffChatMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: StaffChatMemberCreateOrConnectWithoutUserInput | StaffChatMemberCreateOrConnectWithoutUserInput[]
+    upsert?: StaffChatMemberUpsertWithWhereUniqueWithoutUserInput | StaffChatMemberUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: StaffChatMemberCreateManyUserInputEnvelope
+    set?: StaffChatMemberWhereUniqueInput | StaffChatMemberWhereUniqueInput[]
+    disconnect?: StaffChatMemberWhereUniqueInput | StaffChatMemberWhereUniqueInput[]
+    delete?: StaffChatMemberWhereUniqueInput | StaffChatMemberWhereUniqueInput[]
+    connect?: StaffChatMemberWhereUniqueInput | StaffChatMemberWhereUniqueInput[]
+    update?: StaffChatMemberUpdateWithWhereUniqueWithoutUserInput | StaffChatMemberUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: StaffChatMemberUpdateManyWithWhereWithoutUserInput | StaffChatMemberUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: StaffChatMemberScalarWhereInput | StaffChatMemberScalarWhereInput[]
+  }
+
+  export type StaffChatConversationUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<StaffChatConversationCreateWithoutCreatedByInput, StaffChatConversationUncheckedCreateWithoutCreatedByInput> | StaffChatConversationCreateWithoutCreatedByInput[] | StaffChatConversationUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: StaffChatConversationCreateOrConnectWithoutCreatedByInput | StaffChatConversationCreateOrConnectWithoutCreatedByInput[]
+    upsert?: StaffChatConversationUpsertWithWhereUniqueWithoutCreatedByInput | StaffChatConversationUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: StaffChatConversationCreateManyCreatedByInputEnvelope
+    set?: StaffChatConversationWhereUniqueInput | StaffChatConversationWhereUniqueInput[]
+    disconnect?: StaffChatConversationWhereUniqueInput | StaffChatConversationWhereUniqueInput[]
+    delete?: StaffChatConversationWhereUniqueInput | StaffChatConversationWhereUniqueInput[]
+    connect?: StaffChatConversationWhereUniqueInput | StaffChatConversationWhereUniqueInput[]
+    update?: StaffChatConversationUpdateWithWhereUniqueWithoutCreatedByInput | StaffChatConversationUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: StaffChatConversationUpdateManyWithWhereWithoutCreatedByInput | StaffChatConversationUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: StaffChatConversationScalarWhereInput | StaffChatConversationScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutStaffChatCreatedInput = {
+    create?: XOR<UserCreateWithoutStaffChatCreatedInput, UserUncheckedCreateWithoutStaffChatCreatedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutStaffChatCreatedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type StaffChatMemberCreateNestedManyWithoutConversationInput = {
+    create?: XOR<StaffChatMemberCreateWithoutConversationInput, StaffChatMemberUncheckedCreateWithoutConversationInput> | StaffChatMemberCreateWithoutConversationInput[] | StaffChatMemberUncheckedCreateWithoutConversationInput[]
+    connectOrCreate?: StaffChatMemberCreateOrConnectWithoutConversationInput | StaffChatMemberCreateOrConnectWithoutConversationInput[]
+    createMany?: StaffChatMemberCreateManyConversationInputEnvelope
+    connect?: StaffChatMemberWhereUniqueInput | StaffChatMemberWhereUniqueInput[]
+  }
+
+  export type StaffChatMessageCreateNestedManyWithoutConversationInput = {
+    create?: XOR<StaffChatMessageCreateWithoutConversationInput, StaffChatMessageUncheckedCreateWithoutConversationInput> | StaffChatMessageCreateWithoutConversationInput[] | StaffChatMessageUncheckedCreateWithoutConversationInput[]
+    connectOrCreate?: StaffChatMessageCreateOrConnectWithoutConversationInput | StaffChatMessageCreateOrConnectWithoutConversationInput[]
+    createMany?: StaffChatMessageCreateManyConversationInputEnvelope
+    connect?: StaffChatMessageWhereUniqueInput | StaffChatMessageWhereUniqueInput[]
+  }
+
+  export type StaffChatMemberUncheckedCreateNestedManyWithoutConversationInput = {
+    create?: XOR<StaffChatMemberCreateWithoutConversationInput, StaffChatMemberUncheckedCreateWithoutConversationInput> | StaffChatMemberCreateWithoutConversationInput[] | StaffChatMemberUncheckedCreateWithoutConversationInput[]
+    connectOrCreate?: StaffChatMemberCreateOrConnectWithoutConversationInput | StaffChatMemberCreateOrConnectWithoutConversationInput[]
+    createMany?: StaffChatMemberCreateManyConversationInputEnvelope
+    connect?: StaffChatMemberWhereUniqueInput | StaffChatMemberWhereUniqueInput[]
+  }
+
+  export type StaffChatMessageUncheckedCreateNestedManyWithoutConversationInput = {
+    create?: XOR<StaffChatMessageCreateWithoutConversationInput, StaffChatMessageUncheckedCreateWithoutConversationInput> | StaffChatMessageCreateWithoutConversationInput[] | StaffChatMessageUncheckedCreateWithoutConversationInput[]
+    connectOrCreate?: StaffChatMessageCreateOrConnectWithoutConversationInput | StaffChatMessageCreateOrConnectWithoutConversationInput[]
+    createMany?: StaffChatMessageCreateManyConversationInputEnvelope
+    connect?: StaffChatMessageWhereUniqueInput | StaffChatMessageWhereUniqueInput[]
+  }
+
+  export type EnumStaffChatTypeFieldUpdateOperationsInput = {
+    set?: $Enums.StaffChatType
+  }
+
+  export type UserUpdateOneWithoutStaffChatCreatedNestedInput = {
+    create?: XOR<UserCreateWithoutStaffChatCreatedInput, UserUncheckedCreateWithoutStaffChatCreatedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutStaffChatCreatedInput
+    upsert?: UserUpsertWithoutStaffChatCreatedInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutStaffChatCreatedInput, UserUpdateWithoutStaffChatCreatedInput>, UserUncheckedUpdateWithoutStaffChatCreatedInput>
+  }
+
+  export type StaffChatMemberUpdateManyWithoutConversationNestedInput = {
+    create?: XOR<StaffChatMemberCreateWithoutConversationInput, StaffChatMemberUncheckedCreateWithoutConversationInput> | StaffChatMemberCreateWithoutConversationInput[] | StaffChatMemberUncheckedCreateWithoutConversationInput[]
+    connectOrCreate?: StaffChatMemberCreateOrConnectWithoutConversationInput | StaffChatMemberCreateOrConnectWithoutConversationInput[]
+    upsert?: StaffChatMemberUpsertWithWhereUniqueWithoutConversationInput | StaffChatMemberUpsertWithWhereUniqueWithoutConversationInput[]
+    createMany?: StaffChatMemberCreateManyConversationInputEnvelope
+    set?: StaffChatMemberWhereUniqueInput | StaffChatMemberWhereUniqueInput[]
+    disconnect?: StaffChatMemberWhereUniqueInput | StaffChatMemberWhereUniqueInput[]
+    delete?: StaffChatMemberWhereUniqueInput | StaffChatMemberWhereUniqueInput[]
+    connect?: StaffChatMemberWhereUniqueInput | StaffChatMemberWhereUniqueInput[]
+    update?: StaffChatMemberUpdateWithWhereUniqueWithoutConversationInput | StaffChatMemberUpdateWithWhereUniqueWithoutConversationInput[]
+    updateMany?: StaffChatMemberUpdateManyWithWhereWithoutConversationInput | StaffChatMemberUpdateManyWithWhereWithoutConversationInput[]
+    deleteMany?: StaffChatMemberScalarWhereInput | StaffChatMemberScalarWhereInput[]
+  }
+
+  export type StaffChatMessageUpdateManyWithoutConversationNestedInput = {
+    create?: XOR<StaffChatMessageCreateWithoutConversationInput, StaffChatMessageUncheckedCreateWithoutConversationInput> | StaffChatMessageCreateWithoutConversationInput[] | StaffChatMessageUncheckedCreateWithoutConversationInput[]
+    connectOrCreate?: StaffChatMessageCreateOrConnectWithoutConversationInput | StaffChatMessageCreateOrConnectWithoutConversationInput[]
+    upsert?: StaffChatMessageUpsertWithWhereUniqueWithoutConversationInput | StaffChatMessageUpsertWithWhereUniqueWithoutConversationInput[]
+    createMany?: StaffChatMessageCreateManyConversationInputEnvelope
+    set?: StaffChatMessageWhereUniqueInput | StaffChatMessageWhereUniqueInput[]
+    disconnect?: StaffChatMessageWhereUniqueInput | StaffChatMessageWhereUniqueInput[]
+    delete?: StaffChatMessageWhereUniqueInput | StaffChatMessageWhereUniqueInput[]
+    connect?: StaffChatMessageWhereUniqueInput | StaffChatMessageWhereUniqueInput[]
+    update?: StaffChatMessageUpdateWithWhereUniqueWithoutConversationInput | StaffChatMessageUpdateWithWhereUniqueWithoutConversationInput[]
+    updateMany?: StaffChatMessageUpdateManyWithWhereWithoutConversationInput | StaffChatMessageUpdateManyWithWhereWithoutConversationInput[]
+    deleteMany?: StaffChatMessageScalarWhereInput | StaffChatMessageScalarWhereInput[]
+  }
+
+  export type StaffChatMemberUncheckedUpdateManyWithoutConversationNestedInput = {
+    create?: XOR<StaffChatMemberCreateWithoutConversationInput, StaffChatMemberUncheckedCreateWithoutConversationInput> | StaffChatMemberCreateWithoutConversationInput[] | StaffChatMemberUncheckedCreateWithoutConversationInput[]
+    connectOrCreate?: StaffChatMemberCreateOrConnectWithoutConversationInput | StaffChatMemberCreateOrConnectWithoutConversationInput[]
+    upsert?: StaffChatMemberUpsertWithWhereUniqueWithoutConversationInput | StaffChatMemberUpsertWithWhereUniqueWithoutConversationInput[]
+    createMany?: StaffChatMemberCreateManyConversationInputEnvelope
+    set?: StaffChatMemberWhereUniqueInput | StaffChatMemberWhereUniqueInput[]
+    disconnect?: StaffChatMemberWhereUniqueInput | StaffChatMemberWhereUniqueInput[]
+    delete?: StaffChatMemberWhereUniqueInput | StaffChatMemberWhereUniqueInput[]
+    connect?: StaffChatMemberWhereUniqueInput | StaffChatMemberWhereUniqueInput[]
+    update?: StaffChatMemberUpdateWithWhereUniqueWithoutConversationInput | StaffChatMemberUpdateWithWhereUniqueWithoutConversationInput[]
+    updateMany?: StaffChatMemberUpdateManyWithWhereWithoutConversationInput | StaffChatMemberUpdateManyWithWhereWithoutConversationInput[]
+    deleteMany?: StaffChatMemberScalarWhereInput | StaffChatMemberScalarWhereInput[]
+  }
+
+  export type StaffChatMessageUncheckedUpdateManyWithoutConversationNestedInput = {
+    create?: XOR<StaffChatMessageCreateWithoutConversationInput, StaffChatMessageUncheckedCreateWithoutConversationInput> | StaffChatMessageCreateWithoutConversationInput[] | StaffChatMessageUncheckedCreateWithoutConversationInput[]
+    connectOrCreate?: StaffChatMessageCreateOrConnectWithoutConversationInput | StaffChatMessageCreateOrConnectWithoutConversationInput[]
+    upsert?: StaffChatMessageUpsertWithWhereUniqueWithoutConversationInput | StaffChatMessageUpsertWithWhereUniqueWithoutConversationInput[]
+    createMany?: StaffChatMessageCreateManyConversationInputEnvelope
+    set?: StaffChatMessageWhereUniqueInput | StaffChatMessageWhereUniqueInput[]
+    disconnect?: StaffChatMessageWhereUniqueInput | StaffChatMessageWhereUniqueInput[]
+    delete?: StaffChatMessageWhereUniqueInput | StaffChatMessageWhereUniqueInput[]
+    connect?: StaffChatMessageWhereUniqueInput | StaffChatMessageWhereUniqueInput[]
+    update?: StaffChatMessageUpdateWithWhereUniqueWithoutConversationInput | StaffChatMessageUpdateWithWhereUniqueWithoutConversationInput[]
+    updateMany?: StaffChatMessageUpdateManyWithWhereWithoutConversationInput | StaffChatMessageUpdateManyWithWhereWithoutConversationInput[]
+    deleteMany?: StaffChatMessageScalarWhereInput | StaffChatMessageScalarWhereInput[]
+  }
+
+  export type StaffChatConversationCreateNestedOneWithoutMembersInput = {
+    create?: XOR<StaffChatConversationCreateWithoutMembersInput, StaffChatConversationUncheckedCreateWithoutMembersInput>
+    connectOrCreate?: StaffChatConversationCreateOrConnectWithoutMembersInput
+    connect?: StaffChatConversationWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutStaffChatMembershipsInput = {
+    create?: XOR<UserCreateWithoutStaffChatMembershipsInput, UserUncheckedCreateWithoutStaffChatMembershipsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutStaffChatMembershipsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type StaffChatConversationUpdateOneRequiredWithoutMembersNestedInput = {
+    create?: XOR<StaffChatConversationCreateWithoutMembersInput, StaffChatConversationUncheckedCreateWithoutMembersInput>
+    connectOrCreate?: StaffChatConversationCreateOrConnectWithoutMembersInput
+    upsert?: StaffChatConversationUpsertWithoutMembersInput
+    connect?: StaffChatConversationWhereUniqueInput
+    update?: XOR<XOR<StaffChatConversationUpdateToOneWithWhereWithoutMembersInput, StaffChatConversationUpdateWithoutMembersInput>, StaffChatConversationUncheckedUpdateWithoutMembersInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutStaffChatMembershipsNestedInput = {
+    create?: XOR<UserCreateWithoutStaffChatMembershipsInput, UserUncheckedCreateWithoutStaffChatMembershipsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutStaffChatMembershipsInput
+    upsert?: UserUpsertWithoutStaffChatMembershipsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutStaffChatMembershipsInput, UserUpdateWithoutStaffChatMembershipsInput>, UserUncheckedUpdateWithoutStaffChatMembershipsInput>
+  }
+
   export type UserCreateNestedOneWithoutStaffChatMessagesInput = {
     create?: XOR<UserCreateWithoutStaffChatMessagesInput, UserUncheckedCreateWithoutStaffChatMessagesInput>
     connectOrCreate?: UserCreateOrConnectWithoutStaffChatMessagesInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type StaffChatConversationCreateNestedOneWithoutMessagesInput = {
+    create?: XOR<StaffChatConversationCreateWithoutMessagesInput, StaffChatConversationUncheckedCreateWithoutMessagesInput>
+    connectOrCreate?: StaffChatConversationCreateOrConnectWithoutMessagesInput
+    connect?: StaffChatConversationWhereUniqueInput
   }
 
   export type UserUpdateOneRequiredWithoutStaffChatMessagesNestedInput = {
@@ -65903,6 +69254,16 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutStaffChatMessagesInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutStaffChatMessagesInput, UserUpdateWithoutStaffChatMessagesInput>, UserUncheckedUpdateWithoutStaffChatMessagesInput>
+  }
+
+  export type StaffChatConversationUpdateOneWithoutMessagesNestedInput = {
+    create?: XOR<StaffChatConversationCreateWithoutMessagesInput, StaffChatConversationUncheckedCreateWithoutMessagesInput>
+    connectOrCreate?: StaffChatConversationCreateOrConnectWithoutMessagesInput
+    upsert?: StaffChatConversationUpsertWithoutMessagesInput
+    disconnect?: StaffChatConversationWhereInput | boolean
+    delete?: StaffChatConversationWhereInput | boolean
+    connect?: StaffChatConversationWhereUniqueInput
+    update?: XOR<XOR<StaffChatConversationUpdateToOneWithWhereWithoutMessagesInput, StaffChatConversationUpdateWithoutMessagesInput>, StaffChatConversationUncheckedUpdateWithoutMessagesInput>
   }
 
   export type UserCreateNestedOneWithoutPasswordResetTokensInput = {
@@ -66674,6 +70035,23 @@ export namespace Prisma {
     _max?: NestedEnumFosterOnboardingStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumStaffChatTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.StaffChatType | EnumStaffChatTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.StaffChatType[] | ListEnumStaffChatTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.StaffChatType[] | ListEnumStaffChatTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumStaffChatTypeFilter<$PrismaModel> | $Enums.StaffChatType
+  }
+
+  export type NestedEnumStaffChatTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.StaffChatType | EnumStaffChatTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.StaffChatType[] | ListEnumStaffChatTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.StaffChatType[] | ListEnumStaffChatTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumStaffChatTypeWithAggregatesFilter<$PrismaModel> | $Enums.StaffChatType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumStaffChatTypeFilter<$PrismaModel>
+    _max?: NestedEnumStaffChatTypeFilter<$PrismaModel>
+  }
+
   export type NestedEnumPasswordTokenPurposeFilter<$PrismaModel = never> = {
     equals?: $Enums.PasswordTokenPurpose | EnumPasswordTokenPurposeFieldRefInput<$PrismaModel>
     in?: $Enums.PasswordTokenPurpose[] | ListEnumPasswordTokenPurposeFieldRefInput<$PrismaModel>
@@ -67186,6 +70564,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     staffChatMessages?: StaffChatMessageCreateNestedManyWithoutSenderInput
+    staffChatMemberships?: StaffChatMemberCreateNestedManyWithoutUserInput
+    staffChatCreated?: StaffChatConversationCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutFosterInput = {
@@ -67206,6 +70586,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     staffChatMessages?: StaffChatMessageUncheckedCreateNestedManyWithoutSenderInput
+    staffChatMemberships?: StaffChatMemberUncheckedCreateNestedManyWithoutUserInput
+    staffChatCreated?: StaffChatConversationUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutFosterInput = {
@@ -67406,6 +70788,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     staffChatMessages?: StaffChatMessageUpdateManyWithoutSenderNestedInput
+    staffChatMemberships?: StaffChatMemberUpdateManyWithoutUserNestedInput
+    staffChatCreated?: StaffChatConversationUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFosterInput = {
@@ -67426,6 +70810,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     staffChatMessages?: StaffChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+    staffChatMemberships?: StaffChatMemberUncheckedUpdateManyWithoutUserNestedInput
+    staffChatCreated?: StaffChatConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type DocumentUpsertWithWhereUniqueWithoutSubmittedByFosterInput = {
@@ -70609,6 +73995,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     staffChatMessages?: StaffChatMessageCreateNestedManyWithoutSenderInput
+    staffChatMemberships?: StaffChatMemberCreateNestedManyWithoutUserInput
+    staffChatCreated?: StaffChatConversationCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutRejectedApplicationsInput = {
@@ -70629,6 +74017,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     staffChatMessages?: StaffChatMessageUncheckedCreateNestedManyWithoutSenderInput
+    staffChatMemberships?: StaffChatMemberUncheckedCreateNestedManyWithoutUserInput
+    staffChatCreated?: StaffChatConversationUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutRejectedApplicationsInput = {
@@ -70807,6 +74197,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     staffChatMessages?: StaffChatMessageUpdateManyWithoutSenderNestedInput
+    staffChatMemberships?: StaffChatMemberUpdateManyWithoutUserNestedInput
+    staffChatCreated?: StaffChatConversationUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRejectedApplicationsInput = {
@@ -70827,6 +74219,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     staffChatMessages?: StaffChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+    staffChatMemberships?: StaffChatMemberUncheckedUpdateManyWithoutUserNestedInput
+    staffChatCreated?: StaffChatConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type ContractUpsertWithWhereUniqueWithoutApplicationInput = {
@@ -71562,6 +74956,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     staffChatMessages?: StaffChatMessageCreateNestedManyWithoutSenderInput
+    staffChatMemberships?: StaffChatMemberCreateNestedManyWithoutUserInput
+    staffChatCreated?: StaffChatConversationCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutCompletedChecklistItemsInput = {
@@ -71582,6 +74978,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     staffChatMessages?: StaffChatMessageUncheckedCreateNestedManyWithoutSenderInput
+    staffChatMemberships?: StaffChatMemberUncheckedCreateNestedManyWithoutUserInput
+    staffChatCreated?: StaffChatConversationUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutCompletedChecklistItemsInput = {
@@ -71645,6 +75043,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     staffChatMessages?: StaffChatMessageUpdateManyWithoutSenderNestedInput
+    staffChatMemberships?: StaffChatMemberUpdateManyWithoutUserNestedInput
+    staffChatCreated?: StaffChatConversationUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCompletedChecklistItemsInput = {
@@ -71665,6 +75065,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     staffChatMessages?: StaffChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+    staffChatMemberships?: StaffChatMemberUncheckedUpdateManyWithoutUserNestedInput
+    staffChatCreated?: StaffChatConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type ApplicationCreateWithoutUploadsInput = {
@@ -71817,6 +75219,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     staffChatMessages?: StaffChatMessageCreateNestedManyWithoutSenderInput
+    staffChatMemberships?: StaffChatMemberCreateNestedManyWithoutUserInput
+    staffChatCreated?: StaffChatConversationCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutContentCompletionsInput = {
@@ -71837,6 +75241,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     staffChatMessages?: StaffChatMessageUncheckedCreateNestedManyWithoutSenderInput
+    staffChatMemberships?: StaffChatMemberUncheckedCreateNestedManyWithoutUserInput
+    staffChatCreated?: StaffChatConversationUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutContentCompletionsInput = {
@@ -71898,6 +75304,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     staffChatMessages?: StaffChatMessageUpdateManyWithoutSenderNestedInput
+    staffChatMemberships?: StaffChatMemberUpdateManyWithoutUserNestedInput
+    staffChatCreated?: StaffChatConversationUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutContentCompletionsInput = {
@@ -71918,6 +75326,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     staffChatMessages?: StaffChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+    staffChatMemberships?: StaffChatMemberUncheckedUpdateManyWithoutUserNestedInput
+    staffChatCreated?: StaffChatConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type ContentUpsertWithoutCompletionsInput = {
@@ -72408,6 +75818,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     staffChatMessages?: StaffChatMessageCreateNestedManyWithoutSenderInput
+    staffChatMemberships?: StaffChatMemberCreateNestedManyWithoutUserInput
+    staffChatCreated?: StaffChatConversationCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutRoleInput = {
@@ -72428,6 +75840,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     staffChatMessages?: StaffChatMessageUncheckedCreateNestedManyWithoutSenderInput
+    staffChatMemberships?: StaffChatMemberUncheckedCreateNestedManyWithoutUserInput
+    staffChatCreated?: StaffChatConversationUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutRoleInput = {
@@ -72906,15 +76320,17 @@ export namespace Prisma {
   export type StaffChatMessageCreateWithoutSenderInput = {
     id?: string
     content: string
-    channelId?: string
+    channelId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    conversation?: StaffChatConversationCreateNestedOneWithoutMessagesInput
   }
 
   export type StaffChatMessageUncheckedCreateWithoutSenderInput = {
     id?: string
     content: string
-    channelId?: string
+    channelId?: string | null
+    conversationId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -72926,6 +76342,64 @@ export namespace Prisma {
 
   export type StaffChatMessageCreateManySenderInputEnvelope = {
     data: StaffChatMessageCreateManySenderInput | StaffChatMessageCreateManySenderInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type StaffChatMemberCreateWithoutUserInput = {
+    id?: string
+    joinedAt?: Date | string
+    lastReadAt?: Date | string | null
+    conversation: StaffChatConversationCreateNestedOneWithoutMembersInput
+  }
+
+  export type StaffChatMemberUncheckedCreateWithoutUserInput = {
+    id?: string
+    conversationId: string
+    joinedAt?: Date | string
+    lastReadAt?: Date | string | null
+  }
+
+  export type StaffChatMemberCreateOrConnectWithoutUserInput = {
+    where: StaffChatMemberWhereUniqueInput
+    create: XOR<StaffChatMemberCreateWithoutUserInput, StaffChatMemberUncheckedCreateWithoutUserInput>
+  }
+
+  export type StaffChatMemberCreateManyUserInputEnvelope = {
+    data: StaffChatMemberCreateManyUserInput | StaffChatMemberCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type StaffChatConversationCreateWithoutCreatedByInput = {
+    id?: string
+    type: $Enums.StaffChatType
+    name?: string | null
+    isSystem?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    directKey?: string | null
+    members?: StaffChatMemberCreateNestedManyWithoutConversationInput
+    messages?: StaffChatMessageCreateNestedManyWithoutConversationInput
+  }
+
+  export type StaffChatConversationUncheckedCreateWithoutCreatedByInput = {
+    id?: string
+    type: $Enums.StaffChatType
+    name?: string | null
+    isSystem?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    directKey?: string | null
+    members?: StaffChatMemberUncheckedCreateNestedManyWithoutConversationInput
+    messages?: StaffChatMessageUncheckedCreateNestedManyWithoutConversationInput
+  }
+
+  export type StaffChatConversationCreateOrConnectWithoutCreatedByInput = {
+    where: StaffChatConversationWhereUniqueInput
+    create: XOR<StaffChatConversationCreateWithoutCreatedByInput, StaffChatConversationUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type StaffChatConversationCreateManyCreatedByInputEnvelope = {
+    data: StaffChatConversationCreateManyCreatedByInput | StaffChatConversationCreateManyCreatedByInput[]
     skipDuplicates?: boolean
   }
 
@@ -73164,9 +76638,419 @@ export namespace Prisma {
     id?: StringFilter<"StaffChatMessage"> | string
     content?: StringFilter<"StaffChatMessage"> | string
     senderId?: IntFilter<"StaffChatMessage"> | number
-    channelId?: StringFilter<"StaffChatMessage"> | string
+    channelId?: StringNullableFilter<"StaffChatMessage"> | string | null
+    conversationId?: StringNullableFilter<"StaffChatMessage"> | string | null
     createdAt?: DateTimeFilter<"StaffChatMessage"> | Date | string
     updatedAt?: DateTimeFilter<"StaffChatMessage"> | Date | string
+  }
+
+  export type StaffChatMemberUpsertWithWhereUniqueWithoutUserInput = {
+    where: StaffChatMemberWhereUniqueInput
+    update: XOR<StaffChatMemberUpdateWithoutUserInput, StaffChatMemberUncheckedUpdateWithoutUserInput>
+    create: XOR<StaffChatMemberCreateWithoutUserInput, StaffChatMemberUncheckedCreateWithoutUserInput>
+  }
+
+  export type StaffChatMemberUpdateWithWhereUniqueWithoutUserInput = {
+    where: StaffChatMemberWhereUniqueInput
+    data: XOR<StaffChatMemberUpdateWithoutUserInput, StaffChatMemberUncheckedUpdateWithoutUserInput>
+  }
+
+  export type StaffChatMemberUpdateManyWithWhereWithoutUserInput = {
+    where: StaffChatMemberScalarWhereInput
+    data: XOR<StaffChatMemberUpdateManyMutationInput, StaffChatMemberUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type StaffChatMemberScalarWhereInput = {
+    AND?: StaffChatMemberScalarWhereInput | StaffChatMemberScalarWhereInput[]
+    OR?: StaffChatMemberScalarWhereInput[]
+    NOT?: StaffChatMemberScalarWhereInput | StaffChatMemberScalarWhereInput[]
+    id?: StringFilter<"StaffChatMember"> | string
+    conversationId?: StringFilter<"StaffChatMember"> | string
+    userId?: IntFilter<"StaffChatMember"> | number
+    joinedAt?: DateTimeFilter<"StaffChatMember"> | Date | string
+    lastReadAt?: DateTimeNullableFilter<"StaffChatMember"> | Date | string | null
+  }
+
+  export type StaffChatConversationUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: StaffChatConversationWhereUniqueInput
+    update: XOR<StaffChatConversationUpdateWithoutCreatedByInput, StaffChatConversationUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<StaffChatConversationCreateWithoutCreatedByInput, StaffChatConversationUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type StaffChatConversationUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: StaffChatConversationWhereUniqueInput
+    data: XOR<StaffChatConversationUpdateWithoutCreatedByInput, StaffChatConversationUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type StaffChatConversationUpdateManyWithWhereWithoutCreatedByInput = {
+    where: StaffChatConversationScalarWhereInput
+    data: XOR<StaffChatConversationUpdateManyMutationInput, StaffChatConversationUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type StaffChatConversationScalarWhereInput = {
+    AND?: StaffChatConversationScalarWhereInput | StaffChatConversationScalarWhereInput[]
+    OR?: StaffChatConversationScalarWhereInput[]
+    NOT?: StaffChatConversationScalarWhereInput | StaffChatConversationScalarWhereInput[]
+    id?: StringFilter<"StaffChatConversation"> | string
+    type?: EnumStaffChatTypeFilter<"StaffChatConversation"> | $Enums.StaffChatType
+    name?: StringNullableFilter<"StaffChatConversation"> | string | null
+    isSystem?: BoolFilter<"StaffChatConversation"> | boolean
+    createdById?: IntNullableFilter<"StaffChatConversation"> | number | null
+    createdAt?: DateTimeFilter<"StaffChatConversation"> | Date | string
+    updatedAt?: DateTimeFilter<"StaffChatConversation"> | Date | string
+    directKey?: StringNullableFilter<"StaffChatConversation"> | string | null
+  }
+
+  export type UserCreateWithoutStaffChatCreatedInput = {
+    email: string
+    passwordHash: string
+    firstName: string
+    lastName: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastLoginAt?: Date | string | null
+    role: RoleCreateNestedOneWithoutUsersInput
+    foster?: FosterCreateNestedOneWithoutPortalUserInput
+    rejectedApplications?: ApplicationCreateNestedManyWithoutRejectedByInput
+    completedChecklistItems?: OnboardingChecklistCreateNestedManyWithoutCompletedByUserInput
+    contentCompletions?: ContentCompletionCreateNestedManyWithoutUserInput
+    activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
+    administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    staffChatMessages?: StaffChatMessageCreateNestedManyWithoutSenderInput
+    staffChatMemberships?: StaffChatMemberCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutStaffChatCreatedInput = {
+    id?: number
+    email: string
+    passwordHash: string
+    firstName: string
+    lastName: string
+    isActive?: boolean
+    roleId: number
+    fosterId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastLoginAt?: Date | string | null
+    rejectedApplications?: ApplicationUncheckedCreateNestedManyWithoutRejectedByInput
+    completedChecklistItems?: OnboardingChecklistUncheckedCreateNestedManyWithoutCompletedByUserInput
+    contentCompletions?: ContentCompletionUncheckedCreateNestedManyWithoutUserInput
+    activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
+    administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    staffChatMessages?: StaffChatMessageUncheckedCreateNestedManyWithoutSenderInput
+    staffChatMemberships?: StaffChatMemberUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutStaffChatCreatedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutStaffChatCreatedInput, UserUncheckedCreateWithoutStaffChatCreatedInput>
+  }
+
+  export type StaffChatMemberCreateWithoutConversationInput = {
+    id?: string
+    joinedAt?: Date | string
+    lastReadAt?: Date | string | null
+    user: UserCreateNestedOneWithoutStaffChatMembershipsInput
+  }
+
+  export type StaffChatMemberUncheckedCreateWithoutConversationInput = {
+    id?: string
+    userId: number
+    joinedAt?: Date | string
+    lastReadAt?: Date | string | null
+  }
+
+  export type StaffChatMemberCreateOrConnectWithoutConversationInput = {
+    where: StaffChatMemberWhereUniqueInput
+    create: XOR<StaffChatMemberCreateWithoutConversationInput, StaffChatMemberUncheckedCreateWithoutConversationInput>
+  }
+
+  export type StaffChatMemberCreateManyConversationInputEnvelope = {
+    data: StaffChatMemberCreateManyConversationInput | StaffChatMemberCreateManyConversationInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type StaffChatMessageCreateWithoutConversationInput = {
+    id?: string
+    content: string
+    channelId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sender: UserCreateNestedOneWithoutStaffChatMessagesInput
+  }
+
+  export type StaffChatMessageUncheckedCreateWithoutConversationInput = {
+    id?: string
+    content: string
+    senderId: number
+    channelId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StaffChatMessageCreateOrConnectWithoutConversationInput = {
+    where: StaffChatMessageWhereUniqueInput
+    create: XOR<StaffChatMessageCreateWithoutConversationInput, StaffChatMessageUncheckedCreateWithoutConversationInput>
+  }
+
+  export type StaffChatMessageCreateManyConversationInputEnvelope = {
+    data: StaffChatMessageCreateManyConversationInput | StaffChatMessageCreateManyConversationInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutStaffChatCreatedInput = {
+    update: XOR<UserUpdateWithoutStaffChatCreatedInput, UserUncheckedUpdateWithoutStaffChatCreatedInput>
+    create: XOR<UserCreateWithoutStaffChatCreatedInput, UserUncheckedCreateWithoutStaffChatCreatedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutStaffChatCreatedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutStaffChatCreatedInput, UserUncheckedUpdateWithoutStaffChatCreatedInput>
+  }
+
+  export type UserUpdateWithoutStaffChatCreatedInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: RoleUpdateOneRequiredWithoutUsersNestedInput
+    foster?: FosterUpdateOneWithoutPortalUserNestedInput
+    rejectedApplications?: ApplicationUpdateManyWithoutRejectedByNestedInput
+    completedChecklistItems?: OnboardingChecklistUpdateManyWithoutCompletedByUserNestedInput
+    contentCompletions?: ContentCompletionUpdateManyWithoutUserNestedInput
+    activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
+    administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    staffChatMessages?: StaffChatMessageUpdateManyWithoutSenderNestedInput
+    staffChatMemberships?: StaffChatMemberUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutStaffChatCreatedInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    roleId?: IntFieldUpdateOperationsInput | number
+    fosterId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedApplications?: ApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
+    completedChecklistItems?: OnboardingChecklistUncheckedUpdateManyWithoutCompletedByUserNestedInput
+    contentCompletions?: ContentCompletionUncheckedUpdateManyWithoutUserNestedInput
+    activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
+    administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    staffChatMessages?: StaffChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+    staffChatMemberships?: StaffChatMemberUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type StaffChatMemberUpsertWithWhereUniqueWithoutConversationInput = {
+    where: StaffChatMemberWhereUniqueInput
+    update: XOR<StaffChatMemberUpdateWithoutConversationInput, StaffChatMemberUncheckedUpdateWithoutConversationInput>
+    create: XOR<StaffChatMemberCreateWithoutConversationInput, StaffChatMemberUncheckedCreateWithoutConversationInput>
+  }
+
+  export type StaffChatMemberUpdateWithWhereUniqueWithoutConversationInput = {
+    where: StaffChatMemberWhereUniqueInput
+    data: XOR<StaffChatMemberUpdateWithoutConversationInput, StaffChatMemberUncheckedUpdateWithoutConversationInput>
+  }
+
+  export type StaffChatMemberUpdateManyWithWhereWithoutConversationInput = {
+    where: StaffChatMemberScalarWhereInput
+    data: XOR<StaffChatMemberUpdateManyMutationInput, StaffChatMemberUncheckedUpdateManyWithoutConversationInput>
+  }
+
+  export type StaffChatMessageUpsertWithWhereUniqueWithoutConversationInput = {
+    where: StaffChatMessageWhereUniqueInput
+    update: XOR<StaffChatMessageUpdateWithoutConversationInput, StaffChatMessageUncheckedUpdateWithoutConversationInput>
+    create: XOR<StaffChatMessageCreateWithoutConversationInput, StaffChatMessageUncheckedCreateWithoutConversationInput>
+  }
+
+  export type StaffChatMessageUpdateWithWhereUniqueWithoutConversationInput = {
+    where: StaffChatMessageWhereUniqueInput
+    data: XOR<StaffChatMessageUpdateWithoutConversationInput, StaffChatMessageUncheckedUpdateWithoutConversationInput>
+  }
+
+  export type StaffChatMessageUpdateManyWithWhereWithoutConversationInput = {
+    where: StaffChatMessageScalarWhereInput
+    data: XOR<StaffChatMessageUpdateManyMutationInput, StaffChatMessageUncheckedUpdateManyWithoutConversationInput>
+  }
+
+  export type StaffChatConversationCreateWithoutMembersInput = {
+    id?: string
+    type: $Enums.StaffChatType
+    name?: string | null
+    isSystem?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    directKey?: string | null
+    createdBy?: UserCreateNestedOneWithoutStaffChatCreatedInput
+    messages?: StaffChatMessageCreateNestedManyWithoutConversationInput
+  }
+
+  export type StaffChatConversationUncheckedCreateWithoutMembersInput = {
+    id?: string
+    type: $Enums.StaffChatType
+    name?: string | null
+    isSystem?: boolean
+    createdById?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    directKey?: string | null
+    messages?: StaffChatMessageUncheckedCreateNestedManyWithoutConversationInput
+  }
+
+  export type StaffChatConversationCreateOrConnectWithoutMembersInput = {
+    where: StaffChatConversationWhereUniqueInput
+    create: XOR<StaffChatConversationCreateWithoutMembersInput, StaffChatConversationUncheckedCreateWithoutMembersInput>
+  }
+
+  export type UserCreateWithoutStaffChatMembershipsInput = {
+    email: string
+    passwordHash: string
+    firstName: string
+    lastName: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastLoginAt?: Date | string | null
+    role: RoleCreateNestedOneWithoutUsersInput
+    foster?: FosterCreateNestedOneWithoutPortalUserInput
+    rejectedApplications?: ApplicationCreateNestedManyWithoutRejectedByInput
+    completedChecklistItems?: OnboardingChecklistCreateNestedManyWithoutCompletedByUserInput
+    contentCompletions?: ContentCompletionCreateNestedManyWithoutUserInput
+    activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
+    administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    staffChatMessages?: StaffChatMessageCreateNestedManyWithoutSenderInput
+    staffChatCreated?: StaffChatConversationCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutStaffChatMembershipsInput = {
+    id?: number
+    email: string
+    passwordHash: string
+    firstName: string
+    lastName: string
+    isActive?: boolean
+    roleId: number
+    fosterId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastLoginAt?: Date | string | null
+    rejectedApplications?: ApplicationUncheckedCreateNestedManyWithoutRejectedByInput
+    completedChecklistItems?: OnboardingChecklistUncheckedCreateNestedManyWithoutCompletedByUserInput
+    contentCompletions?: ContentCompletionUncheckedCreateNestedManyWithoutUserInput
+    activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
+    administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    staffChatMessages?: StaffChatMessageUncheckedCreateNestedManyWithoutSenderInput
+    staffChatCreated?: StaffChatConversationUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutStaffChatMembershipsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutStaffChatMembershipsInput, UserUncheckedCreateWithoutStaffChatMembershipsInput>
+  }
+
+  export type StaffChatConversationUpsertWithoutMembersInput = {
+    update: XOR<StaffChatConversationUpdateWithoutMembersInput, StaffChatConversationUncheckedUpdateWithoutMembersInput>
+    create: XOR<StaffChatConversationCreateWithoutMembersInput, StaffChatConversationUncheckedCreateWithoutMembersInput>
+    where?: StaffChatConversationWhereInput
+  }
+
+  export type StaffChatConversationUpdateToOneWithWhereWithoutMembersInput = {
+    where?: StaffChatConversationWhereInput
+    data: XOR<StaffChatConversationUpdateWithoutMembersInput, StaffChatConversationUncheckedUpdateWithoutMembersInput>
+  }
+
+  export type StaffChatConversationUpdateWithoutMembersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumStaffChatTypeFieldUpdateOperationsInput | $Enums.StaffChatType
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: UserUpdateOneWithoutStaffChatCreatedNestedInput
+    messages?: StaffChatMessageUpdateManyWithoutConversationNestedInput
+  }
+
+  export type StaffChatConversationUncheckedUpdateWithoutMembersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumStaffChatTypeFieldUpdateOperationsInput | $Enums.StaffChatType
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdById?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directKey?: NullableStringFieldUpdateOperationsInput | string | null
+    messages?: StaffChatMessageUncheckedUpdateManyWithoutConversationNestedInput
+  }
+
+  export type UserUpsertWithoutStaffChatMembershipsInput = {
+    update: XOR<UserUpdateWithoutStaffChatMembershipsInput, UserUncheckedUpdateWithoutStaffChatMembershipsInput>
+    create: XOR<UserCreateWithoutStaffChatMembershipsInput, UserUncheckedCreateWithoutStaffChatMembershipsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutStaffChatMembershipsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutStaffChatMembershipsInput, UserUncheckedUpdateWithoutStaffChatMembershipsInput>
+  }
+
+  export type UserUpdateWithoutStaffChatMembershipsInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: RoleUpdateOneRequiredWithoutUsersNestedInput
+    foster?: FosterUpdateOneWithoutPortalUserNestedInput
+    rejectedApplications?: ApplicationUpdateManyWithoutRejectedByNestedInput
+    completedChecklistItems?: OnboardingChecklistUpdateManyWithoutCompletedByUserNestedInput
+    contentCompletions?: ContentCompletionUpdateManyWithoutUserNestedInput
+    activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
+    administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    staffChatMessages?: StaffChatMessageUpdateManyWithoutSenderNestedInput
+    staffChatCreated?: StaffChatConversationUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutStaffChatMembershipsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    roleId?: IntFieldUpdateOperationsInput | number
+    fosterId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedApplications?: ApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
+    completedChecklistItems?: OnboardingChecklistUncheckedUpdateManyWithoutCompletedByUserNestedInput
+    contentCompletions?: ContentCompletionUncheckedUpdateManyWithoutUserNestedInput
+    activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
+    administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    staffChatMessages?: StaffChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+    staffChatCreated?: StaffChatConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserCreateWithoutStaffChatMessagesInput = {
@@ -73186,6 +77070,8 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    staffChatMemberships?: StaffChatMemberCreateNestedManyWithoutUserInput
+    staffChatCreated?: StaffChatConversationCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutStaffChatMessagesInput = {
@@ -73206,11 +77092,42 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    staffChatMemberships?: StaffChatMemberUncheckedCreateNestedManyWithoutUserInput
+    staffChatCreated?: StaffChatConversationUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutStaffChatMessagesInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutStaffChatMessagesInput, UserUncheckedCreateWithoutStaffChatMessagesInput>
+  }
+
+  export type StaffChatConversationCreateWithoutMessagesInput = {
+    id?: string
+    type: $Enums.StaffChatType
+    name?: string | null
+    isSystem?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    directKey?: string | null
+    createdBy?: UserCreateNestedOneWithoutStaffChatCreatedInput
+    members?: StaffChatMemberCreateNestedManyWithoutConversationInput
+  }
+
+  export type StaffChatConversationUncheckedCreateWithoutMessagesInput = {
+    id?: string
+    type: $Enums.StaffChatType
+    name?: string | null
+    isSystem?: boolean
+    createdById?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    directKey?: string | null
+    members?: StaffChatMemberUncheckedCreateNestedManyWithoutConversationInput
+  }
+
+  export type StaffChatConversationCreateOrConnectWithoutMessagesInput = {
+    where: StaffChatConversationWhereUniqueInput
+    create: XOR<StaffChatConversationCreateWithoutMessagesInput, StaffChatConversationUncheckedCreateWithoutMessagesInput>
   }
 
   export type UserUpsertWithoutStaffChatMessagesInput = {
@@ -73241,6 +77158,8 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    staffChatMemberships?: StaffChatMemberUpdateManyWithoutUserNestedInput
+    staffChatCreated?: StaffChatConversationUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutStaffChatMessagesInput = {
@@ -73261,6 +77180,43 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    staffChatMemberships?: StaffChatMemberUncheckedUpdateManyWithoutUserNestedInput
+    staffChatCreated?: StaffChatConversationUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type StaffChatConversationUpsertWithoutMessagesInput = {
+    update: XOR<StaffChatConversationUpdateWithoutMessagesInput, StaffChatConversationUncheckedUpdateWithoutMessagesInput>
+    create: XOR<StaffChatConversationCreateWithoutMessagesInput, StaffChatConversationUncheckedCreateWithoutMessagesInput>
+    where?: StaffChatConversationWhereInput
+  }
+
+  export type StaffChatConversationUpdateToOneWithWhereWithoutMessagesInput = {
+    where?: StaffChatConversationWhereInput
+    data: XOR<StaffChatConversationUpdateWithoutMessagesInput, StaffChatConversationUncheckedUpdateWithoutMessagesInput>
+  }
+
+  export type StaffChatConversationUpdateWithoutMessagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumStaffChatTypeFieldUpdateOperationsInput | $Enums.StaffChatType
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: UserUpdateOneWithoutStaffChatCreatedNestedInput
+    members?: StaffChatMemberUpdateManyWithoutConversationNestedInput
+  }
+
+  export type StaffChatConversationUncheckedUpdateWithoutMessagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumStaffChatTypeFieldUpdateOperationsInput | $Enums.StaffChatType
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdById?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directKey?: NullableStringFieldUpdateOperationsInput | string | null
+    members?: StaffChatMemberUncheckedUpdateManyWithoutConversationNestedInput
   }
 
   export type UserCreateWithoutPasswordResetTokensInput = {
@@ -73280,6 +77236,8 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
     staffChatMessages?: StaffChatMessageCreateNestedManyWithoutSenderInput
+    staffChatMemberships?: StaffChatMemberCreateNestedManyWithoutUserInput
+    staffChatCreated?: StaffChatConversationCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
@@ -73300,6 +77258,8 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
     staffChatMessages?: StaffChatMessageUncheckedCreateNestedManyWithoutSenderInput
+    staffChatMemberships?: StaffChatMemberUncheckedCreateNestedManyWithoutUserInput
+    staffChatCreated?: StaffChatConversationUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutPasswordResetTokensInput = {
@@ -73335,6 +77295,8 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
     staffChatMessages?: StaffChatMessageUpdateManyWithoutSenderNestedInput
+    staffChatMemberships?: StaffChatMemberUpdateManyWithoutUserNestedInput
+    staffChatCreated?: StaffChatConversationUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
@@ -73355,6 +77317,8 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
     staffChatMessages?: StaffChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+    staffChatMemberships?: StaffChatMemberUncheckedUpdateManyWithoutUserNestedInput
+    staffChatCreated?: StaffChatConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type ProtocolDrugCreateWithoutProtocolInput = {
@@ -73762,6 +77726,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     staffChatMessages?: StaffChatMessageCreateNestedManyWithoutSenderInput
+    staffChatMemberships?: StaffChatMemberCreateNestedManyWithoutUserInput
+    staffChatCreated?: StaffChatConversationCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutActivatedProtocolsInput = {
@@ -73782,6 +77748,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     staffChatMessages?: StaffChatMessageUncheckedCreateNestedManyWithoutSenderInput
+    staffChatMemberships?: StaffChatMemberUncheckedCreateNestedManyWithoutUserInput
+    staffChatCreated?: StaffChatConversationUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutActivatedProtocolsInput = {
@@ -74005,6 +77973,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     staffChatMessages?: StaffChatMessageUpdateManyWithoutSenderNestedInput
+    staffChatMemberships?: StaffChatMemberUpdateManyWithoutUserNestedInput
+    staffChatCreated?: StaffChatConversationUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutActivatedProtocolsInput = {
@@ -74025,6 +77995,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     staffChatMessages?: StaffChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+    staffChatMemberships?: StaffChatMemberUncheckedUpdateManyWithoutUserNestedInput
+    staffChatCreated?: StaffChatConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type ProtocolDoseUpsertWithWhereUniqueWithoutActiveProtocolInput = {
@@ -74140,6 +78112,8 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     staffChatMessages?: StaffChatMessageCreateNestedManyWithoutSenderInput
+    staffChatMemberships?: StaffChatMemberCreateNestedManyWithoutUserInput
+    staffChatCreated?: StaffChatConversationCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutAdministeredProtocolDosesInput = {
@@ -74160,6 +78134,8 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     staffChatMessages?: StaffChatMessageUncheckedCreateNestedManyWithoutSenderInput
+    staffChatMemberships?: StaffChatMemberUncheckedCreateNestedManyWithoutUserInput
+    staffChatCreated?: StaffChatConversationUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutAdministeredProtocolDosesInput = {
@@ -74333,6 +78309,8 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     staffChatMessages?: StaffChatMessageUpdateManyWithoutSenderNestedInput
+    staffChatMemberships?: StaffChatMemberUpdateManyWithoutUserNestedInput
+    staffChatCreated?: StaffChatConversationUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAdministeredProtocolDosesInput = {
@@ -74353,6 +78331,8 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     staffChatMessages?: StaffChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+    staffChatMemberships?: StaffChatMemberUncheckedUpdateManyWithoutUserNestedInput
+    staffChatCreated?: StaffChatConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type MedicationUpsertWithoutProtocolDosesInput = {
@@ -76570,6 +80550,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     staffChatMessages?: StaffChatMessageUpdateManyWithoutSenderNestedInput
+    staffChatMemberships?: StaffChatMemberUpdateManyWithoutUserNestedInput
+    staffChatCreated?: StaffChatConversationUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRoleInput = {
@@ -76590,6 +80572,8 @@ export namespace Prisma {
     administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     staffChatMessages?: StaffChatMessageUncheckedUpdateManyWithoutSenderNestedInput
+    staffChatMemberships?: StaffChatMemberUncheckedUpdateManyWithoutUserNestedInput
+    staffChatCreated?: StaffChatConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutRoleInput = {
@@ -76698,9 +80682,27 @@ export namespace Prisma {
   export type StaffChatMessageCreateManySenderInput = {
     id?: string
     content: string
-    channelId?: string
+    channelId?: string | null
+    conversationId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type StaffChatMemberCreateManyUserInput = {
+    id?: string
+    conversationId: string
+    joinedAt?: Date | string
+    lastReadAt?: Date | string | null
+  }
+
+  export type StaffChatConversationCreateManyCreatedByInput = {
+    id?: string
+    type: $Enums.StaffChatType
+    name?: string | null
+    isSystem?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    directKey?: string | null
   }
 
   export type ApplicationUpdateWithoutRejectedByInput = {
@@ -76896,15 +80898,17 @@ export namespace Prisma {
   export type StaffChatMessageUpdateWithoutSenderInput = {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
-    channelId?: StringFieldUpdateOperationsInput | string
+    channelId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    conversation?: StaffChatConversationUpdateOneWithoutMessagesNestedInput
   }
 
   export type StaffChatMessageUncheckedUpdateWithoutSenderInput = {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
-    channelId?: StringFieldUpdateOperationsInput | string
+    channelId?: NullableStringFieldUpdateOperationsInput | string | null
+    conversationId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -76912,7 +80916,127 @@ export namespace Prisma {
   export type StaffChatMessageUncheckedUpdateManyWithoutSenderInput = {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
-    channelId?: StringFieldUpdateOperationsInput | string
+    channelId?: NullableStringFieldUpdateOperationsInput | string | null
+    conversationId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StaffChatMemberUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    conversation?: StaffChatConversationUpdateOneRequiredWithoutMembersNestedInput
+  }
+
+  export type StaffChatMemberUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    conversationId?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type StaffChatMemberUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    conversationId?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type StaffChatConversationUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumStaffChatTypeFieldUpdateOperationsInput | $Enums.StaffChatType
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directKey?: NullableStringFieldUpdateOperationsInput | string | null
+    members?: StaffChatMemberUpdateManyWithoutConversationNestedInput
+    messages?: StaffChatMessageUpdateManyWithoutConversationNestedInput
+  }
+
+  export type StaffChatConversationUncheckedUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumStaffChatTypeFieldUpdateOperationsInput | $Enums.StaffChatType
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directKey?: NullableStringFieldUpdateOperationsInput | string | null
+    members?: StaffChatMemberUncheckedUpdateManyWithoutConversationNestedInput
+    messages?: StaffChatMessageUncheckedUpdateManyWithoutConversationNestedInput
+  }
+
+  export type StaffChatConversationUncheckedUpdateManyWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumStaffChatTypeFieldUpdateOperationsInput | $Enums.StaffChatType
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directKey?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type StaffChatMemberCreateManyConversationInput = {
+    id?: string
+    userId: number
+    joinedAt?: Date | string
+    lastReadAt?: Date | string | null
+  }
+
+  export type StaffChatMessageCreateManyConversationInput = {
+    id?: string
+    content: string
+    senderId: number
+    channelId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StaffChatMemberUpdateWithoutConversationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user?: UserUpdateOneRequiredWithoutStaffChatMembershipsNestedInput
+  }
+
+  export type StaffChatMemberUncheckedUpdateWithoutConversationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: IntFieldUpdateOperationsInput | number
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type StaffChatMemberUncheckedUpdateManyWithoutConversationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: IntFieldUpdateOperationsInput | number
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type StaffChatMessageUpdateWithoutConversationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    channelId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sender?: UserUpdateOneRequiredWithoutStaffChatMessagesNestedInput
+  }
+
+  export type StaffChatMessageUncheckedUpdateWithoutConversationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    senderId?: IntFieldUpdateOperationsInput | number
+    channelId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StaffChatMessageUncheckedUpdateManyWithoutConversationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    senderId?: IntFieldUpdateOperationsInput | number
+    channelId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

@@ -32,6 +32,7 @@ const ProtocolLibrary = lazy(() => import('./pages/admin/ProtocolLibrary'));
 const MarketingPage = lazy(() => import('./pages/admin/MarketingPage'));
 const SettingsPage = lazy(() => import('./pages/admin/SettingsPage'));
 const EmailTemplatesPage = lazy(() => import('./pages/admin/EmailTemplatesPage'));
+const StaffChatPage = lazy(() => import('./pages/admin/StaffChatPage'));
 const AboutPage = lazy(() => import('./pages/public/AboutPage'));
 const PrivacyPolicyPage = lazy(() => import('./pages/public/PrivacyPolicyPage'));
 const AdoptionFormPage = lazy(() => import('./pages/public/AdoptionFormPage'));
@@ -101,7 +102,11 @@ function App() {
               <Route path="/admin" element={<AdminLayout />}>
                 <Route element={<ProtectedRoute permission="dashboard.view" />}>
                   <Route index element={<DashboardPage />} />
-                </Route>                <Route element={<ProtectedRoute permission="kittens.view" />}>
+                </Route>
+                <Route element={<ProtectedRoute permission="chat.view" />}>
+                  <Route path="chat" element={<StaffChatPage />} />
+                </Route>
+                <Route element={<ProtectedRoute permission="kittens.view" />}>
                   <Route path="kittens" element={<KittenListPage />} />
                   <Route path="kittens/:id" element={<KittenDetailPage />} />
                 </Route>

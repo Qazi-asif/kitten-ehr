@@ -10,158 +10,159 @@ import {
 import { useAuth } from './AuthContext';
 import { getAuthToken } from '../services/authApi';
 import {
+  clearChatConversation,
+  createDirectConversation,
+  createGroupConversation,
   fetchChatMessages,
   fetchChatStaff,
+  fetchConversations,
   getStaffChatWsUrl,
+  markChatRead,
   postChatMessage,
 } from '../services/chatApi';
 
 const ChatContext = createContext(null);
-const LAST_READ_KEY = 'pt_staff_chat_last_read';
 const POLL_MS = 4000;
 const WS_FAIL_THRESHOLD = 3;
 
-function readLastReadAt() {
-  try {
-    return localStorage.getItem(LAST_READ_KEY) || null;
-  } catch {
-    return null;
-  }
-}
-
-function writeLastReadAt(iso) {
-  try {
-    localStorage.setItem(LAST_READ_KEY, iso);
-  } catch {
-    /* ignore */
-  }
-}
-
-function mergeMessages(existing, incoming) {
+function mergeById(existing, incoming) {
   const map = new Map(existing.map((m) => [m.id, m]));
-  for (const msg of incoming) {
-    map.set(msg.id, msg);
-  }
-  return [...map.values()].sort(
+  for (const item of incoming) map.set(item.id, item);
+  return [...map.values()];
+}
+
+function sortMessages(list) {
+  return [...list].sort(
     (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
   );
 }
 
 export function ChatProvider({ children }) {
   const { user, isAuthenticated } = useAuth();
-  // Admin layout is staff-only; portal accounts have fosterId and must not open staff chat sockets.
   const canChat = Boolean(isAuthenticated && user && !user.fosterId);
 
-  const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState([]);
+  const [conversations, setConversations] = useState([]);
+  const [activeId, setActiveId] = useState(null);
+  const [messagesById, setMessagesById] = useState({});
   const [staff, setStaff] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
-  const [typingUser, setTypingUser] = useState(null);
-  const [connectionMode, setConnectionMode] = useState('connecting'); // live | polling | connecting | offline
+  const [typing, setTyping] = useState(null);
+  const [connectionMode, setConnectionMode] = useState('connecting');
   const [sendError, setSendError] = useState(null);
-  const [loadingHistory, setLoadingHistory] = useState(false);
-  const [unreadCount, setUnreadCount] = useState(0);
-  const [lastReadAt, setLastReadAt] = useState(readLastReadAt);
+  const [loadingConversations, setLoadingConversations] = useState(false);
+  const [loadingMessages, setLoadingMessages] = useState(false);
 
   const wsRef = useRef(null);
   const reconnectAttempt = useRef(0);
   const wsFailCount = useRef(0);
   const preferPolling = useRef(false);
   const typingClearRef = useRef(null);
-  const openRef = useRef(false);
-  const lastReadRef = useRef(lastReadAt);
-  const userIdRef = useRef(user?.id);
+  const activeIdRef = useRef(null);
+  const messagesTipRef = useRef({});
 
   useEffect(() => {
-    openRef.current = open;
-  }, [open]);
+    activeIdRef.current = activeId;
+  }, [activeId]);
 
-  useEffect(() => {
-    lastReadRef.current = lastReadAt;
-  }, [lastReadAt]);
+  const totalUnread = useMemo(
+    () => conversations.reduce((sum, c) => sum + (c.unreadCount || 0), 0),
+    [conversations],
+  );
 
-  useEffect(() => {
-    userIdRef.current = user?.id;
+  const activeConversation = useMemo(
+    () => conversations.find((c) => c.id === activeId) || null,
+    [conversations, activeId],
+  );
+
+  const activeMessages = messagesById[activeId] || [];
+
+  const refreshConversations = useCallback(async () => {
+    setLoadingConversations(true);
+    try {
+      const [list, members] = await Promise.all([fetchConversations(), fetchChatStaff()]);
+      setConversations(list);
+      setStaff(members);
+      setActiveId((prev) => {
+        if (prev && list.some((c) => c.id === prev)) return prev;
+        return list[0]?.id || null;
+      });
+    } catch (err) {
+      console.error('[staff-chat] conversations failed', err);
+    } finally {
+      setLoadingConversations(false);
+    }
+  }, []);
+
+  const loadMessages = useCallback(async (conversationId, { after = null } = {}) => {
+    if (!conversationId) return;
+    if (!after) setLoadingMessages(true);
+    try {
+      const batch = await fetchChatMessages(conversationId, { after });
+      setMessagesById((prev) => {
+        const existing = after ? prev[conversationId] || [] : [];
+        const next = sortMessages(mergeById(existing, batch));
+        messagesTipRef.current[conversationId] = next[next.length - 1]?.createdAt || null;
+        return { ...prev, [conversationId]: next };
+      });
+    } catch (err) {
+      console.error('[staff-chat] messages failed', err);
+    } finally {
+      if (!after) setLoadingMessages(false);
+    }
+  }, []);
+
+  const ingestMessage = useCallback((message) => {
+    if (!message?.conversationId) return;
+    setMessagesById((prev) => {
+      const existing = prev[message.conversationId] || [];
+      const next = sortMessages(mergeById(existing, [message]));
+      messagesTipRef.current[message.conversationId] = next[next.length - 1]?.createdAt || null;
+      return { ...prev, [message.conversationId]: next };
+    });
+    setConversations((prev) => {
+      const updated = prev.map((c) => {
+        if (c.id !== message.conversationId) return c;
+        const isActive = activeIdRef.current === c.id;
+        const fromOther = message.senderId !== user?.id;
+        return {
+          ...c,
+          updatedAt: message.createdAt,
+          lastMessage: {
+            id: message.id,
+            content: message.content,
+            senderId: message.senderId,
+            createdAt: message.createdAt,
+            senderName: message.sender?.displayName,
+          },
+          unreadCount: isActive || !fromOther ? 0 : (c.unreadCount || 0) + 1,
+        };
+      });
+      return [...updated].sort(
+        (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
+      );
+    });
   }, [user?.id]);
 
-  const markRead = useCallback(() => {
-    const iso = new Date().toISOString();
-    setLastReadAt(iso);
-    writeLastReadAt(iso);
-    setUnreadCount(0);
-  }, []);
-
-  const recomputeUnread = useCallback((list, readAt, isOpen) => {
-    if (isOpen) {
-      setUnreadCount(0);
-      return;
-    }
-    const cutoff = readAt ? new Date(readAt).getTime() : 0;
-    const count = list.filter((m) => {
-      if (m.senderId === userIdRef.current) return false;
-      return new Date(m.createdAt).getTime() > cutoff;
-    }).length;
-    setUnreadCount(count);
-  }, []);
-
-  const ingestMessages = useCallback((incoming) => {
-    setMessages((prev) => {
-      const next = mergeMessages(prev, Array.isArray(incoming) ? incoming : [incoming]);
-      recomputeUnread(next, lastReadRef.current, openRef.current);
-      return next;
-    });
-  }, [recomputeUnread]);
-
-  const loadHistory = useCallback(async () => {
-    setLoadingHistory(true);
+  const selectConversation = useCallback(async (id) => {
+    setActiveId(id);
+    setSendError(null);
+    setTyping(null);
+    await loadMessages(id);
     try {
-      const [history, members] = await Promise.all([
-        fetchChatMessages({ limit: 100 }),
-        fetchChatStaff(),
-      ]);
-      setMessages(mergeMessages([], history));
-      setStaff(members);
-      recomputeUnread(history, lastReadRef.current, openRef.current);
-    } catch (err) {
-      console.error('[staff-chat] history load failed', err);
-    } finally {
-      setLoadingHistory(false);
+      await markChatRead(id);
+      setConversations((prev) => prev.map((c) => (c.id === id ? { ...c, unreadCount: 0 } : c)));
+    } catch {
+      /* ignore */
     }
-  }, [recomputeUnread]);
-
-  const messagesTipRef = useRef(null);
-  useEffect(() => {
-    messagesTipRef.current = messages.length
-      ? messages[messages.length - 1]?.createdAt
-      : null;
-  }, [messages]);
-
-  const pollOnceStable = useCallback(async () => {
-    try {
-      const batch = await fetchChatMessages({
-        limit: 100,
-        after: messagesTipRef.current || undefined,
-      });
-      if (batch.length) ingestMessages(batch);
-      setConnectionMode((mode) => (mode === 'live' ? mode : 'polling'));
-    } catch (err) {
-      console.error('[staff-chat] poll failed', err);
-      setConnectionMode('offline');
-    }
-  }, [ingestMessages]);
+  }, [loadMessages]);
 
   const connectWs = useCallback(() => {
     if (!canChat || preferPolling.current) return;
-
     const token = getAuthToken();
     if (!token) return;
 
     if (wsRef.current) {
-      try {
-        wsRef.current.close();
-      } catch {
-        /* ignore */
-      }
+      try { wsRef.current.close(); } catch { /* ignore */ }
       wsRef.current = null;
     }
 
@@ -194,23 +195,30 @@ export function ChatProvider({ children }) {
       }
 
       if (payload.type === 'message' && payload.message) {
-        ingestMessages(payload.message);
+        ingestMessage(payload.message);
       } else if (payload.type === 'online' && Array.isArray(payload.users)) {
         setOnlineUsers(payload.users);
       } else if (payload.type === 'typing') {
-        if (payload.userId === userIdRef.current) return;
-        setTypingUser({ id: payload.userId, name: payload.name });
+        if (payload.userId === user?.id) return;
+        if (payload.conversationId !== activeIdRef.current) return;
+        setTyping({ id: payload.userId, name: payload.name });
         if (typingClearRef.current) clearTimeout(typingClearRef.current);
-        typingClearRef.current = setTimeout(() => setTypingUser(null), 2500);
+        typingClearRef.current = setTimeout(() => setTyping(null), 2500);
+      } else if (payload.type === 'cleared') {
+        if (payload.conversationId) {
+          setMessagesById((prev) => ({ ...prev, [payload.conversationId]: [] }));
+          setConversations((prev) => prev.map((c) => (
+            c.id === payload.conversationId
+              ? { ...c, lastMessage: null, unreadCount: 0 }
+              : c
+          )));
+        }
       } else if (payload.type === 'error') {
-        console.error('[staff-chat] server error', payload.message);
         setSendError(payload.message || 'Chat error');
       }
     };
 
-    socket.onerror = () => {
-      console.error('[staff-chat] WebSocket error');
-    };
+    socket.onerror = () => console.error('[staff-chat] WebSocket error');
 
     socket.onclose = () => {
       wsRef.current = null;
@@ -220,7 +228,6 @@ export function ChatProvider({ children }) {
         setConnectionMode('polling');
         return;
       }
-
       const attempt = reconnectAttempt.current;
       reconnectAttempt.current += 1;
       const delay = Math.min(30_000, 1000 * 2 ** attempt);
@@ -229,126 +236,161 @@ export function ChatProvider({ children }) {
         if (canChat && !preferPolling.current) connectWs();
       }, delay);
     };
-  }, [canChat, ingestMessages]);
+  }, [canChat, ingestMessage, user?.id]);
 
   useEffect(() => {
     if (!canChat) {
-      setMessages([]);
+      setConversations([]);
+      setMessagesById({});
       setStaff([]);
       setOnlineUsers([]);
-      setUnreadCount(0);
+      setActiveId(null);
       setConnectionMode('offline');
       if (wsRef.current) {
-        try {
-          wsRef.current.close();
-        } catch {
-          /* ignore */
-        }
+        try { wsRef.current.close(); } catch { /* ignore */ }
         wsRef.current = null;
       }
       return undefined;
     }
 
-    loadHistory();
+    refreshConversations();
     connectWs();
-
     return () => {
       if (wsRef.current) {
-        try {
-          wsRef.current.close();
-        } catch {
-          /* ignore */
-        }
+        try { wsRef.current.close(); } catch { /* ignore */ }
         wsRef.current = null;
       }
     };
-  }, [canChat, connectWs, loadHistory]);
+  }, [canChat, connectWs, refreshConversations]);
 
-  // Polling while drawer open, or always when in polling mode
+  useEffect(() => {
+    if (!canChat || !activeId) return undefined;
+    loadMessages(activeId);
+  }, [activeId, canChat, loadMessages]);
+
   useEffect(() => {
     if (!canChat) return undefined;
-    if (connectionMode === 'live' && !open) return undefined;
-
-    const shouldPoll = connectionMode === 'polling' || connectionMode === 'offline' || open;
-    if (!shouldPoll) return undefined;
-
-    const id = setInterval(() => {
-      pollOnceStable();
+    if (connectionMode === 'live') return undefined;
+    const id = setInterval(async () => {
+      try {
+        await refreshConversations();
+        const cid = activeIdRef.current;
+        if (cid) {
+          await loadMessages(cid, { after: messagesTipRef.current[cid] || null });
+        }
+        setConnectionMode((mode) => (mode === 'live' ? mode : 'polling'));
+      } catch {
+        setConnectionMode('offline');
+      }
     }, POLL_MS);
-
     return () => clearInterval(id);
-  }, [canChat, connectionMode, open, pollOnceStable]);
-
-  useEffect(() => {
-    if (open) markRead();
-  }, [open, markRead]);
+  }, [canChat, connectionMode, loadMessages, refreshConversations]);
 
   const sendTyping = useCallback(() => {
     const socket = wsRef.current;
-    if (socket?.readyState === WebSocket.OPEN) {
-      socket.send(JSON.stringify({ type: 'typing' }));
-    }
+    const cid = activeIdRef.current;
+    if (!cid || socket?.readyState !== WebSocket.OPEN) return;
+    socket.send(JSON.stringify({ type: 'typing', conversationId: cid }));
   }, []);
 
   const sendMessage = useCallback(async (content) => {
     setSendError(null);
     const trimmed = content.trim();
-    if (!trimmed) return;
+    const cid = activeIdRef.current;
+    if (!trimmed || !cid) return;
 
     const socket = wsRef.current;
     if (socket?.readyState === WebSocket.OPEN && connectionMode === 'live') {
       try {
-        socket.send(JSON.stringify({ type: 'message', content: trimmed }));
+        socket.send(JSON.stringify({ type: 'message', conversationId: cid, content: trimmed }));
         return;
       } catch (err) {
-        console.error('[staff-chat] WS send failed, falling back to REST', err);
+        console.error('[staff-chat] WS send failed', err);
       }
     }
 
     try {
-      const message = await postChatMessage({ content: trimmed });
-      ingestMessages(message);
+      const message = await postChatMessage(cid, trimmed);
+      ingestMessage(message);
     } catch (err) {
-      console.error('[staff-chat] REST send failed', err);
       setSendError(err.message || 'Failed to send message');
       throw err;
     }
-  }, [connectionMode, ingestMessages]);
+  }, [connectionMode, ingestMessage]);
+
+  const startDirect = useCallback(async (userId) => {
+    const conversation = await createDirectConversation(userId);
+    await refreshConversations();
+    await selectConversation(conversation.id);
+    return conversation;
+  }, [refreshConversations, selectConversation]);
+
+  const startGroup = useCallback(async ({ name, memberIds }) => {
+    const conversation = await createGroupConversation({ name, memberIds });
+    await refreshConversations();
+    await selectConversation(conversation.id);
+    return conversation;
+  }, [refreshConversations, selectConversation]);
+
+  const clearActive = useCallback(async () => {
+    const cid = activeIdRef.current;
+    if (!cid) return;
+    await clearChatConversation(cid);
+    setMessagesById((prev) => ({ ...prev, [cid]: [] }));
+    setConversations((prev) => prev.map((c) => (
+      c.id === cid ? { ...c, lastMessage: null, unreadCount: 0 } : c
+    )));
+  }, []);
+
+  const isSuperAdmin = user?.roleName === 'Super Admin';
 
   const value = useMemo(
     () => ({
       canChat,
-      open,
-      setOpen,
-      messages,
+      conversations,
+      activeId,
+      activeConversation,
+      activeMessages,
       staff,
       onlineUsers,
-      typingUser,
+      typing,
       connectionMode,
       sendError,
       setSendError,
-      loadingHistory,
-      unreadCount,
+      loadingConversations,
+      loadingMessages,
+      totalUnread,
+      isSuperAdmin,
+      selectConversation,
       sendMessage,
       sendTyping,
-      markRead,
-      refresh: loadHistory,
+      startDirect,
+      startGroup,
+      clearActive,
+      refreshConversations,
     }),
     [
       canChat,
-      open,
-      messages,
+      conversations,
+      activeId,
+      activeConversation,
+      activeMessages,
       staff,
       onlineUsers,
-      typingUser,
+      typing,
       connectionMode,
       sendError,
-      loadingHistory,
-      unreadCount,
+      loadingConversations,
+      loadingMessages,
+      totalUnread,
+      isSuperAdmin,
+      selectConversation,
       sendMessage,
       sendTyping,
-      markRead,
-      loadHistory,
+      startDirect,
+      startGroup,
+      clearActive,
+      refreshConversations,
     ],
   );
 

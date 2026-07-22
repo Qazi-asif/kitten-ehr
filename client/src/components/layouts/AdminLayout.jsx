@@ -19,7 +19,6 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useChat } from '../../context/ChatContext';
-import ChatDrawer from '../chat/ChatDrawer';
 
 const navItems = [
   { label: 'Dashboard', icon: LayoutDashboard, path: '/admin', permission: 'dashboard.view' },
@@ -40,6 +39,7 @@ const navItems = [
 
 const pageMeta = [
   { match: (p) => p === '/admin', title: 'Dashboard' },
+  { match: (p) => p.startsWith('/admin/chat'), title: 'Staff Chat', subtitle: 'Personal and group messaging for staff.' },
   { match: (p) => p.startsWith('/admin/kittens/'), title: 'Kitten Profile', subtitle: 'Medical records, publishing, and adoption details.' },
   { match: (p) => p === '/admin/kittens', title: 'Kittens', subtitle: 'Manage kittens and link them to litter intake groups.' },
   { match: (p) => p.startsWith('/admin/litters/'), title: 'Litter Group', subtitle: 'View kittens linked to this intake group.' },
@@ -75,8 +75,9 @@ function AdminLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout, hasPermission, hasAnyPermission } = useAuth();
-  const { canChat, open, setOpen, unreadCount } = useChat();
+  const { canChat, totalUnread } = useChat();
   const { title, subtitle } = getPageMeta(location.pathname, user);
+  const isChatPage = location.pathname.startsWith('/admin/chat');
 
   const visibleNavItems = navItems.filter((item) => {
     if (item.path === '/admin/settings') {
@@ -117,24 +118,22 @@ function AdminLayout() {
           <ul className="space-y-0.5">
             {canChat && (
               <li>
-                <button
-                  type="button"
-                  onClick={() => setOpen(!open)}
-                  className={`relative flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-[13px] font-medium transition-colors ${
-                    open
+                <Link
+                  to="/admin/chat"
+                  className={`relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-[13px] font-medium transition-colors ${
+                    isChatPage
                       ? 'bg-brand text-white shadow-sm'
                       : 'text-slate-300 hover:bg-sidebar-hover hover:text-white'
                   }`}
-                  aria-label="Open staff chat"
                 >
                   <MessageCircle className="h-[17px] w-[17px] shrink-0" strokeWidth={2} />
                   <span className="flex-1">Staff Chat</span>
-                  {unreadCount > 0 && (
+                  {totalUnread > 0 && (
                     <span className="inline-flex min-w-[1.25rem] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold leading-5 text-white">
-                      {unreadCount > 99 ? '99+' : unreadCount}
+                      {totalUnread > 99 ? '99+' : totalUnread}
                     </span>
                   )}
-                </button>
+                </Link>
               </li>
             )}
             {visibleNavItems.map(({ label, icon: Icon, path }) => (
@@ -179,29 +178,29 @@ function AdminLayout() {
       </aside>
 
       <main className="ml-[260px] min-h-screen print:ml-0">
-        <header className="border-b border-slate-200 bg-white px-8 py-5 print:hidden">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div>
-              <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
-              {subtitle && <p className="mt-0.5 text-sm text-slate-500">{subtitle}</p>}
+        {!isChatPage && (
+          <header className="border-b border-slate-200 bg-white px-8 py-5 print:hidden">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
+                {subtitle && <p className="mt-0.5 text-sm text-slate-500">{subtitle}</p>}
+              </div>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-white px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-50"
+              >
+                <LogOut className="h-4 w-4" />
+                Sign Out
+              </button>
             </div>
-            <button
-              type="button"
-              onClick={handleLogout}
-              className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-white px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-50"
-            >
-              <LogOut className="h-4 w-4" />
-              Sign Out
-            </button>
-          </div>
-        </header>
+          </header>
+        )}
 
-        <div className="p-8 print:p-0">
+        <div className={isChatPage ? '' : 'p-8 print:p-0'}>
           <Outlet />
         </div>
       </main>
-
-      {canChat && <ChatDrawer />}
     </div>
   );
 }

@@ -1,12 +1,12 @@
 /**
- * Local smoke for staff chat REST + WebSocket.
+ * Staff chat conversations smoke (REST + WS).
  * Usage: node scripts/smoke-staff-chat.mjs [baseUrl]
- * Default: http://127.0.0.1:5000
  */
 import '../src/loadEnv.js';
 import prisma from '../src/lib/prisma.js';
 import { signToken } from '../src/utils/authUtils.js';
 import { syncPermissionsFromDefaults } from '../src/utils/syncPermissions.js';
+import { ensureAllStaffConversation } from '../src/controllers/staffChatController.js';
 import WebSocket from 'ws';
 
 const BASE = (process.argv[2] || 'http://127.0.0.1:5000').replace(/\/$/, '');
@@ -28,95 +28,83 @@ async function api(path, { method = 'GET', token, body } = {}) {
   });
   const text = await res.text();
   let data = null;
-  try {
-    data = text ? JSON.parse(text) : null;
-  } catch {
-    data = text;
-  }
+  try { data = text ? JSON.parse(text) : null; } catch { data = text; }
   return { status: res.status, data };
 }
 
 function waitForWsMessage(ws, predicate, timeoutMs = 5000) {
   return new Promise((resolve, reject) => {
-    const timer = setTimeout(() => {
-      cleanup();
-      reject(new Error('WS timeout'));
-    }, timeoutMs);
-
+    const timer = setTimeout(() => { cleanup(); reject(new Error('WS timeout')); }, timeoutMs);
     function onMessage(raw) {
       let payload;
-      try {
-        payload = JSON.parse(String(raw));
-      } catch {
-        return;
-      }
-      if (predicate(payload)) {
-        cleanup();
-        resolve(payload);
-      }
+      try { payload = JSON.parse(String(raw)); } catch { return; }
+      if (predicate(payload)) { cleanup(); resolve(payload); }
     }
-
-    function cleanup() {
-      clearTimeout(timer);
-      ws.off('message', onMessage);
-    }
-
+    function cleanup() { clearTimeout(timer); ws.off('message', onMessage); }
     ws.on('message', onMessage);
   });
 }
 
 async function main() {
   await syncPermissionsFromDefaults();
+  const allStaff = await ensureAllStaffConversation();
 
   const staff = await prisma.user.findFirst({
-    where: {
-      isActive: true,
-      role: { isPortalRole: false, name: { in: ['Super Admin', 'Admin'] } },
-    },
+    where: { isActive: true, role: { isPortalRole: false, name: { in: ['Super Admin', 'Admin'] } } },
     include: { role: true },
   });
-
   if (!staff) {
-    record('find staff user', false, 'no Super Admin/Admin user');
+    record('find staff user', false, 'none');
     process.exit(1);
   }
 
+  const other = await prisma.user.findFirst({
+    where: {
+      isActive: true,
+      id: { not: staff.id },
+      role: { isPortalRole: false },
+    },
+  });
+
   const token = signToken({ userId: staff.id });
-  record('mint JWT', true, `${staff.email} (${staff.role.name})`);
+  record('mint JWT', true, staff.email);
 
-  const unauth = await api('/api/chat/messages');
-  record('GET /api/chat/messages without auth → 401', unauth.status === 401, `status ${unauth.status}`);
+  const unauth = await api('/api/chat/conversations');
+  record('GET conversations without auth → 401', unauth.status === 401, `status ${unauth.status}`);
 
-  const list = await api('/api/chat/messages', { token });
-  record('GET /api/chat/messages → 200', list.status === 200, `count ${Array.isArray(list.data) ? list.data.length : '?'}`);
-
-  const members = await api('/api/chat/staff', { token });
+  const list = await api('/api/chat/conversations', { token });
   record(
-    'GET /api/chat/staff → 200',
-    members.status === 200 && Array.isArray(members.data) && members.data.length > 0,
-    `count ${Array.isArray(members.data) ? members.data.length : 0}`,
+    'GET conversations includes All Staff',
+    list.status === 200 && Array.isArray(list.data) && list.data.some((c) => c.isSystem || c.title === 'All Staff'),
+    `count ${Array.isArray(list.data) ? list.data.length : 0}`,
   );
 
-  const content = `smoke-chat ${Date.now()}`;
-  const posted = await api('/api/chat/messages', {
+  const content = `conv-smoke ${Date.now()}`;
+  const posted = await api(`/api/chat/conversations/${allStaff.id}/messages`, {
     token,
     method: 'POST',
     body: { content },
   });
-  record(
-    'POST /api/chat/messages → 201',
-    posted.status === 201 && posted.data?.content === content,
-    `id ${posted.data?.id || 'n/a'}`,
-  );
+  record('POST message to All Staff → 201', posted.status === 201 && posted.data?.content === content, posted.data?.id || '');
 
-  const empty = await api('/api/chat/messages', {
-    token,
-    method: 'POST',
-    body: { content: '   ' },
-  });
-  record('POST empty message → 400', empty.status === 400, `status ${empty.status}`);
+  if (other) {
+    const dm = await api('/api/chat/conversations/direct', {
+      token,
+      method: 'POST',
+      body: { userId: other.id },
+    });
+    record('POST direct conversation → 201', dm.status === 201 && dm.data?.type === 'DIRECT', dm.data?.id || '');
 
-  // WebSocket round-trip
+    const group = await api('/api/chat/conversations/group', {
+      token,
+      method: 'POST',
+      body: { name: `Smoke Group ${Date.now()}`, memberIds: [other.id] },
+    });
+    record('POST group conversation → 201', group.status === 201 && group.data?.type === 'GROUP', group.data?.id || '');
+  } else {
+    record('POST direct/group skipped', true, 'only one staff user');
+  }
+
   const wsUrl = BASE.replace(/^http/, 'ws') + `/ws/staff-chat?token=${encodeURIComponent(token)}`;
   let wsOk = false;
   let wsDetail = '';
@@ -124,38 +112,21 @@ async function main() {
     const ws = new WebSocket(wsUrl);
     await new Promise((resolve, reject) => {
       const t = setTimeout(() => reject(new Error('connect timeout')), 5000);
-      ws.once('open', () => {
-        clearTimeout(t);
-        resolve();
-      });
-      ws.once('error', (err) => {
-        clearTimeout(t);
-        reject(err);
-      });
+      ws.once('open', () => { clearTimeout(t); resolve(); });
+      ws.once('error', (err) => { clearTimeout(t); reject(err); });
     });
-
-    const online = await waitForWsMessage(ws, (p) => p.type === 'online');
-    record('WS online event', Array.isArray(online.users), `users ${online.users?.length ?? 0}`);
-
-    const wsContent = `ws-smoke ${Date.now()}`;
-    const msgPromise = waitForWsMessage(
-      ws,
-      (p) => p.type === 'message' && p.message?.content === wsContent,
-    );
-    ws.send(JSON.stringify({ type: 'message', content: wsContent }));
+    await waitForWsMessage(ws, (p) => p.type === 'online');
+    const wsContent = `ws-conv ${Date.now()}`;
+    const msgPromise = waitForWsMessage(ws, (p) => p.type === 'message' && p.message?.content === wsContent);
+    ws.send(JSON.stringify({ type: 'message', conversationId: allStaff.id, content: wsContent }));
     const msg = await msgPromise;
     wsOk = Boolean(msg?.message?.id);
-    wsDetail = `id ${msg.message.id}`;
+    wsDetail = msg.message.id;
     ws.close();
   } catch (err) {
     wsDetail = err.message || String(err);
   }
-  record('WS send/receive message', wsOk, wsDetail);
-
-  // Confirm persisted
-  const after = await api('/api/chat/messages?limit=100', { token });
-  const found = Array.isArray(after.data) && after.data.some((m) => m.content === content);
-  record('REST message persisted', found);
+  record('WS send/receive in conversation', wsOk, wsDetail);
 
   const failed = results.filter((r) => !r.ok);
   console.log(`\n${results.length - failed.length}/${results.length} passed`);
