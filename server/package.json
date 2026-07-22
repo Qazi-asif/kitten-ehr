@@ -14,6 +14,8 @@
     "db:seed": "node prisma/seed.js",
     "db:clear": "node prisma/clearTestData.js",
     "db:sync-email": "node scripts/sync-email-module.js",
+    "db:sync-permissions": "node scripts/sync-permissions.mjs",
+    "qa:rbac-smoke": "node scripts/smoke-rbac-matrix.mjs http://127.0.0.1:5000",
     "db:studio": "prisma studio",
     "qa": "node scripts/qa-test.js"
   },

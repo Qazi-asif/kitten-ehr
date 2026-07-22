@@ -210,7 +210,16 @@ app.use('/api/public/donations', donationLimiter);
 // spike Hostinger RAM. File uploads still go through multer (5mb/file).
 app.use(express.json({ limit: '2mb' }));
 
-app.use('/uploads', express.static(getUploadRoot(), { fallthrough: true }));
+// Application uploads are sensitive (IDs, forms). Never serve them anonymously.
+// Staff/portal must use authenticated API download paths (Phase 2.3 expands this).
+// Kitten photo paths under /uploads/kittens remain reachable so public photo
+// redirects keep working until signed-URL migration.
+app.use('/uploads/applications', (req, res) => {
+  res.status(401).json({ error: 'Authentication required' });
+});
+
+// fallthrough:false → missing files 404 instead of leaking into the SPA shell.
+app.use('/uploads', express.static(getUploadRoot(), { fallthrough: false }));
 
 let spec = {
   openapi: '3.0.0',

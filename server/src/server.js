@@ -23,6 +23,16 @@ if (!process.env.JWT_SECRET?.trim()) {
 }
 
 const { default: app } = await import('./app.js');
+const { syncPermissionsFromDefaults } = await import('./utils/syncPermissions.js');
+
+try {
+  const result = await syncPermissionsFromDefaults();
+  console.log(
+    `[permissions] Synced ${result.permissionCount} keys for ${result.roleCount} default roles`,
+  );
+} catch (err) {
+  console.error('[permissions] Sync failed (continuing boot):', err.message || err);
+}
 
 const PORT = process.env.PORT || 5000;
 

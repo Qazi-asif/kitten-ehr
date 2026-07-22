@@ -30,3 +30,7 @@ export function setCachedAuth(userId, data) {
 export function clearCachedAuth(userId) {
   cache.delete(userId);
 }
+
+export function clearAllCachedAuth() {
+  cache.clear();
+}

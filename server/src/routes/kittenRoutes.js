@@ -72,92 +72,14 @@ const router = Router();
  *                   type: string
  *                   example: Failed to fetch kittens
  */
-router.get('/', getAllKittens);
-
-/**
- * @swagger
- * /api/kittens:
- *   post:
- *     summary: Create a new kitten
- *     description: Adds a new kitten to the foster system
- *     tags:
- *       - Kittens
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - name
- *               - status
- *               - age
- *               - breed
- *             properties:
- *               name:
- *                 type: string
- *                 example: Nugget
- *               status:
- *                 type: string
- *                 example: In Foster Care
- *               age:
- *                 type: string
- *                 example: 10 weeks
- *               breed:
- *                 type: string
- *                 example: Domestic Shorthair
- *               litterId:
- *                 type: integer
- *                 example: 1
- *                 description: Optional litter to assign this kitten to
- *               fosterId:
- *                 type: integer
- *                 example: 1
- *                 description: Optional foster home to assign this kitten to
- *     responses:
- *       201:
- *         description: Kitten created successfully
- *       400:
- *         description: Missing required fields or litter not found
- */
-router.post('/', createKitten);
-
-/**
- * @swagger
- * /api/kittens/dashboard/stats:
- *   get:
- *     summary: Get dashboard statistics
- *     description: Returns kitten and foster counts for the admin dashboard
- *     tags:
- *       - Kittens
- *     responses:
- *       200:
- *         description: Dashboard stats
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 activeKittens:
- *                   type: integer
- *                   example: 127
- *                 availableForAdoption:
- *                   type: integer
- *                   example: 43
- *                 pendingAdoptions:
- *                   type: integer
- *                   example: 12
- *                 activeFosters:
- *                   type: integer
- *                   example: 38
- */
-router.get('/dashboard/stats', getDashboardStats);
-router.get('/:id/placements', getKittenPlacements);
+router.get('/', requirePermission('kittens.view'), getAllKittens);
+router.post('/', requirePermission('kittens.create'), createKitten);
+router.get('/dashboard/stats', requirePermission('dashboard.view'), getDashboardStats);
+router.get('/:id/placements', requirePermission('kittens.view'), getKittenPlacements);
 router.get('/:id/wishlists', requirePermission('kittens.view'), getKittenWishlists);
 router.post('/:id/wishlists', requirePermission('kittens.edit'), createKittenWishlist);
-router.get('/:id', getKittenById);
-
-router.patch('/:id', updateKitten);
+router.get('/:id', requirePermission('kittens.view'), getKittenById);
+router.patch('/:id', requirePermission('kittens.edit'), updateKitten);
 router.delete('/:id', requirePermission('kittens.delete'), deleteKitten);
 
 export default router;

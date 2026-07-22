@@ -278,6 +278,19 @@ export async function deleteApplicationDocument(applicationId, uploadId) {
   if (!response.ok) throw new Error(await readApiError(response, 'Failed to delete application document'));
 }
 
+/** Open an application upload via the authenticated streaming route (blob URL). */
+export async function openApplicationUploadFile(applicationId, uploadId) {
+  const response = await adminFetch(`/applications/${applicationId}/documents/${uploadId}/file`);
+  if (!response.ok) {
+    throw new Error(await readApiError(response, 'Failed to open document'));
+  }
+  const blob = await response.blob();
+  const objectUrl = URL.createObjectURL(blob);
+  window.open(objectUrl, '_blank', 'noopener,noreferrer');
+  // Revoke after the new tab has a chance to load the blob.
+  window.setTimeout(() => URL.revokeObjectURL(objectUrl), 60_000);
+}
+
 export function fetchDocuments(kittenId) {
   return adminRequest(`/kittens/${kittenId}/documents`);
 }

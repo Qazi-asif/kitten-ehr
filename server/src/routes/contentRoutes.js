@@ -8,15 +8,16 @@ import {
   markContentComplete,
   updateContent,
 } from '../controllers/contentController.js';
+import { requirePermission } from '../middleware/authMiddleware.js';
 
 const router = Router();
 
-router.get('/', getAllContent);
-router.get('/foster-checklist', getFosterChecklistContent);
-router.get('/:id', getContentById);
-router.post('/', createContent);
-router.post('/:id/complete', markContentComplete);
-router.put('/:id', updateContent);
-router.delete('/:id', deleteContent);
+router.get('/', requirePermission('content.view'), getAllContent);
+router.get('/foster-checklist', requirePermission('content.view'), getFosterChecklistContent);
+router.get('/:id', requirePermission('content.view'), getContentById);
+router.post('/', requirePermission('content.manage'), createContent);
+router.post('/:id/complete', requirePermission('content.manage'), markContentComplete);
+router.put('/:id', requirePermission('content.manage'), updateContent);
+router.delete('/:id', requirePermission('content.manage'), deleteContent);
 
 export default router;

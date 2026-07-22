@@ -233,6 +233,7 @@ function ApplicationDetailPanel({
         </div>
 
         <ApplicationDocumentsSection
+          applicationId={application.id}
           uploads={application.uploads || []}
           applicationType={application.type}
           onUpload={(payload) => onUploadDocument(application.id, payload)}

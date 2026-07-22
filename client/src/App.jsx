@@ -92,18 +92,31 @@ function App() {
 
             <Route element={<ProtectedRoute />}>
               <Route path="/admin" element={<AdminLayout />}>
-                <Route index element={<DashboardPage />} />
-                <Route path="kittens" element={<KittenListPage />} />
-                <Route path="kittens/:id" element={<KittenDetailPage />} />
-                <Route path="fosters" element={<FosterListPage />} />
-                <Route path="fosters/:id" element={<FosterDetailPage />} />
-                <Route path="litters" element={<LitterListPage />} />
-                <Route path="litters/:id" element={<LitterDetailPage />} />
-                <Route path="applications" element={<ApplicationsPage />} />
-                <Route path="onboarding" element={<OnboardingPage />} />
-                <Route path="contracts" element={<ContractsPage />} />
-                <Route path="calendar" element={<CalendarPage />} />
+                <Route element={<ProtectedRoute permission="dashboard.view" />}>
+                  <Route index element={<DashboardPage />} />
+                </Route>                <Route element={<ProtectedRoute permission="kittens.view" />}>
+                  <Route path="kittens" element={<KittenListPage />} />
+                  <Route path="kittens/:id" element={<KittenDetailPage />} />
+                </Route>
+                <Route element={<ProtectedRoute permission="fosters.view" />}>
+                  <Route path="fosters" element={<FosterListPage />} />
+                  <Route path="fosters/:id" element={<FosterDetailPage />} />
+                </Route>
+                <Route element={<ProtectedRoute permission="litters.view" />}>
+                  <Route path="litters" element={<LitterListPage />} />
+                  <Route path="litters/:id" element={<LitterDetailPage />} />
+                </Route>
+                <Route element={<ProtectedRoute permission="applications.view" />}>
+                  <Route path="applications" element={<ApplicationsPage />} />
+                </Route>
+                <Route element={<ProtectedRoute permission="onboarding.view" />}>
+                  <Route path="onboarding" element={<OnboardingPage />} />
+                </Route>
+                <Route element={<ProtectedRoute permission="contracts.view" />}>
+                  <Route path="contracts" element={<ContractsPage />} />
+                </Route>
                 <Route element={<ProtectedRoute permission="events.view" />}>
+                  <Route path="calendar" element={<CalendarPage />} />
                   <Route path="marketing" element={<MarketingPage />} />
                 </Route>
                 <Route element={<ProtectedRoute permission="content.view" />}>
@@ -116,8 +129,12 @@ function App() {
                   <Route path="finance" element={<FinancePage />} />
                   <Route path="donations" element={<FinancePage />} />
                 </Route>
-                <Route path="settings" element={<SettingsPage />} />
-                <Route path="emails" element={<EmailTemplatesPage />} />
+                <Route element={<ProtectedRoute anyPermission={['settings.manage', 'users.view', 'roles.manage']} />}>
+                  <Route path="settings" element={<SettingsPage />} />
+                </Route>
+                <Route element={<ProtectedRoute permission="emails.view" />}>
+                  <Route path="emails" element={<EmailTemplatesPage />} />
+                </Route>
                 <Route path="*" element={<Navigate to="/admin" replace />} />
               </Route>
             </Route>

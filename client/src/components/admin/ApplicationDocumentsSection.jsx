@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { Eye, Trash2, Upload } from 'lucide-react';
-import { getFileUrl } from '../../services/api';
+import { openApplicationUploadFile } from '../../services/api';
 
 const MAX_FILE_BYTES = 5 * 1024 * 1024;
 const ACCEPTED_TYPES = '.pdf,.jpg,.jpeg,.png,.webp,.gif';
@@ -20,6 +20,7 @@ const ADOPTION_DOC_LABELS = [
 ];
 
 function ApplicationDocumentsSection({
+  applicationId,
   uploads = [],
   applicationType,
   onUpload,
@@ -31,6 +32,7 @@ function ApplicationDocumentsSection({
   const [file, setFile] = useState(null);
   const [docLabel, setDocLabel] = useState('');
   const [error, setError] = useState('');
+  const [openingId, setOpeningId] = useState(null);
 
   const labelOptions = applicationType === 'Foster' ? FOSTER_DOC_LABELS : ADOPTION_DOC_LABELS;
 
@@ -63,6 +65,22 @@ function ApplicationDocumentsSection({
       if (inputRef.current) inputRef.current.value = '';
     } catch (uploadError) {
       setError(uploadError.message || 'Upload failed.');
+    }
+  }
+
+  async function handleView(uploadId) {
+    if (!applicationId) {
+      setError('Missing application id.');
+      return;
+    }
+    setOpeningId(uploadId);
+    setError('');
+    try {
+      await openApplicationUploadFile(applicationId, uploadId);
+    } catch (viewError) {
+      setError(viewError.message || 'Failed to open document.');
+    } finally {
+      setOpeningId(null);
     }
   }
 
@@ -128,7 +146,6 @@ function ApplicationDocumentsSection({
       ) : (
         <ul className="mt-4 divide-y divide-gray-100 rounded-lg border border-gray-100 bg-white">
           {uploads.map((upload) => {
-            const fileUrl = getFileUrl(upload.fileUrl);
             const displayName = upload.fileName || upload.docLabel || 'Document';
 
             return (
@@ -144,11 +161,12 @@ function ApplicationDocumentsSection({
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
-                    onClick={() => window.open(fileUrl, '_blank', 'noopener,noreferrer')}
-                    className="inline-flex items-center gap-1 rounded-lg border border-gray-200 px-2.5 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-100"
+                    onClick={() => handleView(upload.id)}
+                    disabled={openingId === upload.id}
+                    className="inline-flex items-center gap-1 rounded-lg border border-gray-200 px-2.5 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-100 disabled:opacity-60"
                   >
                     <Eye className="h-3.5 w-3.5" />
-                    View
+                    {openingId === upload.id ? 'Opening...' : 'View'}
                   </button>
                   <button
                     type="button"

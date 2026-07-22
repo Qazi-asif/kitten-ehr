@@ -8,14 +8,15 @@ import {
   uploadPhoto,
 } from '../controllers/documentController.js';
 import { upload } from '../middleware/uploadMiddleware.js';
+import { requirePermission } from '../middleware/authMiddleware.js';
 
 const router = Router({ mergeParams: true });
 
-router.get('/photos', getPhotosByKitten);
-router.post('/photos', upload.single('file'), uploadPhoto);
-router.patch('/:id/set-primary', setPrimaryPhoto);
-router.get('/', getDocumentsByKitten);
-router.post('/', upload.single('file'), uploadDocument);
-router.delete('/:id', deleteDocument);
+router.get('/photos', requirePermission('documents.view'), getPhotosByKitten);
+router.post('/photos', requirePermission('documents.manage'), upload.single('file'), uploadPhoto);
+router.patch('/:id/set-primary', requirePermission('documents.manage'), setPrimaryPhoto);
+router.get('/', requirePermission('documents.view'), getDocumentsByKitten);
+router.post('/', requirePermission('documents.manage'), upload.single('file'), uploadDocument);
+router.delete('/:id', requirePermission('documents.manage'), deleteDocument);
 
 export default router;

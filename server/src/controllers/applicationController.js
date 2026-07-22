@@ -7,7 +7,7 @@ import {
 import { sendApplicationReceivedEmails, sendApplicationStatusChangedEmail } from '../services/emailService.js';
 import { APPLICATION_REVIEW_STATUSES } from '../constants/emailTemplates.js';
 import { validateUploadedFile } from '../utils/fileValidation.js';
-import { persistApplicationFile } from '../utils/fileStorage.js';
+import { persistApplicationFile, isStoredFileUrl, resolveStoredFileAbsolutePath } from '../utils/fileStorage.js';
 import { parseApplicationFormData } from '../utils/applicationFormData.js';
 import { translateExperienceLevel, translateCapabilityFlags } from '../utils/fosterApplicationMapping.js';
 
@@ -289,6 +289,66 @@ export async function uploadApplicationDocument(req, res, next) {
     });
 
     res.status(201).json(upload);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function streamApplicationUploadFile(req, res, next) {
+  try {
+    const applicationId = Number.parseInt(req.params.id, 10);
+    const uploadId = Number.parseInt(req.params.uploadId, 10);
+
+    const upload = await prisma.applicationUpload.findFirst({
+      where: { id: uploadId, applicationId },
+    });
+
+    if (!upload) {
+      return res.status(404).json({ error: 'Upload not found' });
+    }
+
+    const fileUrl = upload.fileUrl || '';
+    const fileName = upload.fileName || 'document';
+    const contentType = upload.fileType || 'application/octet-stream';
+    const disposition = `inline; filename*=UTF-8''${encodeURIComponent(fileName)}`;
+
+    if (fileUrl.startsWith('data:')) {
+      const match = /^data:([^;,]+);base64,(.+)$/s.exec(fileUrl);
+      if (!match) {
+        return res.status(404).json({ error: 'File not found' });
+      }
+      res.setHeader('Content-Type', match[1] || contentType);
+      res.setHeader('Content-Disposition', disposition);
+      res.setHeader('Cache-Control', 'private, no-store');
+      return res.send(Buffer.from(match[2], 'base64'));
+    }
+
+    if (isStoredFileUrl(fileUrl)) {
+      const absolutePath = resolveStoredFileAbsolutePath(fileUrl);
+      if (!absolutePath) {
+        return res.status(404).json({ error: 'File not found' });
+      }
+      return res.sendFile(absolutePath, {
+        headers: {
+          'Content-Type': contentType,
+          'Content-Disposition': disposition,
+          'Cache-Control': 'private, no-store',
+        },
+      }, (err) => {
+        if (err) {
+          if (!res.headersSent) {
+            res.status(404).json({ error: 'File not found' });
+          }
+        }
+      });
+    }
+
+    if (/^https?:\/\//i.test(fileUrl)) {
+      res.setHeader('Cache-Control', 'private, no-store');
+      return res.redirect(302, fileUrl);
+    }
+
+    return res.status(404).json({ error: 'File not found' });
   } catch (error) {
     next(error);
   }

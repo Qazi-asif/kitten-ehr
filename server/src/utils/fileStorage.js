@@ -40,6 +40,18 @@ export function isStoredFileUrl(url) {
   return typeof url === 'string' && url.startsWith('/uploads/');
 }
 
+/** Resolve a /uploads/... URL to an absolute path confined under UPLOAD_ROOT, or null. */
+export function resolveStoredFileAbsolutePath(fileUrl) {
+  if (!isStoredFileUrl(fileUrl)) return null;
+  const relative = fileUrl.replace(/^\/uploads\//, '');
+  const absolutePath = path.resolve(UPLOAD_ROOT, relative);
+  const rootResolved = path.resolve(UPLOAD_ROOT);
+  if (!absolutePath.startsWith(rootResolved + path.sep) && absolutePath !== rootResolved) {
+    return null;
+  }
+  return absolutePath;
+}
+
 export function isManagedFileUrl(url) {
   return isStoredFileUrl(url) || isObjectStorageUrl(url);
 }
