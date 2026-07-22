@@ -1,2 +1,2 @@
 node_modules/
-dist/
+# dist/ is committed so Hostinger Git deploy serves the built SPA without a build step.
