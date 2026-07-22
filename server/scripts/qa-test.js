@@ -156,14 +156,14 @@ async function run() {
       body: {
         stripeLink: 'https://buy.stripe.com/test',
         paypalLink: 'https://paypal.me/pawsitive',
-        venmoHandle: '@Pawsitive-Rescue',
+        venmoHandle: '@pawsitivetransformationsca',
       },
     });
     if (
       response.ok
       && data.stripeLink === 'https://buy.stripe.com/test'
       && data.paypalLink === 'https://paypal.me/pawsitive'
-      && data.venmoHandle === '@Pawsitive-Rescue'
+      && data.venmoHandle === '@pawsitivetransformationsca'
     ) {
       pass('PATCH /api/settings saves donation payment links');
     } else {
