@@ -25,6 +25,13 @@ const statCards = [
   { key: 'euthanasiaPulls', label: 'Euthanasia-Pull Rescues', icon: HeartHandshake, color: 'text-rose-600 bg-rose-50', format: 'number' },
 ];
 
+const SUMMARY_ALERT_STYLES = {
+  error: 'bg-rose-50 text-rose-800',
+  warning: 'bg-amber-50 text-amber-800',
+  success: 'bg-emerald-50 text-emerald-800',
+  info: 'bg-blue-50 text-blue-800',
+};
+
 const STATUS_COLORS = {
   'Available for Adoption': '#10B981',
   'In Foster Care': '#F97316',
@@ -181,6 +188,7 @@ function DashboardPage() {
   );
 
   const medicalConcerns = metrics?.medicalConcerns ?? [];
+  const summaryAlerts = metrics?.summaryAlerts ?? [];
 
   const reminderGroups = useMemo(
     () => REMINDER_GROUPS
@@ -217,6 +225,22 @@ function DashboardPage() {
           </div>
         ))}
       </div>
+
+      {!loading && summaryAlerts.length > 0 && (
+        <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+          <h2 className="text-base font-bold text-slate-900">Insights</h2>
+          <ul className="mt-3 space-y-2">
+            {summaryAlerts.map((alert, index) => (
+              <li
+                key={index}
+                className={`rounded-lg px-3 py-2 text-sm font-medium ${SUMMARY_ALERT_STYLES[alert.severity] || SUMMARY_ALERT_STYLES.info}`}
+              >
+                {alert.text}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
         <h2 className="text-base font-bold text-slate-900">Upcoming Reminders</h2>

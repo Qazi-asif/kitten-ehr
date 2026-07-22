@@ -49,6 +49,7 @@ export function fetchKittens(params) {
   if (params.status && params.status !== 'All') searchParams.set('status', params.status);
   if (params.fosterId) searchParams.set('fosterId', String(params.fosterId));
   if (params.litterId) searchParams.set('litterId', String(params.litterId));
+  if (params.sort) searchParams.set('sort', params.sort);
 
   const query = searchParams.toString();
   return adminFetch(`/kittens${query ? `?${query}` : ''}`).then(async (response) => {

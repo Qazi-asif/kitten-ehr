@@ -64,18 +64,26 @@ function getPrefilledKittenInterest(params) {
   return params.get('kitten') || params.get('name') || params.get('kittenId') || params.get('id') || '';
 }
 
-function ApplicationForm({ defaultType = 'Adoption', lockType = true, allowPhotoUpload = false, maxPhotos = 3 }) {
+function ApplicationForm({
+  defaultType = 'Adoption',
+  lockType = true,
+  allowPhotoUpload = false,
+  maxPhotos = 3,
+  availableKittens = [],
+}) {
   const [params] = useSearchParams();
   const prefilledKitten = getPrefilledKittenInterest(params);
   const lockedKitten = Boolean(prefilledKitten);
   const prefilledKittenId = Number.parseInt(params.get('kittenId'), 10) || undefined;
   const applicationType = defaultType === 'Foster' ? 'Foster' : 'Adoption';
+  const useKittenDropdown = applicationType === 'Adoption' && !lockedKitten;
   const copy = FORM_COPY[applicationType];
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [photoFiles, setPhotoFiles] = useState([]);
   const [photoPreviews, setPhotoPreviews] = useState([]);
+  const [selectedKittenId, setSelectedKittenId] = useState(prefilledKittenId);
   const [form, setForm] = useState({
     fullName: '',
     email: '',
@@ -94,6 +102,19 @@ function ApplicationForm({ defaultType = 'Adoption', lockType = true, allowPhoto
     unexpectedStopPlan: '',
     message: '',
   });
+
+  function handleKittenSelect(e) {
+    const raw = e.target.value;
+    const id = Number.parseInt(raw, 10);
+    if (!raw || !Number.isInteger(id)) {
+      setSelectedKittenId(undefined);
+      setForm((prev) => ({ ...prev, kittenOfInterest: '' }));
+      return;
+    }
+    const kitten = availableKittens.find((item) => item.id === id);
+    setSelectedKittenId(id);
+    setForm((prev) => ({ ...prev, kittenOfInterest: kitten?.name || '' }));
+  }
 
   function handleChange(e) {
     const { name, value, type, checked } = e.target;
@@ -178,7 +199,12 @@ function ApplicationForm({ defaultType = 'Adoption', lockType = true, allowPhoto
         payload.unexpectedStopPlan = form.unexpectedStopPlan;
       }
 
-      await submitApplication(applicationType, payload, allowPhotoUpload ? photoFiles : [], prefilledKittenId);
+      await submitApplication(
+        applicationType,
+        payload,
+        allowPhotoUpload ? photoFiles : [],
+        selectedKittenId || prefilledKittenId,
+      );
       setSubmitted(true);
     } catch (err) {
       setError(err.message || 'Failed to submit application');
@@ -261,15 +287,34 @@ function ApplicationForm({ defaultType = 'Adoption', lockType = true, allowPhoto
           </label>
           
           <label className="block">
-            <span className="mb-2 block text-sm font-semibold text-slate-800">Kitten(s) of Interest</span>
-            <input
-              name="kittenOfInterest"
-              value={form.kittenOfInterest}
-              onChange={handleChange}
-              disabled={lockedKitten}
-              placeholder={applicationType === 'Foster' ? 'Specific kitten (optional)' : 'Which kitten?'}
-              className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm disabled:bg-slate-50 disabled:text-slate-500 focus:border-brand focus:ring-brand"
-            />
+            <span className="mb-2 block text-sm font-semibold text-slate-800">Kitten of interest</span>
+            {useKittenDropdown ? (
+              <select
+                name="kittenOfInterest"
+                value={selectedKittenId ? String(selectedKittenId) : ''}
+                onChange={handleKittenSelect}
+                className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm focus:border-brand focus:ring-brand"
+              >
+                <option value="">
+                  {availableKittens.length === 0 ? 'No kittens currently listed' : 'Select a kitten (optional)'}
+                </option>
+                {availableKittens.map((kitten) => (
+                  <option key={kitten.id} value={kitten.id}>
+                    {kitten.name}
+                    {kitten.status ? ` — ${kitten.status}` : ''}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <input
+                name="kittenOfInterest"
+                value={form.kittenOfInterest}
+                onChange={handleChange}
+                disabled={lockedKitten}
+                placeholder={applicationType === 'Foster' ? 'Specific kitten (optional)' : 'Which kitten?'}
+                className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm disabled:bg-slate-50 disabled:text-slate-500 focus:border-brand focus:ring-brand"
+              />
+            )}
             {lockedKitten && (
               <p className="mt-2 text-xs font-medium text-brand">✓ Pre-filled from the kitten profile</p>
             )}

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { createMarketingPost, fetchSocialPosts } from '../../services/marketingApi';
 
@@ -121,6 +122,16 @@ function MarketingPage() {
         <p className="mt-1 text-sm text-slate-600">
           Draft and schedule social posts across Facebook, Instagram, X, and TikTok.
         </p>
+      </div>
+
+      <div className="mb-4 rounded-lg border border-brand/20 bg-brand-light/60 px-4 py-3 text-sm text-slate-700">
+        <span className="font-semibold text-brand">AI Copywriter:</span>{' '}
+        Generate Groq-backed kitten captions from a kitten profile →{' '}
+        <span className="font-semibold">Publishing &amp; Social</span> →{' '}
+        <span className="font-semibold">Generate AI Caption</span>.{' '}
+        <Link to="/admin/kittens" className="font-semibold text-brand hover:underline">
+          Open Kittens
+        </Link>
       </div>
 
       {error && (

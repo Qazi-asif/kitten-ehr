@@ -15,6 +15,15 @@ import {
 import { formatKittenAgeShort } from '../utils/kittenAge';
 
 const STATUS_OPTIONS = ['All', 'In Foster Care', 'Available for Adoption', 'Adopted', 'Medical Hold', 'Transferred', 'Deceased'];
+const SORT_OPTIONS = [
+  { value: '', label: 'Sort: Recent intake' },
+  { value: 'name_asc', label: 'Name (A–Z)' },
+  { value: 'name_desc', label: 'Name (Z–A)' },
+  { value: 'age_desc', label: 'Age (youngest first)' },
+  { value: 'age_asc', label: 'Age (oldest first)' },
+  { value: 'gender_asc', label: 'Gender (A–Z)' },
+  { value: 'gender_desc', label: 'Gender (Z–A)' },
+];
 const PAGE_SIZE = 25;
 
 function KittensPage() {
@@ -31,6 +40,7 @@ function KittensPage() {
   const [statusFilter, setStatusFilter] = useState('All');
   const [fosterFilter, setFosterFilter] = useState('');
   const [litterFilter, setLitterFilter] = useState('');
+  const [sort, setSort] = useState('');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
@@ -47,6 +57,7 @@ function KittensPage() {
         status: statusFilter,
         fosterId: fosterFilter || undefined,
         litterId: litterFilter || undefined,
+        sort: listTab === 'recent' ? undefined : (sort || undefined),
       });
       setKittens(data.items ?? []);
       setTotal(data.total ?? 0);
@@ -57,7 +68,7 @@ function KittensPage() {
     } finally {
       setLoading(false);
     }
-  }, [page, listTab, search, statusFilter, fosterFilter, litterFilter]);
+  }, [page, listTab, search, statusFilter, fosterFilter, litterFilter, sort]);
 
   useEffect(() => {
     loadKittens();
@@ -73,7 +84,7 @@ function KittensPage() {
 
   useEffect(() => {
     setPage(1);
-  }, [search, statusFilter, fosterFilter, litterFilter, listTab]);
+  }, [search, statusFilter, fosterFilter, litterFilter, listTab, sort]);
 
   function closeAddForm() {
     searchParams.delete('add');
@@ -174,7 +185,7 @@ function KittensPage() {
       />
 
       <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-5">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-6">
           <label className="relative lg:col-span-2">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
             <input
@@ -200,6 +211,17 @@ function KittensPage() {
             <option value="">Litter group</option>
             {litters.map((l) => (
               <option key={l.id} value={l.id}>{l.name}</option>
+            ))}
+          </select>
+          <select
+            value={listTab === 'recent' ? '' : sort}
+            onChange={(e) => setSort(e.target.value)}
+            disabled={listTab === 'recent'}
+            className="rounded-lg border border-slate-200 px-3 py-2 text-sm disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
+            aria-label="Sort kittens"
+          >
+            {SORT_OPTIONS.map((option) => (
+              <option key={option.value || 'default'} value={option.value}>{option.label}</option>
             ))}
           </select>
         </div>

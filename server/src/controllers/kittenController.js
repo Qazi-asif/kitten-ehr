@@ -31,14 +31,15 @@ export async function getAllKittens(req, res) {
       || req.query.search
       || (req.query.status && req.query.status !== 'All')
       || req.query.fosterId
-      || req.query.litterId;
+      || req.query.litterId
+      || req.query.sort;
 
     const where = buildKittenListWhere(req.query);
 
     if (!usePagination) {
       const kittens = await prisma.kitten.findMany({
         where,
-        orderBy: { id: 'asc' },
+        orderBy: buildKittenListOrderBy(req.query, { fallback: [{ id: 'asc' }] }),
         select: kittenListSelect,
       });
       const enriched = await enrichKittensWithPhotos(kittens);
@@ -55,7 +56,9 @@ export async function getAllKittens(req, res) {
         where,
         skip,
         take: limit,
-        orderBy: [{ intakeDate: 'desc' }, { id: 'desc' }],
+        orderBy: buildKittenListOrderBy(req.query, {
+          fallback: [{ intakeDate: 'desc' }, { id: 'desc' }],
+        }),
         select: kittenListSelect,
       }),
     ]);
@@ -72,6 +75,35 @@ export async function getAllKittens(req, res) {
   } catch (error) {
     console.error('Failed to fetch kittens:', error);
     res.status(500).json({ error: 'Failed to fetch kittens' });
+  }
+}
+
+function buildKittenListOrderBy(query, { fallback } = {}) {
+  const sort = typeof query.sort === 'string' ? query.sort.trim().toLowerCase() : '';
+
+  switch (sort) {
+    case 'name':
+    case 'name_asc':
+      return [{ name: 'asc' }, { id: 'asc' }];
+    case 'name_desc':
+      return [{ name: 'desc' }, { id: 'desc' }];
+    case 'age':
+    case 'age_asc':
+      // Oldest first (earliest date of birth)
+      return [{ dateOfBirth: 'asc' }, { id: 'asc' }];
+    case 'age_desc':
+      // Youngest first (latest date of birth)
+      return [{ dateOfBirth: 'desc' }, { id: 'desc' }];
+    case 'gender':
+    case 'gender_asc':
+    case 'sex':
+    case 'sex_asc':
+      return [{ sex: 'asc' }, { name: 'asc' }, { id: 'asc' }];
+    case 'gender_desc':
+    case 'sex_desc':
+      return [{ sex: 'desc' }, { name: 'asc' }, { id: 'asc' }];
+    default:
+      return fallback || [{ intakeDate: 'desc' }, { id: 'desc' }];
   }
 }
 

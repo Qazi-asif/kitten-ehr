@@ -249,6 +249,8 @@ export async function getDashboardMetrics(_req, res, next) {
       euthanasiaPulls,
       activeProtocols,
       medicalConcerns: insights.medicalConcerns,
+      // Avoid key `alerts` — `...alerts` below is getDashboardAlerts() reminder lists.
+      summaryAlerts: insights.alerts,
       statusCounts,
       recentIntakes: recentIntakes.map(serializeDashboardKitten),
       recentAdoptions: recentAdoptions.map(serializeDashboardKitten),

@@ -52,7 +52,11 @@ function HomePage() {
   }, []);
 
   const displayCats = featured.length > 0
-    ? featured.slice(0, 4).map((c) => ({ image: getKittenImageUrl(c, { allowFallback: true }) }))
+    ? featured.slice(0, 4).map((c) => ({
+      id: c.id,
+      name: c.name,
+      image: getKittenImageUrl(c, { allowFallback: true }),
+    }))
     : [
       { image: '/images/21.png' },
       { image: '/images/22.png' },
@@ -194,11 +198,29 @@ function HomePage() {
               Meet the Cats
             </h2>
             <div className="grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-4">
-              {displayCats.map((cat, idx) => (
-                <div key={idx} className="aspect-[3/4] overflow-hidden rounded-lg border border-slate-200 bg-slate-50 shadow-sm">
-                  <img src={cat.image} alt="Featured cat" className="h-full w-full object-cover" />
-                </div>
-              ))}
+              {displayCats.map((cat, idx) => {
+                const image = (
+                  <img
+                    src={cat.image}
+                    alt={cat.name ? `${cat.name}` : 'Featured cat'}
+                    className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                  />
+                );
+                return (
+                  <div
+                    key={cat.id ?? idx}
+                    className="aspect-[3/4] overflow-hidden rounded-lg border border-slate-200 bg-slate-50 shadow-sm"
+                  >
+                    {cat.id ? (
+                      <Link to={`/kittens/${cat.id}`} className="block h-full w-full" aria-label={`View ${cat.name || 'kitten'} profile`}>
+                        {image}
+                      </Link>
+                    ) : (
+                      image
+                    )}
+                  </div>
+                );
+              })}
             </div>
             <Link
               to="/available"

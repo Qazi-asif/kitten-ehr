@@ -1,6 +1,24 @@
+import { useEffect, useState } from 'react';
 import ApplicationForm from '../../components/ApplicationForm';
+import { fetchPublicKittens } from '../../services/publicApi';
 
 function AdoptionFormPage() {
+  const [availableKittens, setAvailableKittens] = useState([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchPublicKittens()
+      .then((data) => {
+        if (!cancelled) setAvailableKittens(Array.isArray(data) ? data : []);
+      })
+      .catch(() => {
+        if (!cancelled) setAvailableKittens([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <div className="bg-slate-50 min-h-screen pb-12">
       {/* Custom Hero with Decorative Elements */}
@@ -48,7 +66,7 @@ function AdoptionFormPage() {
       </div>
       
       <div className="-mt-8 relative z-20">
-        <ApplicationForm defaultType="Adoption" lockType />
+        <ApplicationForm defaultType="Adoption" lockType availableKittens={availableKittens} />
       </div>
     </div>
   );

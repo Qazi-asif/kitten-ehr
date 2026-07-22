@@ -311,6 +311,20 @@ app.use((err, _req, res, _next) => {
     return res.status(503).json({ error: err.message || 'Service unavailable' });
   }
 
+  // Prisma query-engine panics (e.g. "timer has gone away" on Hostinger when
+  // process/thread limits are hit) leave the client permanently dead. Keep
+  // serving 500s forever would lock users out; ask Passenger to restart.
+  const isPrismaPanic = err?.name === 'PrismaClientRustPanicError'
+    || /PrismaClientRustPanicError|timer has gone away|PANIC:/i.test(String(err?.message || err || ''));
+  if (isPrismaPanic) {
+    res.status(503).json({ error: 'Database engine restarting. Please try again in a moment.' });
+    setTimeout(() => {
+      console.error('[FATAL] Prisma engine panic — exiting so the host can restart the process');
+      process.exit(1);
+    }, 50);
+    return undefined;
+  }
+
   if (err.code?.startsWith('P')) {
     const hint = err.message?.includes('does not exist')
       ? ' Database schema may be out of date — run: cd server && npx prisma db push'

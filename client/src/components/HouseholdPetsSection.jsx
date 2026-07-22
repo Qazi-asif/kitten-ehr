@@ -67,7 +67,7 @@ function HouseholdPetsSection({ pets, onChange }) {
                     value={pet.species}
                     onChange={(e) => updatePet(index, 'species', e.target.value)}
                     required
-                    placeholder="e.g. Cat, Dog"
+                    placeholder="Cat"
                     className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
                   />
                 </label>

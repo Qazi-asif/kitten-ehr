@@ -335,7 +335,7 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
                   className="inline-flex items-center gap-2 rounded-lg border border-brand/20 bg-brand-light px-4 py-2 text-sm font-semibold text-brand hover:bg-brand/10 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   <Sparkles className="h-4 w-4" />
-                  {generatingCaption ? 'Generating...' : '✨ Generate AI Caption'}
+                  {generatingCaption ? 'Generating...' : 'AI Copywriter — Generate Caption'}
                 </button>
               )}
             </div>
