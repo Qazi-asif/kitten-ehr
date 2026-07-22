@@ -2,19 +2,24 @@ export const CONTENT_CATEGORY_EDUCATION = 'education';
 export const CONTENT_CATEGORY_SUCCESS_STORY = 'success-story';
 
 export const EDUCATION_CATEGORIES = [
-  { name: 'Kitten Care 101' },
-  { name: 'Colony & Feral' },
-  { name: 'Foster Education' },
-  { name: 'Toxins/Health' },
+  { name: 'General Education' },
+  { name: 'Becoming a Foster' },
+  { name: 'Kitten Care' },
+  { name: 'Colony & Feral Care' },
+  { name: 'Health & Emergency Care' },
 ];
 
 const LEGACY_CATEGORY_MAP = {
-  'Kitten Care': 'Kitten Care 101',
-  Adoption: 'Kitten Care 101',
-  Fostering: 'Foster Education',
-  'Becoming A Foster': 'Foster Education',
-  'Colony & Feral Care': 'Colony & Feral',
-  'Health & Emergencies': 'Toxins/Health',
+  'Kitten Care 101': 'Kitten Care',
+  'Kitten Care': 'Kitten Care',
+  Adoption: 'Kitten Care',
+  'Colony & Feral': 'Colony & Feral Care',
+  'Colony & Feral Care': 'Colony & Feral Care',
+  'Foster Education': 'Becoming a Foster',
+  Fostering: 'Becoming a Foster',
+  'Becoming A Foster': 'Becoming a Foster',
+  'Toxins/Health': 'Health & Emergency Care',
+  'Health & Emergencies': 'Health & Emergency Care',
 };
 
 export function normalizeEducationCategory(category = '') {

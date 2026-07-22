@@ -38,3 +38,9 @@ export async function deleteMarketingPost(id) {
   const response = await adminFetch(`/social-posts/${id}`, { method: 'DELETE' });
   if (!response.ok) throw new Error(await readApiError(response, 'Failed to delete social post'));
 }
+
+export async function publishSocialPost(id) {
+  const response = await adminFetch(`/social-posts/${id}/publish`, { method: 'POST' });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to publish social post'));
+  return response.json();
+}

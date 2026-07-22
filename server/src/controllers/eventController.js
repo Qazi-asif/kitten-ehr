@@ -6,6 +6,8 @@ import {
   isResolvablePhotoUrl,
   normalizeKittenPhotoUrl,
 } from '../utils/resolveKittenPhotoUrl.js';
+import { validateUploadedFile } from '../utils/fileValidation.js';
+import { deleteStoredFile, persistEventFile } from '../utils/fileStorage.js';
 
 function slugify(text) {
   return text
@@ -202,6 +204,7 @@ export async function getPublicEventBySlug(req, res, next) {
         endDate: true,
         location: true,
         description: true,
+        imageUrl: true,
         eventCats: {
           orderBy: { addedAt: 'asc' },
           select: {
@@ -347,10 +350,50 @@ export async function updateEvent(req, res, next) {
 export async function deleteEvent(req, res, next) {
   try {
     const id = Number.parseInt(req.params.id, 10);
+    const existing = await prisma.event.findUnique({ where: { id }, select: { imageUrl: true } });
     await prisma.event.delete({ where: { id } });
+    if (existing?.imageUrl) {
+      await deleteStoredFile(existing.imageUrl);
+    }
     res.status(204).send();
   } catch (error) {
     if (error.code === 'P2025') return res.status(404).json({ error: 'Event not found' });
+    next(error);
+  }
+}
+
+// PATCH /:id/image - separate multipart upload route (see eventRoutes.js,
+// multer memoryStorage single('image')) rather than accepting the banner on
+// create/update, so the JSON create/update payloads stay small and the
+// image pipeline can reuse the same persistEventFile/deleteStoredFile
+// pattern already used for kitten photos. Deletes the previous disk (or
+// S3/R2) file on replace so old banners never orphan on disk.
+export async function uploadEventImage(req, res, next) {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+
+    const fileCheck = validateUploadedFile(req.file);
+    if (!fileCheck.ok) {
+      return res.status(fileCheck.status).json({ error: fileCheck.error });
+    }
+    if (!req.file.mimetype?.startsWith('image/')) {
+      return res.status(400).json({ error: 'Only image files are allowed' });
+    }
+
+    const existing = await prisma.event.findUnique({ where: { id }, select: { id: true, imageUrl: true } });
+    if (!existing) return res.status(404).json({ error: 'Event not found' });
+
+    const imageUrl = await persistEventFile(id, req.file);
+
+    await prisma.event.update({ where: { id }, data: { imageUrl } });
+
+    if (existing.imageUrl) {
+      await deleteStoredFile(existing.imageUrl);
+    }
+
+    const hydrated = await fetchEventWithCats(id);
+    res.json(hydrated);
+  } catch (error) {
     next(error);
   }
 }

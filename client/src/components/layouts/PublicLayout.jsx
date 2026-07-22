@@ -36,6 +36,7 @@ const navItems = [
     ],
   },
   { label: 'Contact', path: '/contact' },
+  { label: 'Rehome a Cat', path: '/rehome' },
 ];
 
 const DEFAULT_SOCIAL = {

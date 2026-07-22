@@ -174,6 +174,11 @@ export type ActiveProtocol = $Result.DefaultSelection<Prisma.$ActiveProtocolPayl
  */
 export type ProtocolDose = $Result.DefaultSelection<Prisma.$ProtocolDosePayload>
 /**
+ * Model ActiveProtocolDrugLink
+ * 
+ */
+export type ActiveProtocolDrugLink = $Result.DefaultSelection<Prisma.$ActiveProtocolDrugLinkPayload>
+/**
  * Model Settings
  * 
  */
@@ -253,6 +258,33 @@ export const DoseStatus: {
 export type DoseStatus = (typeof DoseStatus)[keyof typeof DoseStatus]
 
 
+export const ProtocolCadence: {
+  DAILY: 'DAILY',
+  EVERY_N_DAYS: 'EVERY_N_DAYS',
+  WEEKLY: 'WEEKLY',
+  MONTHLY: 'MONTHLY'
+};
+
+export type ProtocolCadence = (typeof ProtocolCadence)[keyof typeof ProtocolCadence]
+
+
+export const ProtocolRecordType: {
+  NONE: 'NONE',
+  MEDICATION: 'MEDICATION',
+  VACCINE: 'VACCINE'
+};
+
+export type ProtocolRecordType = (typeof ProtocolRecordType)[keyof typeof ProtocolRecordType]
+
+
+export const ProtocolHealthWriteMode: {
+  PER_DOSE: 'PER_DOSE',
+  COURSE: 'COURSE'
+};
+
+export type ProtocolHealthWriteMode = (typeof ProtocolHealthWriteMode)[keyof typeof ProtocolHealthWriteMode]
+
+
 export const ContractType: {
   FOSTER: 'FOSTER',
   ADOPTION: 'ADOPTION'
@@ -310,6 +342,18 @@ export const SocialPostStatus: typeof $Enums.SocialPostStatus
 export type DoseStatus = $Enums.DoseStatus
 
 export const DoseStatus: typeof $Enums.DoseStatus
+
+export type ProtocolCadence = $Enums.ProtocolCadence
+
+export const ProtocolCadence: typeof $Enums.ProtocolCadence
+
+export type ProtocolRecordType = $Enums.ProtocolRecordType
+
+export const ProtocolRecordType: typeof $Enums.ProtocolRecordType
+
+export type ProtocolHealthWriteMode = $Enums.ProtocolHealthWriteMode
+
+export const ProtocolHealthWriteMode: typeof $Enums.ProtocolHealthWriteMode
 
 export type ContractType = $Enums.ContractType
 
@@ -764,6 +808,16 @@ export class PrismaClient<
     * ```
     */
   get protocolDose(): Prisma.ProtocolDoseDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.activeProtocolDrugLink`: Exposes CRUD operations for the **ActiveProtocolDrugLink** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ActiveProtocolDrugLinks
+    * const activeProtocolDrugLinks = await prisma.activeProtocolDrugLink.findMany()
+    * ```
+    */
+  get activeProtocolDrugLink(): Prisma.ActiveProtocolDrugLinkDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.settings`: Exposes CRUD operations for the **Settings** model.
@@ -1297,6 +1351,7 @@ export namespace Prisma {
     ProtocolDrug: 'ProtocolDrug',
     ActiveProtocol: 'ActiveProtocol',
     ProtocolDose: 'ProtocolDose',
+    ActiveProtocolDrugLink: 'ActiveProtocolDrugLink',
     Settings: 'Settings',
     EmailTemplate: 'EmailTemplate',
     EmailLog: 'EmailLog',
@@ -1321,7 +1376,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "litter" | "foster" | "kitten" | "update" | "sponsorship" | "placement" | "weightLog" | "vaccine" | "medication" | "vetAppointment" | "document" | "application" | "contractTemplate" | "contract" | "contractHouseholdAcknowledgment" | "fosterOnboarding" | "onboardingChecklist" | "applicationUpload" | "content" | "contentCompletion" | "event" | "eventRSVP" | "eventCats" | "role" | "permission" | "rolePermission" | "user" | "passwordResetToken" | "protocol" | "protocolDrug" | "activeProtocol" | "protocolDose" | "settings" | "emailTemplate" | "emailLog" | "transaction" | "wishlist" | "socialPost"
+      modelProps: "litter" | "foster" | "kitten" | "update" | "sponsorship" | "placement" | "weightLog" | "vaccine" | "medication" | "vetAppointment" | "document" | "application" | "contractTemplate" | "contract" | "contractHouseholdAcknowledgment" | "fosterOnboarding" | "onboardingChecklist" | "applicationUpload" | "content" | "contentCompletion" | "event" | "eventRSVP" | "eventCats" | "role" | "permission" | "rolePermission" | "user" | "passwordResetToken" | "protocol" | "protocolDrug" | "activeProtocol" | "protocolDose" | "activeProtocolDrugLink" | "settings" | "emailTemplate" | "emailLog" | "transaction" | "wishlist" | "socialPost"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3693,6 +3748,80 @@ export namespace Prisma {
           }
         }
       }
+      ActiveProtocolDrugLink: {
+        payload: Prisma.$ActiveProtocolDrugLinkPayload<ExtArgs>
+        fields: Prisma.ActiveProtocolDrugLinkFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ActiveProtocolDrugLinkFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveProtocolDrugLinkPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ActiveProtocolDrugLinkFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveProtocolDrugLinkPayload>
+          }
+          findFirst: {
+            args: Prisma.ActiveProtocolDrugLinkFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveProtocolDrugLinkPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ActiveProtocolDrugLinkFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveProtocolDrugLinkPayload>
+          }
+          findMany: {
+            args: Prisma.ActiveProtocolDrugLinkFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveProtocolDrugLinkPayload>[]
+          }
+          create: {
+            args: Prisma.ActiveProtocolDrugLinkCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveProtocolDrugLinkPayload>
+          }
+          createMany: {
+            args: Prisma.ActiveProtocolDrugLinkCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ActiveProtocolDrugLinkCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveProtocolDrugLinkPayload>[]
+          }
+          delete: {
+            args: Prisma.ActiveProtocolDrugLinkDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveProtocolDrugLinkPayload>
+          }
+          update: {
+            args: Prisma.ActiveProtocolDrugLinkUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveProtocolDrugLinkPayload>
+          }
+          deleteMany: {
+            args: Prisma.ActiveProtocolDrugLinkDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ActiveProtocolDrugLinkUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ActiveProtocolDrugLinkUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveProtocolDrugLinkPayload>[]
+          }
+          upsert: {
+            args: Prisma.ActiveProtocolDrugLinkUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActiveProtocolDrugLinkPayload>
+          }
+          aggregate: {
+            args: Prisma.ActiveProtocolDrugLinkAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateActiveProtocolDrugLink>
+          }
+          groupBy: {
+            args: Prisma.ActiveProtocolDrugLinkGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ActiveProtocolDrugLinkGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ActiveProtocolDrugLinkCountArgs<ExtArgs>
+            result: $Utils.Optional<ActiveProtocolDrugLinkCountAggregateOutputType> | number
+          }
+        }
+      }
       Settings: {
         payload: Prisma.$SettingsPayload<ExtArgs>
         fields: Prisma.SettingsFieldRefs
@@ -4265,6 +4394,7 @@ export namespace Prisma {
     protocolDrug?: ProtocolDrugOmit
     activeProtocol?: ActiveProtocolOmit
     protocolDose?: ProtocolDoseOmit
+    activeProtocolDrugLink?: ActiveProtocolDrugLinkOmit
     settings?: SettingsOmit
     emailTemplate?: EmailTemplateOmit
     emailLog?: EmailLogOmit
@@ -4571,6 +4701,77 @@ export namespace Prisma {
    */
   export type KittenCountOutputTypeCountEventCatsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: EventCatsWhereInput
+  }
+
+
+  /**
+   * Count Type VaccineCountOutputType
+   */
+
+  export type VaccineCountOutputType = {
+    protocolDoses: number
+  }
+
+  export type VaccineCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    protocolDoses?: boolean | VaccineCountOutputTypeCountProtocolDosesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * VaccineCountOutputType without action
+   */
+  export type VaccineCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VaccineCountOutputType
+     */
+    select?: VaccineCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * VaccineCountOutputType without action
+   */
+  export type VaccineCountOutputTypeCountProtocolDosesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProtocolDoseWhereInput
+  }
+
+
+  /**
+   * Count Type MedicationCountOutputType
+   */
+
+  export type MedicationCountOutputType = {
+    protocolDoses: number
+    protocolDrugLinks: number
+  }
+
+  export type MedicationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    protocolDoses?: boolean | MedicationCountOutputTypeCountProtocolDosesArgs
+    protocolDrugLinks?: boolean | MedicationCountOutputTypeCountProtocolDrugLinksArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * MedicationCountOutputType without action
+   */
+  export type MedicationCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MedicationCountOutputType
+     */
+    select?: MedicationCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * MedicationCountOutputType without action
+   */
+  export type MedicationCountOutputTypeCountProtocolDosesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProtocolDoseWhereInput
+  }
+
+  /**
+   * MedicationCountOutputType without action
+   */
+  export type MedicationCountOutputTypeCountProtocolDrugLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ActiveProtocolDrugLinkWhereInput
   }
 
 
@@ -4949,10 +5150,12 @@ export namespace Prisma {
 
   export type ProtocolDrugCountOutputType = {
     doses: number
+    activeProtocolDrugLinks: number
   }
 
   export type ProtocolDrugCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doses?: boolean | ProtocolDrugCountOutputTypeCountDosesArgs
+    activeProtocolDrugLinks?: boolean | ProtocolDrugCountOutputTypeCountActiveProtocolDrugLinksArgs
   }
 
   // Custom InputTypes
@@ -4973,6 +5176,13 @@ export namespace Prisma {
     where?: ProtocolDoseWhereInput
   }
 
+  /**
+   * ProtocolDrugCountOutputType without action
+   */
+  export type ProtocolDrugCountOutputTypeCountActiveProtocolDrugLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ActiveProtocolDrugLinkWhereInput
+  }
+
 
   /**
    * Count Type ActiveProtocolCountOutputType
@@ -4980,10 +5190,12 @@ export namespace Prisma {
 
   export type ActiveProtocolCountOutputType = {
     doses: number
+    drugLinks: number
   }
 
   export type ActiveProtocolCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doses?: boolean | ActiveProtocolCountOutputTypeCountDosesArgs
+    drugLinks?: boolean | ActiveProtocolCountOutputTypeCountDrugLinksArgs
   }
 
   // Custom InputTypes
@@ -5002,6 +5214,13 @@ export namespace Prisma {
    */
   export type ActiveProtocolCountOutputTypeCountDosesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ProtocolDoseWhereInput
+  }
+
+  /**
+   * ActiveProtocolCountOutputType without action
+   */
+  export type ActiveProtocolCountOutputTypeCountDrugLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ActiveProtocolDrugLinkWhereInput
   }
 
 
@@ -14080,6 +14299,8 @@ export namespace Prisma {
     administeredBy?: boolean
     notes?: boolean
     kitten?: boolean | KittenDefaultArgs<ExtArgs>
+    protocolDoses?: boolean | Vaccine$protocolDosesArgs<ExtArgs>
+    _count?: boolean | VaccineCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["vaccine"]>
 
   export type VaccineSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -14123,6 +14344,8 @@ export namespace Prisma {
   export type VaccineOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "kittenId" | "type" | "dateGiven" | "nextDueDate" | "lotNumber" | "manufacturer" | "administeredBy" | "notes", ExtArgs["result"]["vaccine"]>
   export type VaccineInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     kitten?: boolean | KittenDefaultArgs<ExtArgs>
+    protocolDoses?: boolean | Vaccine$protocolDosesArgs<ExtArgs>
+    _count?: boolean | VaccineCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type VaccineIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     kitten?: boolean | KittenDefaultArgs<ExtArgs>
@@ -14135,6 +14358,7 @@ export namespace Prisma {
     name: "Vaccine"
     objects: {
       kitten: Prisma.$KittenPayload<ExtArgs>
+      protocolDoses: Prisma.$ProtocolDosePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -14541,6 +14765,7 @@ export namespace Prisma {
   export interface Prisma__VaccineClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     kitten<T extends KittenDefaultArgs<ExtArgs> = {}>(args?: Subset<T, KittenDefaultArgs<ExtArgs>>): Prisma__KittenClient<$Result.GetResult<Prisma.$KittenPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    protocolDoses<T extends Vaccine$protocolDosesArgs<ExtArgs> = {}>(args?: Subset<T, Vaccine$protocolDosesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProtocolDosePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -14975,6 +15200,30 @@ export namespace Prisma {
   }
 
   /**
+   * Vaccine.protocolDoses
+   */
+  export type Vaccine$protocolDosesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDose
+     */
+    select?: ProtocolDoseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDose
+     */
+    omit?: ProtocolDoseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDoseInclude<ExtArgs> | null
+    where?: ProtocolDoseWhereInput
+    orderBy?: ProtocolDoseOrderByWithRelationInput | ProtocolDoseOrderByWithRelationInput[]
+    cursor?: ProtocolDoseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProtocolDoseScalarFieldEnum | ProtocolDoseScalarFieldEnum[]
+  }
+
+  /**
    * Vaccine without action
    */
   export type VaccineDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -15244,6 +15493,9 @@ export namespace Prisma {
     status?: boolean
     notes?: boolean
     kitten?: boolean | KittenDefaultArgs<ExtArgs>
+    protocolDoses?: boolean | Medication$protocolDosesArgs<ExtArgs>
+    protocolDrugLinks?: boolean | Medication$protocolDrugLinksArgs<ExtArgs>
+    _count?: boolean | MedicationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["medication"]>
 
   export type MedicationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -15293,6 +15545,9 @@ export namespace Prisma {
   export type MedicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "kittenId" | "name" | "dose" | "frequency" | "route" | "condition" | "startDate" | "endDate" | "status" | "notes", ExtArgs["result"]["medication"]>
   export type MedicationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     kitten?: boolean | KittenDefaultArgs<ExtArgs>
+    protocolDoses?: boolean | Medication$protocolDosesArgs<ExtArgs>
+    protocolDrugLinks?: boolean | Medication$protocolDrugLinksArgs<ExtArgs>
+    _count?: boolean | MedicationCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type MedicationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     kitten?: boolean | KittenDefaultArgs<ExtArgs>
@@ -15305,6 +15560,8 @@ export namespace Prisma {
     name: "Medication"
     objects: {
       kitten: Prisma.$KittenPayload<ExtArgs>
+      protocolDoses: Prisma.$ProtocolDosePayload<ExtArgs>[]
+      protocolDrugLinks: Prisma.$ActiveProtocolDrugLinkPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -15713,6 +15970,8 @@ export namespace Prisma {
   export interface Prisma__MedicationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     kitten<T extends KittenDefaultArgs<ExtArgs> = {}>(args?: Subset<T, KittenDefaultArgs<ExtArgs>>): Prisma__KittenClient<$Result.GetResult<Prisma.$KittenPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    protocolDoses<T extends Medication$protocolDosesArgs<ExtArgs> = {}>(args?: Subset<T, Medication$protocolDosesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProtocolDosePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    protocolDrugLinks<T extends Medication$protocolDrugLinksArgs<ExtArgs> = {}>(args?: Subset<T, Medication$protocolDrugLinksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActiveProtocolDrugLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -16146,6 +16405,54 @@ export namespace Prisma {
      * Limit how many Medications to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Medication.protocolDoses
+   */
+  export type Medication$protocolDosesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProtocolDose
+     */
+    select?: ProtocolDoseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProtocolDose
+     */
+    omit?: ProtocolDoseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProtocolDoseInclude<ExtArgs> | null
+    where?: ProtocolDoseWhereInput
+    orderBy?: ProtocolDoseOrderByWithRelationInput | ProtocolDoseOrderByWithRelationInput[]
+    cursor?: ProtocolDoseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProtocolDoseScalarFieldEnum | ProtocolDoseScalarFieldEnum[]
+  }
+
+  /**
+   * Medication.protocolDrugLinks
+   */
+  export type Medication$protocolDrugLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocolDrugLink
+     */
+    select?: ActiveProtocolDrugLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocolDrugLink
+     */
+    omit?: ActiveProtocolDrugLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolDrugLinkInclude<ExtArgs> | null
+    where?: ActiveProtocolDrugLinkWhereInput
+    orderBy?: ActiveProtocolDrugLinkOrderByWithRelationInput | ActiveProtocolDrugLinkOrderByWithRelationInput[]
+    cursor?: ActiveProtocolDrugLinkWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ActiveProtocolDrugLinkScalarFieldEnum | ActiveProtocolDrugLinkScalarFieldEnum[]
   }
 
   /**
@@ -29140,6 +29447,7 @@ export namespace Prisma {
     endDate: Date | null
     location: string | null
     description: string | null
+    imageUrl: string | null
     isPublic: boolean | null
     status: string | null
     internalNotes: string | null
@@ -29153,6 +29461,7 @@ export namespace Prisma {
     endDate: Date | null
     location: string | null
     description: string | null
+    imageUrl: string | null
     isPublic: boolean | null
     status: string | null
     internalNotes: string | null
@@ -29166,6 +29475,7 @@ export namespace Prisma {
     endDate: number
     location: number
     description: number
+    imageUrl: number
     isPublic: number
     status: number
     internalNotes: number
@@ -29190,6 +29500,7 @@ export namespace Prisma {
     endDate?: true
     location?: true
     description?: true
+    imageUrl?: true
     isPublic?: true
     status?: true
     internalNotes?: true
@@ -29203,6 +29514,7 @@ export namespace Prisma {
     endDate?: true
     location?: true
     description?: true
+    imageUrl?: true
     isPublic?: true
     status?: true
     internalNotes?: true
@@ -29216,6 +29528,7 @@ export namespace Prisma {
     endDate?: true
     location?: true
     description?: true
+    imageUrl?: true
     isPublic?: true
     status?: true
     internalNotes?: true
@@ -29317,6 +29630,7 @@ export namespace Prisma {
     endDate: Date | null
     location: string
     description: string
+    imageUrl: string | null
     isPublic: boolean
     status: string
     internalNotes: string | null
@@ -29350,6 +29664,7 @@ export namespace Prisma {
     endDate?: boolean
     location?: boolean
     description?: boolean
+    imageUrl?: boolean
     isPublic?: boolean
     status?: boolean
     internalNotes?: boolean
@@ -29367,6 +29682,7 @@ export namespace Prisma {
     endDate?: boolean
     location?: boolean
     description?: boolean
+    imageUrl?: boolean
     isPublic?: boolean
     status?: boolean
     internalNotes?: boolean
@@ -29381,6 +29697,7 @@ export namespace Prisma {
     endDate?: boolean
     location?: boolean
     description?: boolean
+    imageUrl?: boolean
     isPublic?: boolean
     status?: boolean
     internalNotes?: boolean
@@ -29395,13 +29712,14 @@ export namespace Prisma {
     endDate?: boolean
     location?: boolean
     description?: boolean
+    imageUrl?: boolean
     isPublic?: boolean
     status?: boolean
     internalNotes?: boolean
     publishTargets?: boolean
   }
 
-  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "slug" | "date" | "endDate" | "location" | "description" | "isPublic" | "status" | "internalNotes" | "publishTargets", ExtArgs["result"]["event"]>
+  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "slug" | "date" | "endDate" | "location" | "description" | "imageUrl" | "isPublic" | "status" | "internalNotes" | "publishTargets", ExtArgs["result"]["event"]>
   export type EventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     eventCats?: boolean | Event$eventCatsArgs<ExtArgs>
     rsvps?: boolean | Event$rsvpsArgs<ExtArgs>
@@ -29424,6 +29742,7 @@ export namespace Prisma {
       endDate: Date | null
       location: string
       description: string
+      imageUrl: string | null
       isPublic: boolean
       status: string
       internalNotes: string | null
@@ -29860,6 +30179,7 @@ export namespace Prisma {
     readonly endDate: FieldRef<"Event", 'DateTime'>
     readonly location: FieldRef<"Event", 'String'>
     readonly description: FieldRef<"Event", 'String'>
+    readonly imageUrl: FieldRef<"Event", 'String'>
     readonly isPublic: FieldRef<"Event", 'Boolean'>
     readonly status: FieldRef<"Event", 'String'>
     readonly internalNotes: FieldRef<"Event", 'String'>
@@ -39509,6 +39829,7 @@ export namespace Prisma {
     startDayOffset: number | null
     endDayOffset: number | null
     frequencyPerDay: number | null
+    intervalDays: number | null
     sortOrder: number | null
   }
 
@@ -39518,6 +39839,7 @@ export namespace Prisma {
     startDayOffset: number | null
     endDayOffset: number | null
     frequencyPerDay: number | null
+    intervalDays: number | null
     sortOrder: number | null
   }
 
@@ -39530,6 +39852,10 @@ export namespace Prisma {
     startDayOffset: number | null
     endDayOffset: number | null
     frequencyPerDay: number | null
+    cadence: $Enums.ProtocolCadence | null
+    intervalDays: number | null
+    recordType: $Enums.ProtocolRecordType | null
+    healthWriteMode: $Enums.ProtocolHealthWriteMode | null
     instructions: string | null
     sortOrder: number | null
   }
@@ -39543,6 +39869,10 @@ export namespace Prisma {
     startDayOffset: number | null
     endDayOffset: number | null
     frequencyPerDay: number | null
+    cadence: $Enums.ProtocolCadence | null
+    intervalDays: number | null
+    recordType: $Enums.ProtocolRecordType | null
+    healthWriteMode: $Enums.ProtocolHealthWriteMode | null
     instructions: string | null
     sortOrder: number | null
   }
@@ -39556,6 +39886,10 @@ export namespace Prisma {
     startDayOffset: number
     endDayOffset: number
     frequencyPerDay: number
+    cadence: number
+    intervalDays: number
+    recordType: number
+    healthWriteMode: number
     instructions: number
     sortOrder: number
     _all: number
@@ -39568,6 +39902,7 @@ export namespace Prisma {
     startDayOffset?: true
     endDayOffset?: true
     frequencyPerDay?: true
+    intervalDays?: true
     sortOrder?: true
   }
 
@@ -39577,6 +39912,7 @@ export namespace Prisma {
     startDayOffset?: true
     endDayOffset?: true
     frequencyPerDay?: true
+    intervalDays?: true
     sortOrder?: true
   }
 
@@ -39589,6 +39925,10 @@ export namespace Prisma {
     startDayOffset?: true
     endDayOffset?: true
     frequencyPerDay?: true
+    cadence?: true
+    intervalDays?: true
+    recordType?: true
+    healthWriteMode?: true
     instructions?: true
     sortOrder?: true
   }
@@ -39602,6 +39942,10 @@ export namespace Prisma {
     startDayOffset?: true
     endDayOffset?: true
     frequencyPerDay?: true
+    cadence?: true
+    intervalDays?: true
+    recordType?: true
+    healthWriteMode?: true
     instructions?: true
     sortOrder?: true
   }
@@ -39615,6 +39959,10 @@ export namespace Prisma {
     startDayOffset?: true
     endDayOffset?: true
     frequencyPerDay?: true
+    cadence?: true
+    intervalDays?: true
+    recordType?: true
+    healthWriteMode?: true
     instructions?: true
     sortOrder?: true
     _all?: true
@@ -39715,6 +40063,10 @@ export namespace Prisma {
     startDayOffset: number
     endDayOffset: number
     frequencyPerDay: number
+    cadence: $Enums.ProtocolCadence
+    intervalDays: number
+    recordType: $Enums.ProtocolRecordType
+    healthWriteMode: $Enums.ProtocolHealthWriteMode
     instructions: string
     sortOrder: number
     _count: ProtocolDrugCountAggregateOutputType | null
@@ -39747,10 +40099,15 @@ export namespace Prisma {
     startDayOffset?: boolean
     endDayOffset?: boolean
     frequencyPerDay?: boolean
+    cadence?: boolean
+    intervalDays?: boolean
+    recordType?: boolean
+    healthWriteMode?: boolean
     instructions?: boolean
     sortOrder?: boolean
     protocol?: boolean | ProtocolDefaultArgs<ExtArgs>
     doses?: boolean | ProtocolDrug$dosesArgs<ExtArgs>
+    activeProtocolDrugLinks?: boolean | ProtocolDrug$activeProtocolDrugLinksArgs<ExtArgs>
     _count?: boolean | ProtocolDrugCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["protocolDrug"]>
 
@@ -39763,6 +40120,10 @@ export namespace Prisma {
     startDayOffset?: boolean
     endDayOffset?: boolean
     frequencyPerDay?: boolean
+    cadence?: boolean
+    intervalDays?: boolean
+    recordType?: boolean
+    healthWriteMode?: boolean
     instructions?: boolean
     sortOrder?: boolean
     protocol?: boolean | ProtocolDefaultArgs<ExtArgs>
@@ -39777,6 +40138,10 @@ export namespace Prisma {
     startDayOffset?: boolean
     endDayOffset?: boolean
     frequencyPerDay?: boolean
+    cadence?: boolean
+    intervalDays?: boolean
+    recordType?: boolean
+    healthWriteMode?: boolean
     instructions?: boolean
     sortOrder?: boolean
     protocol?: boolean | ProtocolDefaultArgs<ExtArgs>
@@ -39791,14 +40156,19 @@ export namespace Prisma {
     startDayOffset?: boolean
     endDayOffset?: boolean
     frequencyPerDay?: boolean
+    cadence?: boolean
+    intervalDays?: boolean
+    recordType?: boolean
+    healthWriteMode?: boolean
     instructions?: boolean
     sortOrder?: boolean
   }
 
-  export type ProtocolDrugOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "protocolId" | "drugName" | "dosage" | "route" | "startDayOffset" | "endDayOffset" | "frequencyPerDay" | "instructions" | "sortOrder", ExtArgs["result"]["protocolDrug"]>
+  export type ProtocolDrugOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "protocolId" | "drugName" | "dosage" | "route" | "startDayOffset" | "endDayOffset" | "frequencyPerDay" | "cadence" | "intervalDays" | "recordType" | "healthWriteMode" | "instructions" | "sortOrder", ExtArgs["result"]["protocolDrug"]>
   export type ProtocolDrugInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     protocol?: boolean | ProtocolDefaultArgs<ExtArgs>
     doses?: boolean | ProtocolDrug$dosesArgs<ExtArgs>
+    activeProtocolDrugLinks?: boolean | ProtocolDrug$activeProtocolDrugLinksArgs<ExtArgs>
     _count?: boolean | ProtocolDrugCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProtocolDrugIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -39813,6 +40183,7 @@ export namespace Prisma {
     objects: {
       protocol: Prisma.$ProtocolPayload<ExtArgs>
       doses: Prisma.$ProtocolDosePayload<ExtArgs>[]
+      activeProtocolDrugLinks: Prisma.$ActiveProtocolDrugLinkPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -39823,6 +40194,10 @@ export namespace Prisma {
       startDayOffset: number
       endDayOffset: number
       frequencyPerDay: number
+      cadence: $Enums.ProtocolCadence
+      intervalDays: number
+      recordType: $Enums.ProtocolRecordType
+      healthWriteMode: $Enums.ProtocolHealthWriteMode
       instructions: string
       sortOrder: number
     }, ExtArgs["result"]["protocolDrug"]>
@@ -40221,6 +40596,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     protocol<T extends ProtocolDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProtocolDefaultArgs<ExtArgs>>): Prisma__ProtocolClient<$Result.GetResult<Prisma.$ProtocolPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     doses<T extends ProtocolDrug$dosesArgs<ExtArgs> = {}>(args?: Subset<T, ProtocolDrug$dosesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProtocolDosePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    activeProtocolDrugLinks<T extends ProtocolDrug$activeProtocolDrugLinksArgs<ExtArgs> = {}>(args?: Subset<T, ProtocolDrug$activeProtocolDrugLinksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActiveProtocolDrugLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -40258,6 +40634,10 @@ export namespace Prisma {
     readonly startDayOffset: FieldRef<"ProtocolDrug", 'Int'>
     readonly endDayOffset: FieldRef<"ProtocolDrug", 'Int'>
     readonly frequencyPerDay: FieldRef<"ProtocolDrug", 'Int'>
+    readonly cadence: FieldRef<"ProtocolDrug", 'ProtocolCadence'>
+    readonly intervalDays: FieldRef<"ProtocolDrug", 'Int'>
+    readonly recordType: FieldRef<"ProtocolDrug", 'ProtocolRecordType'>
+    readonly healthWriteMode: FieldRef<"ProtocolDrug", 'ProtocolHealthWriteMode'>
     readonly instructions: FieldRef<"ProtocolDrug", 'String'>
     readonly sortOrder: FieldRef<"ProtocolDrug", 'Int'>
   }
@@ -40680,6 +41060,30 @@ export namespace Prisma {
   }
 
   /**
+   * ProtocolDrug.activeProtocolDrugLinks
+   */
+  export type ProtocolDrug$activeProtocolDrugLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocolDrugLink
+     */
+    select?: ActiveProtocolDrugLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocolDrugLink
+     */
+    omit?: ActiveProtocolDrugLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolDrugLinkInclude<ExtArgs> | null
+    where?: ActiveProtocolDrugLinkWhereInput
+    orderBy?: ActiveProtocolDrugLinkOrderByWithRelationInput | ActiveProtocolDrugLinkOrderByWithRelationInput[]
+    cursor?: ActiveProtocolDrugLinkWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ActiveProtocolDrugLinkScalarFieldEnum | ActiveProtocolDrugLinkScalarFieldEnum[]
+  }
+
+  /**
    * ProtocolDrug without action
    */
   export type ProtocolDrugDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -40920,6 +41324,7 @@ export namespace Prisma {
     kitten?: boolean | KittenDefaultArgs<ExtArgs>
     activatedBy?: boolean | UserDefaultArgs<ExtArgs>
     doses?: boolean | ActiveProtocol$dosesArgs<ExtArgs>
+    drugLinks?: boolean | ActiveProtocol$drugLinksArgs<ExtArgs>
     _count?: boolean | ActiveProtocolCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["activeProtocol"]>
 
@@ -40962,6 +41367,7 @@ export namespace Prisma {
     kitten?: boolean | KittenDefaultArgs<ExtArgs>
     activatedBy?: boolean | UserDefaultArgs<ExtArgs>
     doses?: boolean | ActiveProtocol$dosesArgs<ExtArgs>
+    drugLinks?: boolean | ActiveProtocol$drugLinksArgs<ExtArgs>
     _count?: boolean | ActiveProtocolCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ActiveProtocolIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -40982,6 +41388,7 @@ export namespace Prisma {
       kitten: Prisma.$KittenPayload<ExtArgs>
       activatedBy: Prisma.$UserPayload<ExtArgs>
       doses: Prisma.$ProtocolDosePayload<ExtArgs>[]
+      drugLinks: Prisma.$ActiveProtocolDrugLinkPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -41388,6 +41795,7 @@ export namespace Prisma {
     kitten<T extends KittenDefaultArgs<ExtArgs> = {}>(args?: Subset<T, KittenDefaultArgs<ExtArgs>>): Prisma__KittenClient<$Result.GetResult<Prisma.$KittenPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     activatedBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     doses<T extends ActiveProtocol$dosesArgs<ExtArgs> = {}>(args?: Subset<T, ActiveProtocol$dosesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProtocolDosePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    drugLinks<T extends ActiveProtocol$drugLinksArgs<ExtArgs> = {}>(args?: Subset<T, ActiveProtocol$drugLinksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActiveProtocolDrugLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -41843,6 +42251,30 @@ export namespace Prisma {
   }
 
   /**
+   * ActiveProtocol.drugLinks
+   */
+  export type ActiveProtocol$drugLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocolDrugLink
+     */
+    select?: ActiveProtocolDrugLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocolDrugLink
+     */
+    omit?: ActiveProtocolDrugLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolDrugLinkInclude<ExtArgs> | null
+    where?: ActiveProtocolDrugLinkWhereInput
+    orderBy?: ActiveProtocolDrugLinkOrderByWithRelationInput | ActiveProtocolDrugLinkOrderByWithRelationInput[]
+    cursor?: ActiveProtocolDrugLinkWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ActiveProtocolDrugLinkScalarFieldEnum | ActiveProtocolDrugLinkScalarFieldEnum[]
+  }
+
+  /**
    * ActiveProtocol without action
    */
   export type ActiveProtocolDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -41879,6 +42311,8 @@ export namespace Prisma {
     protocolDrugId: number | null
     doseNumberInDay: number | null
     administeredById: number | null
+    medicationId: number | null
+    vaccineId: number | null
   }
 
   export type ProtocolDoseSumAggregateOutputType = {
@@ -41887,6 +42321,8 @@ export namespace Prisma {
     protocolDrugId: number | null
     doseNumberInDay: number | null
     administeredById: number | null
+    medicationId: number | null
+    vaccineId: number | null
   }
 
   export type ProtocolDoseMinAggregateOutputType = {
@@ -41898,6 +42334,8 @@ export namespace Prisma {
     status: $Enums.DoseStatus | null
     administeredAt: Date | null
     administeredById: number | null
+    medicationId: number | null
+    vaccineId: number | null
     notes: string | null
   }
 
@@ -41910,6 +42348,8 @@ export namespace Prisma {
     status: $Enums.DoseStatus | null
     administeredAt: Date | null
     administeredById: number | null
+    medicationId: number | null
+    vaccineId: number | null
     notes: string | null
   }
 
@@ -41922,6 +42362,8 @@ export namespace Prisma {
     status: number
     administeredAt: number
     administeredById: number
+    medicationId: number
+    vaccineId: number
     notes: number
     _all: number
   }
@@ -41933,6 +42375,8 @@ export namespace Prisma {
     protocolDrugId?: true
     doseNumberInDay?: true
     administeredById?: true
+    medicationId?: true
+    vaccineId?: true
   }
 
   export type ProtocolDoseSumAggregateInputType = {
@@ -41941,6 +42385,8 @@ export namespace Prisma {
     protocolDrugId?: true
     doseNumberInDay?: true
     administeredById?: true
+    medicationId?: true
+    vaccineId?: true
   }
 
   export type ProtocolDoseMinAggregateInputType = {
@@ -41952,6 +42398,8 @@ export namespace Prisma {
     status?: true
     administeredAt?: true
     administeredById?: true
+    medicationId?: true
+    vaccineId?: true
     notes?: true
   }
 
@@ -41964,6 +42412,8 @@ export namespace Prisma {
     status?: true
     administeredAt?: true
     administeredById?: true
+    medicationId?: true
+    vaccineId?: true
     notes?: true
   }
 
@@ -41976,6 +42426,8 @@ export namespace Prisma {
     status?: true
     administeredAt?: true
     administeredById?: true
+    medicationId?: true
+    vaccineId?: true
     notes?: true
     _all?: true
   }
@@ -42075,6 +42527,8 @@ export namespace Prisma {
     status: $Enums.DoseStatus
     administeredAt: Date | null
     administeredById: number | null
+    medicationId: number | null
+    vaccineId: number | null
     notes: string
     _count: ProtocolDoseCountAggregateOutputType | null
     _avg: ProtocolDoseAvgAggregateOutputType | null
@@ -42106,10 +42560,14 @@ export namespace Prisma {
     status?: boolean
     administeredAt?: boolean
     administeredById?: boolean
+    medicationId?: boolean
+    vaccineId?: boolean
     notes?: boolean
     activeProtocol?: boolean | ActiveProtocolDefaultArgs<ExtArgs>
     protocolDrug?: boolean | ProtocolDrugDefaultArgs<ExtArgs>
     administeredBy?: boolean | ProtocolDose$administeredByArgs<ExtArgs>
+    medication?: boolean | ProtocolDose$medicationArgs<ExtArgs>
+    vaccine?: boolean | ProtocolDose$vaccineArgs<ExtArgs>
   }, ExtArgs["result"]["protocolDose"]>
 
   export type ProtocolDoseSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -42121,10 +42579,14 @@ export namespace Prisma {
     status?: boolean
     administeredAt?: boolean
     administeredById?: boolean
+    medicationId?: boolean
+    vaccineId?: boolean
     notes?: boolean
     activeProtocol?: boolean | ActiveProtocolDefaultArgs<ExtArgs>
     protocolDrug?: boolean | ProtocolDrugDefaultArgs<ExtArgs>
     administeredBy?: boolean | ProtocolDose$administeredByArgs<ExtArgs>
+    medication?: boolean | ProtocolDose$medicationArgs<ExtArgs>
+    vaccine?: boolean | ProtocolDose$vaccineArgs<ExtArgs>
   }, ExtArgs["result"]["protocolDose"]>
 
   export type ProtocolDoseSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -42136,10 +42598,14 @@ export namespace Prisma {
     status?: boolean
     administeredAt?: boolean
     administeredById?: boolean
+    medicationId?: boolean
+    vaccineId?: boolean
     notes?: boolean
     activeProtocol?: boolean | ActiveProtocolDefaultArgs<ExtArgs>
     protocolDrug?: boolean | ProtocolDrugDefaultArgs<ExtArgs>
     administeredBy?: boolean | ProtocolDose$administeredByArgs<ExtArgs>
+    medication?: boolean | ProtocolDose$medicationArgs<ExtArgs>
+    vaccine?: boolean | ProtocolDose$vaccineArgs<ExtArgs>
   }, ExtArgs["result"]["protocolDose"]>
 
   export type ProtocolDoseSelectScalar = {
@@ -42151,24 +42617,32 @@ export namespace Prisma {
     status?: boolean
     administeredAt?: boolean
     administeredById?: boolean
+    medicationId?: boolean
+    vaccineId?: boolean
     notes?: boolean
   }
 
-  export type ProtocolDoseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "activeProtocolId" | "protocolDrugId" | "scheduledDate" | "doseNumberInDay" | "status" | "administeredAt" | "administeredById" | "notes", ExtArgs["result"]["protocolDose"]>
+  export type ProtocolDoseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "activeProtocolId" | "protocolDrugId" | "scheduledDate" | "doseNumberInDay" | "status" | "administeredAt" | "administeredById" | "medicationId" | "vaccineId" | "notes", ExtArgs["result"]["protocolDose"]>
   export type ProtocolDoseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     activeProtocol?: boolean | ActiveProtocolDefaultArgs<ExtArgs>
     protocolDrug?: boolean | ProtocolDrugDefaultArgs<ExtArgs>
     administeredBy?: boolean | ProtocolDose$administeredByArgs<ExtArgs>
+    medication?: boolean | ProtocolDose$medicationArgs<ExtArgs>
+    vaccine?: boolean | ProtocolDose$vaccineArgs<ExtArgs>
   }
   export type ProtocolDoseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     activeProtocol?: boolean | ActiveProtocolDefaultArgs<ExtArgs>
     protocolDrug?: boolean | ProtocolDrugDefaultArgs<ExtArgs>
     administeredBy?: boolean | ProtocolDose$administeredByArgs<ExtArgs>
+    medication?: boolean | ProtocolDose$medicationArgs<ExtArgs>
+    vaccine?: boolean | ProtocolDose$vaccineArgs<ExtArgs>
   }
   export type ProtocolDoseIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     activeProtocol?: boolean | ActiveProtocolDefaultArgs<ExtArgs>
     protocolDrug?: boolean | ProtocolDrugDefaultArgs<ExtArgs>
     administeredBy?: boolean | ProtocolDose$administeredByArgs<ExtArgs>
+    medication?: boolean | ProtocolDose$medicationArgs<ExtArgs>
+    vaccine?: boolean | ProtocolDose$vaccineArgs<ExtArgs>
   }
 
   export type $ProtocolDosePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -42177,6 +42651,8 @@ export namespace Prisma {
       activeProtocol: Prisma.$ActiveProtocolPayload<ExtArgs>
       protocolDrug: Prisma.$ProtocolDrugPayload<ExtArgs>
       administeredBy: Prisma.$UserPayload<ExtArgs> | null
+      medication: Prisma.$MedicationPayload<ExtArgs> | null
+      vaccine: Prisma.$VaccinePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -42187,6 +42663,8 @@ export namespace Prisma {
       status: $Enums.DoseStatus
       administeredAt: Date | null
       administeredById: number | null
+      medicationId: number | null
+      vaccineId: number | null
       notes: string
     }, ExtArgs["result"]["protocolDose"]>
     composites: {}
@@ -42585,6 +43063,8 @@ export namespace Prisma {
     activeProtocol<T extends ActiveProtocolDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ActiveProtocolDefaultArgs<ExtArgs>>): Prisma__ActiveProtocolClient<$Result.GetResult<Prisma.$ActiveProtocolPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     protocolDrug<T extends ProtocolDrugDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProtocolDrugDefaultArgs<ExtArgs>>): Prisma__ProtocolDrugClient<$Result.GetResult<Prisma.$ProtocolDrugPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     administeredBy<T extends ProtocolDose$administeredByArgs<ExtArgs> = {}>(args?: Subset<T, ProtocolDose$administeredByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    medication<T extends ProtocolDose$medicationArgs<ExtArgs> = {}>(args?: Subset<T, ProtocolDose$medicationArgs<ExtArgs>>): Prisma__MedicationClient<$Result.GetResult<Prisma.$MedicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    vaccine<T extends ProtocolDose$vaccineArgs<ExtArgs> = {}>(args?: Subset<T, ProtocolDose$vaccineArgs<ExtArgs>>): Prisma__VaccineClient<$Result.GetResult<Prisma.$VaccinePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -42622,6 +43102,8 @@ export namespace Prisma {
     readonly status: FieldRef<"ProtocolDose", 'DoseStatus'>
     readonly administeredAt: FieldRef<"ProtocolDose", 'DateTime'>
     readonly administeredById: FieldRef<"ProtocolDose", 'Int'>
+    readonly medicationId: FieldRef<"ProtocolDose", 'Int'>
+    readonly vaccineId: FieldRef<"ProtocolDose", 'Int'>
     readonly notes: FieldRef<"ProtocolDose", 'String'>
   }
     
@@ -43038,6 +43520,44 @@ export namespace Prisma {
   }
 
   /**
+   * ProtocolDose.medication
+   */
+  export type ProtocolDose$medicationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Medication
+     */
+    select?: MedicationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Medication
+     */
+    omit?: MedicationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MedicationInclude<ExtArgs> | null
+    where?: MedicationWhereInput
+  }
+
+  /**
+   * ProtocolDose.vaccine
+   */
+  export type ProtocolDose$vaccineArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vaccine
+     */
+    select?: VaccineSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vaccine
+     */
+    omit?: VaccineOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VaccineInclude<ExtArgs> | null
+    where?: VaccineWhereInput
+  }
+
+  /**
    * ProtocolDose without action
    */
   export type ProtocolDoseDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -43053,6 +43573,1126 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: ProtocolDoseInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ActiveProtocolDrugLink
+   */
+
+  export type AggregateActiveProtocolDrugLink = {
+    _count: ActiveProtocolDrugLinkCountAggregateOutputType | null
+    _avg: ActiveProtocolDrugLinkAvgAggregateOutputType | null
+    _sum: ActiveProtocolDrugLinkSumAggregateOutputType | null
+    _min: ActiveProtocolDrugLinkMinAggregateOutputType | null
+    _max: ActiveProtocolDrugLinkMaxAggregateOutputType | null
+  }
+
+  export type ActiveProtocolDrugLinkAvgAggregateOutputType = {
+    id: number | null
+    activeProtocolId: number | null
+    protocolDrugId: number | null
+    medicationId: number | null
+  }
+
+  export type ActiveProtocolDrugLinkSumAggregateOutputType = {
+    id: number | null
+    activeProtocolId: number | null
+    protocolDrugId: number | null
+    medicationId: number | null
+  }
+
+  export type ActiveProtocolDrugLinkMinAggregateOutputType = {
+    id: number | null
+    activeProtocolId: number | null
+    protocolDrugId: number | null
+    medicationId: number | null
+    createdAt: Date | null
+  }
+
+  export type ActiveProtocolDrugLinkMaxAggregateOutputType = {
+    id: number | null
+    activeProtocolId: number | null
+    protocolDrugId: number | null
+    medicationId: number | null
+    createdAt: Date | null
+  }
+
+  export type ActiveProtocolDrugLinkCountAggregateOutputType = {
+    id: number
+    activeProtocolId: number
+    protocolDrugId: number
+    medicationId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type ActiveProtocolDrugLinkAvgAggregateInputType = {
+    id?: true
+    activeProtocolId?: true
+    protocolDrugId?: true
+    medicationId?: true
+  }
+
+  export type ActiveProtocolDrugLinkSumAggregateInputType = {
+    id?: true
+    activeProtocolId?: true
+    protocolDrugId?: true
+    medicationId?: true
+  }
+
+  export type ActiveProtocolDrugLinkMinAggregateInputType = {
+    id?: true
+    activeProtocolId?: true
+    protocolDrugId?: true
+    medicationId?: true
+    createdAt?: true
+  }
+
+  export type ActiveProtocolDrugLinkMaxAggregateInputType = {
+    id?: true
+    activeProtocolId?: true
+    protocolDrugId?: true
+    medicationId?: true
+    createdAt?: true
+  }
+
+  export type ActiveProtocolDrugLinkCountAggregateInputType = {
+    id?: true
+    activeProtocolId?: true
+    protocolDrugId?: true
+    medicationId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type ActiveProtocolDrugLinkAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ActiveProtocolDrugLink to aggregate.
+     */
+    where?: ActiveProtocolDrugLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ActiveProtocolDrugLinks to fetch.
+     */
+    orderBy?: ActiveProtocolDrugLinkOrderByWithRelationInput | ActiveProtocolDrugLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ActiveProtocolDrugLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ActiveProtocolDrugLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ActiveProtocolDrugLinks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ActiveProtocolDrugLinks
+    **/
+    _count?: true | ActiveProtocolDrugLinkCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ActiveProtocolDrugLinkAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ActiveProtocolDrugLinkSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ActiveProtocolDrugLinkMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ActiveProtocolDrugLinkMaxAggregateInputType
+  }
+
+  export type GetActiveProtocolDrugLinkAggregateType<T extends ActiveProtocolDrugLinkAggregateArgs> = {
+        [P in keyof T & keyof AggregateActiveProtocolDrugLink]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateActiveProtocolDrugLink[P]>
+      : GetScalarType<T[P], AggregateActiveProtocolDrugLink[P]>
+  }
+
+
+
+
+  export type ActiveProtocolDrugLinkGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ActiveProtocolDrugLinkWhereInput
+    orderBy?: ActiveProtocolDrugLinkOrderByWithAggregationInput | ActiveProtocolDrugLinkOrderByWithAggregationInput[]
+    by: ActiveProtocolDrugLinkScalarFieldEnum[] | ActiveProtocolDrugLinkScalarFieldEnum
+    having?: ActiveProtocolDrugLinkScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ActiveProtocolDrugLinkCountAggregateInputType | true
+    _avg?: ActiveProtocolDrugLinkAvgAggregateInputType
+    _sum?: ActiveProtocolDrugLinkSumAggregateInputType
+    _min?: ActiveProtocolDrugLinkMinAggregateInputType
+    _max?: ActiveProtocolDrugLinkMaxAggregateInputType
+  }
+
+  export type ActiveProtocolDrugLinkGroupByOutputType = {
+    id: number
+    activeProtocolId: number
+    protocolDrugId: number
+    medicationId: number
+    createdAt: Date
+    _count: ActiveProtocolDrugLinkCountAggregateOutputType | null
+    _avg: ActiveProtocolDrugLinkAvgAggregateOutputType | null
+    _sum: ActiveProtocolDrugLinkSumAggregateOutputType | null
+    _min: ActiveProtocolDrugLinkMinAggregateOutputType | null
+    _max: ActiveProtocolDrugLinkMaxAggregateOutputType | null
+  }
+
+  type GetActiveProtocolDrugLinkGroupByPayload<T extends ActiveProtocolDrugLinkGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ActiveProtocolDrugLinkGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ActiveProtocolDrugLinkGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ActiveProtocolDrugLinkGroupByOutputType[P]>
+            : GetScalarType<T[P], ActiveProtocolDrugLinkGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ActiveProtocolDrugLinkSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    activeProtocolId?: boolean
+    protocolDrugId?: boolean
+    medicationId?: boolean
+    createdAt?: boolean
+    activeProtocol?: boolean | ActiveProtocolDefaultArgs<ExtArgs>
+    protocolDrug?: boolean | ProtocolDrugDefaultArgs<ExtArgs>
+    medication?: boolean | MedicationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["activeProtocolDrugLink"]>
+
+  export type ActiveProtocolDrugLinkSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    activeProtocolId?: boolean
+    protocolDrugId?: boolean
+    medicationId?: boolean
+    createdAt?: boolean
+    activeProtocol?: boolean | ActiveProtocolDefaultArgs<ExtArgs>
+    protocolDrug?: boolean | ProtocolDrugDefaultArgs<ExtArgs>
+    medication?: boolean | MedicationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["activeProtocolDrugLink"]>
+
+  export type ActiveProtocolDrugLinkSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    activeProtocolId?: boolean
+    protocolDrugId?: boolean
+    medicationId?: boolean
+    createdAt?: boolean
+    activeProtocol?: boolean | ActiveProtocolDefaultArgs<ExtArgs>
+    protocolDrug?: boolean | ProtocolDrugDefaultArgs<ExtArgs>
+    medication?: boolean | MedicationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["activeProtocolDrugLink"]>
+
+  export type ActiveProtocolDrugLinkSelectScalar = {
+    id?: boolean
+    activeProtocolId?: boolean
+    protocolDrugId?: boolean
+    medicationId?: boolean
+    createdAt?: boolean
+  }
+
+  export type ActiveProtocolDrugLinkOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "activeProtocolId" | "protocolDrugId" | "medicationId" | "createdAt", ExtArgs["result"]["activeProtocolDrugLink"]>
+  export type ActiveProtocolDrugLinkInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    activeProtocol?: boolean | ActiveProtocolDefaultArgs<ExtArgs>
+    protocolDrug?: boolean | ProtocolDrugDefaultArgs<ExtArgs>
+    medication?: boolean | MedicationDefaultArgs<ExtArgs>
+  }
+  export type ActiveProtocolDrugLinkIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    activeProtocol?: boolean | ActiveProtocolDefaultArgs<ExtArgs>
+    protocolDrug?: boolean | ProtocolDrugDefaultArgs<ExtArgs>
+    medication?: boolean | MedicationDefaultArgs<ExtArgs>
+  }
+  export type ActiveProtocolDrugLinkIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    activeProtocol?: boolean | ActiveProtocolDefaultArgs<ExtArgs>
+    protocolDrug?: boolean | ProtocolDrugDefaultArgs<ExtArgs>
+    medication?: boolean | MedicationDefaultArgs<ExtArgs>
+  }
+
+  export type $ActiveProtocolDrugLinkPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ActiveProtocolDrugLink"
+    objects: {
+      activeProtocol: Prisma.$ActiveProtocolPayload<ExtArgs>
+      protocolDrug: Prisma.$ProtocolDrugPayload<ExtArgs>
+      medication: Prisma.$MedicationPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      activeProtocolId: number
+      protocolDrugId: number
+      medicationId: number
+      createdAt: Date
+    }, ExtArgs["result"]["activeProtocolDrugLink"]>
+    composites: {}
+  }
+
+  type ActiveProtocolDrugLinkGetPayload<S extends boolean | null | undefined | ActiveProtocolDrugLinkDefaultArgs> = $Result.GetResult<Prisma.$ActiveProtocolDrugLinkPayload, S>
+
+  type ActiveProtocolDrugLinkCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ActiveProtocolDrugLinkFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ActiveProtocolDrugLinkCountAggregateInputType | true
+    }
+
+  export interface ActiveProtocolDrugLinkDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ActiveProtocolDrugLink'], meta: { name: 'ActiveProtocolDrugLink' } }
+    /**
+     * Find zero or one ActiveProtocolDrugLink that matches the filter.
+     * @param {ActiveProtocolDrugLinkFindUniqueArgs} args - Arguments to find a ActiveProtocolDrugLink
+     * @example
+     * // Get one ActiveProtocolDrugLink
+     * const activeProtocolDrugLink = await prisma.activeProtocolDrugLink.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ActiveProtocolDrugLinkFindUniqueArgs>(args: SelectSubset<T, ActiveProtocolDrugLinkFindUniqueArgs<ExtArgs>>): Prisma__ActiveProtocolDrugLinkClient<$Result.GetResult<Prisma.$ActiveProtocolDrugLinkPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ActiveProtocolDrugLink that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ActiveProtocolDrugLinkFindUniqueOrThrowArgs} args - Arguments to find a ActiveProtocolDrugLink
+     * @example
+     * // Get one ActiveProtocolDrugLink
+     * const activeProtocolDrugLink = await prisma.activeProtocolDrugLink.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ActiveProtocolDrugLinkFindUniqueOrThrowArgs>(args: SelectSubset<T, ActiveProtocolDrugLinkFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ActiveProtocolDrugLinkClient<$Result.GetResult<Prisma.$ActiveProtocolDrugLinkPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ActiveProtocolDrugLink that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActiveProtocolDrugLinkFindFirstArgs} args - Arguments to find a ActiveProtocolDrugLink
+     * @example
+     * // Get one ActiveProtocolDrugLink
+     * const activeProtocolDrugLink = await prisma.activeProtocolDrugLink.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ActiveProtocolDrugLinkFindFirstArgs>(args?: SelectSubset<T, ActiveProtocolDrugLinkFindFirstArgs<ExtArgs>>): Prisma__ActiveProtocolDrugLinkClient<$Result.GetResult<Prisma.$ActiveProtocolDrugLinkPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ActiveProtocolDrugLink that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActiveProtocolDrugLinkFindFirstOrThrowArgs} args - Arguments to find a ActiveProtocolDrugLink
+     * @example
+     * // Get one ActiveProtocolDrugLink
+     * const activeProtocolDrugLink = await prisma.activeProtocolDrugLink.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ActiveProtocolDrugLinkFindFirstOrThrowArgs>(args?: SelectSubset<T, ActiveProtocolDrugLinkFindFirstOrThrowArgs<ExtArgs>>): Prisma__ActiveProtocolDrugLinkClient<$Result.GetResult<Prisma.$ActiveProtocolDrugLinkPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ActiveProtocolDrugLinks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActiveProtocolDrugLinkFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ActiveProtocolDrugLinks
+     * const activeProtocolDrugLinks = await prisma.activeProtocolDrugLink.findMany()
+     * 
+     * // Get first 10 ActiveProtocolDrugLinks
+     * const activeProtocolDrugLinks = await prisma.activeProtocolDrugLink.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const activeProtocolDrugLinkWithIdOnly = await prisma.activeProtocolDrugLink.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ActiveProtocolDrugLinkFindManyArgs>(args?: SelectSubset<T, ActiveProtocolDrugLinkFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActiveProtocolDrugLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ActiveProtocolDrugLink.
+     * @param {ActiveProtocolDrugLinkCreateArgs} args - Arguments to create a ActiveProtocolDrugLink.
+     * @example
+     * // Create one ActiveProtocolDrugLink
+     * const ActiveProtocolDrugLink = await prisma.activeProtocolDrugLink.create({
+     *   data: {
+     *     // ... data to create a ActiveProtocolDrugLink
+     *   }
+     * })
+     * 
+     */
+    create<T extends ActiveProtocolDrugLinkCreateArgs>(args: SelectSubset<T, ActiveProtocolDrugLinkCreateArgs<ExtArgs>>): Prisma__ActiveProtocolDrugLinkClient<$Result.GetResult<Prisma.$ActiveProtocolDrugLinkPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ActiveProtocolDrugLinks.
+     * @param {ActiveProtocolDrugLinkCreateManyArgs} args - Arguments to create many ActiveProtocolDrugLinks.
+     * @example
+     * // Create many ActiveProtocolDrugLinks
+     * const activeProtocolDrugLink = await prisma.activeProtocolDrugLink.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ActiveProtocolDrugLinkCreateManyArgs>(args?: SelectSubset<T, ActiveProtocolDrugLinkCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ActiveProtocolDrugLinks and returns the data saved in the database.
+     * @param {ActiveProtocolDrugLinkCreateManyAndReturnArgs} args - Arguments to create many ActiveProtocolDrugLinks.
+     * @example
+     * // Create many ActiveProtocolDrugLinks
+     * const activeProtocolDrugLink = await prisma.activeProtocolDrugLink.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ActiveProtocolDrugLinks and only return the `id`
+     * const activeProtocolDrugLinkWithIdOnly = await prisma.activeProtocolDrugLink.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ActiveProtocolDrugLinkCreateManyAndReturnArgs>(args?: SelectSubset<T, ActiveProtocolDrugLinkCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActiveProtocolDrugLinkPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ActiveProtocolDrugLink.
+     * @param {ActiveProtocolDrugLinkDeleteArgs} args - Arguments to delete one ActiveProtocolDrugLink.
+     * @example
+     * // Delete one ActiveProtocolDrugLink
+     * const ActiveProtocolDrugLink = await prisma.activeProtocolDrugLink.delete({
+     *   where: {
+     *     // ... filter to delete one ActiveProtocolDrugLink
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ActiveProtocolDrugLinkDeleteArgs>(args: SelectSubset<T, ActiveProtocolDrugLinkDeleteArgs<ExtArgs>>): Prisma__ActiveProtocolDrugLinkClient<$Result.GetResult<Prisma.$ActiveProtocolDrugLinkPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ActiveProtocolDrugLink.
+     * @param {ActiveProtocolDrugLinkUpdateArgs} args - Arguments to update one ActiveProtocolDrugLink.
+     * @example
+     * // Update one ActiveProtocolDrugLink
+     * const activeProtocolDrugLink = await prisma.activeProtocolDrugLink.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ActiveProtocolDrugLinkUpdateArgs>(args: SelectSubset<T, ActiveProtocolDrugLinkUpdateArgs<ExtArgs>>): Prisma__ActiveProtocolDrugLinkClient<$Result.GetResult<Prisma.$ActiveProtocolDrugLinkPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ActiveProtocolDrugLinks.
+     * @param {ActiveProtocolDrugLinkDeleteManyArgs} args - Arguments to filter ActiveProtocolDrugLinks to delete.
+     * @example
+     * // Delete a few ActiveProtocolDrugLinks
+     * const { count } = await prisma.activeProtocolDrugLink.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ActiveProtocolDrugLinkDeleteManyArgs>(args?: SelectSubset<T, ActiveProtocolDrugLinkDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ActiveProtocolDrugLinks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActiveProtocolDrugLinkUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ActiveProtocolDrugLinks
+     * const activeProtocolDrugLink = await prisma.activeProtocolDrugLink.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ActiveProtocolDrugLinkUpdateManyArgs>(args: SelectSubset<T, ActiveProtocolDrugLinkUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ActiveProtocolDrugLinks and returns the data updated in the database.
+     * @param {ActiveProtocolDrugLinkUpdateManyAndReturnArgs} args - Arguments to update many ActiveProtocolDrugLinks.
+     * @example
+     * // Update many ActiveProtocolDrugLinks
+     * const activeProtocolDrugLink = await prisma.activeProtocolDrugLink.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ActiveProtocolDrugLinks and only return the `id`
+     * const activeProtocolDrugLinkWithIdOnly = await prisma.activeProtocolDrugLink.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ActiveProtocolDrugLinkUpdateManyAndReturnArgs>(args: SelectSubset<T, ActiveProtocolDrugLinkUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActiveProtocolDrugLinkPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ActiveProtocolDrugLink.
+     * @param {ActiveProtocolDrugLinkUpsertArgs} args - Arguments to update or create a ActiveProtocolDrugLink.
+     * @example
+     * // Update or create a ActiveProtocolDrugLink
+     * const activeProtocolDrugLink = await prisma.activeProtocolDrugLink.upsert({
+     *   create: {
+     *     // ... data to create a ActiveProtocolDrugLink
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ActiveProtocolDrugLink we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ActiveProtocolDrugLinkUpsertArgs>(args: SelectSubset<T, ActiveProtocolDrugLinkUpsertArgs<ExtArgs>>): Prisma__ActiveProtocolDrugLinkClient<$Result.GetResult<Prisma.$ActiveProtocolDrugLinkPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ActiveProtocolDrugLinks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActiveProtocolDrugLinkCountArgs} args - Arguments to filter ActiveProtocolDrugLinks to count.
+     * @example
+     * // Count the number of ActiveProtocolDrugLinks
+     * const count = await prisma.activeProtocolDrugLink.count({
+     *   where: {
+     *     // ... the filter for the ActiveProtocolDrugLinks we want to count
+     *   }
+     * })
+    **/
+    count<T extends ActiveProtocolDrugLinkCountArgs>(
+      args?: Subset<T, ActiveProtocolDrugLinkCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ActiveProtocolDrugLinkCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ActiveProtocolDrugLink.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActiveProtocolDrugLinkAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ActiveProtocolDrugLinkAggregateArgs>(args: Subset<T, ActiveProtocolDrugLinkAggregateArgs>): Prisma.PrismaPromise<GetActiveProtocolDrugLinkAggregateType<T>>
+
+    /**
+     * Group by ActiveProtocolDrugLink.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActiveProtocolDrugLinkGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ActiveProtocolDrugLinkGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ActiveProtocolDrugLinkGroupByArgs['orderBy'] }
+        : { orderBy?: ActiveProtocolDrugLinkGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ActiveProtocolDrugLinkGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetActiveProtocolDrugLinkGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ActiveProtocolDrugLink model
+   */
+  readonly fields: ActiveProtocolDrugLinkFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ActiveProtocolDrugLink.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ActiveProtocolDrugLinkClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    activeProtocol<T extends ActiveProtocolDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ActiveProtocolDefaultArgs<ExtArgs>>): Prisma__ActiveProtocolClient<$Result.GetResult<Prisma.$ActiveProtocolPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    protocolDrug<T extends ProtocolDrugDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProtocolDrugDefaultArgs<ExtArgs>>): Prisma__ProtocolDrugClient<$Result.GetResult<Prisma.$ProtocolDrugPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    medication<T extends MedicationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MedicationDefaultArgs<ExtArgs>>): Prisma__MedicationClient<$Result.GetResult<Prisma.$MedicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ActiveProtocolDrugLink model
+   */
+  interface ActiveProtocolDrugLinkFieldRefs {
+    readonly id: FieldRef<"ActiveProtocolDrugLink", 'Int'>
+    readonly activeProtocolId: FieldRef<"ActiveProtocolDrugLink", 'Int'>
+    readonly protocolDrugId: FieldRef<"ActiveProtocolDrugLink", 'Int'>
+    readonly medicationId: FieldRef<"ActiveProtocolDrugLink", 'Int'>
+    readonly createdAt: FieldRef<"ActiveProtocolDrugLink", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ActiveProtocolDrugLink findUnique
+   */
+  export type ActiveProtocolDrugLinkFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocolDrugLink
+     */
+    select?: ActiveProtocolDrugLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocolDrugLink
+     */
+    omit?: ActiveProtocolDrugLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolDrugLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which ActiveProtocolDrugLink to fetch.
+     */
+    where: ActiveProtocolDrugLinkWhereUniqueInput
+  }
+
+  /**
+   * ActiveProtocolDrugLink findUniqueOrThrow
+   */
+  export type ActiveProtocolDrugLinkFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocolDrugLink
+     */
+    select?: ActiveProtocolDrugLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocolDrugLink
+     */
+    omit?: ActiveProtocolDrugLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolDrugLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which ActiveProtocolDrugLink to fetch.
+     */
+    where: ActiveProtocolDrugLinkWhereUniqueInput
+  }
+
+  /**
+   * ActiveProtocolDrugLink findFirst
+   */
+  export type ActiveProtocolDrugLinkFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocolDrugLink
+     */
+    select?: ActiveProtocolDrugLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocolDrugLink
+     */
+    omit?: ActiveProtocolDrugLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolDrugLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which ActiveProtocolDrugLink to fetch.
+     */
+    where?: ActiveProtocolDrugLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ActiveProtocolDrugLinks to fetch.
+     */
+    orderBy?: ActiveProtocolDrugLinkOrderByWithRelationInput | ActiveProtocolDrugLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ActiveProtocolDrugLinks.
+     */
+    cursor?: ActiveProtocolDrugLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ActiveProtocolDrugLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ActiveProtocolDrugLinks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ActiveProtocolDrugLinks.
+     */
+    distinct?: ActiveProtocolDrugLinkScalarFieldEnum | ActiveProtocolDrugLinkScalarFieldEnum[]
+  }
+
+  /**
+   * ActiveProtocolDrugLink findFirstOrThrow
+   */
+  export type ActiveProtocolDrugLinkFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocolDrugLink
+     */
+    select?: ActiveProtocolDrugLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocolDrugLink
+     */
+    omit?: ActiveProtocolDrugLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolDrugLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which ActiveProtocolDrugLink to fetch.
+     */
+    where?: ActiveProtocolDrugLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ActiveProtocolDrugLinks to fetch.
+     */
+    orderBy?: ActiveProtocolDrugLinkOrderByWithRelationInput | ActiveProtocolDrugLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ActiveProtocolDrugLinks.
+     */
+    cursor?: ActiveProtocolDrugLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ActiveProtocolDrugLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ActiveProtocolDrugLinks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ActiveProtocolDrugLinks.
+     */
+    distinct?: ActiveProtocolDrugLinkScalarFieldEnum | ActiveProtocolDrugLinkScalarFieldEnum[]
+  }
+
+  /**
+   * ActiveProtocolDrugLink findMany
+   */
+  export type ActiveProtocolDrugLinkFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocolDrugLink
+     */
+    select?: ActiveProtocolDrugLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocolDrugLink
+     */
+    omit?: ActiveProtocolDrugLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolDrugLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which ActiveProtocolDrugLinks to fetch.
+     */
+    where?: ActiveProtocolDrugLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ActiveProtocolDrugLinks to fetch.
+     */
+    orderBy?: ActiveProtocolDrugLinkOrderByWithRelationInput | ActiveProtocolDrugLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ActiveProtocolDrugLinks.
+     */
+    cursor?: ActiveProtocolDrugLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ActiveProtocolDrugLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ActiveProtocolDrugLinks.
+     */
+    skip?: number
+    distinct?: ActiveProtocolDrugLinkScalarFieldEnum | ActiveProtocolDrugLinkScalarFieldEnum[]
+  }
+
+  /**
+   * ActiveProtocolDrugLink create
+   */
+  export type ActiveProtocolDrugLinkCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocolDrugLink
+     */
+    select?: ActiveProtocolDrugLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocolDrugLink
+     */
+    omit?: ActiveProtocolDrugLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolDrugLinkInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ActiveProtocolDrugLink.
+     */
+    data: XOR<ActiveProtocolDrugLinkCreateInput, ActiveProtocolDrugLinkUncheckedCreateInput>
+  }
+
+  /**
+   * ActiveProtocolDrugLink createMany
+   */
+  export type ActiveProtocolDrugLinkCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ActiveProtocolDrugLinks.
+     */
+    data: ActiveProtocolDrugLinkCreateManyInput | ActiveProtocolDrugLinkCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ActiveProtocolDrugLink createManyAndReturn
+   */
+  export type ActiveProtocolDrugLinkCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocolDrugLink
+     */
+    select?: ActiveProtocolDrugLinkSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocolDrugLink
+     */
+    omit?: ActiveProtocolDrugLinkOmit<ExtArgs> | null
+    /**
+     * The data used to create many ActiveProtocolDrugLinks.
+     */
+    data: ActiveProtocolDrugLinkCreateManyInput | ActiveProtocolDrugLinkCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolDrugLinkIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ActiveProtocolDrugLink update
+   */
+  export type ActiveProtocolDrugLinkUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocolDrugLink
+     */
+    select?: ActiveProtocolDrugLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocolDrugLink
+     */
+    omit?: ActiveProtocolDrugLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolDrugLinkInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ActiveProtocolDrugLink.
+     */
+    data: XOR<ActiveProtocolDrugLinkUpdateInput, ActiveProtocolDrugLinkUncheckedUpdateInput>
+    /**
+     * Choose, which ActiveProtocolDrugLink to update.
+     */
+    where: ActiveProtocolDrugLinkWhereUniqueInput
+  }
+
+  /**
+   * ActiveProtocolDrugLink updateMany
+   */
+  export type ActiveProtocolDrugLinkUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ActiveProtocolDrugLinks.
+     */
+    data: XOR<ActiveProtocolDrugLinkUpdateManyMutationInput, ActiveProtocolDrugLinkUncheckedUpdateManyInput>
+    /**
+     * Filter which ActiveProtocolDrugLinks to update
+     */
+    where?: ActiveProtocolDrugLinkWhereInput
+    /**
+     * Limit how many ActiveProtocolDrugLinks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ActiveProtocolDrugLink updateManyAndReturn
+   */
+  export type ActiveProtocolDrugLinkUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocolDrugLink
+     */
+    select?: ActiveProtocolDrugLinkSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocolDrugLink
+     */
+    omit?: ActiveProtocolDrugLinkOmit<ExtArgs> | null
+    /**
+     * The data used to update ActiveProtocolDrugLinks.
+     */
+    data: XOR<ActiveProtocolDrugLinkUpdateManyMutationInput, ActiveProtocolDrugLinkUncheckedUpdateManyInput>
+    /**
+     * Filter which ActiveProtocolDrugLinks to update
+     */
+    where?: ActiveProtocolDrugLinkWhereInput
+    /**
+     * Limit how many ActiveProtocolDrugLinks to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolDrugLinkIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ActiveProtocolDrugLink upsert
+   */
+  export type ActiveProtocolDrugLinkUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocolDrugLink
+     */
+    select?: ActiveProtocolDrugLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocolDrugLink
+     */
+    omit?: ActiveProtocolDrugLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolDrugLinkInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ActiveProtocolDrugLink to update in case it exists.
+     */
+    where: ActiveProtocolDrugLinkWhereUniqueInput
+    /**
+     * In case the ActiveProtocolDrugLink found by the `where` argument doesn't exist, create a new ActiveProtocolDrugLink with this data.
+     */
+    create: XOR<ActiveProtocolDrugLinkCreateInput, ActiveProtocolDrugLinkUncheckedCreateInput>
+    /**
+     * In case the ActiveProtocolDrugLink was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ActiveProtocolDrugLinkUpdateInput, ActiveProtocolDrugLinkUncheckedUpdateInput>
+  }
+
+  /**
+   * ActiveProtocolDrugLink delete
+   */
+  export type ActiveProtocolDrugLinkDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocolDrugLink
+     */
+    select?: ActiveProtocolDrugLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocolDrugLink
+     */
+    omit?: ActiveProtocolDrugLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolDrugLinkInclude<ExtArgs> | null
+    /**
+     * Filter which ActiveProtocolDrugLink to delete.
+     */
+    where: ActiveProtocolDrugLinkWhereUniqueInput
+  }
+
+  /**
+   * ActiveProtocolDrugLink deleteMany
+   */
+  export type ActiveProtocolDrugLinkDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ActiveProtocolDrugLinks to delete
+     */
+    where?: ActiveProtocolDrugLinkWhereInput
+    /**
+     * Limit how many ActiveProtocolDrugLinks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ActiveProtocolDrugLink without action
+   */
+  export type ActiveProtocolDrugLinkDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActiveProtocolDrugLink
+     */
+    select?: ActiveProtocolDrugLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActiveProtocolDrugLink
+     */
+    omit?: ActiveProtocolDrugLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActiveProtocolDrugLinkInclude<ExtArgs> | null
   }
 
 
@@ -49022,6 +50662,8 @@ export namespace Prisma {
     imageUrl: string | null
     scheduledFor: Date | null
     status: $Enums.SocialPostStatus | null
+    postedAt: Date | null
+    deliveryLog: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -49032,6 +50674,8 @@ export namespace Prisma {
     imageUrl: string | null
     scheduledFor: Date | null
     status: $Enums.SocialPostStatus | null
+    postedAt: Date | null
+    deliveryLog: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -49043,6 +50687,8 @@ export namespace Prisma {
     platforms: number
     scheduledFor: number
     status: number
+    postedAt: number
+    deliveryLog: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -49063,6 +50709,8 @@ export namespace Prisma {
     imageUrl?: true
     scheduledFor?: true
     status?: true
+    postedAt?: true
+    deliveryLog?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -49073,6 +50721,8 @@ export namespace Prisma {
     imageUrl?: true
     scheduledFor?: true
     status?: true
+    postedAt?: true
+    deliveryLog?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -49084,6 +50734,8 @@ export namespace Prisma {
     platforms?: true
     scheduledFor?: true
     status?: true
+    postedAt?: true
+    deliveryLog?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -49182,6 +50834,8 @@ export namespace Prisma {
     platforms: string[]
     scheduledFor: Date | null
     status: $Enums.SocialPostStatus
+    postedAt: Date | null
+    deliveryLog: string
     createdAt: Date
     updatedAt: Date
     _count: SocialPostCountAggregateOutputType | null
@@ -49212,6 +50866,8 @@ export namespace Prisma {
     platforms?: boolean
     scheduledFor?: boolean
     status?: boolean
+    postedAt?: boolean
+    deliveryLog?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["socialPost"]>
@@ -49223,6 +50879,8 @@ export namespace Prisma {
     platforms?: boolean
     scheduledFor?: boolean
     status?: boolean
+    postedAt?: boolean
+    deliveryLog?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["socialPost"]>
@@ -49234,6 +50892,8 @@ export namespace Prisma {
     platforms?: boolean
     scheduledFor?: boolean
     status?: boolean
+    postedAt?: boolean
+    deliveryLog?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["socialPost"]>
@@ -49245,11 +50905,13 @@ export namespace Prisma {
     platforms?: boolean
     scheduledFor?: boolean
     status?: boolean
+    postedAt?: boolean
+    deliveryLog?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type SocialPostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "body" | "imageUrl" | "platforms" | "scheduledFor" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["socialPost"]>
+  export type SocialPostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "body" | "imageUrl" | "platforms" | "scheduledFor" | "status" | "postedAt" | "deliveryLog" | "createdAt" | "updatedAt", ExtArgs["result"]["socialPost"]>
 
   export type $SocialPostPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "SocialPost"
@@ -49261,6 +50923,8 @@ export namespace Prisma {
       platforms: string[]
       scheduledFor: Date | null
       status: $Enums.SocialPostStatus
+      postedAt: Date | null
+      deliveryLog: string
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["socialPost"]>
@@ -49692,6 +51356,8 @@ export namespace Prisma {
     readonly platforms: FieldRef<"SocialPost", 'String[]'>
     readonly scheduledFor: FieldRef<"SocialPost", 'DateTime'>
     readonly status: FieldRef<"SocialPost", 'SocialPostStatus'>
+    readonly postedAt: FieldRef<"SocialPost", 'DateTime'>
+    readonly deliveryLog: FieldRef<"SocialPost", 'String'>
     readonly createdAt: FieldRef<"SocialPost", 'DateTime'>
     readonly updatedAt: FieldRef<"SocialPost", 'DateTime'>
   }
@@ -50403,6 +52069,7 @@ export namespace Prisma {
     endDate: 'endDate',
     location: 'location',
     description: 'description',
+    imageUrl: 'imageUrl',
     isPublic: 'isPublic',
     status: 'status',
     internalNotes: 'internalNotes',
@@ -50517,6 +52184,10 @@ export namespace Prisma {
     startDayOffset: 'startDayOffset',
     endDayOffset: 'endDayOffset',
     frequencyPerDay: 'frequencyPerDay',
+    cadence: 'cadence',
+    intervalDays: 'intervalDays',
+    recordType: 'recordType',
+    healthWriteMode: 'healthWriteMode',
     instructions: 'instructions',
     sortOrder: 'sortOrder'
   };
@@ -50545,10 +52216,23 @@ export namespace Prisma {
     status: 'status',
     administeredAt: 'administeredAt',
     administeredById: 'administeredById',
+    medicationId: 'medicationId',
+    vaccineId: 'vaccineId',
     notes: 'notes'
   };
 
   export type ProtocolDoseScalarFieldEnum = (typeof ProtocolDoseScalarFieldEnum)[keyof typeof ProtocolDoseScalarFieldEnum]
+
+
+  export const ActiveProtocolDrugLinkScalarFieldEnum: {
+    id: 'id',
+    activeProtocolId: 'activeProtocolId',
+    protocolDrugId: 'protocolDrugId',
+    medicationId: 'medicationId',
+    createdAt: 'createdAt'
+  };
+
+  export type ActiveProtocolDrugLinkScalarFieldEnum = (typeof ActiveProtocolDrugLinkScalarFieldEnum)[keyof typeof ActiveProtocolDrugLinkScalarFieldEnum]
 
 
   export const SettingsScalarFieldEnum: {
@@ -50666,6 +52350,8 @@ export namespace Prisma {
     platforms: 'platforms',
     scheduledFor: 'scheduledFor',
     status: 'status',
+    postedAt: 'postedAt',
+    deliveryLog: 'deliveryLog',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -50818,6 +52504,48 @@ export namespace Prisma {
    * Reference to a field of type 'PasswordTokenPurpose[]'
    */
   export type ListEnumPasswordTokenPurposeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PasswordTokenPurpose[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ProtocolCadence'
+   */
+  export type EnumProtocolCadenceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProtocolCadence'>
+    
+
+
+  /**
+   * Reference to a field of type 'ProtocolCadence[]'
+   */
+  export type ListEnumProtocolCadenceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProtocolCadence[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ProtocolRecordType'
+   */
+  export type EnumProtocolRecordTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProtocolRecordType'>
+    
+
+
+  /**
+   * Reference to a field of type 'ProtocolRecordType[]'
+   */
+  export type ListEnumProtocolRecordTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProtocolRecordType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ProtocolHealthWriteMode'
+   */
+  export type EnumProtocolHealthWriteModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProtocolHealthWriteMode'>
+    
+
+
+  /**
+   * Reference to a field of type 'ProtocolHealthWriteMode[]'
+   */
+  export type ListEnumProtocolHealthWriteModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProtocolHealthWriteMode[]'>
     
 
 
@@ -51575,6 +53303,7 @@ export namespace Prisma {
     administeredBy?: StringFilter<"Vaccine"> | string
     notes?: StringFilter<"Vaccine"> | string
     kitten?: XOR<KittenScalarRelationFilter, KittenWhereInput>
+    protocolDoses?: ProtocolDoseListRelationFilter
   }
 
   export type VaccineOrderByWithRelationInput = {
@@ -51588,6 +53317,7 @@ export namespace Prisma {
     administeredBy?: SortOrder
     notes?: SortOrder
     kitten?: KittenOrderByWithRelationInput
+    protocolDoses?: ProtocolDoseOrderByRelationAggregateInput
   }
 
   export type VaccineWhereUniqueInput = Prisma.AtLeast<{
@@ -51604,6 +53334,7 @@ export namespace Prisma {
     administeredBy?: StringFilter<"Vaccine"> | string
     notes?: StringFilter<"Vaccine"> | string
     kitten?: XOR<KittenScalarRelationFilter, KittenWhereInput>
+    protocolDoses?: ProtocolDoseListRelationFilter
   }, "id">
 
   export type VaccineOrderByWithAggregationInput = {
@@ -51654,6 +53385,8 @@ export namespace Prisma {
     status?: StringFilter<"Medication"> | string
     notes?: StringFilter<"Medication"> | string
     kitten?: XOR<KittenScalarRelationFilter, KittenWhereInput>
+    protocolDoses?: ProtocolDoseListRelationFilter
+    protocolDrugLinks?: ActiveProtocolDrugLinkListRelationFilter
   }
 
   export type MedicationOrderByWithRelationInput = {
@@ -51669,6 +53402,8 @@ export namespace Prisma {
     status?: SortOrder
     notes?: SortOrder
     kitten?: KittenOrderByWithRelationInput
+    protocolDoses?: ProtocolDoseOrderByRelationAggregateInput
+    protocolDrugLinks?: ActiveProtocolDrugLinkOrderByRelationAggregateInput
   }
 
   export type MedicationWhereUniqueInput = Prisma.AtLeast<{
@@ -51687,6 +53422,8 @@ export namespace Prisma {
     status?: StringFilter<"Medication"> | string
     notes?: StringFilter<"Medication"> | string
     kitten?: XOR<KittenScalarRelationFilter, KittenWhereInput>
+    protocolDoses?: ProtocolDoseListRelationFilter
+    protocolDrugLinks?: ActiveProtocolDrugLinkListRelationFilter
   }, "id">
 
   export type MedicationOrderByWithAggregationInput = {
@@ -52639,6 +54376,7 @@ export namespace Prisma {
     endDate?: DateTimeNullableFilter<"Event"> | Date | string | null
     location?: StringFilter<"Event"> | string
     description?: StringFilter<"Event"> | string
+    imageUrl?: StringNullableFilter<"Event"> | string | null
     isPublic?: BoolFilter<"Event"> | boolean
     status?: StringFilter<"Event"> | string
     internalNotes?: StringNullableFilter<"Event"> | string | null
@@ -52655,6 +54393,7 @@ export namespace Prisma {
     endDate?: SortOrderInput | SortOrder
     location?: SortOrder
     description?: SortOrder
+    imageUrl?: SortOrderInput | SortOrder
     isPublic?: SortOrder
     status?: SortOrder
     internalNotes?: SortOrderInput | SortOrder
@@ -52674,6 +54413,7 @@ export namespace Prisma {
     endDate?: DateTimeNullableFilter<"Event"> | Date | string | null
     location?: StringFilter<"Event"> | string
     description?: StringFilter<"Event"> | string
+    imageUrl?: StringNullableFilter<"Event"> | string | null
     isPublic?: BoolFilter<"Event"> | boolean
     status?: StringFilter<"Event"> | string
     internalNotes?: StringNullableFilter<"Event"> | string | null
@@ -52690,6 +54430,7 @@ export namespace Prisma {
     endDate?: SortOrderInput | SortOrder
     location?: SortOrder
     description?: SortOrder
+    imageUrl?: SortOrderInput | SortOrder
     isPublic?: SortOrder
     status?: SortOrder
     internalNotes?: SortOrderInput | SortOrder
@@ -52712,6 +54453,7 @@ export namespace Prisma {
     endDate?: DateTimeNullableWithAggregatesFilter<"Event"> | Date | string | null
     location?: StringWithAggregatesFilter<"Event"> | string
     description?: StringWithAggregatesFilter<"Event"> | string
+    imageUrl?: StringNullableWithAggregatesFilter<"Event"> | string | null
     isPublic?: BoolWithAggregatesFilter<"Event"> | boolean
     status?: StringWithAggregatesFilter<"Event"> | string
     internalNotes?: StringNullableWithAggregatesFilter<"Event"> | string | null
@@ -53261,10 +55003,15 @@ export namespace Prisma {
     startDayOffset?: IntFilter<"ProtocolDrug"> | number
     endDayOffset?: IntFilter<"ProtocolDrug"> | number
     frequencyPerDay?: IntFilter<"ProtocolDrug"> | number
+    cadence?: EnumProtocolCadenceFilter<"ProtocolDrug"> | $Enums.ProtocolCadence
+    intervalDays?: IntFilter<"ProtocolDrug"> | number
+    recordType?: EnumProtocolRecordTypeFilter<"ProtocolDrug"> | $Enums.ProtocolRecordType
+    healthWriteMode?: EnumProtocolHealthWriteModeFilter<"ProtocolDrug"> | $Enums.ProtocolHealthWriteMode
     instructions?: StringFilter<"ProtocolDrug"> | string
     sortOrder?: IntFilter<"ProtocolDrug"> | number
     protocol?: XOR<ProtocolScalarRelationFilter, ProtocolWhereInput>
     doses?: ProtocolDoseListRelationFilter
+    activeProtocolDrugLinks?: ActiveProtocolDrugLinkListRelationFilter
   }
 
   export type ProtocolDrugOrderByWithRelationInput = {
@@ -53276,10 +55023,15 @@ export namespace Prisma {
     startDayOffset?: SortOrder
     endDayOffset?: SortOrder
     frequencyPerDay?: SortOrder
+    cadence?: SortOrder
+    intervalDays?: SortOrder
+    recordType?: SortOrder
+    healthWriteMode?: SortOrder
     instructions?: SortOrder
     sortOrder?: SortOrder
     protocol?: ProtocolOrderByWithRelationInput
     doses?: ProtocolDoseOrderByRelationAggregateInput
+    activeProtocolDrugLinks?: ActiveProtocolDrugLinkOrderByRelationAggregateInput
   }
 
   export type ProtocolDrugWhereUniqueInput = Prisma.AtLeast<{
@@ -53294,10 +55046,15 @@ export namespace Prisma {
     startDayOffset?: IntFilter<"ProtocolDrug"> | number
     endDayOffset?: IntFilter<"ProtocolDrug"> | number
     frequencyPerDay?: IntFilter<"ProtocolDrug"> | number
+    cadence?: EnumProtocolCadenceFilter<"ProtocolDrug"> | $Enums.ProtocolCadence
+    intervalDays?: IntFilter<"ProtocolDrug"> | number
+    recordType?: EnumProtocolRecordTypeFilter<"ProtocolDrug"> | $Enums.ProtocolRecordType
+    healthWriteMode?: EnumProtocolHealthWriteModeFilter<"ProtocolDrug"> | $Enums.ProtocolHealthWriteMode
     instructions?: StringFilter<"ProtocolDrug"> | string
     sortOrder?: IntFilter<"ProtocolDrug"> | number
     protocol?: XOR<ProtocolScalarRelationFilter, ProtocolWhereInput>
     doses?: ProtocolDoseListRelationFilter
+    activeProtocolDrugLinks?: ActiveProtocolDrugLinkListRelationFilter
   }, "id">
 
   export type ProtocolDrugOrderByWithAggregationInput = {
@@ -53309,6 +55066,10 @@ export namespace Prisma {
     startDayOffset?: SortOrder
     endDayOffset?: SortOrder
     frequencyPerDay?: SortOrder
+    cadence?: SortOrder
+    intervalDays?: SortOrder
+    recordType?: SortOrder
+    healthWriteMode?: SortOrder
     instructions?: SortOrder
     sortOrder?: SortOrder
     _count?: ProtocolDrugCountOrderByAggregateInput
@@ -53330,6 +55091,10 @@ export namespace Prisma {
     startDayOffset?: IntWithAggregatesFilter<"ProtocolDrug"> | number
     endDayOffset?: IntWithAggregatesFilter<"ProtocolDrug"> | number
     frequencyPerDay?: IntWithAggregatesFilter<"ProtocolDrug"> | number
+    cadence?: EnumProtocolCadenceWithAggregatesFilter<"ProtocolDrug"> | $Enums.ProtocolCadence
+    intervalDays?: IntWithAggregatesFilter<"ProtocolDrug"> | number
+    recordType?: EnumProtocolRecordTypeWithAggregatesFilter<"ProtocolDrug"> | $Enums.ProtocolRecordType
+    healthWriteMode?: EnumProtocolHealthWriteModeWithAggregatesFilter<"ProtocolDrug"> | $Enums.ProtocolHealthWriteMode
     instructions?: StringWithAggregatesFilter<"ProtocolDrug"> | string
     sortOrder?: IntWithAggregatesFilter<"ProtocolDrug"> | number
   }
@@ -53348,6 +55113,7 @@ export namespace Prisma {
     kitten?: XOR<KittenScalarRelationFilter, KittenWhereInput>
     activatedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     doses?: ProtocolDoseListRelationFilter
+    drugLinks?: ActiveProtocolDrugLinkListRelationFilter
   }
 
   export type ActiveProtocolOrderByWithRelationInput = {
@@ -53361,6 +55127,7 @@ export namespace Prisma {
     kitten?: KittenOrderByWithRelationInput
     activatedBy?: UserOrderByWithRelationInput
     doses?: ProtocolDoseOrderByRelationAggregateInput
+    drugLinks?: ActiveProtocolDrugLinkOrderByRelationAggregateInput
   }
 
   export type ActiveProtocolWhereUniqueInput = Prisma.AtLeast<{
@@ -53377,6 +55144,7 @@ export namespace Prisma {
     kitten?: XOR<KittenScalarRelationFilter, KittenWhereInput>
     activatedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     doses?: ProtocolDoseListRelationFilter
+    drugLinks?: ActiveProtocolDrugLinkListRelationFilter
   }, "id">
 
   export type ActiveProtocolOrderByWithAggregationInput = {
@@ -53417,10 +55185,14 @@ export namespace Prisma {
     status?: EnumDoseStatusFilter<"ProtocolDose"> | $Enums.DoseStatus
     administeredAt?: DateTimeNullableFilter<"ProtocolDose"> | Date | string | null
     administeredById?: IntNullableFilter<"ProtocolDose"> | number | null
+    medicationId?: IntNullableFilter<"ProtocolDose"> | number | null
+    vaccineId?: IntNullableFilter<"ProtocolDose"> | number | null
     notes?: StringFilter<"ProtocolDose"> | string
     activeProtocol?: XOR<ActiveProtocolScalarRelationFilter, ActiveProtocolWhereInput>
     protocolDrug?: XOR<ProtocolDrugScalarRelationFilter, ProtocolDrugWhereInput>
     administeredBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    medication?: XOR<MedicationNullableScalarRelationFilter, MedicationWhereInput> | null
+    vaccine?: XOR<VaccineNullableScalarRelationFilter, VaccineWhereInput> | null
   }
 
   export type ProtocolDoseOrderByWithRelationInput = {
@@ -53432,10 +55204,14 @@ export namespace Prisma {
     status?: SortOrder
     administeredAt?: SortOrderInput | SortOrder
     administeredById?: SortOrderInput | SortOrder
+    medicationId?: SortOrderInput | SortOrder
+    vaccineId?: SortOrderInput | SortOrder
     notes?: SortOrder
     activeProtocol?: ActiveProtocolOrderByWithRelationInput
     protocolDrug?: ProtocolDrugOrderByWithRelationInput
     administeredBy?: UserOrderByWithRelationInput
+    medication?: MedicationOrderByWithRelationInput
+    vaccine?: VaccineOrderByWithRelationInput
   }
 
   export type ProtocolDoseWhereUniqueInput = Prisma.AtLeast<{
@@ -53451,10 +55227,14 @@ export namespace Prisma {
     status?: EnumDoseStatusFilter<"ProtocolDose"> | $Enums.DoseStatus
     administeredAt?: DateTimeNullableFilter<"ProtocolDose"> | Date | string | null
     administeredById?: IntNullableFilter<"ProtocolDose"> | number | null
+    medicationId?: IntNullableFilter<"ProtocolDose"> | number | null
+    vaccineId?: IntNullableFilter<"ProtocolDose"> | number | null
     notes?: StringFilter<"ProtocolDose"> | string
     activeProtocol?: XOR<ActiveProtocolScalarRelationFilter, ActiveProtocolWhereInput>
     protocolDrug?: XOR<ProtocolDrugScalarRelationFilter, ProtocolDrugWhereInput>
     administeredBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    medication?: XOR<MedicationNullableScalarRelationFilter, MedicationWhereInput> | null
+    vaccine?: XOR<VaccineNullableScalarRelationFilter, VaccineWhereInput> | null
   }, "id" | "activeProtocolId_protocolDrugId_scheduledDate_doseNumberInDay">
 
   export type ProtocolDoseOrderByWithAggregationInput = {
@@ -53466,6 +55246,8 @@ export namespace Prisma {
     status?: SortOrder
     administeredAt?: SortOrderInput | SortOrder
     administeredById?: SortOrderInput | SortOrder
+    medicationId?: SortOrderInput | SortOrder
+    vaccineId?: SortOrderInput | SortOrder
     notes?: SortOrder
     _count?: ProtocolDoseCountOrderByAggregateInput
     _avg?: ProtocolDoseAvgOrderByAggregateInput
@@ -53486,7 +55268,73 @@ export namespace Prisma {
     status?: EnumDoseStatusWithAggregatesFilter<"ProtocolDose"> | $Enums.DoseStatus
     administeredAt?: DateTimeNullableWithAggregatesFilter<"ProtocolDose"> | Date | string | null
     administeredById?: IntNullableWithAggregatesFilter<"ProtocolDose"> | number | null
+    medicationId?: IntNullableWithAggregatesFilter<"ProtocolDose"> | number | null
+    vaccineId?: IntNullableWithAggregatesFilter<"ProtocolDose"> | number | null
     notes?: StringWithAggregatesFilter<"ProtocolDose"> | string
+  }
+
+  export type ActiveProtocolDrugLinkWhereInput = {
+    AND?: ActiveProtocolDrugLinkWhereInput | ActiveProtocolDrugLinkWhereInput[]
+    OR?: ActiveProtocolDrugLinkWhereInput[]
+    NOT?: ActiveProtocolDrugLinkWhereInput | ActiveProtocolDrugLinkWhereInput[]
+    id?: IntFilter<"ActiveProtocolDrugLink"> | number
+    activeProtocolId?: IntFilter<"ActiveProtocolDrugLink"> | number
+    protocolDrugId?: IntFilter<"ActiveProtocolDrugLink"> | number
+    medicationId?: IntFilter<"ActiveProtocolDrugLink"> | number
+    createdAt?: DateTimeFilter<"ActiveProtocolDrugLink"> | Date | string
+    activeProtocol?: XOR<ActiveProtocolScalarRelationFilter, ActiveProtocolWhereInput>
+    protocolDrug?: XOR<ProtocolDrugScalarRelationFilter, ProtocolDrugWhereInput>
+    medication?: XOR<MedicationScalarRelationFilter, MedicationWhereInput>
+  }
+
+  export type ActiveProtocolDrugLinkOrderByWithRelationInput = {
+    id?: SortOrder
+    activeProtocolId?: SortOrder
+    protocolDrugId?: SortOrder
+    medicationId?: SortOrder
+    createdAt?: SortOrder
+    activeProtocol?: ActiveProtocolOrderByWithRelationInput
+    protocolDrug?: ProtocolDrugOrderByWithRelationInput
+    medication?: MedicationOrderByWithRelationInput
+  }
+
+  export type ActiveProtocolDrugLinkWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    activeProtocolId_protocolDrugId?: ActiveProtocolDrugLinkActiveProtocolIdProtocolDrugIdCompoundUniqueInput
+    AND?: ActiveProtocolDrugLinkWhereInput | ActiveProtocolDrugLinkWhereInput[]
+    OR?: ActiveProtocolDrugLinkWhereInput[]
+    NOT?: ActiveProtocolDrugLinkWhereInput | ActiveProtocolDrugLinkWhereInput[]
+    activeProtocolId?: IntFilter<"ActiveProtocolDrugLink"> | number
+    protocolDrugId?: IntFilter<"ActiveProtocolDrugLink"> | number
+    medicationId?: IntFilter<"ActiveProtocolDrugLink"> | number
+    createdAt?: DateTimeFilter<"ActiveProtocolDrugLink"> | Date | string
+    activeProtocol?: XOR<ActiveProtocolScalarRelationFilter, ActiveProtocolWhereInput>
+    protocolDrug?: XOR<ProtocolDrugScalarRelationFilter, ProtocolDrugWhereInput>
+    medication?: XOR<MedicationScalarRelationFilter, MedicationWhereInput>
+  }, "id" | "activeProtocolId_protocolDrugId">
+
+  export type ActiveProtocolDrugLinkOrderByWithAggregationInput = {
+    id?: SortOrder
+    activeProtocolId?: SortOrder
+    protocolDrugId?: SortOrder
+    medicationId?: SortOrder
+    createdAt?: SortOrder
+    _count?: ActiveProtocolDrugLinkCountOrderByAggregateInput
+    _avg?: ActiveProtocolDrugLinkAvgOrderByAggregateInput
+    _max?: ActiveProtocolDrugLinkMaxOrderByAggregateInput
+    _min?: ActiveProtocolDrugLinkMinOrderByAggregateInput
+    _sum?: ActiveProtocolDrugLinkSumOrderByAggregateInput
+  }
+
+  export type ActiveProtocolDrugLinkScalarWhereWithAggregatesInput = {
+    AND?: ActiveProtocolDrugLinkScalarWhereWithAggregatesInput | ActiveProtocolDrugLinkScalarWhereWithAggregatesInput[]
+    OR?: ActiveProtocolDrugLinkScalarWhereWithAggregatesInput[]
+    NOT?: ActiveProtocolDrugLinkScalarWhereWithAggregatesInput | ActiveProtocolDrugLinkScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"ActiveProtocolDrugLink"> | number
+    activeProtocolId?: IntWithAggregatesFilter<"ActiveProtocolDrugLink"> | number
+    protocolDrugId?: IntWithAggregatesFilter<"ActiveProtocolDrugLink"> | number
+    medicationId?: IntWithAggregatesFilter<"ActiveProtocolDrugLink"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"ActiveProtocolDrugLink"> | Date | string
   }
 
   export type SettingsWhereInput = {
@@ -54038,6 +55886,8 @@ export namespace Prisma {
     platforms?: StringNullableListFilter<"SocialPost">
     scheduledFor?: DateTimeNullableFilter<"SocialPost"> | Date | string | null
     status?: EnumSocialPostStatusFilter<"SocialPost"> | $Enums.SocialPostStatus
+    postedAt?: DateTimeNullableFilter<"SocialPost"> | Date | string | null
+    deliveryLog?: StringFilter<"SocialPost"> | string
     createdAt?: DateTimeFilter<"SocialPost"> | Date | string
     updatedAt?: DateTimeFilter<"SocialPost"> | Date | string
   }
@@ -54049,6 +55899,8 @@ export namespace Prisma {
     platforms?: SortOrder
     scheduledFor?: SortOrderInput | SortOrder
     status?: SortOrder
+    postedAt?: SortOrderInput | SortOrder
+    deliveryLog?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -54063,6 +55915,8 @@ export namespace Prisma {
     platforms?: StringNullableListFilter<"SocialPost">
     scheduledFor?: DateTimeNullableFilter<"SocialPost"> | Date | string | null
     status?: EnumSocialPostStatusFilter<"SocialPost"> | $Enums.SocialPostStatus
+    postedAt?: DateTimeNullableFilter<"SocialPost"> | Date | string | null
+    deliveryLog?: StringFilter<"SocialPost"> | string
     createdAt?: DateTimeFilter<"SocialPost"> | Date | string
     updatedAt?: DateTimeFilter<"SocialPost"> | Date | string
   }, "id">
@@ -54074,6 +55928,8 @@ export namespace Prisma {
     platforms?: SortOrder
     scheduledFor?: SortOrderInput | SortOrder
     status?: SortOrder
+    postedAt?: SortOrderInput | SortOrder
+    deliveryLog?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: SocialPostCountOrderByAggregateInput
@@ -54093,6 +55949,8 @@ export namespace Prisma {
     platforms?: StringNullableListFilter<"SocialPost">
     scheduledFor?: DateTimeNullableWithAggregatesFilter<"SocialPost"> | Date | string | null
     status?: EnumSocialPostStatusWithAggregatesFilter<"SocialPost"> | $Enums.SocialPostStatus
+    postedAt?: DateTimeNullableWithAggregatesFilter<"SocialPost"> | Date | string | null
+    deliveryLog?: StringWithAggregatesFilter<"SocialPost"> | string
     createdAt?: DateTimeWithAggregatesFilter<"SocialPost"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"SocialPost"> | Date | string
   }
@@ -54831,6 +56689,7 @@ export namespace Prisma {
     administeredBy?: string
     notes?: string
     kitten: KittenCreateNestedOneWithoutVaccinesInput
+    protocolDoses?: ProtocolDoseCreateNestedManyWithoutVaccineInput
   }
 
   export type VaccineUncheckedCreateInput = {
@@ -54843,6 +56702,7 @@ export namespace Prisma {
     manufacturer?: string
     administeredBy?: string
     notes?: string
+    protocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutVaccineInput
   }
 
   export type VaccineUpdateInput = {
@@ -54854,6 +56714,7 @@ export namespace Prisma {
     administeredBy?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
     kitten?: KittenUpdateOneRequiredWithoutVaccinesNestedInput
+    protocolDoses?: ProtocolDoseUpdateManyWithoutVaccineNestedInput
   }
 
   export type VaccineUncheckedUpdateInput = {
@@ -54866,6 +56727,7 @@ export namespace Prisma {
     manufacturer?: StringFieldUpdateOperationsInput | string
     administeredBy?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
+    protocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutVaccineNestedInput
   }
 
   export type VaccineCreateManyInput = {
@@ -54913,6 +56775,8 @@ export namespace Prisma {
     status?: string
     notes?: string
     kitten: KittenCreateNestedOneWithoutMedicationsInput
+    protocolDoses?: ProtocolDoseCreateNestedManyWithoutMedicationInput
+    protocolDrugLinks?: ActiveProtocolDrugLinkCreateNestedManyWithoutMedicationInput
   }
 
   export type MedicationUncheckedCreateInput = {
@@ -54927,6 +56791,8 @@ export namespace Prisma {
     endDate?: Date | string | null
     status?: string
     notes?: string
+    protocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutMedicationInput
+    protocolDrugLinks?: ActiveProtocolDrugLinkUncheckedCreateNestedManyWithoutMedicationInput
   }
 
   export type MedicationUpdateInput = {
@@ -54940,6 +56806,8 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
     kitten?: KittenUpdateOneRequiredWithoutMedicationsNestedInput
+    protocolDoses?: ProtocolDoseUpdateManyWithoutMedicationNestedInput
+    protocolDrugLinks?: ActiveProtocolDrugLinkUpdateManyWithoutMedicationNestedInput
   }
 
   export type MedicationUncheckedUpdateInput = {
@@ -54954,6 +56822,8 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
+    protocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutMedicationNestedInput
+    protocolDrugLinks?: ActiveProtocolDrugLinkUncheckedUpdateManyWithoutMedicationNestedInput
   }
 
   export type MedicationCreateManyInput = {
@@ -55947,6 +57817,7 @@ export namespace Prisma {
     endDate?: Date | string | null
     location?: string
     description?: string
+    imageUrl?: string | null
     isPublic?: boolean
     status?: string
     internalNotes?: string | null
@@ -55963,6 +57834,7 @@ export namespace Prisma {
     endDate?: Date | string | null
     location?: string
     description?: string
+    imageUrl?: string | null
     isPublic?: boolean
     status?: string
     internalNotes?: string | null
@@ -55978,6 +57850,7 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     internalNotes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -55994,6 +57867,7 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     internalNotes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -56010,6 +57884,7 @@ export namespace Prisma {
     endDate?: Date | string | null
     location?: string
     description?: string
+    imageUrl?: string | null
     isPublic?: boolean
     status?: string
     internalNotes?: string | null
@@ -56023,6 +57898,7 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     internalNotes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -56037,6 +57913,7 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     internalNotes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -56570,10 +58447,15 @@ export namespace Prisma {
     startDayOffset: number
     endDayOffset: number
     frequencyPerDay: number
+    cadence?: $Enums.ProtocolCadence
+    intervalDays?: number
+    recordType?: $Enums.ProtocolRecordType
+    healthWriteMode?: $Enums.ProtocolHealthWriteMode
     instructions?: string
     sortOrder?: number
     protocol: ProtocolCreateNestedOneWithoutDrugsInput
     doses?: ProtocolDoseCreateNestedManyWithoutProtocolDrugInput
+    activeProtocolDrugLinks?: ActiveProtocolDrugLinkCreateNestedManyWithoutProtocolDrugInput
   }
 
   export type ProtocolDrugUncheckedCreateInput = {
@@ -56585,9 +58467,14 @@ export namespace Prisma {
     startDayOffset: number
     endDayOffset: number
     frequencyPerDay: number
+    cadence?: $Enums.ProtocolCadence
+    intervalDays?: number
+    recordType?: $Enums.ProtocolRecordType
+    healthWriteMode?: $Enums.ProtocolHealthWriteMode
     instructions?: string
     sortOrder?: number
     doses?: ProtocolDoseUncheckedCreateNestedManyWithoutProtocolDrugInput
+    activeProtocolDrugLinks?: ActiveProtocolDrugLinkUncheckedCreateNestedManyWithoutProtocolDrugInput
   }
 
   export type ProtocolDrugUpdateInput = {
@@ -56597,10 +58484,15 @@ export namespace Prisma {
     startDayOffset?: IntFieldUpdateOperationsInput | number
     endDayOffset?: IntFieldUpdateOperationsInput | number
     frequencyPerDay?: IntFieldUpdateOperationsInput | number
+    cadence?: EnumProtocolCadenceFieldUpdateOperationsInput | $Enums.ProtocolCadence
+    intervalDays?: IntFieldUpdateOperationsInput | number
+    recordType?: EnumProtocolRecordTypeFieldUpdateOperationsInput | $Enums.ProtocolRecordType
+    healthWriteMode?: EnumProtocolHealthWriteModeFieldUpdateOperationsInput | $Enums.ProtocolHealthWriteMode
     instructions?: StringFieldUpdateOperationsInput | string
     sortOrder?: IntFieldUpdateOperationsInput | number
     protocol?: ProtocolUpdateOneRequiredWithoutDrugsNestedInput
     doses?: ProtocolDoseUpdateManyWithoutProtocolDrugNestedInput
+    activeProtocolDrugLinks?: ActiveProtocolDrugLinkUpdateManyWithoutProtocolDrugNestedInput
   }
 
   export type ProtocolDrugUncheckedUpdateInput = {
@@ -56612,9 +58504,14 @@ export namespace Prisma {
     startDayOffset?: IntFieldUpdateOperationsInput | number
     endDayOffset?: IntFieldUpdateOperationsInput | number
     frequencyPerDay?: IntFieldUpdateOperationsInput | number
+    cadence?: EnumProtocolCadenceFieldUpdateOperationsInput | $Enums.ProtocolCadence
+    intervalDays?: IntFieldUpdateOperationsInput | number
+    recordType?: EnumProtocolRecordTypeFieldUpdateOperationsInput | $Enums.ProtocolRecordType
+    healthWriteMode?: EnumProtocolHealthWriteModeFieldUpdateOperationsInput | $Enums.ProtocolHealthWriteMode
     instructions?: StringFieldUpdateOperationsInput | string
     sortOrder?: IntFieldUpdateOperationsInput | number
     doses?: ProtocolDoseUncheckedUpdateManyWithoutProtocolDrugNestedInput
+    activeProtocolDrugLinks?: ActiveProtocolDrugLinkUncheckedUpdateManyWithoutProtocolDrugNestedInput
   }
 
   export type ProtocolDrugCreateManyInput = {
@@ -56626,6 +58523,10 @@ export namespace Prisma {
     startDayOffset: number
     endDayOffset: number
     frequencyPerDay: number
+    cadence?: $Enums.ProtocolCadence
+    intervalDays?: number
+    recordType?: $Enums.ProtocolRecordType
+    healthWriteMode?: $Enums.ProtocolHealthWriteMode
     instructions?: string
     sortOrder?: number
   }
@@ -56637,6 +58538,10 @@ export namespace Prisma {
     startDayOffset?: IntFieldUpdateOperationsInput | number
     endDayOffset?: IntFieldUpdateOperationsInput | number
     frequencyPerDay?: IntFieldUpdateOperationsInput | number
+    cadence?: EnumProtocolCadenceFieldUpdateOperationsInput | $Enums.ProtocolCadence
+    intervalDays?: IntFieldUpdateOperationsInput | number
+    recordType?: EnumProtocolRecordTypeFieldUpdateOperationsInput | $Enums.ProtocolRecordType
+    healthWriteMode?: EnumProtocolHealthWriteModeFieldUpdateOperationsInput | $Enums.ProtocolHealthWriteMode
     instructions?: StringFieldUpdateOperationsInput | string
     sortOrder?: IntFieldUpdateOperationsInput | number
   }
@@ -56650,6 +58555,10 @@ export namespace Prisma {
     startDayOffset?: IntFieldUpdateOperationsInput | number
     endDayOffset?: IntFieldUpdateOperationsInput | number
     frequencyPerDay?: IntFieldUpdateOperationsInput | number
+    cadence?: EnumProtocolCadenceFieldUpdateOperationsInput | $Enums.ProtocolCadence
+    intervalDays?: IntFieldUpdateOperationsInput | number
+    recordType?: EnumProtocolRecordTypeFieldUpdateOperationsInput | $Enums.ProtocolRecordType
+    healthWriteMode?: EnumProtocolHealthWriteModeFieldUpdateOperationsInput | $Enums.ProtocolHealthWriteMode
     instructions?: StringFieldUpdateOperationsInput | string
     sortOrder?: IntFieldUpdateOperationsInput | number
   }
@@ -56661,6 +58570,7 @@ export namespace Prisma {
     kitten: KittenCreateNestedOneWithoutActiveProtocolsInput
     activatedBy: UserCreateNestedOneWithoutActivatedProtocolsInput
     doses?: ProtocolDoseCreateNestedManyWithoutActiveProtocolInput
+    drugLinks?: ActiveProtocolDrugLinkCreateNestedManyWithoutActiveProtocolInput
   }
 
   export type ActiveProtocolUncheckedCreateInput = {
@@ -56671,6 +58581,7 @@ export namespace Prisma {
     activationDate: Date | string
     status?: $Enums.ActiveProtocolStatus
     doses?: ProtocolDoseUncheckedCreateNestedManyWithoutActiveProtocolInput
+    drugLinks?: ActiveProtocolDrugLinkUncheckedCreateNestedManyWithoutActiveProtocolInput
   }
 
   export type ActiveProtocolUpdateInput = {
@@ -56680,6 +58591,7 @@ export namespace Prisma {
     kitten?: KittenUpdateOneRequiredWithoutActiveProtocolsNestedInput
     activatedBy?: UserUpdateOneRequiredWithoutActivatedProtocolsNestedInput
     doses?: ProtocolDoseUpdateManyWithoutActiveProtocolNestedInput
+    drugLinks?: ActiveProtocolDrugLinkUpdateManyWithoutActiveProtocolNestedInput
   }
 
   export type ActiveProtocolUncheckedUpdateInput = {
@@ -56690,6 +58602,7 @@ export namespace Prisma {
     activationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumActiveProtocolStatusFieldUpdateOperationsInput | $Enums.ActiveProtocolStatus
     doses?: ProtocolDoseUncheckedUpdateManyWithoutActiveProtocolNestedInput
+    drugLinks?: ActiveProtocolDrugLinkUncheckedUpdateManyWithoutActiveProtocolNestedInput
   }
 
   export type ActiveProtocolCreateManyInput = {
@@ -56724,6 +58637,8 @@ export namespace Prisma {
     activeProtocol: ActiveProtocolCreateNestedOneWithoutDosesInput
     protocolDrug: ProtocolDrugCreateNestedOneWithoutDosesInput
     administeredBy?: UserCreateNestedOneWithoutAdministeredProtocolDosesInput
+    medication?: MedicationCreateNestedOneWithoutProtocolDosesInput
+    vaccine?: VaccineCreateNestedOneWithoutProtocolDosesInput
   }
 
   export type ProtocolDoseUncheckedCreateInput = {
@@ -56735,6 +58650,8 @@ export namespace Prisma {
     status?: $Enums.DoseStatus
     administeredAt?: Date | string | null
     administeredById?: number | null
+    medicationId?: number | null
+    vaccineId?: number | null
     notes?: string
   }
 
@@ -56747,6 +58664,8 @@ export namespace Prisma {
     activeProtocol?: ActiveProtocolUpdateOneRequiredWithoutDosesNestedInput
     protocolDrug?: ProtocolDrugUpdateOneRequiredWithoutDosesNestedInput
     administeredBy?: UserUpdateOneWithoutAdministeredProtocolDosesNestedInput
+    medication?: MedicationUpdateOneWithoutProtocolDosesNestedInput
+    vaccine?: VaccineUpdateOneWithoutProtocolDosesNestedInput
   }
 
   export type ProtocolDoseUncheckedUpdateInput = {
@@ -56758,6 +58677,8 @@ export namespace Prisma {
     status?: EnumDoseStatusFieldUpdateOperationsInput | $Enums.DoseStatus
     administeredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     administeredById?: NullableIntFieldUpdateOperationsInput | number | null
+    medicationId?: NullableIntFieldUpdateOperationsInput | number | null
+    vaccineId?: NullableIntFieldUpdateOperationsInput | number | null
     notes?: StringFieldUpdateOperationsInput | string
   }
 
@@ -56770,6 +58691,8 @@ export namespace Prisma {
     status?: $Enums.DoseStatus
     administeredAt?: Date | string | null
     administeredById?: number | null
+    medicationId?: number | null
+    vaccineId?: number | null
     notes?: string
   }
 
@@ -56790,7 +58713,59 @@ export namespace Prisma {
     status?: EnumDoseStatusFieldUpdateOperationsInput | $Enums.DoseStatus
     administeredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     administeredById?: NullableIntFieldUpdateOperationsInput | number | null
+    medicationId?: NullableIntFieldUpdateOperationsInput | number | null
+    vaccineId?: NullableIntFieldUpdateOperationsInput | number | null
     notes?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ActiveProtocolDrugLinkCreateInput = {
+    createdAt?: Date | string
+    activeProtocol: ActiveProtocolCreateNestedOneWithoutDrugLinksInput
+    protocolDrug: ProtocolDrugCreateNestedOneWithoutActiveProtocolDrugLinksInput
+    medication: MedicationCreateNestedOneWithoutProtocolDrugLinksInput
+  }
+
+  export type ActiveProtocolDrugLinkUncheckedCreateInput = {
+    id?: number
+    activeProtocolId: number
+    protocolDrugId: number
+    medicationId: number
+    createdAt?: Date | string
+  }
+
+  export type ActiveProtocolDrugLinkUpdateInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    activeProtocol?: ActiveProtocolUpdateOneRequiredWithoutDrugLinksNestedInput
+    protocolDrug?: ProtocolDrugUpdateOneRequiredWithoutActiveProtocolDrugLinksNestedInput
+    medication?: MedicationUpdateOneRequiredWithoutProtocolDrugLinksNestedInput
+  }
+
+  export type ActiveProtocolDrugLinkUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    activeProtocolId?: IntFieldUpdateOperationsInput | number
+    protocolDrugId?: IntFieldUpdateOperationsInput | number
+    medicationId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ActiveProtocolDrugLinkCreateManyInput = {
+    id?: number
+    activeProtocolId: number
+    protocolDrugId: number
+    medicationId: number
+    createdAt?: Date | string
+  }
+
+  export type ActiveProtocolDrugLinkUpdateManyMutationInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ActiveProtocolDrugLinkUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    activeProtocolId?: IntFieldUpdateOperationsInput | number
+    protocolDrugId?: IntFieldUpdateOperationsInput | number
+    medicationId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SettingsCreateInput = {
@@ -57437,6 +59412,8 @@ export namespace Prisma {
     platforms?: SocialPostCreateplatformsInput | string[]
     scheduledFor?: Date | string | null
     status?: $Enums.SocialPostStatus
+    postedAt?: Date | string | null
+    deliveryLog?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -57448,6 +59425,8 @@ export namespace Prisma {
     platforms?: SocialPostCreateplatformsInput | string[]
     scheduledFor?: Date | string | null
     status?: $Enums.SocialPostStatus
+    postedAt?: Date | string | null
+    deliveryLog?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -57458,6 +59437,8 @@ export namespace Prisma {
     platforms?: SocialPostUpdateplatformsInput | string[]
     scheduledFor?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumSocialPostStatusFieldUpdateOperationsInput | $Enums.SocialPostStatus
+    postedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveryLog?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -57469,6 +59450,8 @@ export namespace Prisma {
     platforms?: SocialPostUpdateplatformsInput | string[]
     scheduledFor?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumSocialPostStatusFieldUpdateOperationsInput | $Enums.SocialPostStatus
+    postedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveryLog?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -57480,6 +59463,8 @@ export namespace Prisma {
     platforms?: SocialPostCreateplatformsInput | string[]
     scheduledFor?: Date | string | null
     status?: $Enums.SocialPostStatus
+    postedAt?: Date | string | null
+    deliveryLog?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -57490,6 +59475,8 @@ export namespace Prisma {
     platforms?: SocialPostUpdateplatformsInput | string[]
     scheduledFor?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumSocialPostStatusFieldUpdateOperationsInput | $Enums.SocialPostStatus
+    postedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveryLog?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -57501,6 +59488,8 @@ export namespace Prisma {
     platforms?: SocialPostUpdateplatformsInput | string[]
     scheduledFor?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumSocialPostStatusFieldUpdateOperationsInput | $Enums.SocialPostStatus
+    postedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveryLog?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -58262,6 +60251,16 @@ export namespace Prisma {
     weightGrams?: SortOrder
   }
 
+  export type ProtocolDoseListRelationFilter = {
+    every?: ProtocolDoseWhereInput
+    some?: ProtocolDoseWhereInput
+    none?: ProtocolDoseWhereInput
+  }
+
+  export type ProtocolDoseOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type VaccineCountOrderByAggregateInput = {
     id?: SortOrder
     kittenId?: SortOrder
@@ -58306,6 +60305,16 @@ export namespace Prisma {
   export type VaccineSumOrderByAggregateInput = {
     id?: SortOrder
     kittenId?: SortOrder
+  }
+
+  export type ActiveProtocolDrugLinkListRelationFilter = {
+    every?: ActiveProtocolDrugLinkWhereInput
+    some?: ActiveProtocolDrugLinkWhereInput
+    none?: ActiveProtocolDrugLinkWhereInput
+  }
+
+  export type ActiveProtocolDrugLinkOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type MedicationCountOrderByAggregateInput = {
@@ -59042,6 +61051,7 @@ export namespace Prisma {
     endDate?: SortOrder
     location?: SortOrder
     description?: SortOrder
+    imageUrl?: SortOrder
     isPublic?: SortOrder
     status?: SortOrder
     internalNotes?: SortOrder
@@ -59060,6 +61070,7 @@ export namespace Prisma {
     endDate?: SortOrder
     location?: SortOrder
     description?: SortOrder
+    imageUrl?: SortOrder
     isPublic?: SortOrder
     status?: SortOrder
     internalNotes?: SortOrder
@@ -59073,6 +61084,7 @@ export namespace Prisma {
     endDate?: SortOrder
     location?: SortOrder
     description?: SortOrder
+    imageUrl?: SortOrder
     isPublic?: SortOrder
     status?: SortOrder
     internalNotes?: SortOrder
@@ -59292,12 +61304,6 @@ export namespace Prisma {
     none?: ApplicationWhereInput
   }
 
-  export type ProtocolDoseListRelationFilter = {
-    every?: ProtocolDoseWhereInput
-    some?: ProtocolDoseWhereInput
-    none?: ProtocolDoseWhereInput
-  }
-
   export type PasswordResetTokenListRelationFilter = {
     every?: PasswordResetTokenWhereInput
     some?: PasswordResetTokenWhereInput
@@ -59305,10 +61311,6 @@ export namespace Prisma {
   }
 
   export type ApplicationOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type ProtocolDoseOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -59478,6 +61480,27 @@ export namespace Prisma {
     id?: SortOrder
   }
 
+  export type EnumProtocolCadenceFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProtocolCadence | EnumProtocolCadenceFieldRefInput<$PrismaModel>
+    in?: $Enums.ProtocolCadence[] | ListEnumProtocolCadenceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProtocolCadence[] | ListEnumProtocolCadenceFieldRefInput<$PrismaModel>
+    not?: NestedEnumProtocolCadenceFilter<$PrismaModel> | $Enums.ProtocolCadence
+  }
+
+  export type EnumProtocolRecordTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProtocolRecordType | EnumProtocolRecordTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ProtocolRecordType[] | ListEnumProtocolRecordTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProtocolRecordType[] | ListEnumProtocolRecordTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumProtocolRecordTypeFilter<$PrismaModel> | $Enums.ProtocolRecordType
+  }
+
+  export type EnumProtocolHealthWriteModeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProtocolHealthWriteMode | EnumProtocolHealthWriteModeFieldRefInput<$PrismaModel>
+    in?: $Enums.ProtocolHealthWriteMode[] | ListEnumProtocolHealthWriteModeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProtocolHealthWriteMode[] | ListEnumProtocolHealthWriteModeFieldRefInput<$PrismaModel>
+    not?: NestedEnumProtocolHealthWriteModeFilter<$PrismaModel> | $Enums.ProtocolHealthWriteMode
+  }
+
   export type ProtocolScalarRelationFilter = {
     is?: ProtocolWhereInput
     isNot?: ProtocolWhereInput
@@ -59492,6 +61515,10 @@ export namespace Prisma {
     startDayOffset?: SortOrder
     endDayOffset?: SortOrder
     frequencyPerDay?: SortOrder
+    cadence?: SortOrder
+    intervalDays?: SortOrder
+    recordType?: SortOrder
+    healthWriteMode?: SortOrder
     instructions?: SortOrder
     sortOrder?: SortOrder
   }
@@ -59502,6 +61529,7 @@ export namespace Prisma {
     startDayOffset?: SortOrder
     endDayOffset?: SortOrder
     frequencyPerDay?: SortOrder
+    intervalDays?: SortOrder
     sortOrder?: SortOrder
   }
 
@@ -59514,6 +61542,10 @@ export namespace Prisma {
     startDayOffset?: SortOrder
     endDayOffset?: SortOrder
     frequencyPerDay?: SortOrder
+    cadence?: SortOrder
+    intervalDays?: SortOrder
+    recordType?: SortOrder
+    healthWriteMode?: SortOrder
     instructions?: SortOrder
     sortOrder?: SortOrder
   }
@@ -59527,6 +61559,10 @@ export namespace Prisma {
     startDayOffset?: SortOrder
     endDayOffset?: SortOrder
     frequencyPerDay?: SortOrder
+    cadence?: SortOrder
+    intervalDays?: SortOrder
+    recordType?: SortOrder
+    healthWriteMode?: SortOrder
     instructions?: SortOrder
     sortOrder?: SortOrder
   }
@@ -59537,7 +61573,38 @@ export namespace Prisma {
     startDayOffset?: SortOrder
     endDayOffset?: SortOrder
     frequencyPerDay?: SortOrder
+    intervalDays?: SortOrder
     sortOrder?: SortOrder
+  }
+
+  export type EnumProtocolCadenceWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProtocolCadence | EnumProtocolCadenceFieldRefInput<$PrismaModel>
+    in?: $Enums.ProtocolCadence[] | ListEnumProtocolCadenceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProtocolCadence[] | ListEnumProtocolCadenceFieldRefInput<$PrismaModel>
+    not?: NestedEnumProtocolCadenceWithAggregatesFilter<$PrismaModel> | $Enums.ProtocolCadence
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumProtocolCadenceFilter<$PrismaModel>
+    _max?: NestedEnumProtocolCadenceFilter<$PrismaModel>
+  }
+
+  export type EnumProtocolRecordTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProtocolRecordType | EnumProtocolRecordTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ProtocolRecordType[] | ListEnumProtocolRecordTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProtocolRecordType[] | ListEnumProtocolRecordTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumProtocolRecordTypeWithAggregatesFilter<$PrismaModel> | $Enums.ProtocolRecordType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumProtocolRecordTypeFilter<$PrismaModel>
+    _max?: NestedEnumProtocolRecordTypeFilter<$PrismaModel>
+  }
+
+  export type EnumProtocolHealthWriteModeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProtocolHealthWriteMode | EnumProtocolHealthWriteModeFieldRefInput<$PrismaModel>
+    in?: $Enums.ProtocolHealthWriteMode[] | ListEnumProtocolHealthWriteModeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProtocolHealthWriteMode[] | ListEnumProtocolHealthWriteModeFieldRefInput<$PrismaModel>
+    not?: NestedEnumProtocolHealthWriteModeWithAggregatesFilter<$PrismaModel> | $Enums.ProtocolHealthWriteMode
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumProtocolHealthWriteModeFilter<$PrismaModel>
+    _max?: NestedEnumProtocolHealthWriteModeFilter<$PrismaModel>
   }
 
   export type EnumActiveProtocolStatusFilter<$PrismaModel = never> = {
@@ -59615,6 +61682,16 @@ export namespace Prisma {
     isNot?: ProtocolDrugWhereInput
   }
 
+  export type MedicationNullableScalarRelationFilter = {
+    is?: MedicationWhereInput | null
+    isNot?: MedicationWhereInput | null
+  }
+
+  export type VaccineNullableScalarRelationFilter = {
+    is?: VaccineWhereInput | null
+    isNot?: VaccineWhereInput | null
+  }
+
   export type ProtocolDoseActiveProtocolIdProtocolDrugIdScheduledDateDoseNumberInDayCompoundUniqueInput = {
     activeProtocolId: number
     protocolDrugId: number
@@ -59631,6 +61708,8 @@ export namespace Prisma {
     status?: SortOrder
     administeredAt?: SortOrder
     administeredById?: SortOrder
+    medicationId?: SortOrder
+    vaccineId?: SortOrder
     notes?: SortOrder
   }
 
@@ -59640,6 +61719,8 @@ export namespace Prisma {
     protocolDrugId?: SortOrder
     doseNumberInDay?: SortOrder
     administeredById?: SortOrder
+    medicationId?: SortOrder
+    vaccineId?: SortOrder
   }
 
   export type ProtocolDoseMaxOrderByAggregateInput = {
@@ -59651,6 +61732,8 @@ export namespace Prisma {
     status?: SortOrder
     administeredAt?: SortOrder
     administeredById?: SortOrder
+    medicationId?: SortOrder
+    vaccineId?: SortOrder
     notes?: SortOrder
   }
 
@@ -59663,6 +61746,8 @@ export namespace Prisma {
     status?: SortOrder
     administeredAt?: SortOrder
     administeredById?: SortOrder
+    medicationId?: SortOrder
+    vaccineId?: SortOrder
     notes?: SortOrder
   }
 
@@ -59672,6 +61757,8 @@ export namespace Prisma {
     protocolDrugId?: SortOrder
     doseNumberInDay?: SortOrder
     administeredById?: SortOrder
+    medicationId?: SortOrder
+    vaccineId?: SortOrder
   }
 
   export type EnumDoseStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -59682,6 +61769,54 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumDoseStatusFilter<$PrismaModel>
     _max?: NestedEnumDoseStatusFilter<$PrismaModel>
+  }
+
+  export type MedicationScalarRelationFilter = {
+    is?: MedicationWhereInput
+    isNot?: MedicationWhereInput
+  }
+
+  export type ActiveProtocolDrugLinkActiveProtocolIdProtocolDrugIdCompoundUniqueInput = {
+    activeProtocolId: number
+    protocolDrugId: number
+  }
+
+  export type ActiveProtocolDrugLinkCountOrderByAggregateInput = {
+    id?: SortOrder
+    activeProtocolId?: SortOrder
+    protocolDrugId?: SortOrder
+    medicationId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ActiveProtocolDrugLinkAvgOrderByAggregateInput = {
+    id?: SortOrder
+    activeProtocolId?: SortOrder
+    protocolDrugId?: SortOrder
+    medicationId?: SortOrder
+  }
+
+  export type ActiveProtocolDrugLinkMaxOrderByAggregateInput = {
+    id?: SortOrder
+    activeProtocolId?: SortOrder
+    protocolDrugId?: SortOrder
+    medicationId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ActiveProtocolDrugLinkMinOrderByAggregateInput = {
+    id?: SortOrder
+    activeProtocolId?: SortOrder
+    protocolDrugId?: SortOrder
+    medicationId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ActiveProtocolDrugLinkSumOrderByAggregateInput = {
+    id?: SortOrder
+    activeProtocolId?: SortOrder
+    protocolDrugId?: SortOrder
+    medicationId?: SortOrder
   }
 
   export type SettingsCountOrderByAggregateInput = {
@@ -60069,6 +62204,8 @@ export namespace Prisma {
     platforms?: SortOrder
     scheduledFor?: SortOrder
     status?: SortOrder
+    postedAt?: SortOrder
+    deliveryLog?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -60083,6 +62220,8 @@ export namespace Prisma {
     imageUrl?: SortOrder
     scheduledFor?: SortOrder
     status?: SortOrder
+    postedAt?: SortOrder
+    deliveryLog?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -60093,6 +62232,8 @@ export namespace Prisma {
     imageUrl?: SortOrder
     scheduledFor?: SortOrder
     status?: SortOrder
+    postedAt?: SortOrder
+    deliveryLog?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -61101,6 +63242,20 @@ export namespace Prisma {
     connect?: KittenWhereUniqueInput
   }
 
+  export type ProtocolDoseCreateNestedManyWithoutVaccineInput = {
+    create?: XOR<ProtocolDoseCreateWithoutVaccineInput, ProtocolDoseUncheckedCreateWithoutVaccineInput> | ProtocolDoseCreateWithoutVaccineInput[] | ProtocolDoseUncheckedCreateWithoutVaccineInput[]
+    connectOrCreate?: ProtocolDoseCreateOrConnectWithoutVaccineInput | ProtocolDoseCreateOrConnectWithoutVaccineInput[]
+    createMany?: ProtocolDoseCreateManyVaccineInputEnvelope
+    connect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+  }
+
+  export type ProtocolDoseUncheckedCreateNestedManyWithoutVaccineInput = {
+    create?: XOR<ProtocolDoseCreateWithoutVaccineInput, ProtocolDoseUncheckedCreateWithoutVaccineInput> | ProtocolDoseCreateWithoutVaccineInput[] | ProtocolDoseUncheckedCreateWithoutVaccineInput[]
+    connectOrCreate?: ProtocolDoseCreateOrConnectWithoutVaccineInput | ProtocolDoseCreateOrConnectWithoutVaccineInput[]
+    createMany?: ProtocolDoseCreateManyVaccineInputEnvelope
+    connect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+  }
+
   export type KittenUpdateOneRequiredWithoutVaccinesNestedInput = {
     create?: XOR<KittenCreateWithoutVaccinesInput, KittenUncheckedCreateWithoutVaccinesInput>
     connectOrCreate?: KittenCreateOrConnectWithoutVaccinesInput
@@ -61109,10 +63264,66 @@ export namespace Prisma {
     update?: XOR<XOR<KittenUpdateToOneWithWhereWithoutVaccinesInput, KittenUpdateWithoutVaccinesInput>, KittenUncheckedUpdateWithoutVaccinesInput>
   }
 
+  export type ProtocolDoseUpdateManyWithoutVaccineNestedInput = {
+    create?: XOR<ProtocolDoseCreateWithoutVaccineInput, ProtocolDoseUncheckedCreateWithoutVaccineInput> | ProtocolDoseCreateWithoutVaccineInput[] | ProtocolDoseUncheckedCreateWithoutVaccineInput[]
+    connectOrCreate?: ProtocolDoseCreateOrConnectWithoutVaccineInput | ProtocolDoseCreateOrConnectWithoutVaccineInput[]
+    upsert?: ProtocolDoseUpsertWithWhereUniqueWithoutVaccineInput | ProtocolDoseUpsertWithWhereUniqueWithoutVaccineInput[]
+    createMany?: ProtocolDoseCreateManyVaccineInputEnvelope
+    set?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    disconnect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    delete?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    connect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    update?: ProtocolDoseUpdateWithWhereUniqueWithoutVaccineInput | ProtocolDoseUpdateWithWhereUniqueWithoutVaccineInput[]
+    updateMany?: ProtocolDoseUpdateManyWithWhereWithoutVaccineInput | ProtocolDoseUpdateManyWithWhereWithoutVaccineInput[]
+    deleteMany?: ProtocolDoseScalarWhereInput | ProtocolDoseScalarWhereInput[]
+  }
+
+  export type ProtocolDoseUncheckedUpdateManyWithoutVaccineNestedInput = {
+    create?: XOR<ProtocolDoseCreateWithoutVaccineInput, ProtocolDoseUncheckedCreateWithoutVaccineInput> | ProtocolDoseCreateWithoutVaccineInput[] | ProtocolDoseUncheckedCreateWithoutVaccineInput[]
+    connectOrCreate?: ProtocolDoseCreateOrConnectWithoutVaccineInput | ProtocolDoseCreateOrConnectWithoutVaccineInput[]
+    upsert?: ProtocolDoseUpsertWithWhereUniqueWithoutVaccineInput | ProtocolDoseUpsertWithWhereUniqueWithoutVaccineInput[]
+    createMany?: ProtocolDoseCreateManyVaccineInputEnvelope
+    set?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    disconnect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    delete?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    connect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    update?: ProtocolDoseUpdateWithWhereUniqueWithoutVaccineInput | ProtocolDoseUpdateWithWhereUniqueWithoutVaccineInput[]
+    updateMany?: ProtocolDoseUpdateManyWithWhereWithoutVaccineInput | ProtocolDoseUpdateManyWithWhereWithoutVaccineInput[]
+    deleteMany?: ProtocolDoseScalarWhereInput | ProtocolDoseScalarWhereInput[]
+  }
+
   export type KittenCreateNestedOneWithoutMedicationsInput = {
     create?: XOR<KittenCreateWithoutMedicationsInput, KittenUncheckedCreateWithoutMedicationsInput>
     connectOrCreate?: KittenCreateOrConnectWithoutMedicationsInput
     connect?: KittenWhereUniqueInput
+  }
+
+  export type ProtocolDoseCreateNestedManyWithoutMedicationInput = {
+    create?: XOR<ProtocolDoseCreateWithoutMedicationInput, ProtocolDoseUncheckedCreateWithoutMedicationInput> | ProtocolDoseCreateWithoutMedicationInput[] | ProtocolDoseUncheckedCreateWithoutMedicationInput[]
+    connectOrCreate?: ProtocolDoseCreateOrConnectWithoutMedicationInput | ProtocolDoseCreateOrConnectWithoutMedicationInput[]
+    createMany?: ProtocolDoseCreateManyMedicationInputEnvelope
+    connect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+  }
+
+  export type ActiveProtocolDrugLinkCreateNestedManyWithoutMedicationInput = {
+    create?: XOR<ActiveProtocolDrugLinkCreateWithoutMedicationInput, ActiveProtocolDrugLinkUncheckedCreateWithoutMedicationInput> | ActiveProtocolDrugLinkCreateWithoutMedicationInput[] | ActiveProtocolDrugLinkUncheckedCreateWithoutMedicationInput[]
+    connectOrCreate?: ActiveProtocolDrugLinkCreateOrConnectWithoutMedicationInput | ActiveProtocolDrugLinkCreateOrConnectWithoutMedicationInput[]
+    createMany?: ActiveProtocolDrugLinkCreateManyMedicationInputEnvelope
+    connect?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+  }
+
+  export type ProtocolDoseUncheckedCreateNestedManyWithoutMedicationInput = {
+    create?: XOR<ProtocolDoseCreateWithoutMedicationInput, ProtocolDoseUncheckedCreateWithoutMedicationInput> | ProtocolDoseCreateWithoutMedicationInput[] | ProtocolDoseUncheckedCreateWithoutMedicationInput[]
+    connectOrCreate?: ProtocolDoseCreateOrConnectWithoutMedicationInput | ProtocolDoseCreateOrConnectWithoutMedicationInput[]
+    createMany?: ProtocolDoseCreateManyMedicationInputEnvelope
+    connect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+  }
+
+  export type ActiveProtocolDrugLinkUncheckedCreateNestedManyWithoutMedicationInput = {
+    create?: XOR<ActiveProtocolDrugLinkCreateWithoutMedicationInput, ActiveProtocolDrugLinkUncheckedCreateWithoutMedicationInput> | ActiveProtocolDrugLinkCreateWithoutMedicationInput[] | ActiveProtocolDrugLinkUncheckedCreateWithoutMedicationInput[]
+    connectOrCreate?: ActiveProtocolDrugLinkCreateOrConnectWithoutMedicationInput | ActiveProtocolDrugLinkCreateOrConnectWithoutMedicationInput[]
+    createMany?: ActiveProtocolDrugLinkCreateManyMedicationInputEnvelope
+    connect?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
   }
 
   export type KittenUpdateOneRequiredWithoutMedicationsNestedInput = {
@@ -61121,6 +63332,62 @@ export namespace Prisma {
     upsert?: KittenUpsertWithoutMedicationsInput
     connect?: KittenWhereUniqueInput
     update?: XOR<XOR<KittenUpdateToOneWithWhereWithoutMedicationsInput, KittenUpdateWithoutMedicationsInput>, KittenUncheckedUpdateWithoutMedicationsInput>
+  }
+
+  export type ProtocolDoseUpdateManyWithoutMedicationNestedInput = {
+    create?: XOR<ProtocolDoseCreateWithoutMedicationInput, ProtocolDoseUncheckedCreateWithoutMedicationInput> | ProtocolDoseCreateWithoutMedicationInput[] | ProtocolDoseUncheckedCreateWithoutMedicationInput[]
+    connectOrCreate?: ProtocolDoseCreateOrConnectWithoutMedicationInput | ProtocolDoseCreateOrConnectWithoutMedicationInput[]
+    upsert?: ProtocolDoseUpsertWithWhereUniqueWithoutMedicationInput | ProtocolDoseUpsertWithWhereUniqueWithoutMedicationInput[]
+    createMany?: ProtocolDoseCreateManyMedicationInputEnvelope
+    set?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    disconnect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    delete?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    connect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    update?: ProtocolDoseUpdateWithWhereUniqueWithoutMedicationInput | ProtocolDoseUpdateWithWhereUniqueWithoutMedicationInput[]
+    updateMany?: ProtocolDoseUpdateManyWithWhereWithoutMedicationInput | ProtocolDoseUpdateManyWithWhereWithoutMedicationInput[]
+    deleteMany?: ProtocolDoseScalarWhereInput | ProtocolDoseScalarWhereInput[]
+  }
+
+  export type ActiveProtocolDrugLinkUpdateManyWithoutMedicationNestedInput = {
+    create?: XOR<ActiveProtocolDrugLinkCreateWithoutMedicationInput, ActiveProtocolDrugLinkUncheckedCreateWithoutMedicationInput> | ActiveProtocolDrugLinkCreateWithoutMedicationInput[] | ActiveProtocolDrugLinkUncheckedCreateWithoutMedicationInput[]
+    connectOrCreate?: ActiveProtocolDrugLinkCreateOrConnectWithoutMedicationInput | ActiveProtocolDrugLinkCreateOrConnectWithoutMedicationInput[]
+    upsert?: ActiveProtocolDrugLinkUpsertWithWhereUniqueWithoutMedicationInput | ActiveProtocolDrugLinkUpsertWithWhereUniqueWithoutMedicationInput[]
+    createMany?: ActiveProtocolDrugLinkCreateManyMedicationInputEnvelope
+    set?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+    disconnect?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+    delete?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+    connect?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+    update?: ActiveProtocolDrugLinkUpdateWithWhereUniqueWithoutMedicationInput | ActiveProtocolDrugLinkUpdateWithWhereUniqueWithoutMedicationInput[]
+    updateMany?: ActiveProtocolDrugLinkUpdateManyWithWhereWithoutMedicationInput | ActiveProtocolDrugLinkUpdateManyWithWhereWithoutMedicationInput[]
+    deleteMany?: ActiveProtocolDrugLinkScalarWhereInput | ActiveProtocolDrugLinkScalarWhereInput[]
+  }
+
+  export type ProtocolDoseUncheckedUpdateManyWithoutMedicationNestedInput = {
+    create?: XOR<ProtocolDoseCreateWithoutMedicationInput, ProtocolDoseUncheckedCreateWithoutMedicationInput> | ProtocolDoseCreateWithoutMedicationInput[] | ProtocolDoseUncheckedCreateWithoutMedicationInput[]
+    connectOrCreate?: ProtocolDoseCreateOrConnectWithoutMedicationInput | ProtocolDoseCreateOrConnectWithoutMedicationInput[]
+    upsert?: ProtocolDoseUpsertWithWhereUniqueWithoutMedicationInput | ProtocolDoseUpsertWithWhereUniqueWithoutMedicationInput[]
+    createMany?: ProtocolDoseCreateManyMedicationInputEnvelope
+    set?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    disconnect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    delete?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    connect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+    update?: ProtocolDoseUpdateWithWhereUniqueWithoutMedicationInput | ProtocolDoseUpdateWithWhereUniqueWithoutMedicationInput[]
+    updateMany?: ProtocolDoseUpdateManyWithWhereWithoutMedicationInput | ProtocolDoseUpdateManyWithWhereWithoutMedicationInput[]
+    deleteMany?: ProtocolDoseScalarWhereInput | ProtocolDoseScalarWhereInput[]
+  }
+
+  export type ActiveProtocolDrugLinkUncheckedUpdateManyWithoutMedicationNestedInput = {
+    create?: XOR<ActiveProtocolDrugLinkCreateWithoutMedicationInput, ActiveProtocolDrugLinkUncheckedCreateWithoutMedicationInput> | ActiveProtocolDrugLinkCreateWithoutMedicationInput[] | ActiveProtocolDrugLinkUncheckedCreateWithoutMedicationInput[]
+    connectOrCreate?: ActiveProtocolDrugLinkCreateOrConnectWithoutMedicationInput | ActiveProtocolDrugLinkCreateOrConnectWithoutMedicationInput[]
+    upsert?: ActiveProtocolDrugLinkUpsertWithWhereUniqueWithoutMedicationInput | ActiveProtocolDrugLinkUpsertWithWhereUniqueWithoutMedicationInput[]
+    createMany?: ActiveProtocolDrugLinkCreateManyMedicationInputEnvelope
+    set?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+    disconnect?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+    delete?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+    connect?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+    update?: ActiveProtocolDrugLinkUpdateWithWhereUniqueWithoutMedicationInput | ActiveProtocolDrugLinkUpdateWithWhereUniqueWithoutMedicationInput[]
+    updateMany?: ActiveProtocolDrugLinkUpdateManyWithWhereWithoutMedicationInput | ActiveProtocolDrugLinkUpdateManyWithWhereWithoutMedicationInput[]
+    deleteMany?: ActiveProtocolDrugLinkScalarWhereInput | ActiveProtocolDrugLinkScalarWhereInput[]
   }
 
   export type KittenCreateNestedOneWithoutVetAppointmentsInput = {
@@ -62276,11 +64543,37 @@ export namespace Prisma {
     connect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
   }
 
+  export type ActiveProtocolDrugLinkCreateNestedManyWithoutProtocolDrugInput = {
+    create?: XOR<ActiveProtocolDrugLinkCreateWithoutProtocolDrugInput, ActiveProtocolDrugLinkUncheckedCreateWithoutProtocolDrugInput> | ActiveProtocolDrugLinkCreateWithoutProtocolDrugInput[] | ActiveProtocolDrugLinkUncheckedCreateWithoutProtocolDrugInput[]
+    connectOrCreate?: ActiveProtocolDrugLinkCreateOrConnectWithoutProtocolDrugInput | ActiveProtocolDrugLinkCreateOrConnectWithoutProtocolDrugInput[]
+    createMany?: ActiveProtocolDrugLinkCreateManyProtocolDrugInputEnvelope
+    connect?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+  }
+
   export type ProtocolDoseUncheckedCreateNestedManyWithoutProtocolDrugInput = {
     create?: XOR<ProtocolDoseCreateWithoutProtocolDrugInput, ProtocolDoseUncheckedCreateWithoutProtocolDrugInput> | ProtocolDoseCreateWithoutProtocolDrugInput[] | ProtocolDoseUncheckedCreateWithoutProtocolDrugInput[]
     connectOrCreate?: ProtocolDoseCreateOrConnectWithoutProtocolDrugInput | ProtocolDoseCreateOrConnectWithoutProtocolDrugInput[]
     createMany?: ProtocolDoseCreateManyProtocolDrugInputEnvelope
     connect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+  }
+
+  export type ActiveProtocolDrugLinkUncheckedCreateNestedManyWithoutProtocolDrugInput = {
+    create?: XOR<ActiveProtocolDrugLinkCreateWithoutProtocolDrugInput, ActiveProtocolDrugLinkUncheckedCreateWithoutProtocolDrugInput> | ActiveProtocolDrugLinkCreateWithoutProtocolDrugInput[] | ActiveProtocolDrugLinkUncheckedCreateWithoutProtocolDrugInput[]
+    connectOrCreate?: ActiveProtocolDrugLinkCreateOrConnectWithoutProtocolDrugInput | ActiveProtocolDrugLinkCreateOrConnectWithoutProtocolDrugInput[]
+    createMany?: ActiveProtocolDrugLinkCreateManyProtocolDrugInputEnvelope
+    connect?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+  }
+
+  export type EnumProtocolCadenceFieldUpdateOperationsInput = {
+    set?: $Enums.ProtocolCadence
+  }
+
+  export type EnumProtocolRecordTypeFieldUpdateOperationsInput = {
+    set?: $Enums.ProtocolRecordType
+  }
+
+  export type EnumProtocolHealthWriteModeFieldUpdateOperationsInput = {
+    set?: $Enums.ProtocolHealthWriteMode
   }
 
   export type ProtocolUpdateOneRequiredWithoutDrugsNestedInput = {
@@ -62305,6 +64598,20 @@ export namespace Prisma {
     deleteMany?: ProtocolDoseScalarWhereInput | ProtocolDoseScalarWhereInput[]
   }
 
+  export type ActiveProtocolDrugLinkUpdateManyWithoutProtocolDrugNestedInput = {
+    create?: XOR<ActiveProtocolDrugLinkCreateWithoutProtocolDrugInput, ActiveProtocolDrugLinkUncheckedCreateWithoutProtocolDrugInput> | ActiveProtocolDrugLinkCreateWithoutProtocolDrugInput[] | ActiveProtocolDrugLinkUncheckedCreateWithoutProtocolDrugInput[]
+    connectOrCreate?: ActiveProtocolDrugLinkCreateOrConnectWithoutProtocolDrugInput | ActiveProtocolDrugLinkCreateOrConnectWithoutProtocolDrugInput[]
+    upsert?: ActiveProtocolDrugLinkUpsertWithWhereUniqueWithoutProtocolDrugInput | ActiveProtocolDrugLinkUpsertWithWhereUniqueWithoutProtocolDrugInput[]
+    createMany?: ActiveProtocolDrugLinkCreateManyProtocolDrugInputEnvelope
+    set?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+    disconnect?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+    delete?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+    connect?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+    update?: ActiveProtocolDrugLinkUpdateWithWhereUniqueWithoutProtocolDrugInput | ActiveProtocolDrugLinkUpdateWithWhereUniqueWithoutProtocolDrugInput[]
+    updateMany?: ActiveProtocolDrugLinkUpdateManyWithWhereWithoutProtocolDrugInput | ActiveProtocolDrugLinkUpdateManyWithWhereWithoutProtocolDrugInput[]
+    deleteMany?: ActiveProtocolDrugLinkScalarWhereInput | ActiveProtocolDrugLinkScalarWhereInput[]
+  }
+
   export type ProtocolDoseUncheckedUpdateManyWithoutProtocolDrugNestedInput = {
     create?: XOR<ProtocolDoseCreateWithoutProtocolDrugInput, ProtocolDoseUncheckedCreateWithoutProtocolDrugInput> | ProtocolDoseCreateWithoutProtocolDrugInput[] | ProtocolDoseUncheckedCreateWithoutProtocolDrugInput[]
     connectOrCreate?: ProtocolDoseCreateOrConnectWithoutProtocolDrugInput | ProtocolDoseCreateOrConnectWithoutProtocolDrugInput[]
@@ -62317,6 +64624,20 @@ export namespace Prisma {
     update?: ProtocolDoseUpdateWithWhereUniqueWithoutProtocolDrugInput | ProtocolDoseUpdateWithWhereUniqueWithoutProtocolDrugInput[]
     updateMany?: ProtocolDoseUpdateManyWithWhereWithoutProtocolDrugInput | ProtocolDoseUpdateManyWithWhereWithoutProtocolDrugInput[]
     deleteMany?: ProtocolDoseScalarWhereInput | ProtocolDoseScalarWhereInput[]
+  }
+
+  export type ActiveProtocolDrugLinkUncheckedUpdateManyWithoutProtocolDrugNestedInput = {
+    create?: XOR<ActiveProtocolDrugLinkCreateWithoutProtocolDrugInput, ActiveProtocolDrugLinkUncheckedCreateWithoutProtocolDrugInput> | ActiveProtocolDrugLinkCreateWithoutProtocolDrugInput[] | ActiveProtocolDrugLinkUncheckedCreateWithoutProtocolDrugInput[]
+    connectOrCreate?: ActiveProtocolDrugLinkCreateOrConnectWithoutProtocolDrugInput | ActiveProtocolDrugLinkCreateOrConnectWithoutProtocolDrugInput[]
+    upsert?: ActiveProtocolDrugLinkUpsertWithWhereUniqueWithoutProtocolDrugInput | ActiveProtocolDrugLinkUpsertWithWhereUniqueWithoutProtocolDrugInput[]
+    createMany?: ActiveProtocolDrugLinkCreateManyProtocolDrugInputEnvelope
+    set?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+    disconnect?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+    delete?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+    connect?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+    update?: ActiveProtocolDrugLinkUpdateWithWhereUniqueWithoutProtocolDrugInput | ActiveProtocolDrugLinkUpdateWithWhereUniqueWithoutProtocolDrugInput[]
+    updateMany?: ActiveProtocolDrugLinkUpdateManyWithWhereWithoutProtocolDrugInput | ActiveProtocolDrugLinkUpdateManyWithWhereWithoutProtocolDrugInput[]
+    deleteMany?: ActiveProtocolDrugLinkScalarWhereInput | ActiveProtocolDrugLinkScalarWhereInput[]
   }
 
   export type ProtocolCreateNestedOneWithoutActiveProtocolsInput = {
@@ -62344,11 +64665,25 @@ export namespace Prisma {
     connect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
   }
 
+  export type ActiveProtocolDrugLinkCreateNestedManyWithoutActiveProtocolInput = {
+    create?: XOR<ActiveProtocolDrugLinkCreateWithoutActiveProtocolInput, ActiveProtocolDrugLinkUncheckedCreateWithoutActiveProtocolInput> | ActiveProtocolDrugLinkCreateWithoutActiveProtocolInput[] | ActiveProtocolDrugLinkUncheckedCreateWithoutActiveProtocolInput[]
+    connectOrCreate?: ActiveProtocolDrugLinkCreateOrConnectWithoutActiveProtocolInput | ActiveProtocolDrugLinkCreateOrConnectWithoutActiveProtocolInput[]
+    createMany?: ActiveProtocolDrugLinkCreateManyActiveProtocolInputEnvelope
+    connect?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+  }
+
   export type ProtocolDoseUncheckedCreateNestedManyWithoutActiveProtocolInput = {
     create?: XOR<ProtocolDoseCreateWithoutActiveProtocolInput, ProtocolDoseUncheckedCreateWithoutActiveProtocolInput> | ProtocolDoseCreateWithoutActiveProtocolInput[] | ProtocolDoseUncheckedCreateWithoutActiveProtocolInput[]
     connectOrCreate?: ProtocolDoseCreateOrConnectWithoutActiveProtocolInput | ProtocolDoseCreateOrConnectWithoutActiveProtocolInput[]
     createMany?: ProtocolDoseCreateManyActiveProtocolInputEnvelope
     connect?: ProtocolDoseWhereUniqueInput | ProtocolDoseWhereUniqueInput[]
+  }
+
+  export type ActiveProtocolDrugLinkUncheckedCreateNestedManyWithoutActiveProtocolInput = {
+    create?: XOR<ActiveProtocolDrugLinkCreateWithoutActiveProtocolInput, ActiveProtocolDrugLinkUncheckedCreateWithoutActiveProtocolInput> | ActiveProtocolDrugLinkCreateWithoutActiveProtocolInput[] | ActiveProtocolDrugLinkUncheckedCreateWithoutActiveProtocolInput[]
+    connectOrCreate?: ActiveProtocolDrugLinkCreateOrConnectWithoutActiveProtocolInput | ActiveProtocolDrugLinkCreateOrConnectWithoutActiveProtocolInput[]
+    createMany?: ActiveProtocolDrugLinkCreateManyActiveProtocolInputEnvelope
+    connect?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
   }
 
   export type EnumActiveProtocolStatusFieldUpdateOperationsInput = {
@@ -62393,6 +64728,20 @@ export namespace Prisma {
     deleteMany?: ProtocolDoseScalarWhereInput | ProtocolDoseScalarWhereInput[]
   }
 
+  export type ActiveProtocolDrugLinkUpdateManyWithoutActiveProtocolNestedInput = {
+    create?: XOR<ActiveProtocolDrugLinkCreateWithoutActiveProtocolInput, ActiveProtocolDrugLinkUncheckedCreateWithoutActiveProtocolInput> | ActiveProtocolDrugLinkCreateWithoutActiveProtocolInput[] | ActiveProtocolDrugLinkUncheckedCreateWithoutActiveProtocolInput[]
+    connectOrCreate?: ActiveProtocolDrugLinkCreateOrConnectWithoutActiveProtocolInput | ActiveProtocolDrugLinkCreateOrConnectWithoutActiveProtocolInput[]
+    upsert?: ActiveProtocolDrugLinkUpsertWithWhereUniqueWithoutActiveProtocolInput | ActiveProtocolDrugLinkUpsertWithWhereUniqueWithoutActiveProtocolInput[]
+    createMany?: ActiveProtocolDrugLinkCreateManyActiveProtocolInputEnvelope
+    set?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+    disconnect?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+    delete?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+    connect?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+    update?: ActiveProtocolDrugLinkUpdateWithWhereUniqueWithoutActiveProtocolInput | ActiveProtocolDrugLinkUpdateWithWhereUniqueWithoutActiveProtocolInput[]
+    updateMany?: ActiveProtocolDrugLinkUpdateManyWithWhereWithoutActiveProtocolInput | ActiveProtocolDrugLinkUpdateManyWithWhereWithoutActiveProtocolInput[]
+    deleteMany?: ActiveProtocolDrugLinkScalarWhereInput | ActiveProtocolDrugLinkScalarWhereInput[]
+  }
+
   export type ProtocolDoseUncheckedUpdateManyWithoutActiveProtocolNestedInput = {
     create?: XOR<ProtocolDoseCreateWithoutActiveProtocolInput, ProtocolDoseUncheckedCreateWithoutActiveProtocolInput> | ProtocolDoseCreateWithoutActiveProtocolInput[] | ProtocolDoseUncheckedCreateWithoutActiveProtocolInput[]
     connectOrCreate?: ProtocolDoseCreateOrConnectWithoutActiveProtocolInput | ProtocolDoseCreateOrConnectWithoutActiveProtocolInput[]
@@ -62405,6 +64754,20 @@ export namespace Prisma {
     update?: ProtocolDoseUpdateWithWhereUniqueWithoutActiveProtocolInput | ProtocolDoseUpdateWithWhereUniqueWithoutActiveProtocolInput[]
     updateMany?: ProtocolDoseUpdateManyWithWhereWithoutActiveProtocolInput | ProtocolDoseUpdateManyWithWhereWithoutActiveProtocolInput[]
     deleteMany?: ProtocolDoseScalarWhereInput | ProtocolDoseScalarWhereInput[]
+  }
+
+  export type ActiveProtocolDrugLinkUncheckedUpdateManyWithoutActiveProtocolNestedInput = {
+    create?: XOR<ActiveProtocolDrugLinkCreateWithoutActiveProtocolInput, ActiveProtocolDrugLinkUncheckedCreateWithoutActiveProtocolInput> | ActiveProtocolDrugLinkCreateWithoutActiveProtocolInput[] | ActiveProtocolDrugLinkUncheckedCreateWithoutActiveProtocolInput[]
+    connectOrCreate?: ActiveProtocolDrugLinkCreateOrConnectWithoutActiveProtocolInput | ActiveProtocolDrugLinkCreateOrConnectWithoutActiveProtocolInput[]
+    upsert?: ActiveProtocolDrugLinkUpsertWithWhereUniqueWithoutActiveProtocolInput | ActiveProtocolDrugLinkUpsertWithWhereUniqueWithoutActiveProtocolInput[]
+    createMany?: ActiveProtocolDrugLinkCreateManyActiveProtocolInputEnvelope
+    set?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+    disconnect?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+    delete?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+    connect?: ActiveProtocolDrugLinkWhereUniqueInput | ActiveProtocolDrugLinkWhereUniqueInput[]
+    update?: ActiveProtocolDrugLinkUpdateWithWhereUniqueWithoutActiveProtocolInput | ActiveProtocolDrugLinkUpdateWithWhereUniqueWithoutActiveProtocolInput[]
+    updateMany?: ActiveProtocolDrugLinkUpdateManyWithWhereWithoutActiveProtocolInput | ActiveProtocolDrugLinkUpdateManyWithWhereWithoutActiveProtocolInput[]
+    deleteMany?: ActiveProtocolDrugLinkScalarWhereInput | ActiveProtocolDrugLinkScalarWhereInput[]
   }
 
   export type ActiveProtocolCreateNestedOneWithoutDosesInput = {
@@ -62423,6 +64786,18 @@ export namespace Prisma {
     create?: XOR<UserCreateWithoutAdministeredProtocolDosesInput, UserUncheckedCreateWithoutAdministeredProtocolDosesInput>
     connectOrCreate?: UserCreateOrConnectWithoutAdministeredProtocolDosesInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type MedicationCreateNestedOneWithoutProtocolDosesInput = {
+    create?: XOR<MedicationCreateWithoutProtocolDosesInput, MedicationUncheckedCreateWithoutProtocolDosesInput>
+    connectOrCreate?: MedicationCreateOrConnectWithoutProtocolDosesInput
+    connect?: MedicationWhereUniqueInput
+  }
+
+  export type VaccineCreateNestedOneWithoutProtocolDosesInput = {
+    create?: XOR<VaccineCreateWithoutProtocolDosesInput, VaccineUncheckedCreateWithoutProtocolDosesInput>
+    connectOrCreate?: VaccineCreateOrConnectWithoutProtocolDosesInput
+    connect?: VaccineWhereUniqueInput
   }
 
   export type EnumDoseStatusFieldUpdateOperationsInput = {
@@ -62453,6 +64828,68 @@ export namespace Prisma {
     delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAdministeredProtocolDosesInput, UserUpdateWithoutAdministeredProtocolDosesInput>, UserUncheckedUpdateWithoutAdministeredProtocolDosesInput>
+  }
+
+  export type MedicationUpdateOneWithoutProtocolDosesNestedInput = {
+    create?: XOR<MedicationCreateWithoutProtocolDosesInput, MedicationUncheckedCreateWithoutProtocolDosesInput>
+    connectOrCreate?: MedicationCreateOrConnectWithoutProtocolDosesInput
+    upsert?: MedicationUpsertWithoutProtocolDosesInput
+    disconnect?: MedicationWhereInput | boolean
+    delete?: MedicationWhereInput | boolean
+    connect?: MedicationWhereUniqueInput
+    update?: XOR<XOR<MedicationUpdateToOneWithWhereWithoutProtocolDosesInput, MedicationUpdateWithoutProtocolDosesInput>, MedicationUncheckedUpdateWithoutProtocolDosesInput>
+  }
+
+  export type VaccineUpdateOneWithoutProtocolDosesNestedInput = {
+    create?: XOR<VaccineCreateWithoutProtocolDosesInput, VaccineUncheckedCreateWithoutProtocolDosesInput>
+    connectOrCreate?: VaccineCreateOrConnectWithoutProtocolDosesInput
+    upsert?: VaccineUpsertWithoutProtocolDosesInput
+    disconnect?: VaccineWhereInput | boolean
+    delete?: VaccineWhereInput | boolean
+    connect?: VaccineWhereUniqueInput
+    update?: XOR<XOR<VaccineUpdateToOneWithWhereWithoutProtocolDosesInput, VaccineUpdateWithoutProtocolDosesInput>, VaccineUncheckedUpdateWithoutProtocolDosesInput>
+  }
+
+  export type ActiveProtocolCreateNestedOneWithoutDrugLinksInput = {
+    create?: XOR<ActiveProtocolCreateWithoutDrugLinksInput, ActiveProtocolUncheckedCreateWithoutDrugLinksInput>
+    connectOrCreate?: ActiveProtocolCreateOrConnectWithoutDrugLinksInput
+    connect?: ActiveProtocolWhereUniqueInput
+  }
+
+  export type ProtocolDrugCreateNestedOneWithoutActiveProtocolDrugLinksInput = {
+    create?: XOR<ProtocolDrugCreateWithoutActiveProtocolDrugLinksInput, ProtocolDrugUncheckedCreateWithoutActiveProtocolDrugLinksInput>
+    connectOrCreate?: ProtocolDrugCreateOrConnectWithoutActiveProtocolDrugLinksInput
+    connect?: ProtocolDrugWhereUniqueInput
+  }
+
+  export type MedicationCreateNestedOneWithoutProtocolDrugLinksInput = {
+    create?: XOR<MedicationCreateWithoutProtocolDrugLinksInput, MedicationUncheckedCreateWithoutProtocolDrugLinksInput>
+    connectOrCreate?: MedicationCreateOrConnectWithoutProtocolDrugLinksInput
+    connect?: MedicationWhereUniqueInput
+  }
+
+  export type ActiveProtocolUpdateOneRequiredWithoutDrugLinksNestedInput = {
+    create?: XOR<ActiveProtocolCreateWithoutDrugLinksInput, ActiveProtocolUncheckedCreateWithoutDrugLinksInput>
+    connectOrCreate?: ActiveProtocolCreateOrConnectWithoutDrugLinksInput
+    upsert?: ActiveProtocolUpsertWithoutDrugLinksInput
+    connect?: ActiveProtocolWhereUniqueInput
+    update?: XOR<XOR<ActiveProtocolUpdateToOneWithWhereWithoutDrugLinksInput, ActiveProtocolUpdateWithoutDrugLinksInput>, ActiveProtocolUncheckedUpdateWithoutDrugLinksInput>
+  }
+
+  export type ProtocolDrugUpdateOneRequiredWithoutActiveProtocolDrugLinksNestedInput = {
+    create?: XOR<ProtocolDrugCreateWithoutActiveProtocolDrugLinksInput, ProtocolDrugUncheckedCreateWithoutActiveProtocolDrugLinksInput>
+    connectOrCreate?: ProtocolDrugCreateOrConnectWithoutActiveProtocolDrugLinksInput
+    upsert?: ProtocolDrugUpsertWithoutActiveProtocolDrugLinksInput
+    connect?: ProtocolDrugWhereUniqueInput
+    update?: XOR<XOR<ProtocolDrugUpdateToOneWithWhereWithoutActiveProtocolDrugLinksInput, ProtocolDrugUpdateWithoutActiveProtocolDrugLinksInput>, ProtocolDrugUncheckedUpdateWithoutActiveProtocolDrugLinksInput>
+  }
+
+  export type MedicationUpdateOneRequiredWithoutProtocolDrugLinksNestedInput = {
+    create?: XOR<MedicationCreateWithoutProtocolDrugLinksInput, MedicationUncheckedCreateWithoutProtocolDrugLinksInput>
+    connectOrCreate?: MedicationCreateOrConnectWithoutProtocolDrugLinksInput
+    upsert?: MedicationUpsertWithoutProtocolDrugLinksInput
+    connect?: MedicationWhereUniqueInput
+    update?: XOR<XOR<MedicationUpdateToOneWithWhereWithoutProtocolDrugLinksInput, MedicationUpdateWithoutProtocolDrugLinksInput>, MedicationUncheckedUpdateWithoutProtocolDrugLinksInput>
   }
 
   export type KittenCreateNestedOneWithoutTransactionsInput = {
@@ -62775,6 +65212,57 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPasswordTokenPurposeFilter<$PrismaModel>
     _max?: NestedEnumPasswordTokenPurposeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumProtocolCadenceFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProtocolCadence | EnumProtocolCadenceFieldRefInput<$PrismaModel>
+    in?: $Enums.ProtocolCadence[] | ListEnumProtocolCadenceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProtocolCadence[] | ListEnumProtocolCadenceFieldRefInput<$PrismaModel>
+    not?: NestedEnumProtocolCadenceFilter<$PrismaModel> | $Enums.ProtocolCadence
+  }
+
+  export type NestedEnumProtocolRecordTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProtocolRecordType | EnumProtocolRecordTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ProtocolRecordType[] | ListEnumProtocolRecordTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProtocolRecordType[] | ListEnumProtocolRecordTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumProtocolRecordTypeFilter<$PrismaModel> | $Enums.ProtocolRecordType
+  }
+
+  export type NestedEnumProtocolHealthWriteModeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProtocolHealthWriteMode | EnumProtocolHealthWriteModeFieldRefInput<$PrismaModel>
+    in?: $Enums.ProtocolHealthWriteMode[] | ListEnumProtocolHealthWriteModeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProtocolHealthWriteMode[] | ListEnumProtocolHealthWriteModeFieldRefInput<$PrismaModel>
+    not?: NestedEnumProtocolHealthWriteModeFilter<$PrismaModel> | $Enums.ProtocolHealthWriteMode
+  }
+
+  export type NestedEnumProtocolCadenceWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProtocolCadence | EnumProtocolCadenceFieldRefInput<$PrismaModel>
+    in?: $Enums.ProtocolCadence[] | ListEnumProtocolCadenceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProtocolCadence[] | ListEnumProtocolCadenceFieldRefInput<$PrismaModel>
+    not?: NestedEnumProtocolCadenceWithAggregatesFilter<$PrismaModel> | $Enums.ProtocolCadence
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumProtocolCadenceFilter<$PrismaModel>
+    _max?: NestedEnumProtocolCadenceFilter<$PrismaModel>
+  }
+
+  export type NestedEnumProtocolRecordTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProtocolRecordType | EnumProtocolRecordTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ProtocolRecordType[] | ListEnumProtocolRecordTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProtocolRecordType[] | ListEnumProtocolRecordTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumProtocolRecordTypeWithAggregatesFilter<$PrismaModel> | $Enums.ProtocolRecordType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumProtocolRecordTypeFilter<$PrismaModel>
+    _max?: NestedEnumProtocolRecordTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumProtocolHealthWriteModeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProtocolHealthWriteMode | EnumProtocolHealthWriteModeFieldRefInput<$PrismaModel>
+    in?: $Enums.ProtocolHealthWriteMode[] | ListEnumProtocolHealthWriteModeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProtocolHealthWriteMode[] | ListEnumProtocolHealthWriteModeFieldRefInput<$PrismaModel>
+    not?: NestedEnumProtocolHealthWriteModeWithAggregatesFilter<$PrismaModel> | $Enums.ProtocolHealthWriteMode
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumProtocolHealthWriteModeFilter<$PrismaModel>
+    _max?: NestedEnumProtocolHealthWriteModeFilter<$PrismaModel>
   }
 
   export type NestedEnumActiveProtocolStatusFilter<$PrismaModel = never> = {
@@ -63856,6 +66344,7 @@ export namespace Prisma {
     manufacturer?: string
     administeredBy?: string
     notes?: string
+    protocolDoses?: ProtocolDoseCreateNestedManyWithoutVaccineInput
   }
 
   export type VaccineUncheckedCreateWithoutKittenInput = {
@@ -63867,6 +66356,7 @@ export namespace Prisma {
     manufacturer?: string
     administeredBy?: string
     notes?: string
+    protocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutVaccineInput
   }
 
   export type VaccineCreateOrConnectWithoutKittenInput = {
@@ -63889,6 +66379,8 @@ export namespace Prisma {
     endDate?: Date | string | null
     status?: string
     notes?: string
+    protocolDoses?: ProtocolDoseCreateNestedManyWithoutMedicationInput
+    protocolDrugLinks?: ActiveProtocolDrugLinkCreateNestedManyWithoutMedicationInput
   }
 
   export type MedicationUncheckedCreateWithoutKittenInput = {
@@ -63902,6 +66394,8 @@ export namespace Prisma {
     endDate?: Date | string | null
     status?: string
     notes?: string
+    protocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutMedicationInput
+    protocolDrugLinks?: ActiveProtocolDrugLinkUncheckedCreateNestedManyWithoutMedicationInput
   }
 
   export type MedicationCreateOrConnectWithoutKittenInput = {
@@ -64142,6 +66636,7 @@ export namespace Prisma {
     protocol: ProtocolCreateNestedOneWithoutActiveProtocolsInput
     activatedBy: UserCreateNestedOneWithoutActivatedProtocolsInput
     doses?: ProtocolDoseCreateNestedManyWithoutActiveProtocolInput
+    drugLinks?: ActiveProtocolDrugLinkCreateNestedManyWithoutActiveProtocolInput
   }
 
   export type ActiveProtocolUncheckedCreateWithoutKittenInput = {
@@ -64151,6 +66646,7 @@ export namespace Prisma {
     activationDate: Date | string
     status?: $Enums.ActiveProtocolStatus
     doses?: ProtocolDoseUncheckedCreateNestedManyWithoutActiveProtocolInput
+    drugLinks?: ActiveProtocolDrugLinkUncheckedCreateNestedManyWithoutActiveProtocolInput
   }
 
   export type ActiveProtocolCreateOrConnectWithoutKittenInput = {
@@ -65666,6 +68162,41 @@ export namespace Prisma {
     create: XOR<KittenCreateWithoutVaccinesInput, KittenUncheckedCreateWithoutVaccinesInput>
   }
 
+  export type ProtocolDoseCreateWithoutVaccineInput = {
+    scheduledDate: Date | string
+    doseNumberInDay: number
+    status?: $Enums.DoseStatus
+    administeredAt?: Date | string | null
+    notes?: string
+    activeProtocol: ActiveProtocolCreateNestedOneWithoutDosesInput
+    protocolDrug: ProtocolDrugCreateNestedOneWithoutDosesInput
+    administeredBy?: UserCreateNestedOneWithoutAdministeredProtocolDosesInput
+    medication?: MedicationCreateNestedOneWithoutProtocolDosesInput
+  }
+
+  export type ProtocolDoseUncheckedCreateWithoutVaccineInput = {
+    id?: number
+    activeProtocolId: number
+    protocolDrugId: number
+    scheduledDate: Date | string
+    doseNumberInDay: number
+    status?: $Enums.DoseStatus
+    administeredAt?: Date | string | null
+    administeredById?: number | null
+    medicationId?: number | null
+    notes?: string
+  }
+
+  export type ProtocolDoseCreateOrConnectWithoutVaccineInput = {
+    where: ProtocolDoseWhereUniqueInput
+    create: XOR<ProtocolDoseCreateWithoutVaccineInput, ProtocolDoseUncheckedCreateWithoutVaccineInput>
+  }
+
+  export type ProtocolDoseCreateManyVaccineInputEnvelope = {
+    data: ProtocolDoseCreateManyVaccineInput | ProtocolDoseCreateManyVaccineInput[]
+    skipDuplicates?: boolean
+  }
+
   export type KittenUpsertWithoutVaccinesInput = {
     update: XOR<KittenUpdateWithoutVaccinesInput, KittenUncheckedUpdateWithoutVaccinesInput>
     create: XOR<KittenCreateWithoutVaccinesInput, KittenUncheckedCreateWithoutVaccinesInput>
@@ -65766,6 +68297,39 @@ export namespace Prisma {
     eventCats?: EventCatsUncheckedUpdateManyWithoutKittenNestedInput
   }
 
+  export type ProtocolDoseUpsertWithWhereUniqueWithoutVaccineInput = {
+    where: ProtocolDoseWhereUniqueInput
+    update: XOR<ProtocolDoseUpdateWithoutVaccineInput, ProtocolDoseUncheckedUpdateWithoutVaccineInput>
+    create: XOR<ProtocolDoseCreateWithoutVaccineInput, ProtocolDoseUncheckedCreateWithoutVaccineInput>
+  }
+
+  export type ProtocolDoseUpdateWithWhereUniqueWithoutVaccineInput = {
+    where: ProtocolDoseWhereUniqueInput
+    data: XOR<ProtocolDoseUpdateWithoutVaccineInput, ProtocolDoseUncheckedUpdateWithoutVaccineInput>
+  }
+
+  export type ProtocolDoseUpdateManyWithWhereWithoutVaccineInput = {
+    where: ProtocolDoseScalarWhereInput
+    data: XOR<ProtocolDoseUpdateManyMutationInput, ProtocolDoseUncheckedUpdateManyWithoutVaccineInput>
+  }
+
+  export type ProtocolDoseScalarWhereInput = {
+    AND?: ProtocolDoseScalarWhereInput | ProtocolDoseScalarWhereInput[]
+    OR?: ProtocolDoseScalarWhereInput[]
+    NOT?: ProtocolDoseScalarWhereInput | ProtocolDoseScalarWhereInput[]
+    id?: IntFilter<"ProtocolDose"> | number
+    activeProtocolId?: IntFilter<"ProtocolDose"> | number
+    protocolDrugId?: IntFilter<"ProtocolDose"> | number
+    scheduledDate?: DateTimeFilter<"ProtocolDose"> | Date | string
+    doseNumberInDay?: IntFilter<"ProtocolDose"> | number
+    status?: EnumDoseStatusFilter<"ProtocolDose"> | $Enums.DoseStatus
+    administeredAt?: DateTimeNullableFilter<"ProtocolDose"> | Date | string | null
+    administeredById?: IntNullableFilter<"ProtocolDose"> | number | null
+    medicationId?: IntNullableFilter<"ProtocolDose"> | number | null
+    vaccineId?: IntNullableFilter<"ProtocolDose"> | number | null
+    notes?: StringFilter<"ProtocolDose"> | string
+  }
+
   export type KittenCreateWithoutMedicationsInput = {
     name: string
     status?: string
@@ -65858,6 +68422,64 @@ export namespace Prisma {
   export type KittenCreateOrConnectWithoutMedicationsInput = {
     where: KittenWhereUniqueInput
     create: XOR<KittenCreateWithoutMedicationsInput, KittenUncheckedCreateWithoutMedicationsInput>
+  }
+
+  export type ProtocolDoseCreateWithoutMedicationInput = {
+    scheduledDate: Date | string
+    doseNumberInDay: number
+    status?: $Enums.DoseStatus
+    administeredAt?: Date | string | null
+    notes?: string
+    activeProtocol: ActiveProtocolCreateNestedOneWithoutDosesInput
+    protocolDrug: ProtocolDrugCreateNestedOneWithoutDosesInput
+    administeredBy?: UserCreateNestedOneWithoutAdministeredProtocolDosesInput
+    vaccine?: VaccineCreateNestedOneWithoutProtocolDosesInput
+  }
+
+  export type ProtocolDoseUncheckedCreateWithoutMedicationInput = {
+    id?: number
+    activeProtocolId: number
+    protocolDrugId: number
+    scheduledDate: Date | string
+    doseNumberInDay: number
+    status?: $Enums.DoseStatus
+    administeredAt?: Date | string | null
+    administeredById?: number | null
+    vaccineId?: number | null
+    notes?: string
+  }
+
+  export type ProtocolDoseCreateOrConnectWithoutMedicationInput = {
+    where: ProtocolDoseWhereUniqueInput
+    create: XOR<ProtocolDoseCreateWithoutMedicationInput, ProtocolDoseUncheckedCreateWithoutMedicationInput>
+  }
+
+  export type ProtocolDoseCreateManyMedicationInputEnvelope = {
+    data: ProtocolDoseCreateManyMedicationInput | ProtocolDoseCreateManyMedicationInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ActiveProtocolDrugLinkCreateWithoutMedicationInput = {
+    createdAt?: Date | string
+    activeProtocol: ActiveProtocolCreateNestedOneWithoutDrugLinksInput
+    protocolDrug: ProtocolDrugCreateNestedOneWithoutActiveProtocolDrugLinksInput
+  }
+
+  export type ActiveProtocolDrugLinkUncheckedCreateWithoutMedicationInput = {
+    id?: number
+    activeProtocolId: number
+    protocolDrugId: number
+    createdAt?: Date | string
+  }
+
+  export type ActiveProtocolDrugLinkCreateOrConnectWithoutMedicationInput = {
+    where: ActiveProtocolDrugLinkWhereUniqueInput
+    create: XOR<ActiveProtocolDrugLinkCreateWithoutMedicationInput, ActiveProtocolDrugLinkUncheckedCreateWithoutMedicationInput>
+  }
+
+  export type ActiveProtocolDrugLinkCreateManyMedicationInputEnvelope = {
+    data: ActiveProtocolDrugLinkCreateManyMedicationInput | ActiveProtocolDrugLinkCreateManyMedicationInput[]
+    skipDuplicates?: boolean
   }
 
   export type KittenUpsertWithoutMedicationsInput = {
@@ -65958,6 +68580,49 @@ export namespace Prisma {
     contracts?: ContractUncheckedUpdateManyWithoutKittenNestedInput
     activeProtocols?: ActiveProtocolUncheckedUpdateManyWithoutKittenNestedInput
     eventCats?: EventCatsUncheckedUpdateManyWithoutKittenNestedInput
+  }
+
+  export type ProtocolDoseUpsertWithWhereUniqueWithoutMedicationInput = {
+    where: ProtocolDoseWhereUniqueInput
+    update: XOR<ProtocolDoseUpdateWithoutMedicationInput, ProtocolDoseUncheckedUpdateWithoutMedicationInput>
+    create: XOR<ProtocolDoseCreateWithoutMedicationInput, ProtocolDoseUncheckedCreateWithoutMedicationInput>
+  }
+
+  export type ProtocolDoseUpdateWithWhereUniqueWithoutMedicationInput = {
+    where: ProtocolDoseWhereUniqueInput
+    data: XOR<ProtocolDoseUpdateWithoutMedicationInput, ProtocolDoseUncheckedUpdateWithoutMedicationInput>
+  }
+
+  export type ProtocolDoseUpdateManyWithWhereWithoutMedicationInput = {
+    where: ProtocolDoseScalarWhereInput
+    data: XOR<ProtocolDoseUpdateManyMutationInput, ProtocolDoseUncheckedUpdateManyWithoutMedicationInput>
+  }
+
+  export type ActiveProtocolDrugLinkUpsertWithWhereUniqueWithoutMedicationInput = {
+    where: ActiveProtocolDrugLinkWhereUniqueInput
+    update: XOR<ActiveProtocolDrugLinkUpdateWithoutMedicationInput, ActiveProtocolDrugLinkUncheckedUpdateWithoutMedicationInput>
+    create: XOR<ActiveProtocolDrugLinkCreateWithoutMedicationInput, ActiveProtocolDrugLinkUncheckedCreateWithoutMedicationInput>
+  }
+
+  export type ActiveProtocolDrugLinkUpdateWithWhereUniqueWithoutMedicationInput = {
+    where: ActiveProtocolDrugLinkWhereUniqueInput
+    data: XOR<ActiveProtocolDrugLinkUpdateWithoutMedicationInput, ActiveProtocolDrugLinkUncheckedUpdateWithoutMedicationInput>
+  }
+
+  export type ActiveProtocolDrugLinkUpdateManyWithWhereWithoutMedicationInput = {
+    where: ActiveProtocolDrugLinkScalarWhereInput
+    data: XOR<ActiveProtocolDrugLinkUpdateManyMutationInput, ActiveProtocolDrugLinkUncheckedUpdateManyWithoutMedicationInput>
+  }
+
+  export type ActiveProtocolDrugLinkScalarWhereInput = {
+    AND?: ActiveProtocolDrugLinkScalarWhereInput | ActiveProtocolDrugLinkScalarWhereInput[]
+    OR?: ActiveProtocolDrugLinkScalarWhereInput[]
+    NOT?: ActiveProtocolDrugLinkScalarWhereInput | ActiveProtocolDrugLinkScalarWhereInput[]
+    id?: IntFilter<"ActiveProtocolDrugLink"> | number
+    activeProtocolId?: IntFilter<"ActiveProtocolDrugLink"> | number
+    protocolDrugId?: IntFilter<"ActiveProtocolDrugLink"> | number
+    medicationId?: IntFilter<"ActiveProtocolDrugLink"> | number
+    createdAt?: DateTimeFilter<"ActiveProtocolDrugLink"> | Date | string
   }
 
   export type KittenCreateWithoutVetAppointmentsInput = {
@@ -67890,6 +70555,7 @@ export namespace Prisma {
     endDate?: Date | string | null
     location?: string
     description?: string
+    imageUrl?: string | null
     isPublic?: boolean
     status?: string
     internalNotes?: string | null
@@ -67905,6 +70571,7 @@ export namespace Prisma {
     endDate?: Date | string | null
     location?: string
     description?: string
+    imageUrl?: string | null
     isPublic?: boolean
     status?: string
     internalNotes?: string | null
@@ -67935,6 +70602,7 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     internalNotes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -67950,6 +70618,7 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     internalNotes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -67964,6 +70633,7 @@ export namespace Prisma {
     endDate?: Date | string | null
     location?: string
     description?: string
+    imageUrl?: string | null
     isPublic?: boolean
     status?: string
     internalNotes?: string | null
@@ -67979,6 +70649,7 @@ export namespace Prisma {
     endDate?: Date | string | null
     location?: string
     description?: string
+    imageUrl?: string | null
     isPublic?: boolean
     status?: string
     internalNotes?: string | null
@@ -68103,6 +70774,7 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     internalNotes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -68118,6 +70790,7 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     internalNotes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -68646,6 +71319,7 @@ export namespace Prisma {
     protocol: ProtocolCreateNestedOneWithoutActiveProtocolsInput
     kitten: KittenCreateNestedOneWithoutActiveProtocolsInput
     doses?: ProtocolDoseCreateNestedManyWithoutActiveProtocolInput
+    drugLinks?: ActiveProtocolDrugLinkCreateNestedManyWithoutActiveProtocolInput
   }
 
   export type ActiveProtocolUncheckedCreateWithoutActivatedByInput = {
@@ -68655,6 +71329,7 @@ export namespace Prisma {
     activationDate: Date | string
     status?: $Enums.ActiveProtocolStatus
     doses?: ProtocolDoseUncheckedCreateNestedManyWithoutActiveProtocolInput
+    drugLinks?: ActiveProtocolDrugLinkUncheckedCreateNestedManyWithoutActiveProtocolInput
   }
 
   export type ActiveProtocolCreateOrConnectWithoutActivatedByInput = {
@@ -68675,6 +71350,8 @@ export namespace Prisma {
     notes?: string
     activeProtocol: ActiveProtocolCreateNestedOneWithoutDosesInput
     protocolDrug: ProtocolDrugCreateNestedOneWithoutDosesInput
+    medication?: MedicationCreateNestedOneWithoutProtocolDosesInput
+    vaccine?: VaccineCreateNestedOneWithoutProtocolDosesInput
   }
 
   export type ProtocolDoseUncheckedCreateWithoutAdministeredByInput = {
@@ -68685,6 +71362,8 @@ export namespace Prisma {
     doseNumberInDay: number
     status?: $Enums.DoseStatus
     administeredAt?: Date | string | null
+    medicationId?: number | null
+    vaccineId?: number | null
     notes?: string
   }
 
@@ -68910,21 +71589,6 @@ export namespace Prisma {
     data: XOR<ProtocolDoseUpdateManyMutationInput, ProtocolDoseUncheckedUpdateManyWithoutAdministeredByInput>
   }
 
-  export type ProtocolDoseScalarWhereInput = {
-    AND?: ProtocolDoseScalarWhereInput | ProtocolDoseScalarWhereInput[]
-    OR?: ProtocolDoseScalarWhereInput[]
-    NOT?: ProtocolDoseScalarWhereInput | ProtocolDoseScalarWhereInput[]
-    id?: IntFilter<"ProtocolDose"> | number
-    activeProtocolId?: IntFilter<"ProtocolDose"> | number
-    protocolDrugId?: IntFilter<"ProtocolDose"> | number
-    scheduledDate?: DateTimeFilter<"ProtocolDose"> | Date | string
-    doseNumberInDay?: IntFilter<"ProtocolDose"> | number
-    status?: EnumDoseStatusFilter<"ProtocolDose"> | $Enums.DoseStatus
-    administeredAt?: DateTimeNullableFilter<"ProtocolDose"> | Date | string | null
-    administeredById?: IntNullableFilter<"ProtocolDose"> | number | null
-    notes?: StringFilter<"ProtocolDose"> | string
-  }
-
   export type PasswordResetTokenUpsertWithWhereUniqueWithoutUserInput = {
     where: PasswordResetTokenWhereUniqueInput
     update: XOR<PasswordResetTokenUpdateWithoutUserInput, PasswordResetTokenUncheckedUpdateWithoutUserInput>
@@ -69053,9 +71717,14 @@ export namespace Prisma {
     startDayOffset: number
     endDayOffset: number
     frequencyPerDay: number
+    cadence?: $Enums.ProtocolCadence
+    intervalDays?: number
+    recordType?: $Enums.ProtocolRecordType
+    healthWriteMode?: $Enums.ProtocolHealthWriteMode
     instructions?: string
     sortOrder?: number
     doses?: ProtocolDoseCreateNestedManyWithoutProtocolDrugInput
+    activeProtocolDrugLinks?: ActiveProtocolDrugLinkCreateNestedManyWithoutProtocolDrugInput
   }
 
   export type ProtocolDrugUncheckedCreateWithoutProtocolInput = {
@@ -69066,9 +71735,14 @@ export namespace Prisma {
     startDayOffset: number
     endDayOffset: number
     frequencyPerDay: number
+    cadence?: $Enums.ProtocolCadence
+    intervalDays?: number
+    recordType?: $Enums.ProtocolRecordType
+    healthWriteMode?: $Enums.ProtocolHealthWriteMode
     instructions?: string
     sortOrder?: number
     doses?: ProtocolDoseUncheckedCreateNestedManyWithoutProtocolDrugInput
+    activeProtocolDrugLinks?: ActiveProtocolDrugLinkUncheckedCreateNestedManyWithoutProtocolDrugInput
   }
 
   export type ProtocolDrugCreateOrConnectWithoutProtocolInput = {
@@ -69087,6 +71761,7 @@ export namespace Prisma {
     kitten: KittenCreateNestedOneWithoutActiveProtocolsInput
     activatedBy: UserCreateNestedOneWithoutActivatedProtocolsInput
     doses?: ProtocolDoseCreateNestedManyWithoutActiveProtocolInput
+    drugLinks?: ActiveProtocolDrugLinkCreateNestedManyWithoutActiveProtocolInput
   }
 
   export type ActiveProtocolUncheckedCreateWithoutProtocolInput = {
@@ -69096,6 +71771,7 @@ export namespace Prisma {
     activationDate: Date | string
     status?: $Enums.ActiveProtocolStatus
     doses?: ProtocolDoseUncheckedCreateNestedManyWithoutActiveProtocolInput
+    drugLinks?: ActiveProtocolDrugLinkUncheckedCreateNestedManyWithoutActiveProtocolInput
   }
 
   export type ActiveProtocolCreateOrConnectWithoutProtocolInput = {
@@ -69136,6 +71812,10 @@ export namespace Prisma {
     startDayOffset?: IntFilter<"ProtocolDrug"> | number
     endDayOffset?: IntFilter<"ProtocolDrug"> | number
     frequencyPerDay?: IntFilter<"ProtocolDrug"> | number
+    cadence?: EnumProtocolCadenceFilter<"ProtocolDrug"> | $Enums.ProtocolCadence
+    intervalDays?: IntFilter<"ProtocolDrug"> | number
+    recordType?: EnumProtocolRecordTypeFilter<"ProtocolDrug"> | $Enums.ProtocolRecordType
+    healthWriteMode?: EnumProtocolHealthWriteModeFilter<"ProtocolDrug"> | $Enums.ProtocolHealthWriteMode
     instructions?: StringFilter<"ProtocolDrug"> | string
     sortOrder?: IntFilter<"ProtocolDrug"> | number
   }
@@ -69188,6 +71868,8 @@ export namespace Prisma {
     notes?: string
     activeProtocol: ActiveProtocolCreateNestedOneWithoutDosesInput
     administeredBy?: UserCreateNestedOneWithoutAdministeredProtocolDosesInput
+    medication?: MedicationCreateNestedOneWithoutProtocolDosesInput
+    vaccine?: VaccineCreateNestedOneWithoutProtocolDosesInput
   }
 
   export type ProtocolDoseUncheckedCreateWithoutProtocolDrugInput = {
@@ -69198,6 +71880,8 @@ export namespace Prisma {
     status?: $Enums.DoseStatus
     administeredAt?: Date | string | null
     administeredById?: number | null
+    medicationId?: number | null
+    vaccineId?: number | null
     notes?: string
   }
 
@@ -69208,6 +71892,29 @@ export namespace Prisma {
 
   export type ProtocolDoseCreateManyProtocolDrugInputEnvelope = {
     data: ProtocolDoseCreateManyProtocolDrugInput | ProtocolDoseCreateManyProtocolDrugInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ActiveProtocolDrugLinkCreateWithoutProtocolDrugInput = {
+    createdAt?: Date | string
+    activeProtocol: ActiveProtocolCreateNestedOneWithoutDrugLinksInput
+    medication: MedicationCreateNestedOneWithoutProtocolDrugLinksInput
+  }
+
+  export type ActiveProtocolDrugLinkUncheckedCreateWithoutProtocolDrugInput = {
+    id?: number
+    activeProtocolId: number
+    medicationId: number
+    createdAt?: Date | string
+  }
+
+  export type ActiveProtocolDrugLinkCreateOrConnectWithoutProtocolDrugInput = {
+    where: ActiveProtocolDrugLinkWhereUniqueInput
+    create: XOR<ActiveProtocolDrugLinkCreateWithoutProtocolDrugInput, ActiveProtocolDrugLinkUncheckedCreateWithoutProtocolDrugInput>
+  }
+
+  export type ActiveProtocolDrugLinkCreateManyProtocolDrugInputEnvelope = {
+    data: ActiveProtocolDrugLinkCreateManyProtocolDrugInput | ActiveProtocolDrugLinkCreateManyProtocolDrugInput[]
     skipDuplicates?: boolean
   }
 
@@ -69255,6 +71962,22 @@ export namespace Prisma {
   export type ProtocolDoseUpdateManyWithWhereWithoutProtocolDrugInput = {
     where: ProtocolDoseScalarWhereInput
     data: XOR<ProtocolDoseUpdateManyMutationInput, ProtocolDoseUncheckedUpdateManyWithoutProtocolDrugInput>
+  }
+
+  export type ActiveProtocolDrugLinkUpsertWithWhereUniqueWithoutProtocolDrugInput = {
+    where: ActiveProtocolDrugLinkWhereUniqueInput
+    update: XOR<ActiveProtocolDrugLinkUpdateWithoutProtocolDrugInput, ActiveProtocolDrugLinkUncheckedUpdateWithoutProtocolDrugInput>
+    create: XOR<ActiveProtocolDrugLinkCreateWithoutProtocolDrugInput, ActiveProtocolDrugLinkUncheckedCreateWithoutProtocolDrugInput>
+  }
+
+  export type ActiveProtocolDrugLinkUpdateWithWhereUniqueWithoutProtocolDrugInput = {
+    where: ActiveProtocolDrugLinkWhereUniqueInput
+    data: XOR<ActiveProtocolDrugLinkUpdateWithoutProtocolDrugInput, ActiveProtocolDrugLinkUncheckedUpdateWithoutProtocolDrugInput>
+  }
+
+  export type ActiveProtocolDrugLinkUpdateManyWithWhereWithoutProtocolDrugInput = {
+    where: ActiveProtocolDrugLinkScalarWhereInput
+    data: XOR<ActiveProtocolDrugLinkUpdateManyMutationInput, ActiveProtocolDrugLinkUncheckedUpdateManyWithoutProtocolDrugInput>
   }
 
   export type ProtocolCreateWithoutActiveProtocolsInput = {
@@ -69425,6 +72148,8 @@ export namespace Prisma {
     notes?: string
     protocolDrug: ProtocolDrugCreateNestedOneWithoutDosesInput
     administeredBy?: UserCreateNestedOneWithoutAdministeredProtocolDosesInput
+    medication?: MedicationCreateNestedOneWithoutProtocolDosesInput
+    vaccine?: VaccineCreateNestedOneWithoutProtocolDosesInput
   }
 
   export type ProtocolDoseUncheckedCreateWithoutActiveProtocolInput = {
@@ -69435,6 +72160,8 @@ export namespace Prisma {
     status?: $Enums.DoseStatus
     administeredAt?: Date | string | null
     administeredById?: number | null
+    medicationId?: number | null
+    vaccineId?: number | null
     notes?: string
   }
 
@@ -69445,6 +72172,29 @@ export namespace Prisma {
 
   export type ProtocolDoseCreateManyActiveProtocolInputEnvelope = {
     data: ProtocolDoseCreateManyActiveProtocolInput | ProtocolDoseCreateManyActiveProtocolInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ActiveProtocolDrugLinkCreateWithoutActiveProtocolInput = {
+    createdAt?: Date | string
+    protocolDrug: ProtocolDrugCreateNestedOneWithoutActiveProtocolDrugLinksInput
+    medication: MedicationCreateNestedOneWithoutProtocolDrugLinksInput
+  }
+
+  export type ActiveProtocolDrugLinkUncheckedCreateWithoutActiveProtocolInput = {
+    id?: number
+    protocolDrugId: number
+    medicationId: number
+    createdAt?: Date | string
+  }
+
+  export type ActiveProtocolDrugLinkCreateOrConnectWithoutActiveProtocolInput = {
+    where: ActiveProtocolDrugLinkWhereUniqueInput
+    create: XOR<ActiveProtocolDrugLinkCreateWithoutActiveProtocolInput, ActiveProtocolDrugLinkUncheckedCreateWithoutActiveProtocolInput>
+  }
+
+  export type ActiveProtocolDrugLinkCreateManyActiveProtocolInputEnvelope = {
+    data: ActiveProtocolDrugLinkCreateManyActiveProtocolInput | ActiveProtocolDrugLinkCreateManyActiveProtocolInput[]
     skipDuplicates?: boolean
   }
 
@@ -69642,12 +72392,29 @@ export namespace Prisma {
     data: XOR<ProtocolDoseUpdateManyMutationInput, ProtocolDoseUncheckedUpdateManyWithoutActiveProtocolInput>
   }
 
+  export type ActiveProtocolDrugLinkUpsertWithWhereUniqueWithoutActiveProtocolInput = {
+    where: ActiveProtocolDrugLinkWhereUniqueInput
+    update: XOR<ActiveProtocolDrugLinkUpdateWithoutActiveProtocolInput, ActiveProtocolDrugLinkUncheckedUpdateWithoutActiveProtocolInput>
+    create: XOR<ActiveProtocolDrugLinkCreateWithoutActiveProtocolInput, ActiveProtocolDrugLinkUncheckedCreateWithoutActiveProtocolInput>
+  }
+
+  export type ActiveProtocolDrugLinkUpdateWithWhereUniqueWithoutActiveProtocolInput = {
+    where: ActiveProtocolDrugLinkWhereUniqueInput
+    data: XOR<ActiveProtocolDrugLinkUpdateWithoutActiveProtocolInput, ActiveProtocolDrugLinkUncheckedUpdateWithoutActiveProtocolInput>
+  }
+
+  export type ActiveProtocolDrugLinkUpdateManyWithWhereWithoutActiveProtocolInput = {
+    where: ActiveProtocolDrugLinkScalarWhereInput
+    data: XOR<ActiveProtocolDrugLinkUpdateManyMutationInput, ActiveProtocolDrugLinkUncheckedUpdateManyWithoutActiveProtocolInput>
+  }
+
   export type ActiveProtocolCreateWithoutDosesInput = {
     activationDate: Date | string
     status?: $Enums.ActiveProtocolStatus
     protocol: ProtocolCreateNestedOneWithoutActiveProtocolsInput
     kitten: KittenCreateNestedOneWithoutActiveProtocolsInput
     activatedBy: UserCreateNestedOneWithoutActivatedProtocolsInput
+    drugLinks?: ActiveProtocolDrugLinkCreateNestedManyWithoutActiveProtocolInput
   }
 
   export type ActiveProtocolUncheckedCreateWithoutDosesInput = {
@@ -69657,6 +72424,7 @@ export namespace Prisma {
     activatedById: number
     activationDate: Date | string
     status?: $Enums.ActiveProtocolStatus
+    drugLinks?: ActiveProtocolDrugLinkUncheckedCreateNestedManyWithoutActiveProtocolInput
   }
 
   export type ActiveProtocolCreateOrConnectWithoutDosesInput = {
@@ -69671,9 +72439,14 @@ export namespace Prisma {
     startDayOffset: number
     endDayOffset: number
     frequencyPerDay: number
+    cadence?: $Enums.ProtocolCadence
+    intervalDays?: number
+    recordType?: $Enums.ProtocolRecordType
+    healthWriteMode?: $Enums.ProtocolHealthWriteMode
     instructions?: string
     sortOrder?: number
     protocol: ProtocolCreateNestedOneWithoutDrugsInput
+    activeProtocolDrugLinks?: ActiveProtocolDrugLinkCreateNestedManyWithoutProtocolDrugInput
   }
 
   export type ProtocolDrugUncheckedCreateWithoutDosesInput = {
@@ -69685,8 +72458,13 @@ export namespace Prisma {
     startDayOffset: number
     endDayOffset: number
     frequencyPerDay: number
+    cadence?: $Enums.ProtocolCadence
+    intervalDays?: number
+    recordType?: $Enums.ProtocolRecordType
+    healthWriteMode?: $Enums.ProtocolHealthWriteMode
     instructions?: string
     sortOrder?: number
+    activeProtocolDrugLinks?: ActiveProtocolDrugLinkUncheckedCreateNestedManyWithoutProtocolDrugInput
   }
 
   export type ProtocolDrugCreateOrConnectWithoutDosesInput = {
@@ -69736,6 +72514,68 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutAdministeredProtocolDosesInput, UserUncheckedCreateWithoutAdministeredProtocolDosesInput>
   }
 
+  export type MedicationCreateWithoutProtocolDosesInput = {
+    name: string
+    dose?: string
+    frequency?: string
+    route?: string
+    condition?: string
+    startDate: Date | string
+    endDate?: Date | string | null
+    status?: string
+    notes?: string
+    kitten: KittenCreateNestedOneWithoutMedicationsInput
+    protocolDrugLinks?: ActiveProtocolDrugLinkCreateNestedManyWithoutMedicationInput
+  }
+
+  export type MedicationUncheckedCreateWithoutProtocolDosesInput = {
+    id?: number
+    kittenId: number
+    name: string
+    dose?: string
+    frequency?: string
+    route?: string
+    condition?: string
+    startDate: Date | string
+    endDate?: Date | string | null
+    status?: string
+    notes?: string
+    protocolDrugLinks?: ActiveProtocolDrugLinkUncheckedCreateNestedManyWithoutMedicationInput
+  }
+
+  export type MedicationCreateOrConnectWithoutProtocolDosesInput = {
+    where: MedicationWhereUniqueInput
+    create: XOR<MedicationCreateWithoutProtocolDosesInput, MedicationUncheckedCreateWithoutProtocolDosesInput>
+  }
+
+  export type VaccineCreateWithoutProtocolDosesInput = {
+    type: string
+    dateGiven: Date | string
+    nextDueDate?: Date | string | null
+    lotNumber?: string
+    manufacturer?: string
+    administeredBy?: string
+    notes?: string
+    kitten: KittenCreateNestedOneWithoutVaccinesInput
+  }
+
+  export type VaccineUncheckedCreateWithoutProtocolDosesInput = {
+    id?: number
+    kittenId: number
+    type: string
+    dateGiven: Date | string
+    nextDueDate?: Date | string | null
+    lotNumber?: string
+    manufacturer?: string
+    administeredBy?: string
+    notes?: string
+  }
+
+  export type VaccineCreateOrConnectWithoutProtocolDosesInput = {
+    where: VaccineWhereUniqueInput
+    create: XOR<VaccineCreateWithoutProtocolDosesInput, VaccineUncheckedCreateWithoutProtocolDosesInput>
+  }
+
   export type ActiveProtocolUpsertWithoutDosesInput = {
     update: XOR<ActiveProtocolUpdateWithoutDosesInput, ActiveProtocolUncheckedUpdateWithoutDosesInput>
     create: XOR<ActiveProtocolCreateWithoutDosesInput, ActiveProtocolUncheckedCreateWithoutDosesInput>
@@ -69753,6 +72593,7 @@ export namespace Prisma {
     protocol?: ProtocolUpdateOneRequiredWithoutActiveProtocolsNestedInput
     kitten?: KittenUpdateOneRequiredWithoutActiveProtocolsNestedInput
     activatedBy?: UserUpdateOneRequiredWithoutActivatedProtocolsNestedInput
+    drugLinks?: ActiveProtocolDrugLinkUpdateManyWithoutActiveProtocolNestedInput
   }
 
   export type ActiveProtocolUncheckedUpdateWithoutDosesInput = {
@@ -69762,6 +72603,7 @@ export namespace Prisma {
     activatedById?: IntFieldUpdateOperationsInput | number
     activationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumActiveProtocolStatusFieldUpdateOperationsInput | $Enums.ActiveProtocolStatus
+    drugLinks?: ActiveProtocolDrugLinkUncheckedUpdateManyWithoutActiveProtocolNestedInput
   }
 
   export type ProtocolDrugUpsertWithoutDosesInput = {
@@ -69782,9 +72624,14 @@ export namespace Prisma {
     startDayOffset?: IntFieldUpdateOperationsInput | number
     endDayOffset?: IntFieldUpdateOperationsInput | number
     frequencyPerDay?: IntFieldUpdateOperationsInput | number
+    cadence?: EnumProtocolCadenceFieldUpdateOperationsInput | $Enums.ProtocolCadence
+    intervalDays?: IntFieldUpdateOperationsInput | number
+    recordType?: EnumProtocolRecordTypeFieldUpdateOperationsInput | $Enums.ProtocolRecordType
+    healthWriteMode?: EnumProtocolHealthWriteModeFieldUpdateOperationsInput | $Enums.ProtocolHealthWriteMode
     instructions?: StringFieldUpdateOperationsInput | string
     sortOrder?: IntFieldUpdateOperationsInput | number
     protocol?: ProtocolUpdateOneRequiredWithoutDrugsNestedInput
+    activeProtocolDrugLinks?: ActiveProtocolDrugLinkUpdateManyWithoutProtocolDrugNestedInput
   }
 
   export type ProtocolDrugUncheckedUpdateWithoutDosesInput = {
@@ -69796,8 +72643,13 @@ export namespace Prisma {
     startDayOffset?: IntFieldUpdateOperationsInput | number
     endDayOffset?: IntFieldUpdateOperationsInput | number
     frequencyPerDay?: IntFieldUpdateOperationsInput | number
+    cadence?: EnumProtocolCadenceFieldUpdateOperationsInput | $Enums.ProtocolCadence
+    intervalDays?: IntFieldUpdateOperationsInput | number
+    recordType?: EnumProtocolRecordTypeFieldUpdateOperationsInput | $Enums.ProtocolRecordType
+    healthWriteMode?: EnumProtocolHealthWriteModeFieldUpdateOperationsInput | $Enums.ProtocolHealthWriteMode
     instructions?: StringFieldUpdateOperationsInput | string
     sortOrder?: IntFieldUpdateOperationsInput | number
+    activeProtocolDrugLinks?: ActiveProtocolDrugLinkUncheckedUpdateManyWithoutProtocolDrugNestedInput
   }
 
   export type UserUpsertWithoutAdministeredProtocolDosesInput = {
@@ -69846,6 +72698,294 @@ export namespace Prisma {
     contentCompletions?: ContentCompletionUncheckedUpdateManyWithoutUserNestedInput
     activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type MedicationUpsertWithoutProtocolDosesInput = {
+    update: XOR<MedicationUpdateWithoutProtocolDosesInput, MedicationUncheckedUpdateWithoutProtocolDosesInput>
+    create: XOR<MedicationCreateWithoutProtocolDosesInput, MedicationUncheckedCreateWithoutProtocolDosesInput>
+    where?: MedicationWhereInput
+  }
+
+  export type MedicationUpdateToOneWithWhereWithoutProtocolDosesInput = {
+    where?: MedicationWhereInput
+    data: XOR<MedicationUpdateWithoutProtocolDosesInput, MedicationUncheckedUpdateWithoutProtocolDosesInput>
+  }
+
+  export type MedicationUpdateWithoutProtocolDosesInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    dose?: StringFieldUpdateOperationsInput | string
+    frequency?: StringFieldUpdateOperationsInput | string
+    route?: StringFieldUpdateOperationsInput | string
+    condition?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    notes?: StringFieldUpdateOperationsInput | string
+    kitten?: KittenUpdateOneRequiredWithoutMedicationsNestedInput
+    protocolDrugLinks?: ActiveProtocolDrugLinkUpdateManyWithoutMedicationNestedInput
+  }
+
+  export type MedicationUncheckedUpdateWithoutProtocolDosesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    kittenId?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    dose?: StringFieldUpdateOperationsInput | string
+    frequency?: StringFieldUpdateOperationsInput | string
+    route?: StringFieldUpdateOperationsInput | string
+    condition?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    notes?: StringFieldUpdateOperationsInput | string
+    protocolDrugLinks?: ActiveProtocolDrugLinkUncheckedUpdateManyWithoutMedicationNestedInput
+  }
+
+  export type VaccineUpsertWithoutProtocolDosesInput = {
+    update: XOR<VaccineUpdateWithoutProtocolDosesInput, VaccineUncheckedUpdateWithoutProtocolDosesInput>
+    create: XOR<VaccineCreateWithoutProtocolDosesInput, VaccineUncheckedCreateWithoutProtocolDosesInput>
+    where?: VaccineWhereInput
+  }
+
+  export type VaccineUpdateToOneWithWhereWithoutProtocolDosesInput = {
+    where?: VaccineWhereInput
+    data: XOR<VaccineUpdateWithoutProtocolDosesInput, VaccineUncheckedUpdateWithoutProtocolDosesInput>
+  }
+
+  export type VaccineUpdateWithoutProtocolDosesInput = {
+    type?: StringFieldUpdateOperationsInput | string
+    dateGiven?: DateTimeFieldUpdateOperationsInput | Date | string
+    nextDueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lotNumber?: StringFieldUpdateOperationsInput | string
+    manufacturer?: StringFieldUpdateOperationsInput | string
+    administeredBy?: StringFieldUpdateOperationsInput | string
+    notes?: StringFieldUpdateOperationsInput | string
+    kitten?: KittenUpdateOneRequiredWithoutVaccinesNestedInput
+  }
+
+  export type VaccineUncheckedUpdateWithoutProtocolDosesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    kittenId?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    dateGiven?: DateTimeFieldUpdateOperationsInput | Date | string
+    nextDueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lotNumber?: StringFieldUpdateOperationsInput | string
+    manufacturer?: StringFieldUpdateOperationsInput | string
+    administeredBy?: StringFieldUpdateOperationsInput | string
+    notes?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ActiveProtocolCreateWithoutDrugLinksInput = {
+    activationDate: Date | string
+    status?: $Enums.ActiveProtocolStatus
+    protocol: ProtocolCreateNestedOneWithoutActiveProtocolsInput
+    kitten: KittenCreateNestedOneWithoutActiveProtocolsInput
+    activatedBy: UserCreateNestedOneWithoutActivatedProtocolsInput
+    doses?: ProtocolDoseCreateNestedManyWithoutActiveProtocolInput
+  }
+
+  export type ActiveProtocolUncheckedCreateWithoutDrugLinksInput = {
+    id?: number
+    protocolId: number
+    kittenId: number
+    activatedById: number
+    activationDate: Date | string
+    status?: $Enums.ActiveProtocolStatus
+    doses?: ProtocolDoseUncheckedCreateNestedManyWithoutActiveProtocolInput
+  }
+
+  export type ActiveProtocolCreateOrConnectWithoutDrugLinksInput = {
+    where: ActiveProtocolWhereUniqueInput
+    create: XOR<ActiveProtocolCreateWithoutDrugLinksInput, ActiveProtocolUncheckedCreateWithoutDrugLinksInput>
+  }
+
+  export type ProtocolDrugCreateWithoutActiveProtocolDrugLinksInput = {
+    drugName: string
+    dosage?: string
+    route?: string
+    startDayOffset: number
+    endDayOffset: number
+    frequencyPerDay: number
+    cadence?: $Enums.ProtocolCadence
+    intervalDays?: number
+    recordType?: $Enums.ProtocolRecordType
+    healthWriteMode?: $Enums.ProtocolHealthWriteMode
+    instructions?: string
+    sortOrder?: number
+    protocol: ProtocolCreateNestedOneWithoutDrugsInput
+    doses?: ProtocolDoseCreateNestedManyWithoutProtocolDrugInput
+  }
+
+  export type ProtocolDrugUncheckedCreateWithoutActiveProtocolDrugLinksInput = {
+    id?: number
+    protocolId: number
+    drugName: string
+    dosage?: string
+    route?: string
+    startDayOffset: number
+    endDayOffset: number
+    frequencyPerDay: number
+    cadence?: $Enums.ProtocolCadence
+    intervalDays?: number
+    recordType?: $Enums.ProtocolRecordType
+    healthWriteMode?: $Enums.ProtocolHealthWriteMode
+    instructions?: string
+    sortOrder?: number
+    doses?: ProtocolDoseUncheckedCreateNestedManyWithoutProtocolDrugInput
+  }
+
+  export type ProtocolDrugCreateOrConnectWithoutActiveProtocolDrugLinksInput = {
+    where: ProtocolDrugWhereUniqueInput
+    create: XOR<ProtocolDrugCreateWithoutActiveProtocolDrugLinksInput, ProtocolDrugUncheckedCreateWithoutActiveProtocolDrugLinksInput>
+  }
+
+  export type MedicationCreateWithoutProtocolDrugLinksInput = {
+    name: string
+    dose?: string
+    frequency?: string
+    route?: string
+    condition?: string
+    startDate: Date | string
+    endDate?: Date | string | null
+    status?: string
+    notes?: string
+    kitten: KittenCreateNestedOneWithoutMedicationsInput
+    protocolDoses?: ProtocolDoseCreateNestedManyWithoutMedicationInput
+  }
+
+  export type MedicationUncheckedCreateWithoutProtocolDrugLinksInput = {
+    id?: number
+    kittenId: number
+    name: string
+    dose?: string
+    frequency?: string
+    route?: string
+    condition?: string
+    startDate: Date | string
+    endDate?: Date | string | null
+    status?: string
+    notes?: string
+    protocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutMedicationInput
+  }
+
+  export type MedicationCreateOrConnectWithoutProtocolDrugLinksInput = {
+    where: MedicationWhereUniqueInput
+    create: XOR<MedicationCreateWithoutProtocolDrugLinksInput, MedicationUncheckedCreateWithoutProtocolDrugLinksInput>
+  }
+
+  export type ActiveProtocolUpsertWithoutDrugLinksInput = {
+    update: XOR<ActiveProtocolUpdateWithoutDrugLinksInput, ActiveProtocolUncheckedUpdateWithoutDrugLinksInput>
+    create: XOR<ActiveProtocolCreateWithoutDrugLinksInput, ActiveProtocolUncheckedCreateWithoutDrugLinksInput>
+    where?: ActiveProtocolWhereInput
+  }
+
+  export type ActiveProtocolUpdateToOneWithWhereWithoutDrugLinksInput = {
+    where?: ActiveProtocolWhereInput
+    data: XOR<ActiveProtocolUpdateWithoutDrugLinksInput, ActiveProtocolUncheckedUpdateWithoutDrugLinksInput>
+  }
+
+  export type ActiveProtocolUpdateWithoutDrugLinksInput = {
+    activationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumActiveProtocolStatusFieldUpdateOperationsInput | $Enums.ActiveProtocolStatus
+    protocol?: ProtocolUpdateOneRequiredWithoutActiveProtocolsNestedInput
+    kitten?: KittenUpdateOneRequiredWithoutActiveProtocolsNestedInput
+    activatedBy?: UserUpdateOneRequiredWithoutActivatedProtocolsNestedInput
+    doses?: ProtocolDoseUpdateManyWithoutActiveProtocolNestedInput
+  }
+
+  export type ActiveProtocolUncheckedUpdateWithoutDrugLinksInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolId?: IntFieldUpdateOperationsInput | number
+    kittenId?: IntFieldUpdateOperationsInput | number
+    activatedById?: IntFieldUpdateOperationsInput | number
+    activationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumActiveProtocolStatusFieldUpdateOperationsInput | $Enums.ActiveProtocolStatus
+    doses?: ProtocolDoseUncheckedUpdateManyWithoutActiveProtocolNestedInput
+  }
+
+  export type ProtocolDrugUpsertWithoutActiveProtocolDrugLinksInput = {
+    update: XOR<ProtocolDrugUpdateWithoutActiveProtocolDrugLinksInput, ProtocolDrugUncheckedUpdateWithoutActiveProtocolDrugLinksInput>
+    create: XOR<ProtocolDrugCreateWithoutActiveProtocolDrugLinksInput, ProtocolDrugUncheckedCreateWithoutActiveProtocolDrugLinksInput>
+    where?: ProtocolDrugWhereInput
+  }
+
+  export type ProtocolDrugUpdateToOneWithWhereWithoutActiveProtocolDrugLinksInput = {
+    where?: ProtocolDrugWhereInput
+    data: XOR<ProtocolDrugUpdateWithoutActiveProtocolDrugLinksInput, ProtocolDrugUncheckedUpdateWithoutActiveProtocolDrugLinksInput>
+  }
+
+  export type ProtocolDrugUpdateWithoutActiveProtocolDrugLinksInput = {
+    drugName?: StringFieldUpdateOperationsInput | string
+    dosage?: StringFieldUpdateOperationsInput | string
+    route?: StringFieldUpdateOperationsInput | string
+    startDayOffset?: IntFieldUpdateOperationsInput | number
+    endDayOffset?: IntFieldUpdateOperationsInput | number
+    frequencyPerDay?: IntFieldUpdateOperationsInput | number
+    cadence?: EnumProtocolCadenceFieldUpdateOperationsInput | $Enums.ProtocolCadence
+    intervalDays?: IntFieldUpdateOperationsInput | number
+    recordType?: EnumProtocolRecordTypeFieldUpdateOperationsInput | $Enums.ProtocolRecordType
+    healthWriteMode?: EnumProtocolHealthWriteModeFieldUpdateOperationsInput | $Enums.ProtocolHealthWriteMode
+    instructions?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    protocol?: ProtocolUpdateOneRequiredWithoutDrugsNestedInput
+    doses?: ProtocolDoseUpdateManyWithoutProtocolDrugNestedInput
+  }
+
+  export type ProtocolDrugUncheckedUpdateWithoutActiveProtocolDrugLinksInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolId?: IntFieldUpdateOperationsInput | number
+    drugName?: StringFieldUpdateOperationsInput | string
+    dosage?: StringFieldUpdateOperationsInput | string
+    route?: StringFieldUpdateOperationsInput | string
+    startDayOffset?: IntFieldUpdateOperationsInput | number
+    endDayOffset?: IntFieldUpdateOperationsInput | number
+    frequencyPerDay?: IntFieldUpdateOperationsInput | number
+    cadence?: EnumProtocolCadenceFieldUpdateOperationsInput | $Enums.ProtocolCadence
+    intervalDays?: IntFieldUpdateOperationsInput | number
+    recordType?: EnumProtocolRecordTypeFieldUpdateOperationsInput | $Enums.ProtocolRecordType
+    healthWriteMode?: EnumProtocolHealthWriteModeFieldUpdateOperationsInput | $Enums.ProtocolHealthWriteMode
+    instructions?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    doses?: ProtocolDoseUncheckedUpdateManyWithoutProtocolDrugNestedInput
+  }
+
+  export type MedicationUpsertWithoutProtocolDrugLinksInput = {
+    update: XOR<MedicationUpdateWithoutProtocolDrugLinksInput, MedicationUncheckedUpdateWithoutProtocolDrugLinksInput>
+    create: XOR<MedicationCreateWithoutProtocolDrugLinksInput, MedicationUncheckedCreateWithoutProtocolDrugLinksInput>
+    where?: MedicationWhereInput
+  }
+
+  export type MedicationUpdateToOneWithWhereWithoutProtocolDrugLinksInput = {
+    where?: MedicationWhereInput
+    data: XOR<MedicationUpdateWithoutProtocolDrugLinksInput, MedicationUncheckedUpdateWithoutProtocolDrugLinksInput>
+  }
+
+  export type MedicationUpdateWithoutProtocolDrugLinksInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    dose?: StringFieldUpdateOperationsInput | string
+    frequency?: StringFieldUpdateOperationsInput | string
+    route?: StringFieldUpdateOperationsInput | string
+    condition?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    notes?: StringFieldUpdateOperationsInput | string
+    kitten?: KittenUpdateOneRequiredWithoutMedicationsNestedInput
+    protocolDoses?: ProtocolDoseUpdateManyWithoutMedicationNestedInput
+  }
+
+  export type MedicationUncheckedUpdateWithoutProtocolDrugLinksInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    kittenId?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    dose?: StringFieldUpdateOperationsInput | string
+    frequency?: StringFieldUpdateOperationsInput | string
+    route?: StringFieldUpdateOperationsInput | string
+    condition?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    notes?: StringFieldUpdateOperationsInput | string
+    protocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutMedicationNestedInput
   }
 
   export type KittenCreateWithoutTransactionsInput = {
@@ -70892,6 +74032,7 @@ export namespace Prisma {
     manufacturer?: StringFieldUpdateOperationsInput | string
     administeredBy?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
+    protocolDoses?: ProtocolDoseUpdateManyWithoutVaccineNestedInput
   }
 
   export type VaccineUncheckedUpdateWithoutKittenInput = {
@@ -70903,6 +74044,7 @@ export namespace Prisma {
     manufacturer?: StringFieldUpdateOperationsInput | string
     administeredBy?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
+    protocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutVaccineNestedInput
   }
 
   export type VaccineUncheckedUpdateManyWithoutKittenInput = {
@@ -70926,6 +74068,8 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
+    protocolDoses?: ProtocolDoseUpdateManyWithoutMedicationNestedInput
+    protocolDrugLinks?: ActiveProtocolDrugLinkUpdateManyWithoutMedicationNestedInput
   }
 
   export type MedicationUncheckedUpdateWithoutKittenInput = {
@@ -70939,6 +74083,8 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
+    protocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutMedicationNestedInput
+    protocolDrugLinks?: ActiveProtocolDrugLinkUncheckedUpdateManyWithoutMedicationNestedInput
   }
 
   export type MedicationUncheckedUpdateManyWithoutKittenInput = {
@@ -71205,6 +74351,7 @@ export namespace Prisma {
     protocol?: ProtocolUpdateOneRequiredWithoutActiveProtocolsNestedInput
     activatedBy?: UserUpdateOneRequiredWithoutActivatedProtocolsNestedInput
     doses?: ProtocolDoseUpdateManyWithoutActiveProtocolNestedInput
+    drugLinks?: ActiveProtocolDrugLinkUpdateManyWithoutActiveProtocolNestedInput
   }
 
   export type ActiveProtocolUncheckedUpdateWithoutKittenInput = {
@@ -71214,6 +74361,7 @@ export namespace Prisma {
     activationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumActiveProtocolStatusFieldUpdateOperationsInput | $Enums.ActiveProtocolStatus
     doses?: ProtocolDoseUncheckedUpdateManyWithoutActiveProtocolNestedInput
+    drugLinks?: ActiveProtocolDrugLinkUncheckedUpdateManyWithoutActiveProtocolNestedInput
   }
 
   export type ActiveProtocolUncheckedUpdateManyWithoutKittenInput = {
@@ -71242,6 +74390,135 @@ export namespace Prisma {
     eventId?: IntFieldUpdateOperationsInput | number
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ProtocolDoseCreateManyVaccineInput = {
+    id?: number
+    activeProtocolId: number
+    protocolDrugId: number
+    scheduledDate: Date | string
+    doseNumberInDay: number
+    status?: $Enums.DoseStatus
+    administeredAt?: Date | string | null
+    administeredById?: number | null
+    medicationId?: number | null
+    notes?: string
+  }
+
+  export type ProtocolDoseUpdateWithoutVaccineInput = {
+    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    doseNumberInDay?: IntFieldUpdateOperationsInput | number
+    status?: EnumDoseStatusFieldUpdateOperationsInput | $Enums.DoseStatus
+    administeredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: StringFieldUpdateOperationsInput | string
+    activeProtocol?: ActiveProtocolUpdateOneRequiredWithoutDosesNestedInput
+    protocolDrug?: ProtocolDrugUpdateOneRequiredWithoutDosesNestedInput
+    administeredBy?: UserUpdateOneWithoutAdministeredProtocolDosesNestedInput
+    medication?: MedicationUpdateOneWithoutProtocolDosesNestedInput
+  }
+
+  export type ProtocolDoseUncheckedUpdateWithoutVaccineInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    activeProtocolId?: IntFieldUpdateOperationsInput | number
+    protocolDrugId?: IntFieldUpdateOperationsInput | number
+    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    doseNumberInDay?: IntFieldUpdateOperationsInput | number
+    status?: EnumDoseStatusFieldUpdateOperationsInput | $Enums.DoseStatus
+    administeredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    administeredById?: NullableIntFieldUpdateOperationsInput | number | null
+    medicationId?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ProtocolDoseUncheckedUpdateManyWithoutVaccineInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    activeProtocolId?: IntFieldUpdateOperationsInput | number
+    protocolDrugId?: IntFieldUpdateOperationsInput | number
+    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    doseNumberInDay?: IntFieldUpdateOperationsInput | number
+    status?: EnumDoseStatusFieldUpdateOperationsInput | $Enums.DoseStatus
+    administeredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    administeredById?: NullableIntFieldUpdateOperationsInput | number | null
+    medicationId?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ProtocolDoseCreateManyMedicationInput = {
+    id?: number
+    activeProtocolId: number
+    protocolDrugId: number
+    scheduledDate: Date | string
+    doseNumberInDay: number
+    status?: $Enums.DoseStatus
+    administeredAt?: Date | string | null
+    administeredById?: number | null
+    vaccineId?: number | null
+    notes?: string
+  }
+
+  export type ActiveProtocolDrugLinkCreateManyMedicationInput = {
+    id?: number
+    activeProtocolId: number
+    protocolDrugId: number
+    createdAt?: Date | string
+  }
+
+  export type ProtocolDoseUpdateWithoutMedicationInput = {
+    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    doseNumberInDay?: IntFieldUpdateOperationsInput | number
+    status?: EnumDoseStatusFieldUpdateOperationsInput | $Enums.DoseStatus
+    administeredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: StringFieldUpdateOperationsInput | string
+    activeProtocol?: ActiveProtocolUpdateOneRequiredWithoutDosesNestedInput
+    protocolDrug?: ProtocolDrugUpdateOneRequiredWithoutDosesNestedInput
+    administeredBy?: UserUpdateOneWithoutAdministeredProtocolDosesNestedInput
+    vaccine?: VaccineUpdateOneWithoutProtocolDosesNestedInput
+  }
+
+  export type ProtocolDoseUncheckedUpdateWithoutMedicationInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    activeProtocolId?: IntFieldUpdateOperationsInput | number
+    protocolDrugId?: IntFieldUpdateOperationsInput | number
+    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    doseNumberInDay?: IntFieldUpdateOperationsInput | number
+    status?: EnumDoseStatusFieldUpdateOperationsInput | $Enums.DoseStatus
+    administeredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    administeredById?: NullableIntFieldUpdateOperationsInput | number | null
+    vaccineId?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ProtocolDoseUncheckedUpdateManyWithoutMedicationInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    activeProtocolId?: IntFieldUpdateOperationsInput | number
+    protocolDrugId?: IntFieldUpdateOperationsInput | number
+    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    doseNumberInDay?: IntFieldUpdateOperationsInput | number
+    status?: EnumDoseStatusFieldUpdateOperationsInput | $Enums.DoseStatus
+    administeredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    administeredById?: NullableIntFieldUpdateOperationsInput | number | null
+    vaccineId?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ActiveProtocolDrugLinkUpdateWithoutMedicationInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    activeProtocol?: ActiveProtocolUpdateOneRequiredWithoutDrugLinksNestedInput
+    protocolDrug?: ProtocolDrugUpdateOneRequiredWithoutActiveProtocolDrugLinksNestedInput
+  }
+
+  export type ActiveProtocolDrugLinkUncheckedUpdateWithoutMedicationInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    activeProtocolId?: IntFieldUpdateOperationsInput | number
+    protocolDrugId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ActiveProtocolDrugLinkUncheckedUpdateManyWithoutMedicationInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    activeProtocolId?: IntFieldUpdateOperationsInput | number
+    protocolDrugId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ContractCreateManyApplicationInput = {
@@ -71745,6 +75022,8 @@ export namespace Prisma {
     doseNumberInDay: number
     status?: $Enums.DoseStatus
     administeredAt?: Date | string | null
+    medicationId?: number | null
+    vaccineId?: number | null
     notes?: string
   }
 
@@ -71858,6 +75137,7 @@ export namespace Prisma {
     protocol?: ProtocolUpdateOneRequiredWithoutActiveProtocolsNestedInput
     kitten?: KittenUpdateOneRequiredWithoutActiveProtocolsNestedInput
     doses?: ProtocolDoseUpdateManyWithoutActiveProtocolNestedInput
+    drugLinks?: ActiveProtocolDrugLinkUpdateManyWithoutActiveProtocolNestedInput
   }
 
   export type ActiveProtocolUncheckedUpdateWithoutActivatedByInput = {
@@ -71867,6 +75147,7 @@ export namespace Prisma {
     activationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumActiveProtocolStatusFieldUpdateOperationsInput | $Enums.ActiveProtocolStatus
     doses?: ProtocolDoseUncheckedUpdateManyWithoutActiveProtocolNestedInput
+    drugLinks?: ActiveProtocolDrugLinkUncheckedUpdateManyWithoutActiveProtocolNestedInput
   }
 
   export type ActiveProtocolUncheckedUpdateManyWithoutActivatedByInput = {
@@ -71885,6 +75166,8 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     activeProtocol?: ActiveProtocolUpdateOneRequiredWithoutDosesNestedInput
     protocolDrug?: ProtocolDrugUpdateOneRequiredWithoutDosesNestedInput
+    medication?: MedicationUpdateOneWithoutProtocolDosesNestedInput
+    vaccine?: VaccineUpdateOneWithoutProtocolDosesNestedInput
   }
 
   export type ProtocolDoseUncheckedUpdateWithoutAdministeredByInput = {
@@ -71895,6 +75178,8 @@ export namespace Prisma {
     doseNumberInDay?: IntFieldUpdateOperationsInput | number
     status?: EnumDoseStatusFieldUpdateOperationsInput | $Enums.DoseStatus
     administeredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    medicationId?: NullableIntFieldUpdateOperationsInput | number | null
+    vaccineId?: NullableIntFieldUpdateOperationsInput | number | null
     notes?: StringFieldUpdateOperationsInput | string
   }
 
@@ -71906,6 +75191,8 @@ export namespace Prisma {
     doseNumberInDay?: IntFieldUpdateOperationsInput | number
     status?: EnumDoseStatusFieldUpdateOperationsInput | $Enums.DoseStatus
     administeredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    medicationId?: NullableIntFieldUpdateOperationsInput | number | null
+    vaccineId?: NullableIntFieldUpdateOperationsInput | number | null
     notes?: StringFieldUpdateOperationsInput | string
   }
 
@@ -71949,6 +75236,10 @@ export namespace Prisma {
     startDayOffset: number
     endDayOffset: number
     frequencyPerDay: number
+    cadence?: $Enums.ProtocolCadence
+    intervalDays?: number
+    recordType?: $Enums.ProtocolRecordType
+    healthWriteMode?: $Enums.ProtocolHealthWriteMode
     instructions?: string
     sortOrder?: number
   }
@@ -71968,9 +75259,14 @@ export namespace Prisma {
     startDayOffset?: IntFieldUpdateOperationsInput | number
     endDayOffset?: IntFieldUpdateOperationsInput | number
     frequencyPerDay?: IntFieldUpdateOperationsInput | number
+    cadence?: EnumProtocolCadenceFieldUpdateOperationsInput | $Enums.ProtocolCadence
+    intervalDays?: IntFieldUpdateOperationsInput | number
+    recordType?: EnumProtocolRecordTypeFieldUpdateOperationsInput | $Enums.ProtocolRecordType
+    healthWriteMode?: EnumProtocolHealthWriteModeFieldUpdateOperationsInput | $Enums.ProtocolHealthWriteMode
     instructions?: StringFieldUpdateOperationsInput | string
     sortOrder?: IntFieldUpdateOperationsInput | number
     doses?: ProtocolDoseUpdateManyWithoutProtocolDrugNestedInput
+    activeProtocolDrugLinks?: ActiveProtocolDrugLinkUpdateManyWithoutProtocolDrugNestedInput
   }
 
   export type ProtocolDrugUncheckedUpdateWithoutProtocolInput = {
@@ -71981,9 +75277,14 @@ export namespace Prisma {
     startDayOffset?: IntFieldUpdateOperationsInput | number
     endDayOffset?: IntFieldUpdateOperationsInput | number
     frequencyPerDay?: IntFieldUpdateOperationsInput | number
+    cadence?: EnumProtocolCadenceFieldUpdateOperationsInput | $Enums.ProtocolCadence
+    intervalDays?: IntFieldUpdateOperationsInput | number
+    recordType?: EnumProtocolRecordTypeFieldUpdateOperationsInput | $Enums.ProtocolRecordType
+    healthWriteMode?: EnumProtocolHealthWriteModeFieldUpdateOperationsInput | $Enums.ProtocolHealthWriteMode
     instructions?: StringFieldUpdateOperationsInput | string
     sortOrder?: IntFieldUpdateOperationsInput | number
     doses?: ProtocolDoseUncheckedUpdateManyWithoutProtocolDrugNestedInput
+    activeProtocolDrugLinks?: ActiveProtocolDrugLinkUncheckedUpdateManyWithoutProtocolDrugNestedInput
   }
 
   export type ProtocolDrugUncheckedUpdateManyWithoutProtocolInput = {
@@ -71994,6 +75295,10 @@ export namespace Prisma {
     startDayOffset?: IntFieldUpdateOperationsInput | number
     endDayOffset?: IntFieldUpdateOperationsInput | number
     frequencyPerDay?: IntFieldUpdateOperationsInput | number
+    cadence?: EnumProtocolCadenceFieldUpdateOperationsInput | $Enums.ProtocolCadence
+    intervalDays?: IntFieldUpdateOperationsInput | number
+    recordType?: EnumProtocolRecordTypeFieldUpdateOperationsInput | $Enums.ProtocolRecordType
+    healthWriteMode?: EnumProtocolHealthWriteModeFieldUpdateOperationsInput | $Enums.ProtocolHealthWriteMode
     instructions?: StringFieldUpdateOperationsInput | string
     sortOrder?: IntFieldUpdateOperationsInput | number
   }
@@ -72004,6 +75309,7 @@ export namespace Prisma {
     kitten?: KittenUpdateOneRequiredWithoutActiveProtocolsNestedInput
     activatedBy?: UserUpdateOneRequiredWithoutActivatedProtocolsNestedInput
     doses?: ProtocolDoseUpdateManyWithoutActiveProtocolNestedInput
+    drugLinks?: ActiveProtocolDrugLinkUpdateManyWithoutActiveProtocolNestedInput
   }
 
   export type ActiveProtocolUncheckedUpdateWithoutProtocolInput = {
@@ -72013,6 +75319,7 @@ export namespace Prisma {
     activationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumActiveProtocolStatusFieldUpdateOperationsInput | $Enums.ActiveProtocolStatus
     doses?: ProtocolDoseUncheckedUpdateManyWithoutActiveProtocolNestedInput
+    drugLinks?: ActiveProtocolDrugLinkUncheckedUpdateManyWithoutActiveProtocolNestedInput
   }
 
   export type ActiveProtocolUncheckedUpdateManyWithoutProtocolInput = {
@@ -72031,7 +75338,16 @@ export namespace Prisma {
     status?: $Enums.DoseStatus
     administeredAt?: Date | string | null
     administeredById?: number | null
+    medicationId?: number | null
+    vaccineId?: number | null
     notes?: string
+  }
+
+  export type ActiveProtocolDrugLinkCreateManyProtocolDrugInput = {
+    id?: number
+    activeProtocolId: number
+    medicationId: number
+    createdAt?: Date | string
   }
 
   export type ProtocolDoseUpdateWithoutProtocolDrugInput = {
@@ -72042,6 +75358,8 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     activeProtocol?: ActiveProtocolUpdateOneRequiredWithoutDosesNestedInput
     administeredBy?: UserUpdateOneWithoutAdministeredProtocolDosesNestedInput
+    medication?: MedicationUpdateOneWithoutProtocolDosesNestedInput
+    vaccine?: VaccineUpdateOneWithoutProtocolDosesNestedInput
   }
 
   export type ProtocolDoseUncheckedUpdateWithoutProtocolDrugInput = {
@@ -72052,6 +75370,8 @@ export namespace Prisma {
     status?: EnumDoseStatusFieldUpdateOperationsInput | $Enums.DoseStatus
     administeredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     administeredById?: NullableIntFieldUpdateOperationsInput | number | null
+    medicationId?: NullableIntFieldUpdateOperationsInput | number | null
+    vaccineId?: NullableIntFieldUpdateOperationsInput | number | null
     notes?: StringFieldUpdateOperationsInput | string
   }
 
@@ -72063,7 +75383,29 @@ export namespace Prisma {
     status?: EnumDoseStatusFieldUpdateOperationsInput | $Enums.DoseStatus
     administeredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     administeredById?: NullableIntFieldUpdateOperationsInput | number | null
+    medicationId?: NullableIntFieldUpdateOperationsInput | number | null
+    vaccineId?: NullableIntFieldUpdateOperationsInput | number | null
     notes?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ActiveProtocolDrugLinkUpdateWithoutProtocolDrugInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    activeProtocol?: ActiveProtocolUpdateOneRequiredWithoutDrugLinksNestedInput
+    medication?: MedicationUpdateOneRequiredWithoutProtocolDrugLinksNestedInput
+  }
+
+  export type ActiveProtocolDrugLinkUncheckedUpdateWithoutProtocolDrugInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    activeProtocolId?: IntFieldUpdateOperationsInput | number
+    medicationId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ActiveProtocolDrugLinkUncheckedUpdateManyWithoutProtocolDrugInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    activeProtocolId?: IntFieldUpdateOperationsInput | number
+    medicationId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ProtocolDoseCreateManyActiveProtocolInput = {
@@ -72074,7 +75416,16 @@ export namespace Prisma {
     status?: $Enums.DoseStatus
     administeredAt?: Date | string | null
     administeredById?: number | null
+    medicationId?: number | null
+    vaccineId?: number | null
     notes?: string
+  }
+
+  export type ActiveProtocolDrugLinkCreateManyActiveProtocolInput = {
+    id?: number
+    protocolDrugId: number
+    medicationId: number
+    createdAt?: Date | string
   }
 
   export type ProtocolDoseUpdateWithoutActiveProtocolInput = {
@@ -72085,6 +75436,8 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     protocolDrug?: ProtocolDrugUpdateOneRequiredWithoutDosesNestedInput
     administeredBy?: UserUpdateOneWithoutAdministeredProtocolDosesNestedInput
+    medication?: MedicationUpdateOneWithoutProtocolDosesNestedInput
+    vaccine?: VaccineUpdateOneWithoutProtocolDosesNestedInput
   }
 
   export type ProtocolDoseUncheckedUpdateWithoutActiveProtocolInput = {
@@ -72095,6 +75448,8 @@ export namespace Prisma {
     status?: EnumDoseStatusFieldUpdateOperationsInput | $Enums.DoseStatus
     administeredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     administeredById?: NullableIntFieldUpdateOperationsInput | number | null
+    medicationId?: NullableIntFieldUpdateOperationsInput | number | null
+    vaccineId?: NullableIntFieldUpdateOperationsInput | number | null
     notes?: StringFieldUpdateOperationsInput | string
   }
 
@@ -72106,7 +75461,29 @@ export namespace Prisma {
     status?: EnumDoseStatusFieldUpdateOperationsInput | $Enums.DoseStatus
     administeredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     administeredById?: NullableIntFieldUpdateOperationsInput | number | null
+    medicationId?: NullableIntFieldUpdateOperationsInput | number | null
+    vaccineId?: NullableIntFieldUpdateOperationsInput | number | null
     notes?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ActiveProtocolDrugLinkUpdateWithoutActiveProtocolInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    protocolDrug?: ProtocolDrugUpdateOneRequiredWithoutActiveProtocolDrugLinksNestedInput
+    medication?: MedicationUpdateOneRequiredWithoutProtocolDrugLinksNestedInput
+  }
+
+  export type ActiveProtocolDrugLinkUncheckedUpdateWithoutActiveProtocolInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolDrugId?: IntFieldUpdateOperationsInput | number
+    medicationId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ActiveProtocolDrugLinkUncheckedUpdateManyWithoutActiveProtocolInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolDrugId?: IntFieldUpdateOperationsInput | number
+    medicationId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

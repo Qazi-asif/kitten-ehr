@@ -283,6 +283,99 @@ export async function publishKittenSocialPost({
   return { configured: true, results };
 }
 
+// Generic "publish now" for a SocialPost record (Marketing page) - same
+// Graph API helpers (postToFacebook/postToInstagram/resolveInstagramAccountId)
+// as publishKittenSocialPost above, but for FACEBOOK/INSTAGRAM only and with
+// no manual-share fallback: the caller (socialPostController) already
+// verified the Graph API is configured before calling this, and returns a
+// clear 400 itself when it isn't, per the "Publish now" requirement.
+export async function publishSocialPostToTargets({ caption, imageUrl, targets }) {
+  const config = await getSocialPostingConfig();
+  const results = [];
+
+  let instagramAccountId = config.instagramAccountId;
+  if (targets.includes('INSTAGRAM')) {
+    instagramAccountId = await resolveInstagramAccountId(
+      config.pageId,
+      config.accessToken,
+      instagramAccountId,
+    );
+    if (instagramAccountId && instagramAccountId !== config.instagramAccountId) {
+      await prisma.settings.update({
+        where: { id: SETTINGS_ID },
+        data: { instagramBusinessAccountId: instagramAccountId },
+      }).catch(() => {});
+    }
+  }
+
+  for (const platform of targets) {
+    try {
+      if (platform === 'FACEBOOK') {
+        const posted = await postToFacebook({
+          message: caption,
+          imageUrl,
+          pageId: config.pageId,
+          accessToken: config.accessToken,
+        });
+        results.push({
+          platform,
+          status: 'posted',
+          message: 'Published to Facebook.',
+          postId: posted.postId,
+          shareUrl: config.facebookProfileUrl || '',
+        });
+        continue;
+      }
+
+      if (platform === 'INSTAGRAM') {
+        if (!instagramAccountId) {
+          results.push({
+            platform,
+            status: 'failed',
+            message: 'No Instagram Business account linked to this Facebook page.',
+            shareUrl: config.instagramProfileUrl || '',
+            postId: '',
+          });
+          continue;
+        }
+
+        const posted = await postToInstagram({
+          caption,
+          imageUrl,
+          igUserId: instagramAccountId,
+          accessToken: config.accessToken,
+        });
+        results.push({
+          platform,
+          status: 'posted',
+          message: 'Published to Instagram.',
+          postId: posted.postId,
+          shareUrl: config.instagramProfileUrl || '',
+        });
+        continue;
+      }
+
+      results.push({
+        platform,
+        status: 'skipped',
+        message: 'Automatic posting is not configured for this platform yet.',
+        shareUrl: '',
+        postId: '',
+      });
+    } catch (error) {
+      results.push({
+        platform,
+        status: 'failed',
+        message: error.message,
+        shareUrl: platform === 'INSTAGRAM' ? config.instagramProfileUrl || '' : '',
+        postId: '',
+      });
+    }
+  }
+
+  return { results };
+}
+
 export function parseSocialDeliveryLog(value) {
   if (!value) return [];
   try {

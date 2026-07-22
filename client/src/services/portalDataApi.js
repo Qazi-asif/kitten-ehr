@@ -32,6 +32,21 @@ async function portalFetch(path, options = {}) {
   return fetch(`${API_BASE}${path}`, { ...options, headers });
 }
 
+export async function fetchMyProfile() {
+  const response = await portalFetch('/me');
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to load your profile'));
+  return response.json();
+}
+
+export async function updateMyProfile(data) {
+  const response = await portalFetch('/me', {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to update your profile'));
+  return response.json();
+}
+
 export async function fetchMyPlacements() {
   const response = await portalFetch('/placements');
   if (!response.ok) throw new Error(await readApiError(response, 'Failed to load your placements'));

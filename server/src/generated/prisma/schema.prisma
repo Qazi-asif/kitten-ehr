@@ -40,6 +40,24 @@ enum DoseStatus {
   GIVEN
 }
 
+enum ProtocolCadence {
+  DAILY
+  EVERY_N_DAYS
+  WEEKLY
+  MONTHLY
+}
+
+enum ProtocolRecordType {
+  NONE
+  MEDICATION
+  VACCINE
+}
+
+enum ProtocolHealthWriteMode {
+  PER_DOSE
+  COURSE
+}
+
 model Litter {
   id         Int      @id @default(autoincrement())
   name       String
@@ -182,34 +200,37 @@ model WeightLog {
 }
 
 model Vaccine {
-  id             Int       @id @default(autoincrement())
+  id             Int            @id @default(autoincrement())
   kittenId       Int
-  kitten         Kitten    @relation(fields: [kittenId], references: [id], onDelete: Cascade)
+  kitten         Kitten         @relation(fields: [kittenId], references: [id], onDelete: Cascade)
   type           String
   dateGiven      DateTime
   nextDueDate    DateTime?
-  lotNumber      String    @default("")
-  manufacturer   String    @default("")
-  administeredBy String    @default("")
-  notes          String    @default("")
+  lotNumber      String         @default("")
+  manufacturer   String         @default("")
+  administeredBy String         @default("")
+  notes          String         @default("")
+  protocolDoses  ProtocolDose[]
 
   @@index([kittenId])
   @@index([nextDueDate])
 }
 
 model Medication {
-  id        Int       @id @default(autoincrement())
-  kittenId  Int
-  kitten    Kitten    @relation(fields: [kittenId], references: [id], onDelete: Cascade)
-  name      String
-  dose      String    @default("")
-  frequency String    @default("")
-  route     String    @default("")
-  condition String    @default("")
-  startDate DateTime
-  endDate   DateTime?
-  status    String    @default("Active")
-  notes     String    @default("")
+  id                Int                      @id @default(autoincrement())
+  kittenId          Int
+  kitten            Kitten                   @relation(fields: [kittenId], references: [id], onDelete: Cascade)
+  name              String
+  dose              String                   @default("")
+  frequency         String                   @default("")
+  route             String                   @default("")
+  condition         String                   @default("")
+  startDate         DateTime
+  endDate           DateTime?
+  status            String                   @default("Active")
+  notes             String                   @default("")
+  protocolDoses     ProtocolDose[]
+  protocolDrugLinks ActiveProtocolDrugLink[]
 
   @@index([kittenId])
   @@index([status, endDate])
@@ -457,6 +478,7 @@ model Event {
   endDate        DateTime?
   location       String      @default("")
   description    String      @default("")
+  imageUrl       String?
   isPublic       Boolean     @default(false)
   status         String      @default("DRAFT")
   internalNotes  String?
@@ -574,33 +596,39 @@ model Protocol {
 }
 
 model ProtocolDrug {
-  id              Int            @id @default(autoincrement())
-  protocolId      Int
-  protocol        Protocol       @relation(fields: [protocolId], references: [id], onDelete: Cascade)
-  drugName        String
-  dosage          String         @default("")
-  route           String         @default("")
-  startDayOffset  Int
-  endDayOffset    Int
-  frequencyPerDay Int
-  instructions    String         @default("")
-  sortOrder       Int            @default(0)
-  doses           ProtocolDose[]
+  id                      Int                      @id @default(autoincrement())
+  protocolId              Int
+  protocol                Protocol                 @relation(fields: [protocolId], references: [id], onDelete: Cascade)
+  drugName                String
+  dosage                  String                   @default("")
+  route                   String                   @default("")
+  startDayOffset          Int
+  endDayOffset            Int
+  frequencyPerDay         Int
+  cadence                 ProtocolCadence          @default(DAILY)
+  intervalDays            Int                      @default(1) // EVERY_N_DAYS only
+  recordType              ProtocolRecordType       @default(NONE)
+  healthWriteMode         ProtocolHealthWriteMode  @default(PER_DOSE)
+  instructions            String                   @default("")
+  sortOrder               Int                      @default(0)
+  doses                   ProtocolDose[]
+  activeProtocolDrugLinks ActiveProtocolDrugLink[]
 
   @@index([protocolId])
 }
 
 model ActiveProtocol {
-  id             Int                  @id @default(autoincrement())
+  id             Int                      @id @default(autoincrement())
   protocolId     Int
-  protocol       Protocol             @relation(fields: [protocolId], references: [id], onDelete: Restrict)
+  protocol       Protocol                 @relation(fields: [protocolId], references: [id], onDelete: Restrict)
   kittenId       Int
-  kitten         Kitten               @relation(fields: [kittenId], references: [id], onDelete: Cascade)
+  kitten         Kitten                   @relation(fields: [kittenId], references: [id], onDelete: Cascade)
   activatedById  Int
-  activatedBy    User                 @relation("ProtocolActivatedBy", fields: [activatedById], references: [id], onDelete: Restrict)
+  activatedBy    User                     @relation("ProtocolActivatedBy", fields: [activatedById], references: [id], onDelete: Restrict)
   activationDate DateTime
-  status         ActiveProtocolStatus @default(ACTIVE)
+  status         ActiveProtocolStatus     @default(ACTIVE)
   doses          ProtocolDose[]
+  drugLinks      ActiveProtocolDrugLink[]
 
   @@index([kittenId])
   @@index([protocolId])
@@ -619,6 +647,10 @@ model ProtocolDose {
   administeredAt   DateTime?
   administeredById Int?
   administeredBy   User?          @relation("ProtocolDoseAdministeredBy", fields: [administeredById], references: [id], onDelete: SetNull)
+  medicationId     Int?
+  medication       Medication?    @relation(fields: [medicationId], references: [id], onDelete: SetNull)
+  vaccineId        Int?
+  vaccine          Vaccine?       @relation(fields: [vaccineId], references: [id], onDelete: SetNull)
   notes            String         @default("")
 
   @@unique([activeProtocolId, protocolDrugId, scheduledDate, doseNumberInDay])
@@ -626,6 +658,28 @@ model ProtocolDose {
   @@index([protocolDrugId])
   @@index([administeredById])
   @@index([status, scheduledDate])
+  @@index([medicationId])
+  @@index([vaccineId])
+}
+
+// Tracks the single "course" Medication row created for a MEDICATION +
+// COURSE ProtocolDrug when its ActiveProtocol is activated, so that
+// markProtocolDoseGiven can detect the record already exists and avoid
+// creating a duplicate Medication for every dose in the course.
+model ActiveProtocolDrugLink {
+  id               Int            @id @default(autoincrement())
+  activeProtocolId Int
+  activeProtocol   ActiveProtocol @relation(fields: [activeProtocolId], references: [id], onDelete: Cascade)
+  protocolDrugId   Int
+  protocolDrug     ProtocolDrug   @relation(fields: [protocolDrugId], references: [id], onDelete: Restrict)
+  medicationId     Int
+  medication       Medication     @relation(fields: [medicationId], references: [id], onDelete: Cascade)
+  createdAt        DateTime       @default(now())
+
+  @@unique([activeProtocolId, protocolDrugId])
+  @@index([activeProtocolId])
+  @@index([protocolDrugId])
+  @@index([medicationId])
 }
 
 model Settings {
@@ -742,6 +796,8 @@ model SocialPost {
   platforms    String[]         @default([])
   scheduledFor DateTime?
   status       SocialPostStatus @default(DRAFT)
+  postedAt     DateTime?
+  deliveryLog  String           @default("")
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
 

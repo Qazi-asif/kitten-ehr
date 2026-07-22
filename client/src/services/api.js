@@ -487,6 +487,17 @@ export async function deleteEvent(id) {
   await adminFetch(`/events/${id}`, { method: 'DELETE' });
 }
 
+export async function uploadEventImage(eventId, file) {
+  const formData = new FormData();
+  formData.append('image', file);
+  const response = await adminFetch(`/events/${eventId}/image`, {
+    method: 'PATCH',
+    body: formData,
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to upload event image'));
+  return response.json();
+}
+
 export function getFileUrl(path) {
   if (!path) return '#';
   if (path.startsWith('http') || path.startsWith('data:')) return path;

@@ -23,6 +23,7 @@ function PortalNav() {
           <Link to="/portal" className="hover:text-brand">Home</Link>
           <Link to="/portal/placements" className="hover:text-brand">My Placements</Link>
           <Link to="/portal/documents" className="hover:text-brand">Documents</Link>
+          <Link to="/portal/profile" className="hover:text-brand">My Profile</Link>
           {user?.firstName && <span className="text-slate-400">Hi, {user.firstName}</span>}
           <button type="button" onClick={handleLogout} className="hover:text-brand">
             Log out

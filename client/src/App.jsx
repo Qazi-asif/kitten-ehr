@@ -12,6 +12,7 @@ const PortalSetPasswordPage = lazy(() => import('./pages/portal/PortalSetPasswor
 const PortalHomePage = lazy(() => import('./pages/portal/PortalHomePage'));
 const PortalPlacementsPage = lazy(() => import('./pages/portal/PortalPlacementsPage'));
 const PortalDocumentsPage = lazy(() => import('./pages/portal/PortalDocumentsPage'));
+const PortalProfilePage = lazy(() => import('./pages/portal/PortalProfilePage'));
 
 const FosterDetailPage = lazy(() => import('./pages/FosterDetailPage'));
 const FosterListPage = lazy(() => import('./pages/FosterListPage'));
@@ -45,6 +46,7 @@ const FosterPage = lazy(() => import('./pages/public/FosterPage'));
 const FosterFormPage = lazy(() => import('./pages/public/FosterFormPage'));
 const HomePage = lazy(() => import('./pages/public/HomePage'));
 const PublicKittenProfile = lazy(() => import('./pages/public/PublicKittenProfile'));
+const RehomePage = lazy(() => import('./pages/public/RehomePage'));
 
 function PageLoader() {
   return (
@@ -68,6 +70,7 @@ function App() {
               <Route path="/portal" element={<PortalHomePage />} />
               <Route path="/portal/placements" element={<PortalPlacementsPage />} />
               <Route path="/portal/documents" element={<PortalDocumentsPage />} />
+              <Route path="/portal/profile" element={<PortalProfilePage />} />
             </Route>
 
             <Route element={<PublicLayout />}>
@@ -86,6 +89,8 @@ function App() {
               <Route path="/events/:slug" element={<EventDetailPage />} />
               <Route path="/donate" element={<DonatePage />} />
               <Route path="/contact" element={<ContactPage />} />
+              <Route path="/rehome" element={<RehomePage />} />
+              <Route path="/surrender" element={<Navigate to="/rehome" replace />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/privacy" element={<PrivacyPolicyPage />} />
             </Route>

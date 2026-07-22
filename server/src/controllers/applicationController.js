@@ -9,7 +9,7 @@ import { APPLICATION_REVIEW_STATUSES } from '../constants/emailTemplates.js';
 import { validateUploadedFile } from '../utils/fileValidation.js';
 import { persistApplicationFile, isStoredFileUrl, resolveStoredFileAbsolutePath } from '../utils/fileStorage.js';
 import { parseApplicationFormData } from '../utils/applicationFormData.js';
-import { translateExperienceLevel, translateCapabilityFlags } from '../utils/fosterApplicationMapping.js';
+import { translateExperienceLevel, translateCapabilityFlags, translateMaxKittens } from '../utils/fosterApplicationMapping.js';
 
 const VALID_STATUSES = ['New', 'Under Review', 'Approved', 'Denied'];
 const MAX_APPLICATION_PHOTOS = 3;
@@ -196,7 +196,7 @@ async function buildFosterProvisionPreview(application) {
       experienceLevel: translateExperienceLevel(parsed.experienceLevel),
       capabilityFlags: translateCapabilityFlags(parsed.capacity),
       notes: parsed.message || '',
-      maxKittens: 0,
+      maxKittens: translateMaxKittens(parsed.maxKittens),
       emergencyContact: '',
       photoUrl: null,
     },

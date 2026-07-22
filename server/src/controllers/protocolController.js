@@ -1,5 +1,15 @@
 import prisma from '../lib/prisma.js';
 
+const CADENCE_VALUES = ['DAILY', 'EVERY_N_DAYS', 'WEEKLY', 'MONTHLY'];
+const RECORD_TYPE_VALUES = ['NONE', 'MEDICATION', 'VACCINE'];
+const HEALTH_WRITE_MODE_VALUES = ['PER_DOSE', 'COURSE'];
+
+// Generous safety bound on how many calendar months a MONTHLY cadence will
+// scan forward while looking for offsets inside [startDayOffset,
+// endDayOffset] - avoids an infinite loop if a protocol is ever misconfigured
+// with an unreachable end offset.
+const MAX_MONTHLY_MONTHS_TO_SCAN = 600;
+
 function stripToUtcMidnight(value) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) {
@@ -19,6 +29,63 @@ function buildScheduledDateUtcMidnight(activationMidnightUtc, dayOffset) {
     activationMidnightUtc.getUTCMonth(),
     activationMidnightUtc.getUTCDate() + dayOffset,
   ));
+}
+
+// Adds a whole number of calendar months to a UTC-midnight date, clamping
+// the day-of-month to the last day of the target month (e.g. Jan 31 + 1
+// month -> Feb 28/29, not Mar 3).
+function addCalendarMonthsUtc(baseDateUtc, monthsToAdd) {
+  const year = baseDateUtc.getUTCFullYear();
+  const month = baseDateUtc.getUTCMonth();
+  const day = baseDateUtc.getUTCDate();
+
+  const targetMonthIndex = month + monthsToAdd;
+  const targetYear = year + Math.floor(targetMonthIndex / 12);
+  const targetMonth = ((targetMonthIndex % 12) + 12) % 12;
+  const lastDayOfTargetMonth = new Date(Date.UTC(targetYear, targetMonth + 1, 0)).getUTCDate();
+
+  return new Date(Date.UTC(targetYear, targetMonth, Math.min(day, lastDayOfTargetMonth)));
+}
+
+function diffInDaysUtc(fromDateUtc, toDateUtc) {
+  return Math.round((toDateUtc.getTime() - fromDateUtc.getTime()) / 86400000);
+}
+
+// Cadence-aware day-offset generation for a single ProtocolDrug. Returns the
+// list of day offsets (relative to activationMidnightUtc) on which doses
+// should be scheduled, within [startDayOffset, endDayOffset].
+function computeDayOffsetsForDrug(drug, activationMidnightUtc) {
+  const { cadence, startDayOffset, endDayOffset } = drug;
+
+  if (cadence === 'WEEKLY') {
+    // Only offsets that land on the same weekday as the activation date.
+    const offsets = [];
+    for (let offset = startDayOffset; offset <= endDayOffset; offset += 1) {
+      if (((offset % 7) + 7) % 7 === 0) offsets.push(offset);
+    }
+    return offsets;
+  }
+
+  if (cadence === 'MONTHLY') {
+    const offsets = [];
+    for (let monthsElapsed = 0; monthsElapsed <= MAX_MONTHLY_MONTHS_TO_SCAN; monthsElapsed += 1) {
+      const candidateDate = addCalendarMonthsUtc(activationMidnightUtc, monthsElapsed);
+      const offset = diffInDaysUtc(activationMidnightUtc, candidateDate);
+      if (offset > endDayOffset) break;
+      if (offset >= startDayOffset) offsets.push(offset);
+    }
+    return offsets;
+  }
+
+  const step = cadence === 'EVERY_N_DAYS'
+    ? (Number.isInteger(drug.intervalDays) && drug.intervalDays > 0 ? drug.intervalDays : 1)
+    : 1; // DAILY
+
+  const offsets = [];
+  for (let offset = startDayOffset; offset <= endDayOffset; offset += step) {
+    offsets.push(offset);
+  }
+  return offsets;
 }
 
 function parsePositiveInt(value) {
@@ -53,6 +120,29 @@ function normalizeDrugPayload(drug, index) {
     return { error: `Drug line ${index + 1} has endDayOffset before startDayOffset` };
   }
 
+  const cadence = CADENCE_VALUES.includes(drug.cadence) ? drug.cadence : 'DAILY';
+
+  let intervalDays = 1;
+  if (cadence === 'EVERY_N_DAYS') {
+    const parsedIntervalDays = parsePositiveInt(drug.intervalDays);
+    if (parsedIntervalDays === null) {
+      return { error: `Drug line ${index + 1} requires a positive intervalDays for EVERY_N_DAYS cadence` };
+    }
+    intervalDays = parsedIntervalDays;
+  }
+
+  const recordType = RECORD_TYPE_VALUES.includes(drug.recordType) ? drug.recordType : 'NONE';
+
+  // Vaccines are always recorded per dose - there's no "course" concept for
+  // a vaccine. NONE has no write mode to speak of either, so it's forced to
+  // the default. Only MEDICATION honors the caller's healthWriteMode.
+  let healthWriteMode = HEALTH_WRITE_MODE_VALUES.includes(drug.healthWriteMode)
+    ? drug.healthWriteMode
+    : 'PER_DOSE';
+  if (recordType !== 'MEDICATION') {
+    healthWriteMode = 'PER_DOSE';
+  }
+
   return {
     data: {
       drugName,
@@ -61,6 +151,10 @@ function normalizeDrugPayload(drug, index) {
       startDayOffset,
       endDayOffset,
       frequencyPerDay,
+      cadence,
+      intervalDays,
+      recordType,
+      healthWriteMode,
       instructions: typeof drug.instructions === 'string' ? drug.instructions.trim() : '',
       sortOrder: index,
     },
@@ -367,6 +461,21 @@ export async function markProtocolDoseGiven(req, res, next) {
         id: doseId,
         activeProtocol: { kittenId },
       },
+      include: {
+        protocolDrug: {
+          select: {
+            drugName: true,
+            dosage: true,
+            route: true,
+            instructions: true,
+            recordType: true,
+            healthWriteMode: true,
+          },
+        },
+        activeProtocol: {
+          select: { kittenId: true },
+        },
+      },
     });
 
     if (!existing) {
@@ -374,12 +483,56 @@ export async function markProtocolDoseGiven(req, res, next) {
     }
 
     const dose = await prisma.$transaction(async (tx) => {
+      const { protocolDrug } = existing;
+      let medicationId = existing.medicationId;
+      let vaccineId = existing.vaccineId;
+      const administeredByName = [req.user?.firstName, req.user?.lastName].filter(Boolean).join(' ');
+
+      if (protocolDrug.recordType === 'VACCINE') {
+        // Vaccines are always recorded per dose - create one every time, but
+        // stay idempotent if this dose already has one linked.
+        if (!vaccineId) {
+          const vaccine = await tx.vaccine.create({
+            data: {
+              kittenId: existing.activeProtocol.kittenId,
+              type: protocolDrug.drugName,
+              dateGiven: new Date(),
+              administeredBy: administeredByName,
+              notes: protocolDrug.instructions,
+            },
+          });
+          vaccineId = vaccine.id;
+        }
+      } else if (protocolDrug.recordType === 'MEDICATION' && protocolDrug.healthWriteMode === 'PER_DOSE') {
+        // Per-dose medications get a fresh Medication row per dose given.
+        if (!medicationId) {
+          const medication = await tx.medication.create({
+            data: {
+              kittenId: existing.activeProtocol.kittenId,
+              name: protocolDrug.drugName,
+              dose: protocolDrug.dosage,
+              route: protocolDrug.route,
+              startDate: new Date(),
+              endDate: new Date(),
+              status: 'Active',
+              notes: protocolDrug.instructions,
+            },
+          });
+          medicationId = medication.id;
+        }
+      }
+      // MEDICATION + COURSE: the single course-level Medication was already
+      // created (and linked to every dose) when the protocol was activated,
+      // so there's nothing to do here. RecordType NONE also does nothing.
+
       const updated = await tx.protocolDose.update({
         where: { id: doseId },
         data: {
           status: 'GIVEN',
           administeredAt: new Date(),
           administeredById,
+          medicationId,
+          vaccineId,
         },
         include: {
           protocolDrug: {
@@ -485,7 +638,7 @@ export async function activateProtocol(req, res, next) {
       return res.status(400).json({ error: 'Protocol has no drug lines configured' });
     }
 
-    const doseRows = [];
+    const drugPlans = [];
 
     for (const drug of protocol.drugs) {
       if (drug.frequencyPerDay < 1) {
@@ -500,18 +653,8 @@ export async function activateProtocol(req, res, next) {
         });
       }
 
-      for (let dayOffset = drug.startDayOffset; dayOffset <= drug.endDayOffset; dayOffset += 1) {
-        const scheduledDate = buildScheduledDateUtcMidnight(activationMidnightUtc, dayOffset);
-
-        for (let doseNumberInDay = 1; doseNumberInDay <= drug.frequencyPerDay; doseNumberInDay += 1) {
-          doseRows.push({
-            protocolDrugId: drug.id,
-            scheduledDate,
-            doseNumberInDay,
-            status: 'SCHEDULED',
-          });
-        }
-      }
+      const dayOffsets = computeDayOffsetsForDrug(drug, activationMidnightUtc);
+      drugPlans.push({ drug, dayOffsets });
     }
 
     const result = await prisma.$transaction(async (tx) => {
@@ -533,6 +676,64 @@ export async function activateProtocol(req, res, next) {
         },
       });
 
+      const doseRows = [];
+
+      for (const { drug, dayOffsets } of drugPlans) {
+        if (dayOffsets.length === 0) continue;
+
+        // MEDICATION + COURSE gets exactly one Medication row spanning the
+        // full course (first dose date -> last dose date), created once at
+        // activation and linked to every dose below. PER_DOSE medications
+        // and vaccines are created lazily in markProtocolDoseGiven instead.
+        let courseMedicationId = null;
+        if (drug.recordType === 'MEDICATION' && drug.healthWriteMode === 'COURSE') {
+          const sortedOffsets = [...dayOffsets].sort((a, b) => a - b);
+          const courseStartDate = buildScheduledDateUtcMidnight(activationMidnightUtc, sortedOffsets[0]);
+          const courseEndDate = buildScheduledDateUtcMidnight(
+            activationMidnightUtc,
+            sortedOffsets[sortedOffsets.length - 1],
+          );
+
+          const courseMedication = await tx.medication.create({
+            data: {
+              kittenId,
+              name: drug.drugName,
+              dose: drug.dosage,
+              frequency: `${drug.frequencyPerDay}x/day`,
+              route: drug.route,
+              startDate: courseStartDate,
+              endDate: courseEndDate,
+              status: 'Active',
+              notes: drug.instructions,
+            },
+          });
+
+          await tx.activeProtocolDrugLink.create({
+            data: {
+              activeProtocolId: activeProtocol.id,
+              protocolDrugId: drug.id,
+              medicationId: courseMedication.id,
+            },
+          });
+
+          courseMedicationId = courseMedication.id;
+        }
+
+        for (const dayOffset of dayOffsets) {
+          const scheduledDate = buildScheduledDateUtcMidnight(activationMidnightUtc, dayOffset);
+
+          for (let doseNumberInDay = 1; doseNumberInDay <= drug.frequencyPerDay; doseNumberInDay += 1) {
+            doseRows.push({
+              protocolDrugId: drug.id,
+              scheduledDate,
+              doseNumberInDay,
+              status: 'SCHEDULED',
+              medicationId: courseMedicationId,
+            });
+          }
+        }
+      }
+
       if (doseRows.length > 0) {
         await tx.protocolDose.createMany({
           data: doseRows.map((row) => ({
@@ -541,6 +742,7 @@ export async function activateProtocol(req, res, next) {
             scheduledDate: row.scheduledDate,
             doseNumberInDay: row.doseNumberInDay,
             status: row.status,
+            medicationId: row.medicationId,
           })),
           skipDuplicates: true,
         });

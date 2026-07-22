@@ -104,14 +104,20 @@ async function getLayoutTemplate() {
 }
 
 async function buildRenderedEmail(template, variables) {
-  const subject = renderTemplateString(template.subject, variables);
-  const innerHtml = renderTemplateString(template.bodyHtml, variables, { escapeValues: true });
+  const settings = await getEmailSettings();
+  const merged = {
+    orgName: settings.orgName,
+    orgLogoUrl: settings.orgLogoUrl || '',
+    ...variables,
+  };
+  const subject = renderTemplateString(template.subject, merged);
+  const innerHtml = renderTemplateString(template.bodyHtml, merged, { escapeValues: true });
   const layoutHtml = await getLayoutTemplate();
   const html = template.key === EMAIL_TEMPLATE_KEYS.EMAIL_LAYOUT
     ? innerHtml
-    : wrapEmailContent(innerHtml, variables, layoutHtml);
+    : wrapEmailContent(innerHtml, merged, layoutHtml);
   const textSource = template.bodyText || stripHtml(innerHtml);
-  const text = renderTemplateString(textSource, variables);
+  const text = renderTemplateString(textSource, merged);
 
   return { subject, html, text };
 }
@@ -573,7 +579,7 @@ export async function sendSignedContractPdfEmail({ contract }) {
 <p>Thank you,<br>${escapeHtml(settings.orgName || 'Pawsitive Transformations')}</p>`;
 
   const layoutHtml = await getLayoutTemplate();
-  const html = wrapEmailContent(innerHtml, { orgName: settings.orgName }, layoutHtml);
+  const html = wrapEmailContent(innerHtml, { orgName: settings.orgName, orgLogoUrl: settings.orgLogoUrl || '' }, layoutHtml);
   const text = stripHtml(innerHtml);
 
   const smtpPass = process.env.SMTP_PASS || process.env.SENDGRID_API_KEY || settings.smtpPass;
@@ -687,7 +693,7 @@ ${noteBlock}
 <p>Thank you,<br>${escapeHtml(settings.orgName || 'Pawsitive Transformations')}</p>`;
 
   const layoutHtml = await getLayoutTemplate();
-  const html = wrapEmailContent(innerHtml, { orgName: settings.orgName }, layoutHtml);
+  const html = wrapEmailContent(innerHtml, { orgName: settings.orgName, orgLogoUrl: settings.orgLogoUrl || '' }, layoutHtml);
   const text = stripHtml(innerHtml);
 
   const smtpPass = process.env.SMTP_PASS || process.env.SENDGRID_API_KEY || settings.smtpPass;

@@ -8,6 +8,24 @@ import {
   updateProtocol,
 } from '../../services/protocolApi';
 
+const CADENCE_OPTIONS = [
+  { value: 'DAILY', label: 'Daily' },
+  { value: 'EVERY_N_DAYS', label: 'Every N Days' },
+  { value: 'WEEKLY', label: 'Weekly' },
+  { value: 'MONTHLY', label: 'Monthly' },
+];
+
+const RECORD_TYPE_OPTIONS = [
+  { value: 'NONE', label: 'None' },
+  { value: 'MEDICATION', label: 'Medication' },
+  { value: 'VACCINE', label: 'Vaccine' },
+];
+
+const HEALTH_WRITE_MODE_OPTIONS = [
+  { value: 'PER_DOSE', label: 'Per Dose' },
+  { value: 'COURSE', label: 'Course (single record)' },
+];
+
 const emptyDrug = {
   drugName: '',
   dosage: '',
@@ -15,6 +33,10 @@ const emptyDrug = {
   startDayOffset: 0,
   endDayOffset: 0,
   frequencyPerDay: 1,
+  cadence: 'DAILY',
+  intervalDays: 1,
+  recordType: 'NONE',
+  healthWriteMode: 'PER_DOSE',
 };
 
 const emptyForm = {
@@ -68,9 +90,16 @@ function ProtocolLibrary() {
   function updateDrug(index, field, value) {
     setForm((prev) => ({
       ...prev,
-      drugs: prev.drugs.map((drug, drugIndex) => (
-        drugIndex === index ? { ...drug, [field]: value } : drug
-      )),
+      drugs: prev.drugs.map((drug, drugIndex) => {
+        if (drugIndex !== index) return drug;
+        const updated = { ...drug, [field]: value };
+        // Vaccines have no "course" concept - always recorded per dose.
+        // NONE has no write mode to speak of either.
+        if (field === 'recordType' && value !== 'MEDICATION') {
+          updated.healthWriteMode = 'PER_DOSE';
+        }
+        return updated;
+      }),
     }));
   }
 
@@ -113,6 +142,10 @@ function ProtocolLibrary() {
           startDayOffset: Number.parseInt(drug.startDayOffset, 10),
           endDayOffset: Number.parseInt(drug.endDayOffset, 10),
           frequencyPerDay: Number.parseInt(drug.frequencyPerDay, 10),
+          cadence: drug.cadence,
+          intervalDays: Number.parseInt(drug.intervalDays, 10),
+          recordType: drug.recordType,
+          healthWriteMode: drug.healthWriteMode,
         })),
       };
 
@@ -145,6 +178,10 @@ function ProtocolLibrary() {
             startDayOffset: drug.startDayOffset ?? 0,
             endDayOffset: drug.endDayOffset ?? 0,
             frequencyPerDay: drug.frequencyPerDay ?? 1,
+            cadence: drug.cadence ?? 'DAILY',
+            intervalDays: drug.intervalDays ?? 1,
+            recordType: drug.recordType ?? 'NONE',
+            healthWriteMode: drug.healthWriteMode ?? 'PER_DOSE',
           }))
         : [{ ...emptyDrug }],
     });
@@ -324,6 +361,62 @@ function ProtocolLibrary() {
                       className="mt-1 w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm"
                     />
                   </label>
+                  <label className="block">
+                    <span className="text-xs font-semibold uppercase text-gray-500">Cadence</span>
+                    <select
+                      value={drug.cadence}
+                      onChange={(e) => updateDrug(index, 'cadence', e.target.value)}
+                      className="mt-1 w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm"
+                    >
+                      {CADENCE_OPTIONS.map((option) => (
+                        <option key={option.value} value={option.value}>{option.label}</option>
+                      ))}
+                    </select>
+                  </label>
+                  {drug.cadence === 'EVERY_N_DAYS' && (
+                    <label className="block">
+                      <span className="text-xs font-semibold uppercase text-gray-500">Interval (Days)</span>
+                      <input
+                        type="number"
+                        min="1"
+                        value={drug.intervalDays}
+                        onChange={(e) => updateDrug(index, 'intervalDays', e.target.value)}
+                        required
+                        className="mt-1 w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm"
+                      />
+                    </label>
+                  )}
+                  <label className="block">
+                    <span className="text-xs font-semibold uppercase text-gray-500">Health Record Type</span>
+                    <select
+                      value={drug.recordType}
+                      onChange={(e) => updateDrug(index, 'recordType', e.target.value)}
+                      className="mt-1 w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm"
+                    >
+                      {RECORD_TYPE_OPTIONS.map((option) => (
+                        <option key={option.value} value={option.value}>{option.label}</option>
+                      ))}
+                    </select>
+                  </label>
+                  {drug.recordType === 'MEDICATION' && (
+                    <label className="block">
+                      <span className="text-xs font-semibold uppercase text-gray-500">Health Write Mode</span>
+                      <select
+                        value={drug.healthWriteMode}
+                        onChange={(e) => updateDrug(index, 'healthWriteMode', e.target.value)}
+                        className="mt-1 w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm"
+                      >
+                        {HEALTH_WRITE_MODE_OPTIONS.map((option) => (
+                          <option key={option.value} value={option.value}>{option.label}</option>
+                        ))}
+                      </select>
+                    </label>
+                  )}
+                  {drug.recordType === 'VACCINE' && (
+                    <p className="block text-xs text-gray-500 md:col-span-2">
+                      Vaccines are always recorded per dose.
+                    </p>
+                  )}
                 </div>
               </div>
             ))}

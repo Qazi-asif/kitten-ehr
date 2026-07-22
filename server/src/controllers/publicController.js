@@ -386,6 +386,7 @@ export async function getPublicEvents(_req, res, next) {
         date: true,
         location: true,
         description: true,
+        imageUrl: true,
       },
     });
     res.json(events);

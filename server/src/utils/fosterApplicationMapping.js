@@ -18,7 +18,20 @@ const EXPERIENCE_LEVEL_TRANSLATIONS = {
 };
 
 export function translateExperienceLevel(applicationExperienceLevel) {
-  return EXPERIENCE_LEVEL_TRANSLATIONS[applicationExperienceLevel?.trim()] || '';
+  const trimmed = applicationExperienceLevel?.trim() || '';
+  if (EXPERIENCE_LEVEL_TRANSLATIONS[trimmed]) {
+    return EXPERIENCE_LEVEL_TRANSLATIONS[trimmed];
+  }
+  // Free-text "Other" answers (and anything unmapped) default to Beginner
+  // so auto-provision never lands an invalid experienceLevel enum value.
+  if (trimmed) return 'Beginner';
+  return '';
+}
+
+export function translateMaxKittens(applicationMaxKittens) {
+  const parsed = Number.parseInt(applicationMaxKittens, 10);
+  if (!Number.isInteger(parsed) || parsed < 0) return 0;
+  return Math.min(parsed, 50);
 }
 
 // Best-effort, intentionally partial per the approved plan: most of the

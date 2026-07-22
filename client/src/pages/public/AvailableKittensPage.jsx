@@ -5,7 +5,12 @@ import {
   CONTENT_CATEGORY_SUCCESS_STORY,
   articleExcerpt,
 } from '../../constants/educationCategories';
-import { ADOPT_CAT_FILTERS, ADOPT_SEX_FILTERS, matchesAllAdoptFilters } from '../../utils/kittenFilters';
+import {
+  ADOPT_CAT_FILTERS,
+  ADOPT_COLOR_CHIP_OPTIONS,
+  ADOPT_SEX_FILTERS,
+  matchesAllAdoptFilters,
+} from '../../utils/kittenFilters';
 import { fetchPublicContent, fetchPublicKittens } from '../../services/publicApi';
 
 function AvailableKittensPage() {
@@ -16,7 +21,7 @@ function AvailableKittensPage() {
   const [storiesLoading, setStoriesLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState('all');
   const [sexFilter, setSexFilter] = useState('all');
-  const [colorFilter, setColorFilter] = useState('');
+  const [colorFilter, setColorFilter] = useState('all');
 
   // Kept separate from the success-stories fetch below: a real failure here
   // (e.g. a timed-out request) needs to surface as a visible error with a
@@ -123,16 +128,23 @@ function AvailableKittensPage() {
               ))}
             </select>
           </label>
-          <label className="flex items-center gap-2 text-sm font-medium text-slate-600">
-            Color
-            <input
-              type="text"
-              value={colorFilter}
-              onChange={(e) => setColorFilter(e.target.value)}
-              placeholder="e.g. orange, tabby"
-              className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 placeholder:text-slate-400 focus:border-brand focus:ring-brand"
-            />
-          </label>
+        </div>
+
+        <div className="mb-8 flex flex-wrap gap-2">
+          {ADOPT_COLOR_CHIP_OPTIONS.map((filter) => (
+            <button
+              key={filter.id}
+              type="button"
+              onClick={() => setColorFilter(filter.id === 'all' ? 'all' : filter.id)}
+              className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-colors ${
+                (colorFilter === 'all' && filter.id === 'all') || colorFilter === filter.id
+                  ? 'bg-brand text-white shadow-sm'
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+              }`}
+            >
+              {filter.label}
+            </button>
+          ))}
         </div>
 
         {loading ? (
@@ -173,8 +185,10 @@ function AvailableKittensPage() {
             <p className="mt-8 text-slate-500">Loading success stories...</p>
           ) : successStories.length === 0 ? (
             <div className="mt-8 rounded-xl border border-slate-200 bg-white p-12 text-center">
-              <p className="text-lg font-medium text-slate-700">No success stories yet</p>
-              <p className="mt-2 text-sm text-slate-500">Check back soon for adoption updates from our community.</p>
+              <p className="text-lg font-medium text-slate-700">No success stories published yet</p>
+              <p className="mt-2 text-sm text-slate-500">
+                Staff can add them in Admin → Content Manager using the Success Story category.
+              </p>
             </div>
           ) : (
             <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">

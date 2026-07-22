@@ -209,16 +209,18 @@ app.use('/uploads/applications', (req, res) => {
   res.status(401).json({ error: 'Authentication required' });
 });
 
-// Anonymous /uploads is limited to kitten *image* files only (public cards / admin
-// thumbnails). PDFs and other docs require authenticated document stream routes.
+// Anonymous /uploads is limited to kitten and event *image* files only
+// (public cards / admin thumbnails / event banners). PDFs and other docs
+// require authenticated document stream routes.
 const PUBLIC_UPLOAD_IMAGE_EXT = /\.(jpe?g|png|webp|gif)$/i;
 app.use('/uploads', (req, res, next) => {
   if (req.method !== 'GET' && req.method !== 'HEAD') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
   const relativePath = decodeURIComponent(req.path || '');
-  const isKittenImage = relativePath.startsWith('/kittens/') && PUBLIC_UPLOAD_IMAGE_EXT.test(relativePath);
-  if (!isKittenImage) {
+  const isPublicImagePath = (relativePath.startsWith('/kittens/') || relativePath.startsWith('/events/'))
+    && PUBLIC_UPLOAD_IMAGE_EXT.test(relativePath);
+  if (!isPublicImagePath) {
     return res.status(401).json({ error: 'Authentication required' });
   }
   return next();

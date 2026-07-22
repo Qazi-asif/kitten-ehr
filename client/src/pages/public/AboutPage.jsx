@@ -4,16 +4,19 @@ const TEAM = [
   {
     name: 'Lauren',
     title: 'Chief Cat Herder (Director of Strategy)',
+    photo: '/images/team-lauren.jpg',
     bio: 'Vision, business direction, technology, and execution. Lauren is a licensed psychologist by day and a Canadian by origin who fell into cat rescue by accident in 2025 and hasn\'t looked back. She cares for a colony in Corona, jumps in on trapping missions as needed, fosters full time, and shares her home with a headcount of personal cats that is best described as \u201cever-growing.\u201d She\'s also the name on the state and IRS paperwork, which is a filing technicality, not a hierarchy.',
   },
   {
     name: 'Danielle',
     title: 'Chief of Purrs & Partnerships (Director of Development)',
+    photo: '/images/team-danielle.jpg',
     bio: 'Community partnerships, grants, fundraising, and donor relationships, plus the corporate record-keeping and people side of a growing organization. Danielle is an HR specialist and former federal employee who has spent years in animal rescue. She fosters too, and raised two kids alongside a house full of fur children.',
   },
   {
     name: 'Maggie',
     title: 'Chief of Rescue Ops (Director of Operations)',
+    photo: '/images/team-maggie.jpg',
     bio: 'The rescue engine: intake, foster development, and medical protocols, keeping cats moving safely from pull to placement. Maggie coordinates a shelter euthanasia list, connecting rescues and fosters and networking cats out of danger, and brings nearly a decade of critical-care experience as a medical and neonate foster. She and her husband Craig keep an endless revolving door of cats and kittens.',
   },
 ];
@@ -78,7 +81,7 @@ function AboutPage() {
                 to="/whyfoster"
                 className="rounded-xl border-2 border-brand/20 bg-white px-8 py-3.5 text-base font-bold text-brand transition-colors hover:border-brand"
               >
-                Get Involved
+                Become a Foster
               </Link>
             </div>
           </div>
@@ -88,11 +91,30 @@ function AboutPage() {
           <h2 className="text-3xl font-extrabold text-brand">Meet the Team</h2>
           <div className="mt-8 space-y-8">
             {TEAM.map((member) => (
-              <div key={member.name} className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
-                <h3 className="text-xl font-bold text-slate-900">
-                  {member.name} · {member.title}
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-slate-600">{member.bio}</p>
+              <div key={member.name} className="flex flex-col gap-5 rounded-2xl border border-slate-100 bg-white p-6 shadow-sm sm:flex-row sm:items-start">
+                <div className="mx-auto h-36 w-36 shrink-0 overflow-hidden rounded-2xl bg-brand-light/40 sm:mx-0">
+                  <img
+                    src={member.photo}
+                    alt={member.name}
+                    className="h-full w-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                      e.currentTarget.parentElement.querySelector('[data-fallback]')?.classList.remove('hidden');
+                    }}
+                  />
+                  <div
+                    data-fallback
+                    className="hidden flex h-full w-full items-center justify-center text-3xl font-bold text-brand"
+                  >
+                    {member.name.slice(0, 1)}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-slate-900">
+                    {member.name} · {member.title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-relaxed text-slate-600">{member.bio}</p>
+                </div>
               </div>
             ))}
           </div>

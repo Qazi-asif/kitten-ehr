@@ -78,6 +78,81 @@ export async function getMyKittenDocuments(req, res, next) {
   }
 }
 
+const OWN_PROFILE_SELECT = {
+  id: true,
+  name: true,
+  email: true,
+  phone: true,
+  address: true,
+  emergencyContact: true,
+  experienceLevel: true,
+  capabilityFlags: true,
+  maxKittens: true,
+  photoUrl: true,
+  isActive: true,
+  createdAt: true,
+};
+
+// PATCH /me is intentionally restrictive: name/email/maxKittens/
+// capabilityFlags/experienceLevel/isActive are staff-managed fields (set via
+// the admin Fosters screen) and are read-only through the portal. Anything
+// not in this list is silently ignored rather than erroring, so extra keys
+// in the request body never leak through.
+const EDITABLE_PROFILE_FIELDS = ['phone', 'address', 'emergencyContact', 'photoUrl'];
+
+export async function getMyProfile(req, res, next) {
+  try {
+    const foster = await prisma.foster.findUnique({
+      where: { id: req.user.fosterId },
+      select: OWN_PROFILE_SELECT,
+    });
+
+    if (!foster) return res.status(404).json({ error: 'Foster record not found' });
+
+    res.json(foster);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function updateMyProfile(req, res, next) {
+  try {
+    const data = {};
+
+    for (const field of EDITABLE_PROFILE_FIELDS) {
+      if (req.body[field] === undefined) continue;
+      const value = req.body[field];
+      if (field === 'photoUrl') {
+        data.photoUrl = typeof value === 'string' && value ? value : null;
+        continue;
+      }
+      if (typeof value !== 'string') {
+        return res.status(400).json({ error: `${field} must be a string` });
+      }
+      data[field] = value.trim();
+    }
+
+    if (data.phone !== undefined && !data.phone) {
+      return res.status(400).json({ error: 'Phone is required' });
+    }
+    if (data.address !== undefined && !data.address) {
+      return res.status(400).json({ error: 'Address is required' });
+    }
+
+    // Writes straight to the Foster table (not a portal-only shadow copy) so
+    // staff see the update immediately on the admin Foster detail page.
+    const foster = await prisma.foster.update({
+      where: { id: req.user.fosterId },
+      data,
+      select: OWN_PROFILE_SELECT,
+    });
+
+    res.json(foster);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export async function uploadMyKittenDocument(req, res, next) {
   try {
     const kittenId = Number.parseInt(req.params.kittenId, 10);

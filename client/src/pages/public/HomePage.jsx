@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Heart, Home, Users, Cat } from 'lucide-react';
+import PublicLogo from '../../components/PublicLogo';
 import { fetchPublicKittens } from '../../services/publicApi';
 import { getKittenImageUrl } from '../../utils/kittenImages';
 
@@ -70,23 +71,16 @@ function HomePage() {
         <div className="relative z-10 mx-auto w-full max-w-7xl px-6 lg:px-8">
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
             <div className="relative z-10 lg:pr-8">
-              <div className="mb-8">
-                <h1 className="font-serif-brand text-[56px] font-normal lowercase leading-none tracking-tight text-slate-800">
-                  pawsitive
-                </h1>
-                <div className="my-2.5 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.25em] text-brand">
-                  <span className="h-[1.5px] w-6 bg-brand" />
-                  TRANSFORMATIONS
-                  <span className="h-[1.5px] w-6 bg-brand" />
-                </div>
+              <div className="mb-6">
+                <PublicLogo className="mb-4" orgName="Pawsitive Transformations" />
                 <p className="text-sm font-semibold uppercase tracking-[0.05em] text-slate-600">
                   Cat Rescue & Human Wellness
                 </p>
               </div>
 
-              <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+              <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
                 Every rescue becomes a lifeline.
-              </h2>
+              </h1>
               <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg">
                 We rescue at-risk cats and kittens across Southern California, from euthanasia lists, from the streets, and from communities that have nowhere else to turn, then get them healthy in foster homes and match them with people ready to love them.
               </p>

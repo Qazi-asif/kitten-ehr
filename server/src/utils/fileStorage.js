@@ -76,6 +76,16 @@ export async function saveApplicationFile(applicationId, buffer, originalName, m
   return `/uploads/applications/${applicationId}/${safeName}`;
 }
 
+export async function saveEventFile(eventId, buffer, originalName, mimeType) {
+  const ext = extensionForFile(originalName, mimeType);
+  const safeName = `${randomUUID()}${ext}`;
+  const dir = path.join(UPLOAD_ROOT, 'events', String(eventId));
+  await fs.mkdir(dir, { recursive: true });
+  const absolutePath = path.join(dir, safeName);
+  await fs.writeFile(absolutePath, buffer);
+  return `/uploads/events/${eventId}/${safeName}`;
+}
+
 async function persistScopedFile(scope, scopeId, file) {
   const ext = extensionForFile(file.originalname, file.mimetype);
   const key = `${scope}/${scopeId}/${randomUUID()}${ext}`;
@@ -87,6 +97,9 @@ async function persistScopedFile(scope, scopeId, file) {
   if (shouldUseDiskStorage()) {
     if (scope === 'kittens') {
       return saveKittenFile(scopeId, file.buffer, file.originalname, file.mimetype);
+    }
+    if (scope === 'events') {
+      return saveEventFile(scopeId, file.buffer, file.originalname, file.mimetype);
     }
     return saveApplicationFile(scopeId, file.buffer, file.originalname, file.mimetype);
   }
@@ -129,4 +142,8 @@ export async function persistKittenFile(kittenId, file) {
 
 export async function persistApplicationFile(applicationId, file) {
   return persistScopedFile('applications', applicationId, file);
+}
+
+export async function persistEventFile(eventId, file) {
+  return persistScopedFile('events', eventId, file);
 }

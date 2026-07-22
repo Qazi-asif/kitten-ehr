@@ -8,33 +8,39 @@ import {
   normalizeEducationCategory,
 } from '../../constants/educationCategories';
 
+const DEFAULT_ICON = (
+  <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="h-10 w-10 text-brand">
+    <circle cx="32" cy="32" r="22" />
+    <path d="M24 34c2 4 6 6 8 6s6-2 8-6" />
+    <circle cx="24" cy="26" r="2" fill="currentColor" stroke="none" />
+    <circle cx="40" cy="26" r="2" fill="currentColor" stroke="none" />
+  </svg>
+);
+
 const CATEGORY_ICONS = {
-  'Kitten Care 101': (
-    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="h-10 w-10 text-brand">
-      <path d="M32 8 C28 8 24 11 24 16 L24 24 C24 24 20 26 20 32 L20 50 C20 54 24 56 28 56 L36 56 C40 56 44 54 44 50 L44 32 C44 26 40 24 40 24 L40 16 C40 11 36 8 32 8Z" />
-      <circle cx="32" cy="14" r="3" fill="currentColor" stroke="none" />
-      <path d="M28 36 h8 M28 44 h8" />
-    </svg>
-  ),
-  'Colony & Feral': (
-    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="h-10 w-10 text-brand">
-      <path d="M12 48 L12 28 L32 14 L52 28 L52 48 Z" />
-      <rect x="24" y="34" width="16" height="14" rx="2" />
-      <path d="M32 34 v-8" />
-      <circle cx="32" cy="24" r="4" fill="currentColor" stroke="none" />
-    </svg>
-  ),
-  'Foster Education': (
+  'General Education': DEFAULT_ICON,
+  'Becoming a Foster': (
     <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="h-10 w-10 text-brand">
       <rect x="8" y="20" width="48" height="30" rx="3" />
       <path d="M16 20 L16 14 L48 14 L48 20" />
       <line x1="20" y1="30" x2="44" y2="30" />
       <line x1="20" y1="38" x2="44" y2="38" />
       <line x1="20" y1="46" x2="36" y2="46" />
-      <path d="M8 26 L56 26" />
     </svg>
   ),
-  'Toxins/Health': (
+  'Kitten Care': (
+    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="h-10 w-10 text-brand">
+      <path d="M32 8 C28 8 24 11 24 16 L24 24 C24 24 20 26 20 32 L20 50 C20 54 24 56 28 56 L36 56 C40 56 44 54 44 50 L44 32 C44 26 40 24 40 24 L40 16 C40 11 36 8 32 8Z" />
+      <circle cx="32" cy="14" r="3" fill="currentColor" stroke="none" />
+    </svg>
+  ),
+  'Colony & Feral Care': (
+    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="h-10 w-10 text-brand">
+      <path d="M12 48 L12 28 L32 14 L52 28 L52 48 Z" />
+      <rect x="24" y="34" width="16" height="14" rx="2" />
+    </svg>
+  ),
+  'Health & Emergency Care': (
     <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="h-10 w-10 text-brand">
       <path d="M32 8 L12 20 L12 44 L32 56 L52 44 L52 20 Z" />
       <path d="M32 22 v12 M32 38 v4" strokeWidth="3" />
@@ -63,6 +69,8 @@ function EducationHubPage() {
       const categoryName = normalizeEducationCategory(article.category);
       if (grouped[categoryName]) {
         grouped[categoryName].push(article);
+      } else if (grouped['General Education']) {
+        grouped['General Education'].push(article);
       }
     });
 
@@ -70,8 +78,8 @@ function EducationHubPage() {
   }, [articles]);
 
   return (
-    <div className="overflow-hidden bg-white">
-      <div className="mx-auto flex max-w-7xl items-start">
+    <div className="relative overflow-hidden bg-white">
+      <div className="mx-auto flex max-w-7xl items-start lg:pr-[min(40vw,430px)]">
         <div className="min-w-0 flex-1">
           <div className="px-6 pt-10 pb-6 lg:px-8">
             <h1 className="flex items-center gap-3 text-6xl font-extrabold tracking-tight text-brand">
@@ -105,7 +113,7 @@ function EducationHubPage() {
                 return (
                   <section key={category.name}>
                     <div className="flex items-start gap-4 border-b border-brand/15 pb-4">
-                      <div className="shrink-0">{CATEGORY_ICONS[category.name]}</div>
+                      <div className="shrink-0">{CATEGORY_ICONS[category.name] || DEFAULT_ICON}</div>
                       <div>
                         <h2 className="text-2xl font-extrabold text-brand">{category.name}</h2>
                       </div>
@@ -144,19 +152,19 @@ function EducationHubPage() {
             )}
           </div>
         </div>
+      </div>
 
-        <div className="relative hidden w-[380px] shrink-0 self-stretch lg:block xl:w-[430px]">
-          <img
-            src="/images/education-right.png"
-            alt="Education background"
-            className="absolute inset-0 h-full w-full object-cover object-left-top"
-          />
-          <img
-            src="/images/education-kitten.png"
-            alt="Education kitten"
-            className="pointer-events-none absolute bottom-0 left-0 h-auto w-full object-contain object-bottom"
-          />
-        </div>
+      <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[min(40vw,430px)] lg:block">
+        <img
+          src="/images/education-right.png"
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover object-left-top"
+        />
+        <img
+          src="/images/education-kitten.png"
+          alt="Education kitten"
+          className="absolute bottom-0 right-0 h-auto w-full object-contain object-bottom"
+        />
       </div>
     </div>
   );

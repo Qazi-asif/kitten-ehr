@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PublicEventsCalendar, { toDateKey } from '../../components/PublicEventsCalendar';
 import { fetchPublicEvents } from '../../services/publicApi';
+import { getFileUrl } from '../../services/api';
 
 function formatEventDate(value) {
   return new Date(value).toLocaleString(undefined, {
@@ -98,6 +99,13 @@ function EventsPage() {
                 <ul className="mt-4 space-y-4">
                   {selectedDayEvents.map((event) => (
                     <li key={event.id} className="rounded-xl border border-slate-100 bg-slate-50 p-4">
+                      {event.imageUrl && (
+                        <img
+                          src={getFileUrl(event.imageUrl)}
+                          alt=""
+                          className="mb-3 h-32 w-full rounded-lg object-cover"
+                        />
+                      )}
                       <p className="text-xs font-semibold uppercase tracking-wide text-brand">
                         {formatEventDate(event.date)}
                       </p>

@@ -12,6 +12,7 @@ const ADOPTION_EXPERIENCE_OPTIONS = [
   'Some, I\'ve had cats of my own before',
   'Experienced, I\'ve had multiple cats across my life',
   'Advanced, I\'ve had medical cases and/or raised kittens from bottle babies',
+  'Other',
 ];
 const FOSTER_EXPERIENCE_OPTIONS = [
   '',
@@ -19,6 +20,7 @@ const FOSTER_EXPERIENCE_OPTIONS = [
   'Some (I\'ve had cats of my own)',
   'Experienced (I\'ve fostered before)',
   'Advanced (comfortable with bottle babies / medical cases)',
+  'Other',
 ];
 const FOSTER_AVAILABILITY_OPTIONS = [
   '',
@@ -96,9 +98,11 @@ function ApplicationForm({
     currentPets: [],
     experience: '',
     experienceLevel: '',
+    experienceOther: '',
     homeType: '',
     availability: '',
     capacity: [],
+    maxKittens: '',
     isolationRoom: '',
     vehicleAccess: '',
     unexpectedStopPlan: '',
@@ -205,12 +209,17 @@ function ApplicationForm({
       };
 
       if (applicationType === 'Adoption') {
-        payload.experience = form.experience;
+        payload.experience = form.experience === 'Other'
+          ? (form.experienceOther.trim() || 'Other')
+          : form.experience;
       } else {
-        payload.experienceLevel = form.experienceLevel;
+        payload.experienceLevel = form.experienceLevel === 'Other'
+          ? (form.experienceOther.trim() || 'Other')
+          : form.experienceLevel;
         payload.homeType = form.homeType;
         payload.availability = form.availability;
         payload.capacity = form.capacity;
+        payload.maxKittens = form.maxKittens ? Number.parseInt(form.maxKittens, 10) : 0;
         payload.isolationRoom = form.isolationRoom;
         payload.vehicleAccess = form.vehicleAccess;
         payload.unexpectedStopPlan = form.unexpectedStopPlan;
@@ -342,21 +351,36 @@ function ApplicationForm({
           </label>
           
           {applicationType === 'Adoption' ? (
-            <label className="block sm:col-span-2">
-              <span className="mb-2 block text-sm font-semibold text-slate-800">Experience Level *</span>
-              <select
-                name="experience"
-                value={form.experience}
-                onChange={handleChange}
-                required
-                className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm focus:border-brand focus:ring-brand"
-              >
-                <option value="" disabled>Select your experience level</option>
-                {ADOPTION_EXPERIENCE_OPTIONS.filter(Boolean).map((option) => (
-                  <option key={option} value={option}>{option}</option>
-                ))}
-              </select>
-            </label>
+            <>
+              <label className="block sm:col-span-2">
+                <span className="mb-2 block text-sm font-semibold text-slate-800">Experience Level *</span>
+                <select
+                  name="experience"
+                  value={form.experience}
+                  onChange={handleChange}
+                  required
+                  className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm focus:border-brand focus:ring-brand"
+                >
+                  <option value="" disabled>Select your experience level</option>
+                  {ADOPTION_EXPERIENCE_OPTIONS.filter(Boolean).map((option) => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                </select>
+              </label>
+              {form.experience === 'Other' && (
+                <label className="block sm:col-span-2">
+                  <span className="mb-2 block text-sm font-semibold text-slate-800">Describe your experience *</span>
+                  <input
+                    name="experienceOther"
+                    value={form.experienceOther}
+                    onChange={handleChange}
+                    required
+                    placeholder="Tell us about your experience with cats"
+                    className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm focus:border-brand focus:ring-brand"
+                  />
+                </label>
+              )}
+            </>
           ) : (
             <>
               <label className="block">
@@ -374,6 +398,19 @@ function ApplicationForm({
                   ))}
                 </select>
               </label>
+              {form.experienceLevel === 'Other' && (
+                <label className="block sm:col-span-2">
+                  <span className="mb-2 block text-sm font-semibold text-slate-800">Describe your experience *</span>
+                  <input
+                    name="experienceOther"
+                    value={form.experienceOther}
+                    onChange={handleChange}
+                    required
+                    placeholder="Tell us about your fostering or cat experience"
+                    className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm focus:border-brand focus:ring-brand"
+                  />
+                </label>
+              )}
               <label className="block">
                 <span className="mb-2 block text-sm font-semibold text-slate-800">Home Type *</span>
                 <input name="homeType" value={form.homeType} onChange={handleChange} required placeholder="e.g., Apartment, House with yard" className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm focus:border-brand focus:ring-brand" />
@@ -412,6 +449,20 @@ function ApplicationForm({
                   ))}
                 </div>
               </fieldset>
+              <label className="block sm:col-span-2">
+                <span className="mb-2 block text-sm font-semibold text-slate-800">How many cats/kittens can you foster at once? *</span>
+                <input
+                  type="number"
+                  name="maxKittens"
+                  min="1"
+                  max="20"
+                  value={form.maxKittens}
+                  onChange={handleChange}
+                  required
+                  placeholder="e.g. 2"
+                  className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm focus:border-brand focus:ring-brand"
+                />
+              </label>
               <label className="block sm:col-span-2">
                 <span className="mb-2 block text-sm font-semibold text-slate-800">
                   Do you have a separate room where a new foster cat can be isolated from your other animals? *

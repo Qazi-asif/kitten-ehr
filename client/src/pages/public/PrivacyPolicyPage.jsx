@@ -49,10 +49,10 @@ function PrivacyPolicyPage() {
             <p className="mt-3 leading-relaxed">
               Questions about this policy or our use of technology may be directed to{' '}
               <a
-                href="mailto:hello@pawsitivetransformations.org"
+                href="mailto:info@pawsitivetransformations.org"
                 className="font-semibold text-brand hover:underline"
               >
-                hello@pawsitivetransformations.org
+                info@pawsitivetransformations.org
               </a>
               .
             </p>

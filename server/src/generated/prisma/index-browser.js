@@ -390,6 +390,7 @@ exports.Prisma.EventScalarFieldEnum = {
   endDate: 'endDate',
   location: 'location',
   description: 'description',
+  imageUrl: 'imageUrl',
   isPublic: 'isPublic',
   status: 'status',
   internalNotes: 'internalNotes',
@@ -477,6 +478,10 @@ exports.Prisma.ProtocolDrugScalarFieldEnum = {
   startDayOffset: 'startDayOffset',
   endDayOffset: 'endDayOffset',
   frequencyPerDay: 'frequencyPerDay',
+  cadence: 'cadence',
+  intervalDays: 'intervalDays',
+  recordType: 'recordType',
+  healthWriteMode: 'healthWriteMode',
   instructions: 'instructions',
   sortOrder: 'sortOrder'
 };
@@ -499,7 +504,17 @@ exports.Prisma.ProtocolDoseScalarFieldEnum = {
   status: 'status',
   administeredAt: 'administeredAt',
   administeredById: 'administeredById',
+  medicationId: 'medicationId',
+  vaccineId: 'vaccineId',
   notes: 'notes'
+};
+
+exports.Prisma.ActiveProtocolDrugLinkScalarFieldEnum = {
+  id: 'id',
+  activeProtocolId: 'activeProtocolId',
+  protocolDrugId: 'protocolDrugId',
+  medicationId: 'medicationId',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.SettingsScalarFieldEnum = {
@@ -602,6 +617,8 @@ exports.Prisma.SocialPostScalarFieldEnum = {
   platforms: 'platforms',
   scheduledFor: 'scheduledFor',
   status: 'status',
+  postedAt: 'postedAt',
+  deliveryLog: 'deliveryLog',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -643,6 +660,24 @@ exports.FosterOnboardingStatus = exports.$Enums.FosterOnboardingStatus = {
 exports.PasswordTokenPurpose = exports.$Enums.PasswordTokenPurpose = {
   SETUP: 'SETUP',
   RESET: 'RESET'
+};
+
+exports.ProtocolCadence = exports.$Enums.ProtocolCadence = {
+  DAILY: 'DAILY',
+  EVERY_N_DAYS: 'EVERY_N_DAYS',
+  WEEKLY: 'WEEKLY',
+  MONTHLY: 'MONTHLY'
+};
+
+exports.ProtocolRecordType = exports.$Enums.ProtocolRecordType = {
+  NONE: 'NONE',
+  MEDICATION: 'MEDICATION',
+  VACCINE: 'VACCINE'
+};
+
+exports.ProtocolHealthWriteMode = exports.$Enums.ProtocolHealthWriteMode = {
+  PER_DOSE: 'PER_DOSE',
+  COURSE: 'COURSE'
 };
 
 exports.ActiveProtocolStatus = exports.$Enums.ActiveProtocolStatus = {
@@ -708,6 +743,7 @@ exports.Prisma.ModelName = {
   ProtocolDrug: 'ProtocolDrug',
   ActiveProtocol: 'ActiveProtocol',
   ProtocolDose: 'ProtocolDose',
+  ActiveProtocolDrugLink: 'ActiveProtocolDrugLink',
   Settings: 'Settings',
   EmailTemplate: 'EmailTemplate',
   EmailLog: 'EmailLog',

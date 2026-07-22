@@ -5,6 +5,7 @@ import {
   createMarketingPost,
   deleteMarketingPost,
   fetchSocialPosts,
+  publishSocialPost,
   updateMarketingPost,
 } from '../../services/marketingApi';
 
@@ -65,6 +66,7 @@ function MarketingPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
+  const [publishingId, setPublishingId] = useState(null);
   const [error, setError] = useState('');
 
   const load = useCallback(async () => {
@@ -174,6 +176,22 @@ function MarketingPage() {
       setError(err.message || 'Failed to delete post.');
     } finally {
       setDeletingId(null);
+    }
+  }
+
+  async function handlePublish(id) {
+    if (!canManage) return;
+    if (!window.confirm('Publish this post now to Facebook/Instagram?')) return;
+
+    setPublishingId(id);
+    setError('');
+    try {
+      await publishSocialPost(id);
+      await load();
+    } catch (err) {
+      setError(err.message || 'Failed to publish post.');
+    } finally {
+      setPublishingId(null);
     }
   }
 
@@ -357,6 +375,16 @@ function MarketingPage() {
                     </span>
                   </td>
                   <td className="whitespace-nowrap px-4 py-3 text-sm">
+                    {post.status !== 'POSTED' && (
+                      <button
+                        type="button"
+                        onClick={() => handlePublish(post.id)}
+                        disabled={!canManage || saving || deletingId === post.id || publishingId === post.id}
+                        className="mr-3 font-medium text-green-700 hover:underline disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        {publishingId === post.id ? 'Publishing...' : 'Publish now'}
+                      </button>
+                    )}
                     <button
                       type="button"
                       onClick={() => startEdit(post)}

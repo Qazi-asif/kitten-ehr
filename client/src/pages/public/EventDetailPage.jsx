@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import KittenPhoto from '../../components/KittenPhoto';
 import { fetchPublicEventBySlug } from '../../services/publicApi';
+import { getFileUrl } from '../../services/api';
 
 function formatEventDate(value) {
   return new Date(value).toLocaleString(undefined, {
@@ -39,6 +40,14 @@ function EventDetailPage() {
       <Link to="/events" className="text-sm font-semibold text-brand hover:underline">
         ← Back to Events
       </Link>
+
+      {event.imageUrl && (
+        <img
+          src={getFileUrl(event.imageUrl)}
+          alt=""
+          className="mt-6 h-64 w-full rounded-2xl object-cover"
+        />
+      )}
 
       <p className="mt-6 text-sm font-semibold uppercase tracking-wide text-brand">
         {formatEventDate(event.date)}

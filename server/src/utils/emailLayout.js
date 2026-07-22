@@ -15,6 +15,9 @@ export function buildDefaultEmailLayout() {
         <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(15,23,42,0.08);">
           <tr>
             <td style="background:linear-gradient(135deg,#00CDCD 0%,#00A3A3 100%);padding:28px 32px;text-align:center;">
+              {{#if orgLogoUrl}}
+              <img src="{{orgLogoUrl}}" alt="{{orgName}}" width="120" style="display:block;margin:0 auto 12px;max-width:120px;height:auto;" />
+              {{/if}}
               <p style="margin:0;font-size:11px;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:#E0F9F9;">Pawsitive Rescue</p>
               <h1 style="margin:8px 0 0;font-size:24px;line-height:1.3;color:#ffffff;">{{orgName}}</h1>
             </td>
@@ -22,6 +25,10 @@ export function buildDefaultEmailLayout() {
           <tr>
             <td style="padding:32px;font-size:15px;line-height:1.7;color:#334155;">
               {{content}}
+              <p style="margin:28px 0 0;font-size:15px;line-height:1.7;color:#334155;">
+                Sincerely,<br />
+                The Pawsitive Transformations Team
+              </p>
             </td>
           </tr>
           <tr>
@@ -40,7 +47,18 @@ export function buildDefaultEmailLayout() {
 
 export function wrapEmailContent(contentHtml, variables, layoutTemplateHtml) {
   const layout = layoutTemplateHtml || buildDefaultEmailLayout();
-  const withContent = layout.replace(/\{\{content\}\}/g, contentHtml || '');
+  const logoUrl = variables?.orgLogoUrl || '';
+  // Support a simple optional logo block without a full templating engine.
+  let withLogo = layout;
+  if (logoUrl) {
+    withLogo = withLogo
+      .replace(/\{\{#if orgLogoUrl\}\}([\s\S]*?)\{\{\/if\}\}/g, '$1')
+      .replace(/\{\{orgLogoUrl\}\}/g, String(logoUrl));
+  } else {
+    withLogo = withLogo.replace(/\{\{#if orgLogoUrl\}\}[\s\S]*?\{\{\/if\}\}/g, '');
+  }
+
+  const withContent = withLogo.replace(/\{\{content\}\}/g, contentHtml || '');
   return withContent.replace(/\{\{(\w+)\}\}/g, (_, key) => {
     if (key === 'content') return contentHtml || '';
     const value = variables[key];

@@ -1,7 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 import PublishingMatrix, { PublishTargetBadges } from '../../components/PublishingMatrix';
 import KittenSearchMultiSelect from '../../components/admin/KittenSearchMultiSelect';
-import { createEvent, deleteEvent, fetchEvents, fetchKittens, updateEvent } from '../../services/api';
+import {
+  createEvent,
+  deleteEvent,
+  fetchEvents,
+  fetchKittens,
+  getFileUrl,
+  updateEvent,
+  uploadEventImage,
+} from '../../services/api';
 import { resolvePublishTargets } from '../../utils/publishTargets';
 
 const initialForm = {
@@ -34,6 +42,11 @@ function CalendarPage() {
   const [form, setForm] = useState(initialForm);
   const [editingId, setEditingId] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState('');
+  const [currentImageUrl, setCurrentImageUrl] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -55,16 +68,40 @@ function CalendarPage() {
     setForm((prev) => ({ ...prev, [name]: value }));
   }
 
+  function handleImageChange(event) {
+    const file = event.target.files?.[0] ?? null;
+    setImageFile(file);
+    setImagePreviewUrl(file ? URL.createObjectURL(file) : '');
+  }
+
+  function resetImageState() {
+    setImageFile(null);
+    setImagePreviewUrl('');
+    setCurrentImageUrl('');
+  }
+
   async function handleSubmit(event) {
     event.preventDefault();
-    if (editingId) {
-      await updateEvent(editingId, form);
-    } else {
-      await createEvent(form);
+    setSaving(true);
+    setError('');
+    try {
+      const savedEvent = editingId
+        ? await updateEvent(editingId, form)
+        : await createEvent(form);
+
+      if (imageFile && savedEvent?.id) {
+        await uploadEventImage(savedEvent.id, imageFile);
+      }
+
+      setForm(initialForm);
+      setEditingId(null);
+      resetImageState();
+      await load();
+    } catch (err) {
+      setError(err.message || 'Failed to save event.');
+    } finally {
+      setSaving(false);
     }
-    setForm(initialForm);
-    setEditingId(null);
-    await load();
   }
 
   function startEdit(item) {
@@ -77,6 +114,10 @@ function CalendarPage() {
       publishTargets: resolvePublishTargets(item),
       kittenIds: (item.eventCats || []).map((entry) => entry.kitten?.id || entry.kittenId).filter(Boolean),
     });
+    setImageFile(null);
+    setImagePreviewUrl('');
+    setCurrentImageUrl(item.imageUrl || '');
+    setError('');
   }
 
   async function handleDelete(id) {
@@ -87,6 +128,12 @@ function CalendarPage() {
   return (
     <div>
       <h1 className="mb-6 text-2xl font-bold text-slate-900">Events Calendar</h1>
+
+      {error && (
+        <div className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {error}
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} className="mb-8 rounded-xl border border-slate-100 bg-white p-6 shadow-md">
         <h2 className="mb-4 text-lg font-semibold text-slate-900">
@@ -133,6 +180,22 @@ function CalendarPage() {
               className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
             />
           </label>
+          <label className="block md:col-span-2">
+            <span className="mb-1 block text-sm font-medium text-slate-700">Banner Image</span>
+            {(imagePreviewUrl || currentImageUrl) && (
+              <img
+                src={imagePreviewUrl || getFileUrl(currentImageUrl)}
+                alt="Event banner preview"
+                className="mb-2 h-32 w-full max-w-sm rounded-lg border border-slate-200 object-cover"
+              />
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="block w-full text-sm text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-brand file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-brand-dark"
+            />
+          </label>
         </div>
 
         <div className="mt-5">
@@ -156,9 +219,10 @@ function CalendarPage() {
         <div className="mt-4 flex gap-3">
           <button
             type="submit"
-            className="rounded-lg bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand-dark"
+            disabled={saving}
+            className="rounded-lg bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand-dark disabled:opacity-60"
           >
-            {editingId ? 'Update Event' : 'Add Event'}
+            {saving ? 'Saving...' : editingId ? 'Update Event' : 'Add Event'}
           </button>
           {editingId && (
             <button
@@ -166,8 +230,11 @@ function CalendarPage() {
               onClick={() => {
                 setEditingId(null);
                 setForm(initialForm);
+                resetImageState();
+                setError('');
               }}
-              className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+              disabled={saving}
+              className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-60"
             >
               Cancel
             </button>
@@ -182,6 +249,7 @@ function CalendarPage() {
           <table className="min-w-full divide-y divide-slate-200">
             <thead className="bg-slate-50">
               <tr>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Banner</th>
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Title</th>
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Date</th>
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Location</th>
@@ -193,13 +261,24 @@ function CalendarPage() {
             <tbody className="divide-y divide-slate-200">
               {events.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-sm text-slate-500">
+                  <td colSpan={7} className="px-4 py-8 text-center text-sm text-slate-500">
                     No events scheduled yet.
                   </td>
                 </tr>
               ) : (
                 events.map((item) => (
                   <tr key={item.id} className="hover:bg-slate-50">
+                    <td className="px-4 py-3 text-sm">
+                      {item.imageUrl ? (
+                        <img
+                          src={getFileUrl(item.imageUrl)}
+                          alt=""
+                          className="h-10 w-16 rounded-md border border-slate-200 object-cover"
+                        />
+                      ) : (
+                        <span className="text-slate-400">—</span>
+                      )}
+                    </td>
                     <td className="px-4 py-3 text-sm font-medium text-slate-900">{item.title}</td>
                     <td className="px-4 py-3 text-sm text-slate-600">{formatEventDate(item.date)}</td>
                     <td className="px-4 py-3 text-sm text-slate-600">{item.location || '—'}</td>
