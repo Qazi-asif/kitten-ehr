@@ -16,6 +16,7 @@ export function createOriginValidator() {
   addOrigin(allowed, 'http://localhost:5173');
   addOrigin(allowed, 'http://127.0.0.1:5173');
   addOrigin(allowed, 'https://kitten-ehr.vercel.app');
+  addOrigin(allowed, 'https://mediumslateblue-hornet-819977.hostingersite.com');
 
   if (process.env.VERCEL_URL) {
     addOrigin(allowed, `https://${process.env.VERCEL_URL}`);
