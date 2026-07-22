@@ -4,6 +4,7 @@ import compression from 'compression';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import swaggerUi from 'swagger-ui-express';
@@ -48,6 +49,21 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 5000;
 const isOriginAllowed = createOriginValidator();
+
+// Prefer server/public (Hostinger Node app root) so Git deploy updates the SPA
+// without a separate client build step. Fall back to ../../client/dist for local monorepo.
+function resolveClientDistPath() {
+  const candidates = [
+    path.join(__dirname, '../public'),
+    path.join(__dirname, '../../client/dist'),
+  ];
+  for (const candidate of candidates) {
+    if (fs.existsSync(path.join(candidate, 'index.html'))) {
+      return candidate;
+    }
+  }
+  return candidates[0];
+}
 
 // Hostinger's Node hosting sits behind one reverse proxy hop (Passenger).
 // Without this, req.ip resolves to the proxy's address for every request,
@@ -303,7 +319,8 @@ app.use('/api/transactions', requireAuth, financeRoutes);
 app.use('/api/email-templates', emailTemplateRoutes);
 app.use('/api', requireAuth, aiRoutes);
 
-const clientDistPath = path.join(__dirname, '../../client/dist');
+const clientDistPath = resolveClientDistPath();
+console.log(`[static] Serving SPA from ${clientDistPath}`);
 app.use(express.static(clientDistPath));
 app.use((req, res, next) => {
   if (req.path.startsWith('/api')) { return next(); }

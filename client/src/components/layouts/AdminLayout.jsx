@@ -115,6 +115,28 @@ function AdminLayout() {
 
         <nav className="flex-1 overflow-y-auto px-3 py-4">
           <ul className="space-y-0.5">
+            {canChat && (
+              <li>
+                <button
+                  type="button"
+                  onClick={() => setOpen(!open)}
+                  className={`relative flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-[13px] font-medium transition-colors ${
+                    open
+                      ? 'bg-brand text-white shadow-sm'
+                      : 'text-slate-300 hover:bg-sidebar-hover hover:text-white'
+                  }`}
+                  aria-label="Open staff chat"
+                >
+                  <MessageCircle className="h-[17px] w-[17px] shrink-0" strokeWidth={2} />
+                  <span className="flex-1">Staff Chat</span>
+                  {unreadCount > 0 && (
+                    <span className="inline-flex min-w-[1.25rem] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold leading-5 text-white">
+                      {unreadCount > 99 ? '99+' : unreadCount}
+                    </span>
+                  )}
+                </button>
+              </li>
+            )}
             {visibleNavItems.map(({ label, icon: Icon, path }) => (
               <li key={label}>
                 <Link
@@ -163,32 +185,14 @@ function AdminLayout() {
               <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
               {subtitle && <p className="mt-0.5 text-sm text-slate-500">{subtitle}</p>}
             </div>
-            <div className="flex flex-wrap items-center gap-2">
-              {canChat && (
-                <button
-                  type="button"
-                  onClick={() => setOpen(!open)}
-                  className="relative inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-                  aria-label="Open staff chat"
-                >
-                  <MessageCircle className="h-4 w-4 text-brand" />
-                  Chat
-                  {unreadCount > 0 && (
-                    <span className="absolute -right-1.5 -top-1.5 inline-flex min-w-[1.25rem] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold leading-5 text-white">
-                      {unreadCount > 99 ? '99+' : unreadCount}
-                    </span>
-                  )}
-                </button>
-              )}
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-white px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-50"
-              >
-                <LogOut className="h-4 w-4" />
-                Sign Out
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-white px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-50"
+            >
+              <LogOut className="h-4 w-4" />
+              Sign Out
+            </button>
           </div>
         </header>
 

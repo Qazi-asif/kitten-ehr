@@ -48,8 +48,9 @@ function mergeMessages(existing, incoming) {
 }
 
 export function ChatProvider({ children }) {
-  const { user, isAuthenticated, hasPermission } = useAuth();
-  const canChat = Boolean(isAuthenticated && hasPermission('chat.view'));
+  const { user, isAuthenticated } = useAuth();
+  // Admin layout is staff-only; portal accounts have fosterId and must not open staff chat sockets.
+  const canChat = Boolean(isAuthenticated && user && !user.fosterId);
 
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([]);
