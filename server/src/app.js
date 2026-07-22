@@ -37,6 +37,7 @@ import protocolLibraryRoutes from './routes/protocolLibraryRoutes.js';
 import socialPostRoutes from './routes/socialPostRoutes.js';
 import wishlistRoutes from './routes/wishlistRoutes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
+import staffChatRoutes from './routes/staffChatRoutes.js';
 import portalAuthRoutes from './routes/portalAuthRoutes.js';
 import portalRoutes from './routes/portalRoutes.js';
 import { requireAuth, requirePortalAuth } from './middleware/authMiddleware.js';
@@ -276,6 +277,7 @@ app.get('/api/health', (_req, res) => {
 });
 
 app.use('/api/dashboard', requireAuth, dashboardRoutes);
+app.use('/api/chat', requireAuth, staffChatRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/roles', roleRoutes);
 app.use('/api/kittens', requireAuth, kittenRoutes);

@@ -33,6 +33,7 @@ export const PERMISSIONS = [
   { key: 'settings.manage', label: 'Manage Organization Settings', module: 'Settings' },
   { key: 'emails.view', label: 'View Email Templates', module: 'Emails' },
   { key: 'emails.manage', label: 'Manage Email Templates & Delivery', module: 'Emails' },
+  { key: 'chat.view', label: 'Use Staff Chat', module: 'Staff Chat' },
 ];
 
 export const PERMISSION_KEYS = PERMISSIONS.map((p) => p.key);
@@ -64,6 +65,7 @@ export const DEFAULT_ROLES = [
       'documents.manage',
       'fosters.view',
       'litters.view',
+      'chat.view',
     ],
   },
   {
@@ -90,6 +92,7 @@ export const DEFAULT_ROLES = [
       'events.view',
       'sponsorships.view',
       'sponsorships.manage',
+      'chat.view',
     ],
   },
   {
@@ -103,6 +106,7 @@ export const DEFAULT_ROLES = [
       'medical.manage',
       'documents.view',
       'documents.manage',
+      'chat.view',
     ],
   },
   {

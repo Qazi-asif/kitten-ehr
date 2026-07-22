@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { ChatProvider } from './context/ChatContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import PortalProtectedRoute from './components/PortalProtectedRoute';
 import AdminLayout from './components/layouts/AdminLayout';
@@ -59,6 +60,7 @@ function PageLoader() {
 function App() {
   return (
     <AuthProvider>
+      <ChatProvider>
       <BrowserRouter>
         <Suspense fallback={<PageLoader />}>
           <Routes>
@@ -146,6 +148,7 @@ function App() {
           </Routes>
         </Suspense>
       </BrowserRouter>
+      </ChatProvider>
     </AuthProvider>
   );
 }

@@ -11,12 +11,15 @@ import {
   LogOut,
   Mail,
   Megaphone,
+  MessageCircle,
   Package,
   Settings,
   UserCheck,
   Users,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { useChat } from '../../context/ChatContext';
+import ChatDrawer from '../chat/ChatDrawer';
 
 const navItems = [
   { label: 'Dashboard', icon: LayoutDashboard, path: '/admin', permission: 'dashboard.view' },
@@ -72,6 +75,7 @@ function AdminLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout, hasPermission, hasAnyPermission } = useAuth();
+  const { canChat, open, setOpen, unreadCount } = useChat();
   const { title, subtitle } = getPageMeta(location.pathname, user);
 
   const visibleNavItems = navItems.filter((item) => {
@@ -159,14 +163,32 @@ function AdminLayout() {
               <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
               {subtitle && <p className="mt-0.5 text-sm text-slate-500">{subtitle}</p>}
             </div>
-            <button
-              type="button"
-              onClick={handleLogout}
-              className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-white px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-50"
-            >
-              <LogOut className="h-4 w-4" />
-              Sign Out
-            </button>
+            <div className="flex flex-wrap items-center gap-2">
+              {canChat && (
+                <button
+                  type="button"
+                  onClick={() => setOpen(!open)}
+                  className="relative inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                  aria-label="Open staff chat"
+                >
+                  <MessageCircle className="h-4 w-4 text-brand" />
+                  Chat
+                  {unreadCount > 0 && (
+                    <span className="absolute -right-1.5 -top-1.5 inline-flex min-w-[1.25rem] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold leading-5 text-white">
+                      {unreadCount > 99 ? '99+' : unreadCount}
+                    </span>
+                  )}
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-white px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-50"
+              >
+                <LogOut className="h-4 w-4" />
+                Sign Out
+              </button>
+            </div>
           </div>
         </header>
 
@@ -174,6 +196,8 @@ function AdminLayout() {
           <Outlet />
         </div>
       </main>
+
+      {canChat && <ChatDrawer />}
     </div>
   );
 }

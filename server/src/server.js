@@ -10,6 +10,7 @@ process.on('unhandledRejection', (reason) => {
   console.error('[unhandledRejection]', reason);
 });
 
+import http from 'http';
 import './loadEnv.js';
 
 if (!process.env.DATABASE_URL) {
@@ -24,6 +25,7 @@ if (!process.env.JWT_SECRET?.trim()) {
 
 const { default: app } = await import('./app.js');
 const { syncPermissionsFromDefaults } = await import('./utils/syncPermissions.js');
+const { attachStaffChatWebSocket } = await import('./websocket/staffChat.js');
 
 try {
   const result = await syncPermissionsFromDefaults();
@@ -35,7 +37,9 @@ try {
 }
 
 const PORT = process.env.PORT || 5000;
+const server = http.createServer(app);
+attachStaffChatWebSocket(server);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

@@ -149,6 +149,11 @@ export type RolePermission = $Result.DefaultSelection<Prisma.$RolePermissionPayl
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
+ * Model StaffChatMessage
+ * 
+ */
+export type StaffChatMessage = $Result.DefaultSelection<Prisma.$StaffChatMessagePayload>
+/**
  * Model PasswordResetToken
  * 
  */
@@ -760,6 +765,16 @@ export class PrismaClient<
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.staffChatMessage`: Exposes CRUD operations for the **StaffChatMessage** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more StaffChatMessages
+    * const staffChatMessages = await prisma.staffChatMessage.findMany()
+    * ```
+    */
+  get staffChatMessage(): Prisma.StaffChatMessageDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.passwordResetToken`: Exposes CRUD operations for the **PasswordResetToken** model.
     * Example usage:
     * ```ts
@@ -1346,6 +1361,7 @@ export namespace Prisma {
     Permission: 'Permission',
     RolePermission: 'RolePermission',
     User: 'User',
+    StaffChatMessage: 'StaffChatMessage',
     PasswordResetToken: 'PasswordResetToken',
     Protocol: 'Protocol',
     ProtocolDrug: 'ProtocolDrug',
@@ -1376,7 +1392,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "litter" | "foster" | "kitten" | "update" | "sponsorship" | "placement" | "weightLog" | "vaccine" | "medication" | "vetAppointment" | "document" | "application" | "contractTemplate" | "contract" | "contractHouseholdAcknowledgment" | "fosterOnboarding" | "onboardingChecklist" | "applicationUpload" | "content" | "contentCompletion" | "event" | "eventRSVP" | "eventCats" | "role" | "permission" | "rolePermission" | "user" | "passwordResetToken" | "protocol" | "protocolDrug" | "activeProtocol" | "protocolDose" | "activeProtocolDrugLink" | "settings" | "emailTemplate" | "emailLog" | "transaction" | "wishlist" | "socialPost"
+      modelProps: "litter" | "foster" | "kitten" | "update" | "sponsorship" | "placement" | "weightLog" | "vaccine" | "medication" | "vetAppointment" | "document" | "application" | "contractTemplate" | "contract" | "contractHouseholdAcknowledgment" | "fosterOnboarding" | "onboardingChecklist" | "applicationUpload" | "content" | "contentCompletion" | "event" | "eventRSVP" | "eventCats" | "role" | "permission" | "rolePermission" | "user" | "staffChatMessage" | "passwordResetToken" | "protocol" | "protocolDrug" | "activeProtocol" | "protocolDose" | "activeProtocolDrugLink" | "settings" | "emailTemplate" | "emailLog" | "transaction" | "wishlist" | "socialPost"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3378,6 +3394,80 @@ export namespace Prisma {
           }
         }
       }
+      StaffChatMessage: {
+        payload: Prisma.$StaffChatMessagePayload<ExtArgs>
+        fields: Prisma.StaffChatMessageFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.StaffChatMessageFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatMessagePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.StaffChatMessageFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatMessagePayload>
+          }
+          findFirst: {
+            args: Prisma.StaffChatMessageFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatMessagePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.StaffChatMessageFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatMessagePayload>
+          }
+          findMany: {
+            args: Prisma.StaffChatMessageFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatMessagePayload>[]
+          }
+          create: {
+            args: Prisma.StaffChatMessageCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatMessagePayload>
+          }
+          createMany: {
+            args: Prisma.StaffChatMessageCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.StaffChatMessageCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatMessagePayload>[]
+          }
+          delete: {
+            args: Prisma.StaffChatMessageDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatMessagePayload>
+          }
+          update: {
+            args: Prisma.StaffChatMessageUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatMessagePayload>
+          }
+          deleteMany: {
+            args: Prisma.StaffChatMessageDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.StaffChatMessageUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.StaffChatMessageUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatMessagePayload>[]
+          }
+          upsert: {
+            args: Prisma.StaffChatMessageUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StaffChatMessagePayload>
+          }
+          aggregate: {
+            args: Prisma.StaffChatMessageAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateStaffChatMessage>
+          }
+          groupBy: {
+            args: Prisma.StaffChatMessageGroupByArgs<ExtArgs>
+            result: $Utils.Optional<StaffChatMessageGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.StaffChatMessageCountArgs<ExtArgs>
+            result: $Utils.Optional<StaffChatMessageCountAggregateOutputType> | number
+          }
+        }
+      }
       PasswordResetToken: {
         payload: Prisma.$PasswordResetTokenPayload<ExtArgs>
         fields: Prisma.PasswordResetTokenFieldRefs
@@ -4389,6 +4479,7 @@ export namespace Prisma {
     permission?: PermissionOmit
     rolePermission?: RolePermissionOmit
     user?: UserOmit
+    staffChatMessage?: StaffChatMessageOmit
     passwordResetToken?: PasswordResetTokenOmit
     protocol?: ProtocolOmit
     protocolDrug?: ProtocolDrugOmit
@@ -5039,6 +5130,7 @@ export namespace Prisma {
     activatedProtocols: number
     administeredProtocolDoses: number
     passwordResetTokens: number
+    staffChatMessages: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5048,6 +5140,7 @@ export namespace Prisma {
     activatedProtocols?: boolean | UserCountOutputTypeCountActivatedProtocolsArgs
     administeredProtocolDoses?: boolean | UserCountOutputTypeCountAdministeredProtocolDosesArgs
     passwordResetTokens?: boolean | UserCountOutputTypeCountPasswordResetTokensArgs
+    staffChatMessages?: boolean | UserCountOutputTypeCountStaffChatMessagesArgs
   }
 
   // Custom InputTypes
@@ -5101,6 +5194,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountPasswordResetTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PasswordResetTokenWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountStaffChatMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StaffChatMessageWhereInput
   }
 
 
@@ -36405,6 +36505,7 @@ export namespace Prisma {
     activatedProtocols?: boolean | User$activatedProtocolsArgs<ExtArgs>
     administeredProtocolDoses?: boolean | User$administeredProtocolDosesArgs<ExtArgs>
     passwordResetTokens?: boolean | User$passwordResetTokensArgs<ExtArgs>
+    staffChatMessages?: boolean | User$staffChatMessagesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -36464,6 +36565,7 @@ export namespace Prisma {
     activatedProtocols?: boolean | User$activatedProtocolsArgs<ExtArgs>
     administeredProtocolDoses?: boolean | User$administeredProtocolDosesArgs<ExtArgs>
     passwordResetTokens?: boolean | User$passwordResetTokensArgs<ExtArgs>
+    staffChatMessages?: boolean | User$staffChatMessagesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -36486,6 +36588,7 @@ export namespace Prisma {
       activatedProtocols: Prisma.$ActiveProtocolPayload<ExtArgs>[]
       administeredProtocolDoses: Prisma.$ProtocolDosePayload<ExtArgs>[]
       passwordResetTokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[]
+      staffChatMessages: Prisma.$StaffChatMessagePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -36901,6 +37004,7 @@ export namespace Prisma {
     activatedProtocols<T extends User$activatedProtocolsArgs<ExtArgs> = {}>(args?: Subset<T, User$activatedProtocolsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActiveProtocolPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     administeredProtocolDoses<T extends User$administeredProtocolDosesArgs<ExtArgs> = {}>(args?: Subset<T, User$administeredProtocolDosesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProtocolDosePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     passwordResetTokens<T extends User$passwordResetTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$passwordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    staffChatMessages<T extends User$staffChatMessagesArgs<ExtArgs> = {}>(args?: Subset<T, User$staffChatMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StaffChatMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -37500,6 +37604,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.staffChatMessages
+   */
+  export type User$staffChatMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMessage
+     */
+    select?: StaffChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMessage
+     */
+    omit?: StaffChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMessageInclude<ExtArgs> | null
+    where?: StaffChatMessageWhereInput
+    orderBy?: StaffChatMessageOrderByWithRelationInput | StaffChatMessageOrderByWithRelationInput[]
+    cursor?: StaffChatMessageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: StaffChatMessageScalarFieldEnum | StaffChatMessageScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -37515,6 +37643,1111 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model StaffChatMessage
+   */
+
+  export type AggregateStaffChatMessage = {
+    _count: StaffChatMessageCountAggregateOutputType | null
+    _avg: StaffChatMessageAvgAggregateOutputType | null
+    _sum: StaffChatMessageSumAggregateOutputType | null
+    _min: StaffChatMessageMinAggregateOutputType | null
+    _max: StaffChatMessageMaxAggregateOutputType | null
+  }
+
+  export type StaffChatMessageAvgAggregateOutputType = {
+    senderId: number | null
+  }
+
+  export type StaffChatMessageSumAggregateOutputType = {
+    senderId: number | null
+  }
+
+  export type StaffChatMessageMinAggregateOutputType = {
+    id: string | null
+    content: string | null
+    senderId: number | null
+    channelId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type StaffChatMessageMaxAggregateOutputType = {
+    id: string | null
+    content: string | null
+    senderId: number | null
+    channelId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type StaffChatMessageCountAggregateOutputType = {
+    id: number
+    content: number
+    senderId: number
+    channelId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type StaffChatMessageAvgAggregateInputType = {
+    senderId?: true
+  }
+
+  export type StaffChatMessageSumAggregateInputType = {
+    senderId?: true
+  }
+
+  export type StaffChatMessageMinAggregateInputType = {
+    id?: true
+    content?: true
+    senderId?: true
+    channelId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type StaffChatMessageMaxAggregateInputType = {
+    id?: true
+    content?: true
+    senderId?: true
+    channelId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type StaffChatMessageCountAggregateInputType = {
+    id?: true
+    content?: true
+    senderId?: true
+    channelId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type StaffChatMessageAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which StaffChatMessage to aggregate.
+     */
+    where?: StaffChatMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StaffChatMessages to fetch.
+     */
+    orderBy?: StaffChatMessageOrderByWithRelationInput | StaffChatMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: StaffChatMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StaffChatMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StaffChatMessages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned StaffChatMessages
+    **/
+    _count?: true | StaffChatMessageCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: StaffChatMessageAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: StaffChatMessageSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: StaffChatMessageMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: StaffChatMessageMaxAggregateInputType
+  }
+
+  export type GetStaffChatMessageAggregateType<T extends StaffChatMessageAggregateArgs> = {
+        [P in keyof T & keyof AggregateStaffChatMessage]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateStaffChatMessage[P]>
+      : GetScalarType<T[P], AggregateStaffChatMessage[P]>
+  }
+
+
+
+
+  export type StaffChatMessageGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StaffChatMessageWhereInput
+    orderBy?: StaffChatMessageOrderByWithAggregationInput | StaffChatMessageOrderByWithAggregationInput[]
+    by: StaffChatMessageScalarFieldEnum[] | StaffChatMessageScalarFieldEnum
+    having?: StaffChatMessageScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: StaffChatMessageCountAggregateInputType | true
+    _avg?: StaffChatMessageAvgAggregateInputType
+    _sum?: StaffChatMessageSumAggregateInputType
+    _min?: StaffChatMessageMinAggregateInputType
+    _max?: StaffChatMessageMaxAggregateInputType
+  }
+
+  export type StaffChatMessageGroupByOutputType = {
+    id: string
+    content: string
+    senderId: number
+    channelId: string
+    createdAt: Date
+    updatedAt: Date
+    _count: StaffChatMessageCountAggregateOutputType | null
+    _avg: StaffChatMessageAvgAggregateOutputType | null
+    _sum: StaffChatMessageSumAggregateOutputType | null
+    _min: StaffChatMessageMinAggregateOutputType | null
+    _max: StaffChatMessageMaxAggregateOutputType | null
+  }
+
+  type GetStaffChatMessageGroupByPayload<T extends StaffChatMessageGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<StaffChatMessageGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof StaffChatMessageGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], StaffChatMessageGroupByOutputType[P]>
+            : GetScalarType<T[P], StaffChatMessageGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type StaffChatMessageSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    content?: boolean
+    senderId?: boolean
+    channelId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    sender?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["staffChatMessage"]>
+
+  export type StaffChatMessageSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    content?: boolean
+    senderId?: boolean
+    channelId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    sender?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["staffChatMessage"]>
+
+  export type StaffChatMessageSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    content?: boolean
+    senderId?: boolean
+    channelId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    sender?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["staffChatMessage"]>
+
+  export type StaffChatMessageSelectScalar = {
+    id?: boolean
+    content?: boolean
+    senderId?: boolean
+    channelId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type StaffChatMessageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "content" | "senderId" | "channelId" | "createdAt" | "updatedAt", ExtArgs["result"]["staffChatMessage"]>
+  export type StaffChatMessageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sender?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type StaffChatMessageIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sender?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type StaffChatMessageIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sender?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $StaffChatMessagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "StaffChatMessage"
+    objects: {
+      sender: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      content: string
+      senderId: number
+      channelId: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["staffChatMessage"]>
+    composites: {}
+  }
+
+  type StaffChatMessageGetPayload<S extends boolean | null | undefined | StaffChatMessageDefaultArgs> = $Result.GetResult<Prisma.$StaffChatMessagePayload, S>
+
+  type StaffChatMessageCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<StaffChatMessageFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: StaffChatMessageCountAggregateInputType | true
+    }
+
+  export interface StaffChatMessageDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['StaffChatMessage'], meta: { name: 'StaffChatMessage' } }
+    /**
+     * Find zero or one StaffChatMessage that matches the filter.
+     * @param {StaffChatMessageFindUniqueArgs} args - Arguments to find a StaffChatMessage
+     * @example
+     * // Get one StaffChatMessage
+     * const staffChatMessage = await prisma.staffChatMessage.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends StaffChatMessageFindUniqueArgs>(args: SelectSubset<T, StaffChatMessageFindUniqueArgs<ExtArgs>>): Prisma__StaffChatMessageClient<$Result.GetResult<Prisma.$StaffChatMessagePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one StaffChatMessage that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {StaffChatMessageFindUniqueOrThrowArgs} args - Arguments to find a StaffChatMessage
+     * @example
+     * // Get one StaffChatMessage
+     * const staffChatMessage = await prisma.staffChatMessage.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends StaffChatMessageFindUniqueOrThrowArgs>(args: SelectSubset<T, StaffChatMessageFindUniqueOrThrowArgs<ExtArgs>>): Prisma__StaffChatMessageClient<$Result.GetResult<Prisma.$StaffChatMessagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first StaffChatMessage that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StaffChatMessageFindFirstArgs} args - Arguments to find a StaffChatMessage
+     * @example
+     * // Get one StaffChatMessage
+     * const staffChatMessage = await prisma.staffChatMessage.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends StaffChatMessageFindFirstArgs>(args?: SelectSubset<T, StaffChatMessageFindFirstArgs<ExtArgs>>): Prisma__StaffChatMessageClient<$Result.GetResult<Prisma.$StaffChatMessagePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first StaffChatMessage that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StaffChatMessageFindFirstOrThrowArgs} args - Arguments to find a StaffChatMessage
+     * @example
+     * // Get one StaffChatMessage
+     * const staffChatMessage = await prisma.staffChatMessage.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends StaffChatMessageFindFirstOrThrowArgs>(args?: SelectSubset<T, StaffChatMessageFindFirstOrThrowArgs<ExtArgs>>): Prisma__StaffChatMessageClient<$Result.GetResult<Prisma.$StaffChatMessagePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more StaffChatMessages that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StaffChatMessageFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all StaffChatMessages
+     * const staffChatMessages = await prisma.staffChatMessage.findMany()
+     * 
+     * // Get first 10 StaffChatMessages
+     * const staffChatMessages = await prisma.staffChatMessage.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const staffChatMessageWithIdOnly = await prisma.staffChatMessage.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends StaffChatMessageFindManyArgs>(args?: SelectSubset<T, StaffChatMessageFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StaffChatMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a StaffChatMessage.
+     * @param {StaffChatMessageCreateArgs} args - Arguments to create a StaffChatMessage.
+     * @example
+     * // Create one StaffChatMessage
+     * const StaffChatMessage = await prisma.staffChatMessage.create({
+     *   data: {
+     *     // ... data to create a StaffChatMessage
+     *   }
+     * })
+     * 
+     */
+    create<T extends StaffChatMessageCreateArgs>(args: SelectSubset<T, StaffChatMessageCreateArgs<ExtArgs>>): Prisma__StaffChatMessageClient<$Result.GetResult<Prisma.$StaffChatMessagePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many StaffChatMessages.
+     * @param {StaffChatMessageCreateManyArgs} args - Arguments to create many StaffChatMessages.
+     * @example
+     * // Create many StaffChatMessages
+     * const staffChatMessage = await prisma.staffChatMessage.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends StaffChatMessageCreateManyArgs>(args?: SelectSubset<T, StaffChatMessageCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many StaffChatMessages and returns the data saved in the database.
+     * @param {StaffChatMessageCreateManyAndReturnArgs} args - Arguments to create many StaffChatMessages.
+     * @example
+     * // Create many StaffChatMessages
+     * const staffChatMessage = await prisma.staffChatMessage.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many StaffChatMessages and only return the `id`
+     * const staffChatMessageWithIdOnly = await prisma.staffChatMessage.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends StaffChatMessageCreateManyAndReturnArgs>(args?: SelectSubset<T, StaffChatMessageCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StaffChatMessagePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a StaffChatMessage.
+     * @param {StaffChatMessageDeleteArgs} args - Arguments to delete one StaffChatMessage.
+     * @example
+     * // Delete one StaffChatMessage
+     * const StaffChatMessage = await prisma.staffChatMessage.delete({
+     *   where: {
+     *     // ... filter to delete one StaffChatMessage
+     *   }
+     * })
+     * 
+     */
+    delete<T extends StaffChatMessageDeleteArgs>(args: SelectSubset<T, StaffChatMessageDeleteArgs<ExtArgs>>): Prisma__StaffChatMessageClient<$Result.GetResult<Prisma.$StaffChatMessagePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one StaffChatMessage.
+     * @param {StaffChatMessageUpdateArgs} args - Arguments to update one StaffChatMessage.
+     * @example
+     * // Update one StaffChatMessage
+     * const staffChatMessage = await prisma.staffChatMessage.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends StaffChatMessageUpdateArgs>(args: SelectSubset<T, StaffChatMessageUpdateArgs<ExtArgs>>): Prisma__StaffChatMessageClient<$Result.GetResult<Prisma.$StaffChatMessagePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more StaffChatMessages.
+     * @param {StaffChatMessageDeleteManyArgs} args - Arguments to filter StaffChatMessages to delete.
+     * @example
+     * // Delete a few StaffChatMessages
+     * const { count } = await prisma.staffChatMessage.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends StaffChatMessageDeleteManyArgs>(args?: SelectSubset<T, StaffChatMessageDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more StaffChatMessages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StaffChatMessageUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many StaffChatMessages
+     * const staffChatMessage = await prisma.staffChatMessage.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends StaffChatMessageUpdateManyArgs>(args: SelectSubset<T, StaffChatMessageUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more StaffChatMessages and returns the data updated in the database.
+     * @param {StaffChatMessageUpdateManyAndReturnArgs} args - Arguments to update many StaffChatMessages.
+     * @example
+     * // Update many StaffChatMessages
+     * const staffChatMessage = await prisma.staffChatMessage.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more StaffChatMessages and only return the `id`
+     * const staffChatMessageWithIdOnly = await prisma.staffChatMessage.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends StaffChatMessageUpdateManyAndReturnArgs>(args: SelectSubset<T, StaffChatMessageUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StaffChatMessagePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one StaffChatMessage.
+     * @param {StaffChatMessageUpsertArgs} args - Arguments to update or create a StaffChatMessage.
+     * @example
+     * // Update or create a StaffChatMessage
+     * const staffChatMessage = await prisma.staffChatMessage.upsert({
+     *   create: {
+     *     // ... data to create a StaffChatMessage
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the StaffChatMessage we want to update
+     *   }
+     * })
+     */
+    upsert<T extends StaffChatMessageUpsertArgs>(args: SelectSubset<T, StaffChatMessageUpsertArgs<ExtArgs>>): Prisma__StaffChatMessageClient<$Result.GetResult<Prisma.$StaffChatMessagePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of StaffChatMessages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StaffChatMessageCountArgs} args - Arguments to filter StaffChatMessages to count.
+     * @example
+     * // Count the number of StaffChatMessages
+     * const count = await prisma.staffChatMessage.count({
+     *   where: {
+     *     // ... the filter for the StaffChatMessages we want to count
+     *   }
+     * })
+    **/
+    count<T extends StaffChatMessageCountArgs>(
+      args?: Subset<T, StaffChatMessageCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], StaffChatMessageCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a StaffChatMessage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StaffChatMessageAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends StaffChatMessageAggregateArgs>(args: Subset<T, StaffChatMessageAggregateArgs>): Prisma.PrismaPromise<GetStaffChatMessageAggregateType<T>>
+
+    /**
+     * Group by StaffChatMessage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StaffChatMessageGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends StaffChatMessageGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: StaffChatMessageGroupByArgs['orderBy'] }
+        : { orderBy?: StaffChatMessageGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, StaffChatMessageGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetStaffChatMessageGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the StaffChatMessage model
+   */
+  readonly fields: StaffChatMessageFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for StaffChatMessage.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__StaffChatMessageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    sender<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the StaffChatMessage model
+   */
+  interface StaffChatMessageFieldRefs {
+    readonly id: FieldRef<"StaffChatMessage", 'String'>
+    readonly content: FieldRef<"StaffChatMessage", 'String'>
+    readonly senderId: FieldRef<"StaffChatMessage", 'Int'>
+    readonly channelId: FieldRef<"StaffChatMessage", 'String'>
+    readonly createdAt: FieldRef<"StaffChatMessage", 'DateTime'>
+    readonly updatedAt: FieldRef<"StaffChatMessage", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * StaffChatMessage findUnique
+   */
+  export type StaffChatMessageFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMessage
+     */
+    select?: StaffChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMessage
+     */
+    omit?: StaffChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which StaffChatMessage to fetch.
+     */
+    where: StaffChatMessageWhereUniqueInput
+  }
+
+  /**
+   * StaffChatMessage findUniqueOrThrow
+   */
+  export type StaffChatMessageFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMessage
+     */
+    select?: StaffChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMessage
+     */
+    omit?: StaffChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which StaffChatMessage to fetch.
+     */
+    where: StaffChatMessageWhereUniqueInput
+  }
+
+  /**
+   * StaffChatMessage findFirst
+   */
+  export type StaffChatMessageFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMessage
+     */
+    select?: StaffChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMessage
+     */
+    omit?: StaffChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which StaffChatMessage to fetch.
+     */
+    where?: StaffChatMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StaffChatMessages to fetch.
+     */
+    orderBy?: StaffChatMessageOrderByWithRelationInput | StaffChatMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for StaffChatMessages.
+     */
+    cursor?: StaffChatMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StaffChatMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StaffChatMessages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StaffChatMessages.
+     */
+    distinct?: StaffChatMessageScalarFieldEnum | StaffChatMessageScalarFieldEnum[]
+  }
+
+  /**
+   * StaffChatMessage findFirstOrThrow
+   */
+  export type StaffChatMessageFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMessage
+     */
+    select?: StaffChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMessage
+     */
+    omit?: StaffChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which StaffChatMessage to fetch.
+     */
+    where?: StaffChatMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StaffChatMessages to fetch.
+     */
+    orderBy?: StaffChatMessageOrderByWithRelationInput | StaffChatMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for StaffChatMessages.
+     */
+    cursor?: StaffChatMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StaffChatMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StaffChatMessages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StaffChatMessages.
+     */
+    distinct?: StaffChatMessageScalarFieldEnum | StaffChatMessageScalarFieldEnum[]
+  }
+
+  /**
+   * StaffChatMessage findMany
+   */
+  export type StaffChatMessageFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMessage
+     */
+    select?: StaffChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMessage
+     */
+    omit?: StaffChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which StaffChatMessages to fetch.
+     */
+    where?: StaffChatMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StaffChatMessages to fetch.
+     */
+    orderBy?: StaffChatMessageOrderByWithRelationInput | StaffChatMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing StaffChatMessages.
+     */
+    cursor?: StaffChatMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StaffChatMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StaffChatMessages.
+     */
+    skip?: number
+    distinct?: StaffChatMessageScalarFieldEnum | StaffChatMessageScalarFieldEnum[]
+  }
+
+  /**
+   * StaffChatMessage create
+   */
+  export type StaffChatMessageCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMessage
+     */
+    select?: StaffChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMessage
+     */
+    omit?: StaffChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMessageInclude<ExtArgs> | null
+    /**
+     * The data needed to create a StaffChatMessage.
+     */
+    data: XOR<StaffChatMessageCreateInput, StaffChatMessageUncheckedCreateInput>
+  }
+
+  /**
+   * StaffChatMessage createMany
+   */
+  export type StaffChatMessageCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many StaffChatMessages.
+     */
+    data: StaffChatMessageCreateManyInput | StaffChatMessageCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * StaffChatMessage createManyAndReturn
+   */
+  export type StaffChatMessageCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMessage
+     */
+    select?: StaffChatMessageSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMessage
+     */
+    omit?: StaffChatMessageOmit<ExtArgs> | null
+    /**
+     * The data used to create many StaffChatMessages.
+     */
+    data: StaffChatMessageCreateManyInput | StaffChatMessageCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMessageIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * StaffChatMessage update
+   */
+  export type StaffChatMessageUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMessage
+     */
+    select?: StaffChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMessage
+     */
+    omit?: StaffChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMessageInclude<ExtArgs> | null
+    /**
+     * The data needed to update a StaffChatMessage.
+     */
+    data: XOR<StaffChatMessageUpdateInput, StaffChatMessageUncheckedUpdateInput>
+    /**
+     * Choose, which StaffChatMessage to update.
+     */
+    where: StaffChatMessageWhereUniqueInput
+  }
+
+  /**
+   * StaffChatMessage updateMany
+   */
+  export type StaffChatMessageUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update StaffChatMessages.
+     */
+    data: XOR<StaffChatMessageUpdateManyMutationInput, StaffChatMessageUncheckedUpdateManyInput>
+    /**
+     * Filter which StaffChatMessages to update
+     */
+    where?: StaffChatMessageWhereInput
+    /**
+     * Limit how many StaffChatMessages to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * StaffChatMessage updateManyAndReturn
+   */
+  export type StaffChatMessageUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMessage
+     */
+    select?: StaffChatMessageSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMessage
+     */
+    omit?: StaffChatMessageOmit<ExtArgs> | null
+    /**
+     * The data used to update StaffChatMessages.
+     */
+    data: XOR<StaffChatMessageUpdateManyMutationInput, StaffChatMessageUncheckedUpdateManyInput>
+    /**
+     * Filter which StaffChatMessages to update
+     */
+    where?: StaffChatMessageWhereInput
+    /**
+     * Limit how many StaffChatMessages to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMessageIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * StaffChatMessage upsert
+   */
+  export type StaffChatMessageUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMessage
+     */
+    select?: StaffChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMessage
+     */
+    omit?: StaffChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMessageInclude<ExtArgs> | null
+    /**
+     * The filter to search for the StaffChatMessage to update in case it exists.
+     */
+    where: StaffChatMessageWhereUniqueInput
+    /**
+     * In case the StaffChatMessage found by the `where` argument doesn't exist, create a new StaffChatMessage with this data.
+     */
+    create: XOR<StaffChatMessageCreateInput, StaffChatMessageUncheckedCreateInput>
+    /**
+     * In case the StaffChatMessage was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<StaffChatMessageUpdateInput, StaffChatMessageUncheckedUpdateInput>
+  }
+
+  /**
+   * StaffChatMessage delete
+   */
+  export type StaffChatMessageDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMessage
+     */
+    select?: StaffChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMessage
+     */
+    omit?: StaffChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter which StaffChatMessage to delete.
+     */
+    where: StaffChatMessageWhereUniqueInput
+  }
+
+  /**
+   * StaffChatMessage deleteMany
+   */
+  export type StaffChatMessageDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which StaffChatMessages to delete
+     */
+    where?: StaffChatMessageWhereInput
+    /**
+     * Limit how many StaffChatMessages to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * StaffChatMessage without action
+   */
+  export type StaffChatMessageDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StaffChatMessage
+     */
+    select?: StaffChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StaffChatMessage
+     */
+    omit?: StaffChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StaffChatMessageInclude<ExtArgs> | null
   }
 
 
@@ -52148,6 +53381,18 @@ export namespace Prisma {
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+  export const StaffChatMessageScalarFieldEnum: {
+    id: 'id',
+    content: 'content',
+    senderId: 'senderId',
+    channelId: 'channelId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type StaffChatMessageScalarFieldEnum = (typeof StaffChatMessageScalarFieldEnum)[keyof typeof StaffChatMessageScalarFieldEnum]
+
+
   export const PasswordResetTokenScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
@@ -54764,6 +56009,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolListRelationFilter
     administeredProtocolDoses?: ProtocolDoseListRelationFilter
     passwordResetTokens?: PasswordResetTokenListRelationFilter
+    staffChatMessages?: StaffChatMessageListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -54786,6 +56032,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolOrderByRelationAggregateInput
     administeredProtocolDoses?: ProtocolDoseOrderByRelationAggregateInput
     passwordResetTokens?: PasswordResetTokenOrderByRelationAggregateInput
+    staffChatMessages?: StaffChatMessageOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -54811,6 +56058,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolListRelationFilter
     administeredProtocolDoses?: ProtocolDoseListRelationFilter
     passwordResetTokens?: PasswordResetTokenListRelationFilter
+    staffChatMessages?: StaffChatMessageListRelationFilter
   }, "id" | "email" | "fosterId">
 
   export type UserOrderByWithAggregationInput = {
@@ -54847,6 +56095,68 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     lastLoginAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  }
+
+  export type StaffChatMessageWhereInput = {
+    AND?: StaffChatMessageWhereInput | StaffChatMessageWhereInput[]
+    OR?: StaffChatMessageWhereInput[]
+    NOT?: StaffChatMessageWhereInput | StaffChatMessageWhereInput[]
+    id?: StringFilter<"StaffChatMessage"> | string
+    content?: StringFilter<"StaffChatMessage"> | string
+    senderId?: IntFilter<"StaffChatMessage"> | number
+    channelId?: StringFilter<"StaffChatMessage"> | string
+    createdAt?: DateTimeFilter<"StaffChatMessage"> | Date | string
+    updatedAt?: DateTimeFilter<"StaffChatMessage"> | Date | string
+    sender?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type StaffChatMessageOrderByWithRelationInput = {
+    id?: SortOrder
+    content?: SortOrder
+    senderId?: SortOrder
+    channelId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    sender?: UserOrderByWithRelationInput
+  }
+
+  export type StaffChatMessageWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: StaffChatMessageWhereInput | StaffChatMessageWhereInput[]
+    OR?: StaffChatMessageWhereInput[]
+    NOT?: StaffChatMessageWhereInput | StaffChatMessageWhereInput[]
+    content?: StringFilter<"StaffChatMessage"> | string
+    senderId?: IntFilter<"StaffChatMessage"> | number
+    channelId?: StringFilter<"StaffChatMessage"> | string
+    createdAt?: DateTimeFilter<"StaffChatMessage"> | Date | string
+    updatedAt?: DateTimeFilter<"StaffChatMessage"> | Date | string
+    sender?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type StaffChatMessageOrderByWithAggregationInput = {
+    id?: SortOrder
+    content?: SortOrder
+    senderId?: SortOrder
+    channelId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: StaffChatMessageCountOrderByAggregateInput
+    _avg?: StaffChatMessageAvgOrderByAggregateInput
+    _max?: StaffChatMessageMaxOrderByAggregateInput
+    _min?: StaffChatMessageMinOrderByAggregateInput
+    _sum?: StaffChatMessageSumOrderByAggregateInput
+  }
+
+  export type StaffChatMessageScalarWhereWithAggregatesInput = {
+    AND?: StaffChatMessageScalarWhereWithAggregatesInput | StaffChatMessageScalarWhereWithAggregatesInput[]
+    OR?: StaffChatMessageScalarWhereWithAggregatesInput[]
+    NOT?: StaffChatMessageScalarWhereWithAggregatesInput | StaffChatMessageScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"StaffChatMessage"> | string
+    content?: StringWithAggregatesFilter<"StaffChatMessage"> | string
+    senderId?: IntWithAggregatesFilter<"StaffChatMessage"> | number
+    channelId?: StringWithAggregatesFilter<"StaffChatMessage"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"StaffChatMessage"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"StaffChatMessage"> | Date | string
   }
 
   export type PasswordResetTokenWhereInput = {
@@ -58192,6 +59502,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    staffChatMessages?: StaffChatMessageCreateNestedManyWithoutSenderInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -58212,6 +59523,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    staffChatMessages?: StaffChatMessageUncheckedCreateNestedManyWithoutSenderInput
   }
 
   export type UserUpdateInput = {
@@ -58231,6 +59543,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    staffChatMessages?: StaffChatMessageUpdateManyWithoutSenderNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -58251,6 +59564,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    staffChatMessages?: StaffChatMessageUncheckedUpdateManyWithoutSenderNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -58290,6 +59604,68 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type StaffChatMessageCreateInput = {
+    id?: string
+    content: string
+    channelId?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sender: UserCreateNestedOneWithoutStaffChatMessagesInput
+  }
+
+  export type StaffChatMessageUncheckedCreateInput = {
+    id?: string
+    content: string
+    senderId: number
+    channelId?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StaffChatMessageUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    channelId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sender?: UserUpdateOneRequiredWithoutStaffChatMessagesNestedInput
+  }
+
+  export type StaffChatMessageUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    senderId?: IntFieldUpdateOperationsInput | number
+    channelId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StaffChatMessageCreateManyInput = {
+    id?: string
+    content: string
+    senderId: number
+    channelId?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StaffChatMessageUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    channelId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StaffChatMessageUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    senderId?: IntFieldUpdateOperationsInput | number
+    channelId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PasswordResetTokenCreateInput = {
@@ -61310,11 +62686,21 @@ export namespace Prisma {
     none?: PasswordResetTokenWhereInput
   }
 
+  export type StaffChatMessageListRelationFilter = {
+    every?: StaffChatMessageWhereInput
+    some?: StaffChatMessageWhereInput
+    none?: StaffChatMessageWhereInput
+  }
+
   export type ApplicationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type PasswordResetTokenOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type StaffChatMessageOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -61370,6 +62756,41 @@ export namespace Prisma {
     id?: SortOrder
     roleId?: SortOrder
     fosterId?: SortOrder
+  }
+
+  export type StaffChatMessageCountOrderByAggregateInput = {
+    id?: SortOrder
+    content?: SortOrder
+    senderId?: SortOrder
+    channelId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type StaffChatMessageAvgOrderByAggregateInput = {
+    senderId?: SortOrder
+  }
+
+  export type StaffChatMessageMaxOrderByAggregateInput = {
+    id?: SortOrder
+    content?: SortOrder
+    senderId?: SortOrder
+    channelId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type StaffChatMessageMinOrderByAggregateInput = {
+    id?: SortOrder
+    content?: SortOrder
+    senderId?: SortOrder
+    channelId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type StaffChatMessageSumOrderByAggregateInput = {
+    senderId?: SortOrder
   }
 
   export type EnumPasswordTokenPurposeFilter<$PrismaModel = never> = {
@@ -64200,6 +65621,13 @@ export namespace Prisma {
     connect?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
   }
 
+  export type StaffChatMessageCreateNestedManyWithoutSenderInput = {
+    create?: XOR<StaffChatMessageCreateWithoutSenderInput, StaffChatMessageUncheckedCreateWithoutSenderInput> | StaffChatMessageCreateWithoutSenderInput[] | StaffChatMessageUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: StaffChatMessageCreateOrConnectWithoutSenderInput | StaffChatMessageCreateOrConnectWithoutSenderInput[]
+    createMany?: StaffChatMessageCreateManySenderInputEnvelope
+    connect?: StaffChatMessageWhereUniqueInput | StaffChatMessageWhereUniqueInput[]
+  }
+
   export type ApplicationUncheckedCreateNestedManyWithoutRejectedByInput = {
     create?: XOR<ApplicationCreateWithoutRejectedByInput, ApplicationUncheckedCreateWithoutRejectedByInput> | ApplicationCreateWithoutRejectedByInput[] | ApplicationUncheckedCreateWithoutRejectedByInput[]
     connectOrCreate?: ApplicationCreateOrConnectWithoutRejectedByInput | ApplicationCreateOrConnectWithoutRejectedByInput[]
@@ -64240,6 +65668,13 @@ export namespace Prisma {
     connectOrCreate?: PasswordResetTokenCreateOrConnectWithoutUserInput | PasswordResetTokenCreateOrConnectWithoutUserInput[]
     createMany?: PasswordResetTokenCreateManyUserInputEnvelope
     connect?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
+  }
+
+  export type StaffChatMessageUncheckedCreateNestedManyWithoutSenderInput = {
+    create?: XOR<StaffChatMessageCreateWithoutSenderInput, StaffChatMessageUncheckedCreateWithoutSenderInput> | StaffChatMessageCreateWithoutSenderInput[] | StaffChatMessageUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: StaffChatMessageCreateOrConnectWithoutSenderInput | StaffChatMessageCreateOrConnectWithoutSenderInput[]
+    createMany?: StaffChatMessageCreateManySenderInputEnvelope
+    connect?: StaffChatMessageWhereUniqueInput | StaffChatMessageWhereUniqueInput[]
   }
 
   export type RoleUpdateOneRequiredWithoutUsersNestedInput = {
@@ -64344,6 +65779,20 @@ export namespace Prisma {
     deleteMany?: PasswordResetTokenScalarWhereInput | PasswordResetTokenScalarWhereInput[]
   }
 
+  export type StaffChatMessageUpdateManyWithoutSenderNestedInput = {
+    create?: XOR<StaffChatMessageCreateWithoutSenderInput, StaffChatMessageUncheckedCreateWithoutSenderInput> | StaffChatMessageCreateWithoutSenderInput[] | StaffChatMessageUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: StaffChatMessageCreateOrConnectWithoutSenderInput | StaffChatMessageCreateOrConnectWithoutSenderInput[]
+    upsert?: StaffChatMessageUpsertWithWhereUniqueWithoutSenderInput | StaffChatMessageUpsertWithWhereUniqueWithoutSenderInput[]
+    createMany?: StaffChatMessageCreateManySenderInputEnvelope
+    set?: StaffChatMessageWhereUniqueInput | StaffChatMessageWhereUniqueInput[]
+    disconnect?: StaffChatMessageWhereUniqueInput | StaffChatMessageWhereUniqueInput[]
+    delete?: StaffChatMessageWhereUniqueInput | StaffChatMessageWhereUniqueInput[]
+    connect?: StaffChatMessageWhereUniqueInput | StaffChatMessageWhereUniqueInput[]
+    update?: StaffChatMessageUpdateWithWhereUniqueWithoutSenderInput | StaffChatMessageUpdateWithWhereUniqueWithoutSenderInput[]
+    updateMany?: StaffChatMessageUpdateManyWithWhereWithoutSenderInput | StaffChatMessageUpdateManyWithWhereWithoutSenderInput[]
+    deleteMany?: StaffChatMessageScalarWhereInput | StaffChatMessageScalarWhereInput[]
+  }
+
   export type ApplicationUncheckedUpdateManyWithoutRejectedByNestedInput = {
     create?: XOR<ApplicationCreateWithoutRejectedByInput, ApplicationUncheckedCreateWithoutRejectedByInput> | ApplicationCreateWithoutRejectedByInput[] | ApplicationUncheckedCreateWithoutRejectedByInput[]
     connectOrCreate?: ApplicationCreateOrConnectWithoutRejectedByInput | ApplicationCreateOrConnectWithoutRejectedByInput[]
@@ -64426,6 +65875,34 @@ export namespace Prisma {
     update?: PasswordResetTokenUpdateWithWhereUniqueWithoutUserInput | PasswordResetTokenUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: PasswordResetTokenUpdateManyWithWhereWithoutUserInput | PasswordResetTokenUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: PasswordResetTokenScalarWhereInput | PasswordResetTokenScalarWhereInput[]
+  }
+
+  export type StaffChatMessageUncheckedUpdateManyWithoutSenderNestedInput = {
+    create?: XOR<StaffChatMessageCreateWithoutSenderInput, StaffChatMessageUncheckedCreateWithoutSenderInput> | StaffChatMessageCreateWithoutSenderInput[] | StaffChatMessageUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: StaffChatMessageCreateOrConnectWithoutSenderInput | StaffChatMessageCreateOrConnectWithoutSenderInput[]
+    upsert?: StaffChatMessageUpsertWithWhereUniqueWithoutSenderInput | StaffChatMessageUpsertWithWhereUniqueWithoutSenderInput[]
+    createMany?: StaffChatMessageCreateManySenderInputEnvelope
+    set?: StaffChatMessageWhereUniqueInput | StaffChatMessageWhereUniqueInput[]
+    disconnect?: StaffChatMessageWhereUniqueInput | StaffChatMessageWhereUniqueInput[]
+    delete?: StaffChatMessageWhereUniqueInput | StaffChatMessageWhereUniqueInput[]
+    connect?: StaffChatMessageWhereUniqueInput | StaffChatMessageWhereUniqueInput[]
+    update?: StaffChatMessageUpdateWithWhereUniqueWithoutSenderInput | StaffChatMessageUpdateWithWhereUniqueWithoutSenderInput[]
+    updateMany?: StaffChatMessageUpdateManyWithWhereWithoutSenderInput | StaffChatMessageUpdateManyWithWhereWithoutSenderInput[]
+    deleteMany?: StaffChatMessageScalarWhereInput | StaffChatMessageScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutStaffChatMessagesInput = {
+    create?: XOR<UserCreateWithoutStaffChatMessagesInput, UserUncheckedCreateWithoutStaffChatMessagesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutStaffChatMessagesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutStaffChatMessagesNestedInput = {
+    create?: XOR<UserCreateWithoutStaffChatMessagesInput, UserUncheckedCreateWithoutStaffChatMessagesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutStaffChatMessagesInput
+    upsert?: UserUpsertWithoutStaffChatMessagesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutStaffChatMessagesInput, UserUpdateWithoutStaffChatMessagesInput>, UserUncheckedUpdateWithoutStaffChatMessagesInput>
   }
 
   export type UserCreateNestedOneWithoutPasswordResetTokensInput = {
@@ -65708,6 +67185,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    staffChatMessages?: StaffChatMessageCreateNestedManyWithoutSenderInput
   }
 
   export type UserUncheckedCreateWithoutFosterInput = {
@@ -65727,6 +67205,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    staffChatMessages?: StaffChatMessageUncheckedCreateNestedManyWithoutSenderInput
   }
 
   export type UserCreateOrConnectWithoutFosterInput = {
@@ -65926,6 +67405,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    staffChatMessages?: StaffChatMessageUpdateManyWithoutSenderNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFosterInput = {
@@ -65945,6 +67425,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    staffChatMessages?: StaffChatMessageUncheckedUpdateManyWithoutSenderNestedInput
   }
 
   export type DocumentUpsertWithWhereUniqueWithoutSubmittedByFosterInput = {
@@ -69127,6 +70608,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    staffChatMessages?: StaffChatMessageCreateNestedManyWithoutSenderInput
   }
 
   export type UserUncheckedCreateWithoutRejectedApplicationsInput = {
@@ -69146,6 +70628,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    staffChatMessages?: StaffChatMessageUncheckedCreateNestedManyWithoutSenderInput
   }
 
   export type UserCreateOrConnectWithoutRejectedApplicationsInput = {
@@ -69323,6 +70806,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    staffChatMessages?: StaffChatMessageUpdateManyWithoutSenderNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRejectedApplicationsInput = {
@@ -69342,6 +70826,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    staffChatMessages?: StaffChatMessageUncheckedUpdateManyWithoutSenderNestedInput
   }
 
   export type ContractUpsertWithWhereUniqueWithoutApplicationInput = {
@@ -70076,6 +71561,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    staffChatMessages?: StaffChatMessageCreateNestedManyWithoutSenderInput
   }
 
   export type UserUncheckedCreateWithoutCompletedChecklistItemsInput = {
@@ -70095,6 +71581,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    staffChatMessages?: StaffChatMessageUncheckedCreateNestedManyWithoutSenderInput
   }
 
   export type UserCreateOrConnectWithoutCompletedChecklistItemsInput = {
@@ -70157,6 +71644,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    staffChatMessages?: StaffChatMessageUpdateManyWithoutSenderNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCompletedChecklistItemsInput = {
@@ -70176,6 +71664,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    staffChatMessages?: StaffChatMessageUncheckedUpdateManyWithoutSenderNestedInput
   }
 
   export type ApplicationCreateWithoutUploadsInput = {
@@ -70327,6 +71816,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    staffChatMessages?: StaffChatMessageCreateNestedManyWithoutSenderInput
   }
 
   export type UserUncheckedCreateWithoutContentCompletionsInput = {
@@ -70346,6 +71836,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    staffChatMessages?: StaffChatMessageUncheckedCreateNestedManyWithoutSenderInput
   }
 
   export type UserCreateOrConnectWithoutContentCompletionsInput = {
@@ -70406,6 +71897,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    staffChatMessages?: StaffChatMessageUpdateManyWithoutSenderNestedInput
   }
 
   export type UserUncheckedUpdateWithoutContentCompletionsInput = {
@@ -70425,6 +71917,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    staffChatMessages?: StaffChatMessageUncheckedUpdateManyWithoutSenderNestedInput
   }
 
   export type ContentUpsertWithoutCompletionsInput = {
@@ -70914,6 +72407,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    staffChatMessages?: StaffChatMessageCreateNestedManyWithoutSenderInput
   }
 
   export type UserUncheckedCreateWithoutRoleInput = {
@@ -70933,6 +72427,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    staffChatMessages?: StaffChatMessageUncheckedCreateNestedManyWithoutSenderInput
   }
 
   export type UserCreateOrConnectWithoutRoleInput = {
@@ -71408,6 +72903,32 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type StaffChatMessageCreateWithoutSenderInput = {
+    id?: string
+    content: string
+    channelId?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StaffChatMessageUncheckedCreateWithoutSenderInput = {
+    id?: string
+    content: string
+    channelId?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StaffChatMessageCreateOrConnectWithoutSenderInput = {
+    where: StaffChatMessageWhereUniqueInput
+    create: XOR<StaffChatMessageCreateWithoutSenderInput, StaffChatMessageUncheckedCreateWithoutSenderInput>
+  }
+
+  export type StaffChatMessageCreateManySenderInputEnvelope = {
+    data: StaffChatMessageCreateManySenderInput | StaffChatMessageCreateManySenderInput[]
+    skipDuplicates?: boolean
+  }
+
   export type RoleUpsertWithoutUsersInput = {
     update: XOR<RoleUpdateWithoutUsersInput, RoleUncheckedUpdateWithoutUsersInput>
     create: XOR<RoleCreateWithoutUsersInput, RoleUncheckedCreateWithoutUsersInput>
@@ -71620,6 +73141,128 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"PasswordResetToken"> | Date | string
   }
 
+  export type StaffChatMessageUpsertWithWhereUniqueWithoutSenderInput = {
+    where: StaffChatMessageWhereUniqueInput
+    update: XOR<StaffChatMessageUpdateWithoutSenderInput, StaffChatMessageUncheckedUpdateWithoutSenderInput>
+    create: XOR<StaffChatMessageCreateWithoutSenderInput, StaffChatMessageUncheckedCreateWithoutSenderInput>
+  }
+
+  export type StaffChatMessageUpdateWithWhereUniqueWithoutSenderInput = {
+    where: StaffChatMessageWhereUniqueInput
+    data: XOR<StaffChatMessageUpdateWithoutSenderInput, StaffChatMessageUncheckedUpdateWithoutSenderInput>
+  }
+
+  export type StaffChatMessageUpdateManyWithWhereWithoutSenderInput = {
+    where: StaffChatMessageScalarWhereInput
+    data: XOR<StaffChatMessageUpdateManyMutationInput, StaffChatMessageUncheckedUpdateManyWithoutSenderInput>
+  }
+
+  export type StaffChatMessageScalarWhereInput = {
+    AND?: StaffChatMessageScalarWhereInput | StaffChatMessageScalarWhereInput[]
+    OR?: StaffChatMessageScalarWhereInput[]
+    NOT?: StaffChatMessageScalarWhereInput | StaffChatMessageScalarWhereInput[]
+    id?: StringFilter<"StaffChatMessage"> | string
+    content?: StringFilter<"StaffChatMessage"> | string
+    senderId?: IntFilter<"StaffChatMessage"> | number
+    channelId?: StringFilter<"StaffChatMessage"> | string
+    createdAt?: DateTimeFilter<"StaffChatMessage"> | Date | string
+    updatedAt?: DateTimeFilter<"StaffChatMessage"> | Date | string
+  }
+
+  export type UserCreateWithoutStaffChatMessagesInput = {
+    email: string
+    passwordHash: string
+    firstName: string
+    lastName: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastLoginAt?: Date | string | null
+    role: RoleCreateNestedOneWithoutUsersInput
+    foster?: FosterCreateNestedOneWithoutPortalUserInput
+    rejectedApplications?: ApplicationCreateNestedManyWithoutRejectedByInput
+    completedChecklistItems?: OnboardingChecklistCreateNestedManyWithoutCompletedByUserInput
+    contentCompletions?: ContentCompletionCreateNestedManyWithoutUserInput
+    activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
+    administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutStaffChatMessagesInput = {
+    id?: number
+    email: string
+    passwordHash: string
+    firstName: string
+    lastName: string
+    isActive?: boolean
+    roleId: number
+    fosterId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastLoginAt?: Date | string | null
+    rejectedApplications?: ApplicationUncheckedCreateNestedManyWithoutRejectedByInput
+    completedChecklistItems?: OnboardingChecklistUncheckedCreateNestedManyWithoutCompletedByUserInput
+    contentCompletions?: ContentCompletionUncheckedCreateNestedManyWithoutUserInput
+    activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
+    administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutStaffChatMessagesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutStaffChatMessagesInput, UserUncheckedCreateWithoutStaffChatMessagesInput>
+  }
+
+  export type UserUpsertWithoutStaffChatMessagesInput = {
+    update: XOR<UserUpdateWithoutStaffChatMessagesInput, UserUncheckedUpdateWithoutStaffChatMessagesInput>
+    create: XOR<UserCreateWithoutStaffChatMessagesInput, UserUncheckedCreateWithoutStaffChatMessagesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutStaffChatMessagesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutStaffChatMessagesInput, UserUncheckedUpdateWithoutStaffChatMessagesInput>
+  }
+
+  export type UserUpdateWithoutStaffChatMessagesInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: RoleUpdateOneRequiredWithoutUsersNestedInput
+    foster?: FosterUpdateOneWithoutPortalUserNestedInput
+    rejectedApplications?: ApplicationUpdateManyWithoutRejectedByNestedInput
+    completedChecklistItems?: OnboardingChecklistUpdateManyWithoutCompletedByUserNestedInput
+    contentCompletions?: ContentCompletionUpdateManyWithoutUserNestedInput
+    activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
+    administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutStaffChatMessagesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    roleId?: IntFieldUpdateOperationsInput | number
+    fosterId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedApplications?: ApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
+    completedChecklistItems?: OnboardingChecklistUncheckedUpdateManyWithoutCompletedByUserNestedInput
+    contentCompletions?: ContentCompletionUncheckedUpdateManyWithoutUserNestedInput
+    activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
+    administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  }
+
   export type UserCreateWithoutPasswordResetTokensInput = {
     email: string
     passwordHash: string
@@ -71636,6 +73279,7 @@ export namespace Prisma {
     contentCompletions?: ContentCompletionCreateNestedManyWithoutUserInput
     activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
+    staffChatMessages?: StaffChatMessageCreateNestedManyWithoutSenderInput
   }
 
   export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
@@ -71655,6 +73299,7 @@ export namespace Prisma {
     contentCompletions?: ContentCompletionUncheckedCreateNestedManyWithoutUserInput
     activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
+    staffChatMessages?: StaffChatMessageUncheckedCreateNestedManyWithoutSenderInput
   }
 
   export type UserCreateOrConnectWithoutPasswordResetTokensInput = {
@@ -71689,6 +73334,7 @@ export namespace Prisma {
     contentCompletions?: ContentCompletionUpdateManyWithoutUserNestedInput
     activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
+    staffChatMessages?: StaffChatMessageUpdateManyWithoutSenderNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
@@ -71708,6 +73354,7 @@ export namespace Prisma {
     contentCompletions?: ContentCompletionUncheckedUpdateManyWithoutUserNestedInput
     activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
+    staffChatMessages?: StaffChatMessageUncheckedUpdateManyWithoutSenderNestedInput
   }
 
   export type ProtocolDrugCreateWithoutProtocolInput = {
@@ -72114,6 +73761,7 @@ export namespace Prisma {
     contentCompletions?: ContentCompletionCreateNestedManyWithoutUserInput
     administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    staffChatMessages?: StaffChatMessageCreateNestedManyWithoutSenderInput
   }
 
   export type UserUncheckedCreateWithoutActivatedProtocolsInput = {
@@ -72133,6 +73781,7 @@ export namespace Prisma {
     contentCompletions?: ContentCompletionUncheckedCreateNestedManyWithoutUserInput
     administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    staffChatMessages?: StaffChatMessageUncheckedCreateNestedManyWithoutSenderInput
   }
 
   export type UserCreateOrConnectWithoutActivatedProtocolsInput = {
@@ -72355,6 +74004,7 @@ export namespace Prisma {
     contentCompletions?: ContentCompletionUpdateManyWithoutUserNestedInput
     administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    staffChatMessages?: StaffChatMessageUpdateManyWithoutSenderNestedInput
   }
 
   export type UserUncheckedUpdateWithoutActivatedProtocolsInput = {
@@ -72374,6 +74024,7 @@ export namespace Prisma {
     contentCompletions?: ContentCompletionUncheckedUpdateManyWithoutUserNestedInput
     administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    staffChatMessages?: StaffChatMessageUncheckedUpdateManyWithoutSenderNestedInput
   }
 
   export type ProtocolDoseUpsertWithWhereUniqueWithoutActiveProtocolInput = {
@@ -72488,6 +74139,7 @@ export namespace Prisma {
     contentCompletions?: ContentCompletionCreateNestedManyWithoutUserInput
     activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    staffChatMessages?: StaffChatMessageCreateNestedManyWithoutSenderInput
   }
 
   export type UserUncheckedCreateWithoutAdministeredProtocolDosesInput = {
@@ -72507,6 +74159,7 @@ export namespace Prisma {
     contentCompletions?: ContentCompletionUncheckedCreateNestedManyWithoutUserInput
     activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    staffChatMessages?: StaffChatMessageUncheckedCreateNestedManyWithoutSenderInput
   }
 
   export type UserCreateOrConnectWithoutAdministeredProtocolDosesInput = {
@@ -72679,6 +74332,7 @@ export namespace Prisma {
     contentCompletions?: ContentCompletionUpdateManyWithoutUserNestedInput
     activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    staffChatMessages?: StaffChatMessageUpdateManyWithoutSenderNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAdministeredProtocolDosesInput = {
@@ -72698,6 +74352,7 @@ export namespace Prisma {
     contentCompletions?: ContentCompletionUncheckedUpdateManyWithoutUserNestedInput
     activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    staffChatMessages?: StaffChatMessageUncheckedUpdateManyWithoutSenderNestedInput
   }
 
   export type MedicationUpsertWithoutProtocolDosesInput = {
@@ -74914,6 +76569,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    staffChatMessages?: StaffChatMessageUpdateManyWithoutSenderNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRoleInput = {
@@ -74933,6 +76589,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    staffChatMessages?: StaffChatMessageUncheckedUpdateManyWithoutSenderNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutRoleInput = {
@@ -75036,6 +76693,14 @@ export namespace Prisma {
     createdIp?: string | null
     usedIp?: string | null
     createdAt?: Date | string
+  }
+
+  export type StaffChatMessageCreateManySenderInput = {
+    id?: string
+    content: string
+    channelId?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type ApplicationUpdateWithoutRejectedByInput = {
@@ -75226,6 +76891,30 @@ export namespace Prisma {
     createdIp?: NullableStringFieldUpdateOperationsInput | string | null
     usedIp?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StaffChatMessageUpdateWithoutSenderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    channelId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StaffChatMessageUncheckedUpdateWithoutSenderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    channelId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StaffChatMessageUncheckedUpdateManyWithoutSenderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    channelId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ProtocolDrugCreateManyProtocolInput = {

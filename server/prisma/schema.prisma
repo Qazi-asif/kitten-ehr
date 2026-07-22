@@ -562,6 +562,20 @@ model User {
   activatedProtocols    ActiveProtocol[]      @relation("ProtocolActivatedBy")
   administeredProtocolDoses ProtocolDose[]      @relation("ProtocolDoseAdministeredBy")
   passwordResetTokens   PasswordResetToken[]
+  staffChatMessages     StaffChatMessage[]
+}
+
+model StaffChatMessage {
+  id        String   @id @default(cuid())
+  content   String
+  senderId  Int
+  sender    User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  channelId String   @default("general")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([channelId, createdAt])
+  @@index([senderId])
 }
 
 model PasswordResetToken {

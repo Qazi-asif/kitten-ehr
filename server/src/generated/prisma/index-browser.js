@@ -448,6 +448,15 @@ exports.Prisma.UserScalarFieldEnum = {
   lastLoginAt: 'lastLoginAt'
 };
 
+exports.Prisma.StaffChatMessageScalarFieldEnum = {
+  id: 'id',
+  content: 'content',
+  senderId: 'senderId',
+  channelId: 'channelId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.PasswordResetTokenScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -738,6 +747,7 @@ exports.Prisma.ModelName = {
   Permission: 'Permission',
   RolePermission: 'RolePermission',
   User: 'User',
+  StaffChatMessage: 'StaffChatMessage',
   PasswordResetToken: 'PasswordResetToken',
   Protocol: 'Protocol',
   ProtocolDrug: 'ProtocolDrug',
