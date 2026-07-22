@@ -37,6 +37,17 @@ function getClient(config) {
     },
     forcePathStyle: Boolean(config.endpoint),
     requestChecksumCalculation: 'WHEN_REQUIRED',
+    // AWS SDK v3's NodeHttpHandler defaults every one of these to 0 (disabled)
+    // - a stalled connection to R2/S3 hangs the request indefinitely with no
+    // built-in ceiling. throwOnRequestTimeout is required too: without it, a
+    // breached requestTimeout is only logged as a warning, not actually
+    // aborted.
+    requestHandler: {
+      connectionTimeout: 5000,
+      requestTimeout: 15000,
+      socketTimeout: 15000,
+      throwOnRequestTimeout: true,
+    },
   });
   cachedConfigKey = configKey;
   return cachedClient;

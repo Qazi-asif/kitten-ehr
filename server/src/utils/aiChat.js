@@ -71,6 +71,10 @@ export async function createChatCompletion(provider, messages, options = {}) {
           max_tokens: options.maxTokens ?? 400,
           stream: false,
         }),
+        // Plain fetch has no default timeout - a stalled connection to the AI
+        // provider would otherwise hang indefinitely, and this loop can retry
+        // across multiple models/attempts, multiplying the hang.
+        signal: AbortSignal.timeout(15000),
       });
 
       const payload = await response.json().catch(() => ({}));

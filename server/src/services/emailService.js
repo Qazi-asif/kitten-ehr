@@ -136,6 +136,13 @@ function getSmtpTransporter(settings, smtpHost, smtpUser, smtpPass) {
       pass: smtpPass,
     },
     tls: { rejectUnauthorized: false },
+    // Nodemailer's own defaults here are very long (connectionTimeout 2min,
+    // socketTimeout 10min) - a stalled/unresponsive mail server would hang a
+    // send for that long with no bound. Same bounded values already proven
+    // out in sendTestEmail() below.
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 10000,
   });
   cachedTransporterKey = key;
   return cachedTransporter;
