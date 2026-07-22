@@ -155,15 +155,17 @@ function AdminLayout() {
         </nav>
 
         <div className="border-t border-sidebar-border px-4 py-4">
-          <div className="flex items-center gap-3 rounded-lg bg-sidebar-hover/50 px-2 py-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand text-sm font-bold text-white">
-              {user?.firstName?.[0] || 'U'}
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-semibold text-white">
-                {user ? `${user.firstName} ${user.lastName}` : 'User'}
-              </p>
-              <p className="truncate text-xs text-slate-400">{user?.roleName || 'Staff'}</p>
+          <div className="rounded-lg bg-sidebar-hover/50 px-3 py-3">
+            <div className="mb-3 flex items-center gap-3">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand text-sm font-bold text-white">
+                {user?.firstName?.[0] || 'U'}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-semibold text-white">
+                  {user ? `${user.firstName} ${user.lastName}` : 'User'}
+                </p>
+                <p className="truncate text-xs text-slate-400">{user?.roleName || 'Staff'}</p>
+              </div>
             </div>
             <button
               type="button"
@@ -177,7 +179,7 @@ function AdminLayout() {
         </div>
       </aside>
 
-      <main className="ml-[260px] min-h-screen print:ml-0">
+      <main className={`ml-[260px] print:ml-0 ${isChatPage ? 'flex h-screen flex-col overflow-hidden' : 'min-h-screen'}`}>
         {!isChatPage && (
           <header className="border-b border-slate-200 bg-white px-8 py-5 print:hidden">
             <div className="flex flex-wrap items-center justify-between gap-4">
@@ -197,7 +199,7 @@ function AdminLayout() {
           </header>
         )}
 
-        <div className={isChatPage ? '' : 'p-8 print:p-0'}>
+        <div className={isChatPage ? 'min-h-0 flex-1 overflow-hidden' : 'p-8 print:p-0'}>
           <Outlet />
         </div>
       </main>
