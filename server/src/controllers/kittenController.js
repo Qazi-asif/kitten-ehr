@@ -2,6 +2,7 @@ import prisma from '../lib/prisma.js';
 import {
   createKittenSchema,
   formatZodError,
+  TERMINAL_KITTEN_STATUSES,
   updateKittenSchema,
 } from '../validations/kittenValidation.js';
 import { normalizePublishTargets, targetsIncludeWebsite } from '../utils/publishTargets.js';
@@ -17,6 +18,12 @@ import { buildDashboardInsights } from '../services/dashboardInsights.js';
 import { getCachedResponse, setCachedResponse, invalidateCacheByPrefix } from '../utils/responseCache.js';
 
 const DASHBOARD_STATS_TTL_MS = 60 * 1000;
+
+const TERMINAL_DISCHARGE_TYPE = {
+  Adopted: 'Adopted',
+  Transferred: 'Transferred',
+  Deceased: 'Deceased',
+};
 
 const kittenIncludes = {
   litter: { select: { id: true, name: true } },
@@ -171,32 +178,36 @@ export async function createKitten(req, res, next) {
       if (!foster) return res.status(400).json({ error: 'Foster not found' });
     }
 
-    const kitten = await prisma.kitten.create({
-      data: {
-        name,
-        status,
-        breed,
-        color,
-        litterId: parsedLitterId,
-        currentFosterId: parsedFosterId,
-        dateOfBirth: dateOfBirth ?? null,
-        sex,
-        fixedStatus,
-        rescueStory,
-        intakeDate: intakeDate ?? new Date(),
-      },
-      include: kittenIncludes,
-    });
-
-    if (parsedFosterId) {
-      await prisma.placement.create({
+    const kitten = await prisma.$transaction(async (tx) => {
+      const created = await tx.kitten.create({
         data: {
-          kittenId: kitten.id,
-          fosterId: parsedFosterId,
-          intakeDate: new Date(),
+          name,
+          status,
+          breed,
+          color,
+          litterId: parsedLitterId,
+          currentFosterId: parsedFosterId,
+          dateOfBirth: dateOfBirth ?? null,
+          sex,
+          fixedStatus,
+          rescueStory,
+          intakeDate: intakeDate ?? new Date(),
         },
+        include: kittenIncludes,
       });
-    }
+
+      if (parsedFosterId) {
+        await tx.placement.create({
+          data: {
+            kittenId: created.id,
+            fosterId: parsedFosterId,
+            intakeDate: new Date(),
+          },
+        });
+      }
+
+      return created;
+    });
 
     // Bust cached public kittens list and dashboard so the new kitten appears immediately
     invalidateCacheByPrefix('public-kittens');
@@ -292,6 +303,8 @@ export async function updateKitten(req, res, next) {
     }
 
     delete data.weightGrams;
+    // Placement APIs own foster assignment — never write currentFosterId here.
+    delete data.currentFosterId;
 
     if (data.bondedWithKittenId && data.bondedWithKittenId === id) {
       return res.status(400).json({ error: 'A kitten cannot be bonded with itself' });
@@ -306,25 +319,43 @@ export async function updateKitten(req, res, next) {
     }
 
     const previousPartnerId = existing.bondedWithKittenId;
+    const nextStatus = data.status ?? existing.status;
+    const becomingTerminal = TERMINAL_KITTEN_STATUSES.includes(nextStatus)
+      && nextStatus !== existing.status;
+
+    if (becomingTerminal) {
+      data.currentFosterId = null;
+    }
 
     let kitten;
-    try {
-      kitten = await prisma.kitten.update({
-        where: { id },
-        data,
-        include: kittenIncludes,
-      });
-    } catch (error) {
-      if (!isUnknownPublishTargetsError(error) || data.publishTargets === undefined) {
-        throw error;
+    kitten = await prisma.$transaction(async (tx) => {
+      if (becomingTerminal) {
+        await tx.placement.updateMany({
+          where: { kittenId: id, dischargeDate: null },
+          data: {
+            dischargeDate: new Date(),
+            dischargeType: TERMINAL_DISCHARGE_TYPE[nextStatus] || nextStatus,
+          },
+        });
       }
 
-      kitten = await prisma.kitten.update({
-        where: { id },
-        data: withLegacyWebsiteFlag(data, data.publishTargets),
-        include: kittenIncludes,
-      });
-    }
+      try {
+        return await tx.kitten.update({
+          where: { id },
+          data,
+          include: kittenIncludes,
+        });
+      } catch (error) {
+        if (!isUnknownPublishTargetsError(error) || data.publishTargets === undefined) {
+          throw error;
+        }
+        return tx.kitten.update({
+          where: { id },
+          data: withLegacyWebsiteFlag(data, data.publishTargets),
+          include: kittenIncludes,
+        });
+      }
+    });
 
     if (previousPartnerId && previousPartnerId !== data.bondedWithKittenId) {
       await prisma.kitten.updateMany({

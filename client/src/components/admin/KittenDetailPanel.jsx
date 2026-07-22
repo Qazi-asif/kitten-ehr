@@ -21,7 +21,6 @@ import {
   deleteDocument,
   fetchDocuments,
   fetchLitters,
-  fetchFosters,
   fetchKittens,
   fetchKittenById,
   fetchKittenPhotos,
@@ -103,7 +102,6 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
   const [savingUpdate, setSavingUpdate] = useState(false);
   const [allKittens, setAllKittens] = useState([]);
   const [litters, setLitters] = useState([]);
-  const [fosters, setFosters] = useState([]);
   const [error, setError] = useState(null);
   const [alertsDismissed, setAlertsDismissed] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -120,7 +118,6 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
       fixedStatus: normalizeFixedStatus(data.fixedStatus),
       dateOfBirth: data.dateOfBirth ? data.dateOfBirth.slice(0, 10) : '',
       intakeDate: data.intakeDate ? data.intakeDate.slice(0, 10) : '',
-      currentFosterId: data.currentFosterId ? String(data.currentFosterId) : '',
       rescueStory: data.rescueStory || '',
       fivFelvStatus: data.fivFelvStatus || '',
       specialNeeds: data.specialNeeds || '',
@@ -181,7 +178,6 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
       loadKitten(),
       fetchLitters().then(setLitters).catch(() => setLitters([])),
       fetchKittens().then(setAllKittens).catch(() => setAllKittens([])),
-      fetchFosters().then(setFosters).catch(() => setFosters([])),
     ])
       .then(() => setLoading(false))
       .catch((err) => {
@@ -261,7 +257,6 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
         fixedStatus: profileForm.fixedStatus,
         dateOfBirth: profileForm.dateOfBirth || null,
         intakeDate: profileForm.intakeDate || null,
-        currentFosterId: profileForm.currentFosterId ? Number.parseInt(profileForm.currentFosterId, 10) : null,
         rescueStory: profileForm.rescueStory,
         fivFelvStatus: profileForm.fivFelvStatus || null,
         specialNeeds: profileForm.specialNeeds || null,
@@ -283,7 +278,6 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
         fixedStatus: normalizeFixedStatus(updated.fixedStatus),
         dateOfBirth: updated.dateOfBirth ? updated.dateOfBirth.slice(0, 10) : '',
         intakeDate: updated.intakeDate ? updated.intakeDate.slice(0, 10) : '',
-        currentFosterId: updated.currentFosterId ? String(updated.currentFosterId) : '',
         rescueStory: updated.rescueStory || '',
         fivFelvStatus: updated.fivFelvStatus || '',
         specialNeeds: updated.specialNeeds || '',
@@ -651,25 +645,28 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                     ))}
                   </select>
                 </label>
-                <label className="block sm:col-span-2">
+                <div className="block sm:col-span-2">
                   <span className="text-xs font-semibold uppercase text-gray-500">Assigned Foster</span>
-                  <select
-                    value={profileForm.currentFosterId || ''}
-                    onChange={(e) => handleProfileFieldChange('currentFosterId', e.target.value)}
-                    disabled={!canEdit}
-                    className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm disabled:bg-gray-50"
-                  >
-                    <option value="">No foster assigned</option>
-                    {fosters.map((foster) => (
-                      <option key={foster.id} value={String(foster.id)}>
-                        {foster.name}
-                      </option>
-                    ))}
-                  </select>
-                  {fosters.length === 0 && (
-                    <p className="mt-1 text-xs text-amber-600">No fosters available. Add fosters under Admin → Fosters.</p>
-                  )}
-                </label>
+                  <div className="mt-1 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-800">
+                    {kitten.currentFoster ? (
+                      <Link
+                        to={`/admin/fosters/${kitten.currentFoster.id}`}
+                        className="font-semibold text-emerald-700 hover:underline"
+                      >
+                        {kitten.currentFoster.name}
+                      </Link>
+                    ) : (
+                      <span className="text-gray-500">No foster assigned</span>
+                    )}
+                  </div>
+                  <p className="mt-1 text-xs text-gray-500">
+                    Assign or discharge fosters from{' '}
+                    <Link to="/admin/fosters" className="font-semibold text-brand hover:underline">
+                      Admin → Fosters
+                    </Link>
+                    {' '}(placements), not from this profile field.
+                  </p>
+                </div>
                 <label className="block sm:col-span-2">
                   <span className="text-xs font-semibold uppercase text-gray-500">Litter Group</span>
                   <LitterSelect

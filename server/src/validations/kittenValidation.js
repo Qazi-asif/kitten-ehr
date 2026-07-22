@@ -10,6 +10,9 @@ export const KITTEN_STATUSES = [
   'Deceased',
 ];
 
+/** Statuses that end an open foster placement and clear currentFosterId. */
+export const TERMINAL_KITTEN_STATUSES = ['Adopted', 'Transferred', 'Deceased'];
+
 export const FIXED_STATUS_OPTIONS = ['Intact', 'Spayed/Neutered'];
 
 const fixedStatusField = z
@@ -64,7 +67,6 @@ export const updateKittenSchema = z
     websiteFeaturedComment: z.string().max(2000).optional(),
     publishTargets: publishTargetsField,
     litterId: z.coerce.number().int().positive().optional().nullable(),
-    currentFosterId: z.coerce.number().int().positive().optional().nullable(),
     isBondedPair: z.boolean().optional(),
     bondedWithKittenId: z.coerce.number().int().positive().optional().nullable(),
     bondedWithName: z.string().max(200).optional(),
