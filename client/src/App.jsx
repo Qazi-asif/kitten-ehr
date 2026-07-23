@@ -48,7 +48,6 @@ const FosterPage = lazy(() => import('./pages/public/FosterPage'));
 const FosterFormPage = lazy(() => import('./pages/public/FosterFormPage'));
 const HomePage = lazy(() => import('./pages/public/HomePage'));
 const PublicKittenProfile = lazy(() => import('./pages/public/PublicKittenProfile'));
-const RehomePage = lazy(() => import('./pages/public/RehomePage'));
 
 function PageLoader() {
   return (
@@ -92,8 +91,6 @@ function App() {
               <Route path="/events/:slug" element={<EventDetailPage />} />
               <Route path="/donate" element={<DonatePage />} />
               <Route path="/contact" element={<ContactPage />} />
-              <Route path="/rehome" element={<RehomePage />} />
-              <Route path="/surrender" element={<Navigate to="/rehome" replace />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/privacy" element={<PrivacyPolicyPage />} />
             </Route>
