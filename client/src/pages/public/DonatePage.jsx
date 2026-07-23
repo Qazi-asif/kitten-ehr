@@ -8,7 +8,9 @@ import { fetchPublicSettings, invalidatePublicSettingsCache } from '../../servic
 import { DONATE_PAGE_EIN } from '../../constants/siteCopy';
 import {
   DEFAULT_GIVEBUTTER_EMBED,
+  DEFAULT_GIVEBUTTER_DONATE_URL,
   DEFAULT_GIVEBUTTER_NINE_LIVES_EMBED,
+  DEFAULT_GIVEBUTTER_NINE_LIVES_URL,
 } from '../../constants/givebutterDefaults';
 import { markCheckoutSuccessParam } from '../../hooks/useGivebutterCheckout';
 
@@ -222,6 +224,7 @@ function DonatePage() {
               <GivebutterDonationWidget
                 code={settings.donationWidgetCode || DEFAULT_GIVEBUTTER_EMBED}
                 amount={prefilledAmount || undefined}
+                fallbackUrl={DEFAULT_GIVEBUTTER_DONATE_URL}
                 onSuccess={handleDonationSuccess}
                 className="min-h-[420px] w-full"
               />
@@ -325,6 +328,7 @@ function DonatePage() {
             <GivebutterDonationWidget
               code={DEFAULT_GIVEBUTTER_NINE_LIVES_EMBED}
               frequency="monthly"
+              fallbackUrl={DEFAULT_GIVEBUTTER_NINE_LIVES_URL}
               onSuccess={handleDonationSuccess}
               className="min-h-[420px] w-full"
             />

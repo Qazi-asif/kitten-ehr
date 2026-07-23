@@ -1,5 +1,6 @@
 import GivebutterDonationWidget from './GivebutterDonationWidget';
 import { sponsorshipOverflowDisclosure } from '../constants/donationCopy';
+import { DEFAULT_GIVEBUTTER_SPONSOR_URL } from '../constants/givebutterDefaults';
 
 function DonationCheckoutPanel({
   widgetCode,
@@ -24,6 +25,7 @@ function DonationCheckoutPanel({
           kittenName={kittenName}
           tier={tier}
           sponsor
+          fallbackUrl={DEFAULT_GIVEBUTTER_SPONSOR_URL}
           onSuccess={onSuccess}
           className="min-h-[420px] w-full"
         />

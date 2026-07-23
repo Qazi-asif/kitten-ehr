@@ -2,7 +2,10 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Heart, Home, PawPrint, ShoppingBag, Menu } from 'lucide-react';
 import { isDonatePageLive } from '../../constants/siteFeatures';
-import { DEFAULT_GIVEBUTTER_SPONSOR_EMBED } from '../../constants/givebutterDefaults';
+import {
+  DEFAULT_GIVEBUTTER_SPONSOR_EMBED,
+  DEFAULT_GIVEBUTTER_SPONSOR_URL,
+} from '../../constants/givebutterDefaults';
 import { sponsorshipOverflowDisclosure } from '../../constants/donationCopy';
 import { WISHLIST_OWNER_TYPES, WISHLIST_RETAILER_META } from '../../constants/wishlists';
 import GivebutterDonationWidget from '../../components/GivebutterDonationWidget';
@@ -411,6 +414,7 @@ function PublicKittenProfile() {
                     kittenId={kitten.id}
                     kittenName={kitten.name}
                     sponsor
+                    fallbackUrl={DEFAULT_GIVEBUTTER_SPONSOR_URL}
                     onSuccess={handleSponsorshipSuccess}
                     className="min-h-[300px] w-full"
                   />

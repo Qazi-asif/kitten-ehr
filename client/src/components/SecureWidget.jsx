@@ -3,6 +3,9 @@ import { useEffect, useMemo, useRef } from 'react';
 const ALLOWED_HOSTS = [
   'givebutter.com',
   'widgets.givebutter.com',
+  'js.givebutter.com',
+  'api.givebutter.com',
+  'givebutter.s3.amazonaws.com',
   'paypal.com',
   'www.paypal.com',
   'paypalobjects.com',

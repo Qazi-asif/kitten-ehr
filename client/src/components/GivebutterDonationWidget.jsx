@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import SecureWidget from './SecureWidget';
-import { ensureGivebutterEmbed } from '../constants/givebutterDefaults';
+import {
+  DEFAULT_GIVEBUTTER_DONATE_URL,
+  ensureGivebutterEmbed,
+} from '../constants/givebutterDefaults';
 import { syncGivebutterUrlParams, useGivebutterCheckoutSuccess } from '../hooks/useGivebutterCheckout';
 
 function widgetHasVisibleContent(container) {
@@ -29,6 +32,7 @@ function GivebutterDonationWidget({
   kittenName,
   tier,
   sponsor = false,
+  fallbackUrl = DEFAULT_GIVEBUTTER_DONATE_URL,
   onSuccess,
 }) {
   const shellRef = useRef(null);
@@ -64,7 +68,7 @@ function GivebutterDonationWidget({
         return;
       }
 
-      if (Date.now() - startedAt >= 8000) {
+      if (Date.now() - startedAt >= 10000) {
         setLoading(false);
         setShowFallback(true);
         window.clearInterval(timer);
@@ -84,14 +88,23 @@ function GivebutterDonationWidget({
 
       {showFallback ? (
         <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-950">
-          <p className="font-semibold">Donation form did not load.</p>
+          <p className="font-semibold">Donation form did not load in this browser.</p>
           <p className="mt-2 leading-relaxed">
-            In Admin → Settings → Organization, paste the full Givebutter embed from
-            {' '}<span className="font-medium">Dashboard → Sharing → Widgets → Form</span>.
-            The snippet must include both the script tag and the
-            {' '}<code className="rounded bg-amber-100 px-1 text-xs">&lt;givebutter-giving-form&gt;</code>
-            {' '}or <code className="rounded bg-amber-100 px-1 text-xs">&lt;givebutter-widget&gt;</code> tag
-            with your real campaign code.
+            You can still give securely on Givebutter.
+          </p>
+          <a
+            href={fallbackUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-4 inline-flex rounded-lg bg-brand px-5 py-2.5 text-sm font-bold text-white hover:bg-brand-dark"
+          >
+            Continue on Givebutter
+          </a>
+          <p className="mt-3 text-xs leading-relaxed text-amber-900/80">
+            Staff: in Admin → Settings → Organization, paste the full Form embed from
+            Givebutter Dashboard → Sharing → Widgets (script tag plus
+            {' '}<code className="rounded bg-amber-100 px-1">&lt;givebutter-giving-form&gt;</code>
+            {' '}or <code className="rounded bg-amber-100 px-1">&lt;givebutter-widget&gt;</code>).
           </p>
         </div>
       ) : null}

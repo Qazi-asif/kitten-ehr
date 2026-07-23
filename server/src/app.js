@@ -86,11 +86,18 @@ app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
-        scriptSrc: ["'self'", 'https://widgets.givebutter.com', 'https://js.stripe.com'],
+        scriptSrc: [
+          "'self'",
+          'https://widgets.givebutter.com',
+          'https://js.givebutter.com',
+          'https://js.stripe.com',
+        ],
         connectSrc: [
           "'self'",
           'https://givebutter.com',
           'https://widgets.givebutter.com',
+          'https://js.givebutter.com',
+          'https://api.givebutter.com',
           'https://js.stripe.com',
           'https://api.stripe.com',
         ],
@@ -106,14 +113,15 @@ app.use(
           'data:',
           'https://givebutter.com',
           'https://widgets.givebutter.com',
+          'https://givebutter.s3.amazonaws.com',
           'https://js.stripe.com',
           'https://www.paypal.com',
           'https://www.paypalobjects.com',
         ],
         // PayPal's donate button is a real <form> POSTing to paypal.com -
         // without this, the browser blocks the submission outright (default
-        // form-action is 'self' only).
-        formAction: ["'self'", 'https://www.paypal.com'],
+        // form-action is 'self' only). Givebutter checkout also posts off-site.
+        formAction: ["'self'", 'https://www.paypal.com', 'https://givebutter.com'],
       },
     },
   }),
