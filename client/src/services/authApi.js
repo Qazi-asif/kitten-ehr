@@ -3,16 +3,30 @@ const TOKEN_KEY = 'pt_auth_token';
 const USER_KEY = 'pt_auth_user';
 const REMEMBER_KEY = 'pt_auth_remember';
 
-function getSessionStorage() {
-  return sessionStorage.getItem(TOKEN_KEY) ? sessionStorage : null;
+function readToken() {
+  return localStorage.getItem(TOKEN_KEY) || sessionStorage.getItem(TOKEN_KEY);
 }
 
-function getPersistentStorage() {
-  return localStorage.getItem(TOKEN_KEY) ? localStorage : null;
+function readUserRaw() {
+  return localStorage.getItem(USER_KEY) || sessionStorage.getItem(USER_KEY);
+}
+
+/** Migrate legacy sessionStorage-only sessions into localStorage (multi-tab). */
+function migrateLegacySessionStorage() {
+  const sessionToken = sessionStorage.getItem(TOKEN_KEY);
+  if (!sessionToken) return;
+  if (!localStorage.getItem(TOKEN_KEY)) {
+    localStorage.setItem(TOKEN_KEY, sessionToken);
+    const sessionUser = sessionStorage.getItem(USER_KEY);
+    if (sessionUser) localStorage.setItem(USER_KEY, sessionUser);
+  }
+  sessionStorage.removeItem(TOKEN_KEY);
+  sessionStorage.removeItem(USER_KEY);
 }
 
 export function getAuthToken() {
-  return sessionStorage.getItem(TOKEN_KEY) || localStorage.getItem(TOKEN_KEY);
+  migrateLegacySessionStorage();
+  return readToken();
 }
 
 export function isRememberMeEnabled() {
@@ -20,11 +34,10 @@ export function isRememberMeEnabled() {
 }
 
 export function getStoredUser() {
-  if (!getAuthToken()) {
-    return null;
-  }
+  migrateLegacySessionStorage();
+  if (!readToken()) return null;
 
-  const raw = sessionStorage.getItem(USER_KEY) || localStorage.getItem(USER_KEY);
+  const raw = readUserRaw();
   if (!raw) return null;
   try {
     return JSON.parse(raw);
@@ -34,11 +47,13 @@ export function getStoredUser() {
   }
 }
 
-export function setAuthSession({ token, user, remember = false }) {
+export function setAuthSession({ token, user, remember = true }) {
+  // Always persist in localStorage so every tab in this browser shares the
+  // session. sessionStorage is per-tab and caused surprise logouts when
+  // opening another admin tab.
   clearAuthSession();
-  const storage = remember ? localStorage : sessionStorage;
-  storage.setItem(TOKEN_KEY, token);
-  storage.setItem(USER_KEY, JSON.stringify(user));
+  localStorage.setItem(TOKEN_KEY, token);
+  localStorage.setItem(USER_KEY, JSON.stringify(user));
   if (remember) {
     localStorage.setItem(REMEMBER_KEY, '1');
   }
@@ -81,10 +96,6 @@ export async function loginRequest(email, password) {
 
   if (!response.ok) {
     const error = new Error(data.error || 'Login failed');
-    // Set only when the server rejects a Foster Portal account on this
-    // staff login endpoint (see authController.js) - lets LoginPage.jsx
-    // render an actual clickable link to /portal/login instead of just
-    // mentioning the path in plain error text.
     if (data.portalLoginUrl) error.portalLoginUrl = data.portalLoginUrl;
     throw error;
   }
@@ -96,9 +107,10 @@ export async function fetchCurrentUser() {
   const token = getAuthToken();
   if (!token) return null;
 
+  // Stay signed in through brief offline / flaky network moments. Only a real
+  // auth rejection (401/403) should wipe the session.
   if (typeof navigator !== 'undefined' && !navigator.onLine) {
-    clearAuthSession();
-    return null;
+    return getStoredUser();
   }
 
   try {
@@ -112,18 +124,20 @@ export async function fetchCurrentUser() {
 
     clearTimeout(timeoutId);
 
-    if (!response.ok) {
+    if (response.status === 401 || response.status === 403) {
       clearAuthSession();
       return null;
     }
 
+    if (!response.ok) {
+      return getStoredUser();
+    }
+
     const user = await response.json();
-    const storage = getSessionStorage() || getPersistentStorage() || localStorage;
-    storage.setItem(USER_KEY, JSON.stringify(user));
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
     return user;
   } catch {
-    clearAuthSession();
-    return null;
+    return getStoredUser();
   }
 }
 

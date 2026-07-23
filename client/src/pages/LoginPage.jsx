@@ -10,7 +10,7 @@ function LoginPage() {
   const location = useLocation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
   const [error, setError] = useState('');
   const [portalLoginUrl, setPortalLoginUrl] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -117,10 +117,10 @@ function LoginPage() {
                 onChange={(e) => setRememberMe(e.target.checked)}
                 className="rounded border-slate-300 text-brand focus:ring-brand/30"
               />
-              Keep me logged in
+              Keep me logged in on this device
             </label>
             <p className="text-xs text-slate-500">
-              If unchecked, you will be signed out when you close the browser.
+              Your session is shared across tabs in this browser. Sign in again if you switch to a different browser.
             </p>
             <button
               type="submit"

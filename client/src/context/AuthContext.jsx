@@ -22,14 +22,6 @@ export function AuthProvider({ children }) {
   const refreshUser = useCallback(async () => {
     const token = getAuthToken();
     if (!token) {
-      clearAuthSession();
-      setUser(null);
-      setLoading(false);
-      return null;
-    }
-
-    if (typeof navigator !== 'undefined' && !navigator.onLine) {
-      clearAuthSession();
       setUser(null);
       setLoading(false);
       return null;
@@ -39,15 +31,14 @@ export function AuthProvider({ children }) {
       const current = await fetchCurrentUser();
       if (current) {
         setUser(current);
-      } else {
-        clearAuthSession();
+      } else if (!getAuthToken()) {
+        // Token was rejected and cleared (401/403).
         setUser(null);
       }
-      return current;
+      // Network blip with token still present: keep the cached user.
+      return current || getStoredUser();
     } catch {
-      clearAuthSession();
-      setUser(null);
-      return null;
+      return getStoredUser();
     } finally {
       setLoading(false);
     }
@@ -59,16 +50,7 @@ export function AuthProvider({ children }) {
     return () => clearTimeout(failSafe);
   }, [refreshUser]);
 
-  useEffect(() => {
-    function handleOffline() {
-      logout();
-    }
-
-    window.addEventListener('offline', handleOffline);
-    return () => window.removeEventListener('offline', handleOffline);
-  }, [logout]);
-
-  async function login(email, password, remember = false) {
+  async function login(email, password, remember = true) {
     const data = await loginRequest(email, password);
     setAuthSession({ token: data.token, user: data.user, remember });
     setUser(data.user);

@@ -16,13 +16,15 @@ const USER_KEY = 'pt_portal_user';
 const REMEMBER_KEY = 'pt_portal_remember';
 
 export function getPortalAuthToken() {
-  return sessionStorage.getItem(TOKEN_KEY) || localStorage.getItem(TOKEN_KEY);
+  migrateLegacyPortalSessionStorage();
+  return localStorage.getItem(TOKEN_KEY) || sessionStorage.getItem(TOKEN_KEY);
 }
 
 export function getStoredPortalUser() {
+  migrateLegacyPortalSessionStorage();
   if (!getPortalAuthToken()) return null;
 
-  const raw = sessionStorage.getItem(USER_KEY) || localStorage.getItem(USER_KEY);
+  const raw = localStorage.getItem(USER_KEY) || sessionStorage.getItem(USER_KEY);
   if (!raw) return null;
   try {
     return JSON.parse(raw);
@@ -32,11 +34,22 @@ export function getStoredPortalUser() {
   }
 }
 
-export function setPortalAuthSession({ token, user, remember = false }) {
+function migrateLegacyPortalSessionStorage() {
+  const sessionToken = sessionStorage.getItem(TOKEN_KEY);
+  if (!sessionToken) return;
+  if (!localStorage.getItem(TOKEN_KEY)) {
+    localStorage.setItem(TOKEN_KEY, sessionToken);
+    const sessionUser = sessionStorage.getItem(USER_KEY);
+    if (sessionUser) localStorage.setItem(USER_KEY, sessionUser);
+  }
+  sessionStorage.removeItem(TOKEN_KEY);
+  sessionStorage.removeItem(USER_KEY);
+}
+
+export function setPortalAuthSession({ token, user, remember = true }) {
   clearPortalAuthSession();
-  const storage = remember ? localStorage : sessionStorage;
-  storage.setItem(TOKEN_KEY, token);
-  storage.setItem(USER_KEY, JSON.stringify(user));
+  localStorage.setItem(TOKEN_KEY, token);
+  localStorage.setItem(USER_KEY, JSON.stringify(user));
   if (remember) {
     localStorage.setItem(REMEMBER_KEY, '1');
   }
