@@ -3,7 +3,6 @@ import { sponsorshipOverflowDisclosure } from '../constants/donationCopy';
 import { DEFAULT_GIVEBUTTER_SPONSOR_URL } from '../constants/givebutterDefaults';
 
 function DonationCheckoutPanel({
-  widgetCode,
   amount,
   kittenId,
   kittenName,
@@ -17,17 +16,16 @@ function DonationCheckoutPanel({
         {sponsorshipOverflowDisclosure(kittenName)}
       </p>
 
-      <div className="mt-6 overflow-hidden rounded-xl border border-slate-100 bg-slate-50 p-4">
+      <div className="mt-6">
         <GivebutterDonationWidget
-          code={widgetCode}
           amount={amount}
           kittenId={kittenId}
           kittenName={kittenName}
           tier={tier}
           sponsor
           fallbackUrl={DEFAULT_GIVEBUTTER_SPONSOR_URL}
+          buttonLabel={kittenName ? `Sponsor ${kittenName}` : 'Sponsor a kitten'}
           onSuccess={onSuccess}
-          className="min-h-[420px] w-full"
         />
       </div>
     </div>

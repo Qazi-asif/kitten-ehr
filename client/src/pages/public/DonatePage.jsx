@@ -7,9 +7,7 @@ import { isDonatePageLive } from '../../constants/siteFeatures';
 import { fetchPublicSettings, invalidatePublicSettingsCache } from '../../services/publicApi';
 import { DONATE_PAGE_EIN } from '../../constants/siteCopy';
 import {
-  DEFAULT_GIVEBUTTER_EMBED,
   DEFAULT_GIVEBUTTER_DONATE_URL,
-  DEFAULT_GIVEBUTTER_NINE_LIVES_EMBED,
   DEFAULT_GIVEBUTTER_NINE_LIVES_URL,
 } from '../../constants/givebutterDefaults';
 import { markCheckoutSuccessParam } from '../../hooks/useGivebutterCheckout';
@@ -222,11 +220,10 @@ function DonatePage() {
 
             <div className="mt-6 overflow-hidden rounded-xl border border-slate-100 bg-slate-50/50">
               <GivebutterDonationWidget
-                code={settings.donationWidgetCode || DEFAULT_GIVEBUTTER_EMBED}
                 amount={prefilledAmount || undefined}
                 fallbackUrl={DEFAULT_GIVEBUTTER_DONATE_URL}
+                buttonLabel="Donate securely"
                 onSuccess={handleDonationSuccess}
-                className="min-h-[420px] w-full"
               />
             </div>
           </div>
@@ -326,11 +323,10 @@ function DonatePage() {
           </p>
           <div className="mt-6 overflow-hidden rounded-xl border border-slate-100 bg-white p-4 shadow-sm">
             <GivebutterDonationWidget
-              code={DEFAULT_GIVEBUTTER_NINE_LIVES_EMBED}
               frequency="monthly"
               fallbackUrl={DEFAULT_GIVEBUTTER_NINE_LIVES_URL}
+              buttonLabel="Join the Nine Lives Club"
               onSuccess={handleDonationSuccess}
-              className="min-h-[420px] w-full"
             />
           </div>
           <p className="mt-6 text-sm text-slate-600">

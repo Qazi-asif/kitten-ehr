@@ -3,7 +3,6 @@ import { Link, useParams } from 'react-router-dom';
 import { Heart, Home, PawPrint, ShoppingBag, Menu } from 'lucide-react';
 import { isDonatePageLive } from '../../constants/siteFeatures';
 import {
-  DEFAULT_GIVEBUTTER_SPONSOR_EMBED,
   DEFAULT_GIVEBUTTER_SPONSOR_URL,
 } from '../../constants/givebutterDefaults';
 import { sponsorshipOverflowDisclosure } from '../../constants/donationCopy';
@@ -410,13 +409,12 @@ function PublicKittenProfile() {
               ) : !sponsorshipComplete ? (
                 <div className="mt-8">
                   <GivebutterDonationWidget
-                    code={DEFAULT_GIVEBUTTER_SPONSOR_EMBED}
                     kittenId={kitten.id}
                     kittenName={kitten.name}
                     sponsor
                     fallbackUrl={DEFAULT_GIVEBUTTER_SPONSOR_URL}
+                    buttonLabel={`Sponsor ${kitten.name}`}
                     onSuccess={handleSponsorshipSuccess}
-                    className="min-h-[300px] w-full"
                   />
                 </div>
               ) : (
