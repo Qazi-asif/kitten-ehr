@@ -42,7 +42,8 @@ function createPool(rawUrl, max = 5) {
 }
 
 export function createPrismaClient() {
-  const pool = createPool(process.env.DATABASE_URL, 5);
+  const poolMax = Number.parseInt(process.env.DATABASE_POOL_MAX || '8', 10) || 8;
+  const pool = createPool(process.env.DATABASE_URL, poolMax);
   const adapter = new PrismaPg(pool);
   return new PrismaClient({
     adapter,

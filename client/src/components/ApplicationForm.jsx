@@ -268,7 +268,7 @@ function ApplicationForm({
       
       {error && <div className="mb-8 rounded-xl bg-red-50 border border-red-200 px-6 py-4 text-sm font-medium text-red-800">{error}</div>}
 
-      <form onSubmit={handleSubmit} className="rounded-3xl border border-brand/20 bg-white p-8 lg:p-12 shadow-sm">
+      <form onSubmit={handleSubmit} className="rounded-3xl border border-brand/20 bg-white p-5 shadow-sm sm:p-8 lg:p-12">
         
         {/* Form Header */}
         <div className="mb-10 pb-8 border-b border-slate-100">
@@ -560,7 +560,7 @@ function ApplicationForm({
               <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand/10 text-brand text-xs">5</span>
               Home Photos
             </h3>
-            <div className="mb-10 rounded-2xl border-2 border-dashed border-brand/30 bg-brand/5 p-6">
+            <div className="mb-10 rounded-2xl border-2 border-dashed border-brand/30 bg-brand/5 p-4 sm:p-6">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-sm font-semibold text-slate-900">
@@ -570,7 +570,7 @@ function ApplicationForm({
                     JPG, PNG, or HEIC — foster space, supplies, or a safe room. You can submit without photos.
                   </p>
                 </div>
-                <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-brand-dark">
+                <label className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-brand-dark sm:w-auto">
                   <ImagePlus className="h-4 w-4" />
                   {photoFiles.length >= maxPhotos ? 'Photos added' : 'Add Photos'}
                   <input
@@ -584,7 +584,7 @@ function ApplicationForm({
                 </label>
               </div>
 
-              <div className="mt-5 grid grid-cols-3 gap-3">
+              <div className="mt-5 grid grid-cols-3 gap-2 sm:gap-3">
                 {Array.from({ length: maxPhotos }).map((_, index) => {
                   const preview = photoPreviews[index];
                   return (
@@ -623,11 +623,11 @@ function ApplicationForm({
         )}
 
         {/* Submit Button */}
-        <div className="pt-8 border-t border-slate-100 flex justify-end">
+        <div className="pt-8 border-t border-slate-100 flex justify-stretch sm:justify-end">
           <button
             type="submit"
             disabled={submitting}
-            className="inline-flex items-center gap-2 rounded-xl bg-brand px-10 py-4 text-sm font-bold text-white shadow-md hover:bg-brand-dark transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand px-8 py-4 text-sm font-bold text-white shadow-md hover:bg-brand-dark transition-colors disabled:opacity-60 disabled:cursor-not-allowed sm:w-auto sm:px-10"
           >
             {submitting ? 'Submitting Application...' : copy.submitLabel}
             {!submitting && <Send className="h-4 w-4" />}

@@ -164,38 +164,33 @@ const isAuthenticatedApiPath = (req) =>
   req.path.startsWith('/api') && !req.path.startsWith('/api/public');
 
 // Catch-all for traffic that is neither a public GET nor an authenticated API
-// path (e.g. public POSTs that don't have a dedicated limiter). Sized for a
-// production Hostinger deploy where reverse-proxy IP bucketing can still
-// share a bucket across visitors if hop count is imperfect.
+// path (e.g. public POSTs that don't have a dedicated limiter). Sized for
+// ~4000+ visitors/day with campaign bursts and imperfect proxy IP bucketing.
 const globalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 2500,
+  max: 8000,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Too many requests. Please try again later.' },
   skip: (req) => isPublicRead(req) || isAuthenticatedApiPath(req),
 });
 
-// Public browsing: list + per-card photos + detail (kitten/photo/updates/
-// wishlist/settings) across many page navigations. 1500/15min is production
-// headroom for shared NAT / CDN edge IPs without opening a scraper floodgate.
+// Public browsing: kitten cards fire a photo request each; a mobile session
+// can easily reach hundreds of GETs. Shared campus/cafe Wi‑Fi can represent
+// dozens of real visitors behind one IP during a launch push.
 const publicReadLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 1500,
+  max: 12000,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Too many requests. Please try again later.' },
   skip: (req) => req.method !== 'GET',
 });
 
-// Staff dashboard / admin SPA: a single page can fire 20–50 concurrent GETs
-// (kittens, fosters, alerts, contracts, settings, photos). Multiple admins
-// behind Hostinger's proxy can share a bucket if req.ip collapses — 3000/15min
-// absorbs real concurrent admin work. Login / password-reset stay on their
-// own strict limiters in authRoutes / portalAuthRoutes.
+// Staff dashboard / admin SPA: concurrent GET bursts during a busy intake day.
 const authenticatedLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 3000,
+  max: 8000,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Too many requests. Please try again later.' },
@@ -204,10 +199,8 @@ const authenticatedLimiter = rateLimit({
 
 const applicationLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  // ~200 real applicants worldwide can share a few NATs / mobile gateways.
-  // 40/15min was enough for quiet days but fails a campaign burst from one
-  // campus/VPN exit. 250 still blocks naive spray bots.
-  max: 250,
+  // Campaign days: hundreds of real applicants; some share one mobile gateway IP.
+  max: 500,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Too many application submissions. Please try again later.' },
@@ -216,7 +209,7 @@ const applicationLimiter = rateLimit({
 
 const donationLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 10,
+  max: 100,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Too many donation submissions. Please try again later.' },

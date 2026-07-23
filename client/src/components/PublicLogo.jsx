@@ -1,17 +1,19 @@
 import { Link } from 'react-router-dom';
 
-function PublicLogo({ className = '', orgName = 'Pawsitive Transformations' }) {
-  const words = orgName.trim().split(/\s+/);
-  const primary = words[0] || 'Pawsitive';
-  const secondary = words.slice(1).join(' ');
-
+function PublicLogo({ className = '' }) {
   return (
     <Link to="/" className={`inline-flex items-center gap-2 ${className}`} aria-label="Home">
-      <img
-        src="/images/Pawsitive-01.jpeg"
-        alt="Pawsitive Transformations Logo"
-        className="h-20 sm:h-24 md:h-28 w-auto object-contain"
-      />
+      <picture>
+        <source srcSet="/images/Pawsitive-logo.webp" type="image/webp" />
+        <img
+          src="/images/Pawsitive-logo.jpg"
+          alt="Pawsitive Transformations Logo"
+          width={320}
+          height={160}
+          decoding="async"
+          className="h-12 w-auto object-contain sm:h-16 md:h-20"
+        />
+      </picture>
     </Link>
   );
 }
