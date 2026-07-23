@@ -159,9 +159,11 @@ export async function createApplication(req, res, next) {
       }
     }
 
-    sendApplicationReceivedEmails(application).catch((error) => {
-      console.error('Application email trigger failed:', error.message);
-    });
+    if (process.env.SKIP_APPLICATION_EMAILS !== '1') {
+      sendApplicationReceivedEmails(application).catch((error) => {
+        console.error('Application email trigger failed:', error.message);
+      });
+    }
 
     res.status(201).json({ ...application, uploads, uploadWarning });
   } catch (error) {

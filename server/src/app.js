@@ -204,12 +204,14 @@ const authenticatedLimiter = rateLimit({
 
 const applicationLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  // Shared NAT / Hostinger proxy IPs can represent many real applicants.
-  // 5/15min was starving legitimate foster submissions.
-  max: 40,
+  // ~200 real applicants worldwide can share a few NATs / mobile gateways.
+  // 40/15min was enough for quiet days but fails a campaign burst from one
+  // campus/VPN exit. 250 still blocks naive spray bots.
+  max: 250,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Too many application submissions. Please try again later.' },
+  skip: () => process.env.LOAD_TEST_BYPASS_RATE_LIMIT === '1',
 });
 
 const donationLimiter = rateLimit({

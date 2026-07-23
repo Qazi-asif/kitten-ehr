@@ -17,6 +17,7 @@
     "db:sync-permissions": "node scripts/sync-permissions.mjs",
     "qa:rbac-smoke": "node scripts/smoke-rbac-matrix.mjs http://127.0.0.1:5000",
     "qa:chat-smoke": "node scripts/smoke-staff-chat.mjs http://127.0.0.1:5000",
+    "qa:load-applications": "node scripts/load-applications.mjs http://127.0.0.1:5000",
     "db:studio": "prisma studio",
     "qa": "node scripts/qa-test.js"
   },
