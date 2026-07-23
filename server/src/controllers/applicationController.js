@@ -50,7 +50,10 @@ async function saveApplicationUploads(applicationId, files = []) {
       throw Object.assign(new Error(fileCheck.error), { status: fileCheck.status });
     }
 
-    if (!file.mimetype?.startsWith('image/')) {
+    const mime = (file.mimetype || '').toLowerCase();
+    const looksLikeImage = mime.startsWith('image/')
+      || /\.(jpe?g|png|webp|gif|heic|heif)$/i.test(file.originalname || '');
+    if (!looksLikeImage) {
       throw Object.assign(new Error('Only image uploads are allowed for application photos.'), { status: 400 });
     }
 
@@ -61,7 +64,7 @@ async function saveApplicationUploads(applicationId, files = []) {
           fileName: file.originalname || 'upload',
           docLabel: 'Applicant Photo',
           fileUrl: await resolveApplicationFileUrl(applicationId, file),
-          fileType: file.mimetype,
+          fileType: mime || 'application/octet-stream',
         },
       }),
     );
@@ -144,12 +147,15 @@ export async function createApplication(req, res, next) {
     });
 
     let uploads = [];
+    let uploadWarning = null;
     if (photoFiles.length > 0) {
       try {
         uploads = await saveApplicationUploads(application.id, photoFiles);
       } catch (uploadError) {
-        await prisma.application.delete({ where: { id: application.id } }).catch(() => {});
-        return res.status(uploadError.status || 400).json({ error: uploadError.message });
+        // Keep the application even if photos fail — foster inquiries should
+        // not be lost because of a HEIC/MIME/storage issue.
+        console.error('Application photo upload failed:', uploadError.message);
+        uploadWarning = uploadError.message || 'Photos could not be saved. Your application was still submitted.';
       }
     }
 
@@ -157,7 +163,7 @@ export async function createApplication(req, res, next) {
       console.error('Application email trigger failed:', error.message);
     });
 
-    res.status(201).json({ ...application, uploads });
+    res.status(201).json({ ...application, uploads, uploadWarning });
   } catch (error) {
     next(error);
   }

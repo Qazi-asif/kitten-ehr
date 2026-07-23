@@ -204,7 +204,9 @@ const authenticatedLimiter = rateLimit({
 
 const applicationLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 5,
+  // Shared NAT / Hostinger proxy IPs can represent many real applicants.
+  // 5/15min was starving legitimate foster submissions.
+  max: 40,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Too many application submissions. Please try again later.' },

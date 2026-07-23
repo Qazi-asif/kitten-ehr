@@ -165,22 +165,32 @@ function ApplicationForm({
 
   function handlePhotoChange(e) {
     const selected = Array.from(e.target.files || []);
+    e.target.value = '';
 
-    if (selected.length !== maxPhotos) {
-      setError(`Please select exactly ${maxPhotos} photos (JPG, PNG, or HEIC).`);
-      e.target.value = '';
-      return;
-    }
+    if (selected.length === 0) return;
 
     const invalid = selected.find((file) => !isAcceptedPhoto(file));
     if (invalid) {
       setError('Photos must be JPG, PNG, or HEIC files.');
-      e.target.value = '';
       return;
     }
 
-    setError('');
-    setPhotoFiles(selected);
+    const tooLarge = selected.find((file) => file.size > 5 * 1024 * 1024);
+    if (tooLarge) {
+      setError('Each photo must be 5MB or smaller.');
+      return;
+    }
+
+    setPhotoFiles((prev) => {
+      const room = Math.max(0, maxPhotos - prev.length);
+      const toAdd = selected.slice(0, room);
+      return [...prev, ...toAdd];
+    });
+    if (photoFiles.length + selected.length > maxPhotos) {
+      setError(`You can upload up to ${maxPhotos} photos. Extra files were skipped.`);
+    } else {
+      setError('');
+    }
   }
 
   function removePhoto(index) {
@@ -553,16 +563,21 @@ function ApplicationForm({
             <div className="mb-10 rounded-2xl border-2 border-dashed border-brand/30 bg-brand/5 p-6">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <p className="text-sm font-semibold text-slate-900">Upload exactly {maxPhotos} photos of your home setup</p>
-                  <p className="mt-1 text-sm text-slate-600">JPG, PNG, or HEIC. Foster space for cats and kittens, supplies, or safe room.</p>
+                  <p className="text-sm font-semibold text-slate-900">
+                    Home photos <span className="font-medium text-slate-500">(optional, up to {maxPhotos})</span>
+                  </p>
+                  <p className="mt-1 text-sm text-slate-600">
+                    JPG, PNG, or HEIC — foster space, supplies, or a safe room. You can submit without photos.
+                  </p>
                 </div>
                 <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-brand-dark">
                   <ImagePlus className="h-4 w-4" />
-                  Choose 3 Photos
+                  {photoFiles.length >= maxPhotos ? 'Photos added' : 'Add Photos'}
                   <input
                     type="file"
                     accept={FOSTER_PHOTO_ACCEPT}
                     multiple
+                    disabled={photoFiles.length >= maxPhotos}
                     onChange={handlePhotoChange}
                     className="sr-only"
                   />

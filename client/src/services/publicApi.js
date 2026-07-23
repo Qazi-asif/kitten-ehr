@@ -67,6 +67,12 @@ export function fetchPublicSettings() {
 export async function submitApplication(type, formData, photos = [], kittenId) {
   const kittenOfInterest = formData.kittenOfInterest || formData.kittenInterest || '';
 
+  async function throwIfFailed(response) {
+    if (response.ok) return response.json();
+    const payload = await response.json().catch(() => ({}));
+    throw new Error(payload.error || `Failed to submit application (${response.status})`);
+  }
+
   if (photos.length > 0) {
     const body = new FormData();
     body.append('type', type);
@@ -79,8 +85,7 @@ export async function submitApplication(type, formData, photos = [], kittenId) {
       method: 'POST',
       body,
     });
-    if (!response.ok) throw new Error('Failed to submit application');
-    return response.json();
+    return throwIfFailed(response);
   }
 
   const response = await publicFetch('/public/applications', {
@@ -92,8 +97,7 @@ export async function submitApplication(type, formData, photos = [], kittenId) {
       kittenId: kittenId || undefined,
     }),
   });
-  if (!response.ok) throw new Error('Failed to submit application');
-  return response.json();
+  return throwIfFailed(response);
 }
 
 export async function submitDonation(data) {
