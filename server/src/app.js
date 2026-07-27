@@ -72,16 +72,13 @@ function resolveClientDistPath() {
 app.set('trust proxy', 1);
 
 // Default helmet() CSP blocks the third-party donation widgets embedded on
-// the public Donate page (Givebutter/PayPal/Stripe-under-Givebutter). Domains
-// below match SecureWidget.jsx's own ALLOWED_HOSTS sanitization allowlist -
-// the app's existing, developer-curated trust list for these exact widgets -
-// plus api.stripe.com (well-documented Stripe requirement, not yet in that
-// list since it's a connect-src need rather than a src/href one). Every
-// directive keeps 'self' and every other helmet default directive
-// (default-src, object-src, frame-ancestors, upgrade-insecure-requests, etc.)
-// is untouched. Venmo needs no entry: its link is a plain <a> (CSP doesn't
-// govern anchor navigation) and its QR code is stored as a data: URI, already
-// covered by the existing img-src.
+// the public Donate page (Givebutter/PayPal). Domains below match
+// SecureWidget.jsx's ALLOWED_HOSTS sanitization allowlist. Stripe hosts are
+// retained because Givebutter checkout loads Stripe.js under the hood —
+// they are not for a standalone Stripe donation link (removed from Settings).
+// Venmo needs no entry: its link is a plain <a> (CSP doesn't govern anchor
+// navigation) and its QR code is stored as a data: URI, already covered by
+// the existing img-src.
 app.use(
   helmet({
     contentSecurityPolicy: {

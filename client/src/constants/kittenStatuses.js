@@ -6,6 +6,7 @@ export const KITTEN_STATUS_OPTIONS = [
   'Available for Adoption',
   'Adopted',
   'Medical Hold',
+  'In Socialization',
   'Transferred',
   'Deceased',
   'Released',

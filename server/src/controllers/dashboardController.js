@@ -2,6 +2,7 @@ import prisma from '../lib/prisma.js';
 import { buildDashboardInsights } from '../services/dashboardInsights.js';
 import { stripInlineDataUrl } from '../utils/kittenSerialization.js';
 import { getCachedResponse, setCachedResponse } from '../utils/responseCache.js';
+import { startOfPacificTodayUtc } from '../utils/pacificDate.js';
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 const ALERT_LIMIT = 25;
@@ -238,13 +239,13 @@ export async function getDashboardMetrics(_req, res, next) {
           createdAt: true,
         },
       }),
-      // Next 5 events published to the public website - same isPublic/status
-      // filter getPublicEventBySlug uses for what counts as "live" on the site.
+      // Next 5 published public events from Pacific midnight today onward
+      // (includes today's events even if their clock time has already passed).
       prisma.event.findMany({
         where: {
           isPublic: true,
           status: 'PUBLISHED',
-          date: { gte: new Date() },
+          date: { gte: startOfPacificTodayUtc() },
         },
         orderBy: { date: 'asc' },
         take: 5,

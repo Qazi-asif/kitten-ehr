@@ -6,6 +6,7 @@ export const KITTEN_STATUSES = [
   'Available for Adoption',
   'Adopted',
   'Medical Hold',
+  'In Socialization',
   'Transferred',
   'Deceased',
   'Released',
@@ -44,6 +45,9 @@ export const createKittenSchema = z.object({
   weightGrams: z.coerce.number().positive('Weight must be a positive number').optional(),
   intakeDate: optionalDate,
   intakeSource: z.string().max(200).optional().default(''),
+  microchipNumber: z.string().max(80).optional().default(''),
+  isTnr: z.boolean().optional().default(false),
+  isColony: z.boolean().optional().default(false),
 });
 
 const optionalUrl = z.string().trim().max(500).optional().nullable();
@@ -73,6 +77,8 @@ export const updateKittenSchema = z
     bondedWithKittenId: z.coerce.number().int().positive().optional().nullable(),
     bondedWithName: z.string().max(200).optional(),
     isMedicalSpecialNeeds: z.boolean().optional(),
+    isTnr: z.boolean().optional(),
+    isColony: z.boolean().optional(),
     weightGrams: z.coerce.number().positive('Weight must be a positive number').optional(),
     // Outcome fields: date for Adopted/Deceased/Released; detail text for Transferred.
     outcomeDate: optionalDate,

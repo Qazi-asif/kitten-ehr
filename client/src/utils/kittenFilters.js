@@ -42,6 +42,7 @@ export const ADOPT_COLOR_CHIP_OPTIONS = [
   { id: 'Brown', label: 'Brown' },
   { id: 'Orange', label: 'Orange/Ginger' },
   { id: 'Calico', label: 'Calico' },
+  { id: 'Siamese', label: 'Siamese' },
   { id: 'Tortoiseshell', label: 'Tortoiseshell' },
 ];
 

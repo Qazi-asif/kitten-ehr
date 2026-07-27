@@ -61,9 +61,10 @@ export async function activateKittenProtocol(kittenId, payload) {
   return response.json();
 }
 
-export async function markProtocolDoseGiven(kittenId, doseId) {
+export async function markProtocolDoseGiven(kittenId, doseId, payload = {}) {
   const response = await adminFetch(`/kittens/${kittenId}/protocols/doses/${doseId}`, {
     method: 'PATCH',
+    body: JSON.stringify(payload),
   });
   if (!response.ok) throw new Error(await readApiError(response, 'Failed to update dose'));
   return response.json();

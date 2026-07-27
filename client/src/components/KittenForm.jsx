@@ -2,6 +2,7 @@ import { useState } from 'react';
 import ProfilePhotoUpload from './ProfilePhotoUpload';
 import LitterSelect from './admin/LitterSelect';
 import { KITTEN_STATUS_OPTIONS } from '../constants/kittenStatuses';
+import { pacificToday } from '../utils/pacificDate';
 
 const SEX_OPTIONS = ['', 'Male', 'Female'];
 const FIXED_STATUS_OPTIONS = ['', 'Intact', 'Spayed/Neutered'];
@@ -17,8 +18,11 @@ const initialFormState = {
   sex: '',
   fixedStatus: '',
   rescueStory: '',
-  intakeDate: new Date().toISOString().slice(0, 10),
+  intakeDate: pacificToday(),
+  microchipNumber: '',
   isEuthanasiaPull: false,
+  isTnr: false,
+  isColony: false,
 };
 
 function KittenForm({ onSubmit, litters = [], onLittersChange, fosters = [], submitting = false }) {
@@ -45,7 +49,10 @@ function KittenForm({ onSubmit, litters = [], onLittersChange, fosters = [], sub
         litterId: form.litterId ? Number.parseInt(form.litterId, 10) : null,
         currentFosterId: form.fosterId ? Number.parseInt(form.fosterId, 10) : null,
         intakeDate: form.intakeDate || null,
+        microchipNumber: form.microchipNumber || '',
         intakeSource: form.isEuthanasiaPull ? 'Euthanasia-Pull Rescue' : '',
+        isTnr: form.isTnr,
+        isColony: form.isColony,
       },
       photoFile,
     });
@@ -86,6 +93,10 @@ function KittenForm({ onSubmit, litters = [], onLittersChange, fosters = [], sub
             <span className="mb-1 block text-sm font-medium text-slate-700">Intake Date</span>
             <input type="date" name="intakeDate" value={form.intakeDate} onChange={handleChange} className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" />
           </label>
+          <label className="block">
+            <span className="mb-1 block text-sm font-medium text-slate-700">Microchip Number</span>
+            <input type="text" name="microchipNumber" value={form.microchipNumber} onChange={handleChange} className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" />
+          </label>
           <label className="flex items-center gap-2 md:col-span-2">
             <input
               type="checkbox"
@@ -95,6 +106,26 @@ function KittenForm({ onSubmit, litters = [], onLittersChange, fosters = [], sub
               className="h-4 w-4 rounded border-slate-300 text-brand focus:ring-brand"
             />
             <span className="text-sm font-medium text-slate-700">Euthanasia-Pull Rescue</span>
+          </label>
+          <label className="flex items-center gap-2 md:col-span-2">
+            <input
+              type="checkbox"
+              name="isTnr"
+              checked={form.isTnr}
+              onChange={handleChange}
+              className="h-4 w-4 rounded border-slate-300 text-brand focus:ring-brand"
+            />
+            <span className="text-sm font-medium text-slate-700">TNR</span>
+          </label>
+          <label className="flex items-center gap-2 md:col-span-2">
+            <input
+              type="checkbox"
+              name="isColony"
+              checked={form.isColony}
+              onChange={handleChange}
+              className="h-4 w-4 rounded border-slate-300 text-brand focus:ring-brand"
+            />
+            <span className="text-sm font-medium text-slate-700">Colony</span>
           </label>
           <label className="block">
             <span className="mb-1 block text-sm font-medium text-slate-700">Sex</span>

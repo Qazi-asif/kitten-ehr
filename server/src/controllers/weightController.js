@@ -58,3 +58,46 @@ export async function createWeightLog(req, res, next) {
     next(error);
   }
 }
+
+export async function updateWeightLog(req, res, next) {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+    const existing = await prisma.weightLog.findUnique({ where: { id } });
+    if (!existing) return res.status(404).json({ error: 'Weight log not found' });
+
+    const { weightGrams, weightOz, date, loggedBy, notes } = req.body;
+    let grams = weightGrams != null ? Number.parseFloat(weightGrams) : existing.weightGrams;
+    let oz = weightOz != null ? Number.parseFloat(weightOz) : existing.weightOz;
+    if (weightGrams != null && weightOz == null) oz = grams / 28.3495;
+    if (weightOz != null && weightGrams == null) grams = oz * 28.3495;
+    if (!grams || grams <= 0) {
+      return res.status(400).json({ error: 'weightGrams or weightOz must be a positive number' });
+    }
+
+    const log = await prisma.weightLog.update({
+      where: { id },
+      data: {
+        weightGrams: grams,
+        weightOz: oz,
+        ...(date != null ? { date: new Date(date) } : {}),
+        ...(loggedBy != null ? { loggedBy } : {}),
+        ...(notes != null ? { notes } : {}),
+      },
+    });
+    res.json(log);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function deleteWeightLog(req, res, next) {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+    const existing = await prisma.weightLog.findUnique({ where: { id } });
+    if (!existing) return res.status(404).json({ error: 'Weight log not found' });
+    await prisma.weightLog.delete({ where: { id } });
+    res.status(204).end();
+  } catch (error) {
+    next(error);
+  }
+}

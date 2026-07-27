@@ -5,6 +5,7 @@ const statusBadgeClass = {
   Transferred: 'bg-slate-100 text-slate-600 ring-1 ring-slate-200',
   Deceased: 'bg-red-50 text-red-700 ring-1 ring-red-200',
   'Medical Hold': 'bg-amber-50 text-amber-700 ring-1 ring-amber-200',
+  'In Socialization': 'bg-sky-50 text-sky-700 ring-1 ring-sky-200',
 };
 
 function StatusBadge({ status }) {

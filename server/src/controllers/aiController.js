@@ -15,7 +15,7 @@ function getDonationUrl() {
   if (process.env.PUBLIC_SITE_URL?.trim()) {
     return `${process.env.PUBLIC_SITE_URL.trim().replace(/\/$/, '')}/donate`;
   }
-  return 'https://buy.stripe.com/test_placeholder';
+  return 'https://pawsitivetransformations.org/donate';
 }
 
 async function assertAiGenerationEnabled() {

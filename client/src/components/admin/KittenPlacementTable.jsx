@@ -27,8 +27,8 @@ function KittenPlacementTable({ placements = [] }) {
         <thead className="bg-gray-50">
           <tr>
             <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Foster Home</th>
-            <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Intake Date</th>
-            <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Discharge Date</th>
+            <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Placement Start</th>
+            <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Placement End</th>
             <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Status</th>
           </tr>
         </thead>

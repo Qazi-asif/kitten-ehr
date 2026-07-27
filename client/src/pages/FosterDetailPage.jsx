@@ -22,6 +22,7 @@ import {
   updateFoster,
   updateKitten,
 } from '../services/api';
+import { pacificToday } from '../utils/pacificDate';
 
 function buildFosterFormFromFoster(foster) {
   return {
@@ -131,6 +132,16 @@ function FosterDetailPage() {
     );
     if (!confirmed) return;
 
+    const dischargeDate = window.prompt(
+      'Discharge date (YYYY-MM-DD):',
+      pacificToday(),
+    );
+    if (dischargeDate === null) return;
+    if (!dischargeDate.trim()) {
+      setError('Discharge date is required.');
+      return;
+    }
+
     const dischargeType = window.prompt(
       'Optional discharge reason (e.g. Returned to Rescue, Adopted, Transferred). Leave blank for "Discharged":',
       '',
@@ -141,6 +152,7 @@ function FosterDetailPage() {
     setError(null);
     try {
       const updated = await dischargeFosterPlacement(id, placement.id, {
+        dischargeDate: dischargeDate.trim(),
         dischargeType: dischargeType.trim(),
       });
       await loadData();

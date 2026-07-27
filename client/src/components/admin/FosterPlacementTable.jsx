@@ -27,8 +27,8 @@ function FosterPlacementTable({ placements = [], onDischarge, dischargingId = nu
         <thead className="bg-slate-50">
           <tr>
             <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Kitten</th>
-            <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Intake Date</th>
-            <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Discharge Date</th>
+            <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Placement Start</th>
+            <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Placement End</th>
             <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Status</th>
             <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Actions</th>
           </tr>

@@ -3,7 +3,7 @@ function formatDate(value) {
   return new Date(value).toLocaleDateString();
 }
 
-function VaccinesTable({ vaccines }) {
+function VaccinesTable({ vaccines, canManage = false, onEdit, onDelete }) {
   const records = vaccines ?? [];
 
   if (records.length === 0) {
@@ -17,6 +17,9 @@ function VaccinesTable({ vaccines }) {
           <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-gray-500">Date</th>
           <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-gray-500">Type</th>
           <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-gray-500">Notes</th>
+          {canManage && (
+            <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-gray-500">Actions</th>
+          )}
         </tr>
       </thead>
       <tbody className="divide-y divide-gray-200">
@@ -27,6 +30,26 @@ function VaccinesTable({ vaccines }) {
               <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-800">{record.type}</span>
             </td>
             <td className="px-4 py-2 text-sm text-gray-500">{record.notes || '—'}</td>
+            {canManage && (
+              <td className="px-4 py-2 text-sm">
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => onEdit?.(record)}
+                    className="text-xs font-semibold text-brand hover:underline"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => onDelete?.(record)}
+                    className="text-xs font-semibold text-red-600 hover:underline"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </td>
+            )}
           </tr>
         ))}
       </tbody>

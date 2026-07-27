@@ -12,19 +12,20 @@ import {
   fetchLitters,
   uploadPrimaryPhoto,
 } from '../services/api';
+import { KITTEN_STATUS_OPTIONS } from '../constants/kittenStatuses';
 import { formatKittenAgeShort } from '../utils/kittenAge';
 
-const STATUS_OPTIONS = ['All', 'In Foster Care', 'Available for Adoption', 'Adopted', 'Medical Hold', 'Transferred', 'Deceased'];
+const DEFAULT_STATUS_FILTERS = ['Available for Adoption', 'In Foster Care', 'Medical Hold'];
 const SORT_OPTIONS = [
-  { value: '', label: 'Sort: Recent intake' },
   { value: 'name_asc', label: 'Name (A–Z)' },
   { value: 'name_desc', label: 'Name (Z–A)' },
+  { value: '', label: 'Sort: Recent intake' },
   { value: 'age_desc', label: 'Age (youngest first)' },
   { value: 'age_asc', label: 'Age (oldest first)' },
   { value: 'gender_asc', label: 'Gender (A–Z)' },
   { value: 'gender_desc', label: 'Gender (Z–A)' },
 ];
-const PAGE_SIZE = 25;
+const PAGE_SIZE_OPTIONS = [25, 50, 100];
 
 function KittensPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -37,11 +38,12 @@ function KittensPage() {
   const [error, setError] = useState(null);
   const [listTab, setListTab] = useState('all');
   const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('All');
+  const [selectedStatuses, setSelectedStatuses] = useState(() => [...DEFAULT_STATUS_FILTERS]);
   const [fosterFilter, setFosterFilter] = useState('');
   const [litterFilter, setLitterFilter] = useState('');
-  const [sort, setSort] = useState('');
+  const [sort, setSort] = useState('name_asc');
   const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(50);
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
   const showAddForm = searchParams.get('add') === '1';
@@ -50,11 +52,18 @@ function KittensPage() {
     setLoading(true);
     setError(null);
     try {
+      if (listTab !== 'recent' && selectedStatuses.length === 0) {
+        setKittens([]);
+        setTotal(0);
+        setTotalPages(1);
+        return;
+      }
+
       const data = await fetchKittens({
         page: listTab === 'recent' ? 1 : page,
-        limit: listTab === 'recent' ? 5 : PAGE_SIZE,
+        limit: listTab === 'recent' ? 5 : pageSize,
         search: search.trim() || undefined,
-        status: statusFilter,
+        statuses: listTab === 'recent' ? undefined : selectedStatuses,
         fosterId: fosterFilter || undefined,
         litterId: litterFilter || undefined,
         sort: listTab === 'recent' ? undefined : (sort || undefined),
@@ -68,7 +77,7 @@ function KittensPage() {
     } finally {
       setLoading(false);
     }
-  }, [page, listTab, search, statusFilter, fosterFilter, litterFilter, sort]);
+  }, [page, pageSize, listTab, search, selectedStatuses, fosterFilter, litterFilter, sort]);
 
   useEffect(() => {
     loadKittens();
@@ -77,18 +86,26 @@ function KittensPage() {
   // Litters and fosters are only needed for filters/form — load them once on mount
   useEffect(() => {
     Promise.all([
-      fetchLitters().then(setLitters).catch(() => {}),
+      fetchLitters({ status: 'active', sort: 'name' }).then(setLitters).catch(() => {}),
       fetchFosters().then(setFosters).catch(() => {}),
     ]).catch(() => {});
   }, []);
 
   useEffect(() => {
     setPage(1);
-  }, [search, statusFilter, fosterFilter, litterFilter, listTab, sort]);
+  }, [search, selectedStatuses, fosterFilter, litterFilter, listTab, sort, pageSize]);
 
   function closeAddForm() {
     searchParams.delete('add');
     setSearchParams(searchParams);
+  }
+
+  function toggleStatus(status) {
+    setSelectedStatuses((prev) => (
+      prev.includes(status)
+        ? prev.filter((value) => value !== status)
+        : [...prev, status]
+    ));
   }
 
   async function handleCreateKitten({ kittenData, photoFile }) {
@@ -130,7 +147,7 @@ function KittensPage() {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex rounded-lg border border-slate-200 bg-white p-1 shadow-sm">
           {[
-            { id: 'all', label: 'All Kittens' },
+            { id: 'all', label: 'All Cats' },
             { id: 'recent', label: 'Recent Intakes' },
           ].map((tab) => (
             <button
@@ -151,7 +168,7 @@ function KittensPage() {
           className="inline-flex items-center gap-2 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark"
         >
           <Plus className="h-4 w-4" />
-          Add Kitten
+          Add Cat
         </button>
       </div>
 
@@ -184,23 +201,18 @@ function KittensPage() {
         onFilterChange={setLitterFilter}
       />
 
-      <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-6">
+      <div className="space-y-3 rounded-xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-5">
           <label className="relative lg:col-span-2">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
             <input
               type="search"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search kittens..."
+              placeholder="Search cats..."
               className="w-full rounded-lg border border-slate-200 py-2 pl-9 pr-3 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand"
             />
           </label>
-          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="rounded-lg border border-slate-200 px-3 py-2 text-sm">
-            {STATUS_OPTIONS.map((s) => (
-              <option key={s} value={s}>{s === 'All' ? 'Status' : s}</option>
-            ))}
-          </select>
           <select value={fosterFilter} onChange={(e) => setFosterFilter(e.target.value)} className="rounded-lg border border-slate-200 px-3 py-2 text-sm">
             <option value="">Foster</option>
             {fosters.map((f) => (
@@ -218,25 +230,57 @@ function KittensPage() {
             onChange={(e) => setSort(e.target.value)}
             disabled={listTab === 'recent'}
             className="rounded-lg border border-slate-200 px-3 py-2 text-sm disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
-            aria-label="Sort kittens"
+            aria-label="Sort cats"
           >
             {SORT_OPTIONS.map((option) => (
               <option key={option.value || 'default'} value={option.value}>{option.label}</option>
             ))}
           </select>
         </div>
+
+        <div>
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">Status filters</p>
+          <div className="flex flex-wrap gap-x-4 gap-y-2">
+            {KITTEN_STATUS_OPTIONS.map((status) => (
+              <label key={status} className="inline-flex items-center gap-2 text-sm text-slate-700">
+                <input
+                  type="checkbox"
+                  checked={selectedStatuses.includes(status)}
+                  onChange={() => toggleStatus(status)}
+                  disabled={listTab === 'recent'}
+                  className="h-4 w-4 rounded border-slate-300 text-brand focus:ring-brand"
+                />
+                {status}
+              </label>
+            ))}
+          </div>
+        </div>
       </div>
 
-      {loading && <p className="text-sm text-slate-500">Loading kittens...</p>}
+      {loading && <p className="text-sm text-slate-500">Loading cats...</p>}
       {error && <p className="text-sm text-red-600">{error}</p>}
 
       {!loading && !error && (
         <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-          <div className="flex items-center justify-between border-b border-slate-100 px-5 py-3 text-sm text-slate-500">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 px-5 py-3 text-sm text-slate-500">
             <span>
-              {total} kitten{total === 1 ? '' : 's'}
+              {total} cat{total === 1 ? '' : 's'}
               {listTab === 'all' ? ` · Page ${page} of ${totalPages}` : ' · Recent intakes'}
             </span>
+            {listTab === 'all' && (
+              <label className="inline-flex items-center gap-2 text-sm text-slate-600">
+                <span>Page size</span>
+                <select
+                  value={pageSize}
+                  onChange={(e) => setPageSize(Number(e.target.value))}
+                  className="rounded-lg border border-slate-200 px-2 py-1 text-sm"
+                >
+                  {PAGE_SIZE_OPTIONS.map((size) => (
+                    <option key={size} value={size}>{size}</option>
+                  ))}
+                </select>
+              </label>
+            )}
           </div>
           <div className="overflow-x-auto">
             <table className="min-w-full">
@@ -252,7 +296,7 @@ function KittensPage() {
               <tbody className="divide-y divide-slate-100">
                 {kittens.length === 0 ? (
                   <tr>
-                    <td colSpan={9} className="px-5 py-12 text-center text-sm text-slate-500">No kittens match your filters.</td>
+                    <td colSpan={9} className="px-5 py-12 text-center text-sm text-slate-500">No cats match your filters.</td>
                   </tr>
                 ) : (
                   kittens.map((kitten) => (

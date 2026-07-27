@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Calendar, ChevronDown, X } from 'lucide-react';
+import { ChevronDown, X } from 'lucide-react';
 import { createLitter } from '../../services/api';
 
 const EMPTY_FORM = {
   name: '',
-  intakeDate: '',
 };
 
 function CreateLitterModal({ open, onClose, onCreated }) {
@@ -34,7 +33,6 @@ function CreateLitterModal({ open, onClose, onCreated }) {
     try {
       const created = await createLitter({
         name: form.name.trim(),
-        intakeDate: form.intakeDate,
       });
       onCreated(created);
       onClose();
@@ -92,18 +90,6 @@ function CreateLitterModal({ open, onClose, onCreated }) {
                 placeholder="Spring Alley Litter"
                 className="min-w-0 flex-1 border-0 bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400"
               />
-            </label>
-            <label className="flex items-center gap-3 border-b border-slate-100 py-3">
-              <span className="w-24 shrink-0 text-sm text-slate-500">Intake date</span>
-              <input
-                type="date"
-                name="intakeDate"
-                value={form.intakeDate}
-                onChange={handleChange}
-                required
-                className="min-w-0 flex-1 border-0 bg-transparent text-sm text-slate-900 outline-none [color-scheme:light]"
-              />
-              <Calendar className="h-4 w-4 shrink-0 text-slate-400" aria-hidden="true" />
             </label>
           </div>
 

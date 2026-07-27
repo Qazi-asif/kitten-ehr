@@ -125,7 +125,8 @@ exports.Prisma.LitterScalarFieldEnum = {
   id: 'id',
   name: 'name',
   intakeDate: 'intakeDate',
-  notes: 'notes'
+  notes: 'notes',
+  isActive: 'isActive'
 };
 
 exports.Prisma.FosterScalarFieldEnum = {
@@ -174,6 +175,8 @@ exports.Prisma.KittenScalarFieldEnum = {
   bondedWithKittenId: 'bondedWithKittenId',
   bondedWithName: 'bondedWithName',
   isMedicalSpecialNeeds: 'isMedicalSpecialNeeds',
+  isTnr: 'isTnr',
+  isColony: 'isColony',
   currentFosterId: 'currentFosterId',
   createdAt: 'createdAt'
 };
@@ -323,6 +326,8 @@ exports.Prisma.ContractScalarFieldEnum = {
   pdfUrl: 'pdfUrl',
   status: 'status',
   signedAt: 'signedAt',
+  signingToken: 'signingToken',
+  signingTokenExpiresAt: 'signingTokenExpiresAt',
   createdAt: 'createdAt'
 };
 

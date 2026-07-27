@@ -165,7 +165,7 @@ function NavDropdown({ item, pathname, onNavigate }) {
       <button
         type="button"
         onClick={() => setOpen((value) => !value)}
-        className={`inline-flex items-center gap-1 text-sm font-medium transition-colors ${
+        className={`inline-flex items-center gap-1 text-base font-medium transition-colors ${
           active ? 'text-brand font-bold' : 'text-slate-800 hover:text-brand'
         }`}
         aria-expanded={open}
@@ -183,7 +183,7 @@ function NavDropdown({ item, pathname, onNavigate }) {
                 setOpen(false);
                 onNavigate?.();
               }}
-              className={`block px-4 py-2.5 text-sm transition-colors ${
+              className={`block px-4 py-2.5 text-base transition-colors ${
                 pathIsActive(pathname, child.path)
                   ? 'bg-brand/10 font-semibold text-brand'
                   : 'text-slate-700 hover:bg-slate-50 hover:text-brand'
@@ -206,7 +206,7 @@ function MobileNavSection({ item, pathname, onNavigate }) {
       <Link
         to={item.path}
         onClick={onNavigate}
-        className={`rounded-md px-3 py-2.5 text-sm font-medium ${
+        className={`rounded-md px-3 py-2.5 text-base font-medium ${
           pathIsActive(pathname, item.path) ? 'bg-brand-light text-brand' : 'text-slate-700 hover:bg-slate-50'
         }`}
       >
@@ -220,7 +220,7 @@ function MobileNavSection({ item, pathname, onNavigate }) {
       <button
         type="button"
         onClick={() => setOpen((value) => !value)}
-        className={`flex w-full items-center justify-between px-3 py-2.5 text-sm font-medium ${
+        className={`flex w-full items-center justify-between px-3 py-2.5 text-base font-medium ${
           itemIsActive(pathname, item) ? 'text-brand' : 'text-slate-700'
         }`}
       >
@@ -234,7 +234,7 @@ function MobileNavSection({ item, pathname, onNavigate }) {
               key={child.path}
               to={child.path}
               onClick={onNavigate}
-              className={`block px-4 py-2 text-sm ${
+              className={`block px-4 py-2 text-base ${
                 pathIsActive(pathname, child.path)
                   ? 'font-semibold text-brand'
                   : 'text-slate-600 hover:text-brand'
@@ -285,7 +285,7 @@ function PublicLayout() {
                 <Link
                   key={item.label}
                   to={item.path}
-                  className={`text-sm font-medium transition-colors ${
+                  className={`text-base font-medium transition-colors ${
                     pathIsActive(location.pathname, item.path)
                       ? 'text-brand font-bold'
                       : 'text-slate-800 hover:text-brand'

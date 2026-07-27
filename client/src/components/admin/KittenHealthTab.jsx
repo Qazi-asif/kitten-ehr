@@ -14,6 +14,7 @@ import {
   fetchProtocols,
   markProtocolDoseGiven,
 } from '../../services/protocolApi';
+import { pacificToday } from '../../utils/pacificDate';
 
 function formatDate(value) {
   if (!value) return '—';
@@ -35,19 +36,32 @@ function KittenHealthTab({
   medical,
   weightLogs,
   onCreateVaccine,
+  onUpdateVaccine,
+  onDeleteVaccine,
   onCreateMedication,
+  onUpdateMedication,
+  onDeleteMedication,
   onCreateVetVisit,
+  onUpdateVetVisit,
+  onDeleteVetVisit,
   onCreateWeight,
+  onUpdateWeight,
+  onDeleteWeight,
 }) {
   const [protocolLibrary, setProtocolLibrary] = useState([]);
   const [activeProtocols, setActiveProtocols] = useState([]);
   const [doses, setDoses] = useState([]);
   const [selectedProtocolId, setSelectedProtocolId] = useState('');
-  const [activationDate, setActivationDate] = useState(() => new Date().toISOString().slice(0, 10));
+  const [activationDate, setActivationDate] = useState(() => pacificToday());
+  const [givenDate, setGivenDate] = useState(() => pacificToday());
   const [loading, setLoading] = useState(true);
   const [activating, setActivating] = useState(false);
   const [markingDoseId, setMarkingDoseId] = useState(null);
   const [error, setError] = useState('');
+  const [editingVaccine, setEditingVaccine] = useState(null);
+  const [editingMedication, setEditingMedication] = useState(null);
+  const [editingVetVisit, setEditingVetVisit] = useState(null);
+  const [editingWeight, setEditingWeight] = useState(null);
 
   const loadProtocolData = useCallback(async () => {
     if (!kittenId) return;
@@ -119,13 +133,73 @@ function KittenHealthTab({
     setMarkingDoseId(doseId);
     setError('');
     try {
-      await markProtocolDoseGiven(kittenId, doseId);
+      await markProtocolDoseGiven(kittenId, doseId, { givenDate });
       await loadProtocolData();
     } catch (err) {
       setError(err.message || 'Failed to mark dose as given.');
     } finally {
       setMarkingDoseId(null);
     }
+  }
+
+  async function handleVaccineSubmit(formData, existing) {
+    if (existing?.id) {
+      await onUpdateVaccine?.(existing.id, formData);
+      setEditingVaccine(null);
+      return;
+    }
+    await onCreateVaccine?.(formData);
+  }
+
+  async function handleMedicationSubmit(formData, existing) {
+    if (existing?.id) {
+      await onUpdateMedication?.(existing.id, formData);
+      setEditingMedication(null);
+      return;
+    }
+    await onCreateMedication?.(formData);
+  }
+
+  async function handleVetVisitSubmit(formData, existing) {
+    if (existing?.id) {
+      await onUpdateVetVisit?.(existing.id, formData);
+      setEditingVetVisit(null);
+      return;
+    }
+    await onCreateVetVisit?.(formData);
+  }
+
+  async function handleWeightSubmit(formData, existing) {
+    if (existing?.id) {
+      await onUpdateWeight?.(existing.id, formData);
+      setEditingWeight(null);
+      return;
+    }
+    await onCreateWeight?.(formData);
+  }
+
+  async function handleDeleteVaccine(record) {
+    if (!window.confirm('Delete this vaccination permanently?')) return;
+    await onDeleteVaccine?.(record.id);
+    if (editingVaccine?.id === record.id) setEditingVaccine(null);
+  }
+
+  async function handleDeleteMedication(record) {
+    if (!window.confirm('Delete this medication permanently?')) return;
+    await onDeleteMedication?.(record.id);
+    if (editingMedication?.id === record.id) setEditingMedication(null);
+  }
+
+  async function handleDeleteVetVisit(record) {
+    if (!window.confirm('Delete this vet visit permanently?')) return;
+    await onDeleteVetVisit?.(record.id);
+    if (editingVetVisit?.id === record.id) setEditingVetVisit(null);
+  }
+
+  async function handleDeleteWeight(record) {
+    if (!window.confirm('Delete this weight log permanently?')) return;
+    await onDeleteWeight?.(record.id);
+    if (editingWeight?.id === record.id) setEditingWeight(null);
   }
 
   return (
@@ -237,7 +311,20 @@ function KittenHealthTab({
       )}
 
       <section>
-        <h3 className="mb-3 text-xs font-bold uppercase text-gray-700">Dose Checklist</h3>
+        <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
+          <h3 className="text-xs font-bold uppercase text-gray-700">Dose Checklist</h3>
+          {canManageMedical && (
+            <label className="inline-flex items-center gap-2 text-sm text-gray-600">
+              <span className="text-xs font-semibold uppercase text-gray-500">Mark-given date</span>
+              <input
+                type="date"
+                value={givenDate}
+                onChange={(e) => setGivenDate(e.target.value)}
+                className="rounded-lg border border-gray-200 px-3 py-1.5 text-sm"
+              />
+            </label>
+          )}
+        </div>
         {loading ? (
           <p className="text-sm text-gray-500">Loading dose checklist...</p>
         ) : !error && doses.length === 0 ? (
@@ -295,26 +382,70 @@ function KittenHealthTab({
 
       <section>
         <h3 className="mb-3 text-xs font-bold uppercase text-gray-700">Weight</h3>
-        <WeightLogForm onSubmit={onCreateWeight} />
-        <WeightLogsTable logs={weightLogs} />
+        {canManageMedical && (
+          <WeightLogForm
+            initialValues={editingWeight}
+            onSubmit={handleWeightSubmit}
+            onCancel={() => setEditingWeight(null)}
+          />
+        )}
+        <WeightLogsTable
+          logs={weightLogs}
+          canManage={canManageMedical}
+          onEdit={setEditingWeight}
+          onDelete={handleDeleteWeight}
+        />
       </section>
 
       <section>
         <h3 className="mb-3 text-xs font-bold uppercase text-gray-700">Vaccinations</h3>
-        <VaccineForm onSubmit={onCreateVaccine} />
-        <VaccinesTable vaccines={medical.vaccines} />
+        {canManageMedical && (
+          <VaccineForm
+            initialValues={editingVaccine}
+            onSubmit={handleVaccineSubmit}
+            onCancel={() => setEditingVaccine(null)}
+          />
+        )}
+        <VaccinesTable
+          vaccines={medical.vaccines}
+          canManage={canManageMedical}
+          onEdit={setEditingVaccine}
+          onDelete={handleDeleteVaccine}
+        />
       </section>
 
       <section>
         <h3 className="mb-3 text-xs font-bold uppercase text-gray-700">Medications</h3>
-        <MedicationForm onSubmit={onCreateMedication} />
-        <MedicationsTable medications={medical.medications} />
+        {canManageMedical && (
+          <MedicationForm
+            initialValues={editingMedication}
+            onSubmit={handleMedicationSubmit}
+            onCancel={() => setEditingMedication(null)}
+          />
+        )}
+        <MedicationsTable
+          medications={medical.medications}
+          canManage={canManageMedical}
+          onEdit={setEditingMedication}
+          onDelete={handleDeleteMedication}
+        />
       </section>
 
       <section>
         <h3 className="mb-3 text-xs font-bold uppercase text-gray-700">Vet Visits</h3>
-        <VetVisitForm onSubmit={onCreateVetVisit} />
-        <VetVisitsTable vetAppointments={medical.vetAppointments} />
+        {canManageMedical && (
+          <VetVisitForm
+            initialValues={editingVetVisit}
+            onSubmit={handleVetVisitSubmit}
+            onCancel={() => setEditingVetVisit(null)}
+          />
+        )}
+        <VetVisitsTable
+          vetAppointments={medical.vetAppointments}
+          canManage={canManageMedical}
+          onEdit={setEditingVetVisit}
+          onDelete={handleDeleteVetVisit}
+        />
       </section>
     </div>
   );

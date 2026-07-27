@@ -152,3 +152,127 @@ export async function createMedication(req, res, next) {
 export async function createMedicalRecord(req, res, next) {
   return createVaccine(req, res, next);
 }
+
+export async function updateVaccine(req, res, next) {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+    const existing = await prisma.vaccine.findUnique({ where: { id } });
+    if (!existing) return res.status(404).json({ error: 'Vaccine not found' });
+
+    const {
+      type, dateGiven, nextDueDate, lotNumber, manufacturer, administeredBy, notes,
+    } = req.body;
+
+    const vaccine = await prisma.vaccine.update({
+      where: { id },
+      data: {
+        ...(type != null ? { type } : {}),
+        ...(dateGiven != null ? { dateGiven: new Date(dateGiven) } : {}),
+        ...(nextDueDate !== undefined ? { nextDueDate: nextDueDate ? new Date(nextDueDate) : null } : {}),
+        ...(lotNumber != null ? { lotNumber } : {}),
+        ...(manufacturer != null ? { manufacturer } : {}),
+        ...(administeredBy != null ? { administeredBy } : {}),
+        ...(notes != null ? { notes } : {}),
+      },
+    });
+    res.json(vaccine);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function deleteVaccine(req, res, next) {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+    const existing = await prisma.vaccine.findUnique({ where: { id } });
+    if (!existing) return res.status(404).json({ error: 'Vaccine not found' });
+    await prisma.vaccine.delete({ where: { id } });
+    res.status(204).end();
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function updateMedication(req, res, next) {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+    const existing = await prisma.medication.findUnique({ where: { id } });
+    if (!existing) return res.status(404).json({ error: 'Medication not found' });
+
+    const {
+      name, dose, frequency, route, condition, startDate, endDate, status, notes,
+    } = req.body;
+
+    const medication = await prisma.medication.update({
+      where: { id },
+      data: {
+        ...(name != null ? { name } : {}),
+        ...(dose != null ? { dose } : {}),
+        ...(frequency != null ? { frequency } : {}),
+        ...(route != null ? { route } : {}),
+        ...(condition != null ? { condition } : {}),
+        ...(startDate != null ? { startDate: new Date(startDate) } : {}),
+        ...(endDate !== undefined ? { endDate: endDate ? new Date(endDate) : null } : {}),
+        ...(status != null ? { status } : {}),
+        ...(notes != null ? { notes } : {}),
+      },
+    });
+    res.json(medication);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function deleteMedication(req, res, next) {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+    const existing = await prisma.medication.findUnique({ where: { id } });
+    if (!existing) return res.status(404).json({ error: 'Medication not found' });
+    await prisma.medication.delete({ where: { id } });
+    res.status(204).end();
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function updateVetAppointment(req, res, next) {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+    const existing = await prisma.vetAppointment.findUnique({ where: { id } });
+    if (!existing) return res.status(404).json({ error: 'Vet appointment not found' });
+
+    const {
+      date, clinic, vetName, reason, apptType, diagnosis, treatment, followUpDate, notes,
+    } = req.body;
+
+    const appointment = await prisma.vetAppointment.update({
+      where: { id },
+      data: {
+        ...(date != null ? { date: new Date(date) } : {}),
+        ...(clinic != null ? { clinic } : {}),
+        ...(vetName != null ? { vetName } : {}),
+        ...(reason != null ? { reason } : {}),
+        ...(apptType != null ? { apptType } : {}),
+        ...(diagnosis != null ? { diagnosis } : {}),
+        ...(treatment != null ? { treatment } : {}),
+        ...(followUpDate !== undefined ? { followUpDate: followUpDate ? new Date(followUpDate) : null } : {}),
+        ...(notes != null ? { notes } : {}),
+      },
+    });
+    res.json(appointment);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function deleteVetAppointment(req, res, next) {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+    const existing = await prisma.vetAppointment.findUnique({ where: { id } });
+    if (!existing) return res.status(404).json({ error: 'Vet appointment not found' });
+    await prisma.vetAppointment.delete({ where: { id } });
+    res.status(204).end();
+  } catch (error) {
+    next(error);
+  }
+}

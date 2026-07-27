@@ -92,8 +92,13 @@ export async function createFosterPlacement(req, res, next) {
     }
 
     const placement = await prisma.$transaction(async (tx) => {
+      // Close only the SENDING foster's open placement(s) — never the receiving one.
       await tx.placement.updateMany({
-        where: { kittenId, dischargeDate: null },
+        where: {
+          kittenId,
+          dischargeDate: null,
+          fosterId: { not: fosterId },
+        },
         data: {
           dischargeDate: intake,
           dischargeType: 'Transferred',
@@ -110,6 +115,7 @@ export async function createFosterPlacement(req, res, next) {
         include: placementInclude,
       });
 
+      // Placement start date must NOT overwrite organization intake date.
       await tx.kitten.update({
         where: { id: kittenId },
         data: {

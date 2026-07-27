@@ -6,7 +6,7 @@ function formatDateTime(value) {
   });
 }
 
-function WeightLogsTable({ logs }) {
+function WeightLogsTable({ logs, canManage = false, onEdit, onDelete }) {
   if (logs.length === 0) {
     return <p className="py-6 text-center text-sm text-gray-500">No weight logs yet.</p>;
   }
@@ -20,6 +20,9 @@ function WeightLogsTable({ logs }) {
           <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Weight (oz)</th>
           <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Change</th>
           <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Logged By</th>
+          {canManage && (
+            <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Actions</th>
+          )}
         </tr>
       </thead>
       <tbody className="divide-y divide-gray-200 bg-white">
@@ -40,6 +43,26 @@ function WeightLogsTable({ logs }) {
                 )}
               </td>
               <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-500">{log.loggedBy || '—'}</td>
+              {canManage && (
+                <td className="whitespace-nowrap px-4 py-3 text-sm">
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => onEdit?.(log)}
+                      className="text-xs font-semibold text-brand hover:underline"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onDelete?.(log)}
+                      className="text-xs font-semibold text-red-600 hover:underline"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              )}
             </tr>
           );
         })}

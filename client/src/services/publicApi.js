@@ -11,8 +11,11 @@ async function publicRequest(path) {
   }, PUBLIC_CACHE_TTL_MS);
 }
 
-export function fetchPublicKittens(limit) {
-  const query = limit ? `?limit=${encodeURIComponent(String(limit))}` : '';
+export function fetchPublicKittens(limit, options = {}) {
+  const params = new URLSearchParams();
+  if (limit) params.set('limit', String(limit));
+  if (options.featured) params.set('featured', '1');
+  const query = params.toString() ? `?${params.toString()}` : '';
   return publicRequest(`/kittens${query}`);
 }
 

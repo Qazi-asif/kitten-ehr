@@ -1,4 +1,5 @@
 import prisma from '../lib/prisma.js';
+import { parsePacificDateOnly, toPacificDateString } from '../utils/pacificDate.js';
 
 const CADENCE_VALUES = ['DAILY', 'EVERY_N_DAYS', 'WEEKLY', 'MONTHLY'];
 const RECORD_TYPE_VALUES = ['NONE', 'MEDICATION', 'VACCINE'];
@@ -10,45 +11,49 @@ const HEALTH_WRITE_MODE_VALUES = ['PER_DOSE', 'COURSE'];
 // with an unreachable end offset.
 const MAX_MONTHLY_MONTHS_TO_SCAN = 600;
 
+/** Calendar-day anchor in Pacific (stored as UTC instant for that Pacific day). */
 function stripToUtcMidnight(value) {
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) {
-    return null;
+  if (value == null || value === '') return null;
+  if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value.trim())) {
+    return parsePacificDateOnly(value.trim());
   }
-
-  return new Date(Date.UTC(
-    date.getUTCFullYear(),
-    date.getUTCMonth(),
-    date.getUTCDate(),
-  ));
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) return null;
+  return parsePacificDateOnly(toPacificDateString(date));
 }
 
 function buildScheduledDateUtcMidnight(activationMidnightUtc, dayOffset) {
-  return new Date(Date.UTC(
-    activationMidnightUtc.getUTCFullYear(),
-    activationMidnightUtc.getUTCMonth(),
-    activationMidnightUtc.getUTCDate() + dayOffset,
-  ));
+  const ymd = toPacificDateString(activationMidnightUtc);
+  if (!ymd) return null;
+  const [y, m, d] = ymd.split('-').map(Number);
+  const base = new Date(Date.UTC(y, m - 1, d + dayOffset, 12, 0, 0));
+  return parsePacificDateOnly(toPacificDateString(base));
 }
 
-// Adds a whole number of calendar months to a UTC-midnight date, clamping
-// the day-of-month to the last day of the target month (e.g. Jan 31 + 1
-// month -> Feb 28/29, not Mar 3).
+// Adds a whole number of calendar months in Pacific, clamping day-of-month.
 function addCalendarMonthsUtc(baseDateUtc, monthsToAdd) {
-  const year = baseDateUtc.getUTCFullYear();
-  const month = baseDateUtc.getUTCMonth();
-  const day = baseDateUtc.getUTCDate();
-
-  const targetMonthIndex = month + monthsToAdd;
-  const targetYear = year + Math.floor(targetMonthIndex / 12);
+  const ymd = toPacificDateString(baseDateUtc);
+  if (!ymd) return null;
+  const [y, m, d] = ymd.split('-').map(Number);
+  const targetMonthIndex = (m - 1) + monthsToAdd;
+  const targetYear = y + Math.floor(targetMonthIndex / 12);
   const targetMonth = ((targetMonthIndex % 12) + 12) % 12;
   const lastDayOfTargetMonth = new Date(Date.UTC(targetYear, targetMonth + 1, 0)).getUTCDate();
-
-  return new Date(Date.UTC(targetYear, targetMonth, Math.min(day, lastDayOfTargetMonth)));
+  const day = Math.min(d, lastDayOfTargetMonth);
+  return parsePacificDateOnly(
+    `${targetYear}-${String(targetMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`,
+  );
 }
 
 function diffInDaysUtc(fromDateUtc, toDateUtc) {
-  return Math.round((toDateUtc.getTime() - fromDateUtc.getTime()) / 86400000);
+  const from = toPacificDateString(fromDateUtc);
+  const to = toPacificDateString(toDateUtc);
+  if (!from || !to) return 0;
+  const [fy, fm, fd] = from.split('-').map(Number);
+  const [ty, tm, td] = to.split('-').map(Number);
+  const a = Date.UTC(fy, fm - 1, fd);
+  const b = Date.UTC(ty, tm - 1, td);
+  return Math.round((b - a) / (24 * 60 * 60 * 1000));
 }
 
 // Cadence-aware day-offset generation for a single ProtocolDrug. Returns the
@@ -456,6 +461,12 @@ export async function markProtocolDoseGiven(req, res, next) {
       return res.status(401).json({ error: 'Authentication required' });
     }
 
+    const givenDateRaw = req.body?.givenDate || req.body?.administeredAt;
+    const givenAt = givenDateRaw ? new Date(givenDateRaw) : new Date();
+    if (Number.isNaN(givenAt.getTime())) {
+      return res.status(400).json({ error: 'givenDate must be a valid date' });
+    }
+
     const existing = await prisma.protocolDose.findFirst({
       where: {
         id: doseId,
@@ -496,7 +507,7 @@ export async function markProtocolDoseGiven(req, res, next) {
             data: {
               kittenId: existing.activeProtocol.kittenId,
               type: protocolDrug.drugName,
-              dateGiven: new Date(),
+              dateGiven: givenAt,
               administeredBy: administeredByName,
               notes: protocolDrug.instructions,
             },
@@ -512,8 +523,8 @@ export async function markProtocolDoseGiven(req, res, next) {
               name: protocolDrug.drugName,
               dose: protocolDrug.dosage,
               route: protocolDrug.route,
-              startDate: new Date(),
-              endDate: new Date(),
+              startDate: givenAt,
+              endDate: givenAt,
               status: 'Active',
               notes: protocolDrug.instructions,
             },
@@ -529,7 +540,7 @@ export async function markProtocolDoseGiven(req, res, next) {
         where: { id: doseId },
         data: {
           status: 'GIVEN',
-          administeredAt: new Date(),
+          administeredAt: givenAt,
           administeredById,
           medicationId,
           vaccineId,

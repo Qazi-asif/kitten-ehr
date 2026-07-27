@@ -1,9 +1,44 @@
+import crypto from 'crypto';
 import prisma from '../lib/prisma.js';
 import { paginatedResponse, parsePagination, wantsPagination } from '../utils/pagination.js';
 import { buildContractAgreementText, getAgreementTemplateBySlug } from '../utils/contractAgreementText.js';
 import { sendContractAgreementEmail, sendSignedContractPdfEmail } from '../services/emailService.js';
 import { getClientIp } from '../utils/requestIp.js';
 import { generateContractPdf, storeContractPdf } from '../utils/contractPdf.js';
+import { getPublicSiteBase } from '../services/socialMediaService.js';
+
+const SIGNING_TOKEN_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
+
+function createSigningToken() {
+  return crypto.randomBytes(32).toString('hex');
+}
+
+async function ensureContractSigningToken(contractId) {
+  const existing = await prisma.contract.findUnique({
+    where: { id: contractId },
+    select: { id: true, status: true, signingToken: true, signingTokenExpiresAt: true },
+  });
+  if (!existing) return null;
+  if (existing.status === 'SIGNED' || existing.status === 'VOID') {
+    return existing;
+  }
+
+  const stillValid =
+    existing.signingToken
+    && existing.signingTokenExpiresAt
+    && existing.signingTokenExpiresAt.getTime() > Date.now();
+
+  if (stillValid) return existing;
+
+  return prisma.contract.update({
+    where: { id: contractId },
+    data: {
+      signingToken: createSigningToken(),
+      signingTokenExpiresAt: new Date(Date.now() + SIGNING_TOKEN_TTL_MS),
+    },
+    select: { id: true, status: true, signingToken: true, signingTokenExpiresAt: true },
+  });
+}
 
 const CONTRACT_INCLUDE = {
   application: {
@@ -442,174 +477,258 @@ export async function deleteContract(req, res, next) {
 export async function markContractSigned(req, res, next) {
   try {
     const id = Number.parseInt(req.params.id, 10);
-    const {
-      signatureImage,
-      signedAt,
-      signedPdfUrl,
-      signatureAudit,
-      householdAcknowledgments,
-    } = req.body;
-
     const existing = await prisma.contract.findUnique({ where: { id } });
     if (!existing) return res.status(404).json({ error: 'Contract not found' });
 
-    if (existing.status === 'VOID') {
-      return res.status(400).json({ error: 'Cannot sign a void contract' });
-    }
-
-    if (existing.status === 'SIGNED') {
-      return res.status(400).json({ error: 'Contract is already signed' });
-    }
-
-    const resolvedSignature = signatureImage || signedPdfUrl || '';
-    if (!resolvedSignature?.startsWith('data:')) {
-      return res.status(400).json({ error: 'signatureImage is required' });
-    }
-
-    // Server-derived only. A client-supplied IP is never trusted, whether
-    // sent as a flat body field (no longer even read, above) or smuggled
-    // inside a client-supplied signatureAudit object (guarded below).
-    const clientIp = getClientIp(req);
-    const resolvedSignedAt = signedAt ? new Date(signedAt) : new Date();
-
-    const auditPayload = signatureAudit && typeof signatureAudit === 'object'
-      ? { ...signatureAudit, ipAddress: clientIp }
-      : {
-          signatureImage: resolvedSignature,
-          signedAt: resolvedSignedAt.toISOString(),
-          ipAddress: clientIp,
-          signedVia: 'ContractSigningPad',
-        };
-
-    // Freeze the agreement text and signer name at the moment of signing.
-    // A failure here is a real data-integrity problem (broken template,
-    // bad data) and is allowed to fail the request loudly - not wrapped in
-    // a fallback, unlike the PDF/logo steps below.
-    const frozenAgreementText = await buildContractAgreementText(existing);
-    const signerNameAtSigning = existing.signerName;
-
-    // Logo + org signature lookup for the PDF: non-blocking and independent
-    // of PDF generation itself, one shared settings fetch. A failure here
-    // costs only the logo/org-signature block - the PDF still generates
-    // without them, since both are optional generateContractPdf params.
-    let logoImageDataUrl = null;
-    let orgSignatureImageDataUrl = null;
-    let orgName = null;
-    try {
-      const settings = await prisma.settings.findUnique({ where: { id: 1 } });
-      logoImageDataUrl = settings?.orgLogoUrl || null;
-      orgSignatureImageDataUrl = settings?.orgSignatureUrl || null;
-      orgName = settings?.orgName || null;
-    } catch (error) {
-      console.warn('[markContractSigned] Failed to fetch org logo/signature, continuing without them:', error.message);
-    }
-
-    // PDF generation and storage: never allowed to block signing. pdfUrl is
-    // initialized to null before the try so it always has a safe value,
-    // whether generation succeeds, fails, or storage fails after a
-    // successful generation. The catch only logs - no rethrow, no next(),
-    // no return - so execution always continues to the update below with
-    // signing succeeding regardless of PDF outcome.
-    let pdfUrl = null;
-    try {
-      const title = existing.type === 'ADOPTION' ? 'Cat Adoption Agreement' : 'Foster Care Agreement';
-      const pdfBytes = await generateContractPdf({
-        title,
-        agreementText: frozenAgreementText,
-        signatureImageDataUrl: resolvedSignature,
-        signerName: signerNameAtSigning,
-        signerEmail: existing.signerEmail,
-        signedAt: resolvedSignedAt.toISOString(),
-        logoImageDataUrl,
-        orgSignatureImageDataUrl,
-        orgName,
-      });
-      pdfUrl = await storeContractPdf(existing.id, pdfBytes);
-    } catch (error) {
-      console.warn('[markContractSigned] PDF generation/storage failed, continuing without it:', error.message);
-    }
-
-    // Adult household member acknowledgments (Foster Care Agreement only,
-    // optional): name + signature image + server-set timestamp, nothing
-    // more. These are acknowledgments, not the primary signer - no IP
-    // capture, no name confirmation, no signatureAudit merge - and a
-    // failure to save them must never block the actual signing below, same
-    // spirit as the logo/PDF steps above. Only well-formed entries (both a
-    // non-empty name and a data-URL signature image) are persisted; the
-    // client already withholds incomplete entries before submitting.
-    if (Array.isArray(householdAcknowledgments) && householdAcknowledgments.length > 0) {
-      try {
-        const validEntries = householdAcknowledgments
-          .filter((entry) => entry && typeof entry === 'object')
-          .filter((entry) => entry.name?.trim() && entry.signatureImage?.startsWith('data:'))
-          .map((entry) => ({
-            contractId: id,
-            name: entry.name.trim(),
-            signatureImageUrl: entry.signatureImage,
-            signedAt: resolvedSignedAt,
-          }));
-
-        if (validEntries.length > 0) {
-          await prisma.contractHouseholdAcknowledgment.createMany({ data: validEntries });
-        }
-      } catch (error) {
-        console.warn('[markContractSigned] Failed to save household acknowledgment(s), continuing without them:', error.message);
-      }
-    }
-
-    const contract = await prisma.contract.update({
-      where: { id },
-      data: {
-        status: 'SIGNED',
-        signatureImageUrl: resolvedSignature,
-        signerNameAtSigning,
-        signedIpAddress: clientIp,
-        frozenAgreementText,
-        pdfUrl,
-        signatureAudit: JSON.stringify(auditPayload),
-        signedAt: resolvedSignedAt,
-      },
-      include: CONTRACT_INCLUDE,
+    const contract = await applyContractSignature(existing, req.body, req, {
+      signedVia: 'ContractSigningPad',
     });
-
-    // Auto-discharge on Adoption contract signing: the signed agreement is
-    // the moment of adoption, so the kitten's status/foster assignment and
-    // any still-open placement should reflect that automatically rather
-    // than relying on staff to remember a second manual step. Never allowed
-    // to fail the signing itself - the contract is already SIGNED above.
-    if (existing.type === 'ADOPTION' && existing.kittenId) {
-      try {
-        await prisma.$transaction(async (tx) => {
-          const kitten = await tx.kitten.findUnique({
-            where: { id: existing.kittenId },
-            select: { outcomeDate: true },
-          });
-          if (!kitten) return;
-
-          await tx.placement.updateMany({
-            where: { kittenId: existing.kittenId, dischargeDate: null },
-            data: { dischargeDate: resolvedSignedAt, dischargeType: 'Adopted' },
-          });
-
-          await tx.kitten.update({
-            where: { id: existing.kittenId },
-            data: {
-              status: 'Adopted',
-              currentFosterId: null,
-              outcomeDate: kitten.outcomeDate ?? resolvedSignedAt,
-            },
-          });
-        });
-      } catch (error) {
-        console.warn('[markContractSigned] Auto-discharge on Adoption contract signing failed, continuing:', error.message);
-      }
-    }
-
     res.json(contract);
   } catch (error) {
+    if (error.status) {
+      return res.status(error.status).json({ error: error.message });
+    }
     if (error.code === 'P2025') return res.status(404).json({ error: 'Contract not found' });
     next(error);
   }
+}
+
+export async function getPublicContractBySigningToken(req, res, next) {
+  try {
+    const token = typeof req.params.token === 'string' ? req.params.token.trim() : '';
+    if (!token || token.length < 32) {
+      return res.status(404).json({ error: 'Signing link not found' });
+    }
+
+    const contract = await prisma.contract.findFirst({
+      where: { signingToken: token },
+      select: {
+        id: true,
+        type: true,
+        templateSlug: true,
+        documentVersion: true,
+        signerName: true,
+        signerEmail: true,
+        signerPhone: true,
+        signerAddress: true,
+        microchipNumber: true,
+        kittenName: true,
+        kittenId: true,
+        emergencyContactName: true,
+        emergencyContactPhone: true,
+        status: true,
+        signingTokenExpiresAt: true,
+        kitten: { select: { id: true, name: true, microchipNumber: true } },
+      },
+    });
+
+    if (!contract) {
+      return res.status(404).json({ error: 'Signing link not found or expired' });
+    }
+    if (contract.status === 'VOID') {
+      return res.status(400).json({ error: 'This agreement has been voided' });
+    }
+    if (contract.status === 'SIGNED') {
+      return res.status(400).json({ error: 'This agreement has already been signed' });
+    }
+    if (contract.signingTokenExpiresAt && contract.signingTokenExpiresAt.getTime() < Date.now()) {
+      return res.status(400).json({ error: 'This signing link has expired. Please contact us for a new link.' });
+    }
+
+    const agreementText = await buildContractAgreementText(contract);
+    res.json({
+      id: contract.id,
+      type: contract.type,
+      templateSlug: contract.templateSlug,
+      signerName: contract.signerName,
+      signerEmail: contract.signerEmail,
+      kittenName: contract.kittenName || contract.kitten?.name || '',
+      agreementText,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function signPublicContractByToken(req, res, next) {
+  try {
+    const token = typeof req.params.token === 'string' ? req.params.token.trim() : '';
+    if (!token || token.length < 32) {
+      return res.status(404).json({ error: 'Signing link not found' });
+    }
+
+    const existing = await prisma.contract.findFirst({
+      where: { signingToken: token },
+    });
+
+    if (!existing) {
+      return res.status(404).json({ error: 'Signing link not found or expired' });
+    }
+    if (existing.signingTokenExpiresAt && existing.signingTokenExpiresAt.getTime() < Date.now()) {
+      return res.status(400).json({ error: 'This signing link has expired. Please contact us for a new link.' });
+    }
+
+    const contract = await applyContractSignature(existing, req.body, req, {
+      signedVia: 'PublicSigningLink',
+    });
+
+    // Invalidate token after successful sign so the link cannot be reused.
+    await prisma.contract.update({
+      where: { id: contract.id },
+      data: { signingToken: null, signingTokenExpiresAt: null },
+    });
+
+    res.json({
+      ok: true,
+      id: contract.id,
+      status: contract.status,
+      signedAt: contract.signedAt,
+    });
+  } catch (error) {
+    if (error.status) {
+      return res.status(error.status).json({ error: error.message });
+    }
+    next(error);
+  }
+}
+
+function httpError(status, message) {
+  return Object.assign(new Error(message), { status });
+}
+
+async function applyContractSignature(existing, body, req, { signedVia }) {
+  const {
+    signatureImage,
+    signedAt,
+    signedPdfUrl,
+    signatureAudit,
+    householdAcknowledgments,
+  } = body || {};
+
+  if (existing.status === 'VOID') {
+    throw httpError(400, 'Cannot sign a void contract');
+  }
+
+  if (existing.status === 'SIGNED') {
+    throw httpError(400, 'Contract is already signed');
+  }
+
+  const resolvedSignature = signatureImage || signedPdfUrl || '';
+  if (!resolvedSignature?.startsWith('data:')) {
+    throw httpError(400, 'signatureImage is required');
+  }
+
+  const clientIp = getClientIp(req);
+  const resolvedSignedAt = signedAt ? new Date(signedAt) : new Date();
+  const id = existing.id;
+
+  const auditPayload = signatureAudit && typeof signatureAudit === 'object'
+    ? { ...signatureAudit, ipAddress: clientIp }
+    : {
+        signatureImage: resolvedSignature,
+        signedAt: resolvedSignedAt.toISOString(),
+        ipAddress: clientIp,
+        signedVia,
+      };
+
+  const frozenAgreementText = await buildContractAgreementText(existing);
+  const signerNameAtSigning = existing.signerName;
+
+  let logoImageDataUrl = null;
+  let orgSignatureImageDataUrl = null;
+  let orgName = null;
+  try {
+    const settings = await prisma.settings.findUnique({ where: { id: 1 } });
+    logoImageDataUrl = settings?.orgLogoUrl || null;
+    orgSignatureImageDataUrl = settings?.orgSignatureUrl || null;
+    orgName = settings?.orgName || null;
+  } catch (error) {
+    console.warn('[applyContractSignature] Failed to fetch org logo/signature, continuing without them:', error.message);
+  }
+
+  let pdfUrl = null;
+  try {
+    const title = existing.type === 'ADOPTION' ? 'Cat Adoption Agreement' : 'Foster Care Agreement';
+    const pdfBytes = await generateContractPdf({
+      title,
+      agreementText: frozenAgreementText,
+      signatureImageDataUrl: resolvedSignature,
+      signerName: signerNameAtSigning,
+      signerEmail: existing.signerEmail,
+      signedAt: resolvedSignedAt.toISOString(),
+      logoImageDataUrl,
+      orgSignatureImageDataUrl,
+      orgName,
+    });
+    pdfUrl = await storeContractPdf(existing.id, pdfBytes);
+  } catch (error) {
+    console.warn('[applyContractSignature] PDF generation/storage failed, continuing without it:', error.message);
+  }
+
+  if (Array.isArray(householdAcknowledgments) && householdAcknowledgments.length > 0) {
+    try {
+      const validEntries = householdAcknowledgments
+        .filter((entry) => entry && typeof entry === 'object')
+        .filter((entry) => entry.name?.trim() && entry.signatureImage?.startsWith('data:'))
+        .map((entry) => ({
+          contractId: id,
+          name: entry.name.trim(),
+          signatureImageUrl: entry.signatureImage,
+          signedAt: resolvedSignedAt,
+        }));
+
+      if (validEntries.length > 0) {
+        await prisma.contractHouseholdAcknowledgment.createMany({ data: validEntries });
+      }
+    } catch (error) {
+      console.warn('[applyContractSignature] Failed to save household acknowledgment(s), continuing without them:', error.message);
+    }
+  }
+
+  const contract = await prisma.contract.update({
+    where: { id },
+    data: {
+      status: 'SIGNED',
+      signatureImageUrl: resolvedSignature,
+      signerNameAtSigning,
+      signedIpAddress: clientIp,
+      frozenAgreementText,
+      pdfUrl,
+      signatureAudit: JSON.stringify(auditPayload),
+      signedAt: resolvedSignedAt,
+    },
+    include: CONTRACT_INCLUDE,
+  });
+
+  if (existing.type === 'ADOPTION' && existing.kittenId) {
+    try {
+      await prisma.$transaction(async (tx) => {
+        const kitten = await tx.kitten.findUnique({
+          where: { id: existing.kittenId },
+          select: { outcomeDate: true },
+        });
+        if (!kitten) return;
+
+        await tx.placement.updateMany({
+          where: { kittenId: existing.kittenId, dischargeDate: null },
+          data: { dischargeDate: resolvedSignedAt, dischargeType: 'Adopted' },
+        });
+
+        await tx.kitten.update({
+          where: { id: existing.kittenId },
+          data: {
+            status: 'Adopted',
+            currentFosterId: null,
+            outcomeDate: kitten.outcomeDate ?? resolvedSignedAt,
+          },
+        });
+      });
+    } catch (error) {
+      console.warn('[applyContractSignature] Auto-discharge on Adoption contract signing failed, continuing:', error.message);
+    }
+  }
+
+  return contract;
 }
 
 export async function emailContractAgreement(req, res, next) {
@@ -624,15 +743,24 @@ export async function emailContractAgreement(req, res, next) {
     if (contract.status === 'VOID') {
       return res.status(400).json({ error: 'Cannot email a void contract' });
     }
+    if (contract.status === 'SIGNED') {
+      return res.status(400).json({ error: 'Contract is already signed. Email the signed PDF instead.' });
+    }
     if (!contract.signerEmail?.trim()) {
       return res.status(400).json({ error: 'Contract has no signer email' });
     }
+
+    const tokenRow = await ensureContractSigningToken(contract.id);
+    const signingUrl = tokenRow?.signingToken
+      ? `${getPublicSiteBase(req)}/sign/${tokenRow.signingToken}`
+      : '';
 
     const agreementText = await buildContractAgreementText(contract);
     const result = await sendContractAgreementEmail({
       contract,
       agreementText,
       note: req.body?.note?.trim() || '',
+      signingUrl,
     });
 
     if (result.skipped) {
@@ -642,7 +770,7 @@ export async function emailContractAgreement(req, res, next) {
       return res.status(500).json({ error: result.error || 'Failed to send agreement email' });
     }
 
-    res.json({ ok: true, messageId: result.messageId });
+    res.json({ ok: true, messageId: result.messageId, signingUrl: signingUrl || undefined });
   } catch (error) {
     next(error);
   }

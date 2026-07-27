@@ -19,6 +19,10 @@ import {
   createVetAppointment,
   createWeightLog,
   deleteDocument,
+  deleteMedication,
+  deleteVaccine,
+  deleteVetAppointment,
+  deleteWeightLog,
   fetchDocuments,
   fetchLitters,
   fetchKittens,
@@ -31,6 +35,10 @@ import {
   uploadDocument,
   uploadKittenPhoto,
   updateKitten,
+  updateMedication,
+  updateVaccine,
+  updateVetAppointment,
+  updateWeightLog,
   fetchKittenUpdates,
   createKittenUpdate,
   deleteKittenUpdate,
@@ -41,6 +49,7 @@ import { WISHLIST_OWNER_TYPES } from '../../constants/wishlists';
 import { KITTEN_STATUS_OPTIONS } from '../../constants/kittenStatuses';
 import { formatKittenAgeDetailed } from '../../utils/kittenAge';
 import { resolvePrimaryPhotoUrl } from '../../utils/kittenImages';
+import { pacificToday } from '../../utils/pacificDate';
 
 const TABS = [
   { id: 'profile', label: 'Profile' },
@@ -127,6 +136,9 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
       bondedWithKittenId: data.bondedWithKittenId ? String(data.bondedWithKittenId) : '',
       bondedWithName: data.bondedWithName || '',
       isMedicalSpecialNeeds: Boolean(data.isMedicalSpecialNeeds),
+      isTnr: Boolean(data.isTnr),
+      isColony: Boolean(data.isColony),
+      microchipNumber: data.microchipNumber || '',
       outcomeDate: data.outcomeDate ? data.outcomeDate.slice(0, 10) : '',
       outcomeDetail: data.outcomeDetail || '',
     });
@@ -179,7 +191,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
 
     Promise.all([
       loadKitten(),
-      fetchLitters().then(setLitters).catch(() => setLitters([])),
+      fetchLitters({ status: 'active', sort: 'name' }).then(setLitters).catch(() => setLitters([])),
       fetchKittens().then(setAllKittens).catch(() => setAllKittens([])),
     ])
       .then(() => setLoading(false))
@@ -243,6 +255,13 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
         next.bondedWithKittenId = '';
         next.bondedWithName = '';
       }
+      if (
+        field === 'status'
+        && ['Adopted', 'Deceased', 'Released'].includes(value)
+        && !next.outcomeDate
+      ) {
+        next.outcomeDate = pacificToday();
+      }
       return next;
     });
   }
@@ -271,6 +290,9 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
           : null,
         bondedWithName: profileForm.isBondedPair ? profileForm.bondedWithName : '',
         isMedicalSpecialNeeds: profileForm.isMedicalSpecialNeeds,
+        isTnr: profileForm.isTnr,
+        isColony: profileForm.isColony,
+        microchipNumber: profileForm.microchipNumber || '',
       };
 
       if (['Adopted', 'Deceased', 'Released'].includes(profileForm.status)) {
@@ -302,6 +324,9 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
         bondedWithKittenId: updated.bondedWithKittenId ? String(updated.bondedWithKittenId) : '',
         bondedWithName: updated.bondedWithName || '',
         isMedicalSpecialNeeds: Boolean(updated.isMedicalSpecialNeeds),
+        isTnr: Boolean(updated.isTnr),
+        isColony: Boolean(updated.isColony),
+        microchipNumber: updated.microchipNumber || '',
         outcomeDate: updated.outcomeDate ? updated.outcomeDate.slice(0, 10) : '',
         outcomeDetail: updated.outcomeDetail || '',
       });
@@ -351,9 +376,37 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
     setTabLoading(false);
   }
 
+  async function handleUpdateVaccine(id, formData) {
+    setTabLoading(true);
+    await updateVaccine(id, formData);
+    await loadMedical();
+    setTabLoading(false);
+  }
+
+  async function handleDeleteVaccine(id) {
+    setTabLoading(true);
+    await deleteVaccine(id);
+    await loadMedical();
+    setTabLoading(false);
+  }
+
   async function handleCreateMedication(formData) {
     setTabLoading(true);
     await createMedication({ kittenId: Number.parseInt(kittenId, 10), ...formData });
+    await loadMedical();
+    setTabLoading(false);
+  }
+
+  async function handleUpdateMedication(id, formData) {
+    setTabLoading(true);
+    await updateMedication(id, formData);
+    await loadMedical();
+    setTabLoading(false);
+  }
+
+  async function handleDeleteMedication(id) {
+    setTabLoading(true);
+    await deleteMedication(id);
     await loadMedical();
     setTabLoading(false);
   }
@@ -365,9 +418,37 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
     setTabLoading(false);
   }
 
+  async function handleUpdateVetVisit(id, formData) {
+    setTabLoading(true);
+    await updateVetAppointment(id, formData);
+    await loadMedical();
+    setTabLoading(false);
+  }
+
+  async function handleDeleteVetVisit(id) {
+    setTabLoading(true);
+    await deleteVetAppointment(id);
+    await loadMedical();
+    setTabLoading(false);
+  }
+
   async function handleCreateWeight(formData) {
     setTabLoading(true);
     await createWeightLog({ kittenId: Number.parseInt(kittenId, 10), ...formData });
+    await loadWeights();
+    setTabLoading(false);
+  }
+
+  async function handleUpdateWeight(id, formData) {
+    setTabLoading(true);
+    await updateWeightLog(id, formData);
+    await loadWeights();
+    setTabLoading(false);
+  }
+
+  async function handleDeleteWeight(id) {
+    setTabLoading(true);
+    await deleteWeightLog(id);
     await loadWeights();
     setTabLoading(false);
   }
@@ -657,6 +738,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                 {[
                   ['dateOfBirth', 'Date of Birth', 'date'],
                   ['intakeDate', 'Intake Date', 'date'],
+                  ['microchipNumber', 'Microchip Number', 'text'],
                   ['fivFelvStatus', 'FIV/FeLV Status', 'text'],
                 ].map(([field, label, type]) => (
                   <label key={field} className="block">
@@ -783,6 +865,24 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                     disabled={!canEdit}
                   />
                   <span className="text-sm font-medium text-gray-800">Euthanasia-Pull Rescue</span>
+                </label>
+                <label className="flex items-center gap-2 sm:col-span-2">
+                  <input
+                    type="checkbox"
+                    checked={profileForm.isTnr}
+                    onChange={(e) => handleProfileFieldChange('isTnr', e.target.checked)}
+                    disabled={!canEdit}
+                  />
+                  <span className="text-sm font-medium text-gray-800">TNR</span>
+                </label>
+                <label className="flex items-center gap-2 sm:col-span-2">
+                  <input
+                    type="checkbox"
+                    checked={profileForm.isColony}
+                    onChange={(e) => handleProfileFieldChange('isColony', e.target.checked)}
+                    disabled={!canEdit}
+                  />
+                  <span className="text-sm font-medium text-gray-800">Colony</span>
                 </label>
               </div>
               <label className="block">
@@ -912,9 +1012,17 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
               medical={medical}
               weightLogs={weightLogs}
               onCreateVaccine={handleCreateVaccine}
+              onUpdateVaccine={handleUpdateVaccine}
+              onDeleteVaccine={handleDeleteVaccine}
               onCreateMedication={handleCreateMedication}
+              onUpdateMedication={handleUpdateMedication}
+              onDeleteMedication={handleDeleteMedication}
               onCreateVetVisit={handleCreateVetVisit}
+              onUpdateVetVisit={handleUpdateVetVisit}
+              onDeleteVetVisit={handleDeleteVetVisit}
               onCreateWeight={handleCreateWeight}
+              onUpdateWeight={handleUpdateWeight}
+              onDeleteWeight={handleDeleteWeight}
             />
           )}
 

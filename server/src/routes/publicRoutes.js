@@ -15,6 +15,10 @@ import {
   getPublicStats,
   submitContactForm,
 } from '../controllers/publicController.js';
+import {
+  getPublicContractBySigningToken,
+  signPublicContractByToken,
+} from '../controllers/contractController.js';
 import { getPublicEventBySlug, rsvpForEvent } from '../controllers/eventController.js';
 import { getPublicWishlists, getPublicFosterWishlists, getPublicKittenWishlists } from '../controllers/wishlistController.js';
 
@@ -41,6 +45,11 @@ router.get('/content/:slug', getPublicContentBySlug);
 router.get('/events', getPublicEvents);
 router.get('/events/:slug', getPublicEventBySlug);
 router.post('/events/:slug/rsvp', rsvpForEvent);
+router.get('/contracts/sign/:token', (req, res, next) => {
+  res.set('Cache-Control', 'no-store');
+  next();
+}, getPublicContractBySigningToken);
+router.post('/contracts/sign/:token', signPublicContractByToken);
 router.post('/applications', upload.array('photos', 3), createApplication);
 router.post('/donations', createPublicDonation);
 router.post('/contact', submitContactForm);

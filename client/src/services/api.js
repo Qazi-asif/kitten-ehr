@@ -46,7 +46,11 @@ export function fetchKittens(params) {
   if (params.page) searchParams.set('page', String(params.page));
   if (params.limit) searchParams.set('limit', String(params.limit));
   if (params.search) searchParams.set('search', params.search);
-  if (params.status && params.status !== 'All') searchParams.set('status', params.status);
+  if (Array.isArray(params.statuses) && params.statuses.length > 0) {
+    searchParams.set('status', params.statuses.join(','));
+  } else if (params.status && params.status !== 'All') {
+    searchParams.set('status', params.status);
+  }
   if (params.fosterId) searchParams.set('fosterId', String(params.fosterId));
   if (params.litterId) searchParams.set('litterId', String(params.litterId));
   if (params.sort) searchParams.set('sort', params.sort);
@@ -176,8 +180,12 @@ export async function fetchKittenPlacements(kittenId) {
   return response.json();
 }
 
-export function fetchLitters() {
-  return adminRequest('/litters');
+export function fetchLitters(params = {}) {
+  const searchParams = new URLSearchParams();
+  if (params.status) searchParams.set('status', params.status);
+  if (params.sort) searchParams.set('sort', params.sort);
+  const query = searchParams.toString();
+  return adminRequest(`/litters${query ? `?${query}` : ''}`);
 }
 
 export async function createLitter(litterData) {
@@ -186,6 +194,18 @@ export async function createLitter(litterData) {
     body: JSON.stringify(litterData),
   });
   if (!response.ok) throw new Error(await readApiError(response, 'Failed to create litter'));
+  return response.json();
+}
+
+export async function deactivateLitter(id) {
+  const response = await adminFetch(`/litters/${id}/deactivate`, { method: 'POST' });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to deactivate litter'));
+  return response.json();
+}
+
+export async function activateLitter(id) {
+  const response = await adminFetch(`/litters/${id}/activate`, { method: 'POST' });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to activate litter'));
   return response.json();
 }
 
@@ -211,7 +231,22 @@ export async function createVaccine(recordData) {
     method: 'POST',
     body: JSON.stringify(recordData),
   });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to create vaccine'));
   return response.json();
+}
+
+export async function updateVaccine(id, recordData) {
+  const response = await adminFetch(`/medical/vaccines/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(recordData),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to update vaccine'));
+  return response.json();
+}
+
+export async function deleteVaccine(id) {
+  const response = await adminFetch(`/medical/vaccines/${id}`, { method: 'DELETE' });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to delete vaccine'));
 }
 
 export async function createMedication(recordData) {
@@ -219,7 +254,22 @@ export async function createMedication(recordData) {
     method: 'POST',
     body: JSON.stringify(recordData),
   });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to create medication'));
   return response.json();
+}
+
+export async function updateMedication(id, recordData) {
+  const response = await adminFetch(`/medical/medications/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(recordData),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to update medication'));
+  return response.json();
+}
+
+export async function deleteMedication(id) {
+  const response = await adminFetch(`/medical/medications/${id}`, { method: 'DELETE' });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to delete medication'));
 }
 
 export async function createVetAppointment(recordData) {
@@ -227,7 +277,22 @@ export async function createVetAppointment(recordData) {
     method: 'POST',
     body: JSON.stringify(recordData),
   });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to create vet appointment'));
   return response.json();
+}
+
+export async function updateVetAppointment(id, recordData) {
+  const response = await adminFetch(`/medical/vet-appointments/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(recordData),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to update vet appointment'));
+  return response.json();
+}
+
+export async function deleteVetAppointment(id) {
+  const response = await adminFetch(`/medical/vet-appointments/${id}`, { method: 'DELETE' });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to delete vet appointment'));
 }
 
 export function fetchWeightLogs(kittenId) {
@@ -239,7 +304,22 @@ export async function createWeightLog(logData) {
     method: 'POST',
     body: JSON.stringify(logData),
   });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to create weight log'));
   return response.json();
+}
+
+export async function updateWeightLog(id, logData) {
+  const response = await adminFetch(`/weights/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(logData),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to update weight log'));
+  return response.json();
+}
+
+export async function deleteWeightLog(id) {
+  const response = await adminFetch(`/weights/${id}`, { method: 'DELETE' });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to delete weight log'));
 }
 
 export async function fetchApplications(status, options = {}) {

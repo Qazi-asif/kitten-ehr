@@ -47,7 +47,7 @@ function HomePage() {
   const [featured, setFeatured] = useState([]);
 
   useEffect(() => {
-    fetchPublicKittens(4)
+    fetchPublicKittens(4, { featured: true })
       .then((data) => setFeatured(Array.isArray(data) ? data : []))
       .catch(() => {});
   }, []);
@@ -72,10 +72,7 @@ function HomePage() {
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
             <div className="relative z-10 lg:pr-8">
               <div className="mb-6">
-                <PublicLogo className="mb-4" orgName="Pawsitive Transformations" />
-                <p className="text-sm font-semibold uppercase tracking-[0.05em] text-slate-600">
-                  Cat Rescue & Human Wellness
-                </p>
+                <PublicLogo size="hero" orgName="Pawsitive Transformations" />
               </div>
 
               <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">

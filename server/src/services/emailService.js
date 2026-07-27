@@ -643,7 +643,7 @@ export async function sendSignedContractPdfEmail({ contract }) {
   }
 }
 
-export async function sendContractAgreementEmail({ contract, agreementText, note = '' }) {
+export async function sendContractAgreementEmail({ contract, agreementText, note = '', signingUrl = '' }) {
   const settings = await getEmailSettings();
   const recipient = contract.signerEmail?.trim();
   const provider = resolveEmailProvider(settings);
@@ -683,11 +683,17 @@ export async function sendContractAgreementEmail({ contract, agreementText, note
     ? `<p style="margin:0 0 16px;padding:12px;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0;">${escapeHtml(note)}</p>`
     : '';
 
+  const signBlock = signingUrl
+    ? `<p style="margin:24px 0;"><a href="${escapeHtml(signingUrl)}" style="display:inline-block;padding:14px 28px;background:#0d9488;color:#ffffff;text-decoration:none;border-radius:8px;font-weight:700;">Sign this agreement electronically</a></p>
+<p style="margin:0 0 16px;font-size:13px;color:#64748b;">Or copy this link into your browser:<br><a href="${escapeHtml(signingUrl)}" style="color:#0d9488;word-break:break-all;">${escapeHtml(signingUrl)}</a></p>`
+    : '<p>A team member will help you complete signing in person or at your adoption appointment.</p>';
+
   const innerHtml = `
 <h2 style="margin:0 0 16px;font-size:20px;">Agreement for ${escapeHtml(kittenName)}</h2>
 <p>Hi ${escapeHtml(contract.signerName)},</p>
-<p>Please review the agreement below from ${escapeHtml(settings.orgName || 'Pawsitive Transformations')}. A team member will help you complete signing in the admin portal or at your adoption appointment.</p>
+<p>Please review the agreement below from ${escapeHtml(settings.orgName || 'Pawsitive Transformations')}, then sign electronically using the button below.</p>
 ${noteBlock}
+${signBlock}
 <pre style="margin:20px 0;padding:16px;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0;white-space:pre-wrap;font-family:Georgia,serif;font-size:13px;line-height:1.6;color:#334155;">${escapeHtml(agreementText)}</pre>
 <p>If you have questions, reply to this email or contact us directly.</p>
 <p>Thank you,<br>${escapeHtml(settings.orgName || 'Pawsitive Transformations')}</p>`;

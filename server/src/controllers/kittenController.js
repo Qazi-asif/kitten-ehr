@@ -68,7 +68,7 @@ export async function getAllKittens(req, res) {
         skip,
         take: limit,
         orderBy: buildKittenListOrderBy(req.query, {
-          fallback: [{ intakeDate: 'desc' }, { id: 'desc' }],
+          fallback: [{ name: 'asc' }],
         }),
         select: kittenListSelect,
       }),
@@ -122,7 +122,12 @@ function buildKittenListWhere(query) {
   const where = {};
 
   if (query.status && query.status !== 'All') {
-    where.status = String(query.status);
+    const statuses = String(query.status)
+      .split(',')
+      .map((value) => value.trim())
+      .filter(Boolean);
+    if (statuses.length === 1) where.status = statuses[0];
+    else if (statuses.length > 1) where.status = { in: statuses };
   }
 
   const fosterId = Number.parseInt(query.fosterId, 10);
@@ -168,6 +173,9 @@ export async function createKitten(req, res, next) {
       rescueStory,
       intakeDate,
       intakeSource,
+      microchipNumber,
+      isTnr,
+      isColony,
     } = parsed.data;
 
     const parsedLitterId = litterId ?? null;
@@ -198,6 +206,9 @@ export async function createKitten(req, res, next) {
           rescueStory,
           intakeDate: intakeDate ?? new Date(),
           intakeSource: intakeSource ?? '',
+          microchipNumber: microchipNumber ?? '',
+          isTnr: Boolean(isTnr),
+          isColony: Boolean(isColony),
         },
         include: kittenIncludes,
       });

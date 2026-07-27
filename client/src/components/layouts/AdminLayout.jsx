@@ -22,7 +22,7 @@ import { useChat } from '../../context/ChatContext';
 
 const navItems = [
   { label: 'Dashboard', icon: LayoutDashboard, path: '/admin', permission: 'dashboard.view' },
-  { label: 'Kittens', icon: Cat, path: '/admin/kittens', permission: 'kittens.view' },
+  { label: 'Cats', icon: Cat, path: '/admin/kittens', permission: 'kittens.view' },
   { label: 'Litters', icon: Package, path: '/admin/litters', permission: 'litters.view' },
   { label: 'Fosters', icon: Users, path: '/admin/fosters', permission: 'fosters.view' },
   { label: 'Applications', icon: ClipboardList, path: '/admin/applications', permission: 'applications.view' },
@@ -41,7 +41,7 @@ const pageMeta = [
   { match: (p) => p === '/admin', title: 'Dashboard' },
   { match: (p) => p.startsWith('/admin/chat'), title: 'Staff Chat', subtitle: 'Personal and group messaging for staff.' },
   { match: (p) => p.startsWith('/admin/kittens/'), title: 'Kitten Profile', subtitle: 'Medical records, publishing, and adoption details.' },
-  { match: (p) => p === '/admin/kittens', title: 'Kittens', subtitle: 'Manage kittens and link them to litter intake groups.' },
+  { match: (p) => p === '/admin/kittens', title: 'Cats', subtitle: 'Manage cats and link them to litter intake groups.' },
   { match: (p) => p.startsWith('/admin/litters/'), title: 'Litter Group', subtitle: 'View kittens linked to this intake group.' },
   { match: (p) => p === '/admin/litters', title: 'Litters', subtitle: 'Create and manage litter intake groups.' },
   { match: (p) => p.startsWith('/admin/fosters'), title: 'Fosters', subtitle: 'Foster home contacts and placements.' },

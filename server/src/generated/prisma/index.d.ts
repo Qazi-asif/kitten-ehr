@@ -5605,6 +5605,7 @@ export namespace Prisma {
     name: string | null
     intakeDate: Date | null
     notes: string | null
+    isActive: boolean | null
   }
 
   export type LitterMaxAggregateOutputType = {
@@ -5612,6 +5613,7 @@ export namespace Prisma {
     name: string | null
     intakeDate: Date | null
     notes: string | null
+    isActive: boolean | null
   }
 
   export type LitterCountAggregateOutputType = {
@@ -5619,6 +5621,7 @@ export namespace Prisma {
     name: number
     intakeDate: number
     notes: number
+    isActive: number
     _all: number
   }
 
@@ -5636,6 +5639,7 @@ export namespace Prisma {
     name?: true
     intakeDate?: true
     notes?: true
+    isActive?: true
   }
 
   export type LitterMaxAggregateInputType = {
@@ -5643,6 +5647,7 @@ export namespace Prisma {
     name?: true
     intakeDate?: true
     notes?: true
+    isActive?: true
   }
 
   export type LitterCountAggregateInputType = {
@@ -5650,6 +5655,7 @@ export namespace Prisma {
     name?: true
     intakeDate?: true
     notes?: true
+    isActive?: true
     _all?: true
   }
 
@@ -5742,8 +5748,9 @@ export namespace Prisma {
   export type LitterGroupByOutputType = {
     id: number
     name: string
-    intakeDate: Date
+    intakeDate: Date | null
     notes: string
+    isActive: boolean
     _count: LitterCountAggregateOutputType | null
     _avg: LitterAvgAggregateOutputType | null
     _sum: LitterSumAggregateOutputType | null
@@ -5770,6 +5777,7 @@ export namespace Prisma {
     name?: boolean
     intakeDate?: boolean
     notes?: boolean
+    isActive?: boolean
     kittens?: boolean | Litter$kittensArgs<ExtArgs>
     _count?: boolean | LitterCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["litter"]>
@@ -5779,6 +5787,7 @@ export namespace Prisma {
     name?: boolean
     intakeDate?: boolean
     notes?: boolean
+    isActive?: boolean
   }, ExtArgs["result"]["litter"]>
 
   export type LitterSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5786,6 +5795,7 @@ export namespace Prisma {
     name?: boolean
     intakeDate?: boolean
     notes?: boolean
+    isActive?: boolean
   }, ExtArgs["result"]["litter"]>
 
   export type LitterSelectScalar = {
@@ -5793,9 +5803,10 @@ export namespace Prisma {
     name?: boolean
     intakeDate?: boolean
     notes?: boolean
+    isActive?: boolean
   }
 
-  export type LitterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "intakeDate" | "notes", ExtArgs["result"]["litter"]>
+  export type LitterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "intakeDate" | "notes" | "isActive", ExtArgs["result"]["litter"]>
   export type LitterInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     kittens?: boolean | Litter$kittensArgs<ExtArgs>
     _count?: boolean | LitterCountOutputTypeDefaultArgs<ExtArgs>
@@ -5811,8 +5822,9 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       name: string
-      intakeDate: Date
+      intakeDate: Date | null
       notes: string
+      isActive: boolean
     }, ExtArgs["result"]["litter"]>
     composites: {}
   }
@@ -6241,6 +6253,7 @@ export namespace Prisma {
     readonly name: FieldRef<"Litter", 'String'>
     readonly intakeDate: FieldRef<"Litter", 'DateTime'>
     readonly notes: FieldRef<"Litter", 'String'>
+    readonly isActive: FieldRef<"Litter", 'Boolean'>
   }
     
 
@@ -8098,6 +8111,8 @@ export namespace Prisma {
     bondedWithKittenId: number | null
     bondedWithName: string | null
     isMedicalSpecialNeeds: boolean | null
+    isTnr: boolean | null
+    isColony: boolean | null
     currentFosterId: number | null
     createdAt: Date | null
   }
@@ -8130,6 +8145,8 @@ export namespace Prisma {
     bondedWithKittenId: number | null
     bondedWithName: string | null
     isMedicalSpecialNeeds: boolean | null
+    isTnr: boolean | null
+    isColony: boolean | null
     currentFosterId: number | null
     createdAt: Date | null
   }
@@ -8163,6 +8180,8 @@ export namespace Prisma {
     bondedWithKittenId: number
     bondedWithName: number
     isMedicalSpecialNeeds: number
+    isTnr: number
+    isColony: number
     currentFosterId: number
     createdAt: number
     _all: number
@@ -8211,6 +8230,8 @@ export namespace Prisma {
     bondedWithKittenId?: true
     bondedWithName?: true
     isMedicalSpecialNeeds?: true
+    isTnr?: true
+    isColony?: true
     currentFosterId?: true
     createdAt?: true
   }
@@ -8243,6 +8264,8 @@ export namespace Prisma {
     bondedWithKittenId?: true
     bondedWithName?: true
     isMedicalSpecialNeeds?: true
+    isTnr?: true
+    isColony?: true
     currentFosterId?: true
     createdAt?: true
   }
@@ -8276,6 +8299,8 @@ export namespace Prisma {
     bondedWithKittenId?: true
     bondedWithName?: true
     isMedicalSpecialNeeds?: true
+    isTnr?: true
+    isColony?: true
     currentFosterId?: true
     createdAt?: true
     _all?: true
@@ -8396,6 +8421,8 @@ export namespace Prisma {
     bondedWithKittenId: number | null
     bondedWithName: string
     isMedicalSpecialNeeds: boolean
+    isTnr: boolean
+    isColony: boolean
     currentFosterId: number | null
     createdAt: Date
     _count: KittenCountAggregateOutputType | null
@@ -8448,6 +8475,8 @@ export namespace Prisma {
     bondedWithKittenId?: boolean
     bondedWithName?: boolean
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     currentFosterId?: boolean
     createdAt?: boolean
     litter?: boolean | Kitten$litterArgs<ExtArgs>
@@ -8498,6 +8527,8 @@ export namespace Prisma {
     bondedWithKittenId?: boolean
     bondedWithName?: boolean
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     currentFosterId?: boolean
     createdAt?: boolean
     litter?: boolean | Kitten$litterArgs<ExtArgs>
@@ -8534,6 +8565,8 @@ export namespace Prisma {
     bondedWithKittenId?: boolean
     bondedWithName?: boolean
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     currentFosterId?: boolean
     createdAt?: boolean
     litter?: boolean | Kitten$litterArgs<ExtArgs>
@@ -8570,11 +8603,13 @@ export namespace Prisma {
     bondedWithKittenId?: boolean
     bondedWithName?: boolean
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     currentFosterId?: boolean
     createdAt?: boolean
   }
 
-  export type KittenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "litterId" | "status" | "rescueStory" | "dateOfBirth" | "sex" | "fixedStatus" | "breed" | "color" | "fivFelvStatus" | "specialNeeds" | "microchipNumber" | "primaryPhotoUrl" | "thumbnailUrl" | "intakeDate" | "intakeSource" | "outcomeDate" | "outcomeDetail" | "notes" | "internalNotes" | "isListedOnWebsite" | "websiteFeaturedComment" | "publishTargets" | "isBondedPair" | "bondedWithKittenId" | "bondedWithName" | "isMedicalSpecialNeeds" | "currentFosterId" | "createdAt", ExtArgs["result"]["kitten"]>
+  export type KittenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "litterId" | "status" | "rescueStory" | "dateOfBirth" | "sex" | "fixedStatus" | "breed" | "color" | "fivFelvStatus" | "specialNeeds" | "microchipNumber" | "primaryPhotoUrl" | "thumbnailUrl" | "intakeDate" | "intakeSource" | "outcomeDate" | "outcomeDetail" | "notes" | "internalNotes" | "isListedOnWebsite" | "websiteFeaturedComment" | "publishTargets" | "isBondedPair" | "bondedWithKittenId" | "bondedWithName" | "isMedicalSpecialNeeds" | "isTnr" | "isColony" | "currentFosterId" | "createdAt", ExtArgs["result"]["kitten"]>
   export type KittenInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     litter?: boolean | Kitten$litterArgs<ExtArgs>
     bondedWithKitten?: boolean | Kitten$bondedWithKittenArgs<ExtArgs>
@@ -8654,6 +8689,8 @@ export namespace Prisma {
       bondedWithKittenId: number | null
       bondedWithName: string
       isMedicalSpecialNeeds: boolean
+      isTnr: boolean
+      isColony: boolean
       currentFosterId: number | null
       createdAt: Date
     }, ExtArgs["result"]["kitten"]>
@@ -9123,6 +9160,8 @@ export namespace Prisma {
     readonly bondedWithKittenId: FieldRef<"Kitten", 'Int'>
     readonly bondedWithName: FieldRef<"Kitten", 'String'>
     readonly isMedicalSpecialNeeds: FieldRef<"Kitten", 'Boolean'>
+    readonly isTnr: FieldRef<"Kitten", 'Boolean'>
+    readonly isColony: FieldRef<"Kitten", 'Boolean'>
     readonly currentFosterId: FieldRef<"Kitten", 'Int'>
     readonly createdAt: FieldRef<"Kitten", 'DateTime'>
   }
@@ -21620,6 +21659,8 @@ export namespace Prisma {
     pdfUrl: string | null
     status: $Enums.ContractStatus | null
     signedAt: Date | null
+    signingToken: string | null
+    signingTokenExpiresAt: Date | null
     createdAt: Date | null
   }
 
@@ -21648,6 +21689,8 @@ export namespace Prisma {
     pdfUrl: string | null
     status: $Enums.ContractStatus | null
     signedAt: Date | null
+    signingToken: string | null
+    signingTokenExpiresAt: Date | null
     createdAt: Date | null
   }
 
@@ -21676,6 +21719,8 @@ export namespace Prisma {
     pdfUrl: number
     status: number
     signedAt: number
+    signingToken: number
+    signingTokenExpiresAt: number
     createdAt: number
     _all: number
   }
@@ -21720,6 +21765,8 @@ export namespace Prisma {
     pdfUrl?: true
     status?: true
     signedAt?: true
+    signingToken?: true
+    signingTokenExpiresAt?: true
     createdAt?: true
   }
 
@@ -21748,6 +21795,8 @@ export namespace Prisma {
     pdfUrl?: true
     status?: true
     signedAt?: true
+    signingToken?: true
+    signingTokenExpiresAt?: true
     createdAt?: true
   }
 
@@ -21776,6 +21825,8 @@ export namespace Prisma {
     pdfUrl?: true
     status?: true
     signedAt?: true
+    signingToken?: true
+    signingTokenExpiresAt?: true
     createdAt?: true
     _all?: true
   }
@@ -21891,6 +21942,8 @@ export namespace Prisma {
     pdfUrl: string | null
     status: $Enums.ContractStatus
     signedAt: Date | null
+    signingToken: string | null
+    signingTokenExpiresAt: Date | null
     createdAt: Date
     _count: ContractCountAggregateOutputType | null
     _avg: ContractAvgAggregateOutputType | null
@@ -21938,6 +21991,8 @@ export namespace Prisma {
     pdfUrl?: boolean
     status?: boolean
     signedAt?: boolean
+    signingToken?: boolean
+    signingTokenExpiresAt?: boolean
     createdAt?: boolean
     kitten?: boolean | Contract$kittenArgs<ExtArgs>
     foster?: boolean | Contract$fosterArgs<ExtArgs>
@@ -21971,6 +22026,8 @@ export namespace Prisma {
     pdfUrl?: boolean
     status?: boolean
     signedAt?: boolean
+    signingToken?: boolean
+    signingTokenExpiresAt?: boolean
     createdAt?: boolean
     kitten?: boolean | Contract$kittenArgs<ExtArgs>
     foster?: boolean | Contract$fosterArgs<ExtArgs>
@@ -22002,6 +22059,8 @@ export namespace Prisma {
     pdfUrl?: boolean
     status?: boolean
     signedAt?: boolean
+    signingToken?: boolean
+    signingTokenExpiresAt?: boolean
     createdAt?: boolean
     kitten?: boolean | Contract$kittenArgs<ExtArgs>
     foster?: boolean | Contract$fosterArgs<ExtArgs>
@@ -22033,10 +22092,12 @@ export namespace Prisma {
     pdfUrl?: boolean
     status?: boolean
     signedAt?: boolean
+    signingToken?: boolean
+    signingTokenExpiresAt?: boolean
     createdAt?: boolean
   }
 
-  export type ContractOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "templateSlug" | "signerName" | "signerEmail" | "signerAddress" | "signerPhone" | "microchipNumber" | "kittenName" | "kittenId" | "fosterId" | "applicationId" | "emergencyContactName" | "emergencyContactPhone" | "documentVersion" | "signedPdfUrl" | "signatureAudit" | "signatureImageUrl" | "signerNameAtSigning" | "signedIpAddress" | "frozenAgreementText" | "pdfUrl" | "status" | "signedAt" | "createdAt", ExtArgs["result"]["contract"]>
+  export type ContractOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "templateSlug" | "signerName" | "signerEmail" | "signerAddress" | "signerPhone" | "microchipNumber" | "kittenName" | "kittenId" | "fosterId" | "applicationId" | "emergencyContactName" | "emergencyContactPhone" | "documentVersion" | "signedPdfUrl" | "signatureAudit" | "signatureImageUrl" | "signerNameAtSigning" | "signedIpAddress" | "frozenAgreementText" | "pdfUrl" | "status" | "signedAt" | "signingToken" | "signingTokenExpiresAt" | "createdAt", ExtArgs["result"]["contract"]>
   export type ContractInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     kitten?: boolean | Contract$kittenArgs<ExtArgs>
     foster?: boolean | Contract$fosterArgs<ExtArgs>
@@ -22088,6 +22149,8 @@ export namespace Prisma {
       pdfUrl: string | null
       status: $Enums.ContractStatus
       signedAt: Date | null
+      signingToken: string | null
+      signingTokenExpiresAt: Date | null
       createdAt: Date
     }, ExtArgs["result"]["contract"]>
     composites: {}
@@ -22540,6 +22603,8 @@ export namespace Prisma {
     readonly pdfUrl: FieldRef<"Contract", 'String'>
     readonly status: FieldRef<"Contract", 'ContractStatus'>
     readonly signedAt: FieldRef<"Contract", 'DateTime'>
+    readonly signingToken: FieldRef<"Contract", 'String'>
+    readonly signingTokenExpiresAt: FieldRef<"Contract", 'DateTime'>
     readonly createdAt: FieldRef<"Contract", 'DateTime'>
   }
     
@@ -55633,7 +55698,8 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     intakeDate: 'intakeDate',
-    notes: 'notes'
+    notes: 'notes',
+    isActive: 'isActive'
   };
 
   export type LitterScalarFieldEnum = (typeof LitterScalarFieldEnum)[keyof typeof LitterScalarFieldEnum]
@@ -55688,6 +55754,8 @@ export namespace Prisma {
     bondedWithKittenId: 'bondedWithKittenId',
     bondedWithName: 'bondedWithName',
     isMedicalSpecialNeeds: 'isMedicalSpecialNeeds',
+    isTnr: 'isTnr',
+    isColony: 'isColony',
     currentFosterId: 'currentFosterId',
     createdAt: 'createdAt'
   };
@@ -55870,6 +55938,8 @@ export namespace Prisma {
     pdfUrl: 'pdfUrl',
     status: 'status',
     signedAt: 'signedAt',
+    signingToken: 'signingToken',
+    signingTokenExpiresAt: 'signingTokenExpiresAt',
     createdAt: 'createdAt'
   };
 
@@ -56569,16 +56639,18 @@ export namespace Prisma {
     NOT?: LitterWhereInput | LitterWhereInput[]
     id?: IntFilter<"Litter"> | number
     name?: StringFilter<"Litter"> | string
-    intakeDate?: DateTimeFilter<"Litter"> | Date | string
+    intakeDate?: DateTimeNullableFilter<"Litter"> | Date | string | null
     notes?: StringFilter<"Litter"> | string
+    isActive?: BoolFilter<"Litter"> | boolean
     kittens?: KittenListRelationFilter
   }
 
   export type LitterOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
-    intakeDate?: SortOrder
+    intakeDate?: SortOrderInput | SortOrder
     notes?: SortOrder
+    isActive?: SortOrder
     kittens?: KittenOrderByRelationAggregateInput
   }
 
@@ -56588,16 +56660,18 @@ export namespace Prisma {
     OR?: LitterWhereInput[]
     NOT?: LitterWhereInput | LitterWhereInput[]
     name?: StringFilter<"Litter"> | string
-    intakeDate?: DateTimeFilter<"Litter"> | Date | string
+    intakeDate?: DateTimeNullableFilter<"Litter"> | Date | string | null
     notes?: StringFilter<"Litter"> | string
+    isActive?: BoolFilter<"Litter"> | boolean
     kittens?: KittenListRelationFilter
   }, "id">
 
   export type LitterOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
-    intakeDate?: SortOrder
+    intakeDate?: SortOrderInput | SortOrder
     notes?: SortOrder
+    isActive?: SortOrder
     _count?: LitterCountOrderByAggregateInput
     _avg?: LitterAvgOrderByAggregateInput
     _max?: LitterMaxOrderByAggregateInput
@@ -56611,8 +56685,9 @@ export namespace Prisma {
     NOT?: LitterScalarWhereWithAggregatesInput | LitterScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Litter"> | number
     name?: StringWithAggregatesFilter<"Litter"> | string
-    intakeDate?: DateTimeWithAggregatesFilter<"Litter"> | Date | string
+    intakeDate?: DateTimeNullableWithAggregatesFilter<"Litter"> | Date | string | null
     notes?: StringWithAggregatesFilter<"Litter"> | string
+    isActive?: BoolWithAggregatesFilter<"Litter"> | boolean
   }
 
   export type FosterWhereInput = {
@@ -56764,6 +56839,8 @@ export namespace Prisma {
     bondedWithKittenId?: IntNullableFilter<"Kitten"> | number | null
     bondedWithName?: StringFilter<"Kitten"> | string
     isMedicalSpecialNeeds?: BoolFilter<"Kitten"> | boolean
+    isTnr?: BoolFilter<"Kitten"> | boolean
+    isColony?: BoolFilter<"Kitten"> | boolean
     currentFosterId?: IntNullableFilter<"Kitten"> | number | null
     createdAt?: DateTimeFilter<"Kitten"> | Date | string
     litter?: XOR<LitterNullableScalarRelationFilter, LitterWhereInput> | null
@@ -56813,6 +56890,8 @@ export namespace Prisma {
     bondedWithKittenId?: SortOrderInput | SortOrder
     bondedWithName?: SortOrder
     isMedicalSpecialNeeds?: SortOrder
+    isTnr?: SortOrder
+    isColony?: SortOrder
     currentFosterId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     litter?: LitterOrderByWithRelationInput
@@ -56865,6 +56944,8 @@ export namespace Prisma {
     bondedWithKittenId?: IntNullableFilter<"Kitten"> | number | null
     bondedWithName?: StringFilter<"Kitten"> | string
     isMedicalSpecialNeeds?: BoolFilter<"Kitten"> | boolean
+    isTnr?: BoolFilter<"Kitten"> | boolean
+    isColony?: BoolFilter<"Kitten"> | boolean
     currentFosterId?: IntNullableFilter<"Kitten"> | number | null
     createdAt?: DateTimeFilter<"Kitten"> | Date | string
     litter?: XOR<LitterNullableScalarRelationFilter, LitterWhereInput> | null
@@ -56914,6 +56995,8 @@ export namespace Prisma {
     bondedWithKittenId?: SortOrderInput | SortOrder
     bondedWithName?: SortOrder
     isMedicalSpecialNeeds?: SortOrder
+    isTnr?: SortOrder
+    isColony?: SortOrder
     currentFosterId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: KittenCountOrderByAggregateInput
@@ -56955,6 +57038,8 @@ export namespace Prisma {
     bondedWithKittenId?: IntNullableWithAggregatesFilter<"Kitten"> | number | null
     bondedWithName?: StringWithAggregatesFilter<"Kitten"> | string
     isMedicalSpecialNeeds?: BoolWithAggregatesFilter<"Kitten"> | boolean
+    isTnr?: BoolWithAggregatesFilter<"Kitten"> | boolean
+    isColony?: BoolWithAggregatesFilter<"Kitten"> | boolean
     currentFosterId?: IntNullableWithAggregatesFilter<"Kitten"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"Kitten"> | Date | string
   }
@@ -57778,6 +57863,8 @@ export namespace Prisma {
     pdfUrl?: StringNullableFilter<"Contract"> | string | null
     status?: EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
     signedAt?: DateTimeNullableFilter<"Contract"> | Date | string | null
+    signingToken?: StringNullableFilter<"Contract"> | string | null
+    signingTokenExpiresAt?: DateTimeNullableFilter<"Contract"> | Date | string | null
     createdAt?: DateTimeFilter<"Contract"> | Date | string
     kitten?: XOR<KittenNullableScalarRelationFilter, KittenWhereInput> | null
     foster?: XOR<FosterNullableScalarRelationFilter, FosterWhereInput> | null
@@ -57810,6 +57897,8 @@ export namespace Prisma {
     pdfUrl?: SortOrderInput | SortOrder
     status?: SortOrder
     signedAt?: SortOrderInput | SortOrder
+    signingToken?: SortOrderInput | SortOrder
+    signingTokenExpiresAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     kitten?: KittenOrderByWithRelationInput
     foster?: FosterOrderByWithRelationInput
@@ -57819,6 +57908,7 @@ export namespace Prisma {
 
   export type ContractWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    signingToken?: string
     AND?: ContractWhereInput | ContractWhereInput[]
     OR?: ContractWhereInput[]
     NOT?: ContractWhereInput | ContractWhereInput[]
@@ -57845,12 +57935,13 @@ export namespace Prisma {
     pdfUrl?: StringNullableFilter<"Contract"> | string | null
     status?: EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
     signedAt?: DateTimeNullableFilter<"Contract"> | Date | string | null
+    signingTokenExpiresAt?: DateTimeNullableFilter<"Contract"> | Date | string | null
     createdAt?: DateTimeFilter<"Contract"> | Date | string
     kitten?: XOR<KittenNullableScalarRelationFilter, KittenWhereInput> | null
     foster?: XOR<FosterNullableScalarRelationFilter, FosterWhereInput> | null
     application?: XOR<ApplicationNullableScalarRelationFilter, ApplicationWhereInput> | null
     householdAcknowledgments?: ContractHouseholdAcknowledgmentListRelationFilter
-  }, "id">
+  }, "id" | "signingToken">
 
   export type ContractOrderByWithAggregationInput = {
     id?: SortOrder
@@ -57877,6 +57968,8 @@ export namespace Prisma {
     pdfUrl?: SortOrderInput | SortOrder
     status?: SortOrder
     signedAt?: SortOrderInput | SortOrder
+    signingToken?: SortOrderInput | SortOrder
+    signingTokenExpiresAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: ContractCountOrderByAggregateInput
     _avg?: ContractAvgOrderByAggregateInput
@@ -57913,6 +58006,8 @@ export namespace Prisma {
     pdfUrl?: StringNullableWithAggregatesFilter<"Contract"> | string | null
     status?: EnumContractStatusWithAggregatesFilter<"Contract"> | $Enums.ContractStatus
     signedAt?: DateTimeNullableWithAggregatesFilter<"Contract"> | Date | string | null
+    signingToken?: StringNullableWithAggregatesFilter<"Contract"> | string | null
+    signingTokenExpiresAt?: DateTimeNullableWithAggregatesFilter<"Contract"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Contract"> | Date | string
   }
 
@@ -60116,52 +60211,59 @@ export namespace Prisma {
 
   export type LitterCreateInput = {
     name: string
-    intakeDate: Date | string
+    intakeDate?: Date | string | null
     notes?: string
+    isActive?: boolean
     kittens?: KittenCreateNestedManyWithoutLitterInput
   }
 
   export type LitterUncheckedCreateInput = {
     id?: number
     name: string
-    intakeDate: Date | string
+    intakeDate?: Date | string | null
     notes?: string
+    isActive?: boolean
     kittens?: KittenUncheckedCreateNestedManyWithoutLitterInput
   }
 
   export type LitterUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
-    intakeDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     kittens?: KittenUpdateManyWithoutLitterNestedInput
   }
 
   export type LitterUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
-    intakeDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     kittens?: KittenUncheckedUpdateManyWithoutLitterNestedInput
   }
 
   export type LitterCreateManyInput = {
     id?: number
     name: string
-    intakeDate: Date | string
+    intakeDate?: Date | string | null
     notes?: string
+    isActive?: boolean
   }
 
   export type LitterUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
-    intakeDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type LitterUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
-    intakeDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type FosterCreateInput = {
@@ -60325,6 +60427,8 @@ export namespace Prisma {
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
@@ -60373,6 +60477,8 @@ export namespace Prisma {
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -60416,6 +60522,8 @@ export namespace Prisma {
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
@@ -60464,6 +60572,8 @@ export namespace Prisma {
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -60510,6 +60620,8 @@ export namespace Prisma {
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
   }
@@ -60540,6 +60652,8 @@ export namespace Prisma {
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -60572,6 +60686,8 @@ export namespace Prisma {
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -61420,6 +61536,8 @@ export namespace Prisma {
     pdfUrl?: string | null
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
+    signingToken?: string | null
+    signingTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     kitten?: KittenCreateNestedOneWithoutContractsInput
     foster?: FosterCreateNestedOneWithoutContractsInput
@@ -61452,6 +61570,8 @@ export namespace Prisma {
     pdfUrl?: string | null
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
+    signingToken?: string | null
+    signingTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     householdAcknowledgments?: ContractHouseholdAcknowledgmentUncheckedCreateNestedManyWithoutContractInput
   }
@@ -61477,6 +61597,8 @@ export namespace Prisma {
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    signingToken?: NullableStringFieldUpdateOperationsInput | string | null
+    signingTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     kitten?: KittenUpdateOneWithoutContractsNestedInput
     foster?: FosterUpdateOneWithoutContractsNestedInput
@@ -61509,6 +61631,8 @@ export namespace Prisma {
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    signingToken?: NullableStringFieldUpdateOperationsInput | string | null
+    signingTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     householdAcknowledgments?: ContractHouseholdAcknowledgmentUncheckedUpdateManyWithoutContractNestedInput
   }
@@ -61538,6 +61662,8 @@ export namespace Prisma {
     pdfUrl?: string | null
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
+    signingToken?: string | null
+    signingTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -61562,6 +61688,8 @@ export namespace Prisma {
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    signingToken?: NullableStringFieldUpdateOperationsInput | string | null
+    signingTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -61590,6 +61718,8 @@ export namespace Prisma {
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    signingToken?: NullableStringFieldUpdateOperationsInput | string | null
+    signingTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -63897,21 +64027,31 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type DateTimeFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type KittenListRelationFilter = {
     every?: KittenWhereInput
     some?: KittenWhereInput
     none?: KittenWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
   }
 
   export type KittenOrderByRelationAggregateInput = {
@@ -63923,6 +64063,7 @@ export namespace Prisma {
     name?: SortOrder
     intakeDate?: SortOrder
     notes?: SortOrder
+    isActive?: SortOrder
   }
 
   export type LitterAvgOrderByAggregateInput = {
@@ -63934,6 +64075,7 @@ export namespace Prisma {
     name?: SortOrder
     intakeDate?: SortOrder
     notes?: SortOrder
+    isActive?: SortOrder
   }
 
   export type LitterMinOrderByAggregateInput = {
@@ -63941,6 +64083,7 @@ export namespace Prisma {
     name?: SortOrder
     intakeDate?: SortOrder
     notes?: SortOrder
+    isActive?: SortOrder
   }
 
   export type LitterSumOrderByAggregateInput = {
@@ -63981,18 +64124,26 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
-  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type StringNullableFilter<$PrismaModel = never> = {
@@ -64010,9 +64161,15 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
+  export type DateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
   export type IntNullableFilter<$PrismaModel = never> = {
@@ -64052,11 +64209,6 @@ export namespace Prisma {
   export type ApplicationNullableScalarRelationFilter = {
     is?: ApplicationWhereInput | null
     isNot?: ApplicationWhereInput | null
-  }
-
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
   }
 
   export type PlacementOrderByRelationAggregateInput = {
@@ -64152,12 +64304,18 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
   export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -64174,17 +64332,6 @@ export namespace Prisma {
     _sum?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedIntNullableFilter<$PrismaModel>
     _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type StringNullableListFilter<$PrismaModel = never> = {
@@ -64329,6 +64476,8 @@ export namespace Prisma {
     bondedWithKittenId?: SortOrder
     bondedWithName?: SortOrder
     isMedicalSpecialNeeds?: SortOrder
+    isTnr?: SortOrder
+    isColony?: SortOrder
     currentFosterId?: SortOrder
     createdAt?: SortOrder
   }
@@ -64368,6 +64517,8 @@ export namespace Prisma {
     bondedWithKittenId?: SortOrder
     bondedWithName?: SortOrder
     isMedicalSpecialNeeds?: SortOrder
+    isTnr?: SortOrder
+    isColony?: SortOrder
     currentFosterId?: SortOrder
     createdAt?: SortOrder
   }
@@ -64400,6 +64551,8 @@ export namespace Prisma {
     bondedWithKittenId?: SortOrder
     bondedWithName?: SortOrder
     isMedicalSpecialNeeds?: SortOrder
+    isTnr?: SortOrder
+    isColony?: SortOrder
     currentFosterId?: SortOrder
     createdAt?: SortOrder
   }
@@ -64409,20 +64562,6 @@ export namespace Prisma {
     litterId?: SortOrder
     bondedWithKittenId?: SortOrder
     currentFosterId?: SortOrder
-  }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type KittenScalarRelationFilter = {
@@ -65029,6 +65168,8 @@ export namespace Prisma {
     pdfUrl?: SortOrder
     status?: SortOrder
     signedAt?: SortOrder
+    signingToken?: SortOrder
+    signingTokenExpiresAt?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -65064,6 +65205,8 @@ export namespace Prisma {
     pdfUrl?: SortOrder
     status?: SortOrder
     signedAt?: SortOrder
+    signingToken?: SortOrder
+    signingTokenExpiresAt?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -65092,6 +65235,8 @@ export namespace Prisma {
     pdfUrl?: SortOrder
     status?: SortOrder
     signedAt?: SortOrder
+    signingToken?: SortOrder
+    signingTokenExpiresAt?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -66820,8 +66965,12 @@ export namespace Prisma {
     set?: string
   }
 
-  export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type KittenUpdateManyWithoutLitterNestedInput = {
@@ -66938,8 +67087,8 @@ export namespace Prisma {
     set?: string | null
   }
 
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
   }
 
   export type KittenUpdateManyWithoutCurrentFosterNestedInput = {
@@ -67294,10 +67443,6 @@ export namespace Prisma {
     connectOrCreate?: EventCatsCreateOrConnectWithoutKittenInput | EventCatsCreateOrConnectWithoutKittenInput[]
     createMany?: EventCatsCreateManyKittenInputEnvelope
     connect?: EventCatsWhereUniqueInput | EventCatsWhereUniqueInput[]
-  }
-
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
   }
 
   export type KittenUpdatepublishTargetsInput = {
@@ -69792,15 +69937,20 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type NestedDateTimeFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -69847,18 +69997,37 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
-  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedStringNullableFilter<$PrismaModel = never> = {
@@ -69875,20 +70044,15 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  export type NestedDateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -69908,12 +70072,18 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -69941,31 +70111,6 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -70231,6 +70376,8 @@ export namespace Prisma {
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     createdAt?: Date | string
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
     bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
@@ -70277,6 +70424,8 @@ export namespace Prisma {
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -70352,6 +70501,8 @@ export namespace Prisma {
     bondedWithKittenId?: IntNullableFilter<"Kitten"> | number | null
     bondedWithName?: StringFilter<"Kitten"> | string
     isMedicalSpecialNeeds?: BoolFilter<"Kitten"> | boolean
+    isTnr?: BoolFilter<"Kitten"> | boolean
+    isColony?: BoolFilter<"Kitten"> | boolean
     currentFosterId?: IntNullableFilter<"Kitten"> | number | null
     createdAt?: DateTimeFilter<"Kitten"> | Date | string
   }
@@ -70382,6 +70533,8 @@ export namespace Prisma {
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
@@ -70429,6 +70582,8 @@ export namespace Prisma {
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
@@ -70503,6 +70658,8 @@ export namespace Prisma {
     pdfUrl?: string | null
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
+    signingToken?: string | null
+    signingTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     kitten?: KittenCreateNestedOneWithoutContractsInput
     application?: ApplicationCreateNestedOneWithoutContractsInput
@@ -70533,6 +70690,8 @@ export namespace Prisma {
     pdfUrl?: string | null
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
+    signingToken?: string | null
+    signingTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     householdAcknowledgments?: ContractHouseholdAcknowledgmentUncheckedCreateNestedManyWithoutContractInput
   }
@@ -70757,6 +70916,8 @@ export namespace Prisma {
     pdfUrl?: StringNullableFilter<"Contract"> | string | null
     status?: EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
     signedAt?: DateTimeNullableFilter<"Contract"> | Date | string | null
+    signingToken?: StringNullableFilter<"Contract"> | string | null
+    signingTokenExpiresAt?: DateTimeNullableFilter<"Contract"> | Date | string | null
     createdAt?: DateTimeFilter<"Contract"> | Date | string
   }
 
@@ -70894,15 +71055,17 @@ export namespace Prisma {
 
   export type LitterCreateWithoutKittensInput = {
     name: string
-    intakeDate: Date | string
+    intakeDate?: Date | string | null
     notes?: string
+    isActive?: boolean
   }
 
   export type LitterUncheckedCreateWithoutKittensInput = {
     id?: number
     name: string
-    intakeDate: Date | string
+    intakeDate?: Date | string | null
     notes?: string
+    isActive?: boolean
   }
 
   export type LitterCreateOrConnectWithoutKittensInput = {
@@ -70936,6 +71099,8 @@ export namespace Prisma {
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
@@ -70983,6 +71148,8 @@ export namespace Prisma {
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
@@ -71030,6 +71197,8 @@ export namespace Prisma {
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
@@ -71076,6 +71245,8 @@ export namespace Prisma {
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -71453,6 +71624,8 @@ export namespace Prisma {
     pdfUrl?: string | null
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
+    signingToken?: string | null
+    signingTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     foster?: FosterCreateNestedOneWithoutContractsInput
     application?: ApplicationCreateNestedOneWithoutContractsInput
@@ -71483,6 +71656,8 @@ export namespace Prisma {
     pdfUrl?: string | null
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
+    signingToken?: string | null
+    signingTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     householdAcknowledgments?: ContractHouseholdAcknowledgmentUncheckedCreateNestedManyWithoutContractInput
   }
@@ -71562,15 +71737,17 @@ export namespace Prisma {
 
   export type LitterUpdateWithoutKittensInput = {
     name?: StringFieldUpdateOperationsInput | string
-    intakeDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type LitterUncheckedUpdateWithoutKittensInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
-    intakeDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type KittenUpsertWithoutBondedPartnersInput = {
@@ -71610,6 +71787,8 @@ export namespace Prisma {
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
@@ -71657,6 +71836,8 @@ export namespace Prisma {
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
@@ -72087,6 +72268,8 @@ export namespace Prisma {
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
@@ -72134,6 +72317,8 @@ export namespace Prisma {
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -72192,6 +72377,8 @@ export namespace Prisma {
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
@@ -72239,6 +72426,8 @@ export namespace Prisma {
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -72281,6 +72470,8 @@ export namespace Prisma {
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
@@ -72328,6 +72519,8 @@ export namespace Prisma {
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -72386,6 +72579,8 @@ export namespace Prisma {
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
@@ -72433,6 +72628,8 @@ export namespace Prisma {
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -72475,6 +72672,8 @@ export namespace Prisma {
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
@@ -72522,6 +72721,8 @@ export namespace Prisma {
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -72626,6 +72827,8 @@ export namespace Prisma {
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
@@ -72673,6 +72876,8 @@ export namespace Prisma {
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -72767,6 +72972,8 @@ export namespace Prisma {
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
@@ -72814,6 +73021,8 @@ export namespace Prisma {
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -72872,6 +73081,8 @@ export namespace Prisma {
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
@@ -72919,6 +73130,8 @@ export namespace Prisma {
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -72961,6 +73174,8 @@ export namespace Prisma {
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
@@ -73008,6 +73223,8 @@ export namespace Prisma {
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -73101,6 +73318,8 @@ export namespace Prisma {
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
@@ -73148,6 +73367,8 @@ export namespace Prisma {
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -73223,6 +73444,8 @@ export namespace Prisma {
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
@@ -73270,6 +73493,8 @@ export namespace Prisma {
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -73386,6 +73611,8 @@ export namespace Prisma {
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
@@ -73433,6 +73660,8 @@ export namespace Prisma {
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -73518,6 +73747,8 @@ export namespace Prisma {
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
@@ -73565,6 +73796,8 @@ export namespace Prisma {
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -73623,6 +73856,8 @@ export namespace Prisma {
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
@@ -73670,6 +73905,8 @@ export namespace Prisma {
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -73712,6 +73949,8 @@ export namespace Prisma {
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
@@ -73759,6 +73998,8 @@ export namespace Prisma {
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -73863,6 +74104,8 @@ export namespace Prisma {
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
@@ -73910,6 +74153,8 @@ export namespace Prisma {
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -74047,6 +74292,8 @@ export namespace Prisma {
     pdfUrl?: string | null
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
+    signingToken?: string | null
+    signingTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     kitten?: KittenCreateNestedOneWithoutContractsInput
     foster?: FosterCreateNestedOneWithoutContractsInput
@@ -74077,6 +74324,8 @@ export namespace Prisma {
     pdfUrl?: string | null
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
+    signingToken?: string | null
+    signingTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     householdAcknowledgments?: ContractHouseholdAcknowledgmentUncheckedCreateNestedManyWithoutContractInput
   }
@@ -74330,6 +74579,8 @@ export namespace Prisma {
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
@@ -74377,6 +74628,8 @@ export namespace Prisma {
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -74546,6 +74799,8 @@ export namespace Prisma {
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
@@ -74593,6 +74848,8 @@ export namespace Prisma {
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -74756,6 +75013,8 @@ export namespace Prisma {
     pdfUrl?: string | null
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
+    signingToken?: string | null
+    signingTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     kitten?: KittenCreateNestedOneWithoutContractsInput
     foster?: FosterCreateNestedOneWithoutContractsInput
@@ -74787,6 +75046,8 @@ export namespace Prisma {
     pdfUrl?: string | null
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
+    signingToken?: string | null
+    signingTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -74827,6 +75088,8 @@ export namespace Prisma {
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    signingToken?: NullableStringFieldUpdateOperationsInput | string | null
+    signingTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     kitten?: KittenUpdateOneWithoutContractsNestedInput
     foster?: FosterUpdateOneWithoutContractsNestedInput
@@ -74858,6 +75121,8 @@ export namespace Prisma {
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    signingToken?: NullableStringFieldUpdateOperationsInput | string | null
+    signingTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -75591,6 +75856,8 @@ export namespace Prisma {
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
@@ -75638,6 +75905,8 @@ export namespace Prisma {
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -75738,6 +76007,8 @@ export namespace Prisma {
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
@@ -75785,6 +76056,8 @@ export namespace Prisma {
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -77641,6 +77914,8 @@ export namespace Prisma {
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
@@ -77688,6 +77963,8 @@ export namespace Prisma {
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -77882,6 +78159,8 @@ export namespace Prisma {
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
@@ -77929,6 +78208,8 @@ export namespace Prisma {
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -78649,6 +78930,8 @@ export namespace Prisma {
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
@@ -78696,6 +78979,8 @@ export namespace Prisma {
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -78754,6 +79039,8 @@ export namespace Prisma {
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
@@ -78801,6 +79088,8 @@ export namespace Prisma {
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -78845,6 +79134,8 @@ export namespace Prisma {
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
   }
@@ -78875,6 +79166,8 @@ export namespace Prisma {
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
     bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
@@ -78921,6 +79214,8 @@ export namespace Prisma {
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -78966,6 +79261,8 @@ export namespace Prisma {
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -78999,6 +79296,8 @@ export namespace Prisma {
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     createdAt?: Date | string
   }
 
@@ -79035,6 +79334,8 @@ export namespace Prisma {
     pdfUrl?: string | null
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
+    signingToken?: string | null
+    signingTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -79076,6 +79377,8 @@ export namespace Prisma {
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
@@ -79123,6 +79426,8 @@ export namespace Prisma {
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
@@ -79168,6 +79473,8 @@ export namespace Prisma {
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -79218,6 +79525,8 @@ export namespace Prisma {
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    signingToken?: NullableStringFieldUpdateOperationsInput | string | null
+    signingTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     kitten?: KittenUpdateOneWithoutContractsNestedInput
     application?: ApplicationUpdateOneWithoutContractsNestedInput
@@ -79248,6 +79557,8 @@ export namespace Prisma {
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    signingToken?: NullableStringFieldUpdateOperationsInput | string | null
+    signingTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     householdAcknowledgments?: ContractHouseholdAcknowledgmentUncheckedUpdateManyWithoutContractNestedInput
   }
@@ -79276,6 +79587,8 @@ export namespace Prisma {
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    signingToken?: NullableStringFieldUpdateOperationsInput | string | null
+    signingTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -79342,6 +79655,8 @@ export namespace Prisma {
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
   }
@@ -79468,6 +79783,8 @@ export namespace Prisma {
     pdfUrl?: string | null
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
+    signingToken?: string | null
+    signingTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -79512,6 +79829,8 @@ export namespace Prisma {
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
@@ -79558,6 +79877,8 @@ export namespace Prisma {
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -79603,6 +79924,8 @@ export namespace Prisma {
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -79919,6 +80242,8 @@ export namespace Prisma {
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    signingToken?: NullableStringFieldUpdateOperationsInput | string | null
+    signingTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     foster?: FosterUpdateOneWithoutContractsNestedInput
     application?: ApplicationUpdateOneWithoutContractsNestedInput
@@ -79949,6 +80274,8 @@ export namespace Prisma {
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    signingToken?: NullableStringFieldUpdateOperationsInput | string | null
+    signingTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     householdAcknowledgments?: ContractHouseholdAcknowledgmentUncheckedUpdateManyWithoutContractNestedInput
   }
@@ -79977,6 +80304,8 @@ export namespace Prisma {
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    signingToken?: NullableStringFieldUpdateOperationsInput | string | null
+    signingTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -80180,6 +80509,8 @@ export namespace Prisma {
     pdfUrl?: string | null
     status?: $Enums.ContractStatus
     signedAt?: Date | string | null
+    signingToken?: string | null
+    signingTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -80229,6 +80560,8 @@ export namespace Prisma {
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    signingToken?: NullableStringFieldUpdateOperationsInput | string | null
+    signingTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     kitten?: KittenUpdateOneWithoutContractsNestedInput
     foster?: FosterUpdateOneWithoutContractsNestedInput
@@ -80259,6 +80592,8 @@ export namespace Prisma {
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    signingToken?: NullableStringFieldUpdateOperationsInput | string | null
+    signingTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     householdAcknowledgments?: ContractHouseholdAcknowledgmentUncheckedUpdateManyWithoutContractNestedInput
   }
@@ -80287,6 +80622,8 @@ export namespace Prisma {
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    signingToken?: NullableStringFieldUpdateOperationsInput | string | null
+    signingTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

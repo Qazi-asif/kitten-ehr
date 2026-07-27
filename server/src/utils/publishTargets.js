@@ -20,7 +20,16 @@ export function buildPublicWebsiteWhereClause() {
 
 export function buildPublicAvailableKittenWhereClause() {
   return {
+    // In Socialization must never appear on the public website.
     status: { in: ['Available for Adoption', 'In Foster Care'] },
+    ...buildPublicWebsiteWhereClause(),
+  };
+}
+
+/** Home page "Meet the Cats" — Available for Adoption only. */
+export function buildPublicFeaturedKittenWhereClause() {
+  return {
+    status: 'Available for Adoption',
     ...buildPublicWebsiteWhereClause(),
   };
 }

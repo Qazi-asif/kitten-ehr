@@ -1,15 +1,18 @@
 import { useState } from 'react';
+import { pacificToday } from '../../utils/pacificDate';
 
 function AssignKittenForm({ kittens = [], onSubmit, submitting = false }) {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({
     kittenId: '',
-    intakeDate: new Date().toISOString().slice(0, 10),
+    intakeDate: pacificToday(),
     notes: '',
   });
 
   function handleSubmit(event) {
     event.preventDefault();
+    // Field name remains intakeDate for the Placement API; this is the
+    // placement start date and must not overwrite kitten.intakeDate.
     onSubmit({
       kittenId: Number.parseInt(form.kittenId, 10),
       intakeDate: form.intakeDate,
@@ -17,7 +20,7 @@ function AssignKittenForm({ kittens = [], onSubmit, submitting = false }) {
     });
     setForm({
       kittenId: '',
-      intakeDate: new Date().toISOString().slice(0, 10),
+      intakeDate: pacificToday(),
       notes: '',
     });
     setOpen(false);
@@ -67,7 +70,7 @@ function AssignKittenForm({ kittens = [], onSubmit, submitting = false }) {
         </label>
 
         <label className="block">
-          <span className="text-xs font-semibold uppercase text-slate-500">Intake Date</span>
+          <span className="text-xs font-semibold uppercase text-slate-500">Placement start date</span>
           <input
             type="date"
             required

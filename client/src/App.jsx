@@ -48,6 +48,7 @@ const FosterPage = lazy(() => import('./pages/public/FosterPage'));
 const FosterFormPage = lazy(() => import('./pages/public/FosterFormPage'));
 const HomePage = lazy(() => import('./pages/public/HomePage'));
 const PublicKittenProfile = lazy(() => import('./pages/public/PublicKittenProfile'));
+const ContractSignPage = lazy(() => import('./pages/public/ContractSignPage'));
 
 function PageLoader() {
   return (
@@ -93,6 +94,7 @@ function App() {
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/privacy" element={<PrivacyPolicyPage />} />
+              <Route path="/sign/:token" element={<ContractSignPage />} />
             </Route>
 
             <Route element={<ProtectedRoute />}>

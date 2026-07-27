@@ -53,7 +53,11 @@ export function evaluateKittenFlags(kitten, vaccines = [], weightLogs = []) {
   const ageWeeks = getAgeInWeeks(kitten?.dateOfBirth);
   const latestWeightGrams = getLatestWeightGrams(weightLogs);
 
-  if (latestWeightGrams != null && latestWeightGrams > SPAY_NEUTER_WEIGHT_GRAMS) {
+  if (
+    latestWeightGrams != null
+    && latestWeightGrams > SPAY_NEUTER_WEIGHT_GRAMS
+    && kitten?.fixedStatus !== 'Spayed/Neutered'
+  ) {
     flags.push({ type: 'SPAY_NEUTER', label: 'Spay/Neuter Eligible' });
   }
 

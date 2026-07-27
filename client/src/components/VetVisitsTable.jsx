@@ -3,7 +3,7 @@ function formatDate(value) {
   return new Date(value).toLocaleDateString();
 }
 
-function VetVisitsTable({ vetAppointments }) {
+function VetVisitsTable({ vetAppointments, canManage = false, onEdit, onDelete }) {
   const records = vetAppointments ?? [];
 
   if (records.length === 0) {
@@ -18,6 +18,9 @@ function VetVisitsTable({ vetAppointments }) {
           <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-gray-500">Clinic</th>
           <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-gray-500">Vet</th>
           <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-gray-500">Reason</th>
+          {canManage && (
+            <th className="px-4 py-2 text-left text-xs font-semibold uppercase text-gray-500">Actions</th>
+          )}
         </tr>
       </thead>
       <tbody className="divide-y divide-gray-200">
@@ -27,6 +30,26 @@ function VetVisitsTable({ vetAppointments }) {
             <td className="px-4 py-2 text-sm text-gray-900">{appt.clinic || '—'}</td>
             <td className="px-4 py-2 text-sm text-gray-600">{appt.vetName || '—'}</td>
             <td className="px-4 py-2 text-sm text-gray-600">{appt.reason || '—'}</td>
+            {canManage && (
+              <td className="px-4 py-2 text-sm">
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => onEdit?.(appt)}
+                    className="text-xs font-semibold text-brand hover:underline"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => onDelete?.(appt)}
+                    className="text-xs font-semibold text-red-600 hover:underline"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </td>
+            )}
           </tr>
         ))}
       </tbody>

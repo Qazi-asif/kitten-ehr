@@ -3,6 +3,7 @@ import { DEFAULTS } from './settingsController.js';
 import { PUBLIC_SETTINGS_SELECT, toPublicSettings } from '../utils/publicSettings.js';
 import {
   buildPublicAvailableKittenWhereClause,
+  buildPublicFeaturedKittenWhereClause,
   buildPublicWebsiteWhereClause,
 } from '../utils/publishTargets.js';
 import { isPhotoDocument, photoDocumentOrderBy, photoDocumentSelect } from '../utils/photoDocuments.js';
@@ -40,6 +41,21 @@ const publicKittenSelect = {
 
 const publicWebsiteFilter = buildPublicWebsiteWhereClause();
 const publicAvailableKittenFilter = buildPublicAvailableKittenWhereClause();
+const publicFeaturedKittenFilter = buildPublicFeaturedKittenWhereClause();
+
+const PUBLIC_KITTEN_STATUS_ORDER = {
+  'Available for Adoption': 0,
+  'In Foster Care': 1,
+};
+
+function sortPublicKittens(kittens) {
+  return [...kittens].sort((a, b) => {
+    const statusDiff =
+      (PUBLIC_KITTEN_STATUS_ORDER[a.status] ?? 99) - (PUBLIC_KITTEN_STATUS_ORDER[b.status] ?? 99);
+    if (statusDiff !== 0) return statusDiff;
+    return String(a.name || '').localeCompare(String(b.name || ''), undefined, { sensitivity: 'base' });
+  });
+}
 
 // The public API must never embed a kitten's raw base64 photo inline in a
 // JSON response - a single photo can be several MB, which is what caused the
@@ -110,20 +126,26 @@ export async function getPublicKittens(req, res, next) {
     const limit = Number.isInteger(parsedLimit) && parsedLimit > 0
       ? Math.min(parsedLimit, 100)
       : undefined;
+    const featuredRaw = typeof req.query.featured === 'string' ? req.query.featured.trim().toLowerCase() : '';
+    const featured = featuredRaw === '1' || featuredRaw === 'true';
+    const where = featured ? publicFeaturedKittenFilter : publicAvailableKittenFilter;
 
-    const cacheKey = `public-kittens:${limit ?? 'all'}`;
+    const cacheKey = `public-kittens:${featured ? 'featured' : 'available'}:${limit ?? 'all'}`;
     const cached = getCachedResponse(cacheKey, PUBLIC_KITTENS_TTL_MS);
     if (cached) {
       return res.json(cached);
     }
 
+    // Fetch then sort: Available for Adoption first, then In Foster Care; alpha by name.
+    // (Prisma cannot express custom status priority + name in one orderBy.)
     const kittens = await prisma.kitten.findMany({
-      where: publicAvailableKittenFilter,
+      where,
       select: publicKittenSelect,
-      orderBy: { id: 'asc' },
-      ...(limit ? { take: limit } : {}),
+      orderBy: { name: 'asc' },
     });
-    const enriched = await enrichPublicKittensWithPhotos(kittens);
+    const sorted = sortPublicKittens(kittens);
+    const limited = limit ? sorted.slice(0, limit) : sorted;
+    const enriched = await enrichPublicKittensWithPhotos(limited);
 
     setCachedResponse(cacheKey, enriched);
     res.json(enriched);
@@ -151,8 +173,10 @@ export async function getPublicKittenById(req, res, next) {
   try {
     const id = Number.parseInt(req.params.id, 10);
 
+    // Same status gate as the public listings — never expose In Socialization
+    // (or other non-public statuses) via direct profile URL.
     const kitten = await prisma.kitten.findFirst({
-      where: { id, ...publicWebsiteFilter },
+      where: { id, ...publicAvailableKittenFilter },
       select: publicKittenSelect,
     });
 

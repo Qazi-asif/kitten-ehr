@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import PublishingMatrix, { PublishTargetBadges } from '../../components/PublishingMatrix';
 import KittenSearchMultiSelect from '../../components/admin/KittenSearchMultiSelect';
+import PublicEventsCalendar from '../../components/PublicEventsCalendar';
 import {
   createEvent,
   deleteEvent,
@@ -47,6 +48,8 @@ function CalendarPage() {
   const [currentImageUrl, setCurrentImageUrl] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [monthDate, setMonthDate] = useState(() => new Date());
+  const [selectedDate, setSelectedDate] = useState(() => new Date());
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -62,6 +65,16 @@ function CalendarPage() {
   useEffect(() => {
     load();
   }, [load]);
+
+  const selectedDayEvents = useMemo(() => {
+    if (!selectedDate) return [];
+    const key = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDate.getDate()).padStart(2, '0')}`;
+    return events.filter((event) => {
+      const d = new Date(event.date);
+      const eventKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      return eventKey === key;
+    });
+  }, [events, selectedDate]);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -245,68 +258,102 @@ function CalendarPage() {
       {loading ? (
         <p className="text-slate-500">Loading events...</p>
       ) : (
-        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-          <table className="min-w-full divide-y divide-slate-200">
-            <thead className="bg-slate-50">
-              <tr>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Banner</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Title</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Date</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Location</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Cats</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Publish Targets</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-200">
-              {events.length === 0 ? (
-                <tr>
-                  <td colSpan={7} className="px-4 py-8 text-center text-sm text-slate-500">
-                    No events scheduled yet.
-                  </td>
-                </tr>
+        <div className="space-y-8">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+            <PublicEventsCalendar
+              events={events}
+              selectedDate={selectedDate}
+              onSelectDate={setSelectedDate}
+              monthDate={monthDate}
+              onMonthChange={setMonthDate}
+            />
+            <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+              <h2 className="text-lg font-semibold text-slate-900">
+                {selectedDate
+                  ? selectedDate.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })
+                  : 'Select a day'}
+              </h2>
+              {selectedDayEvents.length === 0 ? (
+                <p className="mt-4 text-sm text-slate-500">No events on this day.</p>
               ) : (
-                events.map((item) => (
-                  <tr key={item.id} className="hover:bg-slate-50">
-                    <td className="px-4 py-3 text-sm">
-                      {item.imageUrl ? (
-                        <img
-                          src={getFileUrl(item.imageUrl)}
-                          alt=""
-                          className="h-10 w-16 rounded-md border border-slate-200 object-cover"
-                        />
-                      ) : (
-                        <span className="text-slate-400">—</span>
-                      )}
-                    </td>
-                    <td className="px-4 py-3 text-sm font-medium text-slate-900">{item.title}</td>
-                    <td className="px-4 py-3 text-sm text-slate-600">{formatEventDate(item.date)}</td>
-                    <td className="px-4 py-3 text-sm text-slate-600">{item.location || '—'}</td>
-                    <td className="px-4 py-3 text-sm text-slate-600">{item.eventCats?.length || 0}</td>
-                    <td className="px-4 py-3 text-sm">
-                      <PublishTargetBadges targets={resolvePublishTargets(item)} />
-                    </td>
-                    <td className="px-4 py-3 text-sm">
-                      <button
-                        type="button"
-                        onClick={() => startEdit(item)}
-                        className="mr-3 font-medium text-teal-600 hover:underline"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleDelete(item.id)}
-                        className="font-medium text-red-600 hover:underline"
-                      >
-                        Delete
-                      </button>
+                <ul className="mt-4 space-y-3">
+                  {selectedDayEvents.map((item) => (
+                    <li key={item.id} className="rounded-lg border border-slate-100 bg-slate-50 px-4 py-3">
+                      <p className="font-medium text-slate-900">{item.title}</p>
+                      <p className="mt-1 text-xs text-slate-500">{formatEventDate(item.date)}</p>
+                      {item.location ? (
+                        <p className="mt-1 text-xs text-slate-500">{item.location}</p>
+                      ) : null}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+
+          <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+            <table className="min-w-full divide-y divide-slate-200">
+              <thead className="bg-slate-50">
+                <tr>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Banner</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Title</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Date</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Location</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Cats</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Publish Targets</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-200">
+                {events.length === 0 ? (
+                  <tr>
+                    <td colSpan={7} className="px-4 py-8 text-center text-sm text-slate-500">
+                      No events scheduled yet.
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : (
+                  events.map((item) => (
+                    <tr key={item.id} className="hover:bg-slate-50">
+                      <td className="px-4 py-3 text-sm">
+                        {item.imageUrl ? (
+                          <img
+                            src={getFileUrl(item.imageUrl)}
+                            alt=""
+                            className="h-10 w-16 rounded-md border border-slate-200 object-cover"
+                          />
+                        ) : (
+                          <span className="text-slate-400">—</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3 text-sm font-medium text-slate-900">{item.title}</td>
+                      <td className="px-4 py-3 text-sm text-slate-600">{formatEventDate(item.date)}</td>
+                      <td className="px-4 py-3 text-sm text-slate-600">{item.location || '—'}</td>
+                      <td className="px-4 py-3 text-sm text-slate-600">{item.eventCats?.length || 0}</td>
+                      <td className="px-4 py-3 text-sm">
+                        <PublishTargetBadges targets={resolvePublishTargets(item)} />
+                      </td>
+                      <td className="px-4 py-3 text-sm">
+                        <button
+                          type="button"
+                          onClick={() => startEdit(item)}
+                          className="mr-3 font-medium text-teal-600 hover:underline"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleDelete(item.id)}
+                          className="font-medium text-red-600 hover:underline"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>

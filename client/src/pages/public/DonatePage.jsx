@@ -4,13 +4,18 @@ import DonationConfirmation from '../../components/DonationConfirmation';
 import GivebutterDonationWidget from '../../components/GivebutterDonationWidget';
 import SecureWidget from '../../components/SecureWidget';
 import { isDonatePageLive } from '../../constants/siteFeatures';
-import { fetchPublicSettings, invalidatePublicSettingsCache } from '../../services/publicApi';
+import {
+  fetchPublicSettings,
+  fetchPublicWishlists,
+  invalidatePublicSettingsCache,
+} from '../../services/publicApi';
 import { DONATE_PAGE_EIN } from '../../constants/siteCopy';
 import {
   DEFAULT_GIVEBUTTER_DONATE_URL,
   DEFAULT_GIVEBUTTER_NINE_LIVES_URL,
 } from '../../constants/givebutterDefaults';
 import { markCheckoutSuccessParam } from '../../hooks/useGivebutterCheckout';
+import { WISHLIST_OWNER_TYPES, WISHLIST_RETAILERS } from '../../constants/wishlists';
 
 const PAYPAL_DONATE_EMBED = `<form action="https://www.paypal.com/donate" method="post" target="_top">
 <input type="hidden" name="hosted_button_id" value="2D7222ATY9EDQ" />
@@ -107,6 +112,7 @@ function DonatePage() {
   const outlet = useOutletContext();
   const [searchParams] = useSearchParams();
   const [settings, setSettings] = useState(outlet?.settings ?? {});
+  const [orgWishlists, setOrgWishlists] = useState([]);
   const [donationComplete, setDonationComplete] = useState(false);
 
   const prefilledAmount = searchParams.get('amount') || '';
@@ -116,6 +122,9 @@ function DonatePage() {
     fetchPublicSettings()
       .then(setSettings)
       .catch(() => {});
+    fetchPublicWishlists(WISHLIST_OWNER_TYPES.ORG, 1)
+      .then((data) => setOrgWishlists(Array.isArray(data) ? data : []))
+      .catch(() => setOrgWishlists([]));
   }, []);
 
   const handleDonationSuccess = useCallback(() => {
@@ -125,12 +134,16 @@ function DonatePage() {
 
   const orgEin = DONATE_PAGE_EIN;
 
-  const otherWayLinks = useMemo(() => ({
-    amazon: settings.amazonWishlistUrl?.trim() || null,
-    chewy: settings.chewyWishlistUrl?.trim() || null,
-    planned: '/contact',
-    corporate: '/contact',
-  }), [settings]);
+  const otherWayLinks = useMemo(() => {
+    const amazonFromWishlist = orgWishlists.find((w) => w.retailer === WISHLIST_RETAILERS.AMAZON)?.url?.trim();
+    const chewyFromWishlist = orgWishlists.find((w) => w.retailer === WISHLIST_RETAILERS.CHEWY)?.url?.trim();
+    return {
+      amazon: amazonFromWishlist || settings.amazonWishlistUrl?.trim() || null,
+      chewy: chewyFromWishlist || settings.chewyWishlistUrl?.trim() || null,
+      planned: '/contact',
+      corporate: '/contact',
+    };
+  }, [settings, orgWishlists]);
 
   // Venmo has no embeddable donate button (unlike PayPal/Givebutter) - the
   // standard approach is a profile link plus an optional QR code for the
@@ -275,13 +288,19 @@ function DonatePage() {
               {OTHER_WAYS.map((way) => {
                 const href = otherWayLinks[way.key];
                 const isExternal = href?.startsWith('http');
+                const isWishlist = way.key === 'amazon' || way.key === 'chewy';
 
                 const content = (
                   <>
                     <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-brand/20 bg-brand/5 text-brand">
                       {way.icon}
                     </span>
-                    <span className="text-sm font-semibold text-slate-700">{way.label}</span>
+                    <span>
+                      <span className="block text-sm font-semibold text-slate-700">{way.label}</span>
+                      {isWishlist && !href ? (
+                        <span className="block text-xs text-slate-400">Link coming soon</span>
+                      ) : null}
+                    </span>
                   </>
                 );
 
@@ -307,7 +326,11 @@ function DonatePage() {
                 }
 
                 return (
-                  <li key={way.key} className="flex items-center gap-4">
+                  <li
+                    key={way.key}
+                    className={`flex items-center gap-4 ${isWishlist ? 'cursor-not-allowed opacity-60' : ''}`}
+                    aria-disabled={isWishlist || undefined}
+                  >
                     {content}
                   </li>
                 );
