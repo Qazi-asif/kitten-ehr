@@ -309,6 +309,7 @@ export type ContractType = (typeof ContractType)[keyof typeof ContractType]
 
 
 export const ContractStatus: {
+  CREATED: 'CREATED',
   SENT: 'SENT',
   SIGNED: 'SIGNED',
   VOID: 'VOID'

@@ -677,6 +677,7 @@ exports.ContractType = exports.$Enums.ContractType = {
 };
 
 exports.ContractStatus = exports.$Enums.ContractStatus = {
+  CREATED: 'CREATED',
   SENT: 'SENT',
   SIGNED: 'SIGNED',
   VOID: 'VOID'

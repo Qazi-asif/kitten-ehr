@@ -158,7 +158,7 @@ function buildContractWhere(query) {
   const { search, status, dateFrom, dateTo, dateField, signedOnly, kittenId, applicationId, fosterId } = query;
   const where = {};
 
-  if (status && ['SENT', 'SIGNED', 'VOID'].includes(status)) {
+  if (status && ['CREATED', 'SENT', 'SIGNED', 'VOID'].includes(status)) {
     where.status = status;
   } else if (signedOnly === 'true') {
     where.status = 'SIGNED';
@@ -239,8 +239,9 @@ export async function getContracts(req, res, next) {
 
 export async function getContractStats(_req, res, next) {
   try {
-    const [total, sent, signed, voided, recentSigned] = await Promise.all([
+    const [total, created, sent, signed, voided, recentSigned] = await Promise.all([
       prisma.contract.count(),
+      prisma.contract.count({ where: { status: 'CREATED' } }),
       prisma.contract.count({ where: { status: 'SENT' } }),
       prisma.contract.count({ where: { status: 'SIGNED' } }),
       prisma.contract.count({ where: { status: 'VOID' } }),
@@ -260,7 +261,7 @@ export async function getContractStats(_req, res, next) {
       }),
     ]);
 
-    res.json({ total, sent, signed, void: voided, recentSigned });
+    res.json({ total, created, sent, signed, void: voided, recentSigned });
   } catch (error) {
     next(error);
   }
@@ -352,7 +353,7 @@ export async function createContractDraft(req, res, next) {
         emergencyContactName: emergencyContactName?.trim() || '',
         emergencyContactPhone: emergencyContactPhone?.trim() || '',
         documentVersion: documentVersion?.trim() || '2026.1',
-        status: 'SENT',
+        status: 'CREATED',
       },
       include: CONTRACT_INCLUDE,
     });
@@ -369,8 +370,8 @@ export async function updateContract(req, res, next) {
     const existing = await prisma.contract.findUnique({ where: { id } });
     if (!existing) return res.status(404).json({ error: 'Contract not found' });
 
-    if (existing.status !== 'SENT') {
-      return res.status(400).json({ error: 'Only pending (SENT) contracts can be edited' });
+    if (existing.status !== 'CREATED' && existing.status !== 'SENT') {
+      return res.status(400).json({ error: 'Only CREATED or SENT contracts can be edited' });
     }
 
     const {
@@ -771,7 +772,19 @@ export async function emailContractAgreement(req, res, next) {
       return res.status(500).json({ error: result.error || 'Failed to send agreement email' });
     }
 
-    res.json({ ok: true, messageId: result.messageId, signingUrl: signingUrl || undefined });
+    // Draft stays CREATED until email actually goes out.
+    const updated = await prisma.contract.update({
+      where: { id: contract.id },
+      data: { status: 'SENT' },
+      include: CONTRACT_INCLUDE,
+    });
+
+    res.json({
+      ok: true,
+      messageId: result.messageId,
+      signingUrl: signingUrl || undefined,
+      contract: updated,
+    });
   } catch (error) {
     next(error);
   }

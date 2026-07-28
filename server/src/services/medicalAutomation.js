@@ -1,10 +1,27 @@
 const MS_PER_WEEK = 7 * 24 * 60 * 60 * 1000;
 const SPAY_NEUTER_WEIGHT_GRAMS = 908;
 
+function parseCalendarDate(value) {
+  if (!value) return null;
+  if (typeof value === 'string') {
+    const match = value.trim().match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (match) {
+      const year = Number(match[1]);
+      const month = Number(match[2]) - 1;
+      const day = Number(match[3]);
+      return new Date(year, month, day);
+    }
+  }
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) return null;
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
 function getAgeInWeeks(dateOfBirth, asOf = new Date()) {
-  if (!dateOfBirth) return null;
-  const dob = new Date(dateOfBirth);
-  const ageMs = asOf.getTime() - dob.getTime();
+  const dob = parseCalendarDate(dateOfBirth);
+  if (!dob) return null;
+  const asOfDay = parseCalendarDate(asOf) || asOf;
+  const ageMs = asOfDay.getTime() - dob.getTime();
   if (ageMs < 0) return 0;
   return ageMs / MS_PER_WEEK;
 }

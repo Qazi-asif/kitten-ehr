@@ -17,6 +17,7 @@ import {
 } from '../../services/publicApi';
 import { markCheckoutSuccessParam } from '../../hooks/useGivebutterCheckout';
 import KittenPhoto from '../../components/KittenPhoto';
+import { formatKittenAgeShort } from '../../utils/kittenAge';
 
 const PREVIEW_UPDATE_COUNT = 2;
 
@@ -43,18 +44,8 @@ function formatUpdateDateShort(value) {
 }
 
 function formatPublicAge(dateOfBirth) {
-  if (!dateOfBirth) return null;
-  const dob = new Date(dateOfBirth);
-  const now = new Date();
-  if (Number.isNaN(dob.getTime()) || dob > now) return null;
-
-  const totalWeeks = Math.floor((now.getTime() - dob.getTime()) / (7 * 24 * 60 * 60 * 1000));
-  if (totalWeeks < 52) {
-    return `${totalWeeks} Week${totalWeeks === 1 ? '' : 's'}`;
-  }
-
-  const years = Math.floor(totalWeeks / 52);
-  return `${years} Year${years === 1 ? '' : 's'}`;
+  const label = formatKittenAgeShort(dateOfBirth);
+  return label === '—' ? null : label;
 }
 
 function HeroWave() {

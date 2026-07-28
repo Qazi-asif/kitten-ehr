@@ -311,6 +311,7 @@ enum ContractType {
 }
 
 enum ContractStatus {
+  CREATED
   SENT
   SIGNED
   VOID
@@ -361,7 +362,7 @@ model Contract {
   signedIpAddress      String?
   frozenAgreementText  String?        @db.Text
   pdfUrl               String?
-  status           ContractStatus @default(SENT)
+  status           ContractStatus @default(CREATED)
   signedAt         DateTime?
   // Opaque token for public electronic signing via /sign/:token (emailed to signer).
   signingToken           String?   @unique

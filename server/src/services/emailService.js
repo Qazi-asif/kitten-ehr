@@ -55,10 +55,49 @@ function buildApplicationVariables(application, statusNotes = '') {
 async function getEmailSettings() {
   let settings = await prisma.settings.findUnique({ where: { id: SETTINGS_ID } });
   if (!settings) {
+    const envReady = Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
     settings = await prisma.settings.create({
-      data: { id: SETTINGS_ID },
+      data: {
+        id: SETTINGS_ID,
+        emailsEnabled: envReady,
+        smtpHost: process.env.SMTP_HOST || '',
+        smtpPort: Number(process.env.SMTP_PORT) || 587,
+        smtpUser: process.env.SMTP_USER || '',
+        smtpPass: process.env.SMTP_PASS || '',
+        fromEmail: process.env.SMTP_USER || '',
+        fromName: 'Pawsitive Transformations',
+        adminNotifyEmail: process.env.SMTP_USER || '',
+      },
+    });
+    return settings;
+  }
+
+  // Same self-heal as Settings GET: env SMTP present but DB still disabled/empty.
+  const envHost = process.env.SMTP_HOST;
+  const envUser = process.env.SMTP_USER;
+  const envPass = process.env.SMTP_PASS;
+  const needsPatch =
+    envHost && envUser && envPass
+    && (!settings.smtpHost || !settings.smtpUser || !settings.smtpPass || !settings.emailsEnabled);
+
+  if (needsPatch) {
+    const port = Number(process.env.SMTP_PORT) || 587;
+    settings = await prisma.settings.update({
+      where: { id: SETTINGS_ID },
+      data: {
+        emailsEnabled: true,
+        smtpHost: settings.smtpHost || envHost,
+        smtpPort: settings.smtpPort || port,
+        smtpSecure: false,
+        smtpUser: settings.smtpUser || envUser,
+        smtpPass: settings.smtpPass || envPass,
+        fromEmail: settings.fromEmail || envUser,
+        fromName: settings.fromName || settings.orgName || 'Pawsitive Transformations',
+        adminNotifyEmail: settings.adminNotifyEmail || envUser,
+      },
     });
   }
+
   return settings;
 }
 
@@ -128,7 +167,7 @@ function getSmtpTransporter(settings, smtpHost, smtpUser, smtpPass) {
   // because it can be stale. 465 = direct SSL, everything else = STARTTLS.
   const secure = port === 465;
 
-  const key = `${smtpHost}|${port}|${secure}|${smtpUser}`;
+  const key = `${smtpHost}|${port}|${secure}|${smtpUser}|${smtpPass}`;
   if (cachedTransporter && cachedTransporterKey === key) {
     return cachedTransporter;
   }
@@ -172,11 +211,15 @@ export async function sendTemplatedEmail({
       subject: '(skipped - emails disabled)',
       status: 'skipped',
       provider,
-      errorMessage: 'Email sending is disabled in settings',
+      errorMessage: 'Email sending is disabled in Settings → Emails. Turn on “Emails enabled” and confirm SMTP host, user, and password.',
       relatedType,
       relatedId,
     });
-    return { ok: false, skipped: true };
+    return {
+      ok: false,
+      skipped: true,
+      errorMessage: 'Email sending is disabled in Settings → Emails. Turn on “Emails enabled” and confirm SMTP host, user, and password.',
+    };
   }
 
   if (!recipient) {
@@ -226,11 +269,15 @@ export async function sendTemplatedEmail({
       subject,
       status: 'skipped',
       provider,
-      errorMessage: 'SMTP is not fully configured',
+      errorMessage: 'SMTP is not fully configured. Set host, username, and password in Settings → Emails (or SMTP_* env vars), then try again.',
       relatedType,
       relatedId,
     });
-    return { ok: false, skipped: true };
+    return {
+      ok: false,
+      skipped: true,
+      errorMessage: 'SMTP is not fully configured. Set host, username, and password in Settings → Emails (or SMTP_* env vars), then try again.',
+    };
   }
 
   try {
@@ -526,7 +573,7 @@ export async function sendSignedContractPdfEmail({ contract }) {
       relatedType: 'Contract',
       relatedId: contract.id,
     });
-    return { ok: false, skipped: true, errorMessage: 'Email sending is disabled in settings' };
+    return { ok: false, skipped: true, errorMessage: 'Email sending is disabled in Settings → Emails. Turn on “Emails enabled” and confirm SMTP host, user, and password.' };
   }
 
   if (!recipient) {
@@ -597,7 +644,7 @@ export async function sendSignedContractPdfEmail({ contract }) {
       relatedType: 'Contract',
       relatedId: contract.id,
     });
-    return { ok: false, skipped: true, errorMessage: 'SMTP is not fully configured' };
+    return { ok: false, skipped: true, errorMessage: 'SMTP is not fully configured. Set host, username, and password in Settings → Emails (or SMTP_* env vars), then try again.' };
   }
 
   try {
@@ -662,7 +709,7 @@ export async function sendContractAgreementEmail({ contract, agreementText, note
       relatedType: 'Contract',
       relatedId: contract.id,
     });
-    return { ok: false, skipped: true, errorMessage: 'Email sending is disabled in settings' };
+    return { ok: false, skipped: true, errorMessage: 'Email sending is disabled in Settings → Emails. Turn on “Emails enabled” and confirm SMTP host, user, and password.' };
   }
 
   if (!recipient) {
@@ -717,7 +764,7 @@ ${signBlock}
       relatedType: 'Contract',
       relatedId: contract.id,
     });
-    return { ok: false, skipped: true, errorMessage: 'SMTP is not fully configured' };
+    return { ok: false, skipped: true, errorMessage: 'SMTP is not fully configured. Set host, username, and password in Settings → Emails (or SMTP_* env vars), then try again.' };
   }
 
   try {
@@ -754,6 +801,6 @@ ${signBlock}
       relatedId: contract.id,
     });
     console.error('Contract agreement email failed:', error.message);
-    return { ok: false, error: error.message };
+    return { ok: false, error: describeSmtpError(error) };
   }
 }

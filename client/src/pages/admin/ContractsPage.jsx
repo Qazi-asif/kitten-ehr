@@ -33,6 +33,7 @@ import {
 } from '../../utils/applicationFormData';
 
 const STATUS_STYLES = {
+  CREATED: 'bg-sky-100 text-sky-800',
   SENT: 'bg-amber-100 text-amber-800',
   SIGNED: 'bg-emerald-100 text-emerald-800',
   VOID: 'bg-slate-100 text-slate-600',
@@ -246,7 +247,7 @@ function ContractsPage() {
   }, [loadPendingApplications]);
 
   const statusCounts = useMemo(() => {
-    const counts = { SENT: 0, SIGNED: 0, VOID: 0 };
+    const counts = { CREATED: 0, SENT: 0, SIGNED: 0, VOID: 0 };
     contracts.forEach((c) => {
       if (counts[c.status] !== undefined) counts[c.status] += 1;
     });
@@ -415,6 +416,7 @@ function ContractsPage() {
     try {
       await emailContractAgreement(contract.id, { note: note.trim() });
       window.alert(`Agreement emailed to ${contract.signerEmail}.`);
+      await load();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -612,9 +614,10 @@ function ContractsPage() {
         </button>
       </div>
 
-      <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         {[
-          { label: 'Pending', value: statusCounts.SENT, style: 'border-amber-200 bg-amber-50 text-amber-800' },
+          { label: 'Created', value: statusCounts.CREATED, style: 'border-sky-200 bg-sky-50 text-sky-800' },
+          { label: 'Sent', value: statusCounts.SENT, style: 'border-amber-200 bg-amber-50 text-amber-800' },
           { label: 'Signed', value: statusCounts.SIGNED, style: 'border-emerald-200 bg-emerald-50 text-emerald-800' },
           { label: 'Void', value: statusCounts.VOID, style: 'border-slate-200 bg-slate-50 text-slate-600' },
           { label: 'Showing', value: contracts.length, style: 'border-neutral-200 bg-white text-neutral-900' },
@@ -707,7 +710,8 @@ function ContractsPage() {
               className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
             >
               <option value="">All statuses</option>
-              <option value="SENT">Pending (SENT)</option>
+              <option value="CREATED">Created</option>
+              <option value="SENT">Sent</option>
               <option value="SIGNED">Signed</option>
               <option value="VOID">Void</option>
             </select>
@@ -1061,7 +1065,7 @@ function ContractsPage() {
                               {emailingPdfId === contract.id ? 'Sending...' : 'Email Signed PDF'}
                             </button>
                           )}
-                          {contract.status === 'SENT' && (
+                          {(contract.status === 'CREATED' || contract.status === 'SENT') && (
                             <>
                               <button
                                 type="button"

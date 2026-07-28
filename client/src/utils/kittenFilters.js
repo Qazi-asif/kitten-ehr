@@ -1,3 +1,5 @@
+import { getKittenAgeMonths } from './kittenAge';
+
 export const ADOPT_CAT_FILTERS = [
   { id: 'all', label: 'All Available' },
   { id: 'kittens', label: 'Kittens' },
@@ -7,12 +9,7 @@ export const ADOPT_CAT_FILTERS = [
   { id: 'medical', label: 'Medical / Special Needs' },
 ];
 
-export function getKittenAgeMonths(dateOfBirth) {
-  if (!dateOfBirth) return null;
-  const dob = new Date(dateOfBirth);
-  const now = new Date();
-  return (now.getFullYear() - dob.getFullYear()) * 12 + (now.getMonth() - dob.getMonth());
-}
+export { getKittenAgeMonths };
 
 export function matchesAdoptFilter(kitten, filterId) {
   if (!filterId || filterId === 'all') return true;
