@@ -23,7 +23,9 @@ import {
 
 const ChatContext = createContext(null);
 const POLL_MS = 4000;
+const LIVE_UNREAD_REFRESH_MS = 15000;
 const WS_FAIL_THRESHOLD = 3;
+const BASE_DOCUMENT_TITLE = 'Pawsitive EHR';
 
 function mergeById(existing, incoming) {
   const map = new Map(existing.map((m) => [m.id, m]));
@@ -35,6 +37,36 @@ function sortMessages(list) {
   return [...list].sort(
     (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
   );
+}
+
+function previewText(content, max = 80) {
+  const text = String(content || '').replace(/\s+/g, ' ').trim();
+  if (text.length <= max) return text;
+  return `${text.slice(0, max - 1)}…`;
+}
+
+function notifyUnreadMessage(title, body) {
+  if (typeof window === 'undefined' || typeof Notification === 'undefined') return;
+  if (Notification.permission !== 'granted') return;
+  if (!document.hidden && window.location.pathname.startsWith('/admin/chat')) return;
+
+  try {
+    const notification = new Notification(title, {
+      body,
+      tag: 'staff-chat-unread',
+      renotify: true,
+      silent: false,
+    });
+    notification.onclick = () => {
+      window.focus();
+      if (!window.location.pathname.startsWith('/admin/chat')) {
+        window.location.assign('/admin/chat');
+      }
+      notification.close();
+    };
+  } catch {
+    /* ignore Notification failures (unsupported options, etc.) */
+  }
 }
 
 export function ChatProvider({ children }) {
@@ -59,6 +91,11 @@ export function ChatProvider({ children }) {
   const typingClearRef = useRef(null);
   const activeIdRef = useRef(null);
   const messagesTipRef = useRef({});
+  const markReadTimerRef = useRef(null);
+  const titleBlinkRef = useRef(null);
+  const baseTitleRef = useRef(
+    typeof document !== 'undefined' ? document.title || BASE_DOCUMENT_TITLE : BASE_DOCUMENT_TITLE,
+  );
 
   useEffect(() => {
     activeIdRef.current = activeId;
@@ -111,19 +148,37 @@ export function ChatProvider({ children }) {
     }
   }, []);
 
+  const persistMarkRead = useCallback((conversationId) => {
+    if (!conversationId) return;
+    if (markReadTimerRef.current) clearTimeout(markReadTimerRef.current);
+    markReadTimerRef.current = setTimeout(async () => {
+      try {
+        await markChatRead(conversationId);
+        setConversations((prev) => prev.map((c) => (
+          c.id === conversationId ? { ...c, unreadCount: 0 } : c
+        )));
+      } catch {
+        /* ignore */
+      }
+    }, 300);
+  }, []);
+
   const ingestMessage = useCallback((message) => {
     if (!message?.conversationId) return;
+    const fromOther = message.senderId !== user?.id;
+    const isActive = activeIdRef.current === message.conversationId;
+
     setMessagesById((prev) => {
       const existing = prev[message.conversationId] || [];
       const next = sortMessages(mergeById(existing, [message]));
       messagesTipRef.current[message.conversationId] = next[next.length - 1]?.createdAt || null;
       return { ...prev, [message.conversationId]: next };
     });
+
     setConversations((prev) => {
+      const known = prev.some((c) => c.id === message.conversationId);
       const updated = prev.map((c) => {
         if (c.id !== message.conversationId) return c;
-        const isActive = activeIdRef.current === c.id;
-        const fromOther = message.senderId !== user?.id;
         return {
           ...c,
           updatedAt: message.createdAt,
@@ -137,11 +192,27 @@ export function ChatProvider({ children }) {
           unreadCount: isActive || !fromOther ? 0 : (c.unreadCount || 0) + 1,
         };
       });
+
+      // New conversation not yet in list — force a refresh so it appears with unread.
+      if (!known && fromOther) {
+        refreshConversations();
+      }
+
       return [...updated].sort(
         (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
       );
     });
-  }, [user?.id]);
+
+    if (fromOther && isActive) {
+      persistMarkRead(message.conversationId);
+    } else if (fromOther) {
+      const senderName = message.sender?.displayName || 'Staff chat';
+      notifyUnreadMessage(
+        `New message from ${senderName}`,
+        previewText(message.content),
+      );
+    }
+  }, [persistMarkRead, refreshConversations, user?.id]);
 
   const selectConversation = useCallback(async (id) => {
     setActiveId(id);
@@ -255,11 +326,18 @@ export function ChatProvider({ children }) {
 
     refreshConversations();
     connectWs();
+
+    // Ask once so unread browser alerts can fire when staff are on other pages/tabs.
+    if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
+      Notification.requestPermission().catch(() => {});
+    }
+
     return () => {
       if (wsRef.current) {
         try { wsRef.current.close(); } catch { /* ignore */ }
         wsRef.current = null;
       }
+      if (markReadTimerRef.current) clearTimeout(markReadTimerRef.current);
     };
   }, [canChat, connectWs, refreshConversations]);
 
@@ -268,6 +346,7 @@ export function ChatProvider({ children }) {
     loadMessages(activeId);
   }, [activeId, canChat, loadMessages]);
 
+  // Polling fallback when WebSocket is not live.
   useEffect(() => {
     if (!canChat) return undefined;
     if (connectionMode === 'live') return undefined;
@@ -285,6 +364,59 @@ export function ChatProvider({ children }) {
     }, POLL_MS);
     return () => clearInterval(id);
   }, [canChat, connectionMode, loadMessages, refreshConversations]);
+
+  // Even in live mode, periodically sync unread counts so badges stay accurate.
+  useEffect(() => {
+    if (!canChat || connectionMode !== 'live') return undefined;
+    const id = setInterval(() => {
+      refreshConversations();
+    }, LIVE_UNREAD_REFRESH_MS);
+    return () => clearInterval(id);
+  }, [canChat, connectionMode, refreshConversations]);
+
+  // Keep tab title showing unread until messages are read.
+  useEffect(() => {
+    if (!canChat) {
+      if (titleBlinkRef.current) {
+        clearInterval(titleBlinkRef.current);
+        titleBlinkRef.current = null;
+      }
+      document.title = baseTitleRef.current || BASE_DOCUMENT_TITLE;
+      return undefined;
+    }
+
+    if (totalUnread <= 0) {
+      if (titleBlinkRef.current) {
+        clearInterval(titleBlinkRef.current);
+        titleBlinkRef.current = null;
+      }
+      document.title = baseTitleRef.current || BASE_DOCUMENT_TITLE;
+      return undefined;
+    }
+
+    const unreadLabel = `(${totalUnread > 99 ? '99+' : totalUnread}) New message${totalUnread === 1 ? '' : 's'}`;
+    document.title = `${unreadLabel} · ${BASE_DOCUMENT_TITLE}`;
+
+    if (titleBlinkRef.current) clearInterval(titleBlinkRef.current);
+    let showUnread = true;
+    titleBlinkRef.current = setInterval(() => {
+      if (!document.hidden) {
+        document.title = `${unreadLabel} · ${BASE_DOCUMENT_TITLE}`;
+        return;
+      }
+      showUnread = !showUnread;
+      document.title = showUnread
+        ? `${unreadLabel} · ${BASE_DOCUMENT_TITLE}`
+        : BASE_DOCUMENT_TITLE;
+    }, 1500);
+
+    return () => {
+      if (titleBlinkRef.current) {
+        clearInterval(titleBlinkRef.current);
+        titleBlinkRef.current = null;
+      }
+    };
+  }, [canChat, totalUnread]);
 
   const sendTyping = useCallback(() => {
     const socket = wsRef.current;

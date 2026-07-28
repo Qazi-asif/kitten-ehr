@@ -714,11 +714,12 @@ async function applyContractSignature(existing, body, req, { signedVia }) {
           data: { dischargeDate: resolvedSignedAt, dischargeType: 'Adopted' },
         });
 
+        // Close open placements for capacity, but keep currentFosterId so the
+        // last foster remains visible until staff clears it manually.
         await tx.kitten.update({
           where: { id: existing.kittenId },
           data: {
             status: 'Adopted',
-            currentFosterId: null,
             outcomeDate: kitten.outcomeDate ?? resolvedSignedAt,
           },
         });

@@ -343,9 +343,9 @@ export async function updateKitten(req, res, next) {
       && nextStatus !== existing.status
       && !TERMINAL_KITTEN_STATUSES.includes(nextStatus);
 
+    // Keep currentFosterId on terminal outcomes (Adopted, etc.). Staff clear
+    // foster via End Placement / reassignment — do not wipe assignment here.
     if (becomingTerminal) {
-      data.currentFosterId = null;
-
       if (OUTCOME_DATE_STATUSES.includes(nextStatus) && data.outcomeDate === undefined) {
         data.outcomeDate = new Date();
       }

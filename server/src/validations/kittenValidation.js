@@ -12,7 +12,7 @@ export const KITTEN_STATUSES = [
   'Released',
 ];
 
-/** Statuses that end an open foster placement and clear currentFosterId. */
+/** Statuses that close open foster placements (currentFosterId is kept until staff clears it). */
 export const TERMINAL_KITTEN_STATUSES = ['Adopted', 'Transferred', 'Deceased', 'Released'];
 
 export const FIXED_STATUS_OPTIONS = ['Intact', 'Spayed/Neutered'];

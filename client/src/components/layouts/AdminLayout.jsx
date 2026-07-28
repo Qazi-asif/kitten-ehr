@@ -129,7 +129,10 @@ function AdminLayout() {
                   <MessageCircle className="h-[17px] w-[17px] shrink-0" strokeWidth={2} />
                   <span className="flex-1">Staff Chat</span>
                   {totalUnread > 0 && (
-                    <span className="inline-flex min-w-[1.25rem] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold leading-5 text-white">
+                    <span
+                      className="inline-flex min-w-[1.25rem] animate-pulse items-center justify-center rounded-full bg-red-500 px-1.5 text-[10px] font-bold leading-5 text-white"
+                      title={`${totalUnread} unread message${totalUnread === 1 ? '' : 's'}`}
+                    >
                       {totalUnread > 99 ? '99+' : totalUnread}
                     </span>
                   )}
@@ -187,14 +190,28 @@ function AdminLayout() {
                 <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
                 {subtitle && <p className="mt-0.5 text-sm text-slate-500">{subtitle}</p>}
               </div>
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-white px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-50"
-              >
-                <LogOut className="h-4 w-4" />
-                Sign Out
-              </button>
+              <div className="flex items-center gap-3">
+                {canChat && totalUnread > 0 && (
+                  <Link
+                    to="/admin/chat"
+                    className="relative inline-flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-900 hover:bg-amber-100"
+                    title="You have unread staff chat messages"
+                  >
+                    <MessageCircle className="h-4 w-4" />
+                    <span>{totalUnread > 99 ? '99+' : totalUnread} unread</span>
+                    <span className="absolute -right-1 -top-1 h-2.5 w-2.5 animate-ping rounded-full bg-red-500" />
+                    <span className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-red-500" />
+                  </Link>
+                )}
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-white px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-50"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Sign Out
+                </button>
+              </div>
             </div>
           </header>
         )}
