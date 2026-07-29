@@ -300,6 +300,14 @@ export const ProtocolHealthWriteMode: {
 export type ProtocolHealthWriteMode = (typeof ProtocolHealthWriteMode)[keyof typeof ProtocolHealthWriteMode]
 
 
+export const DocumentKind: {
+  PHOTO: 'PHOTO',
+  FILE: 'FILE'
+};
+
+export type DocumentKind = (typeof DocumentKind)[keyof typeof DocumentKind]
+
+
 export const ContractType: {
   FOSTER: 'FOSTER',
   ADOPTION: 'ADOPTION'
@@ -378,6 +386,10 @@ export const ProtocolRecordType: typeof $Enums.ProtocolRecordType
 export type ProtocolHealthWriteMode = $Enums.ProtocolHealthWriteMode
 
 export const ProtocolHealthWriteMode: typeof $Enums.ProtocolHealthWriteMode
+
+export type DocumentKind = $Enums.DocumentKind
+
+export const DocumentKind: typeof $Enums.DocumentKind
 
 export type ContractType = $Enums.ContractType
 
@@ -18073,6 +18085,7 @@ export namespace Prisma {
     fileUrl: string | null
     docType: string | null
     description: string | null
+    kind: $Enums.DocumentKind | null
     isPrimaryPhoto: boolean | null
     sortOrder: number | null
     uploadedAt: Date | null
@@ -18086,6 +18099,7 @@ export namespace Prisma {
     fileUrl: string | null
     docType: string | null
     description: string | null
+    kind: $Enums.DocumentKind | null
     isPrimaryPhoto: boolean | null
     sortOrder: number | null
     uploadedAt: Date | null
@@ -18099,6 +18113,7 @@ export namespace Prisma {
     fileUrl: number
     docType: number
     description: number
+    kind: number
     isPrimaryPhoto: number
     sortOrder: number
     uploadedAt: number
@@ -18128,6 +18143,7 @@ export namespace Prisma {
     fileUrl?: true
     docType?: true
     description?: true
+    kind?: true
     isPrimaryPhoto?: true
     sortOrder?: true
     uploadedAt?: true
@@ -18141,6 +18157,7 @@ export namespace Prisma {
     fileUrl?: true
     docType?: true
     description?: true
+    kind?: true
     isPrimaryPhoto?: true
     sortOrder?: true
     uploadedAt?: true
@@ -18154,6 +18171,7 @@ export namespace Prisma {
     fileUrl?: true
     docType?: true
     description?: true
+    kind?: true
     isPrimaryPhoto?: true
     sortOrder?: true
     uploadedAt?: true
@@ -18254,6 +18272,7 @@ export namespace Prisma {
     fileUrl: string
     docType: string
     description: string
+    kind: $Enums.DocumentKind
     isPrimaryPhoto: boolean
     sortOrder: number
     uploadedAt: Date
@@ -18286,6 +18305,7 @@ export namespace Prisma {
     fileUrl?: boolean
     docType?: boolean
     description?: boolean
+    kind?: boolean
     isPrimaryPhoto?: boolean
     sortOrder?: boolean
     uploadedAt?: boolean
@@ -18301,6 +18321,7 @@ export namespace Prisma {
     fileUrl?: boolean
     docType?: boolean
     description?: boolean
+    kind?: boolean
     isPrimaryPhoto?: boolean
     sortOrder?: boolean
     uploadedAt?: boolean
@@ -18316,6 +18337,7 @@ export namespace Prisma {
     fileUrl?: boolean
     docType?: boolean
     description?: boolean
+    kind?: boolean
     isPrimaryPhoto?: boolean
     sortOrder?: boolean
     uploadedAt?: boolean
@@ -18331,13 +18353,14 @@ export namespace Prisma {
     fileUrl?: boolean
     docType?: boolean
     description?: boolean
+    kind?: boolean
     isPrimaryPhoto?: boolean
     sortOrder?: boolean
     uploadedAt?: boolean
     submittedByFosterId?: boolean
   }
 
-  export type DocumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "kittenId" | "fileName" | "fileUrl" | "docType" | "description" | "isPrimaryPhoto" | "sortOrder" | "uploadedAt" | "submittedByFosterId", ExtArgs["result"]["document"]>
+  export type DocumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "kittenId" | "fileName" | "fileUrl" | "docType" | "description" | "kind" | "isPrimaryPhoto" | "sortOrder" | "uploadedAt" | "submittedByFosterId", ExtArgs["result"]["document"]>
   export type DocumentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     kitten?: boolean | KittenDefaultArgs<ExtArgs>
     submittedByFoster?: boolean | Document$submittedByFosterArgs<ExtArgs>
@@ -18364,6 +18387,7 @@ export namespace Prisma {
       fileUrl: string
       docType: string
       description: string
+      kind: $Enums.DocumentKind
       isPrimaryPhoto: boolean
       sortOrder: number
       uploadedAt: Date
@@ -18799,6 +18823,7 @@ export namespace Prisma {
     readonly fileUrl: FieldRef<"Document", 'String'>
     readonly docType: FieldRef<"Document", 'String'>
     readonly description: FieldRef<"Document", 'String'>
+    readonly kind: FieldRef<"Document", 'DocumentKind'>
     readonly isPrimaryPhoto: FieldRef<"Document", 'Boolean'>
     readonly sortOrder: FieldRef<"Document", 'Int'>
     readonly uploadedAt: FieldRef<"Document", 'DateTime'>
@@ -55872,6 +55897,7 @@ export namespace Prisma {
     fileUrl: 'fileUrl',
     docType: 'docType',
     description: 'description',
+    kind: 'kind',
     isPrimaryPhoto: 'isPrimaryPhoto',
     sortOrder: 'sortOrder',
     uploadedAt: 'uploadedAt',
@@ -56446,6 +56472,20 @@ export namespace Prisma {
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DocumentKind'
+   */
+  export type EnumDocumentKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentKind'>
+    
+
+
+  /**
+   * Reference to a field of type 'DocumentKind[]'
+   */
+  export type ListEnumDocumentKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentKind[]'>
     
 
 
@@ -57586,6 +57626,7 @@ export namespace Prisma {
     fileUrl?: StringFilter<"Document"> | string
     docType?: StringFilter<"Document"> | string
     description?: StringFilter<"Document"> | string
+    kind?: EnumDocumentKindFilter<"Document"> | $Enums.DocumentKind
     isPrimaryPhoto?: BoolFilter<"Document"> | boolean
     sortOrder?: IntFilter<"Document"> | number
     uploadedAt?: DateTimeFilter<"Document"> | Date | string
@@ -57601,6 +57642,7 @@ export namespace Prisma {
     fileUrl?: SortOrder
     docType?: SortOrder
     description?: SortOrder
+    kind?: SortOrder
     isPrimaryPhoto?: SortOrder
     sortOrder?: SortOrder
     uploadedAt?: SortOrder
@@ -57619,6 +57661,7 @@ export namespace Prisma {
     fileUrl?: StringFilter<"Document"> | string
     docType?: StringFilter<"Document"> | string
     description?: StringFilter<"Document"> | string
+    kind?: EnumDocumentKindFilter<"Document"> | $Enums.DocumentKind
     isPrimaryPhoto?: BoolFilter<"Document"> | boolean
     sortOrder?: IntFilter<"Document"> | number
     uploadedAt?: DateTimeFilter<"Document"> | Date | string
@@ -57634,6 +57677,7 @@ export namespace Prisma {
     fileUrl?: SortOrder
     docType?: SortOrder
     description?: SortOrder
+    kind?: SortOrder
     isPrimaryPhoto?: SortOrder
     sortOrder?: SortOrder
     uploadedAt?: SortOrder
@@ -57655,6 +57699,7 @@ export namespace Prisma {
     fileUrl?: StringWithAggregatesFilter<"Document"> | string
     docType?: StringWithAggregatesFilter<"Document"> | string
     description?: StringWithAggregatesFilter<"Document"> | string
+    kind?: EnumDocumentKindWithAggregatesFilter<"Document"> | $Enums.DocumentKind
     isPrimaryPhoto?: BoolWithAggregatesFilter<"Document"> | boolean
     sortOrder?: IntWithAggregatesFilter<"Document"> | number
     uploadedAt?: DateTimeWithAggregatesFilter<"Document"> | Date | string
@@ -61241,6 +61286,7 @@ export namespace Prisma {
     fileUrl: string
     docType?: string
     description?: string
+    kind?: $Enums.DocumentKind
     isPrimaryPhoto?: boolean
     sortOrder?: number
     uploadedAt?: Date | string
@@ -61255,6 +61301,7 @@ export namespace Prisma {
     fileUrl: string
     docType?: string
     description?: string
+    kind?: $Enums.DocumentKind
     isPrimaryPhoto?: boolean
     sortOrder?: number
     uploadedAt?: Date | string
@@ -61266,6 +61313,7 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     docType?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    kind?: EnumDocumentKindFieldUpdateOperationsInput | $Enums.DocumentKind
     isPrimaryPhoto?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -61280,6 +61328,7 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     docType?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    kind?: EnumDocumentKindFieldUpdateOperationsInput | $Enums.DocumentKind
     isPrimaryPhoto?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -61293,6 +61342,7 @@ export namespace Prisma {
     fileUrl: string
     docType?: string
     description?: string
+    kind?: $Enums.DocumentKind
     isPrimaryPhoto?: boolean
     sortOrder?: number
     uploadedAt?: Date | string
@@ -61304,6 +61354,7 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     docType?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    kind?: EnumDocumentKindFieldUpdateOperationsInput | $Enums.DocumentKind
     isPrimaryPhoto?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -61316,6 +61367,7 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     docType?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    kind?: EnumDocumentKindFieldUpdateOperationsInput | $Enums.DocumentKind
     isPrimaryPhoto?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -64938,6 +64990,13 @@ export namespace Prisma {
     kittenId?: SortOrder
   }
 
+  export type EnumDocumentKindFilter<$PrismaModel = never> = {
+    equals?: $Enums.DocumentKind | EnumDocumentKindFieldRefInput<$PrismaModel>
+    in?: $Enums.DocumentKind[] | ListEnumDocumentKindFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DocumentKind[] | ListEnumDocumentKindFieldRefInput<$PrismaModel>
+    not?: NestedEnumDocumentKindFilter<$PrismaModel> | $Enums.DocumentKind
+  }
+
   export type DocumentCountOrderByAggregateInput = {
     id?: SortOrder
     kittenId?: SortOrder
@@ -64945,6 +65004,7 @@ export namespace Prisma {
     fileUrl?: SortOrder
     docType?: SortOrder
     description?: SortOrder
+    kind?: SortOrder
     isPrimaryPhoto?: SortOrder
     sortOrder?: SortOrder
     uploadedAt?: SortOrder
@@ -64965,6 +65025,7 @@ export namespace Prisma {
     fileUrl?: SortOrder
     docType?: SortOrder
     description?: SortOrder
+    kind?: SortOrder
     isPrimaryPhoto?: SortOrder
     sortOrder?: SortOrder
     uploadedAt?: SortOrder
@@ -64978,6 +65039,7 @@ export namespace Prisma {
     fileUrl?: SortOrder
     docType?: SortOrder
     description?: SortOrder
+    kind?: SortOrder
     isPrimaryPhoto?: SortOrder
     sortOrder?: SortOrder
     uploadedAt?: SortOrder
@@ -64989,6 +65051,16 @@ export namespace Prisma {
     kittenId?: SortOrder
     sortOrder?: SortOrder
     submittedByFosterId?: SortOrder
+  }
+
+  export type EnumDocumentKindWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DocumentKind | EnumDocumentKindFieldRefInput<$PrismaModel>
+    in?: $Enums.DocumentKind[] | ListEnumDocumentKindFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DocumentKind[] | ListEnumDocumentKindFieldRefInput<$PrismaModel>
+    not?: NestedEnumDocumentKindWithAggregatesFilter<$PrismaModel> | $Enums.DocumentKind
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDocumentKindFilter<$PrismaModel>
+    _max?: NestedEnumDocumentKindFilter<$PrismaModel>
   }
 
   export type ApplicationUploadListRelationFilter = {
@@ -68112,6 +68184,10 @@ export namespace Prisma {
     connect?: FosterWhereUniqueInput
   }
 
+  export type EnumDocumentKindFieldUpdateOperationsInput = {
+    set?: $Enums.DocumentKind
+  }
+
   export type KittenUpdateOneRequiredWithoutDocumentsNestedInput = {
     create?: XOR<KittenCreateWithoutDocumentsInput, KittenUncheckedCreateWithoutDocumentsInput>
     connectOrCreate?: KittenCreateOrConnectWithoutDocumentsInput
@@ -70130,6 +70206,23 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
+  export type NestedEnumDocumentKindFilter<$PrismaModel = never> = {
+    equals?: $Enums.DocumentKind | EnumDocumentKindFieldRefInput<$PrismaModel>
+    in?: $Enums.DocumentKind[] | ListEnumDocumentKindFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DocumentKind[] | ListEnumDocumentKindFieldRefInput<$PrismaModel>
+    not?: NestedEnumDocumentKindFilter<$PrismaModel> | $Enums.DocumentKind
+  }
+
+  export type NestedEnumDocumentKindWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DocumentKind | EnumDocumentKindFieldRefInput<$PrismaModel>
+    in?: $Enums.DocumentKind[] | ListEnumDocumentKindFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DocumentKind[] | ListEnumDocumentKindFieldRefInput<$PrismaModel>
+    not?: NestedEnumDocumentKindWithAggregatesFilter<$PrismaModel> | $Enums.DocumentKind
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDocumentKindFilter<$PrismaModel>
+    _max?: NestedEnumDocumentKindFilter<$PrismaModel>
+  }
+
   export type NestedEnumContractTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.ContractType | EnumContractTypeFieldRefInput<$PrismaModel>
     in?: $Enums.ContractType[] | ListEnumContractTypeFieldRefInput<$PrismaModel>
@@ -70760,6 +70853,7 @@ export namespace Prisma {
     fileUrl: string
     docType?: string
     description?: string
+    kind?: $Enums.DocumentKind
     isPrimaryPhoto?: boolean
     sortOrder?: number
     uploadedAt?: Date | string
@@ -70773,6 +70867,7 @@ export namespace Prisma {
     fileUrl: string
     docType?: string
     description?: string
+    kind?: $Enums.DocumentKind
     isPrimaryPhoto?: boolean
     sortOrder?: number
     uploadedAt?: Date | string
@@ -71002,6 +71097,7 @@ export namespace Prisma {
     fileUrl?: StringFilter<"Document"> | string
     docType?: StringFilter<"Document"> | string
     description?: StringFilter<"Document"> | string
+    kind?: EnumDocumentKindFilter<"Document"> | $Enums.DocumentKind
     isPrimaryPhoto?: BoolFilter<"Document"> | boolean
     sortOrder?: IntFilter<"Document"> | number
     uploadedAt?: DateTimeFilter<"Document"> | Date | string
@@ -71487,6 +71583,7 @@ export namespace Prisma {
     fileUrl: string
     docType?: string
     description?: string
+    kind?: $Enums.DocumentKind
     isPrimaryPhoto?: boolean
     sortOrder?: number
     uploadedAt?: Date | string
@@ -71499,6 +71596,7 @@ export namespace Prisma {
     fileUrl: string
     docType?: string
     description?: string
+    kind?: $Enums.DocumentKind
     isPrimaryPhoto?: boolean
     sortOrder?: number
     uploadedAt?: Date | string
@@ -79347,6 +79445,7 @@ export namespace Prisma {
     fileUrl: string
     docType?: string
     description?: string
+    kind?: $Enums.DocumentKind
     isPrimaryPhoto?: boolean
     sortOrder?: number
     uploadedAt?: Date | string
@@ -79598,6 +79697,7 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     docType?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    kind?: EnumDocumentKindFieldUpdateOperationsInput | $Enums.DocumentKind
     isPrimaryPhoto?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -79611,6 +79711,7 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     docType?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    kind?: EnumDocumentKindFieldUpdateOperationsInput | $Enums.DocumentKind
     isPrimaryPhoto?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -79623,6 +79724,7 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     docType?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    kind?: EnumDocumentKindFieldUpdateOperationsInput | $Enums.DocumentKind
     isPrimaryPhoto?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -79723,6 +79825,7 @@ export namespace Prisma {
     fileUrl: string
     docType?: string
     description?: string
+    kind?: $Enums.DocumentKind
     isPrimaryPhoto?: boolean
     sortOrder?: number
     uploadedAt?: Date | string
@@ -80102,6 +80205,7 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     docType?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    kind?: EnumDocumentKindFieldUpdateOperationsInput | $Enums.DocumentKind
     isPrimaryPhoto?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -80114,6 +80218,7 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     docType?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    kind?: EnumDocumentKindFieldUpdateOperationsInput | $Enums.DocumentKind
     isPrimaryPhoto?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -80126,6 +80231,7 @@ export namespace Prisma {
     fileUrl?: StringFieldUpdateOperationsInput | string
     docType?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    kind?: EnumDocumentKindFieldUpdateOperationsInput | $Enums.DocumentKind
     isPrimaryPhoto?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string

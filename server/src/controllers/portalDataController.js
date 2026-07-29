@@ -179,6 +179,7 @@ export async function uploadMyKittenDocument(req, res, next) {
         fileUrl,
         docType: docType ?? '',
         description: description ?? '',
+        kind: 'FILE',
         submittedByFosterId: req.user.fosterId,
       },
     });

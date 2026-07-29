@@ -6,6 +6,7 @@ export function createOriginValidator() {
   const allowed = new Set();
 
   addOrigin(allowed, process.env.CLIENT_URL);
+  addOrigin(allowed, process.env.PUBLIC_SITE_URL);
 
   if (process.env.CLIENT_URLS) {
     for (const origin of process.env.CLIENT_URLS.split(',')) {
@@ -39,6 +40,11 @@ export function createOriginValidator() {
       }
 
       if (protocol === 'https:' && /^kitten-ehr[a-z0-9-]*\.vercel\.app$/i.test(hostname)) {
+        return true;
+      }
+
+      // Hostinger preview/custom subdomains for this project.
+      if (protocol === 'https:' && /\.hostingersite\.com$/i.test(hostname)) {
         return true;
       }
     } catch {

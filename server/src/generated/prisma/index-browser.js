@@ -268,6 +268,7 @@ exports.Prisma.DocumentScalarFieldEnum = {
   fileUrl: 'fileUrl',
   docType: 'docType',
   description: 'description',
+  kind: 'kind',
   isPrimaryPhoto: 'isPrimaryPhoto',
   sortOrder: 'sortOrder',
   uploadedAt: 'uploadedAt',
@@ -671,6 +672,11 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.DocumentKind = exports.$Enums.DocumentKind = {
+  PHOTO: 'PHOTO',
+  FILE: 'FILE'
+};
+
 exports.ContractType = exports.$Enums.ContractType = {
   FOSTER: 'FOSTER',
   ADOPTION: 'ADOPTION'

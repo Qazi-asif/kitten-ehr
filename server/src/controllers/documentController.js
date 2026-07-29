@@ -164,6 +164,7 @@ export async function uploadDocument(req, res, next) {
         fileUrl,
         docType: docType ?? '',
         description: description ?? '',
+        kind: 'FILE',
       },
     });
 
@@ -198,10 +199,9 @@ export async function uploadPhoto(req, res, next) {
         where: {
           kittenId,
           OR: [
+            { kind: 'PHOTO' },
             { isPrimaryPhoto: true },
             { docType: { in: ['Photo', 'Primary Photo', 'Gallery Photo'] } },
-            { fileUrl: { startsWith: 'data:image/' } },
-            { fileUrl: { startsWith: '/uploads/' } },
           ],
         },
       }),
@@ -229,6 +229,7 @@ export async function uploadPhoto(req, res, next) {
           fileUrl,
           docType: shouldSetPrimary ? 'Primary Photo' : 'Photo',
           description: req.body.description ?? '',
+          kind: 'PHOTO',
           isPrimaryPhoto: shouldSetPrimary,
           sortOrder: photoCount,
         },

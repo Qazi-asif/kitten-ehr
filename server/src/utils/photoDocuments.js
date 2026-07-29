@@ -1,8 +1,9 @@
-// Classify gallery photos by what the file is — never by free-text docType.
-// Substring matching on docType (e.g. includes "Photo") pulled non-image
-// uploads like "Photo ID" into the gallery. No MIME column on Document;
-// upload paths set fileUrl/fileName extensions from the real MIME type.
+// Gallery photos are marked kind=PHOTO at upload time. Documents (including
+// image files uploaded on the Documents tab) stay kind=FILE and never enter
+// the gallery — even when the file extension looks like an image.
 const IMAGE_EXTENSION_PATTERN = /\.(jpe?g|png|webp|gif|jfif|heic|heif|bmp)$/i;
+
+const LEGACY_PHOTO_DOC_TYPES = new Set(['Photo', 'Primary Photo', 'Gallery Photo']);
 
 function pathForExtensionCheck(value) {
   if (!value || typeof value !== 'string') return '';
@@ -15,9 +16,19 @@ function hasImageExtension(value) {
 
 export function isPhotoDocument(document) {
   if (!document) return false;
+  if (document.kind === 'PHOTO') return true;
+  if (document.kind === 'FILE') return false;
+
+  // Legacy rows before kind existed: only explicit photo uploads / primary.
   if (document.isPrimaryPhoto) return true;
-  if (document.fileUrl?.startsWith('data:image/')) return true;
-  return hasImageExtension(document.fileUrl) || hasImageExtension(document.fileName);
+  if (LEGACY_PHOTO_DOC_TYPES.has(String(document.docType || '').trim())) {
+    return (
+      document.fileUrl?.startsWith('data:image/')
+      || hasImageExtension(document.fileUrl)
+      || hasImageExtension(document.fileName)
+    );
+  }
+  return false;
 }
 
 export function photoDocumentOrderBy() {
@@ -30,6 +41,7 @@ export function photoDocumentSelect() {
     fileName: true,
     fileUrl: true,
     docType: true,
+    kind: true,
     isPrimaryPhoto: true,
     sortOrder: true,
     uploadedAt: true,

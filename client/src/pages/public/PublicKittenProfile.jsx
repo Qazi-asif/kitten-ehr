@@ -183,11 +183,21 @@ function PublicKittenProfile() {
                  <span className="flex items-center gap-1"><PawPrint size={14} className="text-gray-400" /> {formatPublicAge(kitten.dateOfBirth) || 'Young'}</span>
               </div>
 
-              {/* Extra details */}
-              <div className="mt-6 space-y-2">
-                 <p className="text-sm font-bold text-gray-800">Bonded pair with <span className="font-extrabold text-gray-900">QA Test Partner Cat</span></p>
-                 <p className="text-sm font-bold text-[#d97706]">Medical / Special Needs</p>
-              </div>
+              {(kitten.isBondedPair || kitten.isMedicalSpecialNeeds) && (
+                <div className="mt-6 space-y-2">
+                  {kitten.isBondedPair && (
+                    <p className="text-sm font-bold text-gray-800">
+                      Bonded pair with{' '}
+                      <span className="font-extrabold text-gray-900">
+                        {kitten.bondedWithKitten?.name || kitten.bondedWithName || 'a partner'}
+                      </span>
+                    </p>
+                  )}
+                  {kitten.isMedicalSpecialNeeds && (
+                    <p className="text-sm font-bold text-[#d97706]">Medical / Special Needs</p>
+                  )}
+                </div>
+              )}
 
               {/* Status banner (shown instead of ADOPT ME when the kitten isn't currently available) */}
               {!isAvailableForAdoption && !isInFosterCare && (

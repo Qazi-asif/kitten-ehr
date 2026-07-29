@@ -257,17 +257,23 @@ model VetAppointment {
   @@index([date])
 }
 
+enum DocumentKind {
+  PHOTO
+  FILE
+}
+
 model Document {
-  id             Int      @id @default(autoincrement())
+  id             Int          @id @default(autoincrement())
   kittenId       Int
-  kitten         Kitten   @relation(fields: [kittenId], references: [id], onDelete: Cascade)
+  kitten         Kitten       @relation(fields: [kittenId], references: [id], onDelete: Cascade)
   fileName       String
   fileUrl        String
-  docType        String   @default("")
-  description    String   @default("")
-  isPrimaryPhoto Boolean  @default(false)
-  sortOrder      Int      @default(0)
-  uploadedAt     DateTime @default(now())
+  docType        String       @default("")
+  description    String       @default("")
+  kind           DocumentKind @default(FILE)
+  isPrimaryPhoto Boolean      @default(false)
+  sortOrder      Int          @default(0)
+  uploadedAt     DateTime     @default(now())
   // Set only when a Foster Portal account uploaded this document via
   // POST /api/portal/kittens/:kittenId/documents - null for every staff
   // upload (documentController.js never sets this). NOT YET MIGRATED as of
@@ -280,6 +286,7 @@ model Document {
 
   @@index([kittenId])
   @@index([kittenId, isPrimaryPhoto])
+  @@index([kittenId, kind])
 }
 
 model Application {
