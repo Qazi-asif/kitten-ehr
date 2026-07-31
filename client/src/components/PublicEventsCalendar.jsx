@@ -1,14 +1,27 @@
 import { useMemo } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { toPacificDateString } from '../utils/pacificDate';
 
 const WEEKDAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
+/** Calendar day key in America/Los_Angeles (CR-83 / CR-84). */
 function toDateKey(value) {
-  const date = new Date(value);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
+  if (!value) return '';
+  if (value instanceof Date && !Number.isNaN(value.getTime())) {
+    // Local calendar Date from month grid cells — use local Y-M-D, not UTC.
+    if (
+      value.getHours() === 0
+      && value.getMinutes() === 0
+      && value.getSeconds() === 0
+      && value.getMilliseconds() === 0
+    ) {
+      const year = value.getFullYear();
+      const month = String(value.getMonth() + 1).padStart(2, '0');
+      const day = String(value.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+  }
+  return toPacificDateString(value);
 }
 
 function isSameDay(a, b) {

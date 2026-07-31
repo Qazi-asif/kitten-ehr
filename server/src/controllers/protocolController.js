@@ -790,3 +790,65 @@ export async function activateProtocol(req, res, next) {
     next(error);
   }
 }
+
+export async function updateActiveProtocol(req, res, next) {
+  try {
+    const kittenId = Number.parseInt(req.params.kittenId, 10);
+    const activeId = Number.parseInt(req.params.activeId, 10);
+    const { status, activationDate } = req.body;
+
+    const existing = await prisma.activeProtocol.findFirst({
+      where: { id: activeId, kittenId },
+    });
+    if (!existing) return res.status(404).json({ error: 'Active protocol not found' });
+
+    const data = {};
+    if (status) {
+      if (!['ACTIVE', 'COMPLETED', 'DISCONTINUED'].includes(status)) {
+        return res.status(400).json({ error: 'Invalid status' });
+      }
+      data.status = status;
+    }
+    if (activationDate !== undefined) {
+      const parsed = stripToUtcMidnight(activationDate);
+      if (!parsed) return res.status(400).json({ error: 'activationDate must be a valid date' });
+      data.activationDate = parsed;
+    }
+
+    const updated = await prisma.activeProtocol.update({
+      where: { id: activeId },
+      data,
+      include: {
+        protocol: { select: { id: true, name: true } },
+        activatedBy: { select: { id: true, firstName: true, lastName: true } },
+        _count: { select: { doses: true } },
+      },
+    });
+
+    res.json(updated);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function deleteActiveProtocol(req, res, next) {
+  try {
+    const kittenId = Number.parseInt(req.params.kittenId, 10);
+    const activeId = Number.parseInt(req.params.activeId, 10);
+
+    const existing = await prisma.activeProtocol.findFirst({
+      where: { id: activeId, kittenId },
+      select: { id: true },
+    });
+    if (!existing) return res.status(404).json({ error: 'Active protocol not found' });
+
+    await prisma.$transaction(async (tx) => {
+      await tx.protocolDose.deleteMany({ where: { activeProtocolId: activeId } });
+      await tx.activeProtocol.delete({ where: { id: activeId } });
+    });
+
+    res.status(204).send();
+  } catch (error) {
+    next(error);
+  }
+}

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import ApplicationDetailPanel from '../../components/admin/ApplicationDetailPanel';
 import {
+  deleteApplication,
   deleteApplicationDocument,
   fetchApplicationById,
   fetchApplications,
@@ -211,6 +212,18 @@ function ApplicationsPage() {
     }
   }
 
+  async function handleDeleteApplication(id) {
+    if (!window.confirm('Permanently delete this application and its uploaded files?')) return;
+    setError('');
+    try {
+      await deleteApplication(id);
+      setApplications((prev) => prev.filter((app) => app.id !== id));
+      if (selected?.id === id) closeApplication();
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
   return (
     <div>
       <h1 className="mb-6 text-2xl font-bold text-gray-900">Applications</h1>
@@ -253,6 +266,7 @@ function ApplicationsPage() {
                 onStatusUpdate={handleStatusUpdate}
                 onUploadDocument={handleUploadDocument}
                 onDeleteDocument={handleDeleteDocument}
+                onDeleteApplication={handleDeleteApplication}
                 saving={savingStatus}
                 uploadingDocument={uploadingDocument}
                 deletingDocumentId={deletingDocumentId}

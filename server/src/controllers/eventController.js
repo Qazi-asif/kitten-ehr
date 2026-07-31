@@ -8,6 +8,12 @@ import {
 } from '../utils/resolveKittenPhotoUrl.js';
 import { validateUploadedFile } from '../utils/fileValidation.js';
 import { deleteStoredFile, persistEventFile } from '../utils/fileStorage.js';
+import { parsePacificDateTime } from '../utils/pacificDate.js';
+
+function asEventDate(value) {
+  if (value == null || value === '') return null;
+  return parsePacificDateTime(value) || new Date(value);
+}
 
 function slugify(text) {
   return text
@@ -266,8 +272,8 @@ export async function createEvent(req, res, next) {
       data: {
         title,
         slug: slug ? slugify(slug) : await resolveUniqueEventSlug(title),
-        date: new Date(date),
-        endDate: endDate ? new Date(endDate) : null,
+        date: asEventDate(date),
+        endDate: endDate ? asEventDate(endDate) : null,
         location: location ?? '',
         description: description ?? '',
         publishTargets: normalizedTargets,
@@ -306,8 +312,8 @@ export async function updateEvent(req, res, next) {
 
     const data = {
       ...(title !== undefined && { title }),
-      ...(date !== undefined && { date: new Date(date) }),
-      ...(endDate !== undefined && { endDate: endDate ? new Date(endDate) : null }),
+      ...(date !== undefined && { date: asEventDate(date) }),
+      ...(endDate !== undefined && { endDate: endDate ? asEventDate(endDate) : null }),
       ...(location !== undefined && { location }),
       ...(description !== undefined && { description }),
       ...(status !== undefined && { status }),

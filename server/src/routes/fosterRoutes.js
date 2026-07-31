@@ -4,6 +4,7 @@ import {
   createFoster,
   updateFoster,
   deactivateFoster,
+  deleteFoster,
   getFosterById,
   resendPortalSetupLink,
   provisionFosterFromApplication,
@@ -12,6 +13,7 @@ import {
   createFosterPlacement,
   dischargePlacement,
   getFosterPlacements,
+  updatePlacement,
 } from '../controllers/placementController.js';
 import {
   createFosterWishlist,
@@ -30,12 +32,14 @@ router.post(
 );
 router.get('/:id/placements', requirePermission('fosters.view'), getFosterPlacements);
 router.post('/:id/placements', requirePermission('fosters.manage'), createFosterPlacement);
+router.patch('/:id/placements/:placementId', requirePermission('fosters.manage'), updatePlacement);
 router.post('/:id/placements/:placementId/discharge', requirePermission('fosters.manage'), dischargePlacement);
 router.get('/:id/wishlists', requirePermission('fosters.view'), getFosterWishlists);
 router.post('/:id/wishlists', requirePermission('fosters.manage'), createFosterWishlist);
 router.get('/:id', requirePermission('fosters.view'), getFosterById);
 router.patch('/:id', requirePermission('fosters.manage'), updateFoster);
 router.post('/:id/deactivate', requirePermission('fosters.manage'), deactivateFoster);
+router.delete('/:id', requirePermission('fosters.manage'), deleteFoster);
 router.post(
   '/:id/portal-account/resend-setup',
   requirePermission('fosters.manage'),

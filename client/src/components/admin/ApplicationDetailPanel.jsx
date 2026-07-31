@@ -41,6 +41,7 @@ function ApplicationDetailPanel({
   onStatusUpdate,
   onUploadDocument,
   onDeleteDocument,
+  onDeleteApplication,
   saving = false,
   uploadingDocument = false,
   deletingDocumentId = null,
@@ -101,6 +102,15 @@ function ApplicationDetailPanel({
             >
               Create Contract
             </Link>
+          )}
+          {onDeleteApplication && (
+            <button
+              type="button"
+              onClick={() => onDeleteApplication(application.id)}
+              className="rounded-lg border border-red-200 px-3 py-1.5 text-sm font-semibold text-red-700 hover:bg-red-50"
+            >
+              Delete
+            </button>
           )}
           <button
             type="button"

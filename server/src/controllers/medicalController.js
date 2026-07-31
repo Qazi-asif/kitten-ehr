@@ -1,4 +1,10 @@
 import prisma from '../lib/prisma.js';
+import { parsePacificDateOnly } from '../utils/pacificDate.js';
+
+function asPacificDate(value) {
+  if (value == null || value === '') return null;
+  return parsePacificDateOnly(value) || new Date(value);
+}
 
 export async function getMedicalByKittenId(req, res, next) {
   try {
@@ -46,8 +52,8 @@ export async function createVaccine(req, res, next) {
       data: {
         kittenId: parsedKittenId,
         type,
-        dateGiven: new Date(dateGiven),
-        nextDueDate: nextDueDate ? new Date(nextDueDate) : null,
+        dateGiven: asPacificDate(dateGiven),
+        nextDueDate: nextDueDate ? asPacificDate(nextDueDate) : null,
         lotNumber: lotNumber ?? '',
         manufacturer: manufacturer ?? '',
         administeredBy: administeredBy ?? '',
@@ -87,14 +93,14 @@ export async function createVetAppointment(req, res, next) {
     const appointment = await prisma.vetAppointment.create({
       data: {
         kittenId: parsedKittenId,
-        date: new Date(date),
+        date: asPacificDate(date),
         clinic: clinic ?? '',
         vetName: vetName ?? '',
         reason: reason ?? '',
         apptType: apptType ?? '',
         diagnosis: diagnosis ?? '',
         treatment: treatment ?? '',
-        followUpDate: followUpDate ? new Date(followUpDate) : null,
+        followUpDate: followUpDate ? asPacificDate(followUpDate) : null,
         notes: notes ?? '',
       },
     });
@@ -136,8 +142,8 @@ export async function createMedication(req, res, next) {
         frequency: frequency ?? '',
         route: route ?? '',
         condition: condition ?? '',
-        startDate: new Date(startDate),
-        endDate: endDate ? new Date(endDate) : null,
+        startDate: asPacificDate(startDate),
+        endDate: endDate ? asPacificDate(endDate) : null,
         status: status ?? 'Active',
         notes: notes ?? '',
       },
@@ -167,8 +173,8 @@ export async function updateVaccine(req, res, next) {
       where: { id },
       data: {
         ...(type != null ? { type } : {}),
-        ...(dateGiven != null ? { dateGiven: new Date(dateGiven) } : {}),
-        ...(nextDueDate !== undefined ? { nextDueDate: nextDueDate ? new Date(nextDueDate) : null } : {}),
+        ...(dateGiven != null ? { dateGiven: asPacificDate(dateGiven) } : {}),
+        ...(nextDueDate !== undefined ? { nextDueDate: nextDueDate ? asPacificDate(nextDueDate) : null } : {}),
         ...(lotNumber != null ? { lotNumber } : {}),
         ...(manufacturer != null ? { manufacturer } : {}),
         ...(administeredBy != null ? { administeredBy } : {}),
@@ -211,8 +217,8 @@ export async function updateMedication(req, res, next) {
         ...(frequency != null ? { frequency } : {}),
         ...(route != null ? { route } : {}),
         ...(condition != null ? { condition } : {}),
-        ...(startDate != null ? { startDate: new Date(startDate) } : {}),
-        ...(endDate !== undefined ? { endDate: endDate ? new Date(endDate) : null } : {}),
+        ...(startDate != null ? { startDate: asPacificDate(startDate) } : {}),
+        ...(endDate !== undefined ? { endDate: endDate ? asPacificDate(endDate) : null } : {}),
         ...(status != null ? { status } : {}),
         ...(notes != null ? { notes } : {}),
       },
@@ -248,14 +254,14 @@ export async function updateVetAppointment(req, res, next) {
     const appointment = await prisma.vetAppointment.update({
       where: { id },
       data: {
-        ...(date != null ? { date: new Date(date) } : {}),
+        ...(date != null ? { date: asPacificDate(date) } : {}),
         ...(clinic != null ? { clinic } : {}),
         ...(vetName != null ? { vetName } : {}),
         ...(reason != null ? { reason } : {}),
         ...(apptType != null ? { apptType } : {}),
         ...(diagnosis != null ? { diagnosis } : {}),
         ...(treatment != null ? { treatment } : {}),
-        ...(followUpDate !== undefined ? { followUpDate: followUpDate ? new Date(followUpDate) : null } : {}),
+        ...(followUpDate !== undefined ? { followUpDate: followUpDate ? asPacificDate(followUpDate) : null } : {}),
         ...(notes != null ? { notes } : {}),
       },
     });

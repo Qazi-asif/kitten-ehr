@@ -14,12 +14,14 @@ import { CAPABILITY_OPTIONS, EXPERIENCE_LEVELS, parseCapabilityFlags } from '../
 import {
   createFosterPlacement,
   deactivateFoster,
+  deleteFoster,
   dischargeFosterPlacement,
   fetchFosterById,
   fetchFosterPlacements,
   fetchKittens,
   resendFosterPortalSetupLink,
   updateFoster,
+  updateFosterPlacement,
   updateKitten,
 } from '../services/api';
 import { pacificToday } from '../utils/pacificDate';
@@ -252,6 +254,34 @@ function FosterDetailPage() {
     }
   }
 
+  async function handleDeleteFoster() {
+    if (!foster) return;
+    const confirmed = window.confirm(
+      `Permanently delete ${foster.name}? This removes their placement history and cannot be undone.`,
+    );
+    if (!confirmed) return;
+    setDeactivating(true);
+    setError(null);
+    try {
+      await deleteFoster(id);
+      window.location.assign('/admin/fosters');
+    } catch (err) {
+      setError(err.message);
+      setDeactivating(false);
+    }
+  }
+
+  async function handleUpdatePlacement(placement, payload) {
+    setError(null);
+    try {
+      const updated = await updateFosterPlacement(id, placement.id, payload);
+      setPlacements((prev) => prev.map((row) => (row.id === updated.id ? updated : row)));
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    }
+  }
+
   if (loading) {
     return <p className="text-slate-500">Loading foster dashboard...</p>;
   }
@@ -318,6 +348,14 @@ function FosterDetailPage() {
                         {deactivating ? 'Deactivating...' : 'Deactivate Foster'}
                       </button>
                     )}
+                    <button
+                      type="button"
+                      onClick={handleDeleteFoster}
+                      disabled={deactivating}
+                      className="rounded-lg border border-red-300 bg-red-50 px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-100 disabled:opacity-60"
+                    >
+                      Delete Foster
+                    </button>
                   </>
                 )}
               </div>
@@ -524,6 +562,8 @@ function FosterDetailPage() {
           <FosterPlacementTable
             placements={placements}
             onDischarge={handleDischargePlacement}
+            onUpdate={handleUpdatePlacement}
+            canEdit={canManageFoster}
             dischargingId={dischargingId}
           />
         </div>

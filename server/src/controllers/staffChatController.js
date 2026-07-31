@@ -350,7 +350,42 @@ export async function createMessage({ conversationId, senderId, content }) {
     return message;
   });
 
-  return serializeMessage(row);
+  const serialized = serializeMessage(row);
+
+  // Fire-and-forget email to other members (CR-81).
+  setImmediate(async () => {
+    try {
+      const { sendStaffChatNotificationEmail } = await import('../services/emailService.js');
+      const conversation = await prisma.staffChatConversation.findUnique({
+        where: { id: conversationId },
+        select: { name: true, type: true },
+      });
+      const members = await prisma.staffChatMember.findMany({
+        where: { conversationId, userId: { not: senderId } },
+        include: {
+          user: { select: { id: true, email: true, firstName: true, lastName: true, isActive: true } },
+        },
+      });
+      const senderLabel = displayName(row.sender);
+      const label = conversation?.name
+        || (conversation?.type === 'DIRECT' ? `Chat with ${senderLabel}` : 'Staff Chat');
+      await Promise.allSettled(
+        members
+          .filter((m) => m.user?.isActive && m.user?.email)
+          .map((m) => sendStaffChatNotificationEmail({
+            toEmail: m.user.email,
+            recipientName: displayName(m.user),
+            senderName: senderLabel,
+            preview: normalized,
+            conversationLabel: label,
+          })),
+      );
+    } catch (err) {
+      console.error('[staff-chat] email notify failed', err?.message || err);
+    }
+  });
+
+  return serialized;
 }
 
 export async function markConversationRead(conversationId, userId) {

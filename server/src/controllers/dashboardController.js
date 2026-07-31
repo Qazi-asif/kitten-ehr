@@ -192,6 +192,7 @@ export async function getDashboardMetrics(_req, res, next) {
       activeFosters,
       totalAdopted,
       euthanasiaPulls,
+      tnrReleases,
       activeProtocols,
       alerts,
       insights,
@@ -199,6 +200,7 @@ export async function getDashboardMetrics(_req, res, next) {
       recentIntakes,
       recentAdoptions,
       pendingApplications,
+      applicationStatusGroups,
       upcomingEvents,
     ] = await Promise.all([
       prisma.kitten.count(),
@@ -208,6 +210,14 @@ export async function getDashboardMetrics(_req, res, next) {
       prisma.foster.count({ where: { isActive: true } }),
       prisma.kitten.count({ where: { status: 'Adopted' } }),
       prisma.kitten.count({ where: { intakeSource: { contains: 'Euthanasia' } } }),
+      prisma.kitten.count({
+        where: {
+          OR: [
+            { isTnr: true },
+            { status: 'Released' },
+          ],
+        },
+      }),
       prisma.activeProtocol.count(),
       getDashboardAlerts(),
       buildDashboardInsights(prisma),
@@ -227,9 +237,9 @@ export async function getDashboardMetrics(_req, res, next) {
         select: dashboardKittenSelect,
       }),
       prisma.application.findMany({
-        where: { status: { in: ['New', 'Under Review'] } },
+        where: { status: { in: ['New', 'Under Review', 'Approved'] } },
         orderBy: { createdAt: 'desc' },
-        take: 5,
+        take: 8,
         select: {
           id: true,
           type: true,
@@ -239,8 +249,11 @@ export async function getDashboardMetrics(_req, res, next) {
           createdAt: true,
         },
       }),
-      // Next 5 published public events from Pacific midnight today onward
-      // (includes today's events even if their clock time has already passed).
+      prisma.application.groupBy({
+        by: ['status'],
+        _count: { _all: true },
+      }),
+      // Month calendar + upcoming list: published website events from Pacific today.
       prisma.event.findMany({
         where: {
           isPublic: true,
@@ -248,7 +261,7 @@ export async function getDashboardMetrics(_req, res, next) {
           date: { gte: startOfPacificTodayUtc() },
         },
         orderBy: { date: 'asc' },
-        take: 5,
+        take: 60,
         select: {
           id: true,
           title: true,
@@ -263,17 +276,23 @@ export async function getDashboardMetrics(_req, res, next) {
       statusGroups.map((group) => [group.status, group._count._all]),
     );
 
+    const applicationStatusCounts = Object.fromEntries(
+      applicationStatusGroups.map((group) => [group.status, group._count._all]),
+    );
+
     const payload = {
       totalKittens,
       availableKittens,
       activeFosters,
       totalAdopted,
       euthanasiaPulls,
+      tnrReleases,
       activeProtocols,
       medicalConcerns: insights.medicalConcerns,
       // Avoid key `alerts` — `...alerts` below is getDashboardAlerts() reminder lists.
       summaryAlerts: insights.alerts,
       statusCounts,
+      applicationStatusCounts,
       recentIntakes: recentIntakes.map(serializeDashboardKitten),
       recentAdoptions: recentAdoptions.map(serializeDashboardKitten),
       pendingApplications,

@@ -1,9 +1,9 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Eye, Trash2, Upload } from 'lucide-react';
-import { openApplicationUploadFile } from '../../services/api';
+import { adminFetch, openApplicationUploadFile } from '../../services/api';
 
 const MAX_FILE_BYTES = 5 * 1024 * 1024;
-const ACCEPTED_TYPES = '.pdf,.jpg,.jpeg,.png,.webp,.gif';
+const ACCEPTED_TYPES = '.pdf,.jpg,.jpeg,.png,.webp,.gif,.heic,.heif';
 
 const FOSTER_DOC_LABELS = [
   'Foster Agreement',
@@ -18,6 +18,62 @@ const ADOPTION_DOC_LABELS = [
   'Identification',
   'Other',
 ];
+
+function isImageUpload(upload) {
+  const type = (upload.fileType || '').toLowerCase();
+  const name = (upload.fileName || '').toLowerCase();
+  if (type.startsWith('image/')) return true;
+  return /\.(jpe?g|png|gif|webp|heic|heif)$/i.test(name);
+}
+
+function ApplicationUploadPreview({ applicationId, upload }) {
+  const [src, setSrc] = useState(null);
+  const [failed, setFailed] = useState(false);
+  const objectUrlRef = useRef(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    if (!isImageUpload(upload)) return undefined;
+
+    (async () => {
+      try {
+        const response = await adminFetch(`/applications/${applicationId}/documents/${upload.id}/file`);
+        if (!response.ok) throw new Error('Failed to load');
+        const blob = await response.blob();
+        if (cancelled) return;
+        const url = URL.createObjectURL(blob);
+        objectUrlRef.current = url;
+        setSrc(url);
+      } catch {
+        if (!cancelled) setFailed(true);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+      if (objectUrlRef.current) {
+        URL.revokeObjectURL(objectUrlRef.current);
+        objectUrlRef.current = null;
+      }
+    };
+  }, [applicationId, upload.id, upload.fileType, upload.fileName]);
+
+  if (!isImageUpload(upload)) return null;
+  if (failed) {
+    return <p className="mt-2 text-xs text-amber-700">Preview unavailable — use View to open the file.</p>;
+  }
+  if (!src) {
+    return <p className="mt-2 text-xs text-gray-400">Loading preview…</p>;
+  }
+
+  return (
+    <img
+      src={src}
+      alt={upload.fileName || upload.docLabel || 'Upload'}
+      className="mt-2 max-h-48 w-full max-w-sm rounded-lg border border-gray-200 object-contain bg-gray-50"
+    />
+  );
+}
 
 function ApplicationDocumentsSection({
   applicationId,
@@ -86,9 +142,9 @@ function ApplicationDocumentsSection({
 
   return (
     <div>
-      <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500">Documents</h3>
+      <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500">Documents & Photos</h3>
       <p className="mt-1 text-sm text-gray-500">
-        Attach signed agreements and supporting files to this application.
+        Application photos and supporting files. Images preview inline; use View to open full size.
       </p>
 
       <form onSubmit={handleSubmit} className="mt-4 space-y-3 rounded-lg border border-gray-100 bg-gray-50 p-4">
@@ -149,34 +205,37 @@ function ApplicationDocumentsSection({
             const displayName = upload.fileName || upload.docLabel || 'Document';
 
             return (
-              <li key={upload.id} className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
-                <div>
-                  <p className="text-sm font-medium text-gray-900">{displayName}</p>
-                  <p className="text-xs text-gray-500">
-                    {upload.docLabel || upload.fileType || 'File'}
-                    {' · '}
-                    {new Date(upload.createdAt).toLocaleString()}
-                  </p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => handleView(upload.id)}
-                    disabled={openingId === upload.id}
-                    className="inline-flex items-center gap-1 rounded-lg border border-gray-200 px-2.5 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-100 disabled:opacity-60"
-                  >
-                    <Eye className="h-3.5 w-3.5" />
-                    {openingId === upload.id ? 'Opening...' : 'View'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => onDelete(upload.id)}
-                    disabled={deletingId === upload.id}
-                    className="inline-flex items-center gap-1 rounded-lg border border-red-200 px-2.5 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-50 disabled:opacity-60"
-                  >
-                    <Trash2 className="h-3.5 w-3.5" />
-                    {deletingId === upload.id ? 'Deleting...' : 'Delete'}
-                  </button>
+              <li key={upload.id} className="px-4 py-3">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium text-gray-900">{displayName}</p>
+                    <p className="text-xs text-gray-500">
+                      {upload.docLabel || upload.fileType || 'File'}
+                      {' · '}
+                      {new Date(upload.createdAt).toLocaleString()}
+                    </p>
+                    <ApplicationUploadPreview applicationId={applicationId} upload={upload} />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => handleView(upload.id)}
+                      disabled={openingId === upload.id}
+                      className="inline-flex items-center gap-1 rounded-lg border border-gray-200 px-2.5 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-100 disabled:opacity-60"
+                    >
+                      <Eye className="h-3.5 w-3.5" />
+                      {openingId === upload.id ? 'Opening...' : 'View'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onDelete(upload.id)}
+                      disabled={deletingId === upload.id}
+                      className="inline-flex items-center gap-1 rounded-lg border border-red-200 px-2.5 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-50 disabled:opacity-60"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                      {deletingId === upload.id ? 'Deleting...' : 'Delete'}
+                    </button>
+                  </div>
                 </div>
               </li>
             );

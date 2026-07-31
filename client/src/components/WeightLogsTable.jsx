@@ -6,6 +6,14 @@ function formatDateTime(value) {
   });
 }
 
+function gramsToOz(grams) {
+  return Number(grams || 0) / 28.3495;
+}
+
+function gramsToLbs(grams) {
+  return Number(grams || 0) / 453.592;
+}
+
 function WeightLogsTable({ logs, canManage = false, onEdit, onDelete }) {
   if (logs.length === 0) {
     return <p className="py-6 text-center text-sm text-gray-500">No weight logs yet.</p>;
@@ -17,7 +25,7 @@ function WeightLogsTable({ logs, canManage = false, onEdit, onDelete }) {
         <tr>
           <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Date &amp; Time</th>
           <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Weight (g)</th>
-          <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Weight (oz)</th>
+          <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Secondary (oz / lbs)</th>
           <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Change</th>
           <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Logged By</th>
           {canManage && (
@@ -29,12 +37,16 @@ function WeightLogsTable({ logs, canManage = false, onEdit, onDelete }) {
         {logs.map((log, index) => {
           const previous = logs[index + 1];
           const change = previous ? log.weightGrams - previous.weightGrams : null;
+          const oz = log.weightOz != null ? Number(log.weightOz) : gramsToOz(log.weightGrams);
+          const lbs = gramsToLbs(log.weightGrams);
 
           return (
             <tr key={log.id} className="hover:bg-gray-50">
               <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-600">{formatDateTime(log.date)}</td>
               <td className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-gray-900">{Math.round(log.weightGrams)}g</td>
-              <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-600">{log.weightOz.toFixed(1)}oz</td>
+              <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-600">
+                {oz.toFixed(1)} oz · {lbs.toFixed(2)} lbs
+              </td>
               <td className="whitespace-nowrap px-4 py-3 text-sm">
                 {change === null ? '—' : (
                   <span className={change >= 0 ? 'text-emerald-700' : 'text-red-600'}>

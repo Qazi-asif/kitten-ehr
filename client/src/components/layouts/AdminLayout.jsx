@@ -61,10 +61,18 @@ function getPageMeta(pathname, user) {
   const meta = pageMeta.find((m) => m.match(pathname)) ?? { title: 'Admin', subtitle: '' };
 
   if (pathname === '/admin') {
-    const name = user?.firstName?.trim() || 'there';
+    const name = [user?.firstName, user?.lastName].filter(Boolean).join(' ').trim() || user?.firstName?.trim() || 'there';
+    const hour = Number(
+      new Intl.DateTimeFormat('en-US', {
+        timeZone: 'America/Los_Angeles',
+        hour: 'numeric',
+        hour12: false,
+      }).format(new Date()),
+    );
+    const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
     return {
       ...meta,
-      subtitle: `Good morning, ${name} — here is what needs your attention today.`,
+      subtitle: `${greeting}, ${name} — here is what needs your attention today.`,
     };
   }
 

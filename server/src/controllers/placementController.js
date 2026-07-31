@@ -1,5 +1,7 @@
 import prisma from '../lib/prisma.js';
 import { createPlacementSchema, formatZodError } from '../validations/fosterValidation.js';
+import { parsePacificDateOnly } from '../utils/pacificDate.js';
+import { TERMINAL_KITTEN_STATUSES } from '../validations/kittenValidation.js';
 
 const placementInclude = {
   kitten: {
@@ -20,6 +22,17 @@ const placementInclude = {
     },
   },
 };
+
+function parsePlacementDate(value, fieldLabel) {
+  if (value == null || value === '') return null;
+  const parsed = parsePacificDateOnly(value);
+  if (!parsed || Number.isNaN(parsed.getTime())) {
+    const err = new Error(`Invalid ${fieldLabel}`);
+    err.status = 400;
+    throw err;
+  }
+  return parsed;
+}
 
 export async function getFosterPlacements(req, res, next) {
   try {
@@ -69,11 +82,7 @@ export async function createFosterPlacement(req, res, next) {
     }
 
     const { kittenId, intakeDate, notes } = parsed.data;
-    const intake = new Date(intakeDate);
-
-    if (Number.isNaN(intake.getTime())) {
-      return res.status(400).json({ error: 'Invalid intake date' });
-    }
+    const intake = parsePlacementDate(intakeDate, 'intake date');
 
     const [foster, kitten] = await Promise.all([
       prisma.foster.findUnique({ where: { id: fosterId } }),
@@ -90,6 +99,8 @@ export async function createFosterPlacement(req, res, next) {
     if (foster.maxKittens > 0 && activePlacements >= foster.maxKittens) {
       return res.status(400).json({ error: 'Foster is at maximum capacity' });
     }
+
+    const keepTerminalStatus = TERMINAL_KITTEN_STATUSES.includes(kitten.status);
 
     const placement = await prisma.$transaction(async (tx) => {
       // Close only the SENDING foster's open placement(s) — never the receiving one.
@@ -116,11 +127,12 @@ export async function createFosterPlacement(req, res, next) {
       });
 
       // Placement start date must NOT overwrite organization intake date.
+      // Terminal outcomes keep their status; foster can still be re-added (CR-76).
       await tx.kitten.update({
         where: { id: kittenId },
         data: {
           currentFosterId: fosterId,
-          status: 'In Foster Care',
+          ...(keepTerminalStatus ? {} : { status: 'In Foster Care' }),
         },
       });
 
@@ -129,6 +141,47 @@ export async function createFosterPlacement(req, res, next) {
 
     res.status(201).json(placement);
   } catch (error) {
+    if (error.status) return res.status(error.status).json({ error: error.message });
+    next(error);
+  }
+}
+
+export async function updatePlacement(req, res, next) {
+  try {
+    const fosterId = Number.parseInt(req.params.id, 10);
+    const placementId = Number.parseInt(req.params.placementId, 10);
+    const { intakeDate, dischargeDate, dischargeType, notes } = req.body;
+
+    const placement = await prisma.placement.findFirst({
+      where: { id: placementId, fosterId },
+    });
+    if (!placement) return res.status(404).json({ error: 'Placement not found' });
+
+    const data = {};
+    if (intakeDate !== undefined) {
+      data.intakeDate = parsePlacementDate(intakeDate, 'intake date');
+    }
+    if (dischargeDate !== undefined) {
+      data.dischargeDate = dischargeDate === null || dischargeDate === ''
+        ? null
+        : parsePlacementDate(dischargeDate, 'discharge date');
+    }
+    if (dischargeType !== undefined) {
+      data.dischargeType = dischargeType?.trim() || null;
+    }
+    if (notes !== undefined) {
+      data.notes = typeof notes === 'string' ? notes : '';
+    }
+
+    const updated = await prisma.placement.update({
+      where: { id: placementId },
+      data,
+      include: placementInclude,
+    });
+
+    res.json(updated);
+  } catch (error) {
+    if (error.status) return res.status(error.status).json({ error: error.message });
     next(error);
   }
 }
@@ -158,10 +211,9 @@ export async function dischargePlacement(req, res, next) {
       return res.status(400).json({ error: 'Placement is already discharged' });
     }
 
-    const discharge = dischargeDate ? new Date(dischargeDate) : new Date();
-    if (Number.isNaN(discharge.getTime())) {
-      return res.status(400).json({ error: 'Invalid discharge date' });
-    }
+    const discharge = dischargeDate
+      ? parsePlacementDate(dischargeDate, 'discharge date')
+      : parsePacificDateOnly(new Date()) || new Date();
 
     const updated = await prisma.$transaction(async (tx) => {
       const dischargedPlacement = await tx.placement.update({
@@ -183,6 +235,7 @@ export async function dischargePlacement(req, res, next) {
 
     res.json(updated);
   } catch (error) {
+    if (error.status) return res.status(error.status).json({ error: error.message });
     next(error);
   }
 }

@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
   createApplication,
+  deleteApplication,
   deleteApplicationDocument,
   getApplicationById,
   getApplications,
@@ -24,5 +25,6 @@ router.post('/', requirePermission('applications.manage'), upload.array('photos'
 router.post('/:id/documents', requirePermission('applications.manage'), upload.single('file'), uploadApplicationDocument);
 router.delete('/:id/documents/:uploadId', requirePermission('applications.manage'), deleteApplicationDocument);
 router.patch('/:id', requirePermission('applications.manage'), updateApplicationStatus);
+router.delete('/:id', requirePermission('applications.manage'), deleteApplication);
 
 export default router;

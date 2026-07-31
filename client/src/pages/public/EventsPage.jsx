@@ -3,13 +3,10 @@ import { Link } from 'react-router-dom';
 import PublicEventsCalendar, { toDateKey } from '../../components/PublicEventsCalendar';
 import { fetchPublicEvents } from '../../services/publicApi';
 import { getFileUrl } from '../../services/api';
+import { formatPacificDisplay } from '../../utils/pacificDate';
 
 function formatEventDate(value) {
-  return new Date(value).toLocaleString(undefined, {
-    weekday: 'long',
-    dateStyle: 'long',
-    timeStyle: 'short',
-  });
+  return formatPacificDisplay(value, { withTime: true }) || '—';
 }
 
 function EventsPage() {

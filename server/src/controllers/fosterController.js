@@ -226,7 +226,45 @@ export async function provisionFosterFromApplication(req, res, next) {
       }
     }
 
-    res.status(fosterWasExisting ? 200 : 201).json({ foster, fosterWasExisting, portalAccount });
+    // CR-80: ensure an Onboarding tab row exists for newly approved fosters.
+    let onboarding = null;
+    try {
+      const existingOnboarding = await prisma.fosterOnboarding.findFirst({
+        where: { applicantEmail: { equals: email, mode: 'insensitive' } },
+        orderBy: { createdAt: 'desc' },
+      });
+      if (existingOnboarding) {
+        onboarding = existingOnboarding;
+      } else {
+        onboarding = await prisma.fosterOnboarding.create({
+          data: {
+            applicantName: foster.name,
+            applicantEmail: email,
+            notes: `Auto-created from foster application #${applicationId}`,
+            status: 'APPLIED',
+            checklistItems: {
+              create: [
+                { stepKey: 'application_review', label: 'Review application' },
+                { stepKey: 'reference_check', label: 'Reference check completed' },
+                { stepKey: 'home_check', label: 'Home check completed' },
+                { stepKey: 'orientation', label: 'Foster orientation completed' },
+                { stepKey: 'supply_kit', label: 'Supply kit provided' },
+              ],
+            },
+          },
+          include: { checklistItems: true },
+        });
+      }
+    } catch (onboardingError) {
+      console.error('[provisionFoster] onboarding create failed:', onboardingError?.message || onboardingError);
+    }
+
+    res.status(fosterWasExisting ? 200 : 201).json({
+      foster,
+      fosterWasExisting,
+      portalAccount,
+      onboarding,
+    });
   } catch (error) {
     next(error);
   }
@@ -322,6 +360,40 @@ export async function deactivateFoster(req, res, next) {
     });
 
     res.json(foster);
+  } catch (error) {
+    next(error);
+  }
+}
+
+/** Hard-delete for QA / mistaken records (CR-78). Cleared after confirming no blockers. */
+export async function deleteFoster(req, res, next) {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+    const existing = await prisma.foster.findUnique({
+      where: { id },
+      include: {
+        _count: { select: { placements: true, currentKittens: true } },
+      },
+    });
+    if (!existing) return res.status(404).json({ error: 'Foster not found' });
+
+    await prisma.$transaction(async (tx) => {
+      await tx.kitten.updateMany({
+        where: { currentFosterId: id },
+        data: { currentFosterId: null },
+      });
+      await tx.placement.deleteMany({ where: { fosterId: id } });
+      await tx.wishlist.deleteMany({
+        where: { ownerType: 'FOSTER', ownerId: id },
+      });
+      await tx.user.updateMany({
+        where: { fosterId: id },
+        data: { fosterId: null, isActive: false },
+      });
+      await tx.foster.delete({ where: { id } });
+    });
+
+    res.status(204).send();
   } catch (error) {
     next(error);
   }

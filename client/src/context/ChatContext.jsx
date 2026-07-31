@@ -70,8 +70,8 @@ function notifyUnreadMessage(title, body) {
 }
 
 export function ChatProvider({ children }) {
-  const { user, isAuthenticated } = useAuth();
-  const canChat = Boolean(isAuthenticated && user && !user.fosterId);
+  const { user, isAuthenticated, hasPermission } = useAuth();
+  const canChat = Boolean(isAuthenticated && user && hasPermission('chat.view'));
 
   const [conversations, setConversations] = useState([]);
   const [activeId, setActiveId] = useState(null);

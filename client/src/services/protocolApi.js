@@ -61,6 +61,22 @@ export async function activateKittenProtocol(kittenId, payload) {
   return response.json();
 }
 
+export async function updateKittenActiveProtocol(kittenId, activeId, payload) {
+  const response = await adminFetch(`/kittens/${kittenId}/protocols/${activeId}`, {
+    method: 'PATCH',
+    body: JSON.stringify(payload),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to update protocol'));
+  return response.json();
+}
+
+export async function deleteKittenActiveProtocol(kittenId, activeId) {
+  const response = await adminFetch(`/kittens/${kittenId}/protocols/${activeId}`, {
+    method: 'DELETE',
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to delete protocol'));
+}
+
 export async function markProtocolDoseGiven(kittenId, doseId, payload = {}) {
   const response = await adminFetch(`/kittens/${kittenId}/protocols/doses/${doseId}`, {
     method: 'PATCH',

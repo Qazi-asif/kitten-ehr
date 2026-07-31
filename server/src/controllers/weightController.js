@@ -1,4 +1,10 @@
 import prisma from '../lib/prisma.js';
+import { parsePacificDateOnly } from '../utils/pacificDate.js';
+
+function asPacificDate(value) {
+  if (value == null || value === '') return null;
+  return parsePacificDateOnly(value) || new Date(value);
+}
 
 export async function getWeightsByKittenId(req, res, next) {
   try {
@@ -45,7 +51,7 @@ export async function createWeightLog(req, res, next) {
     const log = await prisma.weightLog.create({
       data: {
         kittenId: parsedKittenId,
-        date: new Date(date),
+        date: asPacificDate(date),
         weightGrams: grams,
         weightOz: oz,
         loggedBy: loggedBy ?? 'Admin',
@@ -79,7 +85,7 @@ export async function updateWeightLog(req, res, next) {
       data: {
         weightGrams: grams,
         weightOz: oz,
-        ...(date != null ? { date: new Date(date) } : {}),
+        ...(date != null ? { date: asPacificDate(date) } : {}),
         ...(loggedBy != null ? { loggedBy } : {}),
         ...(notes != null ? { notes } : {}),
       },

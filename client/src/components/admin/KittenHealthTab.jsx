@@ -9,12 +9,14 @@ import WeightLogForm from '../WeightLogForm';
 import WeightLogsTable from '../WeightLogsTable';
 import {
   activateKittenProtocol,
+  deleteKittenActiveProtocol,
   fetchKittenActiveProtocols,
   fetchKittenProtocolDoses,
   fetchProtocols,
   markProtocolDoseGiven,
+  updateKittenActiveProtocol,
 } from '../../services/protocolApi';
-import { pacificToday } from '../../utils/pacificDate';
+import { pacificToday, toPacificDateString } from '../../utils/pacificDate';
 
 function formatDate(value) {
   if (!value) return '—';
@@ -124,6 +126,41 @@ function KittenHealthTab({
       setError(err.message || 'Failed to activate protocol.');
     } finally {
       setActivating(false);
+    }
+  }
+
+  async function handleDiscontinueProtocol(entry) {
+    if (!canManageMedical) return;
+    if (!window.confirm(`Discontinue "${entry.protocol?.name}"? Scheduled doses will remain in history.`)) return;
+    setError('');
+    try {
+      await updateKittenActiveProtocol(kittenId, entry.id, { status: 'DISCONTINUED' });
+      await loadProtocolData();
+    } catch (err) {
+      setError(err.message || 'Failed to discontinue protocol.');
+    }
+  }
+
+  async function handleDeleteProtocol(entry) {
+    if (!canManageMedical) return;
+    if (!window.confirm(`Permanently delete "${entry.protocol?.name}" and all its doses?`)) return;
+    setError('');
+    try {
+      await deleteKittenActiveProtocol(kittenId, entry.id);
+      await loadProtocolData();
+    } catch (err) {
+      setError(err.message || 'Failed to delete protocol.');
+    }
+  }
+
+  async function handleUpdateActivationDate(entry, nextDate) {
+    if (!canManageMedical || !nextDate) return;
+    setError('');
+    try {
+      await updateKittenActiveProtocol(kittenId, entry.id, { activationDate: nextDate });
+      await loadProtocolData();
+    } catch (err) {
+      setError(err.message || 'Failed to update activation date.');
     }
   }
 
@@ -238,6 +275,38 @@ function KittenHealthTab({
                       </span>
                     </div>
                     <p className="mt-2 text-xs text-gray-500">{entry._count?.doses || 0} scheduled doses</p>
+                    {canManageMedical && (
+                      <div className="mt-3 flex flex-wrap items-end gap-3 border-t border-gray-100 pt-3">
+                        <label className="w-40">
+                          <span className="text-[10px] font-semibold uppercase text-gray-500">Activation date</span>
+                          <input
+                            type="date"
+                            defaultValue={toPacificDateString(entry.activationDate)}
+                            onBlur={(e) => {
+                              const next = e.target.value;
+                              if (next && next !== toPacificDateString(entry.activationDate)) {
+                                handleUpdateActivationDate(entry, next);
+                              }
+                            }}
+                            className="mt-1 w-full rounded border border-gray-200 px-2 py-1.5 text-xs"
+                          />
+                        </label>
+                        <button
+                          type="button"
+                          onClick={() => handleDiscontinueProtocol(entry)}
+                          className="rounded-lg border border-amber-200 px-3 py-1.5 text-xs font-semibold text-amber-800 hover:bg-amber-50"
+                        >
+                          Discontinue
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteProtocol(entry)}
+                          className="rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-50"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
@@ -304,6 +373,17 @@ function KittenHealthTab({
                   </span>
                 </div>
                 <p className="mt-2 text-xs text-gray-500">{entry._count?.doses || 0} scheduled doses</p>
+                {canManageMedical && (
+                  <div className="mt-3 border-t border-gray-100 pt-3">
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteProtocol(entry)}
+                      className="rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-50"
+                    >
+                      Delete permanently
+                    </button>
+                  </div>
+                )}
               </div>
             ))}
           </div>

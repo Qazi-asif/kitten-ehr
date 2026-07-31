@@ -18,17 +18,21 @@ import {
   createVaccine,
   createVetAppointment,
   createWeightLog,
+  createKittenUpdate,
   deleteDocument,
   deleteMedication,
   deleteVaccine,
   deleteVetAppointment,
   deleteWeightLog,
+  deleteKitten,
+  deleteKittenUpdate,
   fetchDocuments,
   fetchLitters,
   fetchKittens,
   fetchKittenById,
   fetchKittenPhotos,
   fetchKittenPlacements,
+  fetchKittenUpdates,
   fetchMedicalRecords,
   fetchWeightLogs,
   setKittenPrimaryPhoto,
@@ -38,11 +42,8 @@ import {
   updateMedication,
   updateVaccine,
   updateVetAppointment,
+  updateFosterPlacement,
   updateWeightLog,
-  fetchKittenUpdates,
-  createKittenUpdate,
-  deleteKittenUpdate,
-  deleteKitten,
 } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { WISHLIST_OWNER_TYPES } from '../../constants/wishlists';
@@ -89,6 +90,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
   const canDelete = hasPermission('kittens.delete');
   const canEdit = hasPermission('kittens.edit');
   const canManageMedical = hasPermission('medical.manage');
+  const canManageFoster = hasPermission('fosters.manage');
   const [kitten, setKitten] = useState(null);
   const [medical, setMedical] = useState({ vaccines: [], medications: [], vetAppointments: [] });
   const [weightLogs, setWeightLogs] = useState([]);
@@ -1040,13 +1042,25 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
             <div className="space-y-4">
               <div className="rounded-lg border border-gray-100 bg-gray-50 p-4 text-sm text-gray-700">
                 <p><span className="font-semibold text-gray-900">Current Foster:</span> {kitten.currentFoster?.name || 'None assigned'}</p>
+                <p className="mt-2 text-xs text-gray-500">
+                  Assign or re-add a foster from the{' '}
+                  <Link to="/admin/fosters" className="font-semibold text-brand hover:underline">Fosters</Link>
+                  {' '}page. Terminal statuses keep the foster on record until you end the placement.
+                </p>
                 {kitten.currentFoster && (
                   <Link to={`/admin/fosters/${kitten.currentFoster.id}`} className="mt-2 inline-block text-sm font-semibold text-emerald-700 hover:underline">
                     View foster dashboard →
                   </Link>
                 )}
               </div>
-              <KittenPlacementTable placements={placements} />
+              <KittenPlacementTable
+                placements={placements}
+                canEdit={canManageFoster}
+                onUpdate={async (placement, payload) => {
+                  const updated = await updateFosterPlacement(placement.fosterId, placement.id, payload);
+                  setPlacements((prev) => prev.map((row) => (row.id === updated.id ? updated : row)));
+                }}
+              />
             </div>
           )}
 

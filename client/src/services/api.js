@@ -136,6 +136,11 @@ export async function deactivateFoster(id) {
   return response.json();
 }
 
+export async function deleteFoster(id) {
+  const response = await adminFetch(`/fosters/${id}`, { method: 'DELETE' });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to delete foster'));
+}
+
 export async function fetchFosterById(id) {
   const response = await adminFetch(`/fosters/${id}`);
   if (!response.ok) throw new Error(response.status === 404 ? 'Foster not found' : 'Failed to fetch foster');
@@ -154,6 +159,15 @@ export async function createFosterPlacement(fosterId, data) {
     body: JSON.stringify(data),
   });
   if (!response.ok) throw new Error(await readApiError(response, 'Failed to create placement'));
+  return response.json();
+}
+
+export async function updateFosterPlacement(fosterId, placementId, data) {
+  const response = await adminFetch(`/fosters/${fosterId}/placements/${placementId}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to update placement'));
   return response.json();
 }
 
@@ -353,6 +367,11 @@ export async function updateApplicationStatus(id, payload) {
   });
   if (!response.ok) throw new Error(await readApiError(response, 'Failed to update application status'));
   return response.json();
+}
+
+export async function deleteApplication(id) {
+  const response = await adminFetch(`/applications/${id}`, { method: 'DELETE' });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to delete application'));
 }
 
 export async function uploadApplicationDocument(applicationId, { file, docLabel }) {

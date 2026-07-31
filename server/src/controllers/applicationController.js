@@ -382,3 +382,27 @@ export async function deleteApplicationDocument(req, res, next) {
     next(error);
   }
 }
+
+export async function deleteApplication(req, res, next) {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+    const existing = await prisma.application.findUnique({
+      where: { id },
+      select: { id: true },
+    });
+    if (!existing) return res.status(404).json({ error: 'Application not found' });
+
+    await prisma.$transaction(async (tx) => {
+      await tx.applicationUpload.deleteMany({ where: { applicationId: id } });
+      await tx.foster.updateMany({
+        where: { sourceApplicationId: id },
+        data: { sourceApplicationId: null },
+      });
+      await tx.application.delete({ where: { id } });
+    });
+
+    res.status(204).send();
+  } catch (error) {
+    next(error);
+  }
+}
