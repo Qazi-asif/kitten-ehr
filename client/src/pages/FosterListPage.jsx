@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import FosterForm from '../components/FosterForm';
-import { createFoster, deactivateFoster, fetchFosters } from '../services/api';
+import { createFoster, deactivateFoster, deleteFoster, fetchFosters } from '../services/api';
 import { buildCapabilityFlags, fileToDataUrl, parseCapabilityFlags } from '../utils/fosterCapabilities';
 
 function FosterListPage() {
@@ -77,6 +77,21 @@ function FosterListPage() {
     }
   }
 
+  async function handleDeleteFoster(foster) {
+    const confirmed = window.confirm(
+      `Permanently delete ${foster.name}? This cannot be undone and removes their placement history.`,
+    );
+    if (!confirmed) return;
+
+    setError(null);
+    try {
+      await deleteFoster(foster.id);
+      await loadFosters();
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
   return (
     <div>
       <div className="mb-6">
@@ -139,13 +154,13 @@ function FosterListPage() {
                       {foster.isActive === false ? 'Inactive' : 'Active'}
                     </span>
                   </td>
-                  <td className="whitespace-nowrap px-6 py-4 text-sm">
-                    <div className="flex items-center gap-3">
+                  <td className="min-w-[6.5rem] px-4 py-4 text-sm">
+                    <div className="flex flex-col items-start gap-1.5">
                       <Link
                         to={`/admin/fosters/${foster.id}`}
-                        className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50"
+                        className="inline-flex max-w-full rounded-lg border border-slate-300 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50"
                       >
-                        Open Dashboard
+                        Dashboard
                       </Link>
                       {foster.isActive !== false && (
                         <button
@@ -156,6 +171,13 @@ function FosterListPage() {
                           Deactivate
                         </button>
                       )}
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteFoster(foster)}
+                        className="text-xs font-medium text-red-700 hover:underline"
+                      >
+                        Delete
+                      </button>
                     </div>
                   </td>
                 </tr>

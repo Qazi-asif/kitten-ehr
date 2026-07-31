@@ -152,20 +152,32 @@ export async function deleteUser(req, res) {
   const id = Number.parseInt(req.params.id, 10);
 
   if (id === req.user.id) {
-    return res.status(400).json({ error: 'You cannot deactivate your own account' });
+    return res.status(400).json({ error: 'You cannot delete your own account' });
   }
 
-  const existing = await prisma.user.findUnique({ where: { id } });
+  const existing = await prisma.user.findUnique({
+    where: { id },
+    include: { role: { select: { name: true } } },
+  });
   if (!existing) {
     return res.status(404).json({ error: 'User not found' });
   }
 
-  await prisma.user.update({
-    where: { id },
-    data: { isActive: false },
+  if (existing.role?.name === 'Super Admin') {
+    return res.status(400).json({ error: 'Super Admin accounts cannot be deleted' });
+  }
+
+  // ActiveProtocol.activatedById is Restrict — reassign to the acting admin
+  // so hard-delete of QA/test users is not blocked by protocol history.
+  await prisma.$transaction(async (tx) => {
+    await tx.activeProtocol.updateMany({
+      where: { activatedById: id },
+      data: { activatedById: req.user.id },
+    });
+    await tx.user.delete({ where: { id } });
   });
 
   clearCachedAuth(id);
 
-  return res.json({ message: 'User deactivated' });
+  return res.status(204).send();
 }

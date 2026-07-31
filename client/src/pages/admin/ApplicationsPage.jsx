@@ -16,7 +16,7 @@ import {
 
 const STATUS_OPTIONS = ['New', 'Under Review', 'Approved', 'Denied'];
 
-function ApplicationTable({ title, applications, selectedId, onView }) {
+function ApplicationTable({ title, applications, selectedId, onView, onDelete }) {
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
       <div className="border-b border-gray-100 bg-gray-50 px-4 py-3">
@@ -50,13 +50,24 @@ function ApplicationTable({ title, applications, selectedId, onView }) {
                 <td className="px-4 py-3 text-sm text-gray-700">{app.status}</td>
                 <td className="px-4 py-3 text-sm text-gray-500">{new Date(app.createdAt).toLocaleDateString()}</td>
                 <td className="px-4 py-3 text-sm">
-                  <button
-                    type="button"
-                    onClick={() => onView(app)}
-                    className="font-medium text-emerald-700 hover:underline"
-                  >
-                    View
-                  </button>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => onView(app)}
+                      className="font-medium text-emerald-700 hover:underline"
+                    >
+                      View
+                    </button>
+                    {onDelete && (
+                      <button
+                        type="button"
+                        onClick={() => onDelete(app.id)}
+                        className="font-medium text-red-600 hover:underline"
+                      >
+                        Delete
+                      </button>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))
@@ -249,12 +260,14 @@ function ApplicationsPage() {
               applications={adoptionApplications}
               selectedId={selected?.id}
               onView={openApplication}
+              onDelete={handleDeleteApplication}
             />
             <ApplicationTable
               title="Foster Applications"
               applications={fosterApplications}
               selectedId={selected?.id}
               onView={openApplication}
+              onDelete={handleDeleteApplication}
             />
           </div>
 

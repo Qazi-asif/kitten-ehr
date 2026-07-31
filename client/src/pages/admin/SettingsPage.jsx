@@ -9,8 +9,8 @@ import { DEFAULT_GIVEBUTTER_EMBED, ensureGivebutterEmbed } from '../../constants
 import {
   createRole,
   createUser,
-  deactivateUser,
   deleteRole,
+  deleteUser,
   fetchPermissions,
   fetchRoles,
   fetchUsers,
@@ -394,10 +394,10 @@ function SettingsPage() {
     }
   }
 
-  async function handleDeactivateUser(id) {
-    if (!window.confirm('Deactivate this user? They will no longer be able to sign in.')) return;
+  async function handleDeleteUser(id) {
+    if (!window.confirm('Permanently delete this user? This cannot be undone.')) return;
     try {
-      await deactivateUser(id);
+      await deleteUser(id);
       await load();
     } catch (err) {
       setError(err.message);
@@ -1225,13 +1225,13 @@ function SettingsPage() {
                     </td>
                     {canManageUsers && (
                       <td className="px-4 py-3">
-                        <div className="flex gap-2">
+                        <div className="flex flex-wrap gap-2">
                           <button type="button" onClick={() => openEditUser(user)} className="text-brand hover:underline">
                             Edit
                           </button>
-                          {user.isActive && (
-                            <button type="button" onClick={() => handleDeactivateUser(user.id)} className="text-red-600 hover:underline">
-                              Deactivate
+                          {user.id !== currentUser?.id && user.role?.name !== 'Super Admin' && (
+                            <button type="button" onClick={() => handleDeleteUser(user.id)} className="text-red-600 hover:underline">
+                              Delete
                             </button>
                           )}
                         </div>

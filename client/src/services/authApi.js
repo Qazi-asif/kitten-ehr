@@ -185,11 +185,17 @@ export async function updateUser(id, payload) {
   return data;
 }
 
-export async function deactivateUser(id) {
+export async function deleteUser(id) {
   const response = await authFetch(`/users/${id}`, { method: 'DELETE' });
-  const data = await response.json();
-  if (!response.ok) throw new Error(data.error || 'Failed to deactivate user');
+  if (response.status === 204) return;
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.error || 'Failed to delete user');
   return data;
+}
+
+/** @deprecated Prefer deleteUser — soft-deactivate was replaced by hard delete. */
+export async function deactivateUser(id) {
+  return deleteUser(id);
 }
 
 export function fetchRoles() {

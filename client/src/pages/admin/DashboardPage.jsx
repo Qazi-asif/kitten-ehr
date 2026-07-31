@@ -12,7 +12,7 @@ import {
   HeartHandshake,
   Users,
 } from 'lucide-react';
-import { fetchContractStats } from '../../services/api';
+import { deleteApplication, fetchContractStats } from '../../services/api';
 import { fetchDashboardMetrics } from '../../services/dashboardApi';
 import { resolveContractKittenName } from '../../utils/contractAudit';
 import { getApplicationSummary, resolveKittenOfInterest } from '../../utils/applicationFormData';
@@ -291,6 +291,16 @@ function DashboardPage() {
       .finally(() => setLoading(false));
   }, [load]);
 
+  async function handleDeleteApplication(id) {
+    if (!window.confirm('Permanently delete this application and its uploaded files?')) return;
+    try {
+      await deleteApplication(id);
+      await load();
+    } catch (err) {
+      window.alert(err.message || 'Failed to delete application');
+    }
+  }
+
   const reminderRows = useMemo(() => buildReminderRows(metrics), [metrics]);
   const pendingApplications = metrics?.pendingApplications ?? [];
   const appCounts = metrics?.applicationStatusCounts || {};
@@ -514,12 +524,21 @@ function DashboardPage() {
                         {formatPacificDisplay(app.createdAt)}
                       </td>
                       <td className="px-2 py-2.5 text-sm">
-                        <Link
-                          to={`/admin/applications?id=${app.id}`}
-                          className="font-semibold text-brand hover:underline"
-                        >
-                          View
-                        </Link>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <Link
+                            to={`/admin/applications?id=${app.id}`}
+                            className="font-semibold text-brand hover:underline"
+                          >
+                            View
+                          </Link>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteApplication(app.id)}
+                            className="font-semibold text-red-600 hover:underline"
+                          >
+                            Delete
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
