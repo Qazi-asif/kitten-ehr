@@ -2,14 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toPacificDateString, formatPacificDisplay } from '../../utils/pacificDate';
 
-function placementStatus(placement) {
-  if (placement.dischargeDate) {
-    return placement.dischargeType || placement.kitten?.status || 'Discharged';
-  }
-  return 'Active';
-}
-
-function KittenPlacementTable({ placements = [], onUpdate, canEdit = false }) {
+function KittenPlacementTable({ placements = [], onUpdate, canEdit = false, kittenStatus = null }) {
   const [editingId, setEditingId] = useState(null);
   const [draft, setDraft] = useState({ intakeDate: '', dischargeDate: '' });
   const [savingId, setSavingId] = useState(null);
@@ -52,7 +45,7 @@ function KittenPlacementTable({ placements = [], onUpdate, canEdit = false }) {
             <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Foster Home</th>
             <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Placement Start</th>
             <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Placement End</th>
-            <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Status</th>
+            <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Cat Status</th>
             {canEdit && (
               <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Actions</th>
             )}
@@ -61,6 +54,7 @@ function KittenPlacementTable({ placements = [], onUpdate, canEdit = false }) {
         <tbody className="divide-y divide-gray-200 bg-white">
           {placements.map((placement) => {
             const editing = editingId === placement.id;
+            const statusLabel = kittenStatus || placement.kitten?.status || '—';
             return (
               <tr key={placement.id}>
                 <td className="px-4 py-3 text-sm font-medium text-gray-900">
@@ -89,10 +83,15 @@ function KittenPlacementTable({ placements = [], onUpdate, canEdit = false }) {
                       className="rounded border border-gray-200 px-2 py-1 text-sm"
                     />
                   ) : (
-                    formatPacificDisplay(placement.dischargeDate) || '—'
+                    <div>
+                      <div>{formatPacificDisplay(placement.dischargeDate) || '—'}</div>
+                      {placement.dischargeDate && placement.dischargeType ? (
+                        <div className="text-xs text-gray-400">Ended: {placement.dischargeType}</div>
+                      ) : null}
+                    </div>
                   )}
                 </td>
-                <td className="px-4 py-3 text-sm text-gray-600">{placementStatus(placement)}</td>
+                <td className="px-4 py-3 text-sm text-gray-600">{statusLabel}</td>
                 {canEdit && (
                   <td className="px-4 py-3 text-sm">
                     {editing ? (

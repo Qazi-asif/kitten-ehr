@@ -191,11 +191,12 @@ export async function updatePlacement(req, res, next) {
 // reassigning a kitten to a *new* foster) - this is the first explicit way
 // to end an active placement on its own, with no reassignment involved.
 // Does not touch kitten.status; the client prompts staff to confirm/update
-// status separately after a successful discharge, same "prompt, not
-// automatic" pattern used elsewhere. currentFosterId IS cleared here,
-// unconditionally - unlike status, it's a factual fact (which foster
-// currently has this kitten), not a judgment call, so it always gets
-// corrected in the same transaction rather than waiting on a prompt.
+// status separately after a successful discharge.
+//
+// Keep currentFosterId so list/filter/profile still show who had the cat.
+// Foster capacity is driven by open placements (dischargeDate null), not
+// currentFosterId — clearing it made Adopted / In Socialization cats look
+// unassigned and broke foster filters.
 export async function dischargePlacement(req, res, next) {
   try {
     const fosterId = Number.parseInt(req.params.id, 10);
@@ -215,22 +216,13 @@ export async function dischargePlacement(req, res, next) {
       ? parsePlacementDate(dischargeDate, 'discharge date')
       : parsePacificDateOnly(new Date()) || new Date();
 
-    const updated = await prisma.$transaction(async (tx) => {
-      const dischargedPlacement = await tx.placement.update({
-        where: { id: placementId },
-        data: {
-          dischargeDate: discharge,
-          dischargeType: dischargeType?.trim() || 'Discharged',
-        },
-        include: placementInclude,
-      });
-
-      await tx.kitten.update({
-        where: { id: placement.kittenId },
-        data: { currentFosterId: null },
-      });
-
-      return dischargedPlacement;
+    const updated = await prisma.placement.update({
+      where: { id: placementId },
+      data: {
+        dischargeDate: discharge,
+        dischargeType: dischargeType?.trim() || 'Discharged',
+      },
+      include: placementInclude,
     });
 
     res.json(updated);

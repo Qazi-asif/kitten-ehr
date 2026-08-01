@@ -9,6 +9,7 @@ import { normalizePublishTargets, targetsIncludeWebsite } from '../utils/publish
 import { isUnknownPublishTargetsError, withLegacyWebsiteFlag } from '../utils/prismaPublishTargets.js';
 import {
   kittenListSelect,
+  latestPlacementFosterSelect,
   serializeKittenForDetail,
   serializeKittenForList,
   enrichKittensWithPhotos,
@@ -33,6 +34,7 @@ const kittenIncludes = {
   litter: { select: { id: true, name: true } },
   currentFoster: { select: { id: true, name: true, phone: true } },
   bondedWithKitten: { select: { id: true, name: true } },
+  placements: latestPlacementFosterSelect,
 };
 
 export async function getAllKittens(req, res) {
@@ -130,22 +132,40 @@ function buildKittenListWhere(query) {
     else if (statuses.length > 1) where.status = { in: statuses };
   }
 
-  const fosterId = Number.parseInt(query.fosterId, 10);
-  if (Number.isInteger(fosterId) && fosterId > 0) {
-    where.currentFosterId = fosterId;
-  }
-
   const litterId = Number.parseInt(query.litterId, 10);
   if (Number.isInteger(litterId) && litterId > 0) {
     where.litterId = litterId;
   }
 
+  const fosterId = Number.parseInt(query.fosterId, 10);
+  const hasFosterFilter = Number.isInteger(fosterId) && fosterId > 0;
+  // Include current assignment OR any historical placement with this foster
+  // so Adopted/Released/Transferred/Deceased cats still appear when filtering.
+  const fosterClause = hasFosterFilter
+    ? {
+        OR: [
+          { currentFosterId: fosterId },
+          { placements: { some: { fosterId } } },
+        ],
+      }
+    : null;
+
   const search = typeof query.search === 'string' ? query.search.trim() : '';
-  if (search) {
-    where.OR = [
-      { name: { contains: search, mode: 'insensitive' } },
-      { breed: { contains: search, mode: 'insensitive' } },
-    ];
+  const searchClause = search
+    ? {
+        OR: [
+          { name: { contains: search, mode: 'insensitive' } },
+          { breed: { contains: search, mode: 'insensitive' } },
+        ],
+      }
+    : null;
+
+  if (fosterClause && searchClause) {
+    where.AND = [fosterClause, searchClause];
+  } else if (fosterClause) {
+    Object.assign(where, fosterClause);
+  } else if (searchClause) {
+    Object.assign(where, searchClause);
   }
 
   return where;

@@ -776,23 +776,24 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                 <div className="block sm:col-span-2">
                   <span className="text-xs font-semibold uppercase text-gray-500">Assigned Foster</span>
                   <div className="mt-1 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-800">
-                    {kitten.currentFoster ? (
+                    {(kitten.currentFoster || kitten.lastPlacementFoster) ? (
                       <Link
-                        to={`/admin/fosters/${kitten.currentFoster.id}`}
+                        to={`/admin/fosters/${(kitten.currentFoster || kitten.lastPlacementFoster).id}`}
                         className="font-semibold text-emerald-700 hover:underline"
                       >
-                        {kitten.currentFoster.name}
+                        {(kitten.currentFoster || kitten.lastPlacementFoster).name}
                       </Link>
                     ) : (
                       <span className="text-gray-500">No foster assigned</span>
                     )}
                   </div>
                   <p className="mt-1 text-xs text-gray-500">
-                    Assign or discharge fosters from{' '}
+                    Foster stays on record for Adopted / Released / Transferred / Deceased cats.
+                    Assign or change foster from{' '}
                     <Link to="/admin/fosters" className="font-semibold text-brand hover:underline">
                       Admin → Fosters
                     </Link>
-                    {' '}(placements), not from this profile field.
+                    {' '}(placements), including after a terminal status.
                   </p>
                 </div>
                 <label className="block sm:col-span-2">
@@ -1041,20 +1042,29 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
           {activeTab === 'placements' && (
             <div className="space-y-4">
               <div className="rounded-lg border border-gray-100 bg-gray-50 p-4 text-sm text-gray-700">
-                <p><span className="font-semibold text-gray-900">Current Foster:</span> {kitten.currentFoster?.name || 'None assigned'}</p>
+                <p>
+                  <span className="font-semibold text-gray-900">Current Foster:</span>{' '}
+                  {(kitten.currentFoster || kitten.lastPlacementFoster)?.name || 'None assigned'}
+                </p>
                 <p className="mt-2 text-xs text-gray-500">
+                  Cat status is always the profile status ({kitten.status}). Placement end reason is
+                  shown under Placement End — it is not the cat&apos;s status.
                   Assign or re-add a foster from the{' '}
                   <Link to="/admin/fosters" className="font-semibold text-brand hover:underline">Fosters</Link>
-                  {' '}page. Terminal statuses keep the foster on record until you end the placement.
+                  {' '}page even after Adopted / Released / Transferred / Deceased.
                 </p>
-                {kitten.currentFoster && (
-                  <Link to={`/admin/fosters/${kitten.currentFoster.id}`} className="mt-2 inline-block text-sm font-semibold text-emerald-700 hover:underline">
+                {(kitten.currentFoster || kitten.lastPlacementFoster) && (
+                  <Link
+                    to={`/admin/fosters/${(kitten.currentFoster || kitten.lastPlacementFoster).id}`}
+                    className="mt-2 inline-block text-sm font-semibold text-emerald-700 hover:underline"
+                  >
                     View foster dashboard →
                   </Link>
                 )}
               </div>
               <KittenPlacementTable
                 placements={placements}
+                kittenStatus={kitten.status}
                 canEdit={canManageFoster}
                 onUpdate={async (placement, payload) => {
                   const updated = await updateFosterPlacement(placement.fosterId, placement.id, payload);

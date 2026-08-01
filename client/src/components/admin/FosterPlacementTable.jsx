@@ -2,13 +2,6 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toPacificDateString, formatPacificDisplay } from '../../utils/pacificDate';
 
-function placementStatus(placement) {
-  if (placement.dischargeDate) {
-    return placement.dischargeType || placement.kitten?.status || 'Discharged';
-  }
-  return placement.kitten?.status || 'Active';
-}
-
 function FosterPlacementTable({
   placements = [],
   onDischarge,
@@ -58,7 +51,7 @@ function FosterPlacementTable({
             <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Kitten</th>
             <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Placement Start</th>
             <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Placement End</th>
-            <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Status</th>
+            <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Cat Status</th>
             <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Actions</th>
           </tr>
         </thead>
@@ -93,10 +86,17 @@ function FosterPlacementTable({
                       className="rounded border border-slate-200 px-2 py-1 text-sm"
                     />
                   ) : (
-                    formatPacificDisplay(placement.dischargeDate) || '—'
+                    <div>
+                      <div>{formatPacificDisplay(placement.dischargeDate) || '—'}</div>
+                      {placement.dischargeDate && placement.dischargeType ? (
+                        <div className="text-xs text-slate-400">Ended: {placement.dischargeType}</div>
+                      ) : null}
+                    </div>
                   )}
                 </td>
-                <td className="whitespace-nowrap px-6 py-4 text-sm text-slate-600">{placementStatus(placement)}</td>
+                <td className="whitespace-nowrap px-6 py-4 text-sm text-slate-600">
+                  {placement.kitten?.status || '—'}
+                </td>
                 <td className="whitespace-nowrap px-6 py-4 text-sm">
                   <div className="flex flex-wrap items-center gap-3">
                     {editing ? (
