@@ -73,6 +73,7 @@ export const updateKittenSchema = z
     websiteFeaturedComment: z.string().max(2000).optional(),
     publishTargets: publishTargetsField,
     litterId: z.coerce.number().int().positive().optional().nullable(),
+    currentFosterId: z.coerce.number().int().positive().optional().nullable(),
     isBondedPair: z.boolean().optional(),
     bondedWithKittenId: z.coerce.number().int().positive().optional().nullable(),
     bondedWithName: z.string().max(200).optional(),

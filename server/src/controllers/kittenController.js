@@ -340,8 +340,6 @@ export async function updateKitten(req, res, next) {
     }
 
     delete data.weightGrams;
-    // Placement APIs own foster assignment — never write currentFosterId here.
-    delete data.currentFosterId;
 
     if (data.bondedWithKittenId && data.bondedWithKittenId === id) {
       return res.status(400).json({ error: 'A kitten cannot be bonded with itself' });
@@ -362,6 +360,22 @@ export async function updateKitten(req, res, next) {
     const leavingTerminal = TERMINAL_KITTEN_STATUSES.includes(existing.status)
       && nextStatus !== existing.status
       && !TERMINAL_KITTEN_STATUSES.includes(nextStatus);
+    const keepTerminalStatus = TERMINAL_KITTEN_STATUSES.includes(nextStatus);
+
+    const fosterIdProvided = Object.prototype.hasOwnProperty.call(body, 'currentFosterId');
+    const nextFosterId = fosterIdProvided ? (body.currentFosterId ?? null) : undefined;
+    let fosterChanged = false;
+
+    if (fosterIdProvided) {
+      if (nextFosterId != null) {
+        const foster = await prisma.foster.findUnique({ where: { id: nextFosterId } });
+        if (!foster) return res.status(400).json({ error: 'Foster not found' });
+      }
+      fosterChanged = nextFosterId !== existing.currentFosterId;
+      data.currentFosterId = nextFosterId;
+    } else {
+      delete data.currentFosterId;
+    }
 
     // Keep currentFosterId on terminal outcomes (Adopted, etc.). Staff clear
     // foster via End Placement / reassignment — do not wipe assignment here.
@@ -381,8 +395,65 @@ export async function updateKitten(req, res, next) {
       data.outcomeDetail = null;
     }
 
+    // Match createFosterPlacement: assigning a foster sets In Foster Care unless
+    // terminal (or the client explicitly sent a status in this same request).
+    if (fosterChanged && nextFosterId != null && !keepTerminalStatus && body.status === undefined) {
+      data.status = 'In Foster Care';
+    }
+
     let kitten;
     kitten = await prisma.$transaction(async (tx) => {
+      if (fosterChanged) {
+        if (nextFosterId != null) {
+          const foster = await tx.foster.findUnique({ where: { id: nextFosterId } });
+          if (foster?.maxKittens > 0) {
+            const activePlacements = await tx.placement.count({
+              where: { fosterId: nextFosterId, dischargeDate: null },
+            });
+            if (activePlacements >= foster.maxKittens) {
+              const err = new Error('Foster is at maximum capacity');
+              err.status = 400;
+              throw err;
+            }
+          }
+
+          // Close only the SENDING foster's open placement(s) — never the receiving one.
+          await tx.placement.updateMany({
+            where: {
+              kittenId: id,
+              dischargeDate: null,
+              fosterId: { not: nextFosterId },
+            },
+            data: {
+              dischargeDate: new Date(),
+              dischargeType: 'Transferred',
+            },
+          });
+
+          const openForFoster = await tx.placement.findFirst({
+            where: { kittenId: id, fosterId: nextFosterId, dischargeDate: null },
+          });
+          if (!openForFoster) {
+            await tx.placement.create({
+              data: {
+                kittenId: id,
+                fosterId: nextFosterId,
+                intakeDate: new Date(),
+              },
+            });
+          }
+        } else {
+          // Unassign: close open placements and clear currentFosterId.
+          await tx.placement.updateMany({
+            where: { kittenId: id, dischargeDate: null },
+            data: {
+              dischargeDate: new Date(),
+              dischargeType: 'Discharged',
+            },
+          });
+        }
+      }
+
       if (becomingTerminal) {
         await tx.placement.updateMany({
           where: { kittenId: id, dischargeDate: null },
@@ -434,8 +505,9 @@ export async function updateKitten(req, res, next) {
     invalidateCacheByPrefix('public-stats');
     invalidateCacheByPrefix('dashboard-metrics');
 
-    res.json(kitten);
+    res.json(serializeKittenForDetail(kitten));
   } catch (error) {
+    if (error.status) return res.status(error.status).json({ error: error.message });
     next(error);
   }
 }

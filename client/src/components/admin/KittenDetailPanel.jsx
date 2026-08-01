@@ -27,6 +27,7 @@ import {
   deleteKitten,
   deleteKittenUpdate,
   fetchDocuments,
+  fetchFosters,
   fetchLitters,
   fetchKittens,
   fetchKittenById,
@@ -85,6 +86,42 @@ function normalizeFixedStatus(value) {
   return '';
 }
 
+function resolveAssignedFosterId(data) {
+  const id = data?.currentFosterId
+    ?? data?.currentFoster?.id
+    ?? data?.lastPlacementFoster?.id
+    ?? null;
+  return id != null ? String(id) : '';
+}
+
+function buildProfileForm(data) {
+  return {
+    name: data.name || '',
+    status: data.status || '',
+    breed: data.breed || '',
+    color: data.color || '',
+    sex: data.sex || '',
+    fixedStatus: normalizeFixedStatus(data.fixedStatus),
+    dateOfBirth: data.dateOfBirth ? data.dateOfBirth.slice(0, 10) : '',
+    intakeDate: data.intakeDate ? data.intakeDate.slice(0, 10) : '',
+    intakeSource: data.intakeSource || '',
+    rescueStory: data.rescueStory || '',
+    fivFelvStatus: data.fivFelvStatus || '',
+    specialNeeds: data.specialNeeds || '',
+    litterId: data.litterId ? String(data.litterId) : '',
+    currentFosterId: resolveAssignedFosterId(data),
+    isBondedPair: Boolean(data.isBondedPair),
+    bondedWithKittenId: data.bondedWithKittenId ? String(data.bondedWithKittenId) : '',
+    bondedWithName: data.bondedWithName || '',
+    isMedicalSpecialNeeds: Boolean(data.isMedicalSpecialNeeds),
+    isTnr: Boolean(data.isTnr),
+    isColony: Boolean(data.isColony),
+    microchipNumber: data.microchipNumber || '',
+    outcomeDate: data.outcomeDate ? data.outcomeDate.slice(0, 10) : '',
+    outcomeDetail: data.outcomeDetail || '',
+  };
+}
+
 function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
   const { hasPermission } = useAuth();
   const canDelete = hasPermission('kittens.delete');
@@ -113,6 +150,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
   const [savingUpdate, setSavingUpdate] = useState(false);
   const [allKittens, setAllKittens] = useState([]);
   const [litters, setLitters] = useState([]);
+  const [fosters, setFosters] = useState([]);
   const [error, setError] = useState(null);
   const [alertsDismissed, setAlertsDismissed] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -120,30 +158,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
   const loadKitten = useCallback(async () => {
     const data = await fetchKittenById(kittenId);
     setKitten(data);
-    setProfileForm({
-      name: data.name || '',
-      status: data.status || '',
-      breed: data.breed || '',
-      color: data.color || '',
-      sex: data.sex || '',
-      fixedStatus: normalizeFixedStatus(data.fixedStatus),
-      dateOfBirth: data.dateOfBirth ? data.dateOfBirth.slice(0, 10) : '',
-      intakeDate: data.intakeDate ? data.intakeDate.slice(0, 10) : '',
-      intakeSource: data.intakeSource || '',
-      rescueStory: data.rescueStory || '',
-      fivFelvStatus: data.fivFelvStatus || '',
-      specialNeeds: data.specialNeeds || '',
-      litterId: data.litterId ? String(data.litterId) : '',
-      isBondedPair: Boolean(data.isBondedPair),
-      bondedWithKittenId: data.bondedWithKittenId ? String(data.bondedWithKittenId) : '',
-      bondedWithName: data.bondedWithName || '',
-      isMedicalSpecialNeeds: Boolean(data.isMedicalSpecialNeeds),
-      isTnr: Boolean(data.isTnr),
-      isColony: Boolean(data.isColony),
-      microchipNumber: data.microchipNumber || '',
-      outcomeDate: data.outcomeDate ? data.outcomeDate.slice(0, 10) : '',
-      outcomeDetail: data.outcomeDetail || '',
-    });
+    setProfileForm(buildProfileForm(data));
     setNotesForm({
       notes: data.notes || '',
       internalNotes: data.internalNotes || '',
@@ -195,6 +210,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
       loadKitten(),
       fetchLitters({ status: 'active', sort: 'name' }).then(setLitters).catch(() => setLitters([])),
       fetchKittens().then(setAllKittens).catch(() => setAllKittens([])),
+      fetchFosters().then((data) => setFosters(Array.isArray(data) ? data : [])).catch(() => setFosters([])),
     ])
       .then(() => setLoading(false))
       .catch((err) => {
@@ -286,6 +302,9 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
         fivFelvStatus: profileForm.fivFelvStatus || null,
         specialNeeds: profileForm.specialNeeds || null,
         litterId: profileForm.litterId ? Number.parseInt(profileForm.litterId, 10) : null,
+        currentFosterId: profileForm.currentFosterId
+          ? Number.parseInt(profileForm.currentFosterId, 10)
+          : null,
         isBondedPair: profileForm.isBondedPair,
         bondedWithKittenId: profileForm.isBondedPair && profileForm.bondedWithKittenId
           ? Number.parseInt(profileForm.bondedWithKittenId, 10)
@@ -308,29 +327,11 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
 
       const updated = await updateKitten(kittenId, payload);
       setKitten(updated);
-      setProfileForm({
-        name: updated.name || '',
-        status: updated.status || '',
-        breed: updated.breed || '',
-        color: updated.color || '',
-        sex: updated.sex || '',
-        fixedStatus: normalizeFixedStatus(updated.fixedStatus),
-        dateOfBirth: updated.dateOfBirth ? updated.dateOfBirth.slice(0, 10) : '',
-        intakeDate: updated.intakeDate ? updated.intakeDate.slice(0, 10) : '',
-        intakeSource: updated.intakeSource || '',
-        rescueStory: updated.rescueStory || '',
-        fivFelvStatus: updated.fivFelvStatus || '',
-        specialNeeds: updated.specialNeeds || '',
-        litterId: updated.litterId ? String(updated.litterId) : '',
-        isBondedPair: Boolean(updated.isBondedPair),
-        bondedWithKittenId: updated.bondedWithKittenId ? String(updated.bondedWithKittenId) : '',
-        bondedWithName: updated.bondedWithName || '',
-        isMedicalSpecialNeeds: Boolean(updated.isMedicalSpecialNeeds),
-        isTnr: Boolean(updated.isTnr),
-        isColony: Boolean(updated.isColony),
-        microchipNumber: updated.microchipNumber || '',
-        outcomeDate: updated.outcomeDate ? updated.outcomeDate.slice(0, 10) : '',
-        outcomeDetail: updated.outcomeDetail || '',
+      setProfileForm(buildProfileForm(updated));
+      setLoadedTabs((prev) => {
+        const next = new Set(prev);
+        next.delete('placements');
+        return next;
       });
     } catch (err) {
       setError(err.message);
@@ -773,29 +774,45 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                     ))}
                   </select>
                 </label>
-                <div className="block sm:col-span-2">
+                <label className="block sm:col-span-2">
                   <span className="text-xs font-semibold uppercase text-gray-500">Assigned Foster</span>
-                  <div className="mt-1 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-800">
-                    {(kitten.currentFoster || kitten.lastPlacementFoster) ? (
-                      <Link
-                        to={`/admin/fosters/${(kitten.currentFoster || kitten.lastPlacementFoster).id}`}
-                        className="font-semibold text-emerald-700 hover:underline"
-                      >
-                        {(kitten.currentFoster || kitten.lastPlacementFoster).name}
-                      </Link>
-                    ) : (
-                      <span className="text-gray-500">No foster assigned</span>
-                    )}
-                  </div>
+                  <select
+                    value={profileForm.currentFosterId || ''}
+                    onChange={(e) => handleProfileFieldChange('currentFosterId', e.target.value)}
+                    disabled={savingProfile || !canEdit}
+                    className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+                  >
+                    <option value="">No foster assigned</option>
+                    {fosters
+                      .filter((foster) => foster.isActive !== false
+                        || String(foster.id) === String(profileForm.currentFosterId))
+                      .map((foster) => (
+                        <option key={foster.id} value={String(foster.id)}>
+                          {foster.name}
+                          {foster.isActive === false ? ' (inactive)' : ''}
+                        </option>
+                      ))}
+                  </select>
+                  {(kitten.currentFoster || kitten.lastPlacementFoster) && (
+                    <Link
+                      to={`/admin/fosters/${(kitten.currentFoster || kitten.lastPlacementFoster).id}`}
+                      className="mt-1 inline-block text-xs font-semibold text-emerald-700 hover:underline"
+                    >
+                      View foster dashboard →
+                    </Link>
+                  )}
                   <p className="mt-1 text-xs text-gray-500">
-                    Foster stays on record for Adopted / Released / Transferred / Deceased cats.
-                    Assign or change foster from{' '}
+                    You can assign or change foster here for any status, including Adopted /
+                    Released / Transferred / Deceased / In Socialization. Saving updates the
+                    foster on record and placement history without forcing status to In Foster Care
+                    when the cat is already terminal. Placement history is also on the Placements
+                    tab and under{' '}
                     <Link to="/admin/fosters" className="font-semibold text-brand hover:underline">
                       Admin → Fosters
                     </Link>
-                    {' '}(placements), including after a terminal status.
+                    .
                   </p>
-                </div>
+                </label>
                 <label className="block sm:col-span-2">
                   <span className="text-xs font-semibold uppercase text-gray-500">Litter Group</span>
                   <LitterSelect
@@ -1049,9 +1066,9 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                 <p className="mt-2 text-xs text-gray-500">
                   Cat status is always the profile status ({kitten.status}). Placement end reason is
                   shown under Placement End — it is not the cat&apos;s status.
-                  Assign or re-add a foster from the{' '}
+                  Assign or change foster from the Profile tab (or the{' '}
                   <Link to="/admin/fosters" className="font-semibold text-brand hover:underline">Fosters</Link>
-                  {' '}page even after Adopted / Released / Transferred / Deceased.
+                  {' '}page), including after Adopted / Released / Transferred / Deceased.
                 </p>
                 {(kitten.currentFoster || kitten.lastPlacementFoster) && (
                   <Link
