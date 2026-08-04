@@ -58,27 +58,24 @@ export function parsePacificDateOnly(value) {
     return Number.isNaN(fallback.getTime()) ? null : fallback;
   }
   const [, y, m, d] = match;
-  // Noon Pacific avoids DST edge cases when converting to UTC.
-  const probe = new Date(`${y}-${m}-${d}T12:00:00`);
-  const pacificNoon = new Date(
-    new Date(`${y}-${m}-${d}T12:00:00`).toLocaleString('en-US', { timeZone: PACIFIC }),
-  );
-  // Construct via offset: find UTC instant that is midnight Pacific on that day.
-  const asUtcGuess = new Date(Date.UTC(Number(y), Number(m) - 1, Number(d), 8, 0, 0));
-  const labeled = toPacificDateString(asUtcGuess);
-  if (labeled === `${y}-${m}-${d}`) return asUtcGuess;
-  // DST spring-forward / fall-back: try 7 and 9 UTC offsets.
+  const ymd = `${y}-${m}-${d}`;
+  // Prefer the UTC hour whose Pacific wall time is exactly midnight.
+  // Do NOT accept the first same-calendar-day hit: during PDT, 08:00Z is
+  // 01:00 Pacific (still the same date) and would shift the day window by 1h.
   for (const hour of [7, 8, 9]) {
     const candidate = new Date(Date.UTC(Number(y), Number(m) - 1, Number(d), hour, 0, 0));
-    if (toPacificDateString(candidate) === `${y}-${m}-${d}`) return candidate;
+    if (toPacificDateTimeLocal(candidate) === `${ymd}T00:00`) return candidate;
   }
-  void probe;
-  void pacificNoon;
-  return asUtcGuess;
+  // Rare DST edge: accept any instant still labeled as that Pacific day.
+  for (const hour of [7, 8, 9]) {
+    const candidate = new Date(Date.UTC(Number(y), Number(m) - 1, Number(d), hour, 0, 0));
+    if (toPacificDateString(candidate) === ymd) return candidate;
+  }
+  return new Date(Date.UTC(Number(y), Number(m) - 1, Number(d), 8, 0, 0));
 }
 
 /**
- * Parse datetime-local (YYYY-MM-DDTHH:mm) as Pacific wall time → UTC Date.
+ * Parse datetime-local (YYYY-MM-DDTHH:mm) as Pacific wall time -> UTC Date.
  */
 export function parsePacificDateTime(value) {
   if (!value) return null;
