@@ -84,14 +84,3 @@ export function getKittenFallbackImageUrl(kitten) {
   return GENERIC_FALLBACK;
 }
 
-export function formatKittenAge(dateOfBirth) {
-  if (!dateOfBirth) return null;
-  const dob = new Date(dateOfBirth);
-  const now = new Date();
-  const months = (now.getFullYear() - dob.getFullYear()) * 12 + (now.getMonth() - dob.getMonth());
-  if (months < 1) return 'Under 1 month';
-  if (months === 1) return '1 month old';
-  if (months < 12) return `${months} months old`;
-  const years = Math.floor(months / 12);
-  return years === 1 ? '1 year old' : `${years} years old`;
-}

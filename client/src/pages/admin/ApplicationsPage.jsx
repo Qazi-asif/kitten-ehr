@@ -13,6 +13,7 @@ import {
   getApplicationSummary,
   resolveKittenOfInterest,
 } from '../../utils/applicationFormData';
+import { formatPacificDisplay } from '../../utils/pacificDate';
 
 const STATUS_OPTIONS = ['New', 'Under Review', 'Approved', 'Denied'];
 
@@ -48,7 +49,7 @@ function ApplicationTable({ title, applications, selectedId, onView, onDelete })
                   {resolveKittenOfInterest(app.formData, app.kittenOfInterest) || 'Unspecified'}
                 </td>
                 <td className="px-4 py-3 text-sm text-gray-700">{app.status}</td>
-                <td className="px-4 py-3 text-sm text-gray-500">{new Date(app.createdAt).toLocaleDateString()}</td>
+                <td className="px-4 py-3 text-sm text-gray-500">{formatPacificDisplay(app.createdAt)}</td>
                 <td className="px-4 py-3 text-sm">
                   <div className="flex flex-wrap items-center gap-3">
                     <button

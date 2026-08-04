@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import CreateLitterModal from './CreateLitterModal';
+import { formatPacificDisplay } from '../../utils/pacificDate';
 
 function LitterGroupsPanel({ litters, kittens, litterFilter, onLittersChange, onFilterChange }) {
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -62,7 +63,7 @@ function LitterGroupsPanel({ litters, kittens, litterFilter, onLittersChange, on
                   <div>
                     <p className="font-medium text-slate-900">{litter.name}</p>
                     <p className="text-xs text-slate-500">
-                      Intake {new Date(litter.intakeDate).toLocaleDateString()} · {count} kitten(s)
+                      Intake {formatPacificDisplay(litter.intakeDate)} · {count} kitten(s)
                     </p>
                   </div>
                   <button

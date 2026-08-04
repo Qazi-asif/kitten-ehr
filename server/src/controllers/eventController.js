@@ -258,6 +258,7 @@ export async function createEvent(req, res, next) {
       status,
       slug,
       kittenIds,
+      showInReminders,
     } = req.body;
 
     if (!title || !date) {
@@ -279,6 +280,7 @@ export async function createEvent(req, res, next) {
         publishTargets: normalizedTargets,
         isPublic: targetsIncludeWebsite(normalizedTargets),
         status: status ?? (targetsIncludeWebsite(normalizedTargets) ? 'PUBLISHED' : 'DRAFT'),
+        showInReminders: Boolean(showInReminders),
       },
     });
 
@@ -308,6 +310,7 @@ export async function updateEvent(req, res, next) {
       status,
       slug,
       kittenIds,
+      showInReminders,
     } = req.body;
 
     const data = {
@@ -317,6 +320,7 @@ export async function updateEvent(req, res, next) {
       ...(location !== undefined && { location }),
       ...(description !== undefined && { description }),
       ...(status !== undefined && { status }),
+      ...(showInReminders !== undefined && { showInReminders: Boolean(showInReminders) }),
     };
 
     if (slug !== undefined) {

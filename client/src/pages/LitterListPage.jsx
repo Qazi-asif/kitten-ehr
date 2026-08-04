@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 import { Plus } from 'lucide-react';
 import CreateLitterModal from '../components/admin/CreateLitterModal';
 import { activateLitter, deactivateLitter, fetchLitters } from '../services/api';
+import { formatPacificDisplay } from '../utils/pacificDate';
 
 function formatDate(value) {
-  if (!value) return '—';
-  return new Date(value).toLocaleDateString();
+  return formatPacificDisplay(value) || '—';
 }
 
 function LitterListPage() {

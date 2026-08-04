@@ -400,7 +400,8 @@ exports.Prisma.EventScalarFieldEnum = {
   isPublic: 'isPublic',
   status: 'status',
   internalNotes: 'internalNotes',
-  publishTargets: 'publishTargets'
+  publishTargets: 'publishTargets',
+  showInReminders: 'showInReminders'
 };
 
 exports.Prisma.EventRSVPScalarFieldEnum = {

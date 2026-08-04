@@ -19,7 +19,6 @@ function LoginPage() {
     '/admin/content',
     '/admin/social',
     '/admin/sponsorships',
-    '/admin/reports',
   ]);
   const requestedFrom = location.state?.from;
   const redirectTo =

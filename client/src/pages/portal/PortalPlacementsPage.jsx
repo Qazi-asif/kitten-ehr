@@ -3,10 +3,10 @@ import { PawPrint } from 'lucide-react';
 import PortalNav from '../../components/portal/PortalNav';
 import { fetchMyPlacements } from '../../services/portalDataApi';
 import { getKittenImageUrl } from '../../utils/kittenImages';
+import { formatPacificDisplay } from '../../utils/pacificDate';
 
 function formatDate(value) {
-  if (!value) return '—';
-  return new Date(value).toLocaleDateString();
+  return formatPacificDisplay(value) || '—';
 }
 
 function PlacementCard({ placement }) {

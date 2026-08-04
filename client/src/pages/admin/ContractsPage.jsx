@@ -26,6 +26,7 @@ import {
 import { resolveContractKittenName } from '../../utils/contractAudit';
 import { getDefaultContractText } from '../../utils/contractText';
 import { CONTRACT_TEMPLATES, getContractTemplateLabel } from '../../constants/contractTemplates';
+import { formatPacificDisplay } from '../../utils/pacificDate';
 import {
   getApplicationSummary,
   parseApplicationFormData,
@@ -660,7 +661,7 @@ function ContractsPage() {
                       </p>
                       <p className="text-xs text-amber-700">
                         Application #{application.id} · Approved{' '}
-                        {new Date(application.statusUpdatedAt || application.createdAt).toLocaleDateString()}
+                        {formatPacificDisplay(application.statusUpdatedAt || application.createdAt)}
                       </p>
                     </div>
                     <button
@@ -1027,10 +1028,10 @@ function ContractsPage() {
                         </span>
                       </td>
                       <td className="px-4 py-3 text-sm text-gray-500">
-                        {new Date(contract.createdAt).toLocaleDateString()}
+                        {formatPacificDisplay(contract.createdAt)}
                       </td>
                       <td className="px-4 py-3 text-sm text-gray-500">
-                        {contract.signedAt ? new Date(contract.signedAt).toLocaleDateString() : '—'}
+                        {contract.signedAt ? formatPacificDisplay(contract.signedAt) : '—'}
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex flex-wrap items-center gap-2 text-sm">

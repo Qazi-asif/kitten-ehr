@@ -1,4 +1,5 @@
 import { evaluateKittenFlags } from './medicalAutomation.js';
+import { formatPacificDisplay } from '../utils/pacificDate.js';
 
 const ACTIVE_KITTEN_STATUSES = ['In Foster Care', 'Available for Adoption', 'Medical Hold'];
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
@@ -148,13 +149,11 @@ export async function buildDashboardInsights(prisma) {
   }
 
   if (nextEvent) {
+    // Format in Pacific explicitly — the server process's own timezone must
+    // never leak into a date the org displays to Pacific-based staff.
     alerts.push({
       severity: 'info',
-      text: `${nextEvent.title} scheduled ${nextEvent.date.toLocaleDateString(undefined, {
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric',
-      })}`,
+      text: `${nextEvent.title} scheduled ${formatPacificDisplay(nextEvent.date)}`,
     });
   }
 

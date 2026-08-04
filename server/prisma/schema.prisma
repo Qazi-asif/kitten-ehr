@@ -497,6 +497,10 @@ model Event {
   status         String      @default("DRAFT")
   internalNotes  String?
   publishTargets String[]    @default([])
+  // When true (and the event is tagged to kitten(s) via EventCats, and its
+  // date falls within the dashboard's rolling 7-day Pacific window), the
+  // event surfaces as a clickable reminder on the admin Dashboard.
+  showInReminders Boolean    @default(false)
   eventCats      EventCats[]
   rsvps          EventRSVP[]
 

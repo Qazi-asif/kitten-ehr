@@ -41,6 +41,7 @@ import dashboardRoutes from './routes/dashboardRoutes.js';
 import staffChatRoutes from './routes/staffChatRoutes.js';
 import portalAuthRoutes from './routes/portalAuthRoutes.js';
 import portalRoutes from './routes/portalRoutes.js';
+import reportsRoutes from './routes/reportsRoutes.js';
 import { requireAuth, requirePortalAuth } from './middleware/authMiddleware.js';
 import { getUploadRoot } from './utils/fileStorage.js';
 import { createOriginValidator } from './utils/corsOrigins.js';
@@ -318,6 +319,7 @@ app.use('/api/social-posts', requireAuth, socialPostRoutes);
 app.use('/api/wishlists', requireAuth, wishlistRoutes);
 app.use('/api/events', requireAuth, eventRoutes);
 app.use('/api/transactions', requireAuth, financeRoutes);
+app.use('/api/reports', requireAuth, reportsRoutes);
 app.use('/api/email-templates', emailTemplateRoutes);
 app.use('/api', requireAuth, aiRoutes);
 

@@ -9,6 +9,7 @@ import { sponsorshipOverflowDisclosure } from '../constants/donationCopy.js';
 import { getApplicantEmail, getApplicantName } from '../utils/applicationFormData.js';
 import { wrapEmailContent } from '../utils/emailLayout.js';
 import { escapeHtml } from '../utils/htmlEscape.js';
+import { formatPacificDisplay } from '../utils/pacificDate.js';
 
 const SETTINGS_ID = 1;
 let cachedTransporter = null;
@@ -468,7 +469,7 @@ export async function sendDonationReceivedEmails({ transaction, donorName, donor
     donorName: donorName || 'Supporter',
     donorEmail: donorEmail || '',
     amount: Number(transaction.amount).toFixed(2),
-    donationDate: new Date(transaction.date).toLocaleDateString(),
+    donationDate: formatPacificDisplay(transaction.date),
     orgName: settings.orgName || 'Pawsitive Transformations',
   };
 
@@ -502,7 +503,7 @@ export async function sendSponsorshipReceivedEmails({
     donorName: donorName || 'Supporter',
     donorEmail: donorEmail || '',
     amount: Number(transaction.amount).toFixed(2),
-    donationDate: new Date(transaction.date).toLocaleDateString(),
+    donationDate: formatPacificDisplay(transaction.date),
     orgName: settings.orgName || 'Pawsitive Transformations',
     kittenName: kittenName || 'your sponsored kitten',
     tier: tier || 'Custom',

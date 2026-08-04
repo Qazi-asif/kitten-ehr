@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Download, Eye, Trash2 } from 'lucide-react';
 import { downloadKittenDocumentFile, getFileUrl, openKittenDocumentFile } from '../services/api';
+import { formatPacificDisplay } from '../utils/pacificDate';
 
 // Anonymous /uploads is limited to kitten *image* files only (see server/src/app.js) -
 // PDFs and other non-image docs 401 unless fetched through the authenticated
@@ -81,7 +82,7 @@ function DocumentsList({ kittenId, documents, onDelete }) {
                   <td className="px-4 py-3 text-sm text-gray-600">{doc.docType || '—'}</td>
                   <td className="px-4 py-3 text-sm text-gray-600">{doc.description || '—'}</td>
                   <td className="px-4 py-3 text-sm text-gray-500">
-                    {new Date(doc.uploadedAt).toLocaleDateString()}
+                    {formatPacificDisplay(doc.uploadedAt)}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center justify-end gap-2">

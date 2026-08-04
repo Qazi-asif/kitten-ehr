@@ -7,7 +7,12 @@ import {
 import { sendApplicationReceivedEmails, sendApplicationStatusChangedEmail } from '../services/emailService.js';
 import { APPLICATION_REVIEW_STATUSES } from '../constants/emailTemplates.js';
 import { validateUploadedFile } from '../utils/fileValidation.js';
-import { persistApplicationFile, isStoredFileUrl, resolveStoredFileAbsolutePath } from '../utils/fileStorage.js';
+import {
+  persistApplicationFile,
+  isStoredFileUrl,
+  resolveStoredFileAbsolutePath,
+  streamRemoteFile,
+} from '../utils/fileStorage.js';
 import { parseApplicationFormData } from '../utils/applicationFormData.js';
 import { translateExperienceLevel, translateCapabilityFlags, translateMaxKittens } from '../utils/fosterApplicationMapping.js';
 
@@ -133,6 +138,11 @@ export async function createApplication(req, res, next) {
       return res.status(400).json({ error: `Maximum ${MAX_APPLICATION_PHOTOS} photos allowed.` });
     }
 
+    // CR-93: Foster applications require 1–3 home photos (was previously optional).
+    if (type === 'Foster' && photoFiles.length < 1) {
+      return res.status(400).json({ error: 'Please attach 1–3 photos of your home/foster space to submit a Foster application.' });
+    }
+
     const kitten = kittenId
       ? await prisma.kitten.findUnique({ where: { id: kittenId }, select: { status: true } })
       : null;
@@ -152,9 +162,17 @@ export async function createApplication(req, res, next) {
       try {
         uploads = await saveApplicationUploads(application.id, photoFiles);
       } catch (uploadError) {
-        // Keep the application even if photos fail — foster inquiries should
-        // not be lost because of a HEIC/MIME/storage issue.
         console.error('Application photo upload failed:', uploadError.message);
+        // CR-93: Foster photos are required (1–3), so a Foster application
+        // that ends up with zero saved photos isn't valid — roll it back
+        // and surface a real 400 rather than silently accepting an
+        // incomplete submission the way Adoption's optional photos do.
+        if (type === 'Foster') {
+          await prisma.application.delete({ where: { id: application.id } }).catch(() => {});
+          return res.status(400).json({
+            error: uploadError.message || 'Photos could not be saved. Please try again.',
+          });
+        }
         uploadWarning = uploadError.message || 'Photos could not be saved. Your application was still submitted.';
       }
     }
@@ -352,8 +370,11 @@ export async function streamApplicationUploadFile(req, res, next) {
     }
 
     if (/^https?:\/\//i.test(fileUrl)) {
-      res.setHeader('Cache-Control', 'private, no-store');
-      return res.redirect(302, fileUrl);
+      try {
+        return await streamRemoteFile(res, fileUrl, { contentType, disposition });
+      } catch (streamError) {
+        return res.status(streamError.status || 502).json({ error: 'File could not be retrieved from storage' });
+      }
     }
 
     return res.status(404).json({ error: 'File not found' });

@@ -1,5 +1,6 @@
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
+  BarChart3,
   BookOpen,
   Calendar,
   Cat,
@@ -33,6 +34,7 @@ const navItems = [
   { label: 'Protocols', icon: FlaskConical, path: '/admin/protocols', permission: 'medical.view' },
   { label: 'Education Hub', icon: BookOpen, path: '/admin/content', permission: 'content.view' },
   { label: 'Finance', icon: DollarSign, path: '/admin/finance', permission: 'donations.view' },
+  { label: 'Reports', icon: BarChart3, path: '/admin/reports', permission: 'reports.view' },
   { label: 'Emails', icon: Mail, path: '/admin/emails', permission: 'emails.view' },
   { label: 'Settings', icon: Settings, path: '/admin/settings' },
 ];
@@ -53,6 +55,7 @@ const pageMeta = [
   { match: (p) => p.startsWith('/admin/protocols'), title: 'Protocol Library', subtitle: 'Create and manage reusable medical treatment protocols.' },
   { match: (p) => p.startsWith('/admin/content'), title: 'Education Hub', subtitle: 'Manage educational articles for the public Education Hub.' },
   { match: (p) => p.startsWith('/admin/finance') || p.startsWith('/admin/donations'), title: 'Finance', subtitle: 'Track income, expenses, and monthly rescue balance.' },
+  { match: (p) => p.startsWith('/admin/reports'), title: 'Reports', subtitle: 'Audit-oriented summary counts and exportable data.' },
   { match: (p) => p.startsWith('/admin/emails'), title: 'Emails', subtitle: 'Automatic email templates, delivery settings, and send log.' },
   { match: (p) => p.startsWith('/admin/settings'), title: 'Settings', subtitle: 'Organization settings, user accounts, roles, and permissions.' },
 ];

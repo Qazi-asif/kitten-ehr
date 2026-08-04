@@ -28,6 +28,7 @@ const ContractsPage = lazy(() => import('./pages/admin/ContractsPage'));
 const DashboardPage = lazy(() => import('./pages/admin/DashboardPage'));
 const FinancePage = lazy(() => import('./pages/admin/FinancePage'));
 const OnboardingPage = lazy(() => import('./pages/admin/OnboardingPage'));
+const ReportsPage = lazy(() => import('./pages/admin/ReportsPage'));
 const ProtocolLibrary = lazy(() => import('./pages/admin/ProtocolLibrary'));
 const MarketingPage = lazy(() => import('./pages/admin/MarketingPage'));
 const SettingsPage = lazy(() => import('./pages/admin/SettingsPage'));
@@ -145,6 +146,9 @@ function App() {
                 </Route>
                 <Route element={<ProtectedRoute permission="emails.view" />}>
                   <Route path="emails" element={<EmailTemplatesPage />} />
+                </Route>
+                <Route element={<ProtectedRoute permission="reports.view" />}>
+                  <Route path="reports" element={<ReportsPage />} />
                 </Route>
                 <Route path="*" element={<Navigate to="/admin" replace />} />
               </Route>

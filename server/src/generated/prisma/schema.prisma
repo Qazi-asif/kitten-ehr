@@ -485,20 +485,24 @@ model ContentCompletion {
 }
 
 model Event {
-  id             Int         @id @default(autoincrement())
-  title          String
-  slug           String      @unique
-  date           DateTime
-  endDate        DateTime?
-  location       String      @default("")
-  description    String      @default("")
-  imageUrl       String?
-  isPublic       Boolean     @default(false)
-  status         String      @default("DRAFT")
-  internalNotes  String?
-  publishTargets String[]    @default([])
-  eventCats      EventCats[]
-  rsvps          EventRSVP[]
+  id              Int         @id @default(autoincrement())
+  title           String
+  slug            String      @unique
+  date            DateTime
+  endDate         DateTime?
+  location        String      @default("")
+  description     String      @default("")
+  imageUrl        String?
+  isPublic        Boolean     @default(false)
+  status          String      @default("DRAFT")
+  internalNotes   String?
+  publishTargets  String[]    @default([])
+  // When true (and the event is tagged to kitten(s) via EventCats, and its
+  // date falls within the dashboard's rolling 7-day Pacific window), the
+  // event surfaces as a clickable reminder on the admin Dashboard.
+  showInReminders Boolean     @default(false)
+  eventCats       EventCats[]
+  rsvps           EventRSVP[]
 
   @@index([isPublic, status, date])
 }

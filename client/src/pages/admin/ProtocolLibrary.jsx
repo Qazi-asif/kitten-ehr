@@ -7,6 +7,7 @@ import {
   fetchProtocols,
   updateProtocol,
 } from '../../services/protocolApi';
+import { formatPacificDisplay } from '../../utils/pacificDate';
 
 const CADENCE_OPTIONS = [
   { value: 'DAILY', label: 'Daily' },
@@ -46,8 +47,7 @@ const emptyForm = {
 };
 
 function formatDate(value) {
-  if (!value) return '—';
-  return new Date(value).toLocaleDateString();
+  return formatPacificDisplay(value) || '—';
 }
 
 function ProtocolLibrary() {

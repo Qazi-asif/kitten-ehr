@@ -16,20 +16,22 @@ import {
   markProtocolDoseGiven,
   updateKittenActiveProtocol,
 } from '../../services/protocolApi';
-import { pacificToday, toPacificDateString } from '../../utils/pacificDate';
+import { formatPacificDisplay, pacificToday, toPacificDateString } from '../../utils/pacificDate';
 
 function formatDate(value) {
-  if (!value) return '—';
-  return new Date(value).toLocaleDateString();
+  return formatPacificDisplay(value) || '—';
 }
 
 function formatDoseDate(value) {
   if (!value) return '—';
-  return new Date(value).toLocaleDateString(undefined, {
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) return '—';
+  return new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/Los_Angeles',
     weekday: 'short',
     month: 'short',
     day: 'numeric',
-  });
+  }).format(date);
 }
 
 function KittenHealthTab({

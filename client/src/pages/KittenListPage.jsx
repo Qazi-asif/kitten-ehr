@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Plus, Search, X } from 'lucide-react';
+import { Bell, ChevronLeft, ChevronRight, Plus, Search, X } from 'lucide-react';
 import StatusBadge from '../components/admin/StatusBadge';
 import KittenForm from '../components/KittenForm';
 import LitterGroupsPanel from '../components/admin/LitterGroupsPanel';
@@ -48,10 +48,36 @@ function KittensPage() {
   const [total, setTotal] = useState(0);
   const showAddForm = searchParams.get('add') === '1';
 
+  // CR-86: dashboard reminders link here as /admin/kittens?ids=1,2,3&label=...
+  // — when present, this overrides every other filter and shows exactly
+  // those cats, regardless of status.
+  const idsParam = searchParams.get('ids');
+  const reminderLabel = searchParams.get('label') || '';
+  const reminderIds = useMemo(() => {
+    if (!idsParam) return null;
+    return [...new Set(
+      idsParam.split(',').map((value) => Number.parseInt(value.trim(), 10)).filter((value) => Number.isInteger(value) && value > 0),
+    )];
+  }, [idsParam]);
+
   const loadKittens = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
+      if (reminderIds) {
+        if (reminderIds.length === 0) {
+          setKittens([]);
+          setTotal(0);
+          setTotalPages(1);
+          return;
+        }
+        const data = await fetchKittens({ ids: reminderIds, sort: 'name_asc', limit: reminderIds.length });
+        setKittens(data.items ?? []);
+        setTotal(data.total ?? reminderIds.length);
+        setTotalPages(1);
+        return;
+      }
+
       if (listTab !== 'recent' && selectedStatuses.length === 0) {
         setKittens([]);
         setTotal(0);
@@ -77,7 +103,13 @@ function KittensPage() {
     } finally {
       setLoading(false);
     }
-  }, [page, pageSize, listTab, search, selectedStatuses, fosterFilter, litterFilter, sort]);
+  }, [reminderIds, page, pageSize, listTab, search, selectedStatuses, fosterFilter, litterFilter, sort]);
+
+  function clearReminderFilter() {
+    searchParams.delete('ids');
+    searchParams.delete('label');
+    setSearchParams(searchParams);
+  }
 
   useEffect(() => {
     loadKittens();
@@ -171,6 +203,26 @@ function KittensPage() {
           Add Cat
         </button>
       </div>
+
+      {reminderIds && (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-brand/20 bg-brand-light px-4 py-3">
+          <div className="flex items-center gap-2 text-sm text-brand">
+            <Bell className="h-4 w-4 shrink-0" />
+            <span>
+              Showing {reminderIds.length} cat{reminderIds.length === 1 ? '' : 's'} from reminder
+              {reminderLabel ? <>: <strong className="font-semibold">{reminderLabel}</strong></> : null}
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={clearReminderFilter}
+            className="inline-flex items-center gap-1 rounded-lg border border-brand/30 px-3 py-1.5 text-xs font-semibold text-brand hover:bg-white"
+          >
+            <X className="h-3.5 w-3.5" />
+            Clear filter
+          </button>
+        </div>
+      )}
 
       {showAddForm && (
         <div className="relative">

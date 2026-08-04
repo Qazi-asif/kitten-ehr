@@ -6,7 +6,13 @@ import {
   photoDocumentOrderBy,
   photoDocumentSelect,
 } from '../utils/photoDocuments.js';
-import { deleteStoredFile, persistKittenFile, isStoredFileUrl, resolveStoredFileAbsolutePath } from '../utils/fileStorage.js';
+import {
+  deleteStoredFile,
+  persistKittenFile,
+  isStoredFileUrl,
+  resolveStoredFileAbsolutePath,
+  streamRemoteFile,
+} from '../utils/fileStorage.js';
 import { generateThumbnailFromBuffer, generateThumbnailFromUrl } from '../utils/thumbnail.js';
 import { invalidateCacheByPrefix } from '../utils/responseCache.js';
 
@@ -93,8 +99,23 @@ export async function streamDocumentFile(req, res, next) {
     }
 
     if (/^https?:\/\//i.test(fileUrl)) {
-      res.setHeader('Cache-Control', 'private, no-store');
-      return res.redirect(302, fileUrl);
+      const ext = fileUrl.split('.').pop()?.toLowerCase();
+      const mimeByExt = {
+        jpg: 'image/jpeg',
+        jpeg: 'image/jpeg',
+        png: 'image/png',
+        webp: 'image/webp',
+        gif: 'image/gif',
+        pdf: 'application/pdf',
+      };
+      try {
+        return await streamRemoteFile(res, fileUrl, {
+          contentType: mimeByExt[ext],
+          disposition,
+        });
+      } catch (streamError) {
+        return res.status(streamError.status || 502).json({ error: 'File could not be retrieved from storage' });
+      }
     }
 
     return res.status(404).json({ error: 'File not found' });

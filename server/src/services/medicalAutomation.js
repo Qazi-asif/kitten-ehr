@@ -1,6 +1,17 @@
-const MS_PER_WEEK = 7 * 24 * 60 * 60 * 1000;
-const SPAY_NEUTER_WEIGHT_GRAMS = 908;
+import { toPacificDateString } from '../utils/pacificDate.js';
 
+const MS_PER_WEEK = 7 * 24 * 60 * 60 * 1000;
+// CR-88: spay/neuter eligibility at/above 907g.
+const SPAY_NEUTER_WEIGHT_GRAMS = 907;
+
+// Anchors every calendar date to UTC midnight of its *Pacific* calendar day,
+// independent of the server process's own OS/system timezone. Using local
+// getters here (getFullYear/getMonth/getDate) previously bound the result to
+// whatever timezone the Node process happened to run under — on a host
+// configured for Pacific, that silently rolled Pacific-midnight-anchored
+// UTC instants back onto the previous calendar day. Raw `YYYY-MM-DD` strings
+// (no time/zone info) are parsed as a literal calendar date, never round-tripped
+// through a timezone conversion.
 function parseCalendarDate(value) {
   if (!value) return null;
   if (typeof value === 'string') {
@@ -9,12 +20,15 @@ function parseCalendarDate(value) {
       const year = Number(match[1]);
       const month = Number(match[2]) - 1;
       const day = Number(match[3]);
-      return new Date(year, month, day);
+      return new Date(Date.UTC(year, month, day));
     }
   }
   const date = value instanceof Date ? value : new Date(value);
   if (Number.isNaN(date.getTime())) return null;
-  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const ymd = toPacificDateString(date);
+  if (!ymd) return null;
+  const [y, m, d] = ymd.split('-').map(Number);
+  return new Date(Date.UTC(y, m - 1, d));
 }
 
 function getAgeInWeeks(dateOfBirth, asOf = new Date()) {
@@ -72,7 +86,7 @@ export function evaluateKittenFlags(kitten, vaccines = [], weightLogs = []) {
 
   if (
     latestWeightGrams != null
-    && latestWeightGrams > SPAY_NEUTER_WEIGHT_GRAMS
+    && latestWeightGrams >= SPAY_NEUTER_WEIGHT_GRAMS
     && kitten?.fixedStatus !== 'Spayed/Neutered'
   ) {
     flags.push({ type: 'SPAY_NEUTER', label: 'Spay/Neuter Eligible' });

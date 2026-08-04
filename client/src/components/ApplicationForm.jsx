@@ -206,6 +206,12 @@ function ApplicationForm({
       setSubmitting(false);
       return;
     }
+    // CR-93: Foster applications require 1–3 home photos.
+    if (applicationType === 'Foster' && allowPhotoUpload && photoFiles.length < 1) {
+      setError(`Please attach at least 1 photo of your home/foster space (up to ${maxPhotos}) to submit.`);
+      setSubmitting(false);
+      return;
+    }
     try {
       const payload = {
         fullName: form.fullName,
@@ -564,10 +570,10 @@ function ApplicationForm({
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-sm font-semibold text-slate-900">
-                    Home photos <span className="font-medium text-slate-500">(optional, up to {maxPhotos})</span>
+                    Home photos <span className="font-medium text-red-600">(required, 1–{maxPhotos})</span>
                   </p>
                   <p className="mt-1 text-sm text-slate-600">
-                    JPG, PNG, or HEIC — foster space, supplies, or a safe room. You can submit without photos.
+                    JPG, PNG, or HEIC — foster space, supplies, or a safe room. Please attach at least 1 photo (up to {maxPhotos}) to submit.
                   </p>
                 </div>
                 <label className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-brand-dark sm:w-auto">
@@ -615,8 +621,9 @@ function ApplicationForm({
                 })}
               </div>
 
-              <p className="mt-3 text-xs font-medium text-slate-500">
+              <p className={`mt-3 text-xs font-medium ${photoFiles.length === 0 ? 'text-red-600' : 'text-slate-500'}`}>
                 {photoFiles.length}/{maxPhotos} photos selected
+                {photoFiles.length === 0 ? ' — at least 1 is required' : ''}
               </p>
             </div>
           </>

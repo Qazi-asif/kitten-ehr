@@ -2,6 +2,8 @@ import fs from 'fs/promises';
 import path from 'path';
 import { randomUUID } from 'crypto';
 import { fileURLToPath } from 'url';
+import { pipeline } from 'stream/promises';
+import { Readable } from 'stream';
 import {
   deleteFromObjectStorage,
   isObjectStorageConfigured,
@@ -132,6 +134,30 @@ export async function deleteStoredFile(fileUrl) {
   if (isObjectStorageUrl(fileUrl)) {
     await deleteFromObjectStorage(fileUrl);
   }
+}
+
+// CR-94: staff viewing an S3/R2-backed upload previously hit
+// `res.redirect(302, fileUrl)` — the browser's own authenticated `fetch()`
+// then had to follow a cross-origin redirect itself, which the app's CSP
+// `connect-src` (and often the bucket's CORS policy) blocks outright,
+// surfacing as a bare "Failed to fetch". Fetching the bytes server-side and
+// streaming them back through the same authenticated, same-origin response
+// keeps every storage backend (disk, base64, S3/R2) working identically.
+export async function streamRemoteFile(res, fileUrl, { contentType, disposition } = {}) {
+  const upstream = await fetch(fileUrl);
+  if (!upstream.ok || !upstream.body) {
+    const err = new Error('File not found');
+    err.status = 404;
+    throw err;
+  }
+
+  res.setHeader('Content-Type', contentType || upstream.headers.get('content-type') || 'application/octet-stream');
+  if (disposition) res.setHeader('Content-Disposition', disposition);
+  res.setHeader('Cache-Control', 'private, no-store');
+  const contentLength = upstream.headers.get('content-length');
+  if (contentLength) res.setHeader('Content-Length', contentLength);
+
+  await pipeline(Readable.fromWeb(upstream.body), res);
 }
 
 export function shouldUseDiskStorage() {

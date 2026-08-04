@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { fetchLitterById } from '../services/api';
+import { formatPacificDisplay } from '../utils/pacificDate';
 
 const statusBadgeClass = {
   'In Foster Care': 'bg-emerald-100 text-emerald-800',
@@ -16,8 +17,7 @@ function StatusBadge({ status }) {
 }
 
 function formatDate(value) {
-  if (!value) return '—';
-  return new Date(value).toLocaleDateString();
+  return formatPacificDisplay(value) || '—';
 }
 
 function LitterDetailPage() {

@@ -1,7 +1,20 @@
 /**
- * Age helpers that avoid UTC date-only parsing bugs.
- * `YYYY-MM-DD` must be treated as a calendar date, not UTC midnight.
+ * Single shared age helper — used EVERYWHERE a kitten's age is computed or
+ * displayed (public profile, PublicKittenCard, admin list, admin detail).
+ * Backend `dateOfBirth` is the source of truth; every caller must route
+ * through this file rather than computing age locally (CR-92).
+ *
+ * Display rule (CR-92):
+ *  - Under 3 months old: WEEKS only (e.g. "6 weeks") — never months.
+ *  - 3+ months old: months (and years when appropriate).
+ *
+ * Dates are anchored to the *Pacific* calendar day, not the viewer's
+ * browser/OS timezone, so "today" and DOB comparisons stay correct
+ * regardless of where staff are physically located.
  */
+import { toPacificDateString } from './pacificDate';
+
+const MONTHS_WEEKS_CUTOFF = 3;
 
 function parseCalendarDate(value) {
   if (!value) return null;
@@ -12,12 +25,12 @@ function parseCalendarDate(value) {
       const year = Number(match[1]);
       const month = Number(match[2]) - 1;
       const day = Number(match[3]);
-      const date = new Date(year, month, day);
+      const date = new Date(Date.UTC(year, month, day));
       if (
         Number.isNaN(date.getTime())
-        || date.getFullYear() !== year
-        || date.getMonth() !== month
-        || date.getDate() !== day
+        || date.getUTCFullYear() !== year
+        || date.getUTCMonth() !== month
+        || date.getUTCDate() !== day
       ) {
         return null;
       }
@@ -27,12 +40,16 @@ function parseCalendarDate(value) {
 
   const date = value instanceof Date ? value : new Date(value);
   if (Number.isNaN(date.getTime())) return null;
-  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const ymd = toPacificDateString(date);
+  if (!ymd) return null;
+  const [y, m, d] = ymd.split('-').map(Number);
+  return new Date(Date.UTC(y, m - 1, d));
 }
 
 function todayCalendar() {
-  const now = new Date();
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const ymd = toPacificDateString(new Date());
+  const [y, m, d] = ymd.split('-').map(Number);
+  return new Date(Date.UTC(y, m - 1, d));
 }
 
 /** Whole calendar months between DOB and today (day-aware). */
@@ -42,8 +59,8 @@ export function getKittenAgeMonths(dateOfBirth) {
   const today = todayCalendar();
   if (dob > today) return null;
 
-  let months = (today.getFullYear() - dob.getFullYear()) * 12 + (today.getMonth() - dob.getMonth());
-  if (today.getDate() < dob.getDate()) months -= 1;
+  let months = (today.getUTCFullYear() - dob.getUTCFullYear()) * 12 + (today.getUTCMonth() - dob.getUTCMonth());
+  if (today.getUTCDate() < dob.getUTCDate()) months -= 1;
   return Math.max(0, months);
 }
 
@@ -65,8 +82,11 @@ export function formatKittenAgeShort(dateOfBirth) {
   const months = getKittenAgeMonths(dateOfBirth);
   if (months == null) return '—';
 
+  if (months < MONTHS_WEEKS_CUTOFF) {
+    return weeks === 1 ? '1 wk' : `${weeks} wks`;
+  }
+
   if (months < 12) {
-    if (months < 1) return weeks === 1 ? '1 wk' : `${weeks} wks`;
     return months === 1 ? '1 mo' : `${months} mos`;
   }
 
@@ -85,16 +105,14 @@ export function formatKittenAgeDetailed(dateOfBirth) {
   const months = getKittenAgeMonths(dateOfBirth);
   if (months == null) return 'Age Unknown';
 
-  // Under ~2 months: prefer weeks (more useful for neonates).
-  if (months < 2) {
+  if (months < MONTHS_WEEKS_CUTOFF) {
     return `${weeks} week${weeks === 1 ? '' : 's'}`;
   }
 
   if (months < 12) {
     const wholeMonths = months;
     const dob = parseCalendarDate(dateOfBirth);
-    const approx = new Date(dob);
-    approx.setMonth(approx.getMonth() + wholeMonths);
+    const approx = new Date(Date.UTC(dob.getUTCFullYear(), dob.getUTCMonth() + wholeMonths, dob.getUTCDate()));
     const remWeeks = Math.max(
       0,
       Math.floor((todayCalendar().getTime() - approx.getTime()) / (7 * 24 * 60 * 60 * 1000)),

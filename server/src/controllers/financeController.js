@@ -1,35 +1,33 @@
 import prisma from '../lib/prisma.js';
 import { sendDonationReceivedEmails } from '../services/emailService.js';
 import { paginatedResponse, parsePagination, wantsPagination } from '../utils/pagination.js';
+import { parsePacificDateOnly, endOfPacificDayUtc, addPacificDays, toPacificDateString } from '../utils/pacificDate.js';
 
+// Timezone fix: week/month/year boundaries are derived from the Pacific
+// calendar (not the server process's local/UTC clock), so "this month"'s
+// income/expense totals don't shift by a day depending on server TZ.
 function getPeriodStarts(now = new Date()) {
-  const weekStart = new Date(now);
-  weekStart.setDate(now.getDate() - now.getDay());
-  weekStart.setHours(0, 0, 0, 0);
+  const [year, month, day] = toPacificDateString(now).split('-').map(Number);
+  const dayOfWeek = new Date(Date.UTC(year, month - 1, day)).getUTCDay();
+  const todayStart = parsePacificDateOnly(toPacificDateString(now));
 
-  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-  const yearStart = new Date(now.getFullYear(), 0, 1);
+  const weekStart = addPacificDays(todayStart, -dayOfWeek);
+  const monthStart = parsePacificDateOnly(`${year}-${String(month).padStart(2, '0')}-01`);
+  const yearStart = parsePacificDateOnly(`${year}-01-01`);
 
   return { weekStart, monthStart, yearStart };
 }
 
 function parseDateOnly(value, endOfDay = false) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
-
-  const [year, month, day] = value.split('-').map(Number);
-  const date = new Date(year, month - 1, day);
-  if (Number.isNaN(date.getTime())) return null;
-
-  if (endOfDay) date.setHours(23, 59, 59, 999);
-  else date.setHours(0, 0, 0, 0);
-
-  return date;
+  const start = parsePacificDateOnly(value);
+  if (!start) return null;
+  return endOfDay ? endOfPacificDayUtc(start) : start;
 }
 
 function parseTransactionDate(value) {
   if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
-    const [year, month, day] = value.split('-').map(Number);
-    return new Date(year, month - 1, day, 12, 0, 0, 0);
+    return parsePacificDateOnly(value);
   }
 
   const parsed = new Date(value);

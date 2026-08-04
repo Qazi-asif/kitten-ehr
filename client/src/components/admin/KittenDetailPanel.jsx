@@ -50,6 +50,7 @@ import { useAuth } from '../../context/AuthContext';
 import { WISHLIST_OWNER_TYPES } from '../../constants/wishlists';
 import { KITTEN_STATUS_OPTIONS } from '../../constants/kittenStatuses';
 import { formatKittenAgeDetailed } from '../../utils/kittenAge';
+import { formatPacificDisplay } from '../../utils/pacificDate';
 import { resolvePrimaryPhotoUrl } from '../../utils/kittenImages';
 import { pacificToday } from '../../utils/pacificDate';
 
@@ -68,8 +69,7 @@ const FIXED_STATUS_OPTIONS = ['', 'Intact', 'Spayed/Neutered'];
 const SEX_OPTIONS = ['', 'Male', 'Female'];
 
 function formatDate(value) {
-  if (!value) return '—';
-  return new Date(value).toLocaleDateString();
+  return formatPacificDisplay(value) || '—';
 }
 
 function gramsToLbs(grams) {

@@ -6,6 +6,7 @@ import { sendContractAgreementEmail, sendSignedContractPdfEmail } from '../servi
 import { getClientIp } from '../utils/requestIp.js';
 import { generateContractPdf, storeContractPdf } from '../utils/contractPdf.js';
 import { getPublicSiteBase } from '../services/socialMediaService.js';
+import { parsePacificDateOnly, endOfPacificDayUtc } from '../utils/pacificDate.js';
 
 const SIGNING_TOKEN_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
 
@@ -198,8 +199,11 @@ function buildContractWhere(query) {
   const field = dateField === 'signed' ? 'signedAt' : 'createdAt';
   if (dateFrom || dateTo) {
     where[field] = {};
-    if (dateFrom) where[field].gte = new Date(`${dateFrom}T00:00:00.000Z`);
-    if (dateTo) where[field].lte = new Date(`${dateTo}T23:59:59.999Z`);
+    // Timezone fix: dateFrom/dateTo are Pacific calendar days as entered by
+    // staff — anchor them to Pacific midnight/end-of-day, not UTC, so a
+    // search for "8/1" doesn't clip off contracts signed that morning.
+    if (dateFrom) where[field].gte = parsePacificDateOnly(dateFrom);
+    if (dateTo) where[field].lte = endOfPacificDayUtc(parsePacificDateOnly(dateTo));
   }
 
   return where;

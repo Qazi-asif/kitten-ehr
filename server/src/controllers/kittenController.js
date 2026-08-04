@@ -17,6 +17,7 @@ import {
 import { evaluateKittenFlags } from '../services/medicalAutomation.js';
 import { buildDashboardInsights } from '../services/dashboardInsights.js';
 import { getCachedResponse, setCachedResponse, invalidateCacheByPrefix } from '../utils/responseCache.js';
+import { parsePacificDateOnly, toPacificDateString } from '../utils/pacificDate.js';
 
 const DASHBOARD_STATS_TTL_MS = 60 * 1000;
 
@@ -45,14 +46,17 @@ export async function getAllKittens(req, res) {
       || (req.query.status && req.query.status !== 'All')
       || req.query.fosterId
       || req.query.litterId
-      || req.query.sort;
+      || req.query.sort
+      || req.query.ids;
 
     const where = buildKittenListWhere(req.query);
 
     if (!usePagination) {
+      // CR-90: every kitten <select>/dropdown fed by this unpaginated shape
+      // (fetchKittens() with no params) should default to name A–Z.
       const kittens = await prisma.kitten.findMany({
         where,
-        orderBy: buildKittenListOrderBy(req.query, { fallback: [{ id: 'asc' }] }),
+        orderBy: buildKittenListOrderBy(req.query, { fallback: [{ name: 'asc' }, { id: 'asc' }] }),
         select: kittenListSelect,
       });
       const enriched = await enrichKittensWithPhotos(kittens);
@@ -122,6 +126,20 @@ function buildKittenListOrderBy(query, { fallback } = {}) {
 
 function buildKittenListWhere(query) {
   const where = {};
+
+  // CR-86: dashboard reminder links filter the list to an explicit set of
+  // kitten ids (e.g. /admin/kittens?ids=4,9,12) — bypasses status filtering
+  // entirely so terminal-status cats still show if a reminder ever points at one.
+  if (typeof query.ids === 'string' && query.ids.trim()) {
+    const ids = query.ids
+      .split(',')
+      .map((value) => Number.parseInt(value.trim(), 10))
+      .filter((value) => Number.isInteger(value) && value > 0);
+    if (ids.length > 0) {
+      where.id = { in: ids };
+      return where;
+    }
+  }
 
   if (query.status && query.status !== 'All') {
     const statuses = String(query.status)
@@ -552,7 +570,11 @@ export async function getDashboardStats(_req, res, next) {
       return res.json(cached);
     }
 
-    const yearStart = new Date(new Date().getFullYear(), 0, 1);
+    // Timezone fix: derive "this year" from the Pacific calendar year, not
+    // the server process's local/UTC year (avoids an off-by-a-few-hours
+    // boundary error right around New Year's).
+    const pacificYear = toPacificDateString(new Date()).slice(0, 4);
+    const yearStart = parsePacificDateOnly(`${pacificYear}-01-01`);
     const [
       activeKittens,
       availableForAdoption,

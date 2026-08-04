@@ -29894,6 +29894,7 @@ export namespace Prisma {
     isPublic: boolean | null
     status: string | null
     internalNotes: string | null
+    showInReminders: boolean | null
   }
 
   export type EventMaxAggregateOutputType = {
@@ -29908,6 +29909,7 @@ export namespace Prisma {
     isPublic: boolean | null
     status: string | null
     internalNotes: string | null
+    showInReminders: boolean | null
   }
 
   export type EventCountAggregateOutputType = {
@@ -29923,6 +29925,7 @@ export namespace Prisma {
     status: number
     internalNotes: number
     publishTargets: number
+    showInReminders: number
     _all: number
   }
 
@@ -29947,6 +29950,7 @@ export namespace Prisma {
     isPublic?: true
     status?: true
     internalNotes?: true
+    showInReminders?: true
   }
 
   export type EventMaxAggregateInputType = {
@@ -29961,6 +29965,7 @@ export namespace Prisma {
     isPublic?: true
     status?: true
     internalNotes?: true
+    showInReminders?: true
   }
 
   export type EventCountAggregateInputType = {
@@ -29976,6 +29981,7 @@ export namespace Prisma {
     status?: true
     internalNotes?: true
     publishTargets?: true
+    showInReminders?: true
     _all?: true
   }
 
@@ -30078,6 +30084,7 @@ export namespace Prisma {
     status: string
     internalNotes: string | null
     publishTargets: string[]
+    showInReminders: boolean
     _count: EventCountAggregateOutputType | null
     _avg: EventAvgAggregateOutputType | null
     _sum: EventSumAggregateOutputType | null
@@ -30112,6 +30119,7 @@ export namespace Prisma {
     status?: boolean
     internalNotes?: boolean
     publishTargets?: boolean
+    showInReminders?: boolean
     eventCats?: boolean | Event$eventCatsArgs<ExtArgs>
     rsvps?: boolean | Event$rsvpsArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
@@ -30130,6 +30138,7 @@ export namespace Prisma {
     status?: boolean
     internalNotes?: boolean
     publishTargets?: boolean
+    showInReminders?: boolean
   }, ExtArgs["result"]["event"]>
 
   export type EventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -30145,6 +30154,7 @@ export namespace Prisma {
     status?: boolean
     internalNotes?: boolean
     publishTargets?: boolean
+    showInReminders?: boolean
   }, ExtArgs["result"]["event"]>
 
   export type EventSelectScalar = {
@@ -30160,9 +30170,10 @@ export namespace Prisma {
     status?: boolean
     internalNotes?: boolean
     publishTargets?: boolean
+    showInReminders?: boolean
   }
 
-  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "slug" | "date" | "endDate" | "location" | "description" | "imageUrl" | "isPublic" | "status" | "internalNotes" | "publishTargets", ExtArgs["result"]["event"]>
+  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "slug" | "date" | "endDate" | "location" | "description" | "imageUrl" | "isPublic" | "status" | "internalNotes" | "publishTargets" | "showInReminders", ExtArgs["result"]["event"]>
   export type EventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     eventCats?: boolean | Event$eventCatsArgs<ExtArgs>
     rsvps?: boolean | Event$rsvpsArgs<ExtArgs>
@@ -30190,6 +30201,7 @@ export namespace Prisma {
       status: string
       internalNotes: string | null
       publishTargets: string[]
+      showInReminders: boolean
     }, ExtArgs["result"]["event"]>
     composites: {}
   }
@@ -30627,6 +30639,7 @@ export namespace Prisma {
     readonly status: FieldRef<"Event", 'String'>
     readonly internalNotes: FieldRef<"Event", 'String'>
     readonly publishTargets: FieldRef<"Event", 'String[]'>
+    readonly showInReminders: FieldRef<"Event", 'Boolean'>
   }
     
 
@@ -56059,7 +56072,8 @@ export namespace Prisma {
     isPublic: 'isPublic',
     status: 'status',
     internalNotes: 'internalNotes',
-    publishTargets: 'publishTargets'
+    publishTargets: 'publishTargets',
+    showInReminders: 'showInReminders'
   };
 
   export type EventScalarFieldEnum = (typeof EventScalarFieldEnum)[keyof typeof EventScalarFieldEnum]
@@ -58463,6 +58477,7 @@ export namespace Prisma {
     status?: StringFilter<"Event"> | string
     internalNotes?: StringNullableFilter<"Event"> | string | null
     publishTargets?: StringNullableListFilter<"Event">
+    showInReminders?: BoolFilter<"Event"> | boolean
     eventCats?: EventCatsListRelationFilter
     rsvps?: EventRSVPListRelationFilter
   }
@@ -58480,6 +58495,7 @@ export namespace Prisma {
     status?: SortOrder
     internalNotes?: SortOrderInput | SortOrder
     publishTargets?: SortOrder
+    showInReminders?: SortOrder
     eventCats?: EventCatsOrderByRelationAggregateInput
     rsvps?: EventRSVPOrderByRelationAggregateInput
   }
@@ -58500,6 +58516,7 @@ export namespace Prisma {
     status?: StringFilter<"Event"> | string
     internalNotes?: StringNullableFilter<"Event"> | string | null
     publishTargets?: StringNullableListFilter<"Event">
+    showInReminders?: BoolFilter<"Event"> | boolean
     eventCats?: EventCatsListRelationFilter
     rsvps?: EventRSVPListRelationFilter
   }, "id" | "slug">
@@ -58517,6 +58534,7 @@ export namespace Prisma {
     status?: SortOrder
     internalNotes?: SortOrderInput | SortOrder
     publishTargets?: SortOrder
+    showInReminders?: SortOrder
     _count?: EventCountOrderByAggregateInput
     _avg?: EventAvgOrderByAggregateInput
     _max?: EventMaxOrderByAggregateInput
@@ -58540,6 +58558,7 @@ export namespace Prisma {
     status?: StringWithAggregatesFilter<"Event"> | string
     internalNotes?: StringNullableWithAggregatesFilter<"Event"> | string | null
     publishTargets?: StringNullableListFilter<"Event">
+    showInReminders?: BoolWithAggregatesFilter<"Event"> | boolean
   }
 
   export type EventRSVPWhereInput = {
@@ -62164,6 +62183,7 @@ export namespace Prisma {
     status?: string
     internalNotes?: string | null
     publishTargets?: EventCreatepublishTargetsInput | string[]
+    showInReminders?: boolean
     eventCats?: EventCatsCreateNestedManyWithoutEventInput
     rsvps?: EventRSVPCreateNestedManyWithoutEventInput
   }
@@ -62181,6 +62201,7 @@ export namespace Prisma {
     status?: string
     internalNotes?: string | null
     publishTargets?: EventCreatepublishTargetsInput | string[]
+    showInReminders?: boolean
     eventCats?: EventCatsUncheckedCreateNestedManyWithoutEventInput
     rsvps?: EventRSVPUncheckedCreateNestedManyWithoutEventInput
   }
@@ -62197,6 +62218,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     internalNotes?: NullableStringFieldUpdateOperationsInput | string | null
     publishTargets?: EventUpdatepublishTargetsInput | string[]
+    showInReminders?: BoolFieldUpdateOperationsInput | boolean
     eventCats?: EventCatsUpdateManyWithoutEventNestedInput
     rsvps?: EventRSVPUpdateManyWithoutEventNestedInput
   }
@@ -62214,6 +62236,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     internalNotes?: NullableStringFieldUpdateOperationsInput | string | null
     publishTargets?: EventUpdatepublishTargetsInput | string[]
+    showInReminders?: BoolFieldUpdateOperationsInput | boolean
     eventCats?: EventCatsUncheckedUpdateManyWithoutEventNestedInput
     rsvps?: EventRSVPUncheckedUpdateManyWithoutEventNestedInput
   }
@@ -62231,6 +62254,7 @@ export namespace Prisma {
     status?: string
     internalNotes?: string | null
     publishTargets?: EventCreatepublishTargetsInput | string[]
+    showInReminders?: boolean
   }
 
   export type EventUpdateManyMutationInput = {
@@ -62245,6 +62269,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     internalNotes?: NullableStringFieldUpdateOperationsInput | string | null
     publishTargets?: EventUpdatepublishTargetsInput | string[]
+    showInReminders?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type EventUncheckedUpdateManyInput = {
@@ -62260,6 +62285,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     internalNotes?: NullableStringFieldUpdateOperationsInput | string | null
     publishTargets?: EventUpdatepublishTargetsInput | string[]
+    showInReminders?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type EventRSVPCreateInput = {
@@ -65651,6 +65677,7 @@ export namespace Prisma {
     status?: SortOrder
     internalNotes?: SortOrder
     publishTargets?: SortOrder
+    showInReminders?: SortOrder
   }
 
   export type EventAvgOrderByAggregateInput = {
@@ -65669,6 +65696,7 @@ export namespace Prisma {
     isPublic?: SortOrder
     status?: SortOrder
     internalNotes?: SortOrder
+    showInReminders?: SortOrder
   }
 
   export type EventMinOrderByAggregateInput = {
@@ -65683,6 +65711,7 @@ export namespace Prisma {
     isPublic?: SortOrder
     status?: SortOrder
     internalNotes?: SortOrder
+    showInReminders?: SortOrder
   }
 
   export type EventSumOrderByAggregateInput = {
@@ -75827,6 +75856,7 @@ export namespace Prisma {
     status?: string
     internalNotes?: string | null
     publishTargets?: EventCreatepublishTargetsInput | string[]
+    showInReminders?: boolean
     eventCats?: EventCatsCreateNestedManyWithoutEventInput
   }
 
@@ -75843,6 +75873,7 @@ export namespace Prisma {
     status?: string
     internalNotes?: string | null
     publishTargets?: EventCreatepublishTargetsInput | string[]
+    showInReminders?: boolean
     eventCats?: EventCatsUncheckedCreateNestedManyWithoutEventInput
   }
 
@@ -75874,6 +75905,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     internalNotes?: NullableStringFieldUpdateOperationsInput | string | null
     publishTargets?: EventUpdatepublishTargetsInput | string[]
+    showInReminders?: BoolFieldUpdateOperationsInput | boolean
     eventCats?: EventCatsUpdateManyWithoutEventNestedInput
   }
 
@@ -75890,6 +75922,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     internalNotes?: NullableStringFieldUpdateOperationsInput | string | null
     publishTargets?: EventUpdatepublishTargetsInput | string[]
+    showInReminders?: BoolFieldUpdateOperationsInput | boolean
     eventCats?: EventCatsUncheckedUpdateManyWithoutEventNestedInput
   }
 
@@ -75905,6 +75938,7 @@ export namespace Prisma {
     status?: string
     internalNotes?: string | null
     publishTargets?: EventCreatepublishTargetsInput | string[]
+    showInReminders?: boolean
     rsvps?: EventRSVPCreateNestedManyWithoutEventInput
   }
 
@@ -75921,6 +75955,7 @@ export namespace Prisma {
     status?: string
     internalNotes?: string | null
     publishTargets?: EventCreatepublishTargetsInput | string[]
+    showInReminders?: boolean
     rsvps?: EventRSVPUncheckedCreateNestedManyWithoutEventInput
   }
 
@@ -76050,6 +76085,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     internalNotes?: NullableStringFieldUpdateOperationsInput | string | null
     publishTargets?: EventUpdatepublishTargetsInput | string[]
+    showInReminders?: BoolFieldUpdateOperationsInput | boolean
     rsvps?: EventRSVPUpdateManyWithoutEventNestedInput
   }
 
@@ -76066,6 +76102,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     internalNotes?: NullableStringFieldUpdateOperationsInput | string | null
     publishTargets?: EventUpdatepublishTargetsInput | string[]
+    showInReminders?: BoolFieldUpdateOperationsInput | boolean
     rsvps?: EventRSVPUncheckedUpdateManyWithoutEventNestedInput
   }
 

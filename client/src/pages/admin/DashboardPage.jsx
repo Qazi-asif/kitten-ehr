@@ -53,15 +53,21 @@ const STATUS_COLORS = {
 
 const WEEKDAYS = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
+// CR-85: Upcoming Reminders shows ONLY cat/kitten action items with due
+// dates — medical, protocol/vaccine/deworming doses, spay/neuter eligibility,
+// and calendar events explicitly tagged "Show in Upcoming Reminders" (CR-89).
+// Contract items, foster/admin items, and bare status counts (e.g. "8
+// kittens available for adoption") never belong here.
 function buildReminderRows(metrics) {
   const rows = [];
-  const push = (items, tone, iconLabel) => {
+  const push = (items, tone) => {
     for (const item of items || []) {
       rows.push({
-        id: `${iconLabel}-${item.id}-${item.dueDate}`,
+        id: item.id,
         title: item.title,
         kittenName: item.kittenName,
         kittenId: item.kittenId,
+        kittenIds: item.kittenIds || (item.kittenId ? [item.kittenId] : []),
         dueDate: item.dueDate,
         urgency: item.urgency,
         tone,
@@ -69,21 +75,13 @@ function buildReminderRows(metrics) {
     }
   };
 
-  push(metrics?.vaccinesOverdue, 'rose', 'vax-overdue');
-  push(metrics?.vaccinesDueSoon, 'rose', 'vax');
-  push(metrics?.medsEndingSoon, 'amber', 'med');
-  push(metrics?.upcomingVetVisits, 'sky', 'vet');
-  push(metrics?.protocolFollowUps, 'slate', 'protocol');
-
-  for (const alert of metrics?.summaryAlerts || []) {
-    rows.push({
-      id: `insight-${alert.text}`,
-      title: alert.text,
-      dueDate: null,
-      urgency: alert.severity === 'error' ? 'overdue' : 'dueSoon',
-      tone: alert.severity === 'error' ? 'rose' : alert.severity === 'warning' ? 'amber' : 'sky',
-    });
-  }
+  push(metrics?.vaccinesOverdue, 'rose');
+  push(metrics?.vaccinesDueSoon, 'rose');
+  push(metrics?.medsEndingSoon, 'amber');
+  push(metrics?.upcomingVetVisits, 'sky');
+  push(metrics?.protocolFollowUps, 'slate');
+  push(metrics?.spayNeuterEligible, 'purple');
+  push(metrics?.calendarReminders, 'sky');
 
   rows.sort((a, b) => {
     if (!a.dueDate && !b.dueDate) return 0;
@@ -92,7 +90,14 @@ function buildReminderRows(metrics) {
     return new Date(a.dueDate) - new Date(b.dueDate);
   });
 
-  return rows.slice(0, 8);
+  return rows.slice(0, 12);
+}
+
+function reminderLink(row) {
+  if (!row.kittenIds || row.kittenIds.length === 0) return null;
+  const params = new URLSearchParams({ ids: row.kittenIds.join(',') });
+  params.set('label', row.title);
+  return `/admin/kittens?${params.toString()}`;
 }
 
 const TONE_STYLES = {
@@ -351,33 +356,42 @@ function DashboardPage() {
             <p className="text-sm text-slate-500">Loading reminders…</p>
           ) : reminderRows.length === 0 ? (
             <p className="text-sm text-slate-500">
-              No upcoming reminders. Vaccines, deworming, vet visits, foster follow-ups, and protocol reviews appear here.
+              No upcoming reminders. Vaccines, deworming/protocol doses, vet visits, spay/neuter eligibility, and
+              calendar-tagged items due in the next 7 days appear here.
             </p>
           ) : (
             <ul className="space-y-2">
-              {reminderRows.map((row) => (
-                <li
-                  key={row.id}
-                  className={`flex items-start justify-between gap-3 rounded-lg px-3 py-2.5 ${TONE_STYLES[row.tone] || TONE_STYLES.slate}`}
-                >
-                  <div className="min-w-0">
-                    <p className="text-sm font-semibold">
-                      {row.title}
-                      {row.kittenId && row.kittenName ? (
-                        <>
-                          {' '}
-                          <Link to={`/admin/kittens/${row.kittenId}`} className="underline hover:opacity-80">
-                            {row.kittenName}
-                          </Link>
-                        </>
-                      ) : null}
+              {reminderRows.map((row) => {
+                const link = reminderLink(row);
+                const content = (
+                  <>
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold">
+                        {row.title}
+                        {row.kittenName ? <> — {row.kittenName}</> : null}
+                      </p>
+                    </div>
+                    <p className="shrink-0 text-xs font-medium opacity-80">
+                      {row.dueDate ? formatPacificDisplay(row.dueDate) : ''}
                     </p>
-                  </div>
-                  <p className="shrink-0 text-xs font-medium opacity-80">
-                    {row.dueDate ? formatPacificDisplay(row.dueDate) : ''}
-                  </p>
-                </li>
-              ))}
+                  </>
+                );
+                const innerClassName = 'flex items-start justify-between gap-3';
+                return (
+                  <li
+                    key={row.id}
+                    className={`rounded-lg px-3 py-2.5 ${TONE_STYLES[row.tone] || TONE_STYLES.slate}`}
+                  >
+                    {link ? (
+                      <Link to={link} className={`${innerClassName} hover:opacity-80`}>
+                        {content}
+                      </Link>
+                    ) : (
+                      <div className={innerClassName}>{content}</div>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           )}
           <div className="mt-4 text-right">

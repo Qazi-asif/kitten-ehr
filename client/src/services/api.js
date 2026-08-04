@@ -54,6 +54,9 @@ export function fetchKittens(params) {
   if (params.fosterId) searchParams.set('fosterId', String(params.fosterId));
   if (params.litterId) searchParams.set('litterId', String(params.litterId));
   if (params.sort) searchParams.set('sort', params.sort);
+  if (Array.isArray(params.ids) && params.ids.length > 0) {
+    searchParams.set('ids', params.ids.join(','));
+  }
 
   const query = searchParams.toString();
   return adminFetch(`/kittens${query ? `?${query}` : ''}`).then(async (response) => {
@@ -680,6 +683,30 @@ export async function generateAiCaption(data) {
   });
   if (!response.ok) throw new Error(await readApiError(response, 'Failed to generate caption'));
   return response.json();
+}
+
+export async function fetchReportsSummary(filters = {}) {
+  const params = new URLSearchParams();
+  if (filters.startDate) params.set('startDate', filters.startDate);
+  if (filters.endDate) params.set('endDate', filters.endDate);
+  const query = params.toString();
+  const response = await adminFetch(`/reports/summary${query ? `?${query}` : ''}`);
+  if (!response.ok) throw new Error('Failed to load reports summary');
+  return response.json();
+}
+
+export async function downloadKittensCsv() {
+  const response = await adminFetch('/reports/kittens.csv');
+  if (!response.ok) {
+    throw new Error(await readApiError(response, 'Failed to export kittens CSV'));
+  }
+  const blob = await response.blob();
+  const objectUrl = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = objectUrl;
+  link.download = `kittens-${new Date().toISOString().slice(0, 10)}.csv`;
+  link.click();
+  window.setTimeout(() => URL.revokeObjectURL(objectUrl), 60_000);
 }
 
 export async function fetchFinanceStats() {

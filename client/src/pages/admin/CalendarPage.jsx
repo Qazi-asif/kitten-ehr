@@ -12,6 +12,7 @@ import {
   uploadEventImage,
 } from '../../services/api';
 import { resolvePublishTargets } from '../../utils/publishTargets';
+import { formatPacificDisplay, toPacificDateTimeLocal } from '../../utils/pacificDate';
 
 const initialForm = {
   title: '',
@@ -20,21 +21,22 @@ const initialForm = {
   description: '',
   publishTargets: ['WEBSITE'],
   kittenIds: [],
+  showInReminders: false,
 };
 
+// Always Pacific — regardless of the viewing staff member's own browser/OS
+// timezone, an event entered for 6:30 AM Pacific must never display as a
+// different day.
 function formatEventDate(value) {
-  return new Date(value).toLocaleString(undefined, {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  });
+  return formatPacificDisplay(value, { withTime: true });
 }
 
+// Re-populating the datetime-local input on edit must round-trip through
+// Pacific, not the browser's local offset (previously used
+// `date.getTimezoneOffset()`, which silently corrupted the displayed time
+// for any staff member whose OS clock isn't set to Pacific).
 function toDateTimeLocalValue(value) {
-  if (!value) return '';
-  const date = new Date(value);
-  const offset = date.getTimezoneOffset();
-  const local = new Date(date.getTime() - offset * 60 * 1000);
-  return local.toISOString().slice(0, 16);
+  return toPacificDateTimeLocal(value);
 }
 
 function CalendarPage() {
@@ -126,6 +128,7 @@ function CalendarPage() {
       description: item.description,
       publishTargets: resolvePublishTargets(item),
       kittenIds: (item.eventCats || []).map((entry) => entry.kitten?.id || entry.kittenId).filter(Boolean),
+      showInReminders: Boolean(item.showInReminders),
     });
     setImageFile(null);
     setImagePreviewUrl('');
@@ -218,6 +221,22 @@ function CalendarPage() {
             onChange={(kittenIds) => setForm((prev) => ({ ...prev, kittenIds }))}
           />
         </div>
+
+        <label className="mt-4 flex items-start gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-700">
+          <input
+            type="checkbox"
+            checked={form.showInReminders}
+            onChange={(e) => setForm((prev) => ({ ...prev, showInReminders: e.target.checked }))}
+            className="mt-0.5 h-4 w-4 rounded border-slate-300 text-brand focus:ring-brand"
+          />
+          <span>
+            <span className="font-medium">Show in Upcoming Reminders</span>
+            <span className="block text-xs text-slate-500">
+              When checked, this event appears on the Dashboard&apos;s Upcoming Reminders (within 7 days of its date)
+              and links to the cat(s) tagged above. Requires at least one tagged cat.
+            </span>
+          </span>
+        </label>
 
         <div className="mt-5">
           <PublishingMatrix

@@ -1,6 +1,7 @@
+import { formatPacificDisplay } from '../utils/pacificDate';
+
 function formatDate(value) {
-  if (!value) return '—';
-  return new Date(value).toLocaleDateString();
+  return formatPacificDisplay(value) || '—';
 }
 
 function VaccinesTable({ vaccines, canManage = false, onEdit, onDelete }) {

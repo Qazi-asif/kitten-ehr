@@ -2,10 +2,15 @@ import prisma from '../lib/prisma.js';
 import { buildDashboardInsights } from '../services/dashboardInsights.js';
 import { stripInlineDataUrl } from '../utils/kittenSerialization.js';
 import { getCachedResponse, setCachedResponse } from '../utils/responseCache.js';
-import { startOfPacificTodayUtc } from '../utils/pacificDate.js';
+import { startOfPacificTodayUtc, addPacificDays, endOfPacificDayUtc } from '../utils/pacificDate.js';
 
-const MS_PER_DAY = 24 * 60 * 60 * 1000;
 const ALERT_LIMIT = 25;
+// Cats considered "active" for reminder purposes — excludes terminal outcomes
+// (Adopted/Transferred/Deceased/Released) so past-tense records never surface
+// as action items.
+const ACTIVE_KITTEN_STATUSES = ['In Foster Care', 'Available for Adoption', 'Medical Hold', 'In Socialization'];
+// CR-88: spay/neuter eligibility threshold.
+const SPAY_NEUTER_WEIGHT_GRAMS = 907;
 // Cache dashboard metrics for 60 seconds — keeps the DB quiet under repeated
 // refreshes while still reflecting new data within a minute.
 const DASHBOARD_METRICS_TTL_MS = 60 * 1000;
@@ -54,10 +59,11 @@ function serializeDashboardKitten(kitten) {
 
 function mapVaccineAlert(record, urgency) {
   return {
-    id: record.id,
+    id: `vaccine-${record.id}`,
     title: `${record.type} Vaccine Due`,
     kittenId: record.kittenId,
     kittenName: record.kitten?.name ?? 'Unknown',
+    kittenIds: [record.kittenId],
     dueDate: record.nextDueDate,
     urgency,
   };
@@ -65,10 +71,11 @@ function mapVaccineAlert(record, urgency) {
 
 function mapMedicationAlert(record) {
   return {
-    id: record.id,
+    id: `med-${record.id}`,
     title: `${record.name} Medication Ending`,
     kittenId: record.kittenId,
     kittenName: record.kitten?.name ?? 'Unknown',
+    kittenIds: [record.kittenId],
     dueDate: record.endDate,
     urgency: 'dueSoon',
   };
@@ -77,10 +84,11 @@ function mapMedicationAlert(record) {
 function mapVetVisitAlert(record) {
   const visitLabel = record.reason?.trim() || record.apptType?.trim() || 'Vet Visit';
   return {
-    id: record.id,
+    id: `vet-${record.id}`,
     title: `${visitLabel}`,
     kittenId: record.kittenId,
     kittenName: record.kitten?.name ?? 'Unknown',
+    kittenIds: [record.kittenId],
     dueDate: record.date,
     urgency: 'dueSoon',
   };
@@ -88,21 +96,73 @@ function mapVetVisitAlert(record) {
 
 function mapProtocolFollowUp(dose) {
   const protocolName = dose.activeProtocol?.protocol?.name ?? 'Protocol';
+  const drugName = dose.protocolDrug?.drugName;
+  const kittenId = dose.activeProtocol?.kittenId ?? dose.activeProtocol?.kitten?.id;
   return {
-    id: dose.id,
-    title: `${protocolName} Protocol Follow-up`,
-    kittenId: dose.activeProtocol?.kittenId ?? dose.activeProtocol?.kitten?.id,
+    id: `dose-${dose.id}`,
+    title: drugName ? `${drugName} Dose (${protocolName})` : `${protocolName} Protocol Dose`,
+    kittenId,
     kittenName: dose.activeProtocol?.kitten?.name ?? 'Unknown',
+    kittenIds: kittenId ? [kittenId] : [],
     dueDate: dose.scheduledDate,
     urgency: 'dueSoon',
   };
 }
 
+function mapSpayNeuterAlert(kitten) {
+  return {
+    id: `spay-${kitten.id}`,
+    title: 'Spay/Neuter Eligible (\u2265907g)',
+    kittenId: kitten.id,
+    kittenName: kitten.name,
+    kittenIds: [kitten.id],
+    dueDate: kitten.latestWeightDate,
+    urgency: 'dueSoon',
+  };
+}
+
+function mapCalendarAlert(event) {
+  const kittens = (event.eventCats || []).map((ec) => ec.kitten).filter(Boolean);
+  return {
+    id: `event-${event.id}`,
+    title: event.title,
+    kittenId: kittens[0]?.id,
+    kittenName: kittens.length === 1
+      ? kittens[0].name
+      : kittens.length > 1
+        ? `${kittens.length} cats`
+        : undefined,
+    kittenIds: kittens.map((k) => k.id),
+    dueDate: event.date,
+    urgency: 'dueSoon',
+  };
+}
+
+/** Latest WeightLog per kittenId, from a list ordered by date desc. */
+function latestWeightByKitten(weightLogs) {
+  const map = new Map();
+  for (const log of weightLogs) {
+    if (!map.has(log.kittenId)) map.set(log.kittenId, log);
+  }
+  return map;
+}
+
+function resolveWeightGrams(log) {
+  if (!log) return null;
+  if (log.weightGrams > 0) return log.weightGrams;
+  if (log.weightOz > 0) return log.weightOz * 28.3495;
+  return null;
+}
+
+// CR-87: rolling 7-day complete capture. Every window below is anchored to
+// Pacific calendar-day boundaries (today's Pacific midnight through the end
+// of Pacific day +7) rather than the current instant — using `now` as the
+// lower bound previously excluded anything scheduled earlier "today" (e.g. a
+// dose stored at Pacific midnight looks like it's already in the past for
+// most of the day), which was the root cause of doses silently disappearing.
 export async function getDashboardAlerts() {
-  const now = new Date();
-  const in30Days = new Date(now.getTime() + 30 * MS_PER_DAY);
-  const in7Days = new Date(now.getTime() + 7 * MS_PER_DAY);
-  const in14Days = new Date(now.getTime() + 14 * MS_PER_DAY);
+  const todayStartUtc = startOfPacificTodayUtc();
+  const windowEndUtc = endOfPacificDayUtc(addPacificDays(todayStartUtc, 7));
 
   const [
     vaccinesDueSoon,
@@ -110,21 +170,25 @@ export async function getDashboardAlerts() {
     medsEndingSoon,
     upcomingVetVisits,
     protocolFollowUps,
+    spayEligibleKittens,
+    calendarReminderEvents,
   ] = await Promise.all([
     prisma.vaccine.findMany({
       where: {
-        nextDueDate: { not: null, gte: now, lte: in30Days },
+        nextDueDate: { not: null, gte: todayStartUtc, lte: windowEndUtc },
+        kitten: { status: { in: ACTIVE_KITTEN_STATUSES } },
       },
-      distinct: ['kittenId', 'nextDueDate'],
+      distinct: ['kittenId', 'type'],
       select: vaccineSelect,
       orderBy: { nextDueDate: 'asc' },
       take: ALERT_LIMIT,
     }),
     prisma.vaccine.findMany({
       where: {
-        nextDueDate: { not: null, lt: now },
+        nextDueDate: { not: null, lt: todayStartUtc },
+        kitten: { status: { in: ACTIVE_KITTEN_STATUSES } },
       },
-      distinct: ['kittenId', 'nextDueDate'],
+      distinct: ['kittenId', 'type'],
       select: vaccineSelect,
       orderBy: { nextDueDate: 'asc' },
       take: ALERT_LIMIT,
@@ -132,7 +196,8 @@ export async function getDashboardAlerts() {
     prisma.medication.findMany({
       where: {
         status: { in: ['Active', 'ACTIVE'] },
-        endDate: { not: null, gte: now, lte: in7Days },
+        endDate: { not: null, gte: todayStartUtc, lte: windowEndUtc },
+        kitten: { status: { in: ACTIVE_KITTEN_STATUSES } },
       },
       select: medicationSelect,
       orderBy: { endDate: 'asc' },
@@ -140,7 +205,8 @@ export async function getDashboardAlerts() {
     }),
     prisma.vetAppointment.findMany({
       where: {
-        date: { gte: now, lte: in14Days },
+        date: { gte: todayStartUtc, lte: windowEndUtc },
+        kitten: { status: { in: ACTIVE_KITTEN_STATUSES } },
       },
       select: vetAppointmentSelect,
       orderBy: { date: 'asc' },
@@ -149,13 +215,16 @@ export async function getDashboardAlerts() {
     prisma.protocolDose.findMany({
       where: {
         status: 'SCHEDULED',
-        scheduledDate: { gte: now, lte: in7Days },
-        activeProtocol: { status: 'ACTIVE' },
+        scheduledDate: { gte: todayStartUtc, lte: windowEndUtc },
+        activeProtocol: { status: 'ACTIVE', kitten: { status: { in: ACTIVE_KITTEN_STATUSES } } },
       },
-      distinct: ['activeProtocolId', 'scheduledDate'],
+      // Distinct on drug + date (not just date) so multiple drugs due the
+      // same day don't collapse into a single row and silently drop doses.
+      distinct: ['activeProtocolId', 'protocolDrugId', 'scheduledDate'],
       select: {
         id: true,
         scheduledDate: true,
+        protocolDrug: { select: { drugName: true } },
         activeProtocol: {
           select: {
             kittenId: true,
@@ -167,7 +236,52 @@ export async function getDashboardAlerts() {
       orderBy: { scheduledDate: 'asc' },
       take: ALERT_LIMIT,
     }),
+    // CR-88: spay/neuter eligibility — active, not-yet-fixed kittens whose
+    // latest weight is at/above the eligibility threshold.
+    prisma.kitten.findMany({
+      where: {
+        status: { in: ACTIVE_KITTEN_STATUSES },
+        fixedStatus: { not: 'Spayed/Neutered' },
+      },
+      select: { id: true, name: true },
+    }),
+    // CR-89: calendar events explicitly flagged to appear in reminders,
+    // within the same rolling window, tagged to at least one kitten.
+    prisma.event.findMany({
+      where: {
+        showInReminders: true,
+        date: { gte: todayStartUtc, lte: windowEndUtc },
+        eventCats: { some: {} },
+      },
+      select: {
+        id: true,
+        title: true,
+        date: true,
+        eventCats: { select: { kitten: { select: { id: true, name: true } } } },
+      },
+      orderBy: { date: 'asc' },
+      take: ALERT_LIMIT,
+    }),
   ]);
+
+  let spayNeuterEligible = [];
+  if (spayEligibleKittens.length > 0) {
+    const weightLogs = await prisma.weightLog.findMany({
+      where: { kittenId: { in: spayEligibleKittens.map((k) => k.id) } },
+      orderBy: { date: 'desc' },
+      select: { kittenId: true, weightGrams: true, weightOz: true, date: true },
+    });
+    const latestByKitten = latestWeightByKitten(weightLogs);
+    spayNeuterEligible = spayEligibleKittens
+      .map((kitten) => {
+        const latest = latestByKitten.get(kitten.id);
+        const grams = resolveWeightGrams(latest);
+        if (grams == null || grams < SPAY_NEUTER_WEIGHT_GRAMS) return null;
+        return mapSpayNeuterAlert({ ...kitten, latestWeightDate: latest.date });
+      })
+      .filter(Boolean)
+      .slice(0, ALERT_LIMIT);
+  }
 
   return {
     vaccinesDueSoon: vaccinesDueSoon.map((record) => mapVaccineAlert(record, 'dueSoon')),
@@ -175,6 +289,8 @@ export async function getDashboardAlerts() {
     medsEndingSoon: medsEndingSoon.map(mapMedicationAlert),
     upcomingVetVisits: upcomingVetVisits.map(mapVetVisitAlert),
     protocolFollowUps: protocolFollowUps.map(mapProtocolFollowUp),
+    spayNeuterEligible,
+    calendarReminders: calendarReminderEvents.map(mapCalendarAlert),
   };
 }
 

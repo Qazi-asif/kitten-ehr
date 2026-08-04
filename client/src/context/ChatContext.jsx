@@ -113,10 +113,31 @@ export function ChatProvider({ children }) {
 
   const activeMessages = messagesById[activeId] || [];
 
+  const conversationsRef = useRef([]);
+  useEffect(() => {
+    conversationsRef.current = conversations;
+  }, [conversations]);
+
   const refreshConversations = useCallback(async () => {
     setLoadingConversations(true);
     try {
       const [list, members] = await Promise.all([fetchConversations(), fetchChatStaff()]);
+
+      // CR-91: the WS path already fires a browser notification per message
+      // via ingestMessage. The polling fallback only ever updated
+      // badges/title — it never triggered a Notification. Diff unread counts
+      // against the previous snapshot so polling-only sessions still alert.
+      const previous = conversationsRef.current;
+      for (const conv of list) {
+        const prevUnread = previous.find((c) => c.id === conv.id)?.unreadCount || 0;
+        if ((conv.unreadCount || 0) > prevUnread && conv.lastMessage?.senderId !== user?.id) {
+          notifyUnreadMessage(
+            `New message from ${conv.lastMessage?.senderName || conv.name || 'Staff chat'}`,
+            previewText(conv.lastMessage?.content || ''),
+          );
+        }
+      }
+
       setConversations(list);
       setStaff(members);
       setActiveId((prev) => {
@@ -128,7 +149,7 @@ export function ChatProvider({ children }) {
     } finally {
       setLoadingConversations(false);
     }
-  }, []);
+  }, [user?.id]);
 
   const loadMessages = useCallback(async (conversationId, { after = null } = {}) => {
     if (!conversationId) return;

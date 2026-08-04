@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 import { isObjectStorageConfigured, uploadToObjectStorage } from './objectStorage.js';
+import { formatPacificDisplay } from './pacificDate.js';
 
 const PAGE_WIDTH = 612;
 const PAGE_HEIGHT = 792;
@@ -152,7 +153,7 @@ export async function generateContractPdf({
 
   drawLine(`Signed by: ${signerName || 'Unknown'}`, { size: 10 });
   if (signerEmail) drawLine(`Email: ${signerEmail}`, { size: 10 });
-  if (signedAt) drawLine(`Date: ${new Date(signedAt).toLocaleString()}`, { size: 10 });
+  if (signedAt) drawLine(`Date: ${formatPacificDisplay(signedAt, { withTime: true })}`, { size: 10 });
 
   // Org "authorized representative" signature - applied automatically to
   // every signed contract's PDF as a second signature block, alongside
@@ -181,7 +182,7 @@ export async function generateContractPdf({
         page.drawImage(orgSigImage, { x: MARGIN, y: y - orgSigHeight, width: SIGNATURE_WIDTH, height: orgSigHeight });
         y -= orgSigHeight + 8;
         if (orgName) drawLine(`Signed by: ${orgName}`, { size: 10 });
-        if (signedAt) drawLine(`Date: ${new Date(signedAt).toLocaleString()}`, { size: 10 });
+        if (signedAt) drawLine(`Date: ${formatPacificDisplay(signedAt, { withTime: true })}`, { size: 10 });
       }
     }
   } catch (error) {

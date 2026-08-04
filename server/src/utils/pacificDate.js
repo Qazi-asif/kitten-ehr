@@ -135,4 +135,27 @@ export function startOfPacificTodayUtc() {
   return parsePacificDateOnly(toPacificDateString(new Date()));
 }
 
+/**
+ * UTC Date for Pacific midnight of (value's Pacific calendar day + days).
+ * `days` may be negative. Safe across DST transitions since it re-derives
+ * the target UTC instant from the shifted Y-M-D via parsePacificDateOnly,
+ * rather than doing raw millisecond arithmetic on the anchor instant.
+ */
+export function addPacificDays(value, days) {
+  const ymd = toPacificDateString(value instanceof Date ? value : new Date(value));
+  if (!ymd) return null;
+  const [y, m, d] = ymd.split('-').map(Number);
+  // Date.UTC normalizes day overflow/underflow (e.g. day 32 -> next month).
+  const shifted = new Date(Date.UTC(y, m - 1, d + days, 12, 0, 0));
+  const shiftedYmd = `${shifted.getUTCFullYear()}-${pad(shifted.getUTCMonth() + 1)}-${pad(shifted.getUTCDate())}`;
+  return parsePacificDateOnly(shiftedYmd);
+}
+
+/** UTC Date for the last instant (23:59:59.999) of value's Pacific calendar day. */
+export function endOfPacificDayUtc(value) {
+  const nextDayStart = addPacificDays(value, 1);
+  if (!nextDayStart) return null;
+  return new Date(nextDayStart.getTime() - 1);
+}
+
 export { PACIFIC, pad };

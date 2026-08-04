@@ -1,9 +1,12 @@
 import { Link } from 'react-router-dom';
 import KittenPhoto from './KittenPhoto';
-import { formatKittenAge } from '../utils/kittenImages';
+import { formatKittenAgeShort } from '../utils/kittenAge';
 
 function PublicKittenCard({ kitten }) {
-  const age = formatKittenAge(kitten.dateOfBirth);
+  // CR-92: single shared age helper everywhere — was previously a duplicate,
+  // divergent formula that only ever showed months (e.g. "2 months old").
+  const rawAge = formatKittenAgeShort(kitten.dateOfBirth);
+  const age = rawAge && rawAge !== '—' ? `${rawAge} old` : null;
   const bondedLabel = kitten.bondedWithKitten?.name || kitten.bondedWithName;
 
   const profilePath = `/kittens/${kitten.id}`;
