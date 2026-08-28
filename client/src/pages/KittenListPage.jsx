@@ -13,6 +13,7 @@ import {
   uploadPrimaryPhoto,
 } from '../services/api';
 import { KITTEN_STATUS_OPTIONS } from '../constants/kittenStatuses';
+import { REMINDER_FILTER_OPTIONS } from '../constants/reminderCategories';
 import { formatKittenAgeShort } from '../utils/kittenAge';
 
 const DEFAULT_STATUS_FILTERS = ['Available for Adoption', 'In Foster Care', 'Medical Hold'];
@@ -53,6 +54,8 @@ function KittensPage() {
   // those cats, regardless of status.
   const idsParam = searchParams.get('ids');
   const reminderLabel = searchParams.get('label') || '';
+  // CR-99: reminder-category filter, e.g. /admin/kittens?reminder=spayNeuterEligible
+  const reminderFilter = searchParams.get('reminder') || '';
   const reminderIds = useMemo(() => {
     if (!idsParam) return null;
     return [...new Set(
@@ -89,9 +92,12 @@ function KittensPage() {
         page: listTab === 'recent' ? 1 : page,
         limit: listTab === 'recent' ? 5 : pageSize,
         search: search.trim() || undefined,
-        statuses: listTab === 'recent' ? undefined : selectedStatuses,
+        // A reminder category defines its own status scope (active cats only),
+        // so the status checkboxes are bypassed while one is applied.
+        statuses: listTab === 'recent' || reminderFilter ? undefined : selectedStatuses,
         fosterId: fosterFilter || undefined,
         litterId: litterFilter || undefined,
+        reminder: reminderFilter || undefined,
         sort: listTab === 'recent' ? undefined : (sort || undefined),
       });
       setKittens(data.items ?? []);
@@ -103,9 +109,18 @@ function KittensPage() {
     } finally {
       setLoading(false);
     }
-  }, [reminderIds, page, pageSize, listTab, search, selectedStatuses, fosterFilter, litterFilter, sort]);
+  }, [reminderIds, reminderFilter, page, pageSize, listTab, search, selectedStatuses, fosterFilter, litterFilter, sort]);
 
   function clearReminderFilter() {
+    searchParams.delete('ids');
+    searchParams.delete('label');
+    searchParams.delete('reminder');
+    setSearchParams(searchParams);
+  }
+
+  function applyReminderFilter(key) {
+    if (key) searchParams.set('reminder', key);
+    else searchParams.delete('reminder');
     searchParams.delete('ids');
     searchParams.delete('label');
     setSearchParams(searchParams);
@@ -125,7 +140,7 @@ function KittensPage() {
 
   useEffect(() => {
     setPage(1);
-  }, [search, selectedStatuses, fosterFilter, litterFilter, listTab, sort, pageSize]);
+  }, [search, selectedStatuses, fosterFilter, litterFilter, listTab, sort, pageSize, reminderFilter]);
 
   function closeAddForm() {
     searchParams.delete('add');
@@ -224,6 +239,29 @@ function KittensPage() {
         </div>
       )}
 
+      {reminderFilter && (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-brand/20 bg-brand-light px-4 py-3">
+          <div className="flex items-center gap-2 text-sm text-brand">
+            <Bell className="h-4 w-4 shrink-0" />
+            <span>
+              Showing cats in reminder category:{' '}
+              <strong className="font-semibold">
+                {REMINDER_FILTER_OPTIONS.find((o) => o.key === reminderFilter)?.label || reminderFilter}
+              </strong>
+              {' '}({total})
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={clearReminderFilter}
+            className="inline-flex items-center gap-1 rounded-lg border border-brand/30 px-3 py-1.5 text-xs font-semibold text-brand hover:bg-white"
+          >
+            <X className="h-3.5 w-3.5" />
+            Clear filter
+          </button>
+        </div>
+      )}
+
       {showAddForm && (
         <div className="relative">
           <button
@@ -254,7 +292,7 @@ function KittensPage() {
       />
 
       <div className="space-y-3 rounded-xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-5">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-6">
           <label className="relative lg:col-span-2">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
             <input
@@ -275,6 +313,17 @@ function KittensPage() {
             <option value="">Litter group</option>
             {litters.map((l) => (
               <option key={l.id} value={l.id}>{l.name}</option>
+            ))}
+          </select>
+          <select
+            value={reminderFilter}
+            onChange={(e) => applyReminderFilter(e.target.value)}
+            className="rounded-lg border border-slate-200 px-3 py-2 text-sm"
+            aria-label="Filter by reminder category"
+          >
+            <option value="">Reminder category</option>
+            {REMINDER_FILTER_OPTIONS.map((option) => (
+              <option key={option.key} value={option.key}>{option.label}</option>
             ))}
           </select>
           <select

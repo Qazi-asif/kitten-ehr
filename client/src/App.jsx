@@ -1,7 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
-import { ChatProvider } from './context/ChatContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import PortalProtectedRoute from './components/PortalProtectedRoute';
 import AdminLayout from './components/layouts/AdminLayout';
@@ -26,6 +25,7 @@ const CalendarPage = lazy(() => import('./pages/admin/CalendarPage'));
 const ContentManagerPage = lazy(() => import('./pages/admin/ContentManagerPage'));
 const ContractsPage = lazy(() => import('./pages/admin/ContractsPage'));
 const DashboardPage = lazy(() => import('./pages/admin/DashboardPage'));
+const RemindersPage = lazy(() => import('./pages/admin/RemindersPage'));
 const FinancePage = lazy(() => import('./pages/admin/FinancePage'));
 const OnboardingPage = lazy(() => import('./pages/admin/OnboardingPage'));
 const ReportsPage = lazy(() => import('./pages/admin/ReportsPage'));
@@ -33,7 +33,6 @@ const ProtocolLibrary = lazy(() => import('./pages/admin/ProtocolLibrary'));
 const MarketingPage = lazy(() => import('./pages/admin/MarketingPage'));
 const SettingsPage = lazy(() => import('./pages/admin/SettingsPage'));
 const EmailTemplatesPage = lazy(() => import('./pages/admin/EmailTemplatesPage'));
-const StaffChatPage = lazy(() => import('./pages/admin/StaffChatPage'));
 const AboutPage = lazy(() => import('./pages/public/AboutPage'));
 const PrivacyPolicyPage = lazy(() => import('./pages/public/PrivacyPolicyPage'));
 const AdoptionFormPage = lazy(() => import('./pages/public/AdoptionFormPage'));
@@ -62,7 +61,6 @@ function PageLoader() {
 function App() {
   return (
     <AuthProvider>
-      <ChatProvider>
       <BrowserRouter>
         <Suspense fallback={<PageLoader />}>
           <Routes>
@@ -102,9 +100,7 @@ function App() {
               <Route path="/admin" element={<AdminLayout />}>
                 <Route element={<ProtectedRoute permission="dashboard.view" />}>
                   <Route index element={<DashboardPage />} />
-                </Route>
-                <Route element={<ProtectedRoute permission="chat.view" />}>
-                  <Route path="chat" element={<StaffChatPage />} />
+                  <Route path="reminders" element={<RemindersPage />} />
                 </Route>
                 <Route element={<ProtectedRoute permission="kittens.view" />}>
                   <Route path="kittens" element={<KittenListPage />} />
@@ -156,7 +152,6 @@ function App() {
           </Routes>
         </Suspense>
       </BrowserRouter>
-      </ChatProvider>
     </AuthProvider>
   );
 }

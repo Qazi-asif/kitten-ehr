@@ -53,51 +53,17 @@ const STATUS_COLORS = {
 
 const WEEKDAYS = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
-// CR-85: Upcoming Reminders shows ONLY cat/kitten action items with due
-// dates — medical, protocol/vaccine/deworming doses, spay/neuter eligibility,
-// and calendar events explicitly tagged "Show in Upcoming Reminders" (CR-89).
-// Contract items, foster/admin items, and bare status counts (e.g. "8
-// kittens available for adoption") never belong here.
-function buildReminderRows(metrics) {
-  const rows = [];
-  const push = (items, tone) => {
-    for (const item of items || []) {
-      rows.push({
-        id: item.id,
-        title: item.title,
-        kittenName: item.kittenName,
-        kittenId: item.kittenId,
-        kittenIds: item.kittenIds || (item.kittenId ? [item.kittenId] : []),
-        dueDate: item.dueDate,
-        urgency: item.urgency,
-        tone,
-      });
-    }
-  };
-
-  push(metrics?.vaccinesOverdue, 'rose');
-  push(metrics?.vaccinesDueSoon, 'rose');
-  push(metrics?.medsEndingSoon, 'amber');
-  push(metrics?.upcomingVetVisits, 'sky');
-  push(metrics?.protocolFollowUps, 'slate');
-  push(metrics?.spayNeuterEligible, 'purple');
-  push(metrics?.calendarReminders, 'sky');
-
-  rows.sort((a, b) => {
-    if (!a.dueDate && !b.dueDate) return 0;
-    if (!a.dueDate) return 1;
-    if (!b.dueDate) return -1;
-    return new Date(a.dueDate) - new Date(b.dueDate);
-  });
-
-  return rows.slice(0, 12);
-}
-
-function reminderLink(row) {
-  if (!row.kittenIds || row.kittenIds.length === 0) return null;
-  const params = new URLSearchParams({ ids: row.kittenIds.join(',') });
-  params.set('label', row.title);
-  return `/admin/kittens?${params.toString()}`;
+// CR-97: the panel used to render one row per cat, which meant a large
+// category (spay/neuter eligibility, usually) filled all twelve available rows
+// and hid every other reminder type. Rows are now one per category with a
+// count, so every category stays visible no matter how large one gets.
+/**
+ * CR-98: a category row opens the cats page filtered to that category, using
+ * the semantic filter rather than a frozen list of ids, so the destination
+ * stays correct as data changes.
+ */
+function reminderCategoryLink(category) {
+  return `/admin/kittens?reminder=${encodeURIComponent(category.key)}`;
 }
 
 const TONE_STYLES = {
@@ -106,6 +72,7 @@ const TONE_STYLES = {
   sky: 'bg-sky-50 text-sky-700',
   purple: 'bg-purple-50 text-purple-700',
   slate: 'bg-slate-100 text-slate-700',
+  emerald: 'bg-emerald-50 text-emerald-700',
 };
 
 function StatusDonut({ statusCounts }) {
@@ -306,7 +273,7 @@ function DashboardPage() {
     }
   }
 
-  const reminderRows = useMemo(() => buildReminderRows(metrics), [metrics]);
+  const reminderCategories = metrics?.reminderCategories ?? [];
   const pendingApplications = metrics?.pendingApplications ?? [];
   const appCounts = metrics?.applicationStatusCounts || {};
   const pendingTotal = (appCounts.New || 0) + (appCounts['Under Review'] || 0) + (appCounts.Approved || 0);
@@ -354,48 +321,33 @@ function DashboardPage() {
           </div>
           {loading ? (
             <p className="text-sm text-slate-500">Loading reminders…</p>
-          ) : reminderRows.length === 0 ? (
+          ) : reminderCategories.length === 0 ? (
             <p className="text-sm text-slate-500">
-              No upcoming reminders. Vaccines, deworming/protocol doses, vet visits, spay/neuter eligibility, and
-              calendar-tagged items due in the next 7 days appear here.
+              No reminders right now. Spay/neuter eligibility, FVRCP, rabies, deworming and active
+              medications appear here.
             </p>
           ) : (
             <ul className="space-y-2">
-              {reminderRows.map((row) => {
-                const link = reminderLink(row);
-                const content = (
-                  <>
-                    <div className="min-w-0">
-                      <p className="text-sm font-semibold">
-                        {row.title}
-                        {row.kittenName ? <> — {row.kittenName}</> : null}
-                      </p>
-                    </div>
-                    <p className="shrink-0 text-xs font-medium opacity-80">
-                      {row.dueDate ? formatPacificDisplay(row.dueDate) : ''}
-                    </p>
-                  </>
-                );
-                const innerClassName = 'flex items-start justify-between gap-3';
-                return (
-                  <li
-                    key={row.id}
-                    className={`rounded-lg px-3 py-2.5 ${TONE_STYLES[row.tone] || TONE_STYLES.slate}`}
+              {reminderCategories.map((category) => (
+                <li key={category.key}>
+                  <Link
+                    to={reminderCategoryLink(category)}
+                    title={category.description}
+                    className={`flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 hover:opacity-80 ${
+                      TONE_STYLES[category.tone] || TONE_STYLES.slate
+                    } ${category.count === 0 ? 'opacity-50' : ''}`}
                   >
-                    {link ? (
-                      <Link to={link} className={`${innerClassName} hover:opacity-80`}>
-                        {content}
-                      </Link>
-                    ) : (
-                      <div className={innerClassName}>{content}</div>
-                    )}
-                  </li>
-                );
-              })}
+                    <span className="min-w-0 truncate text-sm font-semibold">{category.label}</span>
+                    <span className="shrink-0 rounded-full bg-white/70 px-2 py-0.5 text-xs font-bold tabular-nums">
+                      {category.count}
+                    </span>
+                  </Link>
+                </li>
+              ))}
             </ul>
           )}
           <div className="mt-4 text-right">
-            <Link to="/admin/kittens" className="text-sm font-semibold text-brand hover:underline">
+            <Link to="/admin/reminders" className="text-sm font-semibold text-brand hover:underline">
               View all reminders
             </Link>
           </div>

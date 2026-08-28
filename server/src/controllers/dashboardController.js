@@ -3,6 +3,11 @@ import { buildDashboardInsights } from '../services/dashboardInsights.js';
 import { stripInlineDataUrl } from '../utils/kittenSerialization.js';
 import { getCachedResponse, setCachedResponse } from '../utils/responseCache.js';
 import { startOfPacificTodayUtc, addPacificDays, endOfPacificDayUtc } from '../utils/pacificDate.js';
+import {
+  getReminderCategoryCounts,
+  getReminderCategoryItems,
+  REMINDER_CATEGORIES,
+} from '../services/reminderCategories.js';
 
 const ALERT_LIMIT = 25;
 // Cats considered "active" for reminder purposes — excludes terminal outcomes
@@ -312,6 +317,7 @@ export async function getDashboardMetrics(_req, res, next) {
       activeProtocols,
       alerts,
       insights,
+      reminderCategories,
       statusGroups,
       recentIntakes,
       recentAdoptions,
@@ -337,6 +343,7 @@ export async function getDashboardMetrics(_req, res, next) {
       prisma.activeProtocol.count(),
       getDashboardAlerts(),
       buildDashboardInsights(prisma),
+      getReminderCategoryCounts(prisma),
       prisma.kitten.groupBy({
         by: ['status'],
         _count: { _all: true },
@@ -413,11 +420,49 @@ export async function getDashboardMetrics(_req, res, next) {
       recentAdoptions: recentAdoptions.map(serializeDashboardKitten),
       pendingApplications,
       upcomingEvents,
+      // CR-97: one row per category with a count, so a large category (usually
+      // spay/neuter) can no longer crowd the others out of the panel.
+      reminderCategories,
       ...alerts,
     };
 
     setCachedResponse('dashboard-metrics', payload);
     res.json(payload);
+  } catch (error) {
+    next(error);
+  }
+}
+
+/**
+ * CR-100: the full reminders view — every category with every matching cat,
+ * not the 25-per-category cap the dashboard panel uses.
+ */
+export async function getAllReminders(req, res, next) {
+  try {
+    const requested = typeof req.query.category === 'string' ? req.query.category : null;
+    const categories = requested
+      ? REMINDER_CATEGORIES.filter((category) => category.key === requested)
+      : REMINDER_CATEGORIES;
+
+    if (requested && categories.length === 0) {
+      return res.status(400).json({ error: `Unknown reminder category: ${requested}` });
+    }
+
+    const results = await Promise.all(
+      categories.map(async (category) => {
+        const kittens = await getReminderCategoryItems(prisma, category.key);
+        return {
+          key: category.key,
+          label: category.label,
+          description: category.description,
+          tone: category.tone,
+          count: kittens.length,
+          kittens,
+        };
+      }),
+    );
+
+    res.json({ categories: results });
   } catch (error) {
     next(error);
   }

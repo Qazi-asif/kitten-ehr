@@ -18,6 +18,7 @@ import { evaluateKittenFlags } from '../services/medicalAutomation.js';
 import { buildDashboardInsights } from '../services/dashboardInsights.js';
 import { getCachedResponse, setCachedResponse, invalidateCacheByPrefix } from '../utils/responseCache.js';
 import { parsePacificDateOnly, toPacificDateString } from '../utils/pacificDate.js';
+import { buildReminderWhere } from '../services/reminderCategories.js';
 
 const DASHBOARD_STATS_TTL_MS = 60 * 1000;
 
@@ -47,7 +48,8 @@ export async function getAllKittens(req, res) {
       || req.query.fosterId
       || req.query.litterId
       || req.query.sort
-      || req.query.ids;
+      || req.query.ids
+      || req.query.reminder;
 
     const where = buildKittenListWhere(req.query);
 
@@ -178,12 +180,23 @@ function buildKittenListWhere(query) {
       }
     : null;
 
-  if (fosterClause && searchClause) {
-    where.AND = [fosterClause, searchClause];
-  } else if (fosterClause) {
-    Object.assign(where, fosterClause);
-  } else if (searchClause) {
-    Object.assign(where, searchClause);
+  // CR-99: reminder-category filters. Same definition the dashboard counts, so
+  // a category row and its click-through can never disagree.
+  const reminderClause = typeof query.reminder === 'string' && query.reminder.trim()
+    ? buildReminderWhere(query.reminder.trim())
+    : null;
+
+  // Collect into AND rather than Object.assign: several of these clauses carry
+  // their own top-level `OR`, which would clobber each other when merged.
+  const clauses = [fosterClause, searchClause, reminderClause].filter(Boolean);
+  if (clauses.length === 1) {
+    const [only] = clauses;
+    // A lone clause can merge directly unless it would collide with a key
+    // already set above (status/litterId are plain scalars, so only OR matters).
+    if (!('OR' in only) || !('OR' in where)) Object.assign(where, only);
+    else where.AND = clauses;
+  } else if (clauses.length > 1) {
+    where.AND = clauses;
   }
 
   return where;
