@@ -1,1 +1,0 @@
-import{a9 as o}from"./index-DAm_p-C6.js";async function a(){const r=await o("/dashboard/metrics");if(!r.ok)throw new Error("Failed to fetch dashboard metrics");return r.json()}async function n(r){const e=await o("/dashboard/reminders");if(!e.ok)throw new Error("Failed to fetch reminders");return e.json()}export{n as a,a as f};
