@@ -46,6 +46,7 @@ const EMPTY_ORG = {
   donatePageLive: false,
   showCurrentPetsOnAdoptionForm: false,
   paypalLink: '',
+  stripeLink: '',
   venmoQrCodeUrl: '',
   venmoHandle: '',
   orgLogoUrl: '',
@@ -100,6 +101,7 @@ function mapOrgSettingsFromApi(settingsData = {}) {
     donatePageLive: Boolean(settingsData.donatePageLive),
     showCurrentPetsOnAdoptionForm: Boolean(settingsData.showCurrentPetsOnAdoptionForm),
     paypalLink: settingsData.paypalLink || '',
+    stripeLink: settingsData.stripeLink || '',
     venmoQrCodeUrl: settingsData.venmoQrCodeUrl || '',
     venmoHandle: settingsData.venmoHandle || '',
     orgLogoUrl: settingsData.orgLogoUrl || '',
@@ -696,8 +698,9 @@ function SettingsPage() {
             ownerType={WISHLIST_OWNER_TYPES.ORG}
             ownerId={ORG_SETTINGS_ID}
             canManage={canManageOrg}
+            enableGroups
             title="Organization Wishlists"
-            description="Manage global Amazon, Chewy, and Walmart wishlist links for the rescue."
+            description="Create any number of named wishlists (e.g. General Supplies, TNR / Colony), each holding Amazon, Chewy, and/or Walmart links. Named lists appear grouped on the donate page."
           />
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -834,6 +837,18 @@ function SettingsPage() {
                   onChange={(e) => handleOrgFieldChange('paypalLink', e.target.value)}
                   disabled={!canManageOrg}
                   placeholder="https://paypal.me/..."
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-white"
+                />
+              </label>
+
+              <label className="block">
+                <span className="mb-1 block text-xs font-medium text-slate-600">Stripe Payment Link</span>
+                <input
+                  type="url"
+                  value={orgSettings.stripeLink}
+                  onChange={(e) => handleOrgFieldChange('stripeLink', e.target.value)}
+                  disabled={!canManageOrg}
+                  placeholder="https://buy.stripe.com/..."
                   className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-white"
                 />
               </label>

@@ -1,11 +1,75 @@
 /**
  * QA smoke + regression tests for Kitten-EHR API.
  * Run: node scripts/qa-test.js [baseUrl]
+ *
+ * WARNING: this suite writes through the real API, including PATCHes to the
+ * Settings singleton. Run against a local or staging stack only.
+ *
+ * CR-95 was traced to this script being pointed at a live database: it left
+ * `paypal.me/pawsitive` and `facebook.com/pawsitive-test` persisted in the
+ * organization settings, which staff reported as "the settings page reverts to
+ * placeholder defaults". Two safeguards now prevent a repeat -- a host guard,
+ * and a snapshot/restore around the settings tests.
  */
 import prisma from '../src/lib/prisma.js';
 
 const BASE = process.argv[2] || 'http://localhost:5000';
 const ADMIN = { email: 'admin@pawsitivetransformations.org', password: 'Admin123!' };
+
+const LOCAL_HOST_PATTERN = /^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\]|host\.docker\.internal)$/i;
+
+function assertSafeTarget() {
+  if (process.argv.includes('--allow-remote')) {
+    console.warn(`\n!! Running destructive QA against ${BASE} because --allow-remote was passed.\n`);
+    return;
+  }
+
+  let hostname;
+  try {
+    hostname = new URL(BASE).hostname;
+  } catch {
+    throw new Error(`Invalid base URL: ${BASE}`);
+  }
+
+  if (!LOCAL_HOST_PATTERN.test(hostname)) {
+    console.error(
+      `\nRefusing to run against "${hostname}".\n\n`
+      + 'This suite writes real data, including organization settings, and has\n'
+      + 'previously corrupted live settings (CR-95). Point it at localhost, or\n'
+      + 'pass --allow-remote if you are certain the target is disposable.\n',
+    );
+    process.exit(1);
+  }
+}
+
+/** Snapshot the settings row so mutating tests can put it back afterwards. */
+async function snapshotSettings() {
+  try {
+    const { data } = await api('/api/settings');
+    return data && typeof data === 'object' ? data : null;
+  } catch {
+    return null;
+  }
+}
+
+async function restoreSettings(snapshot) {
+  if (!snapshot) return;
+  const fields = [
+    'stripeLink', 'paypalLink', 'venmoHandle', 'facebookUrl', 'instagramUrl',
+    'amazonWishlistUrl', 'chewyWishlistUrl',
+  ];
+  const body = {};
+  for (const field of fields) {
+    if (snapshot[field] !== undefined) body[field] = snapshot[field] ?? '';
+  }
+  if (Object.keys(body).length === 0) return;
+  try {
+    await api('/api/settings', { method: 'PATCH', body });
+    console.log('  ---   Restored organization settings to their pre-test values');
+  } catch (error) {
+    console.warn(`  !!    Could not restore settings: ${error.message}`);
+  }
+}
 
 const results = [];
 let token = '';
@@ -51,6 +115,7 @@ async function api(path, { method = 'GET', body, auth = true, expectStatus } = {
 }
 
 async function run() {
+  assertSafeTarget();
   console.log(`\nKitten-EHR QA — ${BASE}\n`);
 
   // Health
@@ -150,6 +215,9 @@ async function run() {
     fail('GET /api/settings', e.message);
   }
 
+  // Everything below mutates the Settings singleton, so capture it first.
+  const settingsSnapshot = await snapshotSettings();
+
   try {
     const { data, response } = await api('/api/settings', {
       method: 'PATCH',
@@ -237,6 +305,8 @@ async function run() {
   } catch (e) {
     fail('PATCH /api/settings normalizes social URLs', e.message);
   }
+
+  await restoreSettings(settingsSnapshot);
 
   // Phase 2: contracts & onboarding
   try {
