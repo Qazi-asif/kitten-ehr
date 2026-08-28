@@ -51,6 +51,7 @@ function KittenHealthTab({
   onCreateWeight,
   onUpdateWeight,
   onDeleteWeight,
+  onMedicalRecordsChanged,
 }) {
   const [protocolLibrary, setProtocolLibrary] = useState([]);
   const [activeProtocols, setActiveProtocols] = useState([]);
@@ -173,7 +174,9 @@ function KittenHealthTab({
     setError('');
     try {
       await markProtocolDoseGiven(kittenId, doseId, { givenDate });
-      await loadProtocolData();
+      // A vaccine dose writes into the vaccination log, which lives in the
+      // parent's `medical` prop, so the parent has to reload it too.
+      await Promise.all([loadProtocolData(), onMedicalRecordsChanged?.()]);
     } catch (err) {
       setError(err.message || 'Failed to mark dose as given.');
     } finally {

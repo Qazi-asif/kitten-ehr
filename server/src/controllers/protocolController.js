@@ -1,9 +1,29 @@
 import prisma from '../lib/prisma.js';
 import { parsePacificDateOnly, toPacificDateString } from '../utils/pacificDate.js';
+import { normalizeDateField } from '../utils/dateFields.js';
 
 const CADENCE_VALUES = ['DAILY', 'EVERY_N_DAYS', 'WEEKLY', 'MONTHLY'];
 const RECORD_TYPE_VALUES = ['NONE', 'MEDICATION', 'VACCINE'];
 const HEALTH_WRITE_MODE_VALUES = ['PER_DOSE', 'COURSE'];
+
+/**
+ * Drug names that are vaccines. Used only to rescue protocol lines saved before
+ * `recordType` existed (or saved without setting it), which default to NONE and
+ * would otherwise never reach the vaccination log — the CR-104 symptom.
+ * Lines with an explicit recordType always win over this heuristic.
+ */
+const VACCINE_NAME_PATTERN = /\b(fvrcp|frcp|hcp|rabies|felv|fiv|bordetella|distemper|panleuk|calici|rhinotrach)/i;
+
+/**
+ * Whether marking this dose given should write a vaccination log entry.
+ * An explicit recordType is authoritative; NONE falls back to the drug name so
+ * existing FVRCP protocols record correctly without needing to be re-saved.
+ */
+function writesVaccineRecord(protocolDrug) {
+  if (protocolDrug.recordType === 'VACCINE') return true;
+  if (protocolDrug.recordType && protocolDrug.recordType !== 'NONE') return false;
+  return VACCINE_NAME_PATTERN.test(protocolDrug.drugName || '');
+}
 
 // Generous safety bound on how many calendar months a MONTHLY cadence will
 // scan forward while looking for offsets inside [startDayOffset,
@@ -462,10 +482,14 @@ export async function markProtocolDoseGiven(req, res, next) {
     }
 
     const givenDateRaw = req.body?.givenDate || req.body?.administeredAt;
-    const givenAt = givenDateRaw ? new Date(givenDateRaw) : new Date();
-    if (Number.isNaN(givenAt.getTime())) {
+    const givenAt = givenDateRaw
+      ? normalizeDateField('ProtocolDose.administeredAt', givenDateRaw)
+      : new Date();
+    if (!givenAt || Number.isNaN(givenAt.getTime())) {
       return res.status(400).json({ error: 'givenDate must be a valid date' });
     }
+    // The vaccination log records a calendar day, matching manual vaccine entries.
+    const givenDay = normalizeDateField('Vaccine.dateGiven', givenDateRaw || givenAt);
 
     const existing = await prisma.protocolDose.findFirst({
       where: {
@@ -499,7 +523,7 @@ export async function markProtocolDoseGiven(req, res, next) {
       let vaccineId = existing.vaccineId;
       const administeredByName = [req.user?.firstName, req.user?.lastName].filter(Boolean).join(' ');
 
-      if (protocolDrug.recordType === 'VACCINE') {
+      if (writesVaccineRecord(protocolDrug)) {
         // Vaccines are always recorded per dose - create one every time, but
         // stay idempotent if this dose already has one linked.
         if (!vaccineId) {
@@ -507,7 +531,7 @@ export async function markProtocolDoseGiven(req, res, next) {
             data: {
               kittenId: existing.activeProtocol.kittenId,
               type: protocolDrug.drugName,
-              dateGiven: givenAt,
+              dateGiven: givenDay,
               administeredBy: administeredByName,
               notes: protocolDrug.instructions,
             },

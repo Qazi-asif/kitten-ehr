@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Eye, Trash2, Upload } from 'lucide-react';
 import { adminFetch, openApplicationUploadFile } from '../../services/api';
+import { formatPacificDisplay } from '../../utils/pacificDate.js';
+import ImageLightbox, { ImageLightboxTrigger } from '../ImageLightbox';
 
 const MAX_FILE_BYTES = 5 * 1024 * 1024;
 const ACCEPTED_TYPES = '.pdf,.jpg,.jpeg,.png,.webp,.gif,.heic,.heif';
@@ -26,7 +28,7 @@ function isImageUpload(upload) {
   return /\.(jpe?g|png|gif|webp|heic|heif)$/i.test(name);
 }
 
-function ApplicationUploadPreview({ applicationId, upload }) {
+function ApplicationUploadPreview({ applicationId, upload, onOpenImage }) {
   const [src, setSrc] = useState(null);
   const [failed, setFailed] = useState(false);
   const objectUrlRef = useRef(null);
@@ -66,11 +68,14 @@ function ApplicationUploadPreview({ applicationId, upload }) {
     return <p className="mt-2 text-xs text-gray-400">Loading preview…</p>;
   }
 
+  const label = upload.fileName || upload.docLabel || 'Upload';
+
   return (
-    <img
+    <ImageLightboxTrigger
       src={src}
-      alt={upload.fileName || upload.docLabel || 'Upload'}
-      className="mt-2 max-h-48 w-full max-w-sm rounded-lg border border-gray-200 object-contain bg-gray-50"
+      alt={label}
+      onOpen={onOpenImage}
+      className="mt-2 h-72 w-full max-w-xl"
     />
   );
 }
@@ -89,6 +94,7 @@ function ApplicationDocumentsSection({
   const [docLabel, setDocLabel] = useState('');
   const [error, setError] = useState('');
   const [openingId, setOpeningId] = useState(null);
+  const [lightboxImage, setLightboxImage] = useState(null);
 
   const labelOptions = applicationType === 'Foster' ? FOSTER_DOC_LABELS : ADOPTION_DOC_LABELS;
 
@@ -212,9 +218,13 @@ function ApplicationDocumentsSection({
                     <p className="text-xs text-gray-500">
                       {upload.docLabel || upload.fileType || 'File'}
                       {' · '}
-                      {new Date(upload.createdAt).toLocaleString()}
+                      {formatPacificDisplay(upload.createdAt, { withTime: true })}
                     </p>
-                    <ApplicationUploadPreview applicationId={applicationId} upload={upload} />
+                    <ApplicationUploadPreview
+                      applicationId={applicationId}
+                      upload={upload}
+                      onOpenImage={setLightboxImage}
+                    />
                   </div>
                   <div className="flex items-center gap-2">
                     <button
@@ -241,6 +251,15 @@ function ApplicationDocumentsSection({
             );
           })}
         </ul>
+      )}
+
+      {lightboxImage && (
+        <ImageLightbox
+          src={lightboxImage.src}
+          alt={lightboxImage.alt}
+          downloadName={lightboxImage.alt}
+          onClose={() => setLightboxImage(null)}
+        />
       )}
     </div>
   );

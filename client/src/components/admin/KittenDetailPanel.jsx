@@ -11,7 +11,7 @@ import KittenContractsSection from './KittenContractsSection';
 import KittenHealthTab from './KittenHealthTab';
 import MedicalAlertsBanner from './MedicalAlertsBanner';
 import WishlistManager from './WishlistManager';
-import FaceSheet from '../FaceSheet';
+import KittenFullRecord from '../KittenFullRecord';
 import KittenPhoto from '../KittenPhoto';
 import {
   createMedication,
@@ -139,6 +139,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
   const [photosLoading, setPhotosLoading] = useState(false);
   const [tabLoading, setTabLoading] = useState(false);
   const [loadedTabs, setLoadedTabs] = useState(() => new Set());
+  const [preparingPrint, setPreparingPrint] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [photoUploading, setPhotoUploading] = useState(false);
   const [profileForm, setProfileForm] = useState({});
@@ -174,6 +175,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
     setMedical(await fetchMedicalRecords(kittenId));
   }, [kittenId]);
 
+
   const loadWeights = useCallback(async () => {
     setWeightLogs(await fetchWeightLogs(kittenId));
   }, [kittenId]);
@@ -195,6 +197,35 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
   const loadPlacements = useCallback(async () => {
     setPlacements(await fetchKittenPlacements(kittenId));
   }, [kittenId]);
+
+  /**
+   * CR-105: tabs mount lazily, so any tab the user never opened has no data
+   * loaded and would be silently missing from the printout. Fetch every
+   * section first, let React commit it, then print.
+   */
+  const handlePrintFullRecord = useCallback(async () => {
+    setPreparingPrint(true);
+    try {
+      await Promise.all([
+        loadMedical(),
+        loadWeights(),
+        loadDocuments(),
+        loadUpdates(),
+        loadPlacements(),
+      ]);
+      setLoadedTabs((prev) => new Set([...prev, 'health', 'documents', 'updates', 'placements']));
+      // Yield two frames so the newly-loaded sections are committed to the DOM
+      // before the browser snapshots the page.
+      await new Promise((resolve) => {
+        requestAnimationFrame(() => requestAnimationFrame(resolve));
+      });
+      window.print();
+    } catch (err) {
+      setError(err.message || 'Failed to prepare the record for printing.');
+    } finally {
+      setPreparingPrint(false);
+    }
+  }, [loadMedical, loadWeights, loadDocuments, loadUpdates, loadPlacements]);
 
   useEffect(() => {
     if (!kittenId) return undefined;
@@ -570,9 +601,14 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                 {deleting ? 'Deleting...' : 'Delete Kitten'}
               </button>
             )}
-            <button type="button" onClick={() => window.print()} className="inline-flex items-center gap-1 rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50">
+            <button
+              type="button"
+              onClick={handlePrintFullRecord}
+              disabled={preparingPrint}
+              className="inline-flex items-center gap-1 rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50 disabled:opacity-60"
+            >
               <Printer className="h-3.5 w-3.5" />
-              Print
+              {preparingPrint ? 'Preparing...' : 'Print Full Record'}
             </button>
           </div>
         )}
@@ -1031,6 +1067,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
               canManageMedical={canManageMedical}
               medical={medical}
               weightLogs={weightLogs}
+              onMedicalRecordsChanged={loadMedical}
               onCreateVaccine={handleCreateVaccine}
               onUpdateVaccine={handleUpdateVaccine}
               onDeleteVaccine={handleDeleteVaccine}
@@ -1131,10 +1168,13 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
       </div>
 
       {!embedded && (
-        <FaceSheet
+        <KittenFullRecord
           kitten={kitten}
-          activeMedications={medical.medications.filter((med) => med.status === 'Active')}
-          formatDate={formatDate}
+          medical={medical}
+          weightLogs={weightLogs}
+          updates={updates}
+          documents={documents}
+          placements={placements}
         />
       )}
     </>

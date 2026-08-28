@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Download, Eye, Trash2 } from 'lucide-react';
 import { downloadKittenDocumentFile, getFileUrl, openKittenDocumentFile } from '../services/api';
 import { formatPacificDisplay } from '../utils/pacificDate';
+import ImageLightbox, { ImageLightboxTrigger } from './ImageLightbox';
 
 // Anonymous /uploads is limited to kitten *image* files only (see server/src/app.js) -
 // PDFs and other non-image docs 401 unless fetched through the authenticated
@@ -17,6 +18,7 @@ function DocumentsList({ kittenId, documents, onDelete }) {
   const [openingId, setOpeningId] = useState(null);
   const [downloadingId, setDownloadingId] = useState(null);
   const [error, setError] = useState('');
+  const [lightboxImage, setLightboxImage] = useState(null);
 
   if (documents.length === 0) {
     return (
@@ -30,7 +32,7 @@ function DocumentsList({ kittenId, documents, onDelete }) {
   async function handleView(doc) {
     setError('');
     if (isImageDocument(doc)) {
-      window.open(getFileUrl(doc.fileUrl), '_blank', 'noopener,noreferrer');
+      setLightboxImage({ src: getFileUrl(doc.fileUrl), alt: doc.fileName });
       return;
     }
     setOpeningId(doc.id);
@@ -65,6 +67,7 @@ function DocumentsList({ kittenId, documents, onDelete }) {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
+              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Preview</th>
               <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">File Name</th>
               <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Type</th>
               <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Description</th>
@@ -78,6 +81,18 @@ function DocumentsList({ kittenId, documents, onDelete }) {
 
               return (
                 <tr key={doc.id} className="hover:bg-gray-50">
+                  <td className="px-4 py-3">
+                    {isImage ? (
+                      <ImageLightboxTrigger
+                        src={getFileUrl(doc.fileUrl)}
+                        alt={doc.fileName}
+                        onOpen={setLightboxImage}
+                        className="h-24 w-32"
+                      />
+                    ) : (
+                      <span className="text-xs text-gray-400">—</span>
+                    )}
+                  </td>
                   <td className="px-4 py-3 text-sm font-medium text-gray-900">{doc.fileName}</td>
                   <td className="px-4 py-3 text-sm text-gray-600">{doc.docType || '—'}</td>
                   <td className="px-4 py-3 text-sm text-gray-600">{doc.description || '—'}</td>
@@ -135,6 +150,15 @@ function DocumentsList({ kittenId, documents, onDelete }) {
           </tbody>
         </table>
       </div>
+
+      {lightboxImage && (
+        <ImageLightbox
+          src={lightboxImage.src}
+          alt={lightboxImage.alt}
+          downloadName={lightboxImage.alt}
+          onClose={() => setLightboxImage(null)}
+        />
+      )}
     </div>
   );
 }
