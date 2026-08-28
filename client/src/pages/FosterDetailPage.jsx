@@ -10,6 +10,7 @@ import WishlistManager from '../components/admin/WishlistManager';
 import FosterPhoto from '../components/FosterPhoto';
 import { useAuth } from '../context/AuthContext';
 import { WISHLIST_OWNER_TYPES } from '../constants/wishlists';
+import { formatPacificDisplay } from '../utils/pacificDate.js';
 import { CAPABILITY_OPTIONS, EXPERIENCE_LEVELS, parseCapabilityFlags } from '../utils/fosterCapabilities';
 import {
   createFosterPlacement,
@@ -527,7 +528,7 @@ function FosterDetailPage() {
                 Setup link:{' '}
                 <span className="font-semibold text-slate-900">
                   {foster.portalAccount.hasPendingSetup
-                    ? `Pending, expires ${new Date(foster.portalAccount.tokenExpiresAt).toLocaleString()}`
+                    ? `Pending, expires ${formatPacificDisplay(foster.portalAccount.tokenExpiresAt, { withTime: true })}`
                     : 'None pending'}
                 </span>
               </p>

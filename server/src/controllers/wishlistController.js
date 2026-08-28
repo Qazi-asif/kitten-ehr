@@ -9,6 +9,19 @@ const DEFAULT_LABELS = {
   WALMART: 'Walmart Wishlist',
 };
 
+/** CR-109: the named list a link lands in when the caller does not pick one. */
+const DEFAULT_GROUP_NAME = 'General Supplies';
+const MAX_GROUP_NAME_LENGTH = 60;
+
+function normalizeGroupName(value) {
+  const trimmed = typeof value === 'string' ? value.trim() : '';
+  if (!trimmed) return DEFAULT_GROUP_NAME;
+  return trimmed.slice(0, MAX_GROUP_NAME_LENGTH);
+}
+
+// Rows are returned flat and grouped by name in the UI, which keeps the API
+// shape unchanged for existing consumers.
+
 function normalizeUrl(value = '') {
   const trimmed = value.trim();
   if (!trimmed) return '';
@@ -84,10 +97,12 @@ async function listWishlists(ownerType, ownerId, { publicView = false } = {}) {
 
   return prisma.wishlist.findMany({
     where: { ownerType, ownerId },
-    orderBy: [{ retailer: 'asc' }, { updatedAt: 'desc' }],
+    orderBy: [{ sortOrder: 'asc' }, { groupName: 'asc' }, { retailer: 'asc' }],
     select: publicView
       ? {
         id: true,
+        groupName: true,
+        sortOrder: true,
         retailer: true,
         url: true,
         label: true,
@@ -97,7 +112,7 @@ async function listWishlists(ownerType, ownerId, { publicView = false } = {}) {
   });
 }
 
-async function upsertWishlist({ ownerType, ownerId, retailer, url, label }) {
+async function upsertWishlist({ ownerType, ownerId, groupName, retailer, url, label, sortOrder }) {
   const ownerError = await validateOwner(ownerType, ownerId);
   if (ownerError) {
     const error = new Error(ownerError);
@@ -105,22 +120,111 @@ async function upsertWishlist({ ownerType, ownerId, retailer, url, label }) {
     throw error;
   }
 
+  const name = normalizeGroupName(groupName);
+
+  // A new named list goes to the end unless the caller specifies a position.
+  let resolvedSortOrder = sortOrder;
+  if (!Number.isInteger(resolvedSortOrder)) {
+    const sibling = await prisma.wishlist.findFirst({
+      where: { ownerType, ownerId, groupName: name },
+      select: { sortOrder: true },
+    });
+    if (sibling) {
+      resolvedSortOrder = sibling.sortOrder;
+    } else {
+      const last = await prisma.wishlist.findFirst({
+        where: { ownerType, ownerId },
+        orderBy: { sortOrder: 'desc' },
+        select: { sortOrder: true },
+      });
+      resolvedSortOrder = last ? last.sortOrder + 1 : 0;
+    }
+  }
+
   return prisma.wishlist.upsert({
     where: {
-      ownerType_ownerId_retailer: { ownerType, ownerId, retailer },
+      ownerType_ownerId_groupName_retailer: {
+        ownerType, ownerId, groupName: name, retailer,
+      },
     },
     update: {
       url,
       label: label || DEFAULT_LABELS[retailer],
+      sortOrder: resolvedSortOrder,
     },
     create: {
       ownerType,
       ownerId,
+      groupName: name,
       retailer,
       url,
       label: label || DEFAULT_LABELS[retailer],
+      sortOrder: resolvedSortOrder,
     },
   });
+}
+
+/** Rename a named list, moving every link in it at once (CR-109). */
+export async function renameWishlistGroup(req, res, next) {
+  try {
+    const ownerType = typeof req.body.ownerType === 'string' ? req.body.ownerType.trim().toUpperCase() : '';
+    const ownerId = parseOwnerId(req.body.ownerId);
+    const from = normalizeGroupName(req.body.from);
+    const to = normalizeGroupName(req.body.to);
+
+    if (!OWNER_TYPES.has(ownerType) || !ownerId) {
+      return res.status(400).json({ error: 'ownerType and ownerId are required' });
+    }
+    if (!canManageOwner(req, ownerType)) {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
+    if (from === to) {
+      return res.status(400).json({ error: 'The new name is the same as the current name' });
+    }
+
+    // Merging into an existing list would violate the per-retailer uniqueness
+    // key, so reject it rather than silently dropping links.
+    const collision = await prisma.wishlist.findFirst({
+      where: { ownerType, ownerId, groupName: to },
+      select: { id: true },
+    });
+    if (collision) {
+      return res.status(409).json({ error: `A wishlist named "${to}" already exists.` });
+    }
+
+    const result = await prisma.wishlist.updateMany({
+      where: { ownerType, ownerId, groupName: from },
+      data: { groupName: to },
+    });
+
+    return res.json({ renamed: result.count, from, to });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+/** Remove a named list and every retailer link inside it (CR-109). */
+export async function deleteWishlistGroup(req, res, next) {
+  try {
+    const ownerType = typeof req.query.ownerType === 'string' ? req.query.ownerType.trim().toUpperCase() : '';
+    const ownerId = parseOwnerId(req.query.ownerId);
+    const groupName = normalizeGroupName(req.query.groupName);
+
+    if (!OWNER_TYPES.has(ownerType) || !ownerId) {
+      return res.status(400).json({ error: 'ownerType and ownerId are required' });
+    }
+    if (!canManageOwner(req, ownerType)) {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
+
+    const result = await prisma.wishlist.deleteMany({
+      where: { ownerType, ownerId, groupName },
+    });
+
+    return res.json({ deleted: result.count });
+  } catch (error) {
+    return next(error);
+  }
 }
 
 export async function getWishlists(req, res, next) {
@@ -190,7 +294,9 @@ export async function createWishlist(req, res, next) {
       return res.status(403).json({ error: 'Forbidden' });
     }
 
-    const wishlist = await upsertWishlist({ ownerType, ownerId, retailer, url, label });
+    const wishlist = await upsertWishlist({
+      ownerType, ownerId, groupName: req.body.groupName, retailer, url, label,
+    });
     res.status(201).json(wishlist);
   } catch (error) {
     if (error.statusCode === 404) return res.status(404).json({ error: error.message });
@@ -217,6 +323,7 @@ export async function createFosterWishlist(req, res, next) {
     const wishlist = await upsertWishlist({
       ownerType: 'FOSTER',
       ownerId,
+      groupName: req.body.groupName,
       retailer,
       url,
       label,
@@ -247,6 +354,7 @@ export async function createKittenWishlist(req, res, next) {
     const wishlist = await upsertWishlist({
       ownerType: 'KITTEN',
       ownerId,
+      groupName: req.body.groupName,
       retailer,
       url,
       label,

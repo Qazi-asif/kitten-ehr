@@ -1,20 +1,43 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Plus, Trash2 } from 'lucide-react';
+import { Pencil, Plus, Trash2 } from 'lucide-react';
 import { WISHLIST_RETAILER_OPTIONS } from '../../constants/wishlists';
-import { createWishlist, deleteWishlist, fetchWishlists } from '../../services/wishlistApi';
+import {
+  createWishlist,
+  deleteWishlist,
+  deleteWishlistGroup,
+  fetchWishlists,
+  groupWishlists,
+  renameWishlistGroup,
+} from '../../services/wishlistApi';
+
+const DEFAULT_GROUP_NAME = 'General Supplies';
 
 const emptyForm = {
+  groupName: '',
   retailer: '',
   url: '',
   label: '',
 };
 
-function WishlistManager({ ownerType, ownerId, canManage = false, title = 'Manage Wishlists', description }) {
+/**
+ * `enableGroups` turns on the named-wishlist UI from CR-109. It is on for the
+ * organization settings page; foster and kitten wishlists stay as a single
+ * implicit list, so their links all land in the default group.
+ */
+function WishlistManager({
+  ownerType,
+  ownerId,
+  canManage = false,
+  enableGroups = false,
+  title = 'Manage Wishlists',
+  description,
+}) {
   const [items, setItems] = useState([]);
   const [form, setForm] = useState(emptyForm);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
+  const [busyGroup, setBusyGroup] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
@@ -42,13 +65,25 @@ function WishlistManager({ ownerType, ownerId, canManage = false, title = 'Manag
     load();
   }, [load]);
 
+  const groups = useMemo(() => groupWishlists(items), [items]);
+
+  const targetGroupName = (enableGroups ? form.groupName.trim() : '') || DEFAULT_GROUP_NAME;
+
+  // Retailers are unique per named list, so what is still available depends on
+  // which list the new link is going into.
   const availableRetailers = useMemo(() => {
-    const used = new Set(items.map((item) => item.retailer));
+    const used = new Set(
+      items
+        .filter((item) => (item.groupName || DEFAULT_GROUP_NAME) === targetGroupName)
+        .map((item) => item.retailer),
+    );
     return WISHLIST_RETAILER_OPTIONS.filter((option) => !used.has(option.value));
-  }, [items]);
+  }, [items, targetGroupName]);
 
   useEffect(() => {
-    if (!form.retailer && availableRetailers.length > 0) {
+    if (availableRetailers.length === 0) return;
+    const stillValid = availableRetailers.some((option) => option.value === form.retailer);
+    if (!stillValid) {
       setForm((prev) => ({ ...prev, retailer: availableRetailers[0].value }));
     }
   }, [availableRetailers, form.retailer]);
@@ -65,6 +100,11 @@ function WishlistManager({ ownerType, ownerId, canManage = false, title = 'Manag
       setSuccess('');
       return;
     }
+    if (availableRetailers.length === 0) {
+      setError(`"${targetGroupName}" already has a link for every retailer.`);
+      setSuccess('');
+      return;
+    }
 
     setSaving(true);
     setError('');
@@ -73,11 +113,13 @@ function WishlistManager({ ownerType, ownerId, canManage = false, title = 'Manag
       await createWishlist({
         ownerType,
         ownerId,
+        groupName: targetGroupName,
         retailer: form.retailer,
         url: form.url,
         label: form.label,
       });
-      setForm(emptyForm);
+      // Keep the list name so several retailers can be added back to back.
+      setForm((prev) => ({ ...emptyForm, groupName: prev.groupName }));
       await load();
       setSuccess('Wishlist link saved.');
     } catch (err) {
@@ -104,6 +146,77 @@ function WishlistManager({ ownerType, ownerId, canManage = false, title = 'Manag
     }
   }
 
+  async function handleRenameGroup(name) {
+    if (!canManage) return;
+    const next = window.prompt('Rename this wishlist:', name);
+    if (next === null) return;
+    if (!next.trim() || next.trim() === name) return;
+
+    setBusyGroup(name);
+    setError('');
+    setSuccess('');
+    try {
+      await renameWishlistGroup({ ownerType, ownerId, from: name, to: next.trim() });
+      await load();
+      setSuccess('Wishlist renamed.');
+    } catch (err) {
+      setError(err.message || 'Failed to rename wishlist.');
+    } finally {
+      setBusyGroup('');
+    }
+  }
+
+  async function handleDeleteGroup(name, linkCount) {
+    if (!canManage) return;
+    if (!window.confirm(`Delete "${name}" and its ${linkCount} link(s)?`)) return;
+
+    setBusyGroup(name);
+    setError('');
+    setSuccess('');
+    try {
+      await deleteWishlistGroup({ ownerType, ownerId, groupName: name });
+      await load();
+      setSuccess('Wishlist deleted.');
+    } catch (err) {
+      setError(err.message || 'Failed to delete wishlist.');
+    } finally {
+      setBusyGroup('');
+    }
+  }
+
+  function renderLink(item) {
+    return (
+      <div
+        key={item.id}
+        className="flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-3 sm:flex-row sm:items-center sm:justify-between"
+      >
+        <div className="min-w-0">
+          <p className="text-sm font-semibold text-gray-900">{item.label || item.retailer}</p>
+          <p className="text-xs uppercase tracking-wide text-gray-500">{item.retailer}</p>
+          <a
+            href={item.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-1 block truncate text-xs text-brand hover:underline"
+          >
+            {item.url}
+          </a>
+        </div>
+        {canManage && (
+          <button
+            type="button"
+            onClick={() => handleDelete(item.id)}
+            disabled={deletingId === item.id}
+            className="inline-flex items-center gap-1 rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-50 disabled:opacity-60"
+          >
+            <Trash2 className="h-3.5 w-3.5" />
+            {deletingId === item.id ? 'Removing...' : 'Remove'}
+          </button>
+        )}
+      </div>
+    );
+  }
+
   return (
     <section className="rounded-xl border border-gray-200 bg-gray-50 p-4">
       <h3 className="text-sm font-bold text-gray-900">{title}</h3>
@@ -121,54 +234,87 @@ function WishlistManager({ ownerType, ownerId, canManage = false, title = 'Manag
         </p>
       )}
 
-      <div className="mt-4 space-y-3">
+      <div className="mt-4 space-y-4">
         {loading ? (
           <p className="text-sm text-gray-500">Loading wishlists...</p>
-        ) : items.length === 0 ? (
+        ) : groups.length === 0 ? (
           <p className="text-sm text-gray-500">No wishlist links yet.</p>
-        ) : (
-          items.map((item) => (
-            <div
-              key={item.id}
-              className="flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-3 sm:flex-row sm:items-center sm:justify-between"
-            >
-              <div className="min-w-0">
-                <p className="text-sm font-semibold text-gray-900">{item.label || item.retailer}</p>
-                <p className="text-xs uppercase tracking-wide text-gray-500">{item.retailer}</p>
-                <a
-                  href={item.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-1 block truncate text-xs text-brand hover:underline"
-                >
-                  {item.url}
-                </a>
+        ) : enableGroups ? (
+          groups.map((group) => (
+            <div key={group.name} className="rounded-lg border border-gray-200 bg-white p-3">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <p className="text-sm font-bold text-gray-900">
+                  {group.name}
+                  <span className="ml-2 text-xs font-normal text-gray-500">
+                    {group.links.length} link{group.links.length === 1 ? '' : 's'}
+                  </span>
+                </p>
+                {canManage && (
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => handleRenameGroup(group.name)}
+                      disabled={busyGroup === group.name}
+                      className="inline-flex items-center gap-1 rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-50 disabled:opacity-60"
+                    >
+                      <Pencil className="h-3.5 w-3.5" />
+                      Rename
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteGroup(group.name, group.links.length)}
+                      disabled={busyGroup === group.name}
+                      className="inline-flex items-center gap-1 rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-50 disabled:opacity-60"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                      Delete list
+                    </button>
+                  </div>
+                )}
               </div>
-              {canManage && (
-                <button
-                  type="button"
-                  onClick={() => handleDelete(item.id)}
-                  disabled={deletingId === item.id}
-                  className="inline-flex items-center gap-1 rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-50 disabled:opacity-60"
-                >
-                  <Trash2 className="h-3.5 w-3.5" />
-                  {deletingId === item.id ? 'Removing...' : 'Remove'}
-                </button>
-              )}
+              <div className="mt-3 space-y-3">{group.links.map(renderLink)}</div>
             </div>
           ))
+        ) : (
+          groups.flatMap((group) => group.links).map(renderLink)
         )}
       </div>
 
-      {canManage && availableRetailers.length > 0 && (
+      {canManage && (
         <div className="mt-4 space-y-3 rounded-lg border border-dashed border-gray-300 bg-white p-4">
-          <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Add Wishlist Link</p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+            Add Wishlist Link
+          </p>
+
+          {enableGroups && (
+            <label className="block">
+              <span className="text-xs font-semibold uppercase text-gray-500">Wishlist name</span>
+              <input
+                type="text"
+                list="wishlist-group-names"
+                value={form.groupName}
+                onChange={(e) => setForm((prev) => ({ ...prev, groupName: e.target.value }))}
+                placeholder={DEFAULT_GROUP_NAME}
+                className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+              />
+              <datalist id="wishlist-group-names">
+                {groups.map((group) => (
+                  <option key={group.name} value={group.name} />
+                ))}
+              </datalist>
+              <span className="mt-1 block text-xs text-gray-500">
+                Type a new name to start another list, or pick an existing one to add a retailer to it.
+              </span>
+            </label>
+          )}
+
           <label className="block">
             <span className="text-xs font-semibold uppercase text-gray-500">Retailer</span>
             <select
               value={form.retailer}
               onChange={(e) => setForm((prev) => ({ ...prev, retailer: e.target.value }))}
-              className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+              disabled={availableRetailers.length === 0}
+              className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm disabled:bg-gray-100"
             >
               {availableRetailers.map((option) => (
                 <option key={option.value} value={option.value}>
@@ -200,17 +346,20 @@ function WishlistManager({ ownerType, ownerId, canManage = false, title = 'Manag
           <button
             type="button"
             onClick={handleAdd}
-            disabled={saving}
+            disabled={saving || availableRetailers.length === 0}
             className="inline-flex items-center gap-2 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-60"
           >
             <Plus className="h-4 w-4" />
             {saving ? 'Saving...' : 'Add Wishlist Link'}
           </button>
+          {availableRetailers.length === 0 && (
+            <p className="text-xs text-gray-500">
+              {enableGroups
+                ? `"${targetGroupName}" already has a link for every retailer. Use a different wishlist name to add more.`
+                : 'All retailer wishlists are already configured.'}
+            </p>
+          )}
         </div>
-      )}
-
-      {canManage && !loading && availableRetailers.length === 0 && items.length > 0 && (
-        <p className="mt-3 text-xs text-gray-500">All retailer wishlists are already configured.</p>
       )}
     </section>
   );

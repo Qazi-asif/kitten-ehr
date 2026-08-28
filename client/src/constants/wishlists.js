@@ -35,3 +35,26 @@ export const WISHLIST_RETAILER_META = {
 };
 
 export const ORG_SETTINGS_ID = 1;
+
+export const DEFAULT_WISHLIST_GROUP_NAME = 'General Supplies';
+
+/**
+ * CR-109: collapses flat wishlist rows into named lists,
+ * [{ name, links: [...] }], ordered by sortOrder then name.
+ * Mirrors `groupWishlists` on the server so admin and public views agree.
+ */
+export function groupWishlists(rows = []) {
+  const groups = new Map();
+  for (const row of rows) {
+    const name = row.groupName || DEFAULT_WISHLIST_GROUP_NAME;
+    if (!groups.has(name)) {
+      groups.set(name, { name, sortOrder: row.sortOrder ?? 0, links: [] });
+    }
+    const group = groups.get(name);
+    group.sortOrder = Math.min(group.sortOrder, row.sortOrder ?? 0);
+    group.links.push(row);
+  }
+  return [...groups.values()].sort(
+    (a, b) => a.sortOrder - b.sortOrder || a.name.localeCompare(b.name),
+  );
+}
