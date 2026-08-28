@@ -1,15 +1,8 @@
 import prisma from '../lib/prisma.js';
 import { TERMINAL_KITTEN_STATUSES } from '../validations/kittenValidation.js';
-import { parsePacificDateOnly, endOfPacificDayUtc, startOfPacificTodayUtc, addPacificDays, toPacificDateString } from '../utils/pacificDate.js';
-
-/** Default reporting window when no explicit range is provided: trailing 30 days (Pacific). */
-function resolveDateRange(query) {
-  const endDate = query.endDate ? endOfPacificDayUtc(parsePacificDateOnly(query.endDate)) : endOfPacificDayUtc(startOfPacificTodayUtc());
-  const startDate = query.startDate
-    ? parsePacificDateOnly(query.startDate)
-    : addPacificDays(startOfPacificTodayUtc(), -30);
-  return { startDate, endDate };
-}
+import { toPacificDateString } from '../utils/pacificDate.js';
+import { buildCsv } from '../utils/csv.js';
+import { getReport, listReports, resolveDateRange } from '../services/reports.js';
 
 export async function getReportsSummary(req, res) {
   const { startDate, endDate } = resolveDateRange(req.query);
@@ -46,10 +39,63 @@ export async function getReportsSummary(req, res) {
   });
 }
 
-function csvEscape(value) {
-  const str = value === null || value === undefined ? '' : String(value);
-  if (/[",\n]/.test(str)) return `"${str.replace(/"/g, '""')}"`;
-  return str;
+/** CR-102: the catalogue of defined reports, for the report picker. */
+export async function getReportsCatalog(_req, res) {
+  res.json({ reports: listReports() });
+}
+
+/**
+ * CR-102: run one defined report. Returns JSON by default, or CSV when
+ * `?format=csv`, so the on-screen view and the export are always the same data.
+ */
+export async function runReportHandler(req, res, next) {
+  try {
+    const report = getReport(req.params.reportKey);
+    if (!report) {
+      return res.status(404).json({ error: `Unknown report: ${req.params.reportKey}` });
+    }
+
+    const range = resolveDateRange(req.query);
+    const options = { vaccineType: req.query.vaccineType || '' };
+    const result = await report.run(prisma, range, options);
+
+    const payload = {
+      key: report.key,
+      label: report.label,
+      description: report.description,
+      range: {
+        startDate: toPacificDateString(range.startDate),
+        endDate: toPacificDateString(range.endDate),
+      },
+      ...result,
+    };
+
+    if ((req.query.format || '').toLowerCase() === 'csv') {
+      const meta = [
+        [report.label],
+        result.ignoresDateRange
+          ? ['All dates']
+          : [`Range: ${payload.range.startDate} to ${payload.range.endDate}`],
+        [],
+        ['Summary'],
+        ...result.summary.map((item) => [item.label, item.value]),
+        [],
+        ['Detail'],
+      ];
+      const csv = buildCsv([...meta, result.columns, ...result.rows]);
+
+      res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+      res.setHeader(
+        'Content-Disposition',
+        `attachment; filename="${report.key}-${toPacificDateString(new Date())}.csv"`,
+      );
+      return res.send(csv);
+    }
+
+    return res.json(payload);
+  } catch (error) {
+    return next(error);
+  }
 }
 
 export async function exportKittensCsv(req, res) {
@@ -85,7 +131,7 @@ export async function exportKittensCsv(req, res) {
     k.currentFoster?.name || '',
   ]);
 
-  const csv = [headers, ...rows].map((row) => row.map(csvEscape).join(',')).join('\r\n');
+  const csv = buildCsv([headers, ...rows]);
 
   res.setHeader('Content-Type', 'text/csv; charset=utf-8');
   res.setHeader('Content-Disposition', `attachment; filename="kittens-${toPacificDateString(new Date())}.csv"`);

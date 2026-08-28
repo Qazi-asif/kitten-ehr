@@ -57,6 +57,7 @@ export function fetchKittens(params) {
   if (Array.isArray(params.ids) && params.ids.length > 0) {
     searchParams.set('ids', params.ids.join(','));
   }
+  if (params.reminder) searchParams.set('reminder', params.reminder);
 
   const query = searchParams.toString();
   return adminFetch(`/kittens${query ? `?${query}` : ''}`).then(async (response) => {
@@ -693,6 +694,46 @@ export async function fetchReportsSummary(filters = {}) {
   const response = await adminFetch(`/reports/summary${query ? `?${query}` : ''}`);
   if (!response.ok) throw new Error('Failed to load reports summary');
   return response.json();
+}
+
+/** CR-102: the catalogue of defined reports. */
+export async function fetchReportsCatalog() {
+  const response = await adminFetch('/reports/catalog');
+  if (!response.ok) throw new Error('Failed to load report catalog');
+  return response.json();
+}
+
+function buildReportQuery({ startDate, endDate, vaccineType } = {}) {
+  const params = new URLSearchParams();
+  if (startDate) params.set('startDate', startDate);
+  if (endDate) params.set('endDate', endDate);
+  if (vaccineType) params.set('vaccineType', vaccineType);
+  return params;
+}
+
+/** CR-102: run one defined report and get its summary counts plus rows. */
+export async function runReport(reportKey, filters = {}) {
+  const query = buildReportQuery(filters).toString();
+  const response = await adminFetch(`/reports/run/${reportKey}${query ? `?${query}` : ''}`);
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to run report'));
+  return response.json();
+}
+
+/** CR-102: download the same report as CSV. */
+export async function downloadReportCsv(reportKey, filters = {}) {
+  const params = buildReportQuery(filters);
+  params.set('format', 'csv');
+  const response = await adminFetch(`/reports/run/${reportKey}?${params.toString()}`);
+  if (!response.ok) {
+    throw new Error(await readApiError(response, 'Failed to export report'));
+  }
+  const blob = await response.blob();
+  const objectUrl = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = objectUrl;
+  link.download = `${reportKey}-${new Date().toISOString().slice(0, 10)}.csv`;
+  link.click();
+  window.setTimeout(() => URL.revokeObjectURL(objectUrl), 60_000);
 }
 
 export async function downloadKittensCsv() {
