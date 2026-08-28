@@ -219,6 +219,14 @@ app.use(authenticatedLimiter);
 app.use('/api/public/applications', applicationLimiter);
 app.use('/api/public/donations', donationLimiter);
 
+// The org logo, authorized-representative signature and Venmo QR are stored in
+// Settings as base64 data URLs, so one settings save legitimately carries
+// several MB - the logo alone is routinely >2mb. Give that single route its own
+// ceiling (sized for the 5mb-per-file client cap plus base64's ~33% overhead)
+// rather than raising it for every JSON route. Registered before the global
+// parser below, which then no-ops because body-parser skips an already-parsed body.
+app.use('/api/settings', express.json({ limit: '12mb' }));
+
 // 2mb covers signature data URLs without allowing multi-photo JSON bombs that
 // spike Hostinger RAM. File uploads still go through multer (5mb/file).
 app.use(express.json({ limit: '2mb' }));
@@ -338,6 +346,15 @@ app.use((err, _req, res, _next) => {
 
   if (err.code === 'LIMIT_FILE_SIZE') {
     return res.status(413).json({ error: 'File too large. Max 5MB.' });
+  }
+
+  // body-parser rejects oversize JSON with status 413; without this it fell
+  // through to the generic branch below and surfaced as an opaque 500
+  // "Internal Server Error" with no hint that an image was the culprit.
+  if (err.type === 'entity.too.large' || err.status === 413 || err.statusCode === 413) {
+    return res.status(413).json({
+      error: 'Request too large. Please upload a smaller image and try again.',
+    });
   }
 
   if (err.code === 'ENOENT') {
