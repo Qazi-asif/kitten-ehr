@@ -25,8 +25,6 @@ if (!process.env.JWT_SECRET?.trim()) {
 
 const { default: app } = await import('./app.js');
 const { syncPermissionsFromDefaults } = await import('./utils/syncPermissions.js');
-const { attachStaffChatWebSocket, getStaffChatOnlineIds } = await import('./websocket/staffChat.js');
-const { ensureAllStaffConversation } = await import('./controllers/staffChatController.js');
 
 try {
   const result = await syncPermissionsFromDefaults();
@@ -37,17 +35,8 @@ try {
   console.error('[permissions] Sync failed (continuing boot):', err.message || err);
 }
 
-try {
-  const allStaff = await ensureAllStaffConversation();
-  console.log(`[staff-chat] All Staff conversation ready (${allStaff.id})`);
-} catch (err) {
-  console.error('[staff-chat] Bootstrap failed (continuing boot):', err.message || err);
-}
-
 const PORT = process.env.PORT || 5000;
 const server = http.createServer(app);
-attachStaffChatWebSocket(server);
-app.set('staffChatOnlineIds', getStaffChatOnlineIds);
 
 server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
