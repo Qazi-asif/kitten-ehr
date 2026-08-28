@@ -2,12 +2,13 @@ import { useCallback, useEffect, useState } from 'react';
 import { FileText, Upload } from 'lucide-react';
 import PortalNav from '../../components/portal/PortalNav';
 import { fetchMyKittenDocuments, fetchMyPlacements, uploadMyKittenDocument } from '../../services/portalDataApi';
+import { formatPacificDisplay } from '../../utils/pacificDate.js';
 
 const DOC_TYPE_OPTIONS = ['Photo Update', 'Vet Record', 'Other'];
 
 function formatDate(value) {
   if (!value) return '—';
-  return new Date(value).toLocaleString();
+  return formatPacificDisplay(value, { withTime: true });
 }
 
 function PortalDocumentsPage() {

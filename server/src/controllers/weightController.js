@@ -1,10 +1,9 @@
 import prisma from '../lib/prisma.js';
-import { parsePacificDateOnly } from '../utils/pacificDate.js';
+import { normalizeDateField } from '../utils/dateFields.js';
 
-function asPacificDate(value) {
-  if (value == null || value === '') return null;
-  return parsePacificDateOnly(value) || new Date(value);
-}
+// Weight entries carry a time of day, so this must resolve Pacific wall time
+// rather than a calendar day. See utils/dateFields.js.
+const asWeightDate = (value) => normalizeDateField('WeightLog.date', value);
 
 export async function getWeightsByKittenId(req, res, next) {
   try {
@@ -51,7 +50,7 @@ export async function createWeightLog(req, res, next) {
     const log = await prisma.weightLog.create({
       data: {
         kittenId: parsedKittenId,
-        date: asPacificDate(date),
+        date: asWeightDate(date),
         weightGrams: grams,
         weightOz: oz,
         loggedBy: loggedBy ?? 'Admin',
@@ -85,7 +84,7 @@ export async function updateWeightLog(req, res, next) {
       data: {
         weightGrams: grams,
         weightOz: oz,
-        ...(date != null ? { date: asPacificDate(date) } : {}),
+        ...(date != null ? { date: asWeightDate(date) } : {}),
         ...(loggedBy != null ? { loggedBy } : {}),
         ...(notes != null ? { notes } : {}),
       },

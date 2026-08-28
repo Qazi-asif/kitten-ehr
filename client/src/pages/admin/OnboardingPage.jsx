@@ -10,6 +10,7 @@ import {
   fetchOnboardingList,
   updateOnboardingChecklistItem,
 } from '../../services/api';
+import { formatPacificDisplay } from '../../utils/pacificDate.js';
 
 const emptyForm = {
   fosterId: '',
@@ -315,7 +316,7 @@ function OnboardingPage() {
                       </p>
                       {item.completedAt && (
                         <p className="mt-1 text-xs text-gray-500">
-                          Completed {new Date(item.completedAt).toLocaleString()}
+                          Completed {formatPacificDisplay(item.completedAt, { withTime: true })}
                           {item.completedByUser
                             ? ` by ${item.completedByUser.firstName} ${item.completedByUser.lastName}`
                             : ''}

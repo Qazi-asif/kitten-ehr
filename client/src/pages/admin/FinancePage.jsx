@@ -8,6 +8,7 @@ import {
   fetchKittens,
   fetchTransactions,
 } from '../../services/api';
+import { formatPacificDisplay } from '../../utils/pacificDate.js';
 
 const TYPE_FILTERS = [
   { id: '', label: 'All' },
@@ -37,7 +38,7 @@ function formatCurrency(amount) {
 function formatTransactionDate(value) {
   const parsed = new Date(value);
   if (Number.isNaN(parsed.getTime())) return '—';
-  return parsed.toLocaleDateString(undefined, { timeZone: 'UTC' });
+  return formatPacificDisplay(parsed);
 }
 
 function FinancePage() {

@@ -9,6 +9,7 @@ import {
   updateEmailSettings,
   updateEmailTemplate,
 } from '../../services/api';
+import { formatPacificDisplay } from '../../utils/pacificDate.js';
 
 const TABS = [
   { id: 'templates', label: 'Templates', icon: Mail },
@@ -468,7 +469,7 @@ function EmailTemplatesPage() {
               ) : (
                 logs.map((log) => (
                   <tr key={log.id}>
-                    <td className="px-4 py-3 text-slate-500">{new Date(log.createdAt).toLocaleString()}</td>
+                    <td className="px-4 py-3 text-slate-500">{formatPacificDisplay(log.createdAt, { withTime: true })}</td>
                     <td className="px-4 py-3 font-mono text-xs text-slate-600">{log.templateKey}</td>
                     <td className="px-4 py-3 text-slate-700">{log.toEmail}</td>
                     <td className="px-4 py-3">

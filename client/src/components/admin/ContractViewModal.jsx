@@ -6,6 +6,7 @@ import {
   resolveContractKittenName,
   resolveContractSignatureImage,
 } from '../../utils/contractAudit';
+import { formatPacificDisplay } from '../../utils/pacificDate.js';
 
 function ContractViewModal({ contract, templates = [], onClose }) {
   if (!contract) return null;
@@ -51,7 +52,7 @@ function ContractViewModal({ contract, templates = [], onClose }) {
             <div className="rounded-lg bg-slate-50 px-3 py-2">
               <p className="text-xs font-semibold uppercase text-slate-500">Signed</p>
               <p className="text-sm font-medium text-slate-900">
-                {contract.signedAt ? new Date(contract.signedAt).toLocaleString() : '—'}
+                {contract.signedAt ? formatPacificDisplay(contract.signedAt, { withTime: true }) : '—'}
               </p>
             </div>
             <div className="rounded-lg bg-slate-50 px-3 py-2">
@@ -133,7 +134,7 @@ function ContractViewModal({ contract, templates = [], onClose }) {
                     )}
                     <p className="text-xs text-slate-500">
                       {entry.name}
-                      {entry.signedAt ? ` · ${new Date(entry.signedAt).toLocaleString()}` : ''}
+                      {entry.signedAt ? ` · ${formatPacificDisplay(entry.signedAt, { withTime: true })}` : ''}
                     </p>
                   </div>
                 ))}

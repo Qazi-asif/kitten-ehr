@@ -4,10 +4,12 @@ import { Heart, Home, PawPrint, ShoppingBag, Menu } from 'lucide-react';
 import { isDonatePageLive } from '../../constants/siteFeatures';
 import {
   DEFAULT_GIVEBUTTER_SPONSOR_URL,
+  GIVEBUTTER_WIDGET_IDS,
 } from '../../constants/givebutterDefaults';
 import { sponsorshipOverflowDisclosure } from '../../constants/donationCopy';
 import { WISHLIST_OWNER_TYPES, WISHLIST_RETAILER_META } from '../../constants/wishlists';
 import GivebutterDonationWidget from '../../components/GivebutterDonationWidget';
+import { formatPacificDisplay } from '../../utils/pacificDate.js';
 import {
   fetchPublicKittenById,
   fetchPublicKittenUpdates,
@@ -36,11 +38,7 @@ function stripImagesFromContent(content = '') {
 }
 
 function formatUpdateDateShort(value) {
-  return new Date(value).toLocaleDateString(undefined, {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-  });
+  return formatPacificDisplay(value);
 }
 
 function formatPublicAge(dateOfBirth) {
@@ -410,6 +408,7 @@ function PublicKittenProfile() {
               ) : !sponsorshipComplete ? (
                 <div className="mt-8">
                   <GivebutterDonationWidget
+                    widgetId={GIVEBUTTER_WIDGET_IDS.sponsor}
                     kittenId={kitten.id}
                     kittenName={kitten.name}
                     sponsor

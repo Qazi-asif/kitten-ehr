@@ -26,16 +26,11 @@ import {
   getPublicKittenUrl,
   openShareWindow,
 } from '../../utils/smartShare';
+import { formatPacificDisplay } from '../../utils/pacificDate.js';
 
 function formatDate(value) {
   if (!value) return '—';
-  return new Date(value).toLocaleDateString(undefined, {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
+  return formatPacificDisplay(value, { withTime: true });
 }
 
 function ShareButton({ label, sublabel, className, disabled, onClick }) {

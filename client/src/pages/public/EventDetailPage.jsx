@@ -3,13 +3,10 @@ import { Link, useParams } from 'react-router-dom';
 import KittenPhoto from '../../components/KittenPhoto';
 import { fetchPublicEventBySlug } from '../../services/publicApi';
 import { getFileUrl } from '../../services/api';
+import { formatPacificDisplay } from '../../utils/pacificDate.js';
 
 function formatEventDate(value) {
-  return new Date(value).toLocaleString(undefined, {
-    weekday: 'long',
-    dateStyle: 'long',
-    timeStyle: 'short',
-  });
+  return formatPacificDisplay(value, { withTime: true });
 }
 
 function EventDetailPage() {

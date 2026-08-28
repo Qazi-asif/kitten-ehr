@@ -8,6 +8,7 @@ import {
   publishSocialPost,
   updateMarketingPost,
 } from '../../services/marketingApi';
+import { formatPacificDisplay, toPacificDateTimeLocal } from '../../utils/pacificDate.js';
 
 const PLATFORM_OPTIONS = [
   { id: 'FACEBOOK', label: 'Facebook' },
@@ -32,18 +33,11 @@ const emptyForm = {
 
 function formatDateTime(value) {
   if (!value) return '—';
-  return new Date(value).toLocaleString(undefined, {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  });
+  return formatPacificDisplay(value, { withTime: true });
 }
 
 function toDateTimeLocalValue(value) {
-  if (!value) return '';
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return '';
-  const pad = (n) => String(n).padStart(2, '0');
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+  return toPacificDateTimeLocal(value);
 }
 
 function readImageFile(file) {

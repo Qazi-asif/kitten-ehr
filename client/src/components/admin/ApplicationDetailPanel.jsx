@@ -10,6 +10,7 @@ import {
   parseApplicationFormData,
   resolveKittenOfInterest,
 } from '../../utils/applicationFormData';
+import { formatPacificDisplay } from '../../utils/pacificDate.js';
 
 const STATUS_OPTIONS = ['New', 'Under Review', 'Approved', 'Denied'];
 
@@ -91,7 +92,7 @@ function ApplicationDetailPanel({
           <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700">{application.type} Application</p>
           <h2 className="mt-1 text-xl font-bold text-gray-900">{getApplicationSummary(application.formData)}</h2>
           <p className="mt-1 text-sm text-gray-500">
-            Application #{application.id} · Submitted {new Date(application.createdAt).toLocaleString()}
+            Application #{application.id} · Submitted {formatPacificDisplay(application.createdAt, { withTime: true })}
           </p>
         </div>
         <div className="flex items-center gap-2">

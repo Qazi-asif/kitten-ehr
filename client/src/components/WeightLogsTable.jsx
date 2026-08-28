@@ -1,9 +1,8 @@
+import { formatPacificDisplay } from '../utils/pacificDate.js';
+
 function formatDateTime(value) {
   if (!value) return '—';
-  return new Date(value).toLocaleString(undefined, {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  });
+  return formatPacificDisplay(value, { withTime: true }) || '—';
 }
 
 function gramsToOz(grams) {
