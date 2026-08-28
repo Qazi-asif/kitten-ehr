@@ -15,3 +15,6 @@ client/node_modules.zip
 server/src/generated/prisma/query_engine-*.node
 server/src/generated/prisma/libquery_engine-*.node
 server/src/generated/prisma/*.node.tmp*
+
+# Runtime journal written by the weight-log timezone repair script
+server/scripts/.fix-weightlog-timezone.applied.json

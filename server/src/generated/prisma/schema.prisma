@@ -561,79 +561,25 @@ model RolePermission {
 }
 
 model User {
-  id                        Int                     @id @default(autoincrement())
-  email                     String                  @unique
+  id                        Int                   @id @default(autoincrement())
+  email                     String                @unique
   passwordHash              String
   firstName                 String
   lastName                  String
-  isActive                  Boolean                 @default(true)
+  isActive                  Boolean               @default(true)
   roleId                    Int
-  role                      Role                    @relation(fields: [roleId], references: [id], onDelete: Restrict)
-  fosterId                  Int?                    @unique
-  foster                    Foster?                 @relation(fields: [fosterId], references: [id], onDelete: SetNull)
-  createdAt                 DateTime                @default(now())
-  updatedAt                 DateTime                @updatedAt
+  role                      Role                  @relation(fields: [roleId], references: [id], onDelete: Restrict)
+  fosterId                  Int?                  @unique
+  foster                    Foster?               @relation(fields: [fosterId], references: [id], onDelete: SetNull)
+  createdAt                 DateTime              @default(now())
+  updatedAt                 DateTime              @updatedAt
   lastLoginAt               DateTime?
-  rejectedApplications      Application[]           @relation("ApplicationRejectedBy")
-  completedChecklistItems   OnboardingChecklist[]   @relation("ChecklistCompletedBy")
+  rejectedApplications      Application[]         @relation("ApplicationRejectedBy")
+  completedChecklistItems   OnboardingChecklist[] @relation("ChecklistCompletedBy")
   contentCompletions        ContentCompletion[]
-  activatedProtocols        ActiveProtocol[]        @relation("ProtocolActivatedBy")
-  administeredProtocolDoses ProtocolDose[]          @relation("ProtocolDoseAdministeredBy")
+  activatedProtocols        ActiveProtocol[]      @relation("ProtocolActivatedBy")
+  administeredProtocolDoses ProtocolDose[]        @relation("ProtocolDoseAdministeredBy")
   passwordResetTokens       PasswordResetToken[]
-  staffChatMessages         StaffChatMessage[]      @relation("StaffChatMessageSender")
-  staffChatMemberships      StaffChatMember[]
-  staffChatCreated          StaffChatConversation[] @relation("StaffChatCreatedBy")
-}
-
-enum StaffChatType {
-  DIRECT
-  GROUP
-}
-
-model StaffChatConversation {
-  id          String             @id @default(cuid())
-  type        StaffChatType
-  name        String?
-  isSystem    Boolean            @default(false)
-  createdById Int?
-  createdBy   User?              @relation("StaffChatCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
-  createdAt   DateTime           @default(now())
-  updatedAt   DateTime           @updatedAt
-  members     StaffChatMember[]
-  messages    StaffChatMessage[]
-  directKey   String?            @unique
-
-  @@index([type, updatedAt])
-}
-
-model StaffChatMember {
-  id             String                @id @default(cuid())
-  conversationId String
-  conversation   StaffChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-  userId         Int
-  user           User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  joinedAt       DateTime              @default(now())
-  lastReadAt     DateTime?
-
-  @@unique([conversationId, userId])
-  @@index([userId])
-}
-
-model StaffChatMessage {
-  id             String                 @id @default(cuid())
-  content        String
-  senderId       Int
-  sender         User                   @relation("StaffChatMessageSender", fields: [senderId], references: [id], onDelete: Cascade)
-  // Legacy single-channel field — removed after migrate-staff-chat.mjs
-  channelId      String?                @default("general")
-  conversationId String?
-  conversation   StaffChatConversation? @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-  createdAt      DateTime               @default(now())
-  updatedAt      DateTime               @updatedAt
-
-  @@index([channelId, createdAt])
-  @@index([conversationId, createdAt])
-  @@index([senderId])
 }
 
 model PasswordResetToken {
@@ -848,16 +794,23 @@ model Transaction {
   @@index([type, date])
 }
 
+// CR-109: a wishlist row is one retailer link belonging to a NAMED list.
+// `groupName` is what makes multiple named lists possible ("General Supplies",
+// "TNR / Colony", ...), each holding an Amazon and/or Chewy and/or Walmart
+// link. The uniqueness key includes groupName so the same retailer can appear
+// once per named list rather than only once per owner.
 model Wishlist {
   id        Int               @id @default(autoincrement())
   ownerType WishlistOwnerType
   ownerId   Int
+  groupName String            @default("General Supplies")
+  sortOrder Int               @default(0)
   retailer  WishlistRetailer
   url       String
   label     String            @default("")
   updatedAt DateTime          @updatedAt
 
-  @@unique([ownerType, ownerId, retailer])
+  @@unique([ownerType, ownerId, groupName, retailer])
   @@index([ownerType, ownerId])
 }
 

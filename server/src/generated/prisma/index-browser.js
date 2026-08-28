@@ -455,35 +455,6 @@ exports.Prisma.UserScalarFieldEnum = {
   lastLoginAt: 'lastLoginAt'
 };
 
-exports.Prisma.StaffChatConversationScalarFieldEnum = {
-  id: 'id',
-  type: 'type',
-  name: 'name',
-  isSystem: 'isSystem',
-  createdById: 'createdById',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  directKey: 'directKey'
-};
-
-exports.Prisma.StaffChatMemberScalarFieldEnum = {
-  id: 'id',
-  conversationId: 'conversationId',
-  userId: 'userId',
-  joinedAt: 'joinedAt',
-  lastReadAt: 'lastReadAt'
-};
-
-exports.Prisma.StaffChatMessageScalarFieldEnum = {
-  id: 'id',
-  content: 'content',
-  senderId: 'senderId',
-  channelId: 'channelId',
-  conversationId: 'conversationId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.PasswordResetTokenScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -640,6 +611,8 @@ exports.Prisma.WishlistScalarFieldEnum = {
   id: 'id',
   ownerType: 'ownerType',
   ownerId: 'ownerId',
+  groupName: 'groupName',
+  sortOrder: 'sortOrder',
   retailer: 'retailer',
   url: 'url',
   label: 'label',
@@ -697,11 +670,6 @@ exports.FosterOnboardingStatus = exports.$Enums.FosterOnboardingStatus = {
   ACTIVE: 'ACTIVE',
   DECLINED: 'DECLINED',
   WITHDRAWN: 'WITHDRAWN'
-};
-
-exports.StaffChatType = exports.$Enums.StaffChatType = {
-  DIRECT: 'DIRECT',
-  GROUP: 'GROUP'
 };
 
 exports.PasswordTokenPurpose = exports.$Enums.PasswordTokenPurpose = {
@@ -785,9 +753,6 @@ exports.Prisma.ModelName = {
   Permission: 'Permission',
   RolePermission: 'RolePermission',
   User: 'User',
-  StaffChatConversation: 'StaffChatConversation',
-  StaffChatMember: 'StaffChatMember',
-  StaffChatMessage: 'StaffChatMessage',
   PasswordResetToken: 'PasswordResetToken',
   Protocol: 'Protocol',
   ProtocolDrug: 'ProtocolDrug',
