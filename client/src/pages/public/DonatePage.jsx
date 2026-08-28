@@ -13,9 +13,15 @@ import { DONATE_PAGE_EIN } from '../../constants/siteCopy';
 import {
   DEFAULT_GIVEBUTTER_DONATE_URL,
   DEFAULT_GIVEBUTTER_NINE_LIVES_URL,
+  GIVEBUTTER_WIDGET_IDS,
 } from '../../constants/givebutterDefaults';
 import { markCheckoutSuccessParam } from '../../hooks/useGivebutterCheckout';
-import { WISHLIST_OWNER_TYPES, WISHLIST_RETAILERS } from '../../constants/wishlists';
+import {
+  WISHLIST_OWNER_TYPES,
+  WISHLIST_RETAILERS,
+  WISHLIST_RETAILER_META,
+  groupWishlists,
+} from '../../constants/wishlists';
 
 const PAYPAL_DONATE_EMBED = `<form action="https://www.paypal.com/donate" method="post" target="_top">
 <input type="hidden" name="hosted_button_id" value="2D7222ATY9EDQ" />
@@ -134,6 +140,12 @@ function DonatePage() {
 
   const orgEin = DONATE_PAGE_EIN;
 
+  // CR-109: named wishlists are the primary display. The legacy single
+  // Amazon/Chewy rows below are only used as a fallback while no named list
+  // exists yet.
+  const wishlistGroups = useMemo(() => groupWishlists(orgWishlists), [orgWishlists]);
+  const hasNamedWishlists = wishlistGroups.length > 0;
+
   const otherWayLinks = useMemo(() => {
     const amazonFromWishlist = orgWishlists.find((w) => w.retailer === WISHLIST_RETAILERS.AMAZON)?.url?.trim();
     const chewyFromWishlist = orgWishlists.find((w) => w.retailer === WISHLIST_RETAILERS.CHEWY)?.url?.trim();
@@ -233,6 +245,7 @@ function DonatePage() {
 
             <div className="mt-6 overflow-hidden rounded-xl border border-slate-100 bg-slate-50/50">
               <GivebutterDonationWidget
+                widgetId={GIVEBUTTER_WIDGET_IDS.donate}
                 amount={prefilledAmount || undefined}
                 fallbackUrl={DEFAULT_GIVEBUTTER_DONATE_URL}
                 buttonLabel="Donate securely"
@@ -284,8 +297,39 @@ function DonatePage() {
               </div>
             )}
 
+            {hasNamedWishlists && (
+              <div className="mt-6 space-y-5">
+                {wishlistGroups.map((group) => (
+                  <div key={group.name}>
+                    <p className="text-sm font-semibold text-slate-700">{group.name}</p>
+                    <ul className="mt-2 space-y-2">
+                      {group.links.map((link) => (
+                        <li key={link.id}>
+                          <a
+                            href={link.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="flex items-center gap-3 rounded-lg py-1 transition hover:bg-brand/5"
+                          >
+                            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-brand/20 bg-brand/5 text-brand">
+                              <PawIcon className="h-4 w-4" />
+                            </span>
+                            <span className="text-sm text-slate-600">
+                              {link.label || WISHLIST_RETAILER_META[link.retailer]?.label || link.retailer}
+                            </span>
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            )}
+
             <ul className="mt-6 space-y-4">
               {OTHER_WAYS.map((way) => {
+                const isLegacyWishlistRow = way.key === 'amazon' || way.key === 'chewy';
+                if (hasNamedWishlists && isLegacyWishlistRow) return null;
                 const href = otherWayLinks[way.key];
                 const isExternal = href?.startsWith('http');
                 const isWishlist = way.key === 'amazon' || way.key === 'chewy';
@@ -346,6 +390,7 @@ function DonatePage() {
           </p>
           <div className="mt-6 overflow-hidden rounded-xl border border-slate-100 bg-white p-4 shadow-sm">
             <GivebutterDonationWidget
+              widgetId={GIVEBUTTER_WIDGET_IDS.nineLives}
               frequency="monthly"
               fallbackUrl={DEFAULT_GIVEBUTTER_NINE_LIVES_URL}
               buttonLabel="Join the Nine Lives Club"

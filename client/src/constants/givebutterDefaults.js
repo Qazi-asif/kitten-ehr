@@ -1,5 +1,25 @@
 export const DEFAULT_GIVEBUTTER_ACCOUNT = 'MW5zW87vHahaqHQX';
 
+/**
+ * CR-101: widget ids from each campaign's Share/Embed panel in the Givebutter
+ * dashboard. These render the donation form inline via
+ * `<givebutter-widget id="...">` so visitors never leave the site.
+ *
+ * If a campaign is rebuilt in Givebutter its widget id changes; update it here
+ * (or override per-page from Settings) rather than falling back to a redirect.
+ */
+export const GIVEBUTTER_WIDGET_IDS = {
+  /** General one-time donation. */
+  donate: 'pQq5xn',
+  /** Nine Lives Club, recurring monthly. */
+  nineLives: 'p5MzyA',
+  /** Kitten sponsorship. */
+  sponsor: 'gV1nYk',
+};
+
+/** Loader script that activates every `<givebutter-widget>` on the page. */
+export const GIVEBUTTER_LOADER_SRC = `https://widgets.givebutter.com/latest.umd.cjs?acct=${DEFAULT_GIVEBUTTER_ACCOUNT}`;
+
 /** One-time donation, not linked to a kitten. */
 export const DEFAULT_GIVEBUTTER_DONATE_CAMPAIGN = 'pawsitivetransformations';
 export const DEFAULT_GIVEBUTTER_DONATE_URL = 'https://givebutter.com/pawsitivetransformations';

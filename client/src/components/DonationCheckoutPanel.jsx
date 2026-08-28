@@ -1,6 +1,6 @@
 import GivebutterDonationWidget from './GivebutterDonationWidget';
 import { sponsorshipOverflowDisclosure } from '../constants/donationCopy';
-import { DEFAULT_GIVEBUTTER_SPONSOR_URL } from '../constants/givebutterDefaults';
+import { DEFAULT_GIVEBUTTER_SPONSOR_URL, GIVEBUTTER_WIDGET_IDS } from '../constants/givebutterDefaults';
 
 function DonationCheckoutPanel({
   amount,
@@ -18,6 +18,7 @@ function DonationCheckoutPanel({
 
       <div className="mt-6">
         <GivebutterDonationWidget
+          widgetId={GIVEBUTTER_WIDGET_IDS.sponsor}
           amount={amount}
           kittenId={kittenId}
           kittenName={kittenName}
