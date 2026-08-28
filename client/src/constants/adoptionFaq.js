@@ -24,6 +24,10 @@ export const ADOPTION_FAQ_ITEMS = [
     a: 'Everything we know, you know: full medical records, history, and quirks. Rescue cats come from unknown backgrounds, so we can\'t guarantee the future, but we never hide the past.',
   },
   {
+    q: 'Why are some cats adopted in pairs?',
+    a: 'Cats under a year old go home in pairs, unless you already have a cat or kitten for them to bond with. Young cats need a same-age buddy to stay socialized and burn off energy; a solo kitten with no friend often turns into a nippy, climb-the-curtains handful. A resident cat counts. A bonded dog might count too, case by case, if you have had a cat before that the dog was close with. It also depends on the cat, and we will always tell you which is which.',
+  },
+  {
     q: 'What if it doesn\'t work out?',
     a: 'Bring the cat back to us. Every adoption comes with a lifetime return promise: any reason, any time, no judgment. Please never rehome a Pawsitive cat on your own, and never surrender one to a shelter. They always have a home with us.',
   },

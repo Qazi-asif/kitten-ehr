@@ -39,6 +39,28 @@ const FOSTER_CAPACITY_OPTIONS = [
   'Kittens (weaned)',
   'Special needs / medical cats',
 ];
+// CR-106: the same option list backs both "supplies you have" and "supplies
+// you need", so a foster's answers line up field for field.
+const FOSTER_SUPPLY_OPTIONS = [
+  'Crate / dog kennel / catio',
+  'Litter',
+  'Milk replacement / formula (if bottle-feeding)',
+  'Dry food (age-appropriate)',
+  'Wet food (age-appropriate)',
+  'Bottles & nipples (if bottle-feeding)',
+  'Toys',
+];
+const MEDICATION_EXPERIENCE_OPTIONS = ['Pills', 'Liquid'];
+const BOTTLE_FEEDING_OPTIONS = ['', 'Yes', 'No'];
+
+/** Checkbox groups whose value is an array rather than a scalar. */
+const MULTI_SELECT_FIELDS = new Set([
+  'capacity',
+  'suppliesHave',
+  'suppliesNeeded',
+  'medicationExperience',
+]);
+
 const ISOLATION_ROOM_OPTIONS = ['', 'Yes', 'No', 'Not sure'];
 const VEHICLE_ACCESS_OPTIONS = ['', 'Yes', 'No', 'Sometimes / shared vehicle'];
 const FOSTER_PHOTO_ACCEPT = 'image/jpeg,image/png,image/heic,image/heif,.jpg,.jpeg,.png,.heic,.heif';
@@ -106,6 +128,11 @@ function ApplicationForm({
     isolationRoom: '',
     vehicleAccess: '',
     unexpectedStopPlan: '',
+    suppliesHave: [],
+    suppliesNeeded: [],
+    medicationExperience: [],
+    bottleFeedingExperience: '',
+    bottleFeedingAge: '',
     message: '',
   });
 
@@ -139,13 +166,16 @@ function ApplicationForm({
 
   function handleChange(e) {
     const { name, value, type, checked } = e.target;
-    if (type === 'checkbox' && name === 'capacity') {
-      setForm((prev) => ({
-        ...prev,
-        capacity: checked
-          ? [...prev.capacity, value]
-          : prev.capacity.filter((item) => item !== value),
-      }));
+    if (type === 'checkbox' && MULTI_SELECT_FIELDS.has(name)) {
+      setForm((prev) => {
+        const current = prev[name] || [];
+        return {
+          ...prev,
+          [name]: checked
+            ? [...current, value]
+            : current.filter((item) => item !== value),
+        };
+      });
       return;
     }
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -239,6 +269,14 @@ function ApplicationForm({
         payload.isolationRoom = form.isolationRoom;
         payload.vehicleAccess = form.vehicleAccess;
         payload.unexpectedStopPlan = form.unexpectedStopPlan;
+        payload.suppliesHave = form.suppliesHave;
+        payload.suppliesNeeded = form.suppliesNeeded;
+        payload.medicationExperience = form.medicationExperience;
+        payload.bottleFeedingExperience = form.bottleFeedingExperience;
+        // Only meaningful when they answered Yes.
+        payload.bottleFeedingAge = form.bottleFeedingExperience === 'Yes'
+          ? form.bottleFeedingAge.trim()
+          : '';
       }
 
       await submitApplication(
@@ -465,6 +503,95 @@ function ApplicationForm({
                   ))}
                 </div>
               </fieldset>
+              <fieldset className="block sm:col-span-2">
+                <legend className="mb-2 block text-sm font-semibold text-slate-800">What supplies do you have?</legend>
+                <p className="mb-3 text-xs text-slate-500">Select everything you already have on hand.</p>
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  {FOSTER_SUPPLY_OPTIONS.map((option) => (
+                    <label key={option} className="flex items-start gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm">
+                      <input
+                        type="checkbox"
+                        name="suppliesHave"
+                        value={option}
+                        checked={form.suppliesHave.includes(option)}
+                        onChange={handleChange}
+                        className="mt-1"
+                      />
+                      <span>{option}</span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+
+              <fieldset className="block sm:col-span-2">
+                <legend className="mb-2 block text-sm font-semibold text-slate-800">What supplies do you need?</legend>
+                <p className="mb-3 text-xs text-slate-500">Select everything you would need us to provide.</p>
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  {FOSTER_SUPPLY_OPTIONS.map((option) => (
+                    <label key={option} className="flex items-start gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm">
+                      <input
+                        type="checkbox"
+                        name="suppliesNeeded"
+                        value={option}
+                        checked={form.suppliesNeeded.includes(option)}
+                        onChange={handleChange}
+                        className="mt-1"
+                      />
+                      <span>{option}</span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+
+              <fieldset className="block sm:col-span-2">
+                <legend className="mb-2 block text-sm font-semibold text-slate-800">
+                  Have you ever administered medications to cats?
+                </legend>
+                <p className="mb-3 text-xs text-slate-500">Select all that apply.</p>
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  {MEDICATION_EXPERIENCE_OPTIONS.map((option) => (
+                    <label key={option} className="flex items-start gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm">
+                      <input
+                        type="checkbox"
+                        name="medicationExperience"
+                        value={option}
+                        checked={form.medicationExperience.includes(option)}
+                        onChange={handleChange}
+                        className="mt-1"
+                      />
+                      <span>{option}</span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+
+              <label className="block">
+                <span className="mb-2 block text-sm font-semibold text-slate-800">Bottle-feeding experience?</span>
+                <select
+                  name="bottleFeedingExperience"
+                  value={form.bottleFeedingExperience}
+                  onChange={handleChange}
+                  className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm focus:border-brand focus:ring-brand"
+                >
+                  <option value="">Select an option</option>
+                  {BOTTLE_FEEDING_OPTIONS.filter(Boolean).map((option) => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                </select>
+              </label>
+              {form.bottleFeedingExperience === 'Yes' && (
+                <label className="block">
+                  <span className="mb-2 block text-sm font-semibold text-slate-800">What age?</span>
+                  <input
+                    name="bottleFeedingAge"
+                    value={form.bottleFeedingAge}
+                    onChange={handleChange}
+                    placeholder="e.g. 2 to 4 weeks old"
+                    className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm focus:border-brand focus:ring-brand"
+                  />
+                </label>
+              )}
+
               <label className="block sm:col-span-2">
                 <span className="mb-2 block text-sm font-semibold text-slate-800">How many cats/kittens can you foster at once? *</span>
                 <input

@@ -16,6 +16,11 @@ const FIELD_LABELS = {
   isolationRoom: 'Isolation Room Available',
   vehicleAccess: 'Vehicle Access',
   unexpectedStopPlan: 'If Fostering Stops Unexpectedly',
+  suppliesHave: 'Supplies They Have',
+  suppliesNeeded: 'Supplies They Need',
+  medicationExperience: 'Medications Administered to Cats',
+  bottleFeedingExperience: 'Bottle-Feeding Experience',
+  bottleFeedingAge: 'Bottle-Feeding Age Range',
   message: 'Additional Message',
   applicant: 'Applicant',
   kitten: 'Name',
@@ -37,6 +42,11 @@ const FOSTER_FIELD_ORDER = [
   'isolationRoom',
   'vehicleAccess',
   'unexpectedStopPlan',
+  'suppliesHave',
+  'suppliesNeeded',
+  'medicationExperience',
+  'bottleFeedingExperience',
+  'bottleFeedingAge',
   'message',
 ];
 
@@ -50,6 +60,11 @@ const FOSTER_SPECIFIC_FIELDS = [
   'isolationRoom',
   'vehicleAccess',
   'unexpectedStopPlan',
+  'suppliesHave',
+  'suppliesNeeded',
+  'medicationExperience',
+  'bottleFeedingExperience',
+  'bottleFeedingAge',
 ];
 
 export function parseApplicationFormData(formData) {
