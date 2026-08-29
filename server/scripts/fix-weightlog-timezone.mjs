@@ -22,14 +22,36 @@
  *     .applied.json. Rows listed there are skipped on later runs, so a second
  *     --apply cannot double-shift them even if the same --before is reused.
  *   - DRY RUN BY DEFAULT. Nothing is written unless you pass --apply.
- *
- *   node scripts/fix-weightlog-timezone.mjs --before 2026-08-28           # preview
- *   node scripts/fix-weightlog-timezone.mjs --before 2026-08-28 --apply   # write
+ *   - Rows whose corrected time would land between midnight and 5am Pacific are
+ *     HELD BACK by default. That is the signature of a row that was already
+ *     written correctly (a plausible evening weigh-in becomes an implausible
+ *     small-hours one). Pass --allow-overnight to shift them anyway.
+ *   - Rows with an implausible stored year (before 2000, or after next year) are
+ *     ALWAYS held back. They are corrupt in a way this script cannot repair and
+ *     need a human decision.
+ *   - --exclude-ids takes a comma-separated list of WeightLog ids to hold back
+ *     by hand. A value that is not a list of positive integers aborts the run;
+ *     bad input never widens scope.
  *
  * --before takes the deploy date of the fix, as a Pacific calendar day. Rows
  * dated on or after it were written correctly and are left alone. Preview
  * first and check that the reported "after" times look like plausible working
  * hours.
+ *
+ * Flags:
+ *   --before YYYY-MM-DD   (required) Pacific day the fix deployed.
+ *   --exclude-ids a,b,c   Hold back these WeightLog ids.
+ *   --allow-overnight     Permit corrections landing 00:00-04:59 Pacific.
+ *   --apply               Write the corrections. Without it, dry run.
+ *
+ * RECOMMENDED INVOCATION FOR THE CR-103 REPAIR (run the dry run first, read it,
+ * then run the apply). The excluded ids are the 5 rows that already display as
+ * sensible evening Pacific times plus row 111, whose stored year is 0001:
+ *
+ *   node scripts/fix-weightlog-timezone.mjs --before 2026-08-28 --exclude-ids 52,54,90,91,104,111
+ *   node scripts/fix-weightlog-timezone.mjs --before 2026-08-28 --exclude-ids 52,54,90,91,104,111 --apply
+ *
+ * Expected: 113 candidates, 6 excluded, 107 updated.
  */
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -53,6 +75,33 @@ const args = process.argv.slice(2);
 const apply = args.includes('--apply');
 const beforeIndex = args.indexOf('--before');
 const beforeArg = beforeIndex === -1 ? '' : (args[beforeIndex + 1] || '');
+const allowOvernight = args.includes('--allow-overnight');
+const excludeIndex = args.indexOf('--exclude-ids');
+const excludeArg = excludeIndex === -1 ? null : (args[excludeIndex + 1] ?? '');
+
+const MIN_PLAUSIBLE_YEAR = 2000;
+const MAX_PLAUSIBLE_YEAR = new Date().getUTCFullYear() + 1;
+
+/**
+ * Parse --exclude-ids. Returns { ids } or { error }; a malformed value must abort
+ * the run rather than fall back to an empty set, which would widen scope.
+ */
+function parseExcludeIds(raw) {
+  if (raw === null) return { ids: new Set() };
+  const trimmed = String(raw).trim();
+  if (trimmed === '' || trimmed.startsWith('--')) {
+    return { error: '--exclude-ids requires a comma-separated list of ids, e.g. --exclude-ids 52,54' };
+  }
+  const ids = new Set();
+  for (const part of trimmed.split(',')) {
+    const token = part.trim();
+    if (!/^\d+$/.test(token) || Number(token) === 0) {
+      return { error: `--exclude-ids contains a value that is not a positive integer: "${token}"` };
+    }
+    ids.add(Number(token));
+  }
+  return { ids };
+}
 
 /** Pacific's UTC offset in ms at a given instant (-7h PDT, -8h PST). */
 function pacificOffsetMs(instant) {
@@ -89,6 +138,14 @@ async function main() {
     return;
   }
 
+  const excludeResult = parseExcludeIds(excludeArg);
+  if (excludeResult.error) {
+    console.error(`Refusing to run: ${excludeResult.error}`);
+    process.exitCode = 1;
+    return;
+  }
+  const excludeIds = excludeResult.ids;
+
   const journal = readJournal();
   const alreadyCorrected = new Map(journal.entries.map((e) => [e.id, e]));
 
@@ -103,59 +160,125 @@ async function main() {
     return;
   }
 
-  const skipped = [];
+  const journalled = [];
+  const heldManual = [];
+  const heldCorrupt = [];
+  const heldOvernight = [];
   const changes = [];
   for (const log of logs) {
     const stored = new Date(log.date);
     if (alreadyCorrected.has(log.id)) {
-      skipped.push(log);
+      journalled.push({ log, stored });
+      continue;
+    }
+    if (excludeIds.has(log.id)) {
+      heldManual.push({ log, stored });
+      continue;
+    }
+    const storedYear = stored.getUTCFullYear();
+    if (
+      Number.isNaN(stored.getTime())
+      || storedYear < MIN_PLAUSIBLE_YEAR
+      || storedYear > MAX_PLAUSIBLE_YEAR
+    ) {
+      heldCorrupt.push({ log, stored, storedYear });
       continue;
     }
     // The broken write stored Pacific wall time as if it were UTC. Undo that by
     // subtracting the (negative) offset, i.e. pushing the instant later.
     const corrected = new Date(stored.getTime() - pacificOffsetMs(stored));
-    changes.push({ log, stored, corrected });
+    const hour = Number(toPacificDateTimeLocal(corrected).slice(11, 13));
+    if (hour < 5 && !allowOvernight) {
+      heldOvernight.push({ log, stored, corrected });
+      continue;
+    }
+    changes.push({ log, stored, corrected, overnight: hour < 5 });
   }
 
+  const label = (log) => `  #${String(log.id).padEnd(5)} ${(log.kitten?.name ?? 'unknown').padEnd(18)}`;
+  const excluded = heldManual.length + heldCorrupt.length + heldOvernight.length;
+
   console.log(
-    `Scanned ${logs.length} weight log(s) dated before ${beforeArg} (Pacific);`
-    + ` ${skipped.length} already corrected by a previous --apply run.\n`,
+    `Found ${logs.length} candidate weight log(s) dated before ${beforeArg} (Pacific).\n`,
   );
 
+  if (heldManual.length > 0) {
+    console.log(`EXCLUDED BY --exclude-ids (${heldManual.length}) -- held back, not modified:`);
+    for (const { log, stored } of heldManual) {
+      console.log(`${label(log)} currently displays ${formatPacificDisplay(stored, { withTime: true })}`);
+    }
+    console.log('');
+  }
+  const requestedButAbsent = [...excludeIds].filter(
+    (id) => !heldManual.some(({ log }) => log.id === id),
+  );
+  if (requestedButAbsent.length > 0) {
+    console.log(
+      `NOTE: --exclude-ids listed ${requestedButAbsent.join(', ')}, which are not in the`
+      + ' candidate set (out of --before range, or already journalled).\n',
+    );
+  }
+
+  if (heldCorrupt.length > 0) {
+    console.log(`CORRUPT, NEEDS MANUAL REVIEW (${heldCorrupt.length}) -- always held back:`);
+    for (const { log, stored, storedYear } of heldCorrupt) {
+      const iso = Number.isNaN(stored.getTime()) ? 'invalid date' : stored.toISOString();
+      console.log(`${label(log)} stored year ${storedYear} (${iso})`);
+    }
+    console.log(
+      'These dates are implausible and cannot be repaired by a timezone shift.\n'
+      + 'Decide the true date with a human and fix them by hand.\n',
+    );
+  }
+
+  if (heldOvernight.length > 0) {
+    console.log(
+      `HELD BACK BY OVERNIGHT SAFETY NET (${heldOvernight.length}) -- correcting these would`
+      + ' land between midnight and 5am Pacific, the signature of an already-correct row:',
+    );
+    for (const { log, stored, corrected } of heldOvernight) {
+      console.log(
+        `${label(log)} ${formatPacificDisplay(stored, { withTime: true }).padEnd(24)}`
+        + ` -> would become ${formatPacificDisplay(corrected, { withTime: true })}`,
+      );
+    }
+    console.log('Pass --allow-overnight only if these really were overnight weigh-ins.\n');
+  }
+
+  if (changes.length > 0) {
+    console.log(`${apply ? 'TO APPLY' : 'WOULD UPDATE'} (${changes.length}):`);
+    for (const { log, stored, corrected, overnight } of changes) {
+      const rolled = toPacificDateString(stored) !== toPacificDateString(corrected);
+      console.log(
+        `${label(log)} ${formatPacificDisplay(stored, { withTime: true }).padEnd(24)}`
+        + ` -> ${formatPacificDisplay(corrected, { withTime: true })}`
+        + (rolled ? '   [date rolls forward a day]' : '')
+        + (overnight ? '   [WARNING: --allow-overnight forced a midnight-5am result]' : ''),
+      );
+    }
+    const rolledCount = changes.filter(
+      ({ stored, corrected }) => toPacificDateString(stored) !== toPacificDateString(corrected),
+    ).length;
+    console.log(`\n${rolledCount} of those currently show the wrong calendar day.`);
+  }
+
+  console.log('\nReconciliation:');
+  console.log(`  candidates found          ${logs.length}`);
+  console.log(`  excluded (total)          ${excluded}`);
+  console.log(`    - by --exclude-ids      ${heldManual.length}`);
+  console.log(`    - corrupt year          ${heldCorrupt.length}`);
+  console.log(`    - overnight safety net  ${heldOvernight.length}`);
+  console.log(`  already journalled        ${journalled.length}`);
+  console.log(`  ${apply ? 'to update                ' : 'would update             '} ${changes.length}`);
+  console.log(`  = ${excluded} + ${journalled.length} + ${changes.length} = ${excluded + journalled.length + changes.length} of ${logs.length}`);
+
   if (changes.length === 0) {
-    console.log('Nothing left to correct.');
+    console.log('\nNothing left to correct.');
     return;
   }
 
-  let implausible = 0;
-  for (const { log, stored, corrected } of changes) {
-    const rolled = toPacificDateString(stored) !== toPacificDateString(corrected);
-    const hour = Number(toPacificDateTimeLocal(corrected).slice(11, 13));
-    const nightly = hour < 5;
-    if (nightly) implausible += 1;
-    console.log(
-      `  #${String(log.id).padEnd(5)} ${(log.kitten?.name ?? 'unknown').padEnd(18)}`
-      + ` ${formatPacificDisplay(stored, { withTime: true }).padEnd(24)}`
-      + ` -> ${formatPacificDisplay(corrected, { withTime: true })}`
-      + (rolled ? '   [date rolls forward a day]' : '')
-      + (nightly ? '   [WARNING: after-time is between midnight and 5am]' : ''),
-    );
-  }
-
-  const rolledCount = changes.filter(
-    ({ stored, corrected }) => toPacificDateString(stored) !== toPacificDateString(corrected),
-  ).length;
-  console.log(`\n${rolledCount} row(s) currently show the wrong calendar day.`);
-  if (implausible > 0) {
-    console.log(
-      `${implausible} row(s) land in the small hours after correction. That is the`
-      + ' signature of a row that was already correct -- check them before applying.',
-    );
-  }
-
   if (!apply) {
-    console.log(`\n${changes.length} row(s) would be updated.`);
-    console.log('DRY RUN. Re-run with --apply to write these corrections.');
+    console.log('\nDRY RUN. Re-run with --apply to write these corrections.');
     return;
   }
 
