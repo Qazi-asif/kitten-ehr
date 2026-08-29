@@ -13,6 +13,7 @@ import { DONATE_PAGE_EIN } from '../../constants/siteCopy';
 import {
   DEFAULT_GIVEBUTTER_DONATE_URL,
   DEFAULT_GIVEBUTTER_NINE_LIVES_URL,
+  DEFAULT_GIVEBUTTER_SPONSOR_URL,
   GIVEBUTTER_WIDGET_IDS,
 } from '../../constants/givebutterDefaults';
 import { markCheckoutSuccessParam } from '../../hooks/useGivebutterCheckout';
@@ -400,6 +401,26 @@ function DonatePage() {
           <p className="mt-6 text-sm text-slate-600">
             Cancel anytime, no questions. We&apos;ll keep you posted on exactly who your giving helped.
           </p>
+        </section>
+
+        <section id="sponsor" className="mt-8 scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:p-8">
+          <h2 className="text-xl font-extrabold text-brand">Sponsor a Kitten</h2>
+          <p className="mt-3 max-w-4xl text-sm leading-relaxed text-slate-600">
+            Sponsorship covers one cat&apos;s vet care, food, and everyday needs while they wait for a
+            home. Give here to sponsor wherever the need is greatest, or{' '}
+            <Link to="/available" className="font-semibold text-brand hover:underline">
+              pick a specific cat
+            </Link>{' '}
+            and sponsor them from their Meet Me page.
+          </p>
+          <div className="mt-6 overflow-hidden rounded-xl border border-slate-100 bg-slate-50/50 p-4">
+            <GivebutterDonationWidget
+              widgetId={GIVEBUTTER_WIDGET_IDS.sponsor}
+              fallbackUrl={DEFAULT_GIVEBUTTER_SPONSOR_URL}
+              buttonLabel="Sponsor a kitten"
+              onSuccess={handleDonationSuccess}
+            />
+          </div>
         </section>
       </div>
 

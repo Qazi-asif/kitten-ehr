@@ -47,6 +47,9 @@ function GivebutterDonationWidget({
   const loaderStatus = useGivebutterLoader();
 
   useEffect(() => {
+    // Several widgets can share a page; a widget with nothing to contribute
+    // must not wipe the params another one just wrote.
+    if (!amount && !frequency && !kittenId && !kittenName && !tier && !sponsor) return;
     syncGivebutterUrlParams({
       amount,
       frequency,
@@ -74,7 +77,7 @@ function GivebutterDonationWidget({
 
   if (loaderStatus === 'failed' || !widgetId) {
     return (
-      <div className={`rounded-xl border border-slate-200 bg-white px-5 py-6 text-center ${className}`}>
+      <div className={`flex min-h-[22rem] w-full flex-col justify-center rounded-xl border border-slate-200 bg-white px-5 py-6 text-center ${className}`}>
         <p className="text-sm leading-relaxed text-slate-600">
           Our donation form could not load in your browser. You can still give securely on
           our Givebutter page.
@@ -83,7 +86,7 @@ function GivebutterDonationWidget({
           href={checkoutUrl}
           target="_blank"
           rel="noreferrer"
-          className="mt-5 inline-flex w-full items-center justify-center rounded-lg bg-brand px-5 py-3 text-sm font-bold text-white hover:bg-brand-dark sm:w-auto"
+          className="mt-5 inline-flex w-full items-center justify-center rounded-lg bg-brand px-5 py-3 text-sm font-bold text-white underline-offset-4 hover:bg-brand-dark hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand sm:w-auto"
         >
           {label}
         </a>
@@ -93,12 +96,20 @@ function GivebutterDonationWidget({
   }
 
   return (
-    <div className={`rounded-xl border border-slate-200 bg-white p-2 ${className}`}>
-      {loaderStatus === 'loading' && (
-        <p className="px-3 py-6 text-center text-sm text-slate-500">Loading donation form…</p>
-      )}
-      {/* Custom element activated by the loader script; React renders it as-is. */}
-      <givebutter-widget id={widgetId} />
+    <div className={`w-full rounded-xl border border-slate-200 bg-white p-2 ${className}`}>
+      {/* Reserved height keeps the card from jumping as the widget hydrates. */}
+      <div className="relative min-h-[22rem] w-full">
+        {loaderStatus === 'loading' && (
+          <p
+            className="absolute inset-x-0 top-1/2 -translate-y-1/2 px-3 text-center text-sm text-slate-500"
+            role="status"
+          >
+            Loading donation form…
+          </p>
+        )}
+        {/* Custom element activated by the loader script; React renders it as-is. */}
+        <givebutter-widget id={widgetId} />
+      </div>
       <p className="mt-2 px-3 pb-1 text-center text-xs text-slate-500">
         Powered by Givebutter · Tax-deductible gifts
       </p>

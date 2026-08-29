@@ -17,8 +17,18 @@ export const GIVEBUTTER_WIDGET_IDS = {
   sponsor: 'gV1nYk',
 };
 
-/** Loader script that activates every `<givebutter-widget>` on the page. */
-export const GIVEBUTTER_LOADER_SRC = `https://widgets.givebutter.com/latest.umd.cjs?acct=${DEFAULT_GIVEBUTTER_ACCOUNT}`;
+/**
+ * Loader script that activates every `<givebutter-widget>` on the page.
+ *
+ * `latest.umd.cjs` is the URL Givebutter's dashboard currently hands out;
+ * `latest.js` is the older alias for the same bundle. Override with
+ * VITE_GIVEBUTTER_LOADER_SRC if Givebutter changes the documented snippet.
+ */
+export const GIVEBUTTER_LOADER_SRC = import.meta.env?.VITE_GIVEBUTTER_LOADER_SRC
+  || `https://widgets.givebutter.com/latest.umd.cjs?acct=${DEFAULT_GIVEBUTTER_ACCOUNT}&p=other`;
+
+/** Custom element the loader must define before a widget can render. */
+export const GIVEBUTTER_WIDGET_TAG = 'givebutter-widget';
 
 /** One-time donation, not linked to a kitten. */
 export const DEFAULT_GIVEBUTTER_DONATE_CAMPAIGN = 'pawsitivetransformations';
