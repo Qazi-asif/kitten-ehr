@@ -157,6 +157,7 @@ exports.Prisma.KittenScalarFieldEnum = {
   fixedStatus: 'fixedStatus',
   breed: 'breed',
   color: 'color',
+  coatPattern: 'coatPattern',
   fivFelvStatus: 'fivFelvStatus',
   specialNeeds: 'specialNeeds',
   microchipNumber: 'microchipNumber',
@@ -628,6 +629,8 @@ exports.Prisma.SocialPostScalarFieldEnum = {
   status: 'status',
   postedAt: 'postedAt',
   deliveryLog: 'deliveryLog',
+  attemptCount: 'attemptCount',
+  lastAttemptAt: 'lastAttemptAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -722,7 +725,9 @@ exports.WishlistRetailer = exports.$Enums.WishlistRetailer = {
 exports.SocialPostStatus = exports.$Enums.SocialPostStatus = {
   DRAFT: 'DRAFT',
   SCHEDULED: 'SCHEDULED',
-  POSTED: 'POSTED'
+  PUBLISHING: 'PUBLISHING',
+  POSTED: 'POSTED',
+  FAILED: 'FAILED'
 };
 
 exports.Prisma.ModelName = {

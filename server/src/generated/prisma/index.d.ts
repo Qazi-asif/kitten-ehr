@@ -243,7 +243,9 @@ export type WishlistRetailer = (typeof WishlistRetailer)[keyof typeof WishlistRe
 export const SocialPostStatus: {
   DRAFT: 'DRAFT',
   SCHEDULED: 'SCHEDULED',
-  POSTED: 'POSTED'
+  PUBLISHING: 'PUBLISHING',
+  POSTED: 'POSTED',
+  FAILED: 'FAILED'
 };
 
 export type SocialPostStatus = (typeof SocialPostStatus)[keyof typeof SocialPostStatus]
@@ -7755,6 +7757,7 @@ export namespace Prisma {
     fixedStatus: string | null
     breed: string | null
     color: string | null
+    coatPattern: string | null
     fivFelvStatus: string | null
     specialNeeds: string | null
     microchipNumber: string | null
@@ -7789,6 +7792,7 @@ export namespace Prisma {
     fixedStatus: string | null
     breed: string | null
     color: string | null
+    coatPattern: string | null
     fivFelvStatus: string | null
     specialNeeds: string | null
     microchipNumber: string | null
@@ -7823,6 +7827,7 @@ export namespace Prisma {
     fixedStatus: number
     breed: number
     color: number
+    coatPattern: number
     fivFelvStatus: number
     specialNeeds: number
     microchipNumber: number
@@ -7874,6 +7879,7 @@ export namespace Prisma {
     fixedStatus?: true
     breed?: true
     color?: true
+    coatPattern?: true
     fivFelvStatus?: true
     specialNeeds?: true
     microchipNumber?: true
@@ -7908,6 +7914,7 @@ export namespace Prisma {
     fixedStatus?: true
     breed?: true
     color?: true
+    coatPattern?: true
     fivFelvStatus?: true
     specialNeeds?: true
     microchipNumber?: true
@@ -7942,6 +7949,7 @@ export namespace Prisma {
     fixedStatus?: true
     breed?: true
     color?: true
+    coatPattern?: true
     fivFelvStatus?: true
     specialNeeds?: true
     microchipNumber?: true
@@ -8064,6 +8072,7 @@ export namespace Prisma {
     fixedStatus: string
     breed: string
     color: string
+    coatPattern: string
     fivFelvStatus: string | null
     specialNeeds: string | null
     microchipNumber: string
@@ -8118,6 +8127,7 @@ export namespace Prisma {
     fixedStatus?: boolean
     breed?: boolean
     color?: boolean
+    coatPattern?: boolean
     fivFelvStatus?: boolean
     specialNeeds?: boolean
     microchipNumber?: boolean
@@ -8170,6 +8180,7 @@ export namespace Prisma {
     fixedStatus?: boolean
     breed?: boolean
     color?: boolean
+    coatPattern?: boolean
     fivFelvStatus?: boolean
     specialNeeds?: boolean
     microchipNumber?: boolean
@@ -8208,6 +8219,7 @@ export namespace Prisma {
     fixedStatus?: boolean
     breed?: boolean
     color?: boolean
+    coatPattern?: boolean
     fivFelvStatus?: boolean
     specialNeeds?: boolean
     microchipNumber?: boolean
@@ -8246,6 +8258,7 @@ export namespace Prisma {
     fixedStatus?: boolean
     breed?: boolean
     color?: boolean
+    coatPattern?: boolean
     fivFelvStatus?: boolean
     specialNeeds?: boolean
     microchipNumber?: boolean
@@ -8270,7 +8283,7 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-  export type KittenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "litterId" | "status" | "rescueStory" | "dateOfBirth" | "sex" | "fixedStatus" | "breed" | "color" | "fivFelvStatus" | "specialNeeds" | "microchipNumber" | "primaryPhotoUrl" | "thumbnailUrl" | "intakeDate" | "intakeSource" | "outcomeDate" | "outcomeDetail" | "notes" | "internalNotes" | "isListedOnWebsite" | "websiteFeaturedComment" | "publishTargets" | "isBondedPair" | "bondedWithKittenId" | "bondedWithName" | "isMedicalSpecialNeeds" | "isTnr" | "isColony" | "currentFosterId" | "createdAt", ExtArgs["result"]["kitten"]>
+  export type KittenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "litterId" | "status" | "rescueStory" | "dateOfBirth" | "sex" | "fixedStatus" | "breed" | "color" | "coatPattern" | "fivFelvStatus" | "specialNeeds" | "microchipNumber" | "primaryPhotoUrl" | "thumbnailUrl" | "intakeDate" | "intakeSource" | "outcomeDate" | "outcomeDetail" | "notes" | "internalNotes" | "isListedOnWebsite" | "websiteFeaturedComment" | "publishTargets" | "isBondedPair" | "bondedWithKittenId" | "bondedWithName" | "isMedicalSpecialNeeds" | "isTnr" | "isColony" | "currentFosterId" | "createdAt", ExtArgs["result"]["kitten"]>
   export type KittenInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     litter?: boolean | Kitten$litterArgs<ExtArgs>
     bondedWithKitten?: boolean | Kitten$bondedWithKittenArgs<ExtArgs>
@@ -8332,6 +8345,7 @@ export namespace Prisma {
       fixedStatus: string
       breed: string
       color: string
+      coatPattern: string
       fivFelvStatus: string | null
       specialNeeds: string | null
       microchipNumber: string
@@ -8803,6 +8817,7 @@ export namespace Prisma {
     readonly fixedStatus: FieldRef<"Kitten", 'String'>
     readonly breed: FieldRef<"Kitten", 'String'>
     readonly color: FieldRef<"Kitten", 'String'>
+    readonly coatPattern: FieldRef<"Kitten", 'String'>
     readonly fivFelvStatus: FieldRef<"Kitten", 'String'>
     readonly specialNeeds: FieldRef<"Kitten", 'String'>
     readonly microchipNumber: FieldRef<"Kitten", 'String'>
@@ -50784,10 +50799,12 @@ export namespace Prisma {
 
   export type SocialPostAvgAggregateOutputType = {
     id: number | null
+    attemptCount: number | null
   }
 
   export type SocialPostSumAggregateOutputType = {
     id: number | null
+    attemptCount: number | null
   }
 
   export type SocialPostMinAggregateOutputType = {
@@ -50798,6 +50815,8 @@ export namespace Prisma {
     status: $Enums.SocialPostStatus | null
     postedAt: Date | null
     deliveryLog: string | null
+    attemptCount: number | null
+    lastAttemptAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -50810,6 +50829,8 @@ export namespace Prisma {
     status: $Enums.SocialPostStatus | null
     postedAt: Date | null
     deliveryLog: string | null
+    attemptCount: number | null
+    lastAttemptAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -50823,6 +50844,8 @@ export namespace Prisma {
     status: number
     postedAt: number
     deliveryLog: number
+    attemptCount: number
+    lastAttemptAt: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -50831,10 +50854,12 @@ export namespace Prisma {
 
   export type SocialPostAvgAggregateInputType = {
     id?: true
+    attemptCount?: true
   }
 
   export type SocialPostSumAggregateInputType = {
     id?: true
+    attemptCount?: true
   }
 
   export type SocialPostMinAggregateInputType = {
@@ -50845,6 +50870,8 @@ export namespace Prisma {
     status?: true
     postedAt?: true
     deliveryLog?: true
+    attemptCount?: true
+    lastAttemptAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -50857,6 +50884,8 @@ export namespace Prisma {
     status?: true
     postedAt?: true
     deliveryLog?: true
+    attemptCount?: true
+    lastAttemptAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -50870,6 +50899,8 @@ export namespace Prisma {
     status?: true
     postedAt?: true
     deliveryLog?: true
+    attemptCount?: true
+    lastAttemptAt?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -50970,6 +51001,8 @@ export namespace Prisma {
     status: $Enums.SocialPostStatus
     postedAt: Date | null
     deliveryLog: string
+    attemptCount: number
+    lastAttemptAt: Date | null
     createdAt: Date
     updatedAt: Date
     _count: SocialPostCountAggregateOutputType | null
@@ -51002,6 +51035,8 @@ export namespace Prisma {
     status?: boolean
     postedAt?: boolean
     deliveryLog?: boolean
+    attemptCount?: boolean
+    lastAttemptAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["socialPost"]>
@@ -51015,6 +51050,8 @@ export namespace Prisma {
     status?: boolean
     postedAt?: boolean
     deliveryLog?: boolean
+    attemptCount?: boolean
+    lastAttemptAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["socialPost"]>
@@ -51028,6 +51065,8 @@ export namespace Prisma {
     status?: boolean
     postedAt?: boolean
     deliveryLog?: boolean
+    attemptCount?: boolean
+    lastAttemptAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["socialPost"]>
@@ -51041,11 +51080,13 @@ export namespace Prisma {
     status?: boolean
     postedAt?: boolean
     deliveryLog?: boolean
+    attemptCount?: boolean
+    lastAttemptAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type SocialPostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "body" | "imageUrl" | "platforms" | "scheduledFor" | "status" | "postedAt" | "deliveryLog" | "createdAt" | "updatedAt", ExtArgs["result"]["socialPost"]>
+  export type SocialPostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "body" | "imageUrl" | "platforms" | "scheduledFor" | "status" | "postedAt" | "deliveryLog" | "attemptCount" | "lastAttemptAt" | "createdAt" | "updatedAt", ExtArgs["result"]["socialPost"]>
 
   export type $SocialPostPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "SocialPost"
@@ -51059,6 +51100,8 @@ export namespace Prisma {
       status: $Enums.SocialPostStatus
       postedAt: Date | null
       deliveryLog: string
+      attemptCount: number
+      lastAttemptAt: Date | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["socialPost"]>
@@ -51492,6 +51535,8 @@ export namespace Prisma {
     readonly status: FieldRef<"SocialPost", 'SocialPostStatus'>
     readonly postedAt: FieldRef<"SocialPost", 'DateTime'>
     readonly deliveryLog: FieldRef<"SocialPost", 'String'>
+    readonly attemptCount: FieldRef<"SocialPost", 'Int'>
+    readonly lastAttemptAt: FieldRef<"SocialPost", 'DateTime'>
     readonly createdAt: FieldRef<"SocialPost", 'DateTime'>
     readonly updatedAt: FieldRef<"SocialPost", 'DateTime'>
   }
@@ -51916,6 +51961,7 @@ export namespace Prisma {
     fixedStatus: 'fixedStatus',
     breed: 'breed',
     color: 'color',
+    coatPattern: 'coatPattern',
     fivFelvStatus: 'fivFelvStatus',
     specialNeeds: 'specialNeeds',
     microchipNumber: 'microchipNumber',
@@ -52495,6 +52541,8 @@ export namespace Prisma {
     status: 'status',
     postedAt: 'postedAt',
     deliveryLog: 'deliveryLog',
+    attemptCount: 'attemptCount',
+    lastAttemptAt: 'lastAttemptAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -52967,6 +53015,7 @@ export namespace Prisma {
     fixedStatus?: StringFilter<"Kitten"> | string
     breed?: StringFilter<"Kitten"> | string
     color?: StringFilter<"Kitten"> | string
+    coatPattern?: StringFilter<"Kitten"> | string
     fivFelvStatus?: StringNullableFilter<"Kitten"> | string | null
     specialNeeds?: StringNullableFilter<"Kitten"> | string | null
     microchipNumber?: StringFilter<"Kitten"> | string
@@ -53018,6 +53067,7 @@ export namespace Prisma {
     fixedStatus?: SortOrder
     breed?: SortOrder
     color?: SortOrder
+    coatPattern?: SortOrder
     fivFelvStatus?: SortOrderInput | SortOrder
     specialNeeds?: SortOrderInput | SortOrder
     microchipNumber?: SortOrder
@@ -53072,6 +53122,7 @@ export namespace Prisma {
     fixedStatus?: StringFilter<"Kitten"> | string
     breed?: StringFilter<"Kitten"> | string
     color?: StringFilter<"Kitten"> | string
+    coatPattern?: StringFilter<"Kitten"> | string
     fivFelvStatus?: StringNullableFilter<"Kitten"> | string | null
     specialNeeds?: StringNullableFilter<"Kitten"> | string | null
     microchipNumber?: StringFilter<"Kitten"> | string
@@ -53123,6 +53174,7 @@ export namespace Prisma {
     fixedStatus?: SortOrder
     breed?: SortOrder
     color?: SortOrder
+    coatPattern?: SortOrder
     fivFelvStatus?: SortOrderInput | SortOrder
     specialNeeds?: SortOrderInput | SortOrder
     microchipNumber?: SortOrder
@@ -53166,6 +53218,7 @@ export namespace Prisma {
     fixedStatus?: StringWithAggregatesFilter<"Kitten"> | string
     breed?: StringWithAggregatesFilter<"Kitten"> | string
     color?: StringWithAggregatesFilter<"Kitten"> | string
+    coatPattern?: StringWithAggregatesFilter<"Kitten"> | string
     fivFelvStatus?: StringNullableWithAggregatesFilter<"Kitten"> | string | null
     specialNeeds?: StringNullableWithAggregatesFilter<"Kitten"> | string | null
     microchipNumber?: StringWithAggregatesFilter<"Kitten"> | string
@@ -56090,6 +56143,8 @@ export namespace Prisma {
     status?: EnumSocialPostStatusFilter<"SocialPost"> | $Enums.SocialPostStatus
     postedAt?: DateTimeNullableFilter<"SocialPost"> | Date | string | null
     deliveryLog?: StringFilter<"SocialPost"> | string
+    attemptCount?: IntFilter<"SocialPost"> | number
+    lastAttemptAt?: DateTimeNullableFilter<"SocialPost"> | Date | string | null
     createdAt?: DateTimeFilter<"SocialPost"> | Date | string
     updatedAt?: DateTimeFilter<"SocialPost"> | Date | string
   }
@@ -56103,6 +56158,8 @@ export namespace Prisma {
     status?: SortOrder
     postedAt?: SortOrderInput | SortOrder
     deliveryLog?: SortOrder
+    attemptCount?: SortOrder
+    lastAttemptAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -56119,6 +56176,8 @@ export namespace Prisma {
     status?: EnumSocialPostStatusFilter<"SocialPost"> | $Enums.SocialPostStatus
     postedAt?: DateTimeNullableFilter<"SocialPost"> | Date | string | null
     deliveryLog?: StringFilter<"SocialPost"> | string
+    attemptCount?: IntFilter<"SocialPost"> | number
+    lastAttemptAt?: DateTimeNullableFilter<"SocialPost"> | Date | string | null
     createdAt?: DateTimeFilter<"SocialPost"> | Date | string
     updatedAt?: DateTimeFilter<"SocialPost"> | Date | string
   }, "id">
@@ -56132,6 +56191,8 @@ export namespace Prisma {
     status?: SortOrder
     postedAt?: SortOrderInput | SortOrder
     deliveryLog?: SortOrder
+    attemptCount?: SortOrder
+    lastAttemptAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: SocialPostCountOrderByAggregateInput
@@ -56153,6 +56214,8 @@ export namespace Prisma {
     status?: EnumSocialPostStatusWithAggregatesFilter<"SocialPost"> | $Enums.SocialPostStatus
     postedAt?: DateTimeNullableWithAggregatesFilter<"SocialPost"> | Date | string | null
     deliveryLog?: StringWithAggregatesFilter<"SocialPost"> | string
+    attemptCount?: IntWithAggregatesFilter<"SocialPost"> | number
+    lastAttemptAt?: DateTimeNullableWithAggregatesFilter<"SocialPost"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"SocialPost"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"SocialPost"> | Date | string
   }
@@ -56358,6 +56421,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -56407,6 +56471,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -56453,6 +56518,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -56502,6 +56568,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -56550,6 +56617,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -56583,6 +56651,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -56616,6 +56685,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -59679,6 +59749,8 @@ export namespace Prisma {
     status?: $Enums.SocialPostStatus
     postedAt?: Date | string | null
     deliveryLog?: string
+    attemptCount?: number
+    lastAttemptAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -59692,6 +59764,8 @@ export namespace Prisma {
     status?: $Enums.SocialPostStatus
     postedAt?: Date | string | null
     deliveryLog?: string
+    attemptCount?: number
+    lastAttemptAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -59704,6 +59778,8 @@ export namespace Prisma {
     status?: EnumSocialPostStatusFieldUpdateOperationsInput | $Enums.SocialPostStatus
     postedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveryLog?: StringFieldUpdateOperationsInput | string
+    attemptCount?: IntFieldUpdateOperationsInput | number
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -59717,6 +59793,8 @@ export namespace Prisma {
     status?: EnumSocialPostStatusFieldUpdateOperationsInput | $Enums.SocialPostStatus
     postedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveryLog?: StringFieldUpdateOperationsInput | string
+    attemptCount?: IntFieldUpdateOperationsInput | number
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -59730,6 +59808,8 @@ export namespace Prisma {
     status?: $Enums.SocialPostStatus
     postedAt?: Date | string | null
     deliveryLog?: string
+    attemptCount?: number
+    lastAttemptAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -59742,6 +59822,8 @@ export namespace Prisma {
     status?: EnumSocialPostStatusFieldUpdateOperationsInput | $Enums.SocialPostStatus
     postedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveryLog?: StringFieldUpdateOperationsInput | string
+    attemptCount?: IntFieldUpdateOperationsInput | number
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -59755,6 +59837,8 @@ export namespace Prisma {
     status?: EnumSocialPostStatusFieldUpdateOperationsInput | $Enums.SocialPostStatus
     postedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveryLog?: StringFieldUpdateOperationsInput | string
+    attemptCount?: IntFieldUpdateOperationsInput | number
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -60216,6 +60300,7 @@ export namespace Prisma {
     fixedStatus?: SortOrder
     breed?: SortOrder
     color?: SortOrder
+    coatPattern?: SortOrder
     fivFelvStatus?: SortOrder
     specialNeeds?: SortOrder
     microchipNumber?: SortOrder
@@ -60258,6 +60343,7 @@ export namespace Prisma {
     fixedStatus?: SortOrder
     breed?: SortOrder
     color?: SortOrder
+    coatPattern?: SortOrder
     fivFelvStatus?: SortOrder
     specialNeeds?: SortOrder
     microchipNumber?: SortOrder
@@ -60292,6 +60378,7 @@ export namespace Prisma {
     fixedStatus?: SortOrder
     breed?: SortOrder
     color?: SortOrder
+    coatPattern?: SortOrder
     fivFelvStatus?: SortOrder
     specialNeeds?: SortOrder
     microchipNumber?: SortOrder
@@ -62518,12 +62605,15 @@ export namespace Prisma {
     status?: SortOrder
     postedAt?: SortOrder
     deliveryLog?: SortOrder
+    attemptCount?: SortOrder
+    lastAttemptAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type SocialPostAvgOrderByAggregateInput = {
     id?: SortOrder
+    attemptCount?: SortOrder
   }
 
   export type SocialPostMaxOrderByAggregateInput = {
@@ -62534,6 +62624,8 @@ export namespace Prisma {
     status?: SortOrder
     postedAt?: SortOrder
     deliveryLog?: SortOrder
+    attemptCount?: SortOrder
+    lastAttemptAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -62546,12 +62638,15 @@ export namespace Prisma {
     status?: SortOrder
     postedAt?: SortOrder
     deliveryLog?: SortOrder
+    attemptCount?: SortOrder
+    lastAttemptAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type SocialPostSumOrderByAggregateInput = {
     id?: SortOrder
+    attemptCount?: SortOrder
   }
 
   export type EnumSocialPostStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -65692,6 +65787,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -65739,6 +65835,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -65816,6 +65913,7 @@ export namespace Prisma {
     fixedStatus?: StringFilter<"Kitten"> | string
     breed?: StringFilter<"Kitten"> | string
     color?: StringFilter<"Kitten"> | string
+    coatPattern?: StringFilter<"Kitten"> | string
     fivFelvStatus?: StringNullableFilter<"Kitten"> | string | null
     specialNeeds?: StringNullableFilter<"Kitten"> | string | null
     microchipNumber?: StringFilter<"Kitten"> | string
@@ -65849,6 +65947,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -65897,6 +65996,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -66406,6 +66506,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -66454,6 +66555,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -66504,6 +66606,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -66552,6 +66655,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -67096,6 +67200,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -67144,6 +67249,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -67577,6 +67683,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -67625,6 +67732,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -67686,6 +67794,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -67734,6 +67843,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -67779,6 +67889,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -67827,6 +67938,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -67888,6 +68000,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -67936,6 +68049,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -67981,6 +68095,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -68029,6 +68144,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -68136,6 +68252,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -68184,6 +68301,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -68281,6 +68399,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -68329,6 +68448,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -68390,6 +68510,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -68438,6 +68559,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -68483,6 +68605,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -68531,6 +68654,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -68627,6 +68751,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -68675,6 +68800,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -68753,6 +68879,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -68801,6 +68928,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -68920,6 +69048,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -68968,6 +69097,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -69056,6 +69186,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -69104,6 +69235,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -69165,6 +69297,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -69213,6 +69346,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -69258,6 +69392,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -69306,6 +69441,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -69413,6 +69549,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -69461,6 +69598,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -69876,6 +70014,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -69924,6 +70063,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -70096,6 +70236,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -70144,6 +70285,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -71135,6 +71277,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -71183,6 +71326,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -71288,6 +71432,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -71336,6 +71481,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -72487,6 +72633,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -72535,6 +72682,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -72726,6 +72874,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -72774,6 +72923,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -73479,6 +73629,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -73527,6 +73678,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -73588,6 +73740,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -73636,6 +73789,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -73682,6 +73836,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -73715,6 +73870,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -73762,6 +73918,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -73809,6 +73966,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -73844,6 +74002,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -73927,6 +74086,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -73975,6 +74135,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -74022,6 +74183,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -74208,6 +74370,7 @@ export namespace Prisma {
     fixedStatus?: string
     breed: string
     color?: string
+    coatPattern?: string
     fivFelvStatus?: string | null
     specialNeeds?: string | null
     microchipNumber?: string
@@ -74383,6 +74546,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -74431,6 +74595,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string
@@ -74478,6 +74643,7 @@ export namespace Prisma {
     fixedStatus?: StringFieldUpdateOperationsInput | string
     breed?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
     fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
     specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
     microchipNumber?: StringFieldUpdateOperationsInput | string

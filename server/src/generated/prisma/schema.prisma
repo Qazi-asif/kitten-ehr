@@ -31,7 +31,12 @@ enum WishlistRetailer {
 enum SocialPostStatus {
   DRAFT
   SCHEDULED
+  // Claimed by the scheduler and mid-publish. Exists so a claim is visible to
+  // every serverless instance: only a SCHEDULED -> PUBLISHING transition can
+  // succeed, so overlapping cron runs cannot both publish the same post.
+  PUBLISHING
   POSTED
+  FAILED
 }
 
 enum DoseStatus {
@@ -102,6 +107,7 @@ model Kitten {
   fixedStatus            String           @default("")
   breed                  String
   color                  String           @default("")
+  coatPattern            String           @default("")
   fivFelvStatus          String?
   specialNeeds           String?
   microchipNumber        String           @default("")
@@ -815,16 +821,19 @@ model Wishlist {
 }
 
 model SocialPost {
-  id           Int              @id @default(autoincrement())
-  body         String           @default("")
-  imageUrl     String           @default("")
-  platforms    String[]         @default([])
-  scheduledFor DateTime?
-  status       SocialPostStatus @default(DRAFT)
-  postedAt     DateTime?
-  deliveryLog  String           @default("")
-  createdAt    DateTime         @default(now())
-  updatedAt    DateTime         @updatedAt
+  id            Int              @id @default(autoincrement())
+  body          String           @default("")
+  imageUrl      String           @default("")
+  platforms     String[]         @default([])
+  scheduledFor  DateTime?
+  status        SocialPostStatus @default(DRAFT)
+  postedAt      DateTime?
+  deliveryLog   String           @default("")
+  attemptCount  Int              @default(0)
+  lastAttemptAt DateTime?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
 
+  @@index([status, scheduledFor])
   @@map("social_posts")
 }
