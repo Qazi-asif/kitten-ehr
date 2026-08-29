@@ -2,6 +2,7 @@ import { Router } from 'express';
 import {
   createSocialPost,
   deleteSocialPost,
+  getSchedulerStatus,
   getSocialPosts,
   publishSocialPost,
   updateSocialPost,
@@ -11,6 +12,7 @@ import { requirePermission } from '../middleware/authMiddleware.js';
 const router = Router();
 
 router.get('/', requirePermission('events.view'), getSocialPosts);
+router.get('/scheduler', requirePermission('events.view'), getSchedulerStatus);
 router.post('/', requirePermission('events.manage'), createSocialPost);
 router.patch('/:id', requirePermission('events.manage'), updateSocialPost);
 router.post('/:id/publish', requirePermission('events.manage'), publishSocialPost);

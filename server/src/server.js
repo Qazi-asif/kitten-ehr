@@ -35,6 +35,20 @@ try {
   console.error('[permissions] Sync failed (continuing boot):', err.message || err);
 }
 
+// The scheduled-social-post runner. On by default because Hostinger runs this as
+// a persistent process; SOCIAL_SCHEDULER_ENABLED=false disables it.
+try {
+  const { startInProcessSocialScheduler } = await import('./services/socialPostScheduler.js');
+  const started = startInProcessSocialScheduler();
+  console.log(
+    started.started
+      ? `[social-scheduler] In-process runner started, every ${Math.round(started.intervalMs / 1000)}s (pid ${process.pid})`
+      : `[social-scheduler] In-process runner not started (${started.reason})`,
+  );
+} catch (err) {
+  console.error('[social-scheduler] Failed to start:', err.message || err);
+}
+
 const PORT = process.env.PORT || 5000;
 const server = http.createServer(app);
 

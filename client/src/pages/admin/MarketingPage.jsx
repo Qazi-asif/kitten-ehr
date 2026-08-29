@@ -4,17 +4,21 @@ import { useAuth } from '../../context/AuthContext';
 import {
   createMarketingPost,
   deleteMarketingPost,
+  fetchSchedulerStatus,
   fetchSocialPosts,
   publishSocialPost,
   updateMarketingPost,
 } from '../../services/marketingApi';
 import { formatPacificDisplay, toPacificDateTimeLocal } from '../../utils/pacificDate.js';
 
+// Only Facebook and Instagram have a Graph API integration. X and TikTok are
+// kept selectable as a record of intent, but labelled so nobody expects the
+// scheduler to publish them.
 const PLATFORM_OPTIONS = [
-  { id: 'FACEBOOK', label: 'Facebook' },
-  { id: 'INSTAGRAM', label: 'Instagram' },
-  { id: 'X', label: 'X' },
-  { id: 'TIKTOK', label: 'TikTok' },
+  { id: 'FACEBOOK', label: 'Facebook', auto: true },
+  { id: 'INSTAGRAM', label: 'Instagram', auto: true },
+  { id: 'X', label: 'X (manual only)', auto: false },
+  { id: 'TIKTOK', label: 'TikTok (manual only)', auto: false },
 ];
 
 const STATUS_TABS = [
@@ -22,7 +26,31 @@ const STATUS_TABS = [
   { id: 'draft', label: 'Draft' },
   { id: 'scheduled', label: 'Scheduled' },
   { id: 'posted', label: 'Posted' },
+  { id: 'failed', label: 'Failed' },
 ];
+
+const STATUS_STYLES = {
+  POSTED: 'bg-green-100 text-green-800',
+  SCHEDULED: 'bg-blue-100 text-blue-800',
+  PUBLISHING: 'bg-amber-100 text-amber-800',
+  FAILED: 'bg-red-100 text-red-800',
+};
+
+function parseDeliveryLog(value) {
+  if (!value) return [];
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function deliveryProblems(post) {
+  return parseDeliveryLog(post.deliveryLog)
+    .filter((entry) => entry.status === 'failed' || entry.status === 'skipped')
+    .map((entry) => `${entry.platform}: ${entry.message}`);
+}
 
 const emptyForm = {
   body: '',
@@ -62,6 +90,7 @@ function MarketingPage() {
   const [deletingId, setDeletingId] = useState(null);
   const [publishingId, setPublishingId] = useState(null);
   const [error, setError] = useState('');
+  const [scheduler, setScheduler] = useState(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -80,6 +109,12 @@ function MarketingPage() {
   useEffect(() => {
     load();
   }, [load]);
+
+  useEffect(() => {
+    fetchSchedulerStatus()
+      .then(setScheduler)
+      .catch(() => setScheduler(null));
+  }, [posts]);
 
   useEffect(() => {
     if (editingId && formRef.current) {
@@ -194,9 +229,41 @@ function MarketingPage() {
       <div className="mb-6">
         <h2 className="text-xl font-bold text-slate-900">Marketing</h2>
         <p className="mt-1 text-sm text-slate-600">
-          Draft and schedule social posts across Facebook, Instagram, X, and TikTok.
+          Draft and schedule social posts. Facebook and Instagram publish automatically;
+          X and TikTok must be shared by hand.
         </p>
       </div>
+
+      {scheduler && (
+        <div
+          className={`mb-4 rounded-lg border px-4 py-3 text-sm ${
+            scheduler.enabled
+              ? 'border-emerald-200 bg-emerald-50 text-emerald-900'
+              : 'border-amber-200 bg-amber-50 text-amber-900'
+          }`}
+        >
+          {scheduler.enabled ? (
+            <>
+              <span className="font-semibold">Auto-publishing is active.</span>{' '}
+              {scheduler.mode === 'interval'
+                ? `Scheduled posts are checked every ${scheduler.intervalMinutes} minute(s).`
+                : 'Scheduled posts are published by an external trigger, so a post may go out a few minutes after its scheduled time.'}{' '}
+              Next scheduled post: {scheduler.nextScheduledFor ? formatDateTime(scheduler.nextScheduledFor) : 'none'}.
+              {scheduler.dueNowCount > 0 && ` ${scheduler.dueNowCount} post(s) due and awaiting the next run.`}
+              {scheduler.failedCount > 0 && (
+                <span className="font-semibold"> {scheduler.failedCount} post(s) failed — see the Failed tab.</span>
+              )}
+            </>
+          ) : (
+            <>
+              <span className="font-semibold">Auto-publishing is NOT running on this deployment.</span>{' '}
+              Scheduled posts will stay at &quot;Scheduled&quot; until someone uses &quot;Publish now&quot;.
+              Auto-publishing is normally on by default, so ask your administrator to check whether
+              SOCIAL_SCHEDULER_ENABLED has been set to false on the server.
+            </>
+          )}
+        </div>
+      )}
 
       <div className="mb-4 rounded-lg border border-brand/20 bg-brand-light/60 px-4 py-3 text-sm text-slate-700">
         <span className="font-semibold text-brand">AI Copywriter:</span>{' '}
@@ -364,12 +431,28 @@ function MarketingPage() {
                   </td>
                   <td className="px-4 py-3 text-sm text-slate-600">{formatDateTime(post.scheduledFor)}</td>
                   <td className="px-4 py-3 text-sm">
-                    <span className="inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold uppercase text-slate-700">
+                    <span
+                      className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold uppercase ${
+                        STATUS_STYLES[post.status] || 'bg-slate-100 text-slate-700'
+                      }`}
+                    >
                       {post.status}
                     </span>
+                    {deliveryProblems(post).length > 0 && (
+                      <ul className="mt-2 space-y-1 text-xs text-red-700">
+                        {deliveryProblems(post).map((problem) => (
+                          <li key={problem}>{problem}</li>
+                        ))}
+                      </ul>
+                    )}
+                    {post.status === 'FAILED' && (
+                      <p className="mt-1 text-xs text-slate-500">
+                        Edit the post and set a new time to retry, or use Publish now.
+                      </p>
+                    )}
                   </td>
                   <td className="whitespace-nowrap px-4 py-3 text-sm">
-                    {post.status !== 'POSTED' && (
+                    {post.status !== 'POSTED' && post.status !== 'PUBLISHING' && (
                       <button
                         type="button"
                         onClick={() => handlePublish(post.id)}

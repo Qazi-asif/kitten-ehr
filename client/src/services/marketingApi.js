@@ -16,6 +16,12 @@ export async function fetchSocialPosts(status) {
   return response.json();
 }
 
+export async function fetchSchedulerStatus() {
+  const response = await adminFetch('/social-posts/scheduler');
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to load scheduler status'));
+  return response.json();
+}
+
 export async function createMarketingPost(payload) {
   const response = await adminFetch('/social-posts', {
     method: 'POST',

@@ -36,6 +36,7 @@ import onboardingRoutes from './routes/onboardingRoutes.js';
 import protocolRoutes from './routes/protocolRoutes.js';
 import protocolLibraryRoutes from './routes/protocolLibraryRoutes.js';
 import socialPostRoutes from './routes/socialPostRoutes.js';
+import cronRoutes from './routes/cronRoutes.js';
 import wishlistRoutes from './routes/wishlistRoutes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
 import portalAuthRoutes from './routes/portalAuthRoutes.js';
@@ -293,6 +294,12 @@ app.use('/api/portal', requirePortalAuth, portalRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/public', publicRoutes);
 app.use('/api/webhooks', webhookRoutes);
+// Optional external trigger for the social-post scheduler. The in-process
+// interval runner is the primary mechanism; this endpoint exists for an external
+// pinger and for manual triggering while debugging. Deliberately NOT behind
+// requireAuth (a cron call has no user session) — it authenticates with
+// CRON_SECRET, enforced inside cronRoutes, and 503s when that is unset.
+app.use('/api/cron', cronRoutes);
 
 app.get('/api/health', (_req, res) => {
   res.json({
