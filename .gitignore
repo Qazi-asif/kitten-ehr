@@ -10,6 +10,15 @@ client/node_modules.zip
 .cursorrules
 .cursor/
 .vscode/
+.claude/
+
+# One-off destructive maintenance scripts. Kept out of the repo because the live
+# Hostinger host deploys by pulling this branch, and nothing that can wipe or
+# bulk-delete production rows should land on that machine.
+server/scripts/full-data-wipe-pre-deploy.mjs
+server/scripts/purge-dummy-users.mjs
+# One-off local diagnostic against a named individual's record.
+server/scripts/check-foster-photo-ayesha.mjs
 
 # Legacy Prisma Rust engines (Rust-free client uses query_compiler instead)
 server/src/generated/prisma/query_engine-*.node
