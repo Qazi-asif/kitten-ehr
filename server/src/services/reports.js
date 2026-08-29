@@ -426,8 +426,9 @@ async function fullExport(prisma, { startDate, endDate }) {
     kitten.name,
     kitten.status,
     kitten.breed,
-    // CR-102: coat color was missing from the raw export.
+    // CR-102: coat color and pattern were missing from the raw export.
     kitten.color || '',
+    kitten.coatPattern || '',
     kitten.sex,
     kitten.fixedStatus,
     kitten.fivFelvStatus || '',
@@ -446,7 +447,7 @@ async function fullExport(prisma, { startDate, endDate }) {
   return {
     summary: [{ label: 'Cats exported', value: rows.length, hint: 'The full export ignores the date range by design.' }],
     columns: [
-      'ID', 'Name', 'Status', 'Breed', 'Coat Color', 'Sex', 'Fixed Status', 'FIV/FeLV',
+      'ID', 'Name', 'Status', 'Breed', 'Coat Color', 'Coat Pattern', 'Sex', 'Fixed Status', 'FIV/FeLV',
       'Microchip', 'Date of Birth', 'Intake Date', 'Intake Source (raw)', 'Intake Source',
       'Outcome Date', 'Outcome Detail', 'Litter', 'Current Foster', 'Special Needs',
     ],
@@ -496,7 +497,7 @@ export const REPORTS = [
   {
     key: 'full-export',
     label: 'Full Cat Export (raw)',
-    description: 'Every cat, all columns, including coat color. Ignores the date range.',
+    description: 'Every cat, all columns, including coat color and pattern. Ignores the date range.',
     run: fullExport,
   },
 ];

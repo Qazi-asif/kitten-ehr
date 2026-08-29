@@ -37,6 +37,7 @@ const BLOCKED_FIELD_KEYS = new Set([
   'specialNeeds',
   'fixedStatus',
   'color',
+  'coatPattern',
   'sex',
   'dateOfBirth',
   'intakeDate',

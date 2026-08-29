@@ -2,6 +2,7 @@ import { useState } from 'react';
 import ProfilePhotoUpload from './ProfilePhotoUpload';
 import LitterSelect from './admin/LitterSelect';
 import { KITTEN_STATUS_OPTIONS } from '../constants/kittenStatuses';
+import { COAT_PATTERN_OPTIONS } from '../constants/coatPatterns';
 import { pacificToday } from '../utils/pacificDate';
 
 const SEX_OPTIONS = ['', 'Male', 'Female'];
@@ -11,6 +12,7 @@ const initialFormState = {
   name: '',
   breed: '',
   color: '',
+  coatPattern: '',
   status: 'In Foster Care',
   litterId: '',
   fosterId: '',
@@ -41,6 +43,7 @@ function KittenForm({ onSubmit, litters = [], onLittersChange, fosters = [], sub
         name: form.name,
         breed: form.breed,
         color: form.color,
+        coatPattern: form.coatPattern,
         status: form.status,
         dateOfBirth: form.dateOfBirth || null,
         sex: form.sex,
@@ -84,6 +87,14 @@ function KittenForm({ onSubmit, litters = [], onLittersChange, fosters = [], sub
           <label className="block">
             <span className="mb-1 block text-sm font-medium text-slate-700">Color</span>
             <input type="text" name="color" value={form.color} onChange={handleChange} className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" />
+          </label>
+          <label className="block">
+            <span className="mb-1 block text-sm font-medium text-slate-700">Coat Pattern</span>
+            <select name="coatPattern" value={form.coatPattern} onChange={handleChange} className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
+              {COAT_PATTERN_OPTIONS.map((option) => (
+                <option key={option || 'unset'} value={option}>{option || 'Not specified'}</option>
+              ))}
+            </select>
           </label>
           <label className="block">
             <span className="mb-1 block text-sm font-medium text-slate-700">Date of Birth</span>

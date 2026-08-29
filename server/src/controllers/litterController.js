@@ -125,6 +125,7 @@ export async function getLitterById(req, res, next) {
             status: true,
             breed: true,
             color: true,
+            coatPattern: true,
             currentFoster: { select: { id: true, name: true } },
           },
         },

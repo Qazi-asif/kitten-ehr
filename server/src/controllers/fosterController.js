@@ -285,6 +285,7 @@ export async function getFosterById(req, res, next) {
             status: true,
             breed: true,
             color: true,
+            coatPattern: true,
           },
         },
         _count: { select: { placements: true, currentKittens: true } },

@@ -17,8 +17,29 @@ export const TERMINAL_KITTEN_STATUSES = ['Adopted', 'Transferred', 'Deceased', '
 
 export const FIXED_STATUS_OPTIONS = ['Intact', 'Spayed/Neutered'];
 
+/** Controlled coat pattern vocabulary so pattern is groupable in reports. */
+export const COAT_PATTERN_OPTIONS = [
+  'Solid',
+  'Tabby',
+  'Ticked',
+  'Torbie',
+  'Tortoiseshell',
+  'Calico',
+  'Tuxedo',
+  'Bicolour',
+  'Van',
+  'Colourpoint',
+  'Smoke',
+  'Unknown/Other',
+];
+
 const fixedStatusField = z
   .union([z.enum(FIXED_STATUS_OPTIONS), z.literal('')])
+  .optional()
+  .default('');
+
+const coatPatternField = z
+  .union([z.enum(COAT_PATTERN_OPTIONS), z.literal('')])
   .optional()
   .default('');
 
@@ -34,6 +55,7 @@ export const createKittenSchema = z.object({
   status: z.enum(KITTEN_STATUSES).optional().default('In Foster Care'),
   breed: z.string().trim().min(1, 'Breed is required').max(80),
   color: z.string().max(80).optional().default(''),
+  coatPattern: coatPatternField,
   litterId: z.coerce.number().int().positive().optional().nullable(),
   currentFosterId: z.coerce.number().int().positive().optional().nullable(),
   fosterId: z.coerce.number().int().positive().optional().nullable(),
@@ -58,6 +80,7 @@ export const updateKittenSchema = z
     status: z.enum(KITTEN_STATUSES).optional(),
     breed: z.string().trim().min(1).max(80).optional(),
     color: z.string().max(80).optional(),
+    coatPattern: coatPatternField.optional(),
     sex: z.string().max(20).optional(),
     fixedStatus: fixedStatusField.optional(),
     rescueStory: z.string().max(5000).optional(),

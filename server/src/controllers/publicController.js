@@ -31,6 +31,7 @@ const publicKittenSelect = {
   sex: true,
   breed: true,
   color: true,
+  coatPattern: true,
   specialNeeds: true,
   isBondedPair: true,
   bondedWithKittenId: true,

@@ -49,6 +49,7 @@ import {
 import { useAuth } from '../../context/AuthContext';
 import { WISHLIST_OWNER_TYPES } from '../../constants/wishlists';
 import { KITTEN_STATUS_OPTIONS } from '../../constants/kittenStatuses';
+import { COAT_PATTERN_OPTIONS } from '../../constants/coatPatterns';
 import { formatKittenAgeDetailed } from '../../utils/kittenAge';
 import { formatPacificDisplay } from '../../utils/pacificDate';
 import { resolvePrimaryPhotoUrl } from '../../utils/kittenImages';
@@ -100,6 +101,7 @@ function buildProfileForm(data) {
     status: data.status || '',
     breed: data.breed || '',
     color: data.color || '',
+    coatPattern: data.coatPattern || '',
     sex: data.sex || '',
     fixedStatus: normalizeFixedStatus(data.fixedStatus),
     dateOfBirth: data.dateOfBirth ? data.dateOfBirth.slice(0, 10) : '',
@@ -324,6 +326,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
         status: profileForm.status,
         breed: profileForm.breed,
         color: profileForm.color,
+        coatPattern: profileForm.coatPattern,
         sex: profileForm.sex,
         fixedStatus: profileForm.fixedStatus,
         dateOfBirth: profileForm.dateOfBirth || null,
@@ -720,6 +723,20 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                     />
                   </label>
                 ))}
+                <label className="block">
+                  <span className="text-xs font-semibold uppercase text-gray-500">Coat Pattern</span>
+                  <select
+                    value={profileForm.coatPattern || ''}
+                    onChange={(e) => handleProfileFieldChange('coatPattern', e.target.value)}
+                    className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+                  >
+                    {COAT_PATTERN_OPTIONS.map((option) => (
+                      <option key={option || 'unset'} value={option}>
+                        {option || 'Not specified'}
+                      </option>
+                    ))}
+                  </select>
+                </label>
                 <label className="block">
                   <span className="text-xs font-semibold uppercase text-gray-500">Sex</span>
                   <select

@@ -11,6 +11,7 @@ const placementInclude = {
       status: true,
       breed: true,
       color: true,
+      coatPattern: true,
     },
   },
   foster: {

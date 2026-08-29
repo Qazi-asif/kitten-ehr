@@ -28,6 +28,7 @@ export const kittenListSelect = {
   status: true,
   breed: true,
   color: true,
+  coatPattern: true,
   dateOfBirth: true,
   sex: true,
   fixedStatus: true,
