@@ -16,16 +16,17 @@ export function createOriginValidator() {
 
   addOrigin(allowed, 'http://localhost:5173');
   addOrigin(allowed, 'http://127.0.0.1:5173');
-  addOrigin(allowed, 'https://kitten-ehr.vercel.app');
+
+  // Production site. Both hosts answer on their own (neither redirects to the
+  // other), so both must be trusted or one of them loses every API call.
+  addOrigin(allowed, 'https://pawsitivetransformations.org');
+  addOrigin(allowed, 'https://www.pawsitivetransformations.org');
+
+  // The Hostinger-assigned hostname for this same site, still reachable and
+  // still used to check a deploy before the custom domain is looked at.
+  // Exact match only: a `*.hostingersite.com` pattern would trust every other
+  // Hostinger customer's subdomain against this API.
   addOrigin(allowed, 'https://mediumslateblue-hornet-819977.hostingersite.com');
-
-  if (process.env.VERCEL_URL) {
-    addOrigin(allowed, `https://${process.env.VERCEL_URL}`);
-  }
-
-  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
-    addOrigin(allowed, `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`);
-  }
 
   return function isOriginAllowed(origin) {
     if (!origin) return true;
@@ -36,15 +37,6 @@ export function createOriginValidator() {
       const { hostname, protocol } = url;
 
       if (protocol === 'http:' && (hostname === 'localhost' || hostname === '127.0.0.1')) {
-        return true;
-      }
-
-      if (protocol === 'https:' && /^kitten-ehr[a-z0-9-]*\.vercel\.app$/i.test(hostname)) {
-        return true;
-      }
-
-      // Hostinger preview/custom subdomains for this project.
-      if (protocol === 'https:' && /\.hostingersite\.com$/i.test(hostname)) {
         return true;
       }
     } catch {

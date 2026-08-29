@@ -94,6 +94,25 @@ If a process dies mid-publish, the row is left in `PUBLISHING`;
 `recoverStaleClaims()` returns it to `SCHEDULED` after 15 minutes (or to `FAILED`
 once the 3-attempt budget is spent).
 
+## CORS allow-list
+
+`server/src/utils/corsOrigins.js` decides which browser origins may call the API.
+It trusts, and only trusts:
+
+- `https://pawsitivetransformations.org` and `https://www.pawsitivetransformations.org`
+  — both hosts serve the site directly (neither redirects to the other), so both
+  are listed.
+- `https://mediumslateblue-hornet-819977.hostingersite.com` — the Hostinger-assigned
+  hostname for the same site, kept as an **exact** entry for checking a deploy.
+- `http://localhost` / `http://127.0.0.1` on any port, for local development.
+- Whatever `CLIENT_URL`, `PUBLIC_SITE_URL`, and the optional comma-separated
+  `CLIENT_URLS` contain (see `server/.env.example`).
+
+There is deliberately **no wildcard**. A previous `*.hostingersite.com` pattern
+trusted every other Hostinger customer's subdomain against this API. If a new
+host is ever needed, add it as an exact string here or via `CLIENT_URLS` — never
+as a suffix match.
+
 ## SPA build mirror (`server/public`)
 
 Express serves the SPA from `server/public` first, falling back to `client/dist`
