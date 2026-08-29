@@ -104,13 +104,6 @@ describe('in-process interval gate', () => {
     assert.equal(resolveIntervalConfig({ SOCIAL_SCHEDULER_ENABLED: 'true' }).enabled, true);
   });
 
-  it('still refuses to run on a serverless host, where the process is not long-lived', () => {
-    assert.deepEqual(
-      resolveIntervalConfig({ VERCEL: '1' }),
-      { enabled: false, reason: 'vercel_uses_cron' },
-    );
-  });
-
   it('honours an interval override and floors it', () => {
     assert.deepEqual(
       resolveIntervalConfig({ SOCIAL_SCHEDULER_INTERVAL_MS: '300000' }),

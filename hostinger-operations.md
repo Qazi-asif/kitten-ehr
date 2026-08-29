@@ -41,8 +41,7 @@ Look in the Hostinger Node app log for this line, printed once per process start
 ```
 
 If it instead prints `In-process runner not started (disabled_by_env)`, the
-`SOCIAL_SCHEDULER_ENABLED` variable is switched off. `(vercel_uses_cron)` would mean
-a `VERCEL` variable is set in the environment, which should not happen on Hostinger.
+`SOCIAL_SCHEDULER_ENABLED` variable is switched off.
 
 A pass only logs when it does something, so silence between runs is normal. When a
 post is claimed, published, failed, or a stale claim is recovered you get a JSON
@@ -131,10 +130,22 @@ robocopy client\dist server\public /MIR
 end up referencing files that no longer exist. Confirm `server/public/index.html` and
 `client/dist/index.html` are identical before committing.
 
-## Vercel artefacts
+## Vercel artefacts (removed)
 
-`vercel.json`, `api/index.js`, `scripts/vercel-sync-env.cjs`,
-`server/scripts/vercel-postinstall.cjs` and the `process.env.VERCEL` branches in the
-server are leftovers from a Vercel deployment. They are inert on Hostinger (`VERCEL`
-is never set there) and have been left in place, but Hostinger is the deployment
-target of record: do not add new platform behaviour behind `process.env.VERCEL`.
+The app was once deployed on Vercel. That scaffolding — `vercel.json`,
+`api/index.js`, `scripts/vercel-sync-env.cjs`,
+`server/scripts/vercel-postinstall.cjs`, the `vercel:*` npm scripts — and every
+`process.env.VERCEL` branch in the server have been deleted. The serverless
+branches were inert here (`VERCEL` is never set on Hostinger), so only the
+Hostinger paths remain: uploads go to object storage when configured and to local
+disk otherwise, the in-process auth cache is always on, and the social-post
+scheduler always uses the in-process runner.
+
+Hostinger is the deployment target of record. Do not reintroduce platform
+branching behind `process.env.VERCEL`.
+
+Historical data note: uploads created under the old serverless deployment could
+be stored as base64 data URLs in Postgres. Writes never produce that format any
+more, but the read paths (`documentController`, `applicationController`,
+`publicController`, `utils/thumbnail.js`, `utils/contractPdf.js`) still decode it
+and must keep doing so.

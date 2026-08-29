@@ -78,14 +78,11 @@ const OFF_VALUES = new Set(['0', 'false', 'off', 'no']);
  * is a scheduler that silently does not work.
  *
  * SOCIAL_SCHEDULER_ENABLED=false turns it off; SOCIAL_SCHEDULER_INTERVAL_MS
- * overrides the interval (floored at MIN_INTERVAL_MS). The Vercel refusal is a
- * leftover safety guard for a serverless environment where the process is not
- * long-lived; it gates nothing in normal operation.
+ * overrides the interval (floored at MIN_INTERVAL_MS).
  */
 export function resolveIntervalConfig(env = process.env) {
   const flag = env.SOCIAL_SCHEDULER_ENABLED?.trim().toLowerCase();
   if (flag && OFF_VALUES.has(flag)) return { enabled: false, reason: 'disabled_by_env' };
-  if (env.VERCEL) return { enabled: false, reason: 'vercel_uses_cron' };
 
   const raw = Number.parseInt(env.SOCIAL_SCHEDULER_INTERVAL_MS || '', 10);
   const requested = Number.isFinite(raw) && raw > 0 ? raw : DEFAULT_INTERVAL_MS;

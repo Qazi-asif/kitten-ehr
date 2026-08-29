@@ -276,7 +276,7 @@ try {
     definition: {
       openapi: '3.0.0',
       info: { title: 'Pawsitive Transformations API', version: '1.0' },
-      servers: [{ url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : `http://localhost:${PORT}` }],
+      servers: [{ url: process.env.PUBLIC_SITE_URL?.replace(/\/$/, '') || `http://localhost:${PORT}` }],
     },
     apis: [path.join(__dirname, 'routes/*.js')],
   });
@@ -304,7 +304,6 @@ app.use('/api/cron', cronRoutes);
 app.get('/api/health', (_req, res) => {
   res.json({
     status: 'ok',
-    vercel: Boolean(process.env.VERCEL),
     databaseConfigured: Boolean(process.env.DATABASE_URL),
   });
 });

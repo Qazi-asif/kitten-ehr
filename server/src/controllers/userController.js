@@ -128,8 +128,8 @@ export async function updateUser(req, res) {
     });
 
     // Role, foster linkage, and active flag drive auth middleware. All three
-    // are read from the cached user record on Hostinger (cache is enabled when
-    // VERCEL is unset), so invalidate immediately on any of these changes.
+    // are read from the cached user record, so invalidate immediately on any of
+    // these changes.
     if (
       data.roleId !== undefined
       || data.fosterId !== undefined

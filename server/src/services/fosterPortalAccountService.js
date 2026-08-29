@@ -6,8 +6,8 @@ import { generatePasswordResetToken } from '../utils/passwordResetTokens.js';
 import { getClientIp } from '../utils/requestIp.js';
 import { sendTemplatedEmail } from './emailService.js';
 import { EMAIL_TEMPLATE_KEYS } from '../constants/emailTemplates.js';
-// Reuses the same PUBLIC_SITE_URL -> CLIENT_URL -> VERCEL_URL -> request
-// host -> localhost fallback chain that CORS and social-share/asset links
+// Reuses the same PUBLIC_SITE_URL -> CLIENT_URL -> request host -> localhost
+// fallback chain that CORS and social-share/asset links
 // already rely on, instead of a bare process.env.CLIENT_URL read with no
 // fallback - that gap was the actual cause of the broken
 // "http:///portal/set-password?token=..." invite links (CLIENT_URL was

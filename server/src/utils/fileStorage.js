@@ -90,6 +90,12 @@ export async function saveEventFile(eventId, buffer, originalName, mimeType) {
   return `/uploads/events/${eventId}/${safeName}`;
 }
 
+// Writes go to object storage when it is configured, otherwise to local disk
+// under UPLOAD_ROOT. Base64-in-Postgres is never written: multi-MB blobs balloon
+// RAM on every list/detail read and are a primary Hostinger OOM vector. Rows
+// created before that rule still hold base64 data URLs, so the read paths
+// (documentController, applicationController, publicController, thumbnail) keep
+// decoding them.
 async function persistScopedFile(scope, scopeId, file) {
   const ext = extensionForFile(file.originalname, file.mimetype);
   const key = `${scope}/${scopeId}/${randomUUID()}${ext}`;
@@ -98,24 +104,13 @@ async function persistScopedFile(scope, scopeId, file) {
     return uploadToObjectStorage(key, file.buffer, file.mimetype);
   }
 
-  if (shouldUseDiskStorage()) {
-    if (scope === 'kittens') {
-      return saveKittenFile(scopeId, file.buffer, file.originalname, file.mimetype);
-    }
-    if (scope === 'events') {
-      return saveEventFile(scopeId, file.buffer, file.originalname, file.mimetype);
-    }
-    return saveApplicationFile(scopeId, file.buffer, file.originalname, file.mimetype);
+  if (scope === 'kittens') {
+    return saveKittenFile(scopeId, file.buffer, file.originalname, file.mimetype);
   }
-
-  // Never embed multi-MB base64 blobs in Postgres — that balloons RAM on every
-  // list/detail read and is a primary Hostinger OOM vector. Require R2/S3
-  // (or local disk outside Vercel) instead.
-  const err = new Error(
-    'File storage is not configured. Set S3/R2 env vars (S3_BUCKET, S3_ACCESS_KEY_ID, S3_SECRET_ACCESS_KEY, S3_PUBLIC_URL) or run on a host with local disk uploads.',
-  );
-  err.status = 503;
-  throw err;
+  if (scope === 'events') {
+    return saveEventFile(scopeId, file.buffer, file.originalname, file.mimetype);
+  }
+  return saveApplicationFile(scopeId, file.buffer, file.originalname, file.mimetype);
 }
 
 export async function deleteStoredFile(fileUrl) {
@@ -158,10 +153,6 @@ export async function streamRemoteFile(res, fileUrl, { contentType, disposition 
   if (contentLength) res.setHeader('Content-Length', contentLength);
 
   await pipeline(Readable.fromWeb(upstream.body), res);
-}
-
-export function shouldUseDiskStorage() {
-  return !process.env.VERCEL;
 }
 
 export async function persistKittenFile(kittenId, file) {

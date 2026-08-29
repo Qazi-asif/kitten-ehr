@@ -48,9 +48,6 @@ export async function resolveAiProvider() {
 }
 
 export function getMissingKeyHint() {
-  if (process.env.VERCEL) {
-    return 'Set GROQ_API_KEY in Vercel → Environment Variables and redeploy, or paste your Groq key in Settings → Organization → AI Copywriter and save.';
-  }
   return 'Add GROQ_API_KEY to server/.env and restart, or paste your Groq key in Settings → Organization → AI Copywriter and save.';
 }
 

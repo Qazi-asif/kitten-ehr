@@ -8,7 +8,6 @@
     "dev": "node --watch src/index.js",
     "build": "prisma generate",
     "postinstall": "prisma generate",
-    "vercel:prepare": "node scripts/vercel-postinstall.cjs",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:seed": "node prisma/seed.js",

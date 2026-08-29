@@ -6,7 +6,6 @@ const GRAPH_API = 'https://graph.facebook.com/v21.0';
 export function getPublicSiteBase(req) {
   if (process.env.PUBLIC_SITE_URL) return process.env.PUBLIC_SITE_URL.replace(/\/$/, '');
   if (process.env.CLIENT_URL) return process.env.CLIENT_URL.replace(/\/$/, '');
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
   if (req?.get?.('host')) {
     const protocol = req.protocol || 'https';
     return `${protocol}://${req.get('host')}`;
