@@ -54,4 +54,11 @@ const server = http.createServer(app);
 
 server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
+
+  // Warn if the database is behind schema.prisma (a deploy without db push).
+  // Started only once we are already accepting requests, imported dynamically
+  // and inside try/catch, so neither the check nor loading it can affect boot.
+  import('./utils/schemaDriftCheck.js')
+    .then(({ startSchemaDriftCheck }) => startSchemaDriftCheck())
+    .catch(() => {});
 });
