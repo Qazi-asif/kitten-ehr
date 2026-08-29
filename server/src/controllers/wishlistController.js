@@ -366,6 +366,46 @@ export async function createKittenWishlist(req, res, next) {
   }
 }
 
+/** Edit a single retailer link in place: its url and/or label (CR-109). */
+export async function updateWishlist(req, res, next) {
+  try {
+    const id = parseOwnerId(req.params.id);
+    if (!id) {
+      return res.status(400).json({ error: 'Invalid wishlist id' });
+    }
+
+    const existing = await prisma.wishlist.findUnique({ where: { id } });
+    if (!existing) return res.status(404).json({ error: 'Wishlist not found' });
+
+    if (!canManageOwner(req, existing.ownerType)) {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
+
+    const data = {};
+
+    if (req.body.url !== undefined) {
+      const url = normalizeUrl(req.body.url);
+      if (!url) return res.status(400).json({ error: 'A valid url is required' });
+      data.url = url;
+    }
+
+    if (req.body.label !== undefined) {
+      const label = typeof req.body.label === 'string' ? req.body.label.trim() : '';
+      data.label = label || DEFAULT_LABELS[existing.retailer];
+    }
+
+    if (Object.keys(data).length === 0) {
+      return res.status(400).json({ error: 'Nothing to update' });
+    }
+
+    const wishlist = await prisma.wishlist.update({ where: { id }, data });
+    return res.json(wishlist);
+  } catch (error) {
+    if (error.code === 'P2025') return res.status(404).json({ error: 'Wishlist not found' });
+    return next(error);
+  }
+}
+
 export async function deleteWishlist(req, res, next) {
   try {
     const id = parseOwnerId(req.params.id);

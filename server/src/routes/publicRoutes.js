@@ -20,7 +20,7 @@ import {
   signPublicContractByToken,
 } from '../controllers/contractController.js';
 import { getPublicEventBySlug, rsvpForEvent } from '../controllers/eventController.js';
-import { getPublicWishlists, getPublicFosterWishlists, getPublicKittenWishlists } from '../controllers/wishlistController.js';
+import { getPublicWishlists, getPublicKittenWishlists } from '../controllers/wishlistController.js';
 
 const router = Router();
 

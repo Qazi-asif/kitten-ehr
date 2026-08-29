@@ -5,6 +5,7 @@ import {
   deleteWishlistGroup,
   getWishlists,
   renameWishlistGroup,
+  updateWishlist,
 } from '../controllers/wishlistController.js';
 import { requireAnyPermission } from '../middleware/authMiddleware.js';
 
@@ -21,6 +22,7 @@ router.post('/', canEdit, createWishlist);
 router.patch('/groups/rename', canEdit, renameWishlistGroup);
 router.delete('/groups', canEdit, deleteWishlistGroup);
 
+router.patch('/:id', canEdit, updateWishlist);
 router.delete('/:id', canEdit, deleteWishlist);
 
 export default router;

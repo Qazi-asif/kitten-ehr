@@ -142,21 +142,26 @@ function DonatePage() {
   const orgEin = DONATE_PAGE_EIN;
 
   // CR-109: named wishlists are the primary display. The legacy single
-  // Amazon/Chewy rows below are only used as a fallback while no named list
-  // exists yet.
+  // Amazon/Chewy settings fields still act as a per-retailer fallback, so a
+  // retailer that has no named link yet does not vanish from the page.
   const wishlistGroups = useMemo(() => groupWishlists(orgWishlists), [orgWishlists]);
   const hasNamedWishlists = wishlistGroups.length > 0;
 
-  const otherWayLinks = useMemo(() => {
-    const amazonFromWishlist = orgWishlists.find((w) => w.retailer === WISHLIST_RETAILERS.AMAZON)?.url?.trim();
-    const chewyFromWishlist = orgWishlists.find((w) => w.retailer === WISHLIST_RETAILERS.CHEWY)?.url?.trim();
-    return {
-      amazon: amazonFromWishlist || settings.amazonWishlistUrl?.trim() || null,
-      chewy: chewyFromWishlist || settings.chewyWishlistUrl?.trim() || null,
-      planned: '/contact',
-      corporate: '/contact',
-    };
-  }, [settings, orgWishlists]);
+  const namedRetailers = useMemo(
+    () => new Set(orgWishlists.map((w) => w.retailer)),
+    [orgWishlists],
+  );
+
+  const otherWayLinks = useMemo(() => ({
+    amazon: namedRetailers.has(WISHLIST_RETAILERS.AMAZON)
+      ? null
+      : settings.amazonWishlistUrl?.trim() || null,
+    chewy: namedRetailers.has(WISHLIST_RETAILERS.CHEWY)
+      ? null
+      : settings.chewyWishlistUrl?.trim() || null,
+    planned: '/contact',
+    corporate: '/contact',
+  }), [settings, namedRetailers]);
 
   // Venmo has no embeddable donate button (unlike PayPal/Givebutter) - the
   // standard approach is a profile link plus an optional QR code for the
@@ -329,9 +334,11 @@ function DonatePage() {
 
             <ul className="mt-6 space-y-4">
               {OTHER_WAYS.map((way) => {
-                const isLegacyWishlistRow = way.key === 'amazon' || way.key === 'chewy';
-                if (hasNamedWishlists && isLegacyWishlistRow) return null;
                 const href = otherWayLinks[way.key];
+                const isLegacyWishlistRow = way.key === 'amazon' || way.key === 'chewy';
+                // Once named lists exist, only show a legacy tile that still
+                // has a URL of its own to offer.
+                if (hasNamedWishlists && isLegacyWishlistRow && !href) return null;
                 const isExternal = href?.startsWith('http');
                 const isWishlist = way.key === 'amazon' || way.key === 'chewy';
 

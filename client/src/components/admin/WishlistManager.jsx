@@ -8,6 +8,7 @@ import {
   fetchWishlists,
   groupWishlists,
   renameWishlistGroup,
+  updateWishlist,
 } from '../../services/wishlistApi';
 
 const DEFAULT_GROUP_NAME = 'General Supplies';
@@ -37,6 +38,9 @@ function WishlistManager({
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
+  const [editingId, setEditingId] = useState(null);
+  const [editForm, setEditForm] = useState({ url: '', label: '' });
+  const [savingEdit, setSavingEdit] = useState(false);
   const [busyGroup, setBusyGroup] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -129,6 +133,35 @@ function WishlistManager({
     }
   }
 
+  function startEdit(item) {
+    setEditingId(item.id);
+    setEditForm({ url: item.url || '', label: item.label || '' });
+    setError('');
+    setSuccess('');
+  }
+
+  async function handleSaveEdit(id) {
+    if (!canManage) return;
+    if (!editForm.url.trim()) {
+      setError('A URL is required.');
+      return;
+    }
+
+    setSavingEdit(true);
+    setError('');
+    setSuccess('');
+    try {
+      await updateWishlist(id, { url: editForm.url.trim(), label: editForm.label.trim() });
+      setEditingId(null);
+      await load();
+      setSuccess('Wishlist link updated.');
+    } catch (err) {
+      setError(err.message || 'Failed to update wishlist link.');
+    } finally {
+      setSavingEdit(false);
+    }
+  }
+
   async function handleDelete(id) {
     if (!canManage) return;
     if (!window.confirm('Remove this wishlist link?')) return;
@@ -185,6 +218,51 @@ function WishlistManager({
   }
 
   function renderLink(item) {
+    if (editingId === item.id) {
+      return (
+        <div key={item.id} className="space-y-2 rounded-lg border border-brand/40 bg-white p-3">
+          <p className="text-xs uppercase tracking-wide text-gray-500">{item.retailer}</p>
+          <label className="block">
+            <span className="text-xs font-semibold uppercase text-gray-500">URL</span>
+            <input
+              type="url"
+              value={editForm.url}
+              onChange={(e) => setEditForm((prev) => ({ ...prev, url: e.target.value }))}
+              placeholder="https://..."
+              className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+            />
+          </label>
+          <label className="block">
+            <span className="text-xs font-semibold uppercase text-gray-500">Label (optional)</span>
+            <input
+              type="text"
+              value={editForm.label}
+              onChange={(e) => setEditForm((prev) => ({ ...prev, label: e.target.value }))}
+              className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+            />
+          </label>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => handleSaveEdit(item.id)}
+              disabled={savingEdit}
+              className="rounded-lg bg-brand px-3 py-1.5 text-xs font-semibold text-white hover:bg-brand-dark disabled:opacity-60"
+            >
+              {savingEdit ? 'Saving...' : 'Save link'}
+            </button>
+            <button
+              type="button"
+              onClick={() => setEditingId(null)}
+              disabled={savingEdit}
+              className="rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-50 disabled:opacity-60"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div
         key={item.id}
@@ -203,15 +281,25 @@ function WishlistManager({
           </a>
         </div>
         {canManage && (
-          <button
-            type="button"
-            onClick={() => handleDelete(item.id)}
-            disabled={deletingId === item.id}
-            className="inline-flex items-center gap-1 rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-50 disabled:opacity-60"
-          >
-            <Trash2 className="h-3.5 w-3.5" />
-            {deletingId === item.id ? 'Removing...' : 'Remove'}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => startEdit(item)}
+              className="inline-flex items-center gap-1 rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-50"
+            >
+              <Pencil className="h-3.5 w-3.5" />
+              Edit
+            </button>
+            <button
+              type="button"
+              onClick={() => handleDelete(item.id)}
+              disabled={deletingId === item.id}
+              className="inline-flex items-center gap-1 rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-50 disabled:opacity-60"
+            >
+              <Trash2 className="h-3.5 w-3.5" />
+              {deletingId === item.id ? 'Removing...' : 'Remove'}
+            </button>
+          </div>
         )}
       </div>
     );

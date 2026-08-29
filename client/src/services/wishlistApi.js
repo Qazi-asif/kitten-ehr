@@ -48,6 +48,20 @@ export async function createWishlist(payload) {
   return response.json();
 }
 
+/** CR-109: edit one retailer link's url and/or label in place. */
+export async function updateWishlist(id, { url, label }) {
+  const body = {};
+  if (url !== undefined) body.url = url;
+  if (label !== undefined) body.label = label;
+
+  const response = await adminFetch(`/wishlists/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(body),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to update wishlist link'));
+  return response.json();
+}
+
 export async function deleteWishlist(id) {
   const response = await adminFetch(`/wishlists/${id}`, { method: 'DELETE' });
   if (!response.ok) throw new Error(await readApiError(response, 'Failed to delete wishlist'));
