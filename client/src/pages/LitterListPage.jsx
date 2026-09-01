@@ -2,7 +2,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus } from 'lucide-react';
 import CreateLitterModal from '../components/admin/CreateLitterModal';
-import { activateLitter, deactivateLitter, fetchLitters } from '../services/api';
+import {
+  activateLitter,
+  deactivateLitter,
+  deleteLitter,
+  fetchLitters,
+} from '../services/api';
 import { formatPacificDisplay } from '../utils/pacificDate';
 
 function formatDate(value) {
@@ -14,9 +19,8 @@ function LitterListPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [statusFilter, setStatusFilter] = useState('active');
+  const [statusFilter, setStatusFilter] = useState('all');
   const [sort, setSort] = useState('name');
-  const [togglingId, setTogglingId] = useState(null);
 
   const loadLitters = useCallback(async () => {
     setLoading(true);
@@ -37,7 +41,7 @@ function LitterListPage() {
 
   function handleCreated(created) {
     if (statusFilter === 'inactive') {
-      setStatusFilter('active');
+      setStatusFilter('all');
     } else {
       setLitters((prev) => {
         const next = [...prev, created];
@@ -50,23 +54,48 @@ function LitterListPage() {
     setShowCreateModal(false);
   }
 
-  async function handleToggleActive(litter) {
-    setTogglingId(litter.id);
+  async function handleDeactivateLitter(litter) {
+    const confirmed = window.confirm(
+      `Deactivate ${litter.name}? It will be marked inactive and hidden from new kitten assignment, but not deleted.`,
+    );
+    if (!confirmed) return;
+
     setError(null);
     try {
-      const updated = litter.isActive === false
-        ? await activateLitter(litter.id)
-        : await deactivateLitter(litter.id);
-      setLitters((prev) => {
-        if (statusFilter === 'all') {
-          return prev.map((item) => (item.id === updated.id ? updated : item));
-        }
-        return prev.filter((item) => item.id !== updated.id);
-      });
+      await deactivateLitter(litter.id);
+      await loadLitters();
     } catch (err) {
       setError(err.message);
-    } finally {
-      setTogglingId(null);
+    }
+  }
+
+  async function handleActivateLitter(litter) {
+    const confirmed = window.confirm(
+      `Re-activate ${litter.name}? It will appear in active litter lists again.`,
+    );
+    if (!confirmed) return;
+
+    setError(null);
+    try {
+      await activateLitter(litter.id);
+      await loadLitters();
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
+  async function handleDeleteLitter(litter) {
+    const confirmed = window.confirm(
+      `Permanently delete ${litter.name}? This cannot be undone. Linked kittens will remain but lose their litter group assignment.`,
+    );
+    if (!confirmed) return;
+
+    setError(null);
+    try {
+      await deleteLitter(litter.id);
+      await loadLitters();
+    } catch (err) {
+      setError(err.message);
     }
   }
 
@@ -94,9 +123,9 @@ function LitterListPage() {
           className="rounded-lg border border-slate-200 px-3 py-2 text-sm"
           aria-label="Filter litters by status"
         >
+          <option value="all">All</option>
           <option value="active">Active</option>
           <option value="inactive">Inactive</option>
-          <option value="all">All</option>
         </select>
         <select
           value={sort}
@@ -147,25 +176,38 @@ function LitterListPage() {
                     </td>
                     <td className="whitespace-nowrap px-5 py-3 text-sm text-slate-600">{formatDate(litter.intakeDate)}</td>
                     <td className="whitespace-nowrap px-5 py-3 text-sm text-slate-600">{litter._count?.kittens ?? 0}</td>
-                    <td className="whitespace-nowrap px-5 py-3 text-sm">
-                      <div className="flex flex-wrap items-center gap-2">
+                    <td className="min-w-[6.5rem] px-4 py-3 text-sm">
+                      <div className="flex flex-col items-start gap-1.5">
                         <Link
                           to={`/admin/litters/${litter.id}`}
-                          className="rounded-md border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50"
+                          className="inline-flex max-w-full rounded-lg border border-slate-300 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50"
                         >
                           View
                         </Link>
+                        {isActive && (
+                          <button
+                            type="button"
+                            onClick={() => handleDeactivateLitter(litter)}
+                            className="text-xs font-medium text-red-600 hover:underline"
+                          >
+                            Deactivate
+                          </button>
+                        )}
+                        {!isActive && (
+                          <button
+                            type="button"
+                            onClick={() => handleActivateLitter(litter)}
+                            className="text-xs font-medium text-emerald-700 hover:underline"
+                          >
+                            Re-activate
+                          </button>
+                        )}
                         <button
                           type="button"
-                          onClick={() => handleToggleActive(litter)}
-                          disabled={togglingId === litter.id}
-                          className="rounded-md border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50 disabled:opacity-60"
+                          onClick={() => handleDeleteLitter(litter)}
+                          className="text-xs font-medium text-red-700 hover:underline"
                         >
-                          {togglingId === litter.id
-                            ? 'Saving...'
-                            : isActive
-                              ? 'Deactivate'
-                              : 'Re-activate'}
+                          Delete
                         </button>
                       </div>
                     </td>

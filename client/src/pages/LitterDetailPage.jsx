@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
   activateLitter,
   deactivateLitter,
+  deleteLitter,
   fetchLitterById,
   updateLitter,
 } from '../services/api';
@@ -36,6 +37,7 @@ function buildLitterForm(litter) {
 
 function LitterDetailPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { hasPermission } = useAuth();
   const canManageLitter = hasPermission('litters.manage');
   const [litter, setLitter] = useState(null);
@@ -45,6 +47,7 @@ function LitterDetailPage() {
   const [litterForm, setLitterForm] = useState(null);
   const [saving, setSaving] = useState(false);
   const [togglingActive, setTogglingActive] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const loadLitter = useCallback(async () => {
     setLoading(true);
@@ -97,7 +100,7 @@ function LitterDetailPage() {
     const isActive = litter.isActive !== false;
     const confirmed = window.confirm(
       isActive
-        ? `Deactivate ${litter.name}? The litter will be marked inactive but not deleted.`
+        ? `Deactivate ${litter.name}? It will be marked inactive and hidden from new kitten assignment, but not deleted.`
         : `Re-activate ${litter.name}? It will appear in active litter lists again.`,
     );
     if (!confirmed) return;
@@ -113,6 +116,25 @@ function LitterDetailPage() {
       setError(err.message);
     } finally {
       setTogglingActive(false);
+    }
+  }
+
+  async function handleDeleteLitter() {
+    if (!litter) return;
+    const confirmed = window.confirm(
+      `Permanently delete ${litter.name}? This cannot be undone. Linked kittens will remain but lose their litter group assignment.`,
+    );
+    if (!confirmed) return;
+
+    setDeleting(true);
+    setError(null);
+    try {
+      await deleteLitter(id);
+      navigate('/admin/litters');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setDeleting(false);
     }
   }
 
@@ -157,7 +179,7 @@ function LitterDetailPage() {
               <button
                 type="button"
                 onClick={handleToggleActive}
-                disabled={togglingActive}
+                disabled={togglingActive || deleting}
                 className="rounded-lg border border-red-200 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50 disabled:opacity-60"
               >
                 {togglingActive ? 'Deactivating...' : 'Deactivate'}
@@ -166,12 +188,20 @@ function LitterDetailPage() {
               <button
                 type="button"
                 onClick={handleToggleActive}
-                disabled={togglingActive}
+                disabled={togglingActive || deleting}
                 className="rounded-lg border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-700 hover:bg-emerald-50 disabled:opacity-60"
               >
                 {togglingActive ? 'Re-activating...' : 'Re-activate'}
               </button>
             )}
+            <button
+              type="button"
+              onClick={handleDeleteLitter}
+              disabled={deleting || togglingActive}
+              className="rounded-lg border border-red-300 px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-50 disabled:opacity-60"
+            >
+              {deleting ? 'Deleting...' : 'Delete Litter'}
+            </button>
           </div>
         )}
       </div>

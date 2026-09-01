@@ -233,6 +233,11 @@ export async function activateLitter(id) {
   return response.json();
 }
 
+export async function deleteLitter(id) {
+  const response = await adminFetch(`/litters/${id}`, { method: 'DELETE' });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to delete litter'));
+}
+
 export async function updateLitter(id, data) {
   const response = await adminFetch(`/litters/${id}`, {
     method: 'PATCH',

@@ -115,6 +115,20 @@ export async function activateLitter(req, res, next) {
   }
 }
 
+/** Hard-delete for mistaken records. Linked kittens keep their records with litterId cleared. */
+export async function deleteLitter(req, res, next) {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+    const existing = await prisma.litter.findUnique({ where: { id } });
+    if (!existing) return res.status(404).json({ error: 'Litter not found' });
+
+    await prisma.litter.delete({ where: { id } });
+    res.status(204).send();
+  } catch (error) {
+    next(error);
+  }
+}
+
 export async function getLitterById(req, res, next) {
   try {
     const id = Number.parseInt(req.params.id, 10);
