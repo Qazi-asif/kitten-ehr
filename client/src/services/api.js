@@ -140,6 +140,12 @@ export async function deactivateFoster(id) {
   return response.json();
 }
 
+export async function activateFoster(id) {
+  const response = await adminFetch(`/fosters/${id}/activate`, { method: 'POST' });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to re-activate foster'));
+  return response.json();
+}
+
 export async function deleteFoster(id) {
   const response = await adminFetch(`/fosters/${id}`, { method: 'DELETE' });
   if (!response.ok) throw new Error(await readApiError(response, 'Failed to delete foster'));
@@ -224,6 +230,15 @@ export async function deactivateLitter(id) {
 export async function activateLitter(id) {
   const response = await adminFetch(`/litters/${id}/activate`, { method: 'POST' });
   if (!response.ok) throw new Error(await readApiError(response, 'Failed to activate litter'));
+  return response.json();
+}
+
+export async function updateLitter(id, data) {
+  const response = await adminFetch(`/litters/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to update litter'));
   return response.json();
 }
 

@@ -14,6 +14,7 @@ import { formatPacificDisplay } from '../utils/pacificDate.js';
 import { CAPABILITY_OPTIONS, EXPERIENCE_LEVELS, parseCapabilityFlags } from '../utils/fosterCapabilities';
 import {
   createFosterPlacement,
+  activateFoster,
   deactivateFoster,
   deleteFoster,
   dischargeFosterPlacement,
@@ -60,6 +61,7 @@ function FosterDetailPage() {
   const [fosterForm, setFosterForm] = useState(null);
   const [savingFoster, setSavingFoster] = useState(false);
   const [deactivating, setDeactivating] = useState(false);
+  const [activating, setActivating] = useState(false);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -255,6 +257,23 @@ function FosterDetailPage() {
     }
   }
 
+  async function handleActivateFoster() {
+    if (!foster) return;
+    const confirmed = window.confirm(`Re-activate ${foster.name}? They will be available for new placements again.`);
+    if (!confirmed) return;
+
+    setActivating(true);
+    setError(null);
+    try {
+      await activateFoster(id);
+      await loadData();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setActivating(false);
+    }
+  }
+
   async function handleDeleteFoster() {
     if (!foster) return;
     const confirmed = window.confirm(
@@ -343,10 +362,20 @@ function FosterDetailPage() {
                       <button
                         type="button"
                         onClick={handleDeactivateFoster}
-                        disabled={deactivating}
+                        disabled={deactivating || activating}
                         className="rounded-lg border border-red-200 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50 disabled:opacity-60"
                       >
                         {deactivating ? 'Deactivating...' : 'Deactivate Foster'}
+                      </button>
+                    )}
+                    {foster.isActive === false && (
+                      <button
+                        type="button"
+                        onClick={handleActivateFoster}
+                        disabled={deactivating || activating}
+                        className="rounded-lg border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-700 hover:bg-emerald-50 disabled:opacity-60"
+                      >
+                        {activating ? 'Re-activating...' : 'Re-activate Foster'}
                       </button>
                     )}
                     <button

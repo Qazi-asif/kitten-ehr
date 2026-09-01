@@ -366,6 +366,26 @@ export async function deactivateFoster(req, res, next) {
   }
 }
 
+export async function activateFoster(req, res, next) {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+
+    const existing = await prisma.foster.findUnique({ where: { id } });
+    if (!existing) {
+      return res.status(404).json({ error: 'Foster not found' });
+    }
+
+    const foster = await prisma.foster.update({
+      where: { id },
+      data: { isActive: true },
+    });
+
+    res.json(foster);
+  } catch (error) {
+    next(error);
+  }
+}
+
 /** Hard-delete for QA / mistaken records (CR-78). Cleared after confirming no blockers. */
 export async function deleteFoster(req, res, next) {
   try {

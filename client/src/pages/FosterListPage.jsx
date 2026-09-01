@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import FosterForm from '../components/FosterForm';
-import { createFoster, deactivateFoster, deleteFoster, fetchFosters } from '../services/api';
+import { createFoster, activateFoster, deactivateFoster, deleteFoster, fetchFosters } from '../services/api';
 import { buildCapabilityFlags, fileToDataUrl, parseCapabilityFlags } from '../utils/fosterCapabilities';
 
 function FosterListPage() {
@@ -71,6 +71,19 @@ function FosterListPage() {
     setError(null);
     try {
       await deactivateFoster(foster.id);
+      await loadFosters();
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
+  async function handleActivateFoster(foster) {
+    const confirmed = window.confirm(`Re-activate ${foster.name}? They will be available for new placements again.`);
+    if (!confirmed) return;
+
+    setError(null);
+    try {
+      await activateFoster(foster.id);
       await loadFosters();
     } catch (err) {
       setError(err.message);
@@ -169,6 +182,15 @@ function FosterListPage() {
                           className="text-xs font-medium text-red-600 hover:underline"
                         >
                           Deactivate
+                        </button>
+                      )}
+                      {foster.isActive === false && (
+                        <button
+                          type="button"
+                          onClick={() => handleActivateFoster(foster)}
+                          className="text-xs font-medium text-emerald-700 hover:underline"
+                        >
+                          Re-activate
                         </button>
                       )}
                       <button

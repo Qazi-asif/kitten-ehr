@@ -1,4 +1,5 @@
 import prisma from '../lib/prisma.js';
+import { parsePacificDateOnly } from '../utils/pacificDate.js';
 
 export async function getAllLitters(req, res, next) {
   try {
@@ -64,6 +65,10 @@ export async function updateLitter(req, res, next) {
     }
     if (typeof req.body.notes === 'string') data.notes = req.body.notes;
     if (typeof req.body.isActive === 'boolean') data.isActive = req.body.isActive;
+    if (req.body.intakeDate === null) data.intakeDate = null;
+    else if (typeof req.body.intakeDate === 'string' && req.body.intakeDate.trim()) {
+      data.intakeDate = parsePacificDateOnly(req.body.intakeDate.trim());
+    }
 
     const litter = await prisma.litter.update({
       where: { id },

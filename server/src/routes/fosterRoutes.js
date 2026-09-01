@@ -4,6 +4,7 @@ import {
   createFoster,
   updateFoster,
   deactivateFoster,
+  activateFoster,
   deleteFoster,
   getFosterById,
   resendPortalSetupLink,
@@ -39,6 +40,7 @@ router.post('/:id/wishlists', requirePermission('fosters.manage'), createFosterW
 router.get('/:id', requirePermission('fosters.view'), getFosterById);
 router.patch('/:id', requirePermission('fosters.manage'), updateFoster);
 router.post('/:id/deactivate', requirePermission('fosters.manage'), deactivateFoster);
+router.post('/:id/activate', requirePermission('fosters.manage'), activateFoster);
 router.delete('/:id', requirePermission('fosters.manage'), deleteFoster);
 router.post(
   '/:id/portal-account/resend-setup',

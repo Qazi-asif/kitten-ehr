@@ -140,8 +140,10 @@ function LitterListPage() {
                         {litter.name}
                       </Link>
                     </td>
-                    <td className="whitespace-nowrap px-5 py-3 text-sm text-slate-600">
-                      {isActive ? 'Active' : 'Inactive'}
+                    <td className="whitespace-nowrap px-5 py-3 text-sm">
+                      <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${isActive ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-500'}`}>
+                        {isActive ? 'Active' : 'Inactive'}
+                      </span>
                     </td>
                     <td className="whitespace-nowrap px-5 py-3 text-sm text-slate-600">{formatDate(litter.intakeDate)}</td>
                     <td className="whitespace-nowrap px-5 py-3 text-sm text-slate-600">{litter._count?.kittens ?? 0}</td>
@@ -163,7 +165,7 @@ function LitterListPage() {
                             ? 'Saving...'
                             : isActive
                               ? 'Deactivate'
-                              : 'Activate'}
+                              : 'Re-activate'}
                         </button>
                       </div>
                     </td>
