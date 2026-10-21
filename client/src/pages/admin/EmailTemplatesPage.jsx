@@ -30,15 +30,11 @@ const EMPTY_TEMPLATE = {
 
 const EMPTY_DELIVERY = {
   emailsEnabled: false,
-  smtpHost: '',
-  smtpPort: 587,
-  smtpSecure: false,
-  smtpUser: '',
-  smtpPass: '',
   fromEmail: '',
   fromName: '',
   adminNotifyEmail: '',
   smtpPassConfigured: false,
+  smtpConfigured: false,
 };
 
 function EmailTemplatesPage() {
@@ -157,10 +153,12 @@ function EmailTemplatesPage() {
     setSaving(true);
     setError('');
     try {
-      const payload = { ...delivery };
-      if (!payload.smtpPass) delete payload.smtpPass;
-      delete payload.smtpPassConfigured;
-      const updated = await updateEmailSettings(payload);
+      const updated = await updateEmailSettings({
+        emailsEnabled: delivery.emailsEnabled,
+        fromEmail: delivery.fromEmail,
+        fromName: delivery.fromName,
+        adminNotifyEmail: delivery.adminNotifyEmail,
+      });
       setDelivery({ ...EMPTY_DELIVERY, ...updated });
     } catch (err) {
       setError(err.message);
@@ -327,8 +325,8 @@ function EmailTemplatesPage() {
           <div>
             <h3 className="text-base font-bold text-slate-900">SMTP & Delivery</h3>
             <p className="mt-1 text-sm text-slate-500">
-              Enable automatic emails and configure your mail server. You can also set SMTP credentials via environment
-              variables (SMTP_HOST, SMTP_USER, SMTP_PASS).
+              Enable automatic emails and set the from-address identity. SMTP credentials are read only from
+              SMTP_HOST, SMTP_USER, and SMTP_PASS on the server.
             </p>
           </div>
 
@@ -342,51 +340,15 @@ function EmailTemplatesPage() {
             Enable automatic emails
           </label>
 
+          {delivery.smtpConfigured ? (
+            <p className="text-sm font-semibold text-emerald-700">SMTP is configured on the server</p>
+          ) : (
+            <p className="text-sm text-amber-700">
+              SMTP is not configured. Set SMTP_HOST, SMTP_USER, and SMTP_PASS on the server, then restart Node.
+            </p>
+          )}
+
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <label className="block">
-              <span className="mb-1 block text-xs font-medium text-slate-600">SMTP Host</span>
-              <input
-                value={delivery.smtpHost}
-                onChange={(e) => setDelivery({ ...delivery, smtpHost: e.target.value })}
-                disabled={!canConfigureDelivery}
-                placeholder="smtp.gmail.com"
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-slate-50"
-              />
-            </label>
-            <label className="block">
-              <span className="mb-1 block text-xs font-medium text-slate-600">SMTP Port</span>
-              <input
-                type="number"
-                value={delivery.smtpPort}
-                onChange={(e) => setDelivery({ ...delivery, smtpPort: e.target.value })}
-                disabled={!canConfigureDelivery}
-                placeholder="587"
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-slate-50"
-              />
-              <p className="mt-1 text-xs text-slate-400">Gmail: use 587 (STARTTLS) or 465 (SSL). Do not use 25.</p>
-            </label>
-            <label className="block">
-              <span className="mb-1 block text-xs font-medium text-slate-600">SMTP Username</span>
-              <input
-                value={delivery.smtpUser}
-                onChange={(e) => setDelivery({ ...delivery, smtpUser: e.target.value })}
-                disabled={!canConfigureDelivery}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-slate-50"
-              />
-            </label>
-            <label className="block">
-              <span className="mb-1 block text-xs font-medium text-slate-600">
-                SMTP Password {delivery.smtpPassConfigured ? '(configured — leave blank to keep)' : ''}
-              </span>
-              <input
-                type="password"
-                value={delivery.smtpPass}
-                onChange={(e) => setDelivery({ ...delivery, smtpPass: e.target.value })}
-                disabled={!canConfigureDelivery}
-                placeholder={delivery.smtpPassConfigured ? '••••••••' : ''}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-slate-50"
-              />
-            </label>
             <label className="block">
               <span className="mb-1 block text-xs font-medium text-slate-600">From Email</span>
               <input
@@ -416,20 +378,6 @@ function EmailTemplatesPage() {
                 className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-slate-50"
               />
             </label>
-          </div>
-
-          <label className="flex items-center gap-2 text-sm text-slate-700">
-            <input
-              type="checkbox"
-              checked={delivery.smtpSecure}
-              onChange={(e) => setDelivery({ ...delivery, smtpSecure: e.target.checked })}
-              disabled={!canConfigureDelivery}
-            />
-            Use SSL/TLS (port 465) — leave unchecked for port 587 STARTTLS
-          </label>
-
-          <div className="rounded-lg border border-blue-100 bg-blue-50 px-4 py-3 text-xs text-blue-800">
-            <strong>Gmail App Password setup:</strong> Host = <code className="rounded bg-blue-100 px-1">smtp.gmail.com</code>, Port = <code className="rounded bg-blue-100 px-1">587</code>, SSL checkbox <strong>unchecked</strong>. Username = your Gmail address. Password = 16-character App Password from Google Account → Security → App Passwords (requires 2-Step Verification).
           </div>
 
           {canConfigureDelivery ? (

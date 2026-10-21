@@ -54,12 +54,7 @@ async function seedAuth() {
 }
 
 async function seedSettings() {
-  const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
-  const smtpPort = Number(process.env.SMTP_PORT) || 587;
   const smtpUser = process.env.SMTP_USER || '';
-  const smtpPass = process.env.SMTP_PASS || '';
-  // Enable emails automatically when credentials are present in env
-  const emailsEnabled = Boolean(smtpHost && smtpUser && smtpPass);
 
   await prisma.settings.upsert({
     where: { id: 1 },
@@ -77,12 +72,7 @@ async function seedSettings() {
       chewyWishlistUrl: '',
       facebookUrl: '',
       instagramUrl: '',
-      emailsEnabled,
-      smtpHost,
-      smtpPort,
-      smtpSecure: false, // always false — secure is derived from port at send time
-      smtpUser,
-      smtpPass,
+      emailsEnabled: false,
       fromEmail: smtpUser,
       fromName: 'Pawsitive Transformations',
       adminNotifyEmail: smtpUser,

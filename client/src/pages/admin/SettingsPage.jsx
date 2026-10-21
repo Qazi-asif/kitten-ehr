@@ -52,12 +52,8 @@ const EMPTY_ORG = {
   orgLogoUrl: '',
   orgSignatureUrl: '',
   emailsEnabled: false,
-  smtpHost: '',
-  smtpPort: 587,
-  smtpSecure: false,
-  smtpUser: '',
-  smtpPass: '',
   smtpPassConfigured: false,
+  smtpConfigured: false,
   fromEmail: '',
   fromName: '',
   adminNotifyEmail: '',
@@ -108,12 +104,8 @@ function mapOrgSettingsFromApi(settingsData = {}) {
     orgLogoUrl: settingsData.orgLogoUrl || '',
     orgSignatureUrl: settingsData.orgSignatureUrl || '',
     emailsEnabled: Boolean(settingsData.emailsEnabled),
-    smtpHost: settingsData.smtpHost || '',
-    smtpPort: settingsData.smtpPort ?? 587,
-    smtpSecure: Boolean(settingsData.smtpSecure),
-    smtpUser: settingsData.smtpUser || '',
-    smtpPass: '',
     smtpPassConfigured: Boolean(settingsData.smtpPassConfigured),
+    smtpConfigured: Boolean(settingsData.smtpConfigured),
     fromEmail: settingsData.fromEmail || '',
     fromName: settingsData.fromName || '',
     adminNotifyEmail: settingsData.adminNotifyEmail || '',
@@ -194,8 +186,15 @@ function SettingsPage() {
     setOrgSaving(true);
     setError('');
     try {
+      const {
+        smtpPassConfigured,
+        smtpConfigured,
+        groqApiKeyConfigured,
+        facebookPageAccessTokenConfigured,
+        ...orgPayload
+      } = orgSettings;
       const updated = await updateSettings({
-        ...orgSettings,
+        ...orgPayload,
         defaultDonationAmount: Number.parseInt(orgSettings.defaultDonationAmount, 10) || 50,
       });
       setOrgSettings(mapOrgSettingsFromApi(updated));
@@ -324,20 +323,11 @@ function SettingsPage() {
     }
   }
 
-  // Tests whatever is currently in the SMTP form fields, not just what's
-  // saved - the server falls back to the saved value for any field left
-  // blank (same "blank means keep existing" rule updateSettings already
-  // uses for smtpPass), so this works whether or not the form has been
-  // saved yet.
   async function handleTestEmailConnection() {
     setEmailTesting(true);
     setEmailTestMessage(null);
     try {
       await testEmailSettingsConnection({
-        smtpHost: orgSettings.smtpHost,
-        smtpPort: orgSettings.smtpPort,
-        smtpUser: orgSettings.smtpUser,
-        smtpPass: orgSettings.smtpPass,
         toEmail: emailTestRecipient || orgSettings.adminNotifyEmail,
       });
       setEmailTestMessage({ type: 'success', text: 'Test email sent successfully.' });
@@ -982,65 +972,13 @@ function SettingsPage() {
               </label>
             </div>
 
-            <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
-              <label className="block">
-                <span className="mb-1 block text-xs font-medium text-slate-600">SMTP Host</span>
-                <input
-                  type="text"
-                  value={orgSettings.smtpHost}
-                  onChange={(e) => handleOrgFieldChange('smtpHost', e.target.value)}
-                  disabled={!canManageOrg}
-                  placeholder="smtp.example.com"
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-white"
-                />
-              </label>
-              <label className="block">
-                <span className="mb-1 block text-xs font-medium text-slate-600">SMTP Port</span>
-                <input
-                  type="number"
-                  min="1"
-                  value={orgSettings.smtpPort}
-                  onChange={(e) => handleOrgFieldChange('smtpPort', e.target.value)}
-                  disabled={!canManageOrg}
-                  placeholder="587"
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-white"
-                />
-              </label>
-              <label className="block">
-                <span className="mb-1 block text-xs font-medium text-slate-600">SMTP Username</span>
-                <input
-                  type="text"
-                  value={orgSettings.smtpUser}
-                  onChange={(e) => handleOrgFieldChange('smtpUser', e.target.value)}
-                  disabled={!canManageOrg}
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-white"
-                />
-              </label>
-              <label className="block">
-                <span className="mb-1 block text-xs font-medium text-slate-600">SMTP Password</span>
-                <input
-                  type="password"
-                  value={orgSettings.smtpPass}
-                  onChange={(e) => handleOrgFieldChange('smtpPass', e.target.value)}
-                  disabled={!canManageOrg}
-                  placeholder="Leave blank to keep existing password"
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:bg-white"
-                />
-                {orgSettings.smtpPassConfigured && (
-                  <p className="mt-1 text-xs font-semibold text-emerald-700">Password is configured.</p>
-                )}
-              </label>
-            </div>
-
-            <label className="mt-4 flex items-center gap-2 text-sm text-slate-700">
-              <input
-                type="checkbox"
-                checked={orgSettings.smtpSecure}
-                onChange={(e) => handleOrgFieldChange('smtpSecure', e.target.checked)}
-                disabled={!canManageOrg}
-              />
-              Use SSL/TLS (typically port 465 - leave unchecked for STARTTLS on port 587)
-            </label>
+            {orgSettings.smtpConfigured ? (
+              <p className="mt-4 text-sm font-semibold text-emerald-700">SMTP is configured on the server</p>
+            ) : (
+              <p className="mt-4 text-sm text-amber-700">
+                SMTP is not configured. Set SMTP_HOST, SMTP_USER, and SMTP_PASS on the server, then restart Node.
+              </p>
+            )}
 
             <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
               <label className="block">
@@ -1082,8 +1020,8 @@ function SettingsPage() {
               <div className="mt-4 rounded-lg border border-dashed border-slate-300 bg-white p-4">
                 <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Send Test Email</p>
                 <p className="mt-1 text-xs text-slate-500">
-                  Tests the SMTP fields above as currently entered, even if not yet saved. Any field left blank
-                  falls back to the saved value.
+                  Tests the server SMTP credentials (SMTP_HOST, SMTP_USER, SMTP_PASS). Works even if automatic
+                  emails are disabled.
                 </p>
                 <div className="mt-3 flex flex-wrap items-end gap-3">
                   <label className="block flex-1 min-w-[220px]">

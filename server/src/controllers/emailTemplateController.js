@@ -17,7 +17,14 @@ export async function getEmailTemplates(_req, res, next) {
       prisma.settings.findUnique({ where: { id: SETTINGS_ID } }),
     ]);
 
-    const { smtpPass, ...emailSettings } = settings || {};
+    const {
+      smtpPass,
+      smtpHost,
+      smtpPort,
+      smtpSecure,
+      smtpUser,
+      ...emailSettings
+    } = settings || {};
 
     res.json({
       templates,
@@ -25,7 +32,8 @@ export async function getEmailTemplates(_req, res, next) {
       delivery: settings
         ? {
             ...emailSettings,
-            smtpPassConfigured: Boolean(smtpPass || process.env.SMTP_PASS),
+            smtpPassConfigured: Boolean(process.env.SMTP_PASS),
+            smtpConfigured: Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS),
           }
         : null,
     });
@@ -112,11 +120,6 @@ export async function updateEmailSettings(req, res, next) {
   try {
     const {
       emailsEnabled,
-      smtpHost,
-      smtpPort,
-      smtpSecure,
-      smtpUser,
-      smtpPass,
       fromEmail,
       fromName,
       adminNotifyEmail,
@@ -124,17 +127,6 @@ export async function updateEmailSettings(req, res, next) {
 
     const data = {};
     if (emailsEnabled !== undefined) data.emailsEnabled = Boolean(emailsEnabled);
-    if (smtpHost !== undefined) data.smtpHost = String(smtpHost).trim();
-    if (smtpPort !== undefined) {
-      const parsed = Number.parseInt(smtpPort, 10);
-      if (Number.isNaN(parsed) || parsed < 1) {
-        return res.status(400).json({ error: 'smtpPort must be a positive integer' });
-      }
-      data.smtpPort = parsed;
-    }
-    if (smtpSecure !== undefined) data.smtpSecure = Boolean(smtpSecure);
-    if (smtpUser !== undefined) data.smtpUser = String(smtpUser).trim();
-    if (smtpPass !== undefined && smtpPass !== '') data.smtpPass = String(smtpPass);
     if (fromEmail !== undefined) data.fromEmail = String(fromEmail).trim();
     if (fromName !== undefined) data.fromName = String(fromName).trim();
     if (adminNotifyEmail !== undefined) data.adminNotifyEmail = String(adminNotifyEmail).trim();
@@ -145,10 +137,11 @@ export async function updateEmailSettings(req, res, next) {
       update: data,
     });
 
-    const { smtpPass: storedPass, ...rest } = settings;
+    const { smtpPass, smtpHost, smtpPort, smtpSecure, smtpUser, ...rest } = settings;
     res.json({
       ...rest,
-      smtpPassConfigured: Boolean(storedPass || process.env.SMTP_PASS),
+      smtpPassConfigured: Boolean(process.env.SMTP_PASS),
+      smtpConfigured: Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS),
     });
   } catch (error) {
     next(error);

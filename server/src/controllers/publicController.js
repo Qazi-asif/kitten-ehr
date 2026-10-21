@@ -15,7 +15,7 @@ import {
 } from '../utils/resolveKittenPhotoUrl.js';
 import { getCachedResponse, setCachedResponse } from '../utils/responseCache.js';
 import { resolveStoredFileAbsolutePath } from '../utils/fileStorage.js';
-import nodemailer from 'nodemailer';
+import { getEnvSmtpConfig, getSmtpTransporter, isEnvSmtpConfigured } from '../services/emailService.js';
 import { escapeHtml } from '../utils/htmlEscape.js';
 
 // Cache TTLs for public read-only endpoints (milliseconds)
@@ -493,42 +493,23 @@ export async function submitContactForm(req, res, next) {
       return res.status(400).json({ error: 'Please select a topic.' });
     }
 
-    // Load SMTP config — env vars take priority over DB values
     const settings = await prisma.settings.findUnique({ where: { id: 1 } });
+    const smtp = getEnvSmtpConfig();
+    const adminEmail = (settings?.adminNotifyEmail || settings?.contactEmail || smtp.user || '').trim();
 
-    const smtpHost = (process.env.SMTP_HOST || settings?.smtpHost || '').trim();
-    const smtpUser = (process.env.SMTP_USER || settings?.smtpUser || '').trim();
-    const smtpPass = (process.env.SMTP_PASS || settings?.smtpPass || '').trim();
-    const adminEmail = (settings?.adminNotifyEmail || settings?.contactEmail || smtpUser || '').trim();
-    const emailsEnabled = Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS)
-      || Boolean(settings?.emailsEnabled);
-
-    if (!emailsEnabled) {
+    if (!settings?.emailsEnabled) {
       return res.status(503).json({ error: 'Email sending is currently disabled. Please contact us directly.' });
     }
-    if (!smtpHost || !smtpUser || !smtpPass) {
+    if (!isEnvSmtpConfigured()) {
       return res.status(503).json({ error: 'Email is not fully configured on the server. Please contact us directly.' });
     }
     if (!adminEmail) {
       return res.status(503).json({ error: 'No recipient email address is configured. Please contact us directly.' });
     }
 
-    const port = Number(process.env.SMTP_PORT || settings?.smtpPort) || 587;
-    // Derive secure ONLY from the port — never trust the DB smtpSecure flag
-    // because it can be stale or incorrectly set.
-    // 465 = direct SSL (secure:true), 587/25/2525 = STARTTLS (secure:false).
-    const secure = port === 465;
     const orgName = settings?.orgName || 'Pawsitive Transformations';
-
-    const transportConfig = {
-      host: smtpHost,
-      port,
-      secure,
-      auth: { user: smtpUser, pass: smtpPass },
-      tls: { rejectUnauthorized: false },
-    };
-
-    const transporter = nodemailer.createTransport(transportConfig);
+    const fromAddress = (settings?.fromEmail || smtp.user || '').trim();
+    const transporter = getSmtpTransporter();
 
     const subject = `[Contact Form] ${topic.trim()} — ${firstName.trim()} ${lastName.trim()}`;
 
@@ -560,7 +541,7 @@ export async function submitContactForm(req, res, next) {
     try {
       // Admin notification
       await transporter.sendMail({
-        from: `"${orgName} Contact Form" <${smtpUser}>`,
+        from: `"${orgName} Contact Form" <${fromAddress}>`,
         to: adminEmail,
         replyTo: email.trim(),
         subject,
@@ -570,7 +551,7 @@ export async function submitContactForm(req, res, next) {
 
       // Sender confirmation
       await transporter.sendMail({
-        from: `"${orgName}" <${smtpUser}>`,
+        from: `"${orgName}" <${fromAddress}>`,
         to: email.trim(),
         subject: `We received your message — ${orgName}`,
         text: `Hi ${firstName.trim()},\n\nThanks for reaching out! We received your message about "${topic.trim()}" and will be in touch shortly.\n\n${orgName}`,

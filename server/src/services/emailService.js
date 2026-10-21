@@ -12,6 +12,10 @@ import { escapeHtml } from '../utils/htmlEscape.js';
 import { formatPacificDisplay } from '../utils/pacificDate.js';
 
 const SETTINGS_ID = 1;
+const EMAILS_DISABLED =
+  'Email sending is disabled in Settings. Turn on “Enable automatic emails”.';
+const SMTP_NOT_CONFIGURED =
+  'SMTP is not fully configured. Set SMTP_HOST, SMTP_USER, and SMTP_PASS on the server, then restart Node.';
 let cachedTransporter = null;
 let cachedTransporterKey = '';
 
@@ -29,13 +33,25 @@ function stripHtml(html) {
   return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
-function resolveEmailProvider(settings) {
-  if (process.env.SENDGRID_API_KEY) return 'sendgrid';
-  if (process.env.AWS_SES_REGION || process.env.SES_REGION) return 'ses';
-  const host = (process.env.SMTP_HOST || settings.smtpHost || '').toLowerCase();
+function resolveEmailProvider() {
+  const host = (process.env.SMTP_HOST || '').toLowerCase();
   if (host.includes('sendgrid')) return 'sendgrid';
   if (host.includes('amazonaws')) return 'ses';
   return 'smtp';
+}
+
+export function getEnvSmtpConfig() {
+  const host = (process.env.SMTP_HOST || '').trim();
+  const port = Number(process.env.SMTP_PORT) || 587;
+  const user = (process.env.SMTP_USER || '').trim();
+  const pass = (process.env.SMTP_PASS || '').trim();
+  const secure = port === 465;
+  return { host, port, user, pass, secure };
+}
+
+export function isEnvSmtpConfigured() {
+  const { host, user, pass } = getEnvSmtpConfig();
+  return Boolean(host && user && pass);
 }
 
 function buildApplicationVariables(application, statusNotes = '') {
@@ -56,49 +72,15 @@ function buildApplicationVariables(application, statusNotes = '') {
 async function getEmailSettings() {
   let settings = await prisma.settings.findUnique({ where: { id: SETTINGS_ID } });
   if (!settings) {
-    const envReady = Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
     settings = await prisma.settings.create({
       data: {
         id: SETTINGS_ID,
-        emailsEnabled: envReady,
-        smtpHost: process.env.SMTP_HOST || '',
-        smtpPort: Number(process.env.SMTP_PORT) || 587,
-        smtpUser: process.env.SMTP_USER || '',
-        smtpPass: process.env.SMTP_PASS || '',
         fromEmail: process.env.SMTP_USER || '',
         fromName: 'Pawsitive Transformations',
         adminNotifyEmail: process.env.SMTP_USER || '',
       },
     });
-    return settings;
   }
-
-  // Same self-heal as Settings GET: env SMTP present but DB still disabled/empty.
-  const envHost = process.env.SMTP_HOST;
-  const envUser = process.env.SMTP_USER;
-  const envPass = process.env.SMTP_PASS;
-  const needsPatch =
-    envHost && envUser && envPass
-    && (!settings.smtpHost || !settings.smtpUser || !settings.smtpPass || !settings.emailsEnabled);
-
-  if (needsPatch) {
-    const port = Number(process.env.SMTP_PORT) || 587;
-    settings = await prisma.settings.update({
-      where: { id: SETTINGS_ID },
-      data: {
-        emailsEnabled: true,
-        smtpHost: settings.smtpHost || envHost,
-        smtpPort: settings.smtpPort || port,
-        smtpSecure: false,
-        smtpUser: settings.smtpUser || envUser,
-        smtpPass: settings.smtpPass || envPass,
-        fromEmail: settings.fromEmail || envUser,
-        fromName: settings.fromName || settings.orgName || 'Pawsitive Transformations',
-        adminNotifyEmail: settings.adminNotifyEmail || envUser,
-      },
-    });
-  }
-
   return settings;
 }
 
@@ -162,36 +144,34 @@ async function buildRenderedEmail(template, variables) {
   return { subject, html, text };
 }
 
-function getSmtpTransporter(settings, smtpHost, smtpUser, smtpPass) {
-  const port = Number(settings.smtpPort) || 587;
-  // Derive secure ONLY from the port — never trust the stored smtpSecure flag
-  // because it can be stale. 465 = direct SSL, everything else = STARTTLS.
-  const secure = port === 465;
-
-  const key = `${smtpHost}|${port}|${secure}|${smtpUser}|${smtpPass}`;
+export function getSmtpTransporter() {
+  const { host, port, user, pass, secure } = getEnvSmtpConfig();
+  const key = `${host}|${port}|${secure}|${user}|${pass}`;
   if (cachedTransporter && cachedTransporterKey === key) {
     return cachedTransporter;
   }
 
   cachedTransporter = nodemailer.createTransport({
-    host: smtpHost,
+    host,
     port,
     secure,
     auth: {
-      user: smtpUser,
-      pass: smtpPass,
+      user,
+      pass,
     },
     tls: { rejectUnauthorized: false },
-    // Nodemailer's own defaults here are very long (connectionTimeout 2min,
-    // socketTimeout 10min) - a stalled/unresponsive mail server would hang a
-    // send for that long with no bound. Same bounded values already proven
-    // out in sendTestEmail() below.
     connectionTimeout: 10000,
     greetingTimeout: 10000,
     socketTimeout: 10000,
   });
   cachedTransporterKey = key;
   return cachedTransporter;
+}
+
+function mailFrom(settings, smtpUser) {
+  const name = settings.fromName || settings.orgName || 'Pawsitive Transformations';
+  const address = settings.fromEmail || smtpUser;
+  return `"${name}" <${address}>`;
 }
 
 export async function sendTemplatedEmail({
@@ -203,7 +183,7 @@ export async function sendTemplatedEmail({
 }) {
   const settings = await getEmailSettings();
   const recipient = toEmail?.trim();
-  const provider = resolveEmailProvider(settings);
+  const provider = resolveEmailProvider();
 
   if (!settings.emailsEnabled) {
     await logEmailAttempt({
@@ -212,14 +192,14 @@ export async function sendTemplatedEmail({
       subject: '(skipped - emails disabled)',
       status: 'skipped',
       provider,
-      errorMessage: 'Email sending is disabled in Settings → Emails. Turn on “Emails enabled” and confirm SMTP host, user, and password.',
+      errorMessage: EMAILS_DISABLED,
       relatedType,
       relatedId,
     });
     return {
       ok: false,
       skipped: true,
-      errorMessage: 'Email sending is disabled in Settings → Emails. Turn on “Emails enabled” and confirm SMTP host, user, and password.',
+      errorMessage: EMAILS_DISABLED,
     };
   }
 
@@ -259,33 +239,31 @@ export async function sendTemplatedEmail({
 
   const { subject, html, text } = await buildRenderedEmail(template, mergedVariables);
 
-  const smtpPass = process.env.SMTP_PASS || process.env.SENDGRID_API_KEY || settings.smtpPass;
-  const smtpHost = process.env.SMTP_HOST || settings.smtpHost;
-  const smtpUser = process.env.SMTP_USER || settings.smtpUser;
+  const smtp = getEnvSmtpConfig();
 
-  if (!smtpHost || !smtpUser || !smtpPass) {
+  if (!smtp.host || !smtp.user || !smtp.pass) {
     await logEmailAttempt({
       templateKey,
       toEmail: recipient,
       subject,
       status: 'skipped',
       provider,
-      errorMessage: 'SMTP is not fully configured. Set host, username, and password in Settings → Emails (or SMTP_* env vars), then try again.',
+      errorMessage: SMTP_NOT_CONFIGURED,
       relatedType,
       relatedId,
     });
     return {
       ok: false,
       skipped: true,
-      errorMessage: 'SMTP is not fully configured. Set host, username, and password in Settings → Emails (or SMTP_* env vars), then try again.',
+      errorMessage: SMTP_NOT_CONFIGURED,
     };
   }
 
   try {
-    const transporter = getSmtpTransporter(settings, smtpHost, smtpUser, smtpPass);
+    const transporter = getSmtpTransporter();
 
     const info = await transporter.sendMail({
-      from: `"${settings.fromName || settings.orgName}" <${settings.fromEmail || smtpUser}>`,
+      from: mailFrom(settings, smtp.user),
       to: recipient,
       subject,
       text,
@@ -335,36 +313,16 @@ function describeSmtpError(error) {
   }
 }
 
-// Sends a one-off test message to confirm SMTP settings work, from the
-// Settings page's "Send Test Email" button. Any field left blank/undefined
-// falls back to the currently-saved Settings row - same convention
-// updateSettings already uses for smtpPass (the client never has the real
-// saved password to send back), extended here to every SMTP field so the
-// button works whether staff edited everything, nothing, or just one field.
-//
-// Deliberately does NOT use getSmtpTransporter()'s module-level cache above -
-// a test send may use host/port/credentials that differ from (or haven't yet
-// overwritten) the cached production transporter, and a failed test must
-// never leave a bad transporter cached for real sends to pick up. Uses its
-// own short timeouts so a wrong host or blocked port fails fast instead of
-// hanging on nodemailer's much longer default. Also runs regardless of
-// settings.emailsEnabled - "would sending work if it were on" is exactly
-// what this button answers.
-export async function sendTestEmail({ smtpHost, smtpPort, smtpUser, smtpPass, toEmail }) {
+// Sends a one-off test message using process.env SMTP_* only. Ignores
+// Dashboard/DB credentials and settings.emailsEnabled so staff can verify
+// server env vars even while automatic emails are off.
+export async function sendTestEmail({ toEmail } = {}) {
   const settings = await getEmailSettings();
-
-  const effectiveHost = smtpHost?.trim() || settings.smtpHost;
-  const parsedPort = smtpPort !== undefined && smtpPort !== '' ? Number(smtpPort) : NaN;
-  const effectivePort = Number.isInteger(parsedPort) && parsedPort > 0 ? parsedPort : (settings.smtpPort || 587);
-  const effectiveUser = smtpUser?.trim() || settings.smtpUser;
-  const effectivePass = smtpPass || settings.smtpPass;
-  // Secure is always derived from port, never a trusted flag - same rule as
-  // every other send path in this file (465 = SSL, else STARTTLS).
-  const effectiveSecure = effectivePort === 465;
+  const smtp = getEnvSmtpConfig();
   const recipient = (toEmail?.trim() || settings.adminNotifyEmail || '').trim();
 
-  if (!effectiveHost || !effectiveUser || !effectivePass) {
-    return { ok: false, error: 'SMTP host, username, and password are required to send a test email.' };
+  if (!smtp.host || !smtp.user || !smtp.pass) {
+    return { ok: false, error: SMTP_NOT_CONFIGURED };
   }
   if (!recipient) {
     return { ok: false, error: 'A recipient email address is required.' };
@@ -374,22 +332,12 @@ export async function sendTestEmail({ smtpHost, smtpPort, smtpUser, smtpPass, to
   const subject = `${settings.orgName || 'Pawsitive Transformations'} — SMTP Test Email`;
   const text = `This is a test email from ${settings.orgName || 'Pawsitive Transformations'} to confirm your SMTP settings are working.`;
   const html = `<p>${escapeHtml(text)}</p>`;
-  const provider = resolveEmailProvider({ ...settings, smtpHost: effectiveHost });
-
-  const transporter = nodemailer.createTransport({
-    host: effectiveHost,
-    port: effectivePort,
-    secure: effectiveSecure,
-    auth: { user: effectiveUser, pass: effectivePass },
-    tls: { rejectUnauthorized: false },
-    connectionTimeout: 10000,
-    greetingTimeout: 10000,
-    socketTimeout: 10000,
-  });
+  const provider = resolveEmailProvider();
+  const transporter = getSmtpTransporter();
 
   try {
     const info = await transporter.sendMail({
-      from: `"${settings.fromName || settings.orgName}" <${settings.fromEmail || effectiveUser}>`,
+      from: mailFrom(settings, smtp.user),
       to: recipient,
       subject,
       text,
@@ -557,7 +505,7 @@ function buildPdfAttachment(pdfUrl, filename) {
 export async function sendSignedContractPdfEmail({ contract }) {
   const settings = await getEmailSettings();
   const recipient = contract.signerEmail?.trim();
-  const provider = resolveEmailProvider(settings);
+  const provider = resolveEmailProvider();
   const templateKey = EMAIL_TEMPLATE_KEYS.CONTRACT_SIGNED_PDF;
   const kittenName = contract.kittenName || contract.kitten?.name || 'your cat';
   const agreementLabel = contract.type === 'ADOPTION' ? 'Cat Adoption Agreement' : 'Foster Care Agreement';
@@ -570,11 +518,11 @@ export async function sendSignedContractPdfEmail({ contract }) {
       subject: '(skipped - emails disabled)',
       status: 'skipped',
       provider,
-      errorMessage: 'Email sending is disabled in settings',
+      errorMessage: EMAILS_DISABLED,
       relatedType: 'Contract',
       relatedId: contract.id,
     });
-    return { ok: false, skipped: true, errorMessage: 'Email sending is disabled in Settings → Emails. Turn on “Emails enabled” and confirm SMTP host, user, and password.' };
+    return { ok: false, skipped: true, errorMessage: EMAILS_DISABLED };
   }
 
   if (!recipient) {
@@ -630,28 +578,26 @@ export async function sendSignedContractPdfEmail({ contract }) {
   const html = wrapEmailContent(innerHtml, { orgName: settings.orgName, orgLogoUrl: settings.orgLogoUrl || '' }, layoutHtml);
   const text = stripHtml(innerHtml);
 
-  const smtpPass = process.env.SMTP_PASS || process.env.SENDGRID_API_KEY || settings.smtpPass;
-  const smtpHost = process.env.SMTP_HOST || settings.smtpHost;
-  const smtpUser = process.env.SMTP_USER || settings.smtpUser;
+  const smtp = getEnvSmtpConfig();
 
-  if (!smtpHost || !smtpUser || !smtpPass) {
+  if (!smtp.host || !smtp.user || !smtp.pass) {
     await logEmailAttempt({
       templateKey,
       toEmail: recipient,
       subject,
       status: 'skipped',
       provider,
-      errorMessage: 'SMTP is not fully configured',
+      errorMessage: SMTP_NOT_CONFIGURED,
       relatedType: 'Contract',
       relatedId: contract.id,
     });
-    return { ok: false, skipped: true, errorMessage: 'SMTP is not fully configured. Set host, username, and password in Settings → Emails (or SMTP_* env vars), then try again.' };
+    return { ok: false, skipped: true, errorMessage: SMTP_NOT_CONFIGURED };
   }
 
   try {
-    const transporter = getSmtpTransporter(settings, smtpHost, smtpUser, smtpPass);
+    const transporter = getSmtpTransporter();
     const info = await transporter.sendMail({
-      from: `"${settings.fromName || settings.orgName}" <${settings.fromEmail || smtpUser}>`,
+      from: mailFrom(settings, smtp.user),
       to: recipient,
       subject,
       text,
@@ -694,7 +640,7 @@ export async function sendSignedContractPdfEmail({ contract }) {
 export async function sendContractAgreementEmail({ contract, agreementText, note = '', signingUrl = '' }) {
   const settings = await getEmailSettings();
   const recipient = contract.signerEmail?.trim();
-  const provider = resolveEmailProvider(settings);
+  const provider = resolveEmailProvider();
   const templateKey = EMAIL_TEMPLATE_KEYS.CONTRACT_AGREEMENT;
   const kittenName = contract.kittenName || contract.kitten?.name || 'your cat';
   const subject = `${settings.orgName || 'Pawsitive Transformations'} — ${contract.type === 'ADOPTION' ? 'Cat Adoption Agreement' : 'Foster Care Agreement'}`;
@@ -706,11 +652,11 @@ export async function sendContractAgreementEmail({ contract, agreementText, note
       subject: '(skipped - emails disabled)',
       status: 'skipped',
       provider,
-      errorMessage: 'Email sending is disabled in settings',
+      errorMessage: EMAILS_DISABLED,
       relatedType: 'Contract',
       relatedId: contract.id,
     });
-    return { ok: false, skipped: true, errorMessage: 'Email sending is disabled in Settings → Emails. Turn on “Emails enabled” and confirm SMTP host, user, and password.' };
+    return { ok: false, skipped: true, errorMessage: EMAILS_DISABLED };
   }
 
   if (!recipient) {
@@ -750,28 +696,26 @@ ${signBlock}
   const html = wrapEmailContent(innerHtml, { orgName: settings.orgName, orgLogoUrl: settings.orgLogoUrl || '' }, layoutHtml);
   const text = stripHtml(innerHtml);
 
-  const smtpPass = process.env.SMTP_PASS || process.env.SENDGRID_API_KEY || settings.smtpPass;
-  const smtpHost = process.env.SMTP_HOST || settings.smtpHost;
-  const smtpUser = process.env.SMTP_USER || settings.smtpUser;
+  const smtp = getEnvSmtpConfig();
 
-  if (!smtpHost || !smtpUser || !smtpPass) {
+  if (!smtp.host || !smtp.user || !smtp.pass) {
     await logEmailAttempt({
       templateKey,
       toEmail: recipient,
       subject,
       status: 'skipped',
       provider,
-      errorMessage: 'SMTP is not fully configured',
+      errorMessage: SMTP_NOT_CONFIGURED,
       relatedType: 'Contract',
       relatedId: contract.id,
     });
-    return { ok: false, skipped: true, errorMessage: 'SMTP is not fully configured. Set host, username, and password in Settings → Emails (or SMTP_* env vars), then try again.' };
+    return { ok: false, skipped: true, errorMessage: SMTP_NOT_CONFIGURED };
   }
 
   try {
-    const transporter = getSmtpTransporter(settings, smtpHost, smtpUser, smtpPass);
+    const transporter = getSmtpTransporter();
     const info = await transporter.sendMail({
-      from: `"${settings.fromName || settings.orgName}" <${settings.fromEmail || smtpUser}>`,
+      from: mailFrom(settings, smtp.user),
       to: recipient,
       subject,
       text,
@@ -819,7 +763,7 @@ export async function sendCustomEmail({
 }) {
   const settings = await getEmailSettings();
   const recipient = toEmail?.trim();
-  const provider = resolveEmailProvider(settings);
+  const provider = resolveEmailProvider();
   const mailSubject = subject?.trim() || '(no subject)';
 
   if (!settings.emailsEnabled) {
@@ -829,14 +773,14 @@ export async function sendCustomEmail({
       subject: '(skipped - emails disabled)',
       status: 'skipped',
       provider,
-      errorMessage: 'Email sending is disabled in Settings → Emails. Turn on “Emails enabled” and confirm SMTP host, user, and password.',
+      errorMessage: EMAILS_DISABLED,
       relatedType,
       relatedId,
     });
     return {
       ok: false,
       skipped: true,
-      errorMessage: 'Email sending is disabled in Settings → Emails. Turn on “Emails enabled” and confirm SMTP host, user, and password.',
+      errorMessage: EMAILS_DISABLED,
     };
   }
 
@@ -854,25 +798,23 @@ export async function sendCustomEmail({
     return { ok: false, skipped: true, errorMessage: 'Recipient email is required.' };
   }
 
-  const smtpPass = process.env.SMTP_PASS || process.env.SENDGRID_API_KEY || settings.smtpPass;
-  const smtpHost = process.env.SMTP_HOST || settings.smtpHost;
-  const smtpUser = process.env.SMTP_USER || settings.smtpUser;
+  const smtp = getEnvSmtpConfig();
 
-  if (!smtpHost || !smtpUser || !smtpPass) {
+  if (!smtp.host || !smtp.user || !smtp.pass) {
     await logEmailAttempt({
       templateKey,
       toEmail: recipient,
       subject: mailSubject,
       status: 'skipped',
       provider,
-      errorMessage: 'SMTP is not fully configured. Set host, username, and password in Settings → Emails (or SMTP_* env vars), then try again.',
+      errorMessage: SMTP_NOT_CONFIGURED,
       relatedType,
       relatedId,
     });
     return {
       ok: false,
       skipped: true,
-      errorMessage: 'SMTP is not fully configured. Set host, username, and password in Settings → Emails (or SMTP_* env vars), then try again.',
+      errorMessage: SMTP_NOT_CONFIGURED,
     };
   }
 
@@ -885,9 +827,9 @@ export async function sendCustomEmail({
   const plainText = text || stripHtml(html || '');
 
   try {
-    const transporter = getSmtpTransporter(settings, smtpHost, smtpUser, smtpPass);
+    const transporter = getSmtpTransporter();
     const info = await transporter.sendMail({
-      from: `"${settings.fromName || settings.orgName}" <${settings.fromEmail || smtpUser}>`,
+      from: mailFrom(settings, smtp.user),
       to: recipient,
       subject: mailSubject,
       text: plainText,

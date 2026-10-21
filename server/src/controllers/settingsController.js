@@ -31,15 +31,12 @@ export const DEFAULTS = {
   groqApiKey: '',
   groqModel: 'llama-3.3-70b-versatile',
   aiEnabled: true,
-  // Email defaults: enabled by default if SMTP env vars are present, otherwise
-  // the admin must configure SMTP manually in Settings → Emails before emails work.
-  emailsEnabled: Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS),
-  smtpHost: process.env.SMTP_HOST || 'smtp.gmail.com',
-  smtpPort: Number(process.env.SMTP_PORT) || 587,
-  // Always false by default — secure is derived from port at send time (465=SSL, else STARTTLS)
+  emailsEnabled: false,
+  smtpHost: '',
+  smtpPort: 587,
   smtpSecure: false,
-  smtpUser: process.env.SMTP_USER || '',
-  smtpPass: process.env.SMTP_PASS || '',
+  smtpUser: '',
+  smtpPass: '',
   fromEmail: process.env.SMTP_USER || '',
   fromName: 'Pawsitive Transformations',
   adminNotifyEmail: process.env.SMTP_USER || '',
@@ -55,10 +52,20 @@ export const DEFAULTS = {
 };
 
 function sanitizeSettings(settings) {
-  const { smtpPass, facebookPageAccessToken, groqApiKey, ...rest } = settings;
+  const {
+    smtpPass,
+    smtpHost,
+    smtpPort,
+    smtpSecure,
+    smtpUser,
+    facebookPageAccessToken,
+    groqApiKey,
+    ...rest
+  } = settings;
   return {
     ...rest,
-    smtpPassConfigured: Boolean(smtpPass || process.env.SMTP_PASS),
+    smtpPassConfigured: Boolean(process.env.SMTP_PASS),
+    smtpConfigured: Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS),
     facebookPageAccessTokenConfigured: Boolean(
       facebookPageAccessToken || process.env.FACEBOOK_PAGE_ACCESS_TOKEN,
     ),
@@ -74,34 +81,6 @@ export async function getSettings(_req, res, next) {
       settings = await prisma.settings.create({
         data: { id: SETTINGS_ID, ...DEFAULTS },
       });
-    } else {
-      // Self-heal: if SMTP env vars are set but the DB row still has empty/disabled
-      // values (e.g. row was created before .env was configured), patch them in.
-      const envHost = process.env.SMTP_HOST;
-      const envUser = process.env.SMTP_USER;
-      const envPass = process.env.SMTP_PASS;
-
-      const needsPatch =
-        envHost && envUser && envPass &&
-        (!settings.smtpHost || !settings.smtpUser || !settings.smtpPass || !settings.emailsEnabled);
-
-      if (needsPatch) {
-        const port = Number(process.env.SMTP_PORT) || 587;
-        settings = await prisma.settings.update({
-          where: { id: SETTINGS_ID },
-          data: {
-            emailsEnabled: true,
-            smtpHost: settings.smtpHost || envHost,
-            smtpPort: settings.smtpPort || port,
-            smtpSecure: false, // always false — secure is derived from port at send time
-            smtpUser: settings.smtpUser || envUser,
-            smtpPass: settings.smtpPass || envPass,
-            fromEmail: settings.fromEmail || envUser,
-            fromName: settings.fromName || settings.orgName || 'Pawsitive Transformations',
-            adminNotifyEmail: settings.adminNotifyEmail || envUser,
-          },
-        });
-      }
     }
 
     res.json(sanitizeSettings(settings));
@@ -134,11 +113,6 @@ export async function updateSettings(req, res, next) {
       xaiApiKey,
       grokModel,
       emailsEnabled,
-      smtpHost,
-      smtpPort,
-      smtpSecure,
-      smtpUser,
-      smtpPass,
       fromEmail,
       fromName,
       adminNotifyEmail,
@@ -196,17 +170,6 @@ export async function updateSettings(req, res, next) {
     }
     if (aiEnabled !== undefined) data.aiEnabled = Boolean(aiEnabled);
     if (emailsEnabled !== undefined) data.emailsEnabled = Boolean(emailsEnabled);
-    if (smtpHost !== undefined) data.smtpHost = String(smtpHost).trim();
-    if (smtpPort !== undefined) {
-      const parsed = Number.parseInt(smtpPort, 10);
-      if (Number.isNaN(parsed) || parsed < 1) {
-        return res.status(400).json({ error: 'smtpPort must be a positive integer' });
-      }
-      data.smtpPort = parsed;
-    }
-    if (smtpSecure !== undefined) data.smtpSecure = Boolean(smtpSecure);
-    if (smtpUser !== undefined) data.smtpUser = String(smtpUser).trim();
-    if (smtpPass !== undefined && smtpPass !== '') data.smtpPass = String(smtpPass).slice(0, 500);
     if (fromEmail !== undefined) data.fromEmail = String(fromEmail).trim();
     if (fromName !== undefined) data.fromName = String(fromName).trim();
     if (adminNotifyEmail !== undefined) data.adminNotifyEmail = String(adminNotifyEmail).trim();
@@ -250,8 +213,8 @@ export async function testSocialSettings(_req, res, next) {
 
 export async function testEmailSettings(req, res, next) {
   try {
-    const { smtpHost, smtpPort, smtpUser, smtpPass, toEmail } = req.body;
-    const result = await sendTestEmail({ smtpHost, smtpPort, smtpUser, smtpPass, toEmail });
+    const { toEmail } = req.body;
+    const result = await sendTestEmail({ toEmail });
     if (!result.ok) {
       return res.status(400).json(result);
     }
