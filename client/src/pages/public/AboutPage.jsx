@@ -8,12 +8,6 @@ const TEAM = [
     bio: 'Vision, business direction, technology, and execution. Lauren is a licensed psychologist by day and a Canadian by origin who fell into cat rescue by accident in 2025 and hasn\'t looked back. She cares for a colony in Corona, jumps in on trapping missions as needed, fosters full time, and shares her home with a headcount of personal cats that is best described as \u201cever-growing.\u201d She\'s also the name on the state and IRS paperwork, which is a filing technicality, not a hierarchy.',
   },
   {
-    name: 'Danielle',
-    title: 'Chief of Purrs & Partnerships (Director of Development)',
-    photo: '/images/team-danielle.jpg',
-    bio: 'Community partnerships, grants, fundraising, and donor relationships, plus the corporate record-keeping and people side of a growing organization. Danielle is an HR specialist and former federal employee who has spent years in animal rescue. She fosters too, and raised two kids alongside a house full of fur children.',
-  },
-  {
     name: 'Maggie',
     title: 'Chief of Rescue Ops (Director of Operations)',
     photo: '/images/team-maggie.jpg',

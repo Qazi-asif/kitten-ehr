@@ -84,6 +84,7 @@ function KittenSpreadsheetPage() {
                 {COLUMNS.map((column) => (
                   <td key={column.field} className="px-1 py-1">
                     <input
+                      key={`${row.id}:${column.field}:${toInputValue(row[column.field], column.type)}`}
                       defaultValue={toInputValue(row[column.field], column.type)}
                       type={column.type === 'number' ? 'number' : column.type === 'date' ? 'date' : 'text'}
                       disabled={savingKey === `${row.id}:${column.field}`}

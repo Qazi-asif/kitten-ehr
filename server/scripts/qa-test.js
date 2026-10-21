@@ -71,6 +71,88 @@ async function restoreSettings(snapshot) {
   }
 }
 
+const QA_CONTRACT_EMAILS = ['qa-contract@test.com', 'qa-delete@test.com'];
+const QA_ONBOARDING_EMAILS = ['qa-onboarding@test.com'];
+
+async function restoreKittenPublishing(kittenId, snapshot) {
+  if (!kittenId || !snapshot) return;
+  try {
+    await api(`/api/kittens/${kittenId}`, {
+      method: 'PATCH',
+      body: {
+        publishTargets: snapshot.publishTargets ?? [],
+        websiteFeaturedComment: snapshot.websiteFeaturedComment ?? '',
+      },
+    });
+    console.log(`  ---   Restored publishing settings for kitten ${kittenId}`);
+  } catch (error) {
+    console.warn(`  !!    Could not restore kitten publishing: ${error.message}`);
+  }
+}
+
+async function cleanupQaArtifacts({
+  createdContractId,
+  createdOnboardingId,
+  createdApplicationId,
+}) {
+  try {
+    const contractWhere = {
+      OR: [
+        ...(createdContractId ? [{ id: createdContractId }] : []),
+        { signerEmail: { in: QA_CONTRACT_EMAILS } },
+        { kittenName: { startsWith: 'QA ' } },
+      ],
+    };
+    const deletedContracts = await prisma.contract.deleteMany({ where: contractWhere });
+    if (deletedContracts.count) {
+      console.log(`  ---   Removed ${deletedContracts.count} QA contract(s)`);
+    }
+  } catch (error) {
+    console.warn(`  !!    Could not remove QA contracts: ${error.message}`);
+  }
+
+  try {
+    const deletedOnboarding = await prisma.fosterOnboarding.deleteMany({
+      where: {
+        OR: [
+          ...(createdOnboardingId ? [{ id: createdOnboardingId }] : []),
+          { applicantEmail: { in: QA_ONBOARDING_EMAILS } },
+        ],
+      },
+    });
+    if (deletedOnboarding.count) {
+      console.log(`  ---   Removed ${deletedOnboarding.count} QA onboarding record(s)`);
+    }
+  } catch (error) {
+    console.warn(`  !!    Could not remove QA onboarding: ${error.message}`);
+  }
+
+  try {
+    const applications = await prisma.application.findMany({
+      where: {
+        OR: [
+          ...(createdApplicationId ? [{ id: createdApplicationId }] : []),
+          { formData: { contains: 'qa@test.com' } },
+        ],
+      },
+      select: { id: true },
+    });
+    for (const application of applications) {
+      await prisma.applicationUpload.deleteMany({ where: { applicationId: application.id } });
+      await prisma.foster.updateMany({
+        where: { sourceApplicationId: application.id },
+        data: { sourceApplicationId: null },
+      });
+      await prisma.application.delete({ where: { id: application.id } }).catch(() => {});
+    }
+    if (applications.length) {
+      console.log(`  ---   Removed ${applications.length} QA application(s)`);
+    }
+  } catch (error) {
+    console.warn(`  !!    Could not remove QA applications: ${error.message}`);
+  }
+}
+
 const results = [];
 let token = '';
 let createdTxId = null;
@@ -78,6 +160,9 @@ let createdSocialUpdateId = null;
 let qaKittenId = null;
 let createdContractId = null;
 let createdOnboardingId = null;
+let listedKittenId = null;
+let createdApplicationId = null;
+let kittenPublishSnapshot = null;
 
 function pass(name) {
   results.push({ name, ok: true });
@@ -116,6 +201,9 @@ async function api(path, { method = 'GET', body, auth = true, expectStatus } = {
 
 async function run() {
   assertSafeTarget();
+  // Public application POST still writes a real row; skip SMTP so a local
+  // suite cannot spam staff or fail on invalid Gmail credentials.
+  process.env.SKIP_APPLICATION_EMAILS = '1';
   console.log(`\nKitten-EHR QA — ${BASE}\n`);
 
   // Health
@@ -186,6 +274,7 @@ async function run() {
     } else if (data.length === 0) {
       pass('Public kittens photo resolution (no available kittens)');
     } else {
+      listedKittenId = data[0]?.id ?? null;
       const unresolved = data.filter((kitten) => {
         const url = kitten.primaryPhotoUrl || '';
         return !url.startsWith('data:image/')
@@ -247,10 +336,19 @@ async function run() {
 
   try {
     const { data } = await api('/api/public/settings', { auth: false });
-    if (typeof data.stripeLink === 'string' && typeof data.paypalLink === 'string') {
+    const publicDonationOk = typeof data.paypalLink === 'string'
+      && typeof data.venmoHandle === 'string'
+      && typeof data.donationWidgetCode === 'string'
+      && !Object.hasOwn(data, 'stripeLink');
+    if (publicDonationOk) {
       pass('GET /api/public/settings exposes donation payment fields');
     } else {
-      fail('GET /api/public/settings exposes donation payment fields', JSON.stringify(data));
+      fail('GET /api/public/settings exposes donation payment fields', JSON.stringify({
+        paypalLink: data?.paypalLink,
+        venmoHandle: data?.venmoHandle,
+        donationWidgetCode: typeof data?.donationWidgetCode,
+        stripeLink: data?.stripeLink,
+      }));
     }
   } catch (e) {
     fail('GET /api/public/settings exposes donation payment fields', e.message);
@@ -465,6 +563,10 @@ async function run() {
         } else if (!Array.isArray(data.flags)) {
           fail(`GET /api/kittens/${qaKittenId} medical flags`, 'flags array missing from detail response');
         } else {
+          kittenPublishSnapshot = {
+            publishTargets: Array.isArray(data.publishTargets) ? data.publishTargets : [],
+            websiteFeaturedComment: data.websiteFeaturedComment ?? '',
+          };
           pass(`GET /api/kittens/${qaKittenId} detail (photo=${data.hasPrimaryPhoto ? 'yes' : 'none'}, flags=${data.flags.length})`);
         }
       } else {
@@ -637,13 +739,15 @@ async function run() {
 
   // Public application
   try {
-    await api('/api/public/applications', {
+    const { data, response } = await api('/api/public/applications', {
       auth: false,
       method: 'POST',
       body: { type: 'Adoption', formData: { name: 'QA Tester', email: 'qa@test.com' } },
       expectStatus: 201,
     });
-    pass('POST /api/public/applications');
+    createdApplicationId = data?.id ?? null;
+    if (response.status === 201) pass('POST /api/public/applications');
+    else fail('POST /api/public/applications', JSON.stringify(data));
   } catch (e) {
     fail('POST /api/public/applications', e.message);
   }
@@ -657,6 +761,55 @@ async function run() {
     fail('GET /api/roles', e.message);
   }
 
+  try {
+    const { response } = await api('/api/health', { auth: false });
+    const csp = response.headers.get('content-security-policy') || '';
+    if (csp.includes('data:') && csp.includes('r2.dev')) {
+      pass('CSP img-src allows data URIs and R2 photos');
+    } else {
+      fail('CSP img-src allows data URIs and R2 photos', csp.slice(0, 300));
+    }
+  } catch (e) {
+    fail('CSP img-src allows data URIs and R2 photos', e.message);
+  }
+
+  if (listedKittenId) {
+    try {
+      const { data } = await api(`/api/public/kittens/${listedKittenId}/updates`, { auth: false });
+      if (Array.isArray(data)) pass(`GET /api/public/kittens/${listedKittenId}/updates (${data.length})`);
+      else fail(`GET /api/public/kittens/${listedKittenId}/updates`, JSON.stringify(data));
+    } catch (e) {
+      fail(`GET /api/public/kittens/${listedKittenId}/updates`, e.message);
+    }
+
+    try {
+      const { data } = await api(`/api/public/apply-status?cat=${listedKittenId}`, { auth: false });
+      if (typeof data.available === 'boolean') {
+        pass(`GET /api/public/apply-status (${data.available ? 'available' : data.reason || 'unavailable'})`);
+      } else {
+        fail('GET /api/public/apply-status', JSON.stringify(data));
+      }
+    } catch (e) {
+      fail('GET /api/public/apply-status', e.message);
+    }
+  } else {
+    fail('Public kitten updates / apply-status', 'No listed kitten available');
+  }
+
+  try {
+    const { data } = await api('/api/kittens/spreadsheet');
+    if (Array.isArray(data?.rows)) pass(`GET /api/kittens/spreadsheet (${data.rows.length} rows)`);
+    else fail('GET /api/kittens/spreadsheet', JSON.stringify(data));
+  } catch (e) {
+    fail('GET /api/kittens/spreadsheet', e.message);
+  }
+
+  await restoreKittenPublishing(qaKittenId, kittenPublishSnapshot);
+  await cleanupQaArtifacts({
+    createdContractId,
+    createdOnboardingId,
+    createdApplicationId,
+  });
   await prisma.$disconnect();
   printSummary();
   process.exit(results.some((r) => !r.ok) ? 1 : 0);
@@ -674,7 +827,18 @@ function printSummary() {
   console.log('');
 }
 
-run().catch((err) => {
+run().catch(async (err) => {
   console.error(err);
+  try {
+    await restoreKittenPublishing(qaKittenId, kittenPublishSnapshot);
+    await cleanupQaArtifacts({
+      createdContractId,
+      createdOnboardingId,
+      createdApplicationId,
+    });
+  } catch (cleanupError) {
+    console.warn(`  !!    Cleanup after failure: ${cleanupError.message}`);
+  }
+  await prisma.$disconnect().catch(() => {});
   process.exit(1);
 });
