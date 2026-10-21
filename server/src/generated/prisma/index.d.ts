@@ -8065,6 +8065,9 @@ export namespace Prisma {
     isTnr: boolean | null
     isColony: boolean | null
     isCommunitySave: boolean | null
+    okWithDogs: boolean | null
+    okWithCats: boolean | null
+    okWithKids: boolean | null
     currentFosterId: number | null
     createdAt: Date | null
   }
@@ -8104,6 +8107,9 @@ export namespace Prisma {
     isTnr: boolean | null
     isColony: boolean | null
     isCommunitySave: boolean | null
+    okWithDogs: boolean | null
+    okWithCats: boolean | null
+    okWithKids: boolean | null
     currentFosterId: number | null
     createdAt: Date | null
   }
@@ -8144,6 +8150,9 @@ export namespace Prisma {
     isTnr: number
     isColony: number
     isCommunitySave: number
+    okWithDogs: number
+    okWithCats: number
+    okWithKids: number
     currentFosterId: number
     createdAt: number
     _all: number
@@ -8201,6 +8210,9 @@ export namespace Prisma {
     isTnr?: true
     isColony?: true
     isCommunitySave?: true
+    okWithDogs?: true
+    okWithCats?: true
+    okWithKids?: true
     currentFosterId?: true
     createdAt?: true
   }
@@ -8240,6 +8252,9 @@ export namespace Prisma {
     isTnr?: true
     isColony?: true
     isCommunitySave?: true
+    okWithDogs?: true
+    okWithCats?: true
+    okWithKids?: true
     currentFosterId?: true
     createdAt?: true
   }
@@ -8280,6 +8295,9 @@ export namespace Prisma {
     isTnr?: true
     isColony?: true
     isCommunitySave?: true
+    okWithDogs?: true
+    okWithCats?: true
+    okWithKids?: true
     currentFosterId?: true
     createdAt?: true
     _all?: true
@@ -8407,6 +8425,9 @@ export namespace Prisma {
     isTnr: boolean
     isColony: boolean
     isCommunitySave: boolean
+    okWithDogs: boolean | null
+    okWithCats: boolean | null
+    okWithKids: boolean | null
     currentFosterId: number | null
     createdAt: Date
     _count: KittenCountAggregateOutputType | null
@@ -8466,6 +8487,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean
+    okWithCats?: boolean
+    okWithKids?: boolean
     currentFosterId?: boolean
     createdAt?: boolean
     litter?: boolean | Kitten$litterArgs<ExtArgs>
@@ -8524,6 +8548,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean
+    okWithCats?: boolean
+    okWithKids?: boolean
     currentFosterId?: boolean
     createdAt?: boolean
     litter?: boolean | Kitten$litterArgs<ExtArgs>
@@ -8568,6 +8595,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean
+    okWithCats?: boolean
+    okWithKids?: boolean
     currentFosterId?: boolean
     createdAt?: boolean
     litter?: boolean | Kitten$litterArgs<ExtArgs>
@@ -8612,11 +8642,14 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean
+    okWithCats?: boolean
+    okWithKids?: boolean
     currentFosterId?: boolean
     createdAt?: boolean
   }
 
-  export type KittenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "litterId" | "status" | "rescueStory" | "dateOfBirth" | "sex" | "fixedStatus" | "breed" | "color" | "coatPattern" | "fivFelvStatus" | "specialNeeds" | "microchipNumber" | "primaryPhotoUrl" | "thumbnailUrl" | "intakeDate" | "intakeSource" | "outcomeDate" | "outcomeDetail" | "notes" | "internalNotes" | "isListedOnWebsite" | "isActive" | "websiteFeaturedComment" | "publishTargets" | "externalId" | "createdByUserId" | "isBondedPair" | "bondedWithKittenId" | "bondedWithName" | "isMedicalSpecialNeeds" | "isTnr" | "isColony" | "isCommunitySave" | "currentFosterId" | "createdAt", ExtArgs["result"]["kitten"]>
+  export type KittenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "litterId" | "status" | "rescueStory" | "dateOfBirth" | "sex" | "fixedStatus" | "breed" | "color" | "coatPattern" | "fivFelvStatus" | "specialNeeds" | "microchipNumber" | "primaryPhotoUrl" | "thumbnailUrl" | "intakeDate" | "intakeSource" | "outcomeDate" | "outcomeDetail" | "notes" | "internalNotes" | "isListedOnWebsite" | "isActive" | "websiteFeaturedComment" | "publishTargets" | "externalId" | "createdByUserId" | "isBondedPair" | "bondedWithKittenId" | "bondedWithName" | "isMedicalSpecialNeeds" | "isTnr" | "isColony" | "isCommunitySave" | "okWithDogs" | "okWithCats" | "okWithKids" | "currentFosterId" | "createdAt", ExtArgs["result"]["kitten"]>
   export type KittenInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     litter?: boolean | Kitten$litterArgs<ExtArgs>
     createdByUser?: boolean | Kitten$createdByUserArgs<ExtArgs>
@@ -8707,6 +8740,9 @@ export namespace Prisma {
       isTnr: boolean
       isColony: boolean
       isCommunitySave: boolean
+      okWithDogs: boolean | null
+      okWithCats: boolean | null
+      okWithKids: boolean | null
       currentFosterId: number | null
       createdAt: Date
     }, ExtArgs["result"]["kitten"]>
@@ -9184,6 +9220,9 @@ export namespace Prisma {
     readonly isTnr: FieldRef<"Kitten", 'Boolean'>
     readonly isColony: FieldRef<"Kitten", 'Boolean'>
     readonly isCommunitySave: FieldRef<"Kitten", 'Boolean'>
+    readonly okWithDogs: FieldRef<"Kitten", 'Boolean'>
+    readonly okWithCats: FieldRef<"Kitten", 'Boolean'>
+    readonly okWithKids: FieldRef<"Kitten", 'Boolean'>
     readonly currentFosterId: FieldRef<"Kitten", 'Int'>
     readonly createdAt: FieldRef<"Kitten", 'DateTime'>
   }
@@ -55643,6 +55682,9 @@ export namespace Prisma {
     isTnr: 'isTnr',
     isColony: 'isColony',
     isCommunitySave: 'isCommunitySave',
+    okWithDogs: 'okWithDogs',
+    okWithCats: 'okWithCats',
+    okWithKids: 'okWithKids',
     currentFosterId: 'currentFosterId',
     createdAt: 'createdAt'
   };
@@ -56778,6 +56820,9 @@ export namespace Prisma {
     isTnr?: BoolFilter<"Kitten"> | boolean
     isColony?: BoolFilter<"Kitten"> | boolean
     isCommunitySave?: BoolFilter<"Kitten"> | boolean
+    okWithDogs?: BoolNullableFilter<"Kitten"> | boolean | null
+    okWithCats?: BoolNullableFilter<"Kitten"> | boolean | null
+    okWithKids?: BoolNullableFilter<"Kitten"> | boolean | null
     currentFosterId?: IntNullableFilter<"Kitten"> | number | null
     createdAt?: DateTimeFilter<"Kitten"> | Date | string
     litter?: XOR<LitterNullableScalarRelationFilter, LitterWhereInput> | null
@@ -56835,6 +56880,9 @@ export namespace Prisma {
     isTnr?: SortOrder
     isColony?: SortOrder
     isCommunitySave?: SortOrder
+    okWithDogs?: SortOrderInput | SortOrder
+    okWithCats?: SortOrderInput | SortOrder
+    okWithKids?: SortOrderInput | SortOrder
     currentFosterId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     litter?: LitterOrderByWithRelationInput
@@ -56895,6 +56943,9 @@ export namespace Prisma {
     isTnr?: BoolFilter<"Kitten"> | boolean
     isColony?: BoolFilter<"Kitten"> | boolean
     isCommunitySave?: BoolFilter<"Kitten"> | boolean
+    okWithDogs?: BoolNullableFilter<"Kitten"> | boolean | null
+    okWithCats?: BoolNullableFilter<"Kitten"> | boolean | null
+    okWithKids?: BoolNullableFilter<"Kitten"> | boolean | null
     currentFosterId?: IntNullableFilter<"Kitten"> | number | null
     createdAt?: DateTimeFilter<"Kitten"> | Date | string
     litter?: XOR<LitterNullableScalarRelationFilter, LitterWhereInput> | null
@@ -56952,6 +57003,9 @@ export namespace Prisma {
     isTnr?: SortOrder
     isColony?: SortOrder
     isCommunitySave?: SortOrder
+    okWithDogs?: SortOrderInput | SortOrder
+    okWithCats?: SortOrderInput | SortOrder
+    okWithKids?: SortOrderInput | SortOrder
     currentFosterId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: KittenCountOrderByAggregateInput
@@ -57000,6 +57054,9 @@ export namespace Prisma {
     isTnr?: BoolWithAggregatesFilter<"Kitten"> | boolean
     isColony?: BoolWithAggregatesFilter<"Kitten"> | boolean
     isCommunitySave?: BoolWithAggregatesFilter<"Kitten"> | boolean
+    okWithDogs?: BoolNullableWithAggregatesFilter<"Kitten"> | boolean | null
+    okWithCats?: BoolNullableWithAggregatesFilter<"Kitten"> | boolean | null
+    okWithKids?: BoolNullableWithAggregatesFilter<"Kitten"> | boolean | null
     currentFosterId?: IntNullableWithAggregatesFilter<"Kitten"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"Kitten"> | Date | string
   }
@@ -60436,6 +60493,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
@@ -60492,6 +60552,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -60541,6 +60604,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
@@ -60597,6 +60663,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -60650,6 +60719,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     currentFosterId?: number | null
     createdAt?: Date | string
   }
@@ -60686,6 +60758,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -60725,6 +60800,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -64457,6 +64535,11 @@ export namespace Prisma {
     isEmpty?: boolean
   }
 
+  export type BoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
+  }
+
   export type LitterNullableScalarRelationFilter = {
     is?: LitterWhereInput | null
     isNot?: LitterWhereInput | null
@@ -64598,6 +64681,9 @@ export namespace Prisma {
     isTnr?: SortOrder
     isColony?: SortOrder
     isCommunitySave?: SortOrder
+    okWithDogs?: SortOrder
+    okWithCats?: SortOrder
+    okWithKids?: SortOrder
     currentFosterId?: SortOrder
     createdAt?: SortOrder
   }
@@ -64645,6 +64731,9 @@ export namespace Prisma {
     isTnr?: SortOrder
     isColony?: SortOrder
     isCommunitySave?: SortOrder
+    okWithDogs?: SortOrder
+    okWithCats?: SortOrder
+    okWithKids?: SortOrder
     currentFosterId?: SortOrder
     createdAt?: SortOrder
   }
@@ -64684,6 +64773,9 @@ export namespace Prisma {
     isTnr?: SortOrder
     isColony?: SortOrder
     isCommunitySave?: SortOrder
+    okWithDogs?: SortOrder
+    okWithCats?: SortOrder
+    okWithKids?: SortOrder
     currentFosterId?: SortOrder
     createdAt?: SortOrder
   }
@@ -64694,6 +64786,14 @@ export namespace Prisma {
     createdByUserId?: SortOrder
     bondedWithKittenId?: SortOrder
     currentFosterId?: SortOrder
+  }
+
+  export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
   }
 
   export type KittenScalarRelationFilter = {
@@ -67649,6 +67749,10 @@ export namespace Prisma {
     push?: string | string[]
   }
 
+  export type NullableBoolFieldUpdateOperationsInput = {
+    set?: boolean | null
+  }
+
   export type LitterUpdateOneWithoutKittensNestedInput = {
     create?: XOR<LitterCreateWithoutKittensInput, LitterUncheckedCreateWithoutKittensInput>
     connectOrCreate?: LitterCreateOrConnectWithoutKittensInput
@@ -70098,6 +70202,19 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedBoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
+  }
+
+  export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
+  }
+
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
     in?: number[] | ListFloatFieldRefInput<$PrismaModel>
@@ -70390,6 +70507,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     createdAt?: Date | string
     createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
@@ -70444,6 +70564,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -70526,6 +70649,9 @@ export namespace Prisma {
     isTnr?: BoolFilter<"Kitten"> | boolean
     isColony?: BoolFilter<"Kitten"> | boolean
     isCommunitySave?: BoolFilter<"Kitten"> | boolean
+    okWithDogs?: BoolNullableFilter<"Kitten"> | boolean | null
+    okWithCats?: BoolNullableFilter<"Kitten"> | boolean | null
+    okWithKids?: BoolNullableFilter<"Kitten"> | boolean | null
     currentFosterId?: IntNullableFilter<"Kitten"> | number | null
     createdAt?: DateTimeFilter<"Kitten"> | Date | string
   }
@@ -70562,6 +70688,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
@@ -70617,6 +70746,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
@@ -71177,6 +71309,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
@@ -71232,6 +71367,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     currentFosterId?: number | null
     createdAt?: Date | string
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
@@ -71285,6 +71423,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
@@ -71339,6 +71480,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -71937,6 +72081,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
@@ -71992,6 +72139,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
@@ -72428,6 +72578,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
@@ -72483,6 +72636,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -72547,6 +72703,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
@@ -72602,6 +72761,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -72650,6 +72812,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
@@ -72705,6 +72870,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -72769,6 +72937,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
@@ -72824,6 +72995,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -72872,6 +73046,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
@@ -72927,6 +73104,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -73037,6 +73217,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
@@ -73092,6 +73275,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -73192,6 +73378,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
@@ -73247,6 +73436,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -73311,6 +73503,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
@@ -73366,6 +73561,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -73414,6 +73612,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
@@ -73469,6 +73670,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -73568,6 +73772,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
@@ -73623,6 +73830,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -73704,6 +73914,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
@@ -73759,6 +73972,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -73881,6 +74097,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
@@ -73936,6 +74155,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -74027,6 +74249,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
@@ -74082,6 +74307,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -74146,6 +74374,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
@@ -74201,6 +74432,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -74249,6 +74483,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
@@ -74304,6 +74541,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -74414,6 +74654,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
@@ -74469,6 +74712,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -74891,6 +75137,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
@@ -74946,6 +75195,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -75121,6 +75373,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
@@ -75176,6 +75431,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -76178,6 +76436,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
@@ -76233,6 +76494,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -76341,6 +76605,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
@@ -76396,6 +76663,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -76962,6 +77232,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
@@ -77016,6 +77289,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -77693,6 +77969,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
@@ -77748,6 +78027,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -77944,6 +78226,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
@@ -77999,6 +78284,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -78713,6 +79001,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
     createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
@@ -78768,6 +79059,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -78832,6 +79126,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
@@ -78887,6 +79184,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -78938,6 +79238,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     currentFosterId?: number | null
     createdAt?: Date | string
   }
@@ -78974,6 +79277,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
@@ -79028,6 +79334,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -79080,6 +79389,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -79120,6 +79432,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     createdAt?: Date | string
   }
 
@@ -79206,6 +79521,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
@@ -79261,6 +79579,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
@@ -79313,6 +79634,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -79503,6 +79827,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     currentFosterId?: number | null
     createdAt?: Date | string
   }
@@ -79682,6 +80009,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
@@ -79736,6 +80066,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -79788,6 +80121,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -80912,6 +81248,9 @@ export namespace Prisma {
     isTnr?: boolean
     isColony?: boolean
     isCommunitySave?: boolean
+    okWithDogs?: boolean | null
+    okWithCats?: boolean | null
+    okWithKids?: boolean | null
     currentFosterId?: number | null
     createdAt?: Date | string
   }
@@ -81138,6 +81477,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
@@ -81192,6 +81534,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -81244,6 +81589,9 @@ export namespace Prisma {
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
     isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    okWithDogs?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithCats?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    okWithKids?: NullableBoolFieldUpdateOperationsInput | boolean | null
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

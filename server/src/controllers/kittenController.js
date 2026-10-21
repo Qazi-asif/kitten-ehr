@@ -5,7 +5,7 @@ import {
   TERMINAL_KITTEN_STATUSES,
   updateKittenSchema,
 } from '../validations/kittenValidation.js';
-import { normalizePublishTargets, targetsIncludeWebsite } from '../utils/publishTargets.js';
+import { normalizePublishTargets } from '../utils/publishTargets.js';
 import { isUnknownPublishTargetsError, withLegacyWebsiteFlag } from '../utils/prismaPublishTargets.js';
 import {
   kittenListSelect,
@@ -20,7 +20,7 @@ import { getCachedResponse, setCachedResponse, invalidateCacheByPrefix } from '.
 import { parsePacificDateOnly, toPacificDateString } from '../utils/pacificDate.js';
 import { buildReminderWhere } from '../services/reminderCategories.js';
 import { enqueueSyndication } from '../services/syndicationService.js';
-import { formatExternalId, kittenOwnerWhere, mergeKittenWhere } from '../utils/kittenScope.js';
+import { applicationMatchesOwnedKittens, formatExternalId, kittenOwnerWhere, mergeKittenWhere } from '../utils/kittenScope.js';
 
 const DASHBOARD_STATS_TTL_MS = 60 * 1000;
 
@@ -234,6 +234,9 @@ export async function createKitten(req, res, next) {
       isTnr,
       isColony,
       isCommunitySave,
+      okWithDogs,
+      okWithCats,
+      okWithKids,
     } = parsed.data;
 
     const parsedLitterId = litterId ?? null;
@@ -269,6 +272,9 @@ export async function createKitten(req, res, next) {
           isTnr: Boolean(isTnr),
           isColony: Boolean(isColony),
           isCommunitySave: Boolean(isCommunitySave),
+          okWithDogs: okWithDogs ?? null,
+          okWithCats: okWithCats ?? null,
+          okWithKids: okWithKids ?? null,
           createdByUserId: req.user?.id ?? null,
         },
         include: kittenIncludes,
@@ -283,18 +289,19 @@ export async function createKitten(req, res, next) {
         });
       }
 
-      return tx.kitten.update({
+      const withExternalId = await tx.kitten.update({
         where: { id: created.id },
         data: { externalId: formatExternalId(created.id) },
         include: kittenIncludes,
       });
+      await enqueueSyndication('kitten.created', withExternalId.id, tx);
+      return withExternalId;
     });
 
     // Bust cached public kittens list and dashboard so the new kitten appears immediately
     invalidateCacheByPrefix('public-kittens');
     invalidateCacheByPrefix('public-stats');
     invalidateCacheByPrefix('dashboard-metrics');
-    await enqueueSyndication('kitten.created', kitten.id);
 
     res.status(201).json(kitten);
   } catch (error) {
@@ -374,9 +381,6 @@ export async function updateKitten(req, res, next) {
     }
     if (body.publishTargets !== undefined) {
       data.publishTargets = normalizePublishTargets(body.publishTargets);
-      if (body.isListedOnWebsite === undefined) {
-        data.isListedOnWebsite = targetsIncludeWebsite(data.publishTargets);
-      }
     }
     if (body.isListedOnWebsite !== undefined) {
       data.isListedOnWebsite = body.isListedOnWebsite;
@@ -507,8 +511,9 @@ export async function updateKitten(req, res, next) {
         });
       }
 
+      let updated;
       try {
-        return await tx.kitten.update({
+        updated = await tx.kitten.update({
           where: { id },
           data,
           include: kittenIncludes,
@@ -517,12 +522,14 @@ export async function updateKitten(req, res, next) {
         if (!isUnknownPublishTargetsError(error) || data.publishTargets === undefined) {
           throw error;
         }
-        return tx.kitten.update({
+        updated = await tx.kitten.update({
           where: { id },
           data: withLegacyWebsiteFlag(data, data.publishTargets),
           include: kittenIncludes,
         });
       }
+      await enqueueSyndication('kitten.changed', id, tx);
+      return updated;
     });
 
     if (previousPartnerId && previousPartnerId !== data.bondedWithKittenId) {
@@ -547,7 +554,6 @@ export async function updateKitten(req, res, next) {
     invalidateCacheByPrefix('public-kittens');
     invalidateCacheByPrefix('public-stats');
     invalidateCacheByPrefix('dashboard-metrics');
-    await enqueueSyndication('kitten.changed', id);
 
     res.json(serializeKittenForDetail(kitten));
   } catch (error) {
@@ -573,11 +579,13 @@ export async function deleteKitten(req, res, next) {
       return res.status(404).json({ error: 'Kitten not found' });
     }
 
-    await prisma.kitten.update({
-      where: { id },
-      data: { isActive: false, isListedOnWebsite: false },
+    await prisma.$transaction(async (tx) => {
+      await tx.kitten.update({
+        where: { id },
+        data: { isActive: false, isListedOnWebsite: false },
+      });
+      await enqueueSyndication('kitten.deactivated', id, tx);
     });
-    await enqueueSyndication('kitten.deactivated', id);
 
     // Bust caches — kitten removed from public list
     invalidateCacheByPrefix('public-kittens');
@@ -619,7 +627,13 @@ export async function getDashboardStats(req, res, next) {
         where: mergeKittenWhere({ status: { in: ['In Foster Care', 'Medical Hold'] } }, ownerWhere),
       }),
       prisma.kitten.count({ where: mergeKittenWhere({ status: 'Available for Adoption' }, ownerWhere) }),
-      prisma.application.count({ where: { status: { in: ['New', 'Under Review'] } } }),
+      ownerWhere.createdByUserId
+        ? prisma.application.findMany({
+            where: { status: { in: ['New', 'Under Review'] } },
+            select: { kittenOfInterest: true, formData: true },
+            take: 200,
+          })
+        : prisma.application.count({ where: { status: { in: ['New', 'Under Review'] } } }),
       prisma.foster.count({ where: { currentKittens: { some: {} } } }),
       prisma.kitten.count({
         where: mergeKittenWhere({ status: 'Adopted', createdAt: { gte: yearStart } }, ownerWhere),
@@ -627,10 +641,21 @@ export async function getDashboardStats(req, res, next) {
       buildDashboardInsights(prisma),
     ]);
 
+    let pendingCount = pendingAdoptions;
+    if (Array.isArray(pendingAdoptions)) {
+      const owned = await prisma.kitten.findMany({
+        where: ownerWhere,
+        select: { id: true, name: true, externalId: true },
+      });
+      pendingCount = pendingAdoptions.filter((application) => (
+        applicationMatchesOwnedKittens(application, owned)
+      )).length;
+    }
+
     const payload = {
       activeKittens,
       availableForAdoption,
-      pendingAdoptions,
+      pendingAdoptions: pendingCount,
       activeFosters,
       adoptionsThisYear,
       alerts: insights.alerts,

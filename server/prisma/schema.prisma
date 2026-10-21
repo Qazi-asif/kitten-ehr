@@ -136,6 +136,10 @@ model Kitten {
   isTnr                  Boolean  @default(false)
   isColony               Boolean  @default(false)
   isCommunitySave        Boolean  @default(false)
+  // Null = unknown (CSV blank). false = not good-with (CSV "No"). true stays blank (negative-only mapping).
+  okWithDogs      Boolean?
+  okWithCats      Boolean?
+  okWithKids      Boolean?
   currentFosterId Int?
   currentFoster   Foster?          @relation("CurrentFoster", fields: [currentFosterId], references: [id], onDelete: SetNull)
   createdAt       DateTime         @default(now())

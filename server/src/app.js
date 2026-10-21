@@ -332,6 +332,7 @@ app.use('/api/dashboard', requireAuth, dashboardRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/roles', roleRoutes);
 app.get('/cdn/cats/:externalId/:fileName', serveCdnPhoto);
+app.get('/cats/:externalId/:fileName', serveCdnPhoto);
 app.use('/api/syndication', requireAuth, syndicationRoutes);
 app.use('/api/kittens', requireAuth, kittenRoutes);
 app.use('/api/kittens', requireAuth, emailRoutes);
@@ -361,7 +362,9 @@ const clientDistPath = resolveClientDistPath();
 console.log(`[static] Serving SPA from ${clientDistPath}`);
 app.use(express.static(clientDistPath));
 app.use((req, res, next) => {
-  if (req.path.startsWith('/api')) { return next(); }
+  if (req.path.startsWith('/api') || req.path.startsWith('/cdn') || req.path.startsWith('/cats/')) {
+    return next();
+  }
   res.sendFile(path.join(clientDistPath, 'index.html'));
 });
 

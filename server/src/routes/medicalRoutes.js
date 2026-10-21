@@ -13,10 +13,11 @@ import {
   updateVetAppointment,
 } from '../controllers/medicalController.js';
 import { requirePermission } from '../middleware/authMiddleware.js';
+import { requireAccessibleKitten } from '../middleware/kittenAccess.js';
 
 const router = Router();
 
-router.get('/kitten/:kittenId', requirePermission('medical.view'), getMedicalByKittenId);
+router.get('/kitten/:kittenId', requirePermission('medical.view'), requireAccessibleKitten, getMedicalByKittenId);
 router.post('/vaccines', requirePermission('medical.manage'), createVaccine);
 router.patch('/vaccines/:id', requirePermission('medical.manage'), updateVaccine);
 router.delete('/vaccines/:id', requirePermission('medical.manage'), deleteVaccine);

@@ -214,7 +214,7 @@ function PublicKittenProfile() {
               <div className="mt-10 flex flex-col sm:flex-row flex-wrap gap-4">
                 {(isAvailableForAdoption || isInFosterCare) && (
                   <Link
-                    to={`/adopt/apply?kitten=${encodeURIComponent(kitten.name)}&kittenId=${kitten.id}`}
+                    to={`/adopt/apply?kitten=${encodeURIComponent(kitten.name)}&kittenId=${kitten.id}&cat=${encodeURIComponent(kitten.externalId || kitten.id)}`}
                     className="inline-flex min-w-[140px] items-center justify-center gap-2 rounded-xl bg-brand px-6 py-3.5 text-sm font-bold tracking-wide text-white shadow-md transition hover:bg-brand-dark"
                   >
                     <Home className="h-4 w-4" fill="currentColor" />

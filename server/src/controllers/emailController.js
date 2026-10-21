@@ -2,6 +2,7 @@ import prisma from '../lib/prisma.js';
 import { sendCustomEmail } from '../services/emailService.js';
 import { escapeHtml } from '../utils/htmlEscape.js';
 import { loadFileBytes } from '../utils/loadFileBytes.js';
+import { kittenOwnerWhere, mergeKittenWhere } from '../utils/kittenScope.js';
 
 function failStatus(result) {
   if (result?.skipped) return 503;
@@ -36,8 +37,8 @@ export async function sendKittenDocumentsEmail(req, res, next) {
       return res.status(400).json({ error: 'Invalid document selection' });
     }
 
-    const kitten = await prisma.kitten.findUnique({
-      where: { id: kittenId },
+    const kitten = await prisma.kitten.findFirst({
+      where: mergeKittenWhere({ id: kittenId }, kittenOwnerWhere(req)),
       select: { id: true, name: true },
     });
     if (!kitten) {

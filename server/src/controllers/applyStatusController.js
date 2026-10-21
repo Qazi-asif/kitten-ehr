@@ -12,7 +12,7 @@ const UNAVAILABLE = new Set([
 
 export async function getApplyStatus(req, res, next) {
   try {
-    const raw = req.query.cat || req.query.externalId || req.params.id;
+    const raw = req.query.cat || req.query.kittenId || req.query.kitten || req.query.externalId || req.params.id;
     const asId = Number.parseInt(raw, 10);
     const kitten = await prisma.kitten.findFirst({
       where: Number.isInteger(asId)

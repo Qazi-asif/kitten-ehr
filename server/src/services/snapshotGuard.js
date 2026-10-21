@@ -25,3 +25,9 @@ export function nextBackoffMinutes(attempts) {
   const n = Math.max(1, Number(attempts) || 1);
   return Math.min(30, 2 ** (n - 1));
 }
+
+export function outboxDisposition(result) {
+  if (result?.ok) return 'processed';
+  if (result?.blocked) return 'retry_guard';
+  return 'backoff';
+}

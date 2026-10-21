@@ -82,6 +82,7 @@ async function restoreKittenPublishing(kittenId, snapshot) {
       body: {
         publishTargets: snapshot.publishTargets ?? [],
         websiteFeaturedComment: snapshot.websiteFeaturedComment ?? '',
+        isListedOnWebsite: Boolean(snapshot.isListedOnWebsite),
       },
     });
     console.log(`  ---   Restored publishing settings for kitten ${kittenId}`);
@@ -566,6 +567,7 @@ async function run() {
           kittenPublishSnapshot = {
             publishTargets: Array.isArray(data.publishTargets) ? data.publishTargets : [],
             websiteFeaturedComment: data.websiteFeaturedComment ?? '',
+            isListedOnWebsite: Boolean(data.isListedOnWebsite),
           };
           pass(`GET /api/kittens/${qaKittenId} detail (photo=${data.hasPrimaryPhoto ? 'yes' : 'none'}, flags=${data.flags.length})`);
         }
@@ -792,6 +794,17 @@ async function run() {
     } catch (e) {
       fail('GET /api/public/apply-status', e.message);
     }
+
+    try {
+      const { data } = await api(`/api/public/apply-status?kittenId=${listedKittenId}`, { auth: false });
+      if (typeof data.available === 'boolean') {
+        pass(`GET /api/public/apply-status?kittenId= (${data.available ? 'available' : data.reason || 'unavailable'})`);
+      } else {
+        fail('GET /api/public/apply-status?kittenId=', JSON.stringify(data));
+      }
+    } catch (e) {
+      fail('GET /api/public/apply-status?kittenId=', e.message);
+    }
   } else {
     fail('Public kitten updates / apply-status', 'No listed kitten available');
   }
@@ -800,8 +813,34 @@ async function run() {
     const { data } = await api('/api/kittens/spreadsheet');
     if (Array.isArray(data?.rows)) pass(`GET /api/kittens/spreadsheet (${data.rows.length} rows)`);
     else fail('GET /api/kittens/spreadsheet', JSON.stringify(data));
+
+    const row = data?.rows?.[0];
+    if (row?.id && row.breed != null) {
+      const { data: patched, response } = await api('/api/kittens/spreadsheet', {
+        method: 'PATCH',
+        body: { id: row.id, field: 'breed', value: row.breed },
+      });
+      if (response.ok && patched?.row?.id === row.id && patched.row.breed === row.breed) {
+        pass(`PATCH /api/kittens/spreadsheet restore cell id=${row.id}`);
+      } else {
+        fail('PATCH /api/kittens/spreadsheet restore cell', JSON.stringify(patched));
+      }
+    }
   } catch (e) {
     fail('GET /api/kittens/spreadsheet', e.message);
+  }
+
+  if (qaKittenId) {
+    try {
+      await api(`/api/kittens/${qaKittenId}/send-email`, {
+        method: 'POST',
+        body: {},
+        expectStatus: 400,
+      });
+      pass(`POST /api/kittens/${qaKittenId}/send-email rejects empty payload`);
+    } catch (e) {
+      fail('POST /api/kittens/:id/send-email validation', e.message);
+    }
   }
 
   await restoreKittenPublishing(qaKittenId, kittenPublishSnapshot);

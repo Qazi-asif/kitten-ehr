@@ -69,7 +69,7 @@ export function kittenToCsvRow(kitten, {
   const priBreed = mapBreed(kitten.breed, breedMap);
   const sex = mapSex(kitten.sex);
   const applyUrl = applyBaseUrl
-    ? `${applyBaseUrl.replace(/\/$/, '')}/adopt/apply?cat=${encodeURIComponent(externalID)}`
+    ? `${applyBaseUrl.replace(/\/$/, '')}/adopt/apply?cat=${encodeURIComponent(externalID)}&kitten=${encodeURIComponent(kitten.name || '')}&kittenId=${kitten.id}`
     : '';
   const photosPadded = [...photos, '', '', '', ''].slice(0, 4);
   const altered = kitten.fixedStatus === 'Spayed/Neutered' ? 'Yes' : 'No';

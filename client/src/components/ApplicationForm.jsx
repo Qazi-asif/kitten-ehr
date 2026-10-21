@@ -89,6 +89,10 @@ function getPrefilledKittenInterest(params) {
   return params.get('kitten') || params.get('name') || params.get('kittenId') || params.get('id') || params.get('cat') || '';
 }
 
+function getApplyStatusLookup(params) {
+  return params.get('cat') || params.get('kittenId') || params.get('kitten') || params.get('id') || params.get('name') || '';
+}
+
 function ApplicationForm({
   defaultType = 'Adoption',
   lockType = true,
@@ -138,10 +142,10 @@ function ApplicationForm({
   });
 
   useEffect(() => {
-    const cat = params.get('cat');
-    if (applicationType !== 'Adoption' || !cat) return undefined;
+    const lookup = getApplyStatusLookup(params);
+    if (applicationType !== 'Adoption' || !lookup) return undefined;
     let cancelled = false;
-    fetchApplyStatus(cat)
+    fetchApplyStatus(lookup)
       .then((status) => {
         if (!cancelled) setApplyStatus(status);
       })

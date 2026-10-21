@@ -8,7 +8,7 @@ import {
   getReminderCategoryItems,
   REMINDER_CATEGORIES,
 } from '../services/reminderCategories.js';
-import { kittenOwnerWhere, mergeKittenWhere } from '../utils/kittenScope.js';
+import { applicationMatchesOwnedKittens, kittenOwnerWhere, mergeKittenWhere } from '../utils/kittenScope.js';
 
 const ALERT_LIMIT = 25;
 // Cats considered "active" for reminder purposes — excludes terminal outcomes
@@ -172,23 +172,43 @@ function resolveWeightGrams(log) {
 // lower bound previously excluded anything scheduled earlier "today" (e.g. a
 // dose stored at Pacific midnight looks like it's already in the past for
 // most of the day), which was the root cause of doses silently disappearing.
-async function getCalendarReminderEvents() {
+async function getCalendarReminderEvents(req) {
   const { todayStartUtc, windowEndUtc } = reminderWindow();
+  const ownerWhere = kittenOwnerWhere(req);
+  const scoped = Boolean(ownerWhere.createdByUserId);
   const events = await prisma.event.findMany({
     where: {
       showInReminders: true,
       date: { gte: todayStartUtc, lte: windowEndUtc },
+      ...(scoped ? { eventCats: { some: { kitten: ownerWhere } } } : {}),
     },
     select: {
       id: true,
       title: true,
       date: true,
-      eventCats: { select: { kitten: { select: { id: true, name: true } } } },
+      eventCats: {
+        ...(scoped ? { where: { kitten: ownerWhere } } : {}),
+        select: { kitten: { select: { id: true, name: true } } },
+      },
     },
     orderBy: { date: 'asc' },
     take: ALERT_LIMIT,
   });
   return events.map(mapCalendarAlert);
+}
+
+async function ownedKittensForScope(req) {
+  const ownerWhere = kittenOwnerWhere(req);
+  if (!ownerWhere.createdByUserId) return null;
+  return prisma.kitten.findMany({
+    where: ownerWhere,
+    select: { id: true, name: true, externalId: true },
+  });
+}
+
+function filterApplicationsForOwner(applications, ownedKittens) {
+  if (!ownedKittens) return applications;
+  return applications.filter((application) => applicationMatchesOwnedKittens(application, ownedKittens));
 }
 
 export async function getDashboardAlerts(req) {
@@ -278,7 +298,7 @@ export async function getDashboardAlerts(req) {
     }),
   ]);
 
-  const calendarReminderEvents = await getCalendarReminderEvents();
+  const calendarReminderEvents = await getCalendarReminderEvents(req);
 
   let spayNeuterEligible = [];
   if (spayEligibleKittens.length > 0) {
@@ -380,7 +400,7 @@ export async function getDashboardMetrics(req, res, next) {
       prisma.application.findMany({
         where: { status: { in: ['New', 'Under Review', 'Approved'] } },
         orderBy: { createdAt: 'desc' },
-        take: 8,
+        take: ownerWhere.createdByUserId ? 200 : 8,
         select: {
           id: true,
           type: true,
@@ -417,9 +437,17 @@ export async function getDashboardMetrics(req, res, next) {
       statusGroups.map((group) => [group.status, group._count._all]),
     );
 
-    const applicationStatusCounts = Object.fromEntries(
-      applicationStatusGroups.map((group) => [group.status, group._count._all]),
-    );
+    const ownedKittens = await ownedKittensForScope(req);
+    const matchingApplications = filterApplicationsForOwner(pendingApplications, ownedKittens);
+    const scopedPendingApplications = matchingApplications.slice(0, 8);
+    const applicationStatusCounts = ownedKittens
+      ? matchingApplications.reduce((counts, application) => {
+          counts[application.status] = (counts[application.status] || 0) + 1;
+          return counts;
+        }, {})
+      : Object.fromEntries(
+          applicationStatusGroups.map((group) => [group.status, group._count._all]),
+        );
 
     const payload = {
       totalKittens,
@@ -436,7 +464,7 @@ export async function getDashboardMetrics(req, res, next) {
       applicationStatusCounts,
       recentIntakes: recentIntakes.map(serializeDashboardKitten),
       recentAdoptions: recentAdoptions.map(serializeDashboardKitten),
-      pendingApplications,
+      pendingApplications: scopedPendingApplications,
       upcomingEvents,
       // CR-97: one row per category with a count, so a large category (usually
       // spay/neuter) can no longer crowd the others out of the panel.
@@ -482,7 +510,7 @@ export async function getAllReminders(req, res, next) {
       }),
     );
 
-    const calendarReminders = requested ? [] : await getCalendarReminderEvents();
+    const calendarReminders = requested ? [] : await getCalendarReminderEvents(req);
 
     res.json({ categories: results, calendarReminders });
   } catch (error) {

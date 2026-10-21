@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { evaluateSnapshotGuard, nextBackoffMinutes } from '../src/services/snapshotGuard.js';
+import { evaluateSnapshotGuard, nextBackoffMinutes, outboxDisposition } from '../src/services/snapshotGuard.js';
 
 describe('evaluateSnapshotGuard', () => {
   it('blocks an empty snapshot without override', () => {
@@ -23,6 +23,14 @@ describe('evaluateSnapshotGuard', () => {
   it('allows a first snapshot and a modest change', () => {
     assert.equal(evaluateSnapshotGuard({ rowCount: 3, lastSuccessfulCount: 0 }).ok, true);
     assert.equal(evaluateSnapshotGuard({ rowCount: 8, lastSuccessfulCount: 10 }).ok, true);
+  });
+});
+
+describe('outboxDisposition', () => {
+  it('does not mark guard-blocked runs as processed', () => {
+    assert.equal(outboxDisposition({ ok: true }), 'processed');
+    assert.equal(outboxDisposition({ ok: false, blocked: true }), 'retry_guard');
+    assert.equal(outboxDisposition({ ok: false, error: 'ftp failed' }), 'backoff');
   });
 });
 

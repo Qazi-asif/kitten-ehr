@@ -49,6 +49,7 @@ const optionalDate = z
   .transform((value) => (value ? new Date(value) : null));
 
 const publishTargetsField = z.array(z.enum(PUBLISH_PLATFORM_IDS)).optional();
+const optionalNullableBoolean = z.boolean().nullable().optional();
 
 export const createKittenSchema = z.object({
   name: z.string().trim().min(1, 'Name is required').max(50, 'Name must be 50 characters or less'),
@@ -71,6 +72,9 @@ export const createKittenSchema = z.object({
   isTnr: z.boolean().optional().default(false),
   isColony: z.boolean().optional().default(false),
   isCommunitySave: z.boolean().optional().default(false),
+  okWithDogs: optionalNullableBoolean,
+  okWithCats: optionalNullableBoolean,
+  okWithKids: optionalNullableBoolean,
 });
 
 const optionalUrl = z.string().trim().max(500).optional().nullable();
@@ -106,6 +110,9 @@ export const updateKittenSchema = z
     isTnr: z.boolean().optional(),
     isColony: z.boolean().optional(),
     isCommunitySave: z.boolean().optional(),
+    okWithDogs: optionalNullableBoolean,
+    okWithCats: optionalNullableBoolean,
+    okWithKids: optionalNullableBoolean,
     weightGrams: z.coerce.number().positive('Weight must be a positive number').optional(),
     // Outcome fields: date for Adopted/Deceased/Released; detail text for Transferred.
     outcomeDate: optionalDate,

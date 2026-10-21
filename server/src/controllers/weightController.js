@@ -1,5 +1,13 @@
 import prisma from '../lib/prisma.js';
 import { normalizeDateField } from '../utils/dateFields.js';
+import { kittenOwnerWhere, mergeKittenWhere } from '../utils/kittenScope.js';
+
+async function findAccessibleKitten(req, kittenId) {
+  return prisma.kitten.findFirst({
+    where: mergeKittenWhere({ id: kittenId }, kittenOwnerWhere(req)),
+    select: { id: true },
+  });
+}
 
 // Weight entries carry a time of day, so this must resolve Pacific wall time
 // rather than a calendar day. See utils/dateFields.js.
@@ -9,7 +17,7 @@ export async function getWeightsByKittenId(req, res, next) {
   try {
     const kittenId = Number.parseInt(req.params.kittenId, 10);
 
-    const kitten = await prisma.kitten.findUnique({ where: { id: kittenId } });
+    const kitten = await findAccessibleKitten(req, kittenId);
     if (!kitten) {
       return res.status(404).json({ error: 'Kitten not found' });
     }
@@ -34,7 +42,7 @@ export async function createWeightLog(req, res, next) {
     }
 
     const parsedKittenId = Number.parseInt(kittenId, 10);
-    const kitten = await prisma.kitten.findUnique({ where: { id: parsedKittenId } });
+    const kitten = await findAccessibleKitten(req, parsedKittenId);
     if (!kitten) return res.status(404).json({ error: 'Kitten not found' });
 
     let grams = weightGrams ? Number.parseFloat(weightGrams) : null;
@@ -69,6 +77,8 @@ export async function updateWeightLog(req, res, next) {
     const id = Number.parseInt(req.params.id, 10);
     const existing = await prisma.weightLog.findUnique({ where: { id } });
     if (!existing) return res.status(404).json({ error: 'Weight log not found' });
+    const kitten = await findAccessibleKitten(req, existing.kittenId);
+    if (!kitten) return res.status(404).json({ error: 'Kitten not found' });
 
     const { weightGrams, weightOz, date, loggedBy, notes } = req.body;
     let grams = weightGrams != null ? Number.parseFloat(weightGrams) : existing.weightGrams;
@@ -100,6 +110,8 @@ export async function deleteWeightLog(req, res, next) {
     const id = Number.parseInt(req.params.id, 10);
     const existing = await prisma.weightLog.findUnique({ where: { id } });
     if (!existing) return res.status(404).json({ error: 'Weight log not found' });
+    const kitten = await findAccessibleKitten(req, existing.kittenId);
+    if (!kitten) return res.status(404).json({ error: 'Kitten not found' });
     await prisma.weightLog.delete({ where: { id } });
     res.status(204).end();
   } catch (error) {

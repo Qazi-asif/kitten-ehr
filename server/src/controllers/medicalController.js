@@ -171,6 +171,8 @@ export async function updateVaccine(req, res, next) {
     const id = Number.parseInt(req.params.id, 10);
     const existing = await prisma.vaccine.findUnique({ where: { id } });
     if (!existing) return res.status(404).json({ error: 'Vaccine not found' });
+    const kitten = await findAccessibleKitten(req, existing.kittenId);
+    if (!kitten) return res.status(404).json({ error: 'Kitten not found' });
 
     const {
       type, dateGiven, nextDueDate, lotNumber, manufacturer, administeredBy, notes,
@@ -199,6 +201,8 @@ export async function deleteVaccine(req, res, next) {
     const id = Number.parseInt(req.params.id, 10);
     const existing = await prisma.vaccine.findUnique({ where: { id } });
     if (!existing) return res.status(404).json({ error: 'Vaccine not found' });
+    const kitten = await findAccessibleKitten(req, existing.kittenId);
+    if (!kitten) return res.status(404).json({ error: 'Kitten not found' });
     await prisma.vaccine.delete({ where: { id } });
     res.status(204).end();
   } catch (error) {
@@ -211,6 +215,8 @@ export async function updateMedication(req, res, next) {
     const id = Number.parseInt(req.params.id, 10);
     const existing = await prisma.medication.findUnique({ where: { id } });
     if (!existing) return res.status(404).json({ error: 'Medication not found' });
+    const kitten = await findAccessibleKitten(req, existing.kittenId);
+    if (!kitten) return res.status(404).json({ error: 'Kitten not found' });
 
     const {
       name, dose, frequency, route, condition, startDate, endDate, status, notes,
@@ -241,6 +247,8 @@ export async function deleteMedication(req, res, next) {
     const id = Number.parseInt(req.params.id, 10);
     const existing = await prisma.medication.findUnique({ where: { id } });
     if (!existing) return res.status(404).json({ error: 'Medication not found' });
+    const kitten = await findAccessibleKitten(req, existing.kittenId);
+    if (!kitten) return res.status(404).json({ error: 'Kitten not found' });
     await prisma.medication.delete({ where: { id } });
     res.status(204).end();
   } catch (error) {
@@ -253,6 +261,8 @@ export async function updateVetAppointment(req, res, next) {
     const id = Number.parseInt(req.params.id, 10);
     const existing = await prisma.vetAppointment.findUnique({ where: { id } });
     if (!existing) return res.status(404).json({ error: 'Vet appointment not found' });
+    const kitten = await findAccessibleKitten(req, existing.kittenId);
+    if (!kitten) return res.status(404).json({ error: 'Kitten not found' });
 
     const {
       date, clinic, vetName, reason, apptType, diagnosis, treatment, followUpDate, notes,
@@ -283,6 +293,8 @@ export async function deleteVetAppointment(req, res, next) {
     const id = Number.parseInt(req.params.id, 10);
     const existing = await prisma.vetAppointment.findUnique({ where: { id } });
     if (!existing) return res.status(404).json({ error: 'Vet appointment not found' });
+    const kitten = await findAccessibleKitten(req, existing.kittenId);
+    if (!kitten) return res.status(404).json({ error: 'Kitten not found' });
     await prisma.vetAppointment.delete({ where: { id } });
     res.status(204).end();
   } catch (error) {

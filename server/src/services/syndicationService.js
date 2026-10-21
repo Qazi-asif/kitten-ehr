@@ -5,8 +5,9 @@ import prisma from '../lib/prisma.js';
 import { sendCustomEmail } from './emailService.js';
 import { ensureCdnPhotosForKitten } from './photoCdn.js';
 import { hashCsv, isSnapshotEligible, kittenToCsvRow, rowsToCsv } from './rescueGroupsCsv.js';
-import { evaluateSnapshotGuard, nextBackoffMinutes } from './snapshotGuard.js';
+import { evaluateSnapshotGuard, nextBackoffMinutes, outboxDisposition } from './snapshotGuard.js';
 import { DEFAULT_BREED_MAP, LOOKUP_VERSION, mapBreed } from './syndicationLookups.js';
+import { getRescueGroupsFtpConfig, uploadRescueGroupsSnapshot } from './rescueGroupsFtp.js';
 
 const SNAPSHOT_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '../../uploads/syndication');
 const REGISTERED_FILE_NAME = process.env.RG_FTP_FILENAME || 'animals.csv';
@@ -40,11 +41,11 @@ async function breedMap() {
 }
 
 function applyBaseUrl() {
-  return (process.env.PUBLIC_SITE_URL || process.env.PUBLIC_BASE_URL || '').replace(/\/$/, '');
+  return (process.env.PUBLIC_BASE_URL || process.env.PUBLIC_SITE_URL || '').replace(/\/$/, '');
 }
 
-export async function enqueueSyndication(eventType, kittenId = null) {
-  await prisma.syndicationOutbox.create({
+export async function enqueueSyndication(eventType, kittenId = null, db = prisma) {
+  await db.syndicationOutbox.create({
     data: { eventType, kittenId },
   });
 }
@@ -60,7 +61,7 @@ export async function atomicWriteSnapshot(csv, fileName = REGISTERED_FILE_NAME) 
 
 async function lastSuccessfulRun() {
   return prisma.syndicationRun.findFirst({
-    where: { status: 'success' },
+    where: { status: { in: ['success', 'success_local'] } },
     orderBy: { finishedAt: 'desc' },
   });
 }
@@ -136,7 +137,9 @@ async function alertConsecutiveFailures(count, errorMessage) {
 export async function runSyndication({ override = false, trigger = 'manual' } = {}) {
   const previous = await lastSuccessfulRun();
   const lastRun = await prisma.syndicationRun.findFirst({ orderBy: { startedAt: 'desc' } });
-  const consecutive = lastRun?.status === 'success' ? 0 : (lastRun?.consecutiveFailures || 0);
+  const consecutive = lastRun?.status === 'success' || lastRun?.status === 'success_local'
+    ? 0
+    : (lastRun?.consecutiveFailures || 0);
 
   const run = await prisma.syndicationRun.create({
     data: { status: 'running', consecutiveFailures: consecutive },
@@ -160,15 +163,21 @@ export async function runSyndication({ override = false, trigger = 'manual' } = 
     }
 
     const snapshotPath = await atomicWriteSnapshot(snapshot.csv);
+    const ftp = await uploadRescueGroupsSnapshot(snapshotPath, REGISTERED_FILE_NAME);
     const prevIds = new Set(previous?.idsAdded || previous?.idsRemoved || []);
     const nextIds = new Set(snapshot.ids);
     const idsAdded = snapshot.ids.filter((id) => !prevIds.has(id));
     const idsRemoved = [...prevIds].filter((id) => !nextIds.has(id));
+    const remoteStatus = ftp.uploaded ? 'uploaded' : 'skipped_remote';
+    const runStatus = ftp.uploaded ? 'success' : 'success_local';
+    const ftpNote = ftp.uploaded
+      ? `remote=uploaded; file=${ftp.remoteFile}`
+      : `remote=skipped_remote; ${ftp.reason}`;
 
     await prisma.syndicationRun.update({
       where: { id: run.id },
       data: {
-        status: 'success',
+        status: runStatus,
         finishedAt: new Date(),
         rowCount: snapshot.rowCount,
         fileHash: snapshot.fileHash,
@@ -177,11 +186,19 @@ export async function runSyndication({ override = false, trigger = 'manual' } = 
         snapshotPath,
         overrideUsed: override,
         consecutiveFailures: 0,
-        platformResponse: `trigger=${trigger}; file=${REGISTERED_FILE_NAME}`,
+        platformResponse: `trigger=${trigger}; file=${REGISTERED_FILE_NAME}; ${ftpNote}`,
       },
     });
 
-    return { ok: true, rowCount: snapshot.rowCount, fileHash: snapshot.fileHash, snapshotPath, runId: run.id };
+    return {
+      ok: true,
+      rowCount: snapshot.rowCount,
+      fileHash: snapshot.fileHash,
+      snapshotPath,
+      runId: run.id,
+      remote: remoteStatus,
+      ftpConfigured: Boolean(getRescueGroupsFtpConfig()),
+    };
   } catch (error) {
     const failures = consecutive + 1;
     await prisma.syndicationRun.update({
@@ -208,12 +225,18 @@ export async function processOutbox(limit = 20) {
 
   const result = await runSyndication({ trigger: 'outbox' });
   const now = new Date();
+  const disposition = outboxDisposition(result);
 
   for (const item of due) {
-    if (result.ok || result.blocked) {
+    if (disposition === 'processed') {
       await prisma.syndicationOutbox.update({
         where: { id: item.id },
-        data: { processedAt: now, lastError: result.blocked ? result.message : '' },
+        data: { processedAt: now, lastError: '' },
+      });
+    } else if (disposition === 'retry_guard') {
+      await prisma.syndicationOutbox.update({
+        where: { id: item.id },
+        data: { lastError: result.message || 'Snapshot guard blocked upload' },
       });
     } else {
       const attempts = item.attempts + 1;

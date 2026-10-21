@@ -59,24 +59,24 @@ function serializeRow(kitten) {
   };
 }
 
-async function upsertVaccine(kittenId, type, dateValue) {
+async function upsertVaccine(kittenId, type, dateValue, db = prisma) {
   const dateGiven = parsePacificDateOnly(String(dateValue).slice(0, 10));
   if (!dateGiven) {
     const error = new Error(`Invalid date for ${type}`);
     error.status = 400;
     throw error;
   }
-  const existing = await prisma.vaccine.findFirst({
+  const existing = await db.vaccine.findFirst({
     where: { kittenId, type: { contains: type, mode: 'insensitive' } },
     orderBy: { dateGiven: 'desc' },
   });
   if (existing) {
-    return prisma.vaccine.update({
+    return db.vaccine.update({
       where: { id: existing.id },
       data: { dateGiven, type },
     });
   }
-  return prisma.vaccine.create({
+  return db.vaccine.create({
     data: { kittenId, type, dateGiven },
   });
 }
@@ -120,41 +120,49 @@ export async function patchSpreadsheetCell(req, res, next) {
       return res.status(400).json({ error: `Field ${field} is not bulk-editable` });
     }
 
-    if (field === 'vaccines' || field === 'rabies') {
-      if (value) await upsertVaccine(id, field === 'rabies' ? 'Rabies' : 'FVRCP', value);
-    } else if (field === 'weight') {
-      const grams = Number(value);
-      if (!Number.isFinite(grams) || grams <= 0) {
-        return res.status(400).json({ error: 'Weight must be a positive number of grams' });
-      }
-      await prisma.weightLog.create({
-        data: {
-          kittenId: id,
-          date: new Date(),
-          weightGrams: grams,
-          weightOz: grams / 28.3495,
-          loggedBy: `${req.user.firstName || ''} ${req.user.lastName || ''}`.trim(),
-        },
-      });
-    } else {
-      const payload = {};
-      if (field === 'gender') payload.sex = value ?? '';
-      else if (field === 'dateOfBirth' || field === 'intakeDate') {
-        payload[field] = value ? String(value).slice(0, 10) : null;
+    await prisma.$transaction(async (tx) => {
+      if (field === 'vaccines' || field === 'rabies') {
+        if (value) await upsertVaccine(id, field === 'rabies' ? 'Rabies' : 'FVRCP', value, tx);
+      } else if (field === 'weight') {
+        const grams = Number(value);
+        if (!Number.isFinite(grams) || grams <= 0) {
+          const error = new Error('Weight must be a positive number of grams');
+          error.status = 400;
+          throw error;
+        }
+        await tx.weightLog.create({
+          data: {
+            kittenId: id,
+            date: new Date(),
+            weightGrams: grams,
+            weightOz: grams / 28.3495,
+            loggedBy: `${req.user.firstName || ''} ${req.user.lastName || ''}`.trim(),
+          },
+        });
       } else {
-        payload[field] = value;
+        const payload = {};
+        if (field === 'gender') payload.sex = value ?? '';
+        else if (field === 'dateOfBirth' || field === 'intakeDate') {
+          payload[field] = value ? String(value).slice(0, 10) : null;
+        } else {
+          payload[field] = value;
+        }
+        const parsed = updateKittenSchema.safeParse(payload);
+        if (!parsed.success) {
+          const error = new Error(formatZodError(parsed.error));
+          error.status = 400;
+          throw error;
+        }
+        if (parsed.data.status && !KITTEN_STATUSES.includes(parsed.data.status)) {
+          const error = new Error('Invalid status');
+          error.status = 400;
+          throw error;
+        }
+        await tx.kitten.update({ where: { id }, data: parsed.data });
       }
-      const parsed = updateKittenSchema.safeParse(payload);
-      if (!parsed.success) {
-        return res.status(400).json({ error: formatZodError(parsed.error) });
-      }
-      if (parsed.data.status && !KITTEN_STATUSES.includes(parsed.data.status)) {
-        return res.status(400).json({ error: 'Invalid status' });
-      }
-      await prisma.kitten.update({ where: { id }, data: parsed.data });
-    }
 
-    await enqueueSyndication('kitten.changed', id);
+      await enqueueSyndication('kitten.changed', id, tx);
+    });
     invalidateCacheByPrefix('dashboard-metrics');
     invalidateCacheByPrefix('public-kittens');
 

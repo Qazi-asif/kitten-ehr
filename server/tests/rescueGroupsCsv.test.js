@@ -68,6 +68,11 @@ describe('snapshot eligibility and CSV', () => {
     assert.equal(row.priBreed, 'Domestic Short Hair');
     assert.match(row.dsc, /Sweet girl/);
     assert.match(row.dsc, /adopt\/apply\?cat=PT-000012/);
+    assert.match(row.dsc, /kittenId=12/);
     assert.equal(row.photo1, 'https://example.org/cdn/cats/PT-000012/abcd.jpg');
+    assert.equal(row.okwithdogs, '');
+    assert.equal(kittenToCsvRow(cat({ okWithDogs: false, okWithCats: true, okWithKids: null })).okwithdogs, 'No');
+    assert.equal(kittenToCsvRow(cat({ okWithDogs: false, okWithCats: true, okWithKids: null })).okwithcats, '');
+    assert.equal(kittenToCsvRow(cat({ okWithDogs: false, okWithCats: true, okWithKids: null })).okwithkids, '');
   });
 });

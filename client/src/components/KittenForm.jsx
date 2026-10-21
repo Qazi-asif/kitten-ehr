@@ -26,6 +26,9 @@ const initialFormState = {
   isTnr: false,
   isColony: false,
   isCommunitySave: false,
+  okWithDogs: '',
+  okWithCats: '',
+  okWithKids: '',
 };
 
 function KittenForm({ onSubmit, litters = [], onLittersChange, fosters = [], submitting = false }) {
@@ -58,6 +61,9 @@ function KittenForm({ onSubmit, litters = [], onLittersChange, fosters = [], sub
         isTnr: form.isTnr,
         isColony: form.isColony,
         isCommunitySave: form.isCommunitySave,
+        okWithDogs: form.okWithDogs === 'yes' ? true : form.okWithDogs === 'no' ? false : null,
+        okWithCats: form.okWithCats === 'yes' ? true : form.okWithCats === 'no' ? false : null,
+        okWithKids: form.okWithKids === 'yes' ? true : form.okWithKids === 'no' ? false : null,
       },
       photoFile,
     });
@@ -149,6 +155,30 @@ function KittenForm({ onSubmit, litters = [], onLittersChange, fosters = [], sub
               className="h-4 w-4 rounded border-slate-300 text-brand focus:ring-brand"
             />
             <span className="text-sm font-medium text-slate-700">Community Save</span>
+          </label>
+          <label className="block">
+            <span className="mb-1 block text-sm font-medium text-slate-700">Good with dogs</span>
+            <select name="okWithDogs" value={form.okWithDogs} onChange={handleChange} className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
+              <option value="">Unknown</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </label>
+          <label className="block">
+            <span className="mb-1 block text-sm font-medium text-slate-700">Good with cats</span>
+            <select name="okWithCats" value={form.okWithCats} onChange={handleChange} className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
+              <option value="">Unknown</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </label>
+          <label className="block">
+            <span className="mb-1 block text-sm font-medium text-slate-700">Good with kids</span>
+            <select name="okWithKids" value={form.okWithKids} onChange={handleChange} className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
+              <option value="">Unknown</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
           </label>
           <label className="block">
             <span className="mb-1 block text-sm font-medium text-slate-700">Sex</span>

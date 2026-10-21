@@ -26,6 +26,7 @@ const publicKittenSelect = {
   id: true,
   name: true,
   status: true,
+  externalId: true,
   primaryPhotoUrl: true,
   rescueStory: true,
   dateOfBirth: true,

@@ -28,8 +28,9 @@ export function buildPublicPublishTargetsWhereClause() {
 
 export function buildPublicAvailableKittenWhereClause() {
   return {
-    // In Socialization must never appear on the public website.
-    status: { in: ['Available for Adoption', 'In Foster Care'] },
+    // Website visibility is the per-cat toggle (isListedOnWebsite), not status.
+    // In Socialization and terminal outcomes still never appear on the public list.
+    status: { notIn: ['In Socialization', 'Adopted', 'Transferred', 'Deceased', 'Released'] },
     ...buildPublicWebsiteWhereClause(),
   };
 }

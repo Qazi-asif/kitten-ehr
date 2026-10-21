@@ -121,6 +121,7 @@ export const DEFAULT_ROLES = [
       'kittens.view',
       'kittens.create',
       'kittens.edit',
+      'kittens.delete',
       'medical.view',
       'medical.manage',
       'documents.view',

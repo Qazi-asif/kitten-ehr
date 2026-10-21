@@ -182,6 +182,9 @@ exports.Prisma.KittenScalarFieldEnum = {
   isTnr: 'isTnr',
   isColony: 'isColony',
   isCommunitySave: 'isCommunitySave',
+  okWithDogs: 'okWithDogs',
+  okWithCats: 'okWithCats',
+  okWithKids: 'okWithKids',
   currentFosterId: 'currentFosterId',
   createdAt: 'createdAt'
 };

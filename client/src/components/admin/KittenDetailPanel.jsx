@@ -119,6 +119,9 @@ function buildProfileForm(data) {
     isTnr: Boolean(data.isTnr),
     isColony: Boolean(data.isColony),
     isCommunitySave: Boolean(data.isCommunitySave),
+    okWithDogs: data.okWithDogs === true ? 'yes' : data.okWithDogs === false ? 'no' : '',
+    okWithCats: data.okWithCats === true ? 'yes' : data.okWithCats === false ? 'no' : '',
+    okWithKids: data.okWithKids === true ? 'yes' : data.okWithKids === false ? 'no' : '',
     microchipNumber: data.microchipNumber || '',
     outcomeDate: data.outcomeDate ? data.outcomeDate.slice(0, 10) : '',
     outcomeDetail: data.outcomeDetail || '',
@@ -349,6 +352,9 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
         isTnr: profileForm.isTnr,
         isColony: profileForm.isColony,
         isCommunitySave: profileForm.isCommunitySave,
+        okWithDogs: profileForm.okWithDogs === 'yes' ? true : profileForm.okWithDogs === 'no' ? false : null,
+        okWithCats: profileForm.okWithCats === 'yes' ? true : profileForm.okWithCats === 'no' ? false : null,
+        okWithKids: profileForm.okWithKids === 'yes' ? true : profileForm.okWithKids === 'no' ? false : null,
         microchipNumber: profileForm.microchipNumber || '',
       };
 
@@ -967,6 +973,45 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                     disabled={!canEdit}
                   />
                   <span className="text-sm font-medium text-gray-800">Community Save</span>
+                </label>
+                <label className="block">
+                  <span className="text-xs font-semibold uppercase text-gray-500">Good with dogs</span>
+                  <select
+                    value={profileForm.okWithDogs || ''}
+                    onChange={(e) => handleProfileFieldChange('okWithDogs', e.target.value)}
+                    disabled={!canEdit}
+                    className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+                  >
+                    <option value="">Unknown</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </label>
+                <label className="block">
+                  <span className="text-xs font-semibold uppercase text-gray-500">Good with cats</span>
+                  <select
+                    value={profileForm.okWithCats || ''}
+                    onChange={(e) => handleProfileFieldChange('okWithCats', e.target.value)}
+                    disabled={!canEdit}
+                    className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+                  >
+                    <option value="">Unknown</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </label>
+                <label className="block">
+                  <span className="text-xs font-semibold uppercase text-gray-500">Good with kids</span>
+                  <select
+                    value={profileForm.okWithKids || ''}
+                    onChange={(e) => handleProfileFieldChange('okWithKids', e.target.value)}
+                    disabled={!canEdit}
+                    className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+                  >
+                    <option value="">Unknown</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
                 </label>
               </div>
               <label className="block">
