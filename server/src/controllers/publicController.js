@@ -4,6 +4,7 @@ import { PUBLIC_SETTINGS_SELECT, toPublicSettings } from '../utils/publicSetting
 import {
   buildPublicAvailableKittenWhereClause,
   buildPublicFeaturedKittenWhereClause,
+  buildPublicPublishTargetsWhereClause,
   buildPublicWebsiteWhereClause,
 } from '../utils/publishTargets.js';
 import { isPhotoDocument, photoDocumentOrderBy, photoDocumentSelect } from '../utils/photoDocuments.js';
@@ -41,6 +42,7 @@ const publicKittenSelect = {
 };
 
 const publicWebsiteFilter = buildPublicWebsiteWhereClause();
+const publicPublishTargetsFilter = buildPublicPublishTargetsWhereClause();
 const publicAvailableKittenFilter = buildPublicAvailableKittenWhereClause();
 const publicFeaturedKittenFilter = buildPublicFeaturedKittenWhereClause();
 
@@ -369,7 +371,7 @@ export async function getPublicContent(req, res, next) {
 
     const articles = await prisma.content.findMany({
       where: {
-        ...publicWebsiteFilter,
+        ...publicPublishTargetsFilter,
         ...(category ? { category } : {}),
       },
       orderBy: { createdAt: 'desc' },
@@ -384,7 +386,7 @@ export async function getPublicContent(req, res, next) {
 export async function getPublicContentBySlug(req, res, next) {
   try {
     const article = await prisma.content.findFirst({
-      where: { slug: req.params.slug, ...publicWebsiteFilter },
+      where: { slug: req.params.slug, ...publicPublishTargetsFilter },
       select: { id: true, title: true, slug: true, body: true, category: true, createdAt: true },
     });
 
@@ -399,7 +401,7 @@ export async function getPublicEvents(_req, res, next) {
   try {
     const events = await prisma.event.findMany({
       where: {
-        ...publicWebsiteFilter,
+        ...publicPublishTargetsFilter,
         isPublic: true,
         status: 'PUBLISHED',
       },
@@ -434,7 +436,7 @@ export async function getPublicKittenUpdates(req, res, next) {
     }
 
     const updates = await prisma.update.findMany({
-      where: { kittenId: id, ...publicWebsiteFilter },
+      where: { kittenId: id, ...publicPublishTargetsFilter },
       orderBy: { createdAt: 'desc' },
       select: {
         id: true,

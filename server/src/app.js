@@ -54,6 +54,21 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const isOriginAllowed = createOriginValidator();
 
+function objectStorageImageOrigin() {
+  const origins = new Set();
+  for (const value of [
+    process.env.S3_PUBLIC_URL,
+    'https://pub-bbcd6f66026f4b49b3c527d402576331.r2.dev',
+  ]) {
+    try {
+      if (value) origins.add(new URL(value).origin);
+    } catch {
+      // Ignore invalid URLs so a bad env value cannot crash Helmet.
+    }
+  }
+  return [...origins];
+}
+
 // Prefer server/public (Hostinger Node app root) so Git deploy updates the SPA
 // without a separate client build step. Fall back to ../../client/dist for local monorepo.
 function resolveClientDistPath() {
@@ -112,6 +127,8 @@ app.use(
         imgSrc: [
           "'self'",
           'data:',
+          'https://*.r2.dev',
+          ...objectStorageImageOrigin(),
           'https://givebutter.com',
           'https://widgets.givebutter.com',
           'https://givebutter.s3.amazonaws.com',

@@ -16,6 +16,16 @@ export function buildPublicWebsiteWhereClause() {
   };
 }
 
+/** Content, events, and kitten updates still publish via publishTargets. */
+export function buildPublicPublishTargetsWhereClause() {
+  return {
+    OR: [
+      { publishTargets: { isEmpty: true } },
+      { publishTargets: { has: 'WEBSITE' } },
+    ],
+  };
+}
+
 export function buildPublicAvailableKittenWhereClause() {
   return {
     // In Socialization must never appear on the public website.
