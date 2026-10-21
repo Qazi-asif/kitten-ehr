@@ -70,6 +70,7 @@ export const createKittenSchema = z.object({
   microchipNumber: z.string().max(80).optional().default(''),
   isTnr: z.boolean().optional().default(false),
   isColony: z.boolean().optional().default(false),
+  isCommunitySave: z.boolean().optional().default(false),
 });
 
 const optionalUrl = z.string().trim().max(500).optional().nullable();
@@ -93,6 +94,7 @@ export const updateKittenSchema = z
     notes: z.string().max(10000).optional(),
     internalNotes: z.string().max(10000).optional(),
     isListedOnWebsite: z.boolean().optional(),
+    isActive: z.boolean().optional(),
     websiteFeaturedComment: z.string().max(2000).optional(),
     publishTargets: publishTargetsField,
     litterId: z.coerce.number().int().positive().optional().nullable(),
@@ -103,6 +105,7 @@ export const updateKittenSchema = z
     isMedicalSpecialNeeds: z.boolean().optional(),
     isTnr: z.boolean().optional(),
     isColony: z.boolean().optional(),
+    isCommunitySave: z.boolean().optional(),
     weightGrams: z.coerce.number().positive('Weight must be a positive number').optional(),
     // Outcome fields: date for Adopted/Deceased/Released; detail text for Transferred.
     outcomeDate: optionalDate,

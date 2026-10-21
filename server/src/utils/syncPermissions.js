@@ -20,8 +20,22 @@ export async function syncPermissionsFromDefaults() {
   const permissionByKey = Object.fromEntries(permissionRecords.map((p) => [p.key, p.id]));
 
   for (const roleDef of DEFAULT_ROLES) {
-    const role = await prisma.role.findUnique({ where: { name: roleDef.name } });
-    if (!role) continue;
+    const role = await prisma.role.upsert({
+      where: { name: roleDef.name },
+      create: {
+        name: roleDef.name,
+        description: roleDef.description,
+        isSystem: Boolean(roleDef.isSystem),
+        isPortalRole: Boolean(roleDef.isPortalRole),
+        scopesToOwnCats: Boolean(roleDef.scopesToOwnCats),
+      },
+      update: {
+        description: roleDef.description,
+        isSystem: Boolean(roleDef.isSystem),
+        isPortalRole: Boolean(roleDef.isPortalRole),
+        scopesToOwnCats: Boolean(roleDef.scopesToOwnCats),
+      },
+    });
 
     for (const key of roleDef.permissions) {
       const permissionId = permissionByKey[key];

@@ -47,10 +47,16 @@ async function loadPortalAccountSummary(fosterId) {
   };
 }
 
-export async function getAllFosters(_req, res, next) {
+export async function getAllFosters(req, res, next) {
   try {
+    const { status } = req.query;
+    const where = {};
+    if (status === 'active') where.isActive = true;
+    else if (status === 'inactive') where.isActive = false;
+
     const [fosters, openPlacementCounts] = await Promise.all([
       prisma.foster.findMany({
+        where,
         orderBy: { name: 'asc' },
         // Exclude photoUrl from list view — it can be a large base64 blob and
         // is only needed on the individual foster detail page.

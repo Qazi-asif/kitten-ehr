@@ -19,7 +19,7 @@ function LitterListPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [statusFilter, setStatusFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState('active');
   const [sort, setSort] = useState('name');
 
   const loadLitters = useCallback(async () => {
@@ -41,7 +41,7 @@ function LitterListPage() {
 
   function handleCreated(created) {
     if (statusFilter === 'inactive') {
-      setStatusFilter('all');
+      setStatusFilter('active');
     } else {
       setLitters((prev) => {
         const next = [...prev, created];
@@ -123,9 +123,9 @@ function LitterListPage() {
           className="rounded-lg border border-slate-200 px-3 py-2 text-sm"
           aria-label="Filter litters by status"
         >
-          <option value="all">All</option>
           <option value="active">Active</option>
           <option value="inactive">Inactive</option>
+          <option value="all">All</option>
         </select>
         <select
           value={sort}

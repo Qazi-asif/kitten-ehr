@@ -118,6 +118,7 @@ function buildProfileForm(data) {
     isMedicalSpecialNeeds: Boolean(data.isMedicalSpecialNeeds),
     isTnr: Boolean(data.isTnr),
     isColony: Boolean(data.isColony),
+    isCommunitySave: Boolean(data.isCommunitySave),
     microchipNumber: data.microchipNumber || '',
     outcomeDate: data.outcomeDate ? data.outcomeDate.slice(0, 10) : '',
     outcomeDetail: data.outcomeDetail || '',
@@ -347,6 +348,7 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
         isMedicalSpecialNeeds: profileForm.isMedicalSpecialNeeds,
         isTnr: profileForm.isTnr,
         isColony: profileForm.isColony,
+        isCommunitySave: profileForm.isCommunitySave,
         microchipNumber: profileForm.microchipNumber || '',
       };
 
@@ -956,6 +958,15 @@ function KittenDetailPanel({ kittenId, embedded = false, onKittenDeleted }) {
                     disabled={!canEdit}
                   />
                   <span className="text-sm font-medium text-gray-800">Colony</span>
+                </label>
+                <label className="flex items-center gap-2 sm:col-span-2">
+                  <input
+                    type="checkbox"
+                    checked={profileForm.isCommunitySave}
+                    onChange={(e) => handleProfileFieldChange('isCommunitySave', e.target.checked)}
+                    disabled={!canEdit}
+                  />
+                  <span className="text-sm font-medium text-gray-800">Community Save</span>
                 </label>
               </div>
               <label className="block">

@@ -8,8 +8,8 @@ function KittenDocumentsTab({ kittenId, documents, onUpload, uploading, onDelete
   const [emailOpen, setEmailOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
 
-  function handleEmailSuccess() {
-    setSuccessMessage('Documents sent successfully!');
+  function handleEmailSuccess(result) {
+    setSuccessMessage(result?.message || 'Email dispatched to the recipient.');
     setEmailOpen(false);
   }
 

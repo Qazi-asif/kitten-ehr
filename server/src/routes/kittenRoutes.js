@@ -12,7 +12,9 @@ import {
   createKittenWishlist,
   getKittenWishlists,
 } from '../controllers/wishlistController.js';
+import { getSpreadsheet, patchSpreadsheetCell } from '../controllers/kittenSpreadsheetController.js';
 import { requirePermission } from '../middleware/authMiddleware.js';
+import { requireAccessibleKitten } from '../middleware/kittenAccess.js';
 
 const router = Router();
 
@@ -75,11 +77,13 @@ const router = Router();
 router.get('/', requirePermission('kittens.view'), getAllKittens);
 router.post('/', requirePermission('kittens.create'), createKitten);
 router.get('/dashboard/stats', requirePermission('dashboard.view'), getDashboardStats);
-router.get('/:id/placements', requirePermission('kittens.view'), getKittenPlacements);
-router.get('/:id/wishlists', requirePermission('kittens.view'), getKittenWishlists);
-router.post('/:id/wishlists', requirePermission('kittens.edit'), createKittenWishlist);
-router.get('/:id', requirePermission('kittens.view'), getKittenById);
-router.patch('/:id', requirePermission('kittens.edit'), updateKitten);
-router.delete('/:id', requirePermission('kittens.delete'), deleteKitten);
+router.get('/spreadsheet', requirePermission('kittens.view'), getSpreadsheet);
+router.patch('/spreadsheet', requirePermission('kittens.edit'), patchSpreadsheetCell);
+router.get('/:id/placements', requirePermission('kittens.view'), requireAccessibleKitten, getKittenPlacements);
+router.get('/:id/wishlists', requirePermission('kittens.view'), requireAccessibleKitten, getKittenWishlists);
+router.post('/:id/wishlists', requirePermission('kittens.edit'), requireAccessibleKitten, createKittenWishlist);
+router.get('/:id', requirePermission('kittens.view'), requireAccessibleKitten, getKittenById);
+router.patch('/:id', requirePermission('kittens.edit'), requireAccessibleKitten, updateKitten);
+router.delete('/:id', requirePermission('kittens.delete'), requireAccessibleKitten, deleteKitten);
 
 export default router;

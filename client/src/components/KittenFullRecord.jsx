@@ -126,6 +126,9 @@ function KittenFullRecord({
             <FieldRow label="Microchip" value={kitten.microchipNumber} />
             <FieldRow label="Intake Date" value={fmtDate(kitten.intakeDate)} />
             <FieldRow label="Intake Source" value={kitten.intakeSource} />
+            <FieldRow label="TNR" value={kitten.isTnr ? 'Yes' : 'No'} />
+            <FieldRow label="Colony" value={kitten.isColony ? 'Yes' : 'No'} />
+            <FieldRow label="Community Save" value={kitten.isCommunitySave ? 'Yes' : 'No'} />
             <FieldRow label="Outcome Date" value={fmtDate(kitten.outcomeDate)} />
             <FieldRow label="Current Weight" value={latestWeight ? `${Math.round(latestWeight.weightGrams)} g` : '—'} />
           </dl>

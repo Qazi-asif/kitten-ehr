@@ -21,6 +21,7 @@ import {
 } from '../controllers/contractController.js';
 import { getPublicEventBySlug, rsvpForEvent } from '../controllers/eventController.js';
 import { getPublicWishlists, getPublicKittenWishlists } from '../controllers/wishlistController.js';
+import { getApplyStatus } from '../controllers/applyStatusController.js';
 
 const router = Router();
 
@@ -32,6 +33,7 @@ router.use((req, res, next) => {
 });
 
 router.get('/wishlists', getPublicWishlists);
+router.get('/apply-status', getApplyStatus);
 router.get('/kittens', getPublicKittens);
 router.get('/kittens/:id/wishlists', getPublicKittenWishlists);
 router.get('/kittens/:id/photo', getPublicKittenPhoto);

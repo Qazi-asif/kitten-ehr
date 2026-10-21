@@ -9,6 +9,7 @@ import {
 import { validateUploadedFile } from '../utils/fileValidation.js';
 import { deleteStoredFile, persistEventFile } from '../utils/fileStorage.js';
 import { parsePacificDateTime } from '../utils/pacificDate.js';
+import { invalidateCacheByPrefix } from '../utils/responseCache.js';
 
 function asEventDate(value) {
   if (value == null || value === '') return null;
@@ -289,6 +290,7 @@ export async function createEvent(req, res, next) {
     }
 
     const hydrated = await fetchEventWithCats(event.id);
+    invalidateCacheByPrefix('dashboard-metrics');
     res.status(201).json(hydrated);
   } catch (error) {
     if (error.statusCode === 400) return res.status(400).json({ error: error.message });
@@ -349,6 +351,7 @@ export async function updateEvent(req, res, next) {
     }
 
     const hydrated = await fetchEventWithCats(event.id);
+    invalidateCacheByPrefix('dashboard-metrics');
     res.json(hydrated);
   } catch (error) {
     if (error.statusCode === 400) return res.status(400).json({ error: error.message });
@@ -365,6 +368,7 @@ export async function deleteEvent(req, res, next) {
     if (existing?.imageUrl) {
       await deleteStoredFile(existing.imageUrl);
     }
+    invalidateCacheByPrefix('dashboard-metrics');
     res.status(204).send();
   } catch (error) {
     if (error.code === 'P2025') return res.status(404).json({ error: 'Event not found' });

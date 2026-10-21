@@ -51,6 +51,7 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
   const [publishingForm, setPublishingForm] = useState({
     publishTargets: [],
     websiteFeaturedComment: '',
+    isListedOnWebsite: false,
   });
   const [socialCaption, setSocialCaption] = useState('');
   const [isAiGeneratedCaption, setIsAiGeneratedCaption] = useState(false);
@@ -73,6 +74,7 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
     setPublishingForm({
       publishTargets: resolvePublishTargets(kitten),
       websiteFeaturedComment: kitten.websiteFeaturedComment || '',
+      isListedOnWebsite: Boolean(kitten.isListedOnWebsite),
     });
   }, [kitten]);
 
@@ -133,7 +135,7 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
   }, [photoOptions, selectedPhotoKey]);
 
   const selectedPhoto = photoOptions.find((photo) => photo.key === selectedPhotoKey) ?? null;
-  const listedOnWebsite = publishingForm.publishTargets.includes('WEBSITE');
+  const listedOnWebsite = Boolean(publishingForm.isListedOnWebsite);
   const publicKittenUrl = getPublicKittenUrl(kitten?.id);
 
   async function handleSavePublishingSettings(event) {
@@ -144,11 +146,13 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
       const updated = await updateKitten(kittenId, {
         publishTargets: publishingForm.publishTargets,
         websiteFeaturedComment: publishingForm.websiteFeaturedComment,
+        isListedOnWebsite: publishingForm.isListedOnWebsite,
       });
       setKitten(updated);
       setPublishingForm({
         publishTargets: resolvePublishTargets(updated),
         websiteFeaturedComment: updated.websiteFeaturedComment || '',
+        isListedOnWebsite: Boolean(updated.isListedOnWebsite),
       });
     } catch (err) {
       setError(err.message);
@@ -265,14 +269,30 @@ function KittenPublishingTab({ kittenId, kitten, galleryPhotos = [], setKitten }
             setPublishingForm((prev) => ({ ...prev, publishTargets: normalizePublishTargets(targets) }))
           }
           title="Publishing Matrix"
-          description="Choose exactly where this kitten should be published. Website controls the public adoption profile."
+          description="Choose exactly where this kitten should be published. Website listing is controlled by Show on website below."
         />
 
         <section className="rounded-xl border border-gray-200 p-5">
           <h3 className="text-sm font-bold uppercase tracking-wide text-gray-900">Website Details</h3>
           <p className="mt-1 text-sm text-gray-500">
-            Extra content shown on the public profile when Website is checked above.
+            Extra content shown on the public profile when the cat is listed on the website.
           </p>
+          <label className="mt-5 flex items-start gap-3 rounded-lg border border-slate-200 bg-slate-50 px-3 py-3 text-sm">
+            <input
+              type="checkbox"
+              className="mt-0.5"
+              checked={Boolean(publishingForm.isListedOnWebsite)}
+              onChange={(e) =>
+                setPublishingForm((prev) => ({ ...prev, isListedOnWebsite: e.target.checked }))
+              }
+            />
+            <span>
+              <span className="font-semibold text-slate-900">Show on website</span>
+              <span className="mt-0.5 block text-xs text-slate-500">
+                Public adoption pages only include cats with this box checked.
+              </span>
+            </span>
+          </label>
 
           <label className="mt-5 block">
             <span className="text-xs font-semibold uppercase text-gray-500">Website Featured Comment</span>

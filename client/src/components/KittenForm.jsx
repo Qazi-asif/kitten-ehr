@@ -25,6 +25,7 @@ const initialFormState = {
   isEuthanasiaPull: false,
   isTnr: false,
   isColony: false,
+  isCommunitySave: false,
 };
 
 function KittenForm({ onSubmit, litters = [], onLittersChange, fosters = [], submitting = false }) {
@@ -56,6 +57,7 @@ function KittenForm({ onSubmit, litters = [], onLittersChange, fosters = [], sub
         intakeSource: form.isEuthanasiaPull ? 'Euthanasia-Pull Rescue' : '',
         isTnr: form.isTnr,
         isColony: form.isColony,
+        isCommunitySave: form.isCommunitySave,
       },
       photoFile,
     });
@@ -137,6 +139,16 @@ function KittenForm({ onSubmit, litters = [], onLittersChange, fosters = [], sub
               className="h-4 w-4 rounded border-slate-300 text-brand focus:ring-brand"
             />
             <span className="text-sm font-medium text-slate-700">Colony</span>
+          </label>
+          <label className="flex items-center gap-2 md:col-span-2">
+            <input
+              type="checkbox"
+              name="isCommunitySave"
+              checked={form.isCommunitySave}
+              onChange={handleChange}
+              className="h-4 w-4 rounded border-slate-300 text-brand focus:ring-brand"
+            />
+            <span className="text-sm font-medium text-slate-700">Community Save</span>
           </label>
           <label className="block">
             <span className="mb-1 block text-sm font-medium text-slate-700">Sex</span>

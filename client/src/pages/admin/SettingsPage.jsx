@@ -76,6 +76,7 @@ const EMPTY_ROLE = {
   name: '',
   description: '',
   permissions: [],
+  scopesToOwnCats: false,
 };
 
 function mapOrgSettingsFromApi(settingsData = {}) {
@@ -417,6 +418,7 @@ function SettingsPage() {
       description: role.description,
       permissions: [...role.permissions],
       isSystem: role.isSystem,
+      scopesToOwnCats: Boolean(role.scopesToOwnCats),
     });
   }
 
@@ -439,6 +441,7 @@ function SettingsPage() {
           name: roleForm.name,
           description: roleForm.description,
           permissions: roleForm.permissions,
+          scopesToOwnCats: Boolean(roleForm.scopesToOwnCats),
         });
         if (currentUser?.roleId === roleForm.id) {
           await refreshUser();
@@ -1399,6 +1402,20 @@ function SettingsPage() {
             <label className="mt-4 block">
               <span className="mb-1 block text-xs font-medium text-slate-600">Description</span>
               <input value={roleForm.description} onChange={(e) => setRoleForm({ ...roleForm, description: e.target.value })} className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" />
+            </label>
+            <label className="mt-4 flex items-start gap-3 rounded-lg border border-slate-200 px-3 py-3 text-sm">
+              <input
+                type="checkbox"
+                className="mt-0.5"
+                checked={Boolean(roleForm.scopesToOwnCats)}
+                onChange={(e) => setRoleForm({ ...roleForm, scopesToOwnCats: e.target.checked })}
+              />
+              <span>
+                <span className="font-semibold text-slate-800">Limit to own cats</span>
+                <span className="mt-0.5 block text-xs text-slate-500">
+                  This role can only see cats they created. Do not grant Reports.
+                </span>
+              </span>
             </label>
             <div className="mt-6 space-y-4">
               {Object.entries(permissionsByModule).map(([module, modulePermissions]) => (

@@ -10,19 +10,20 @@ function FosterListPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [notice, setNotice] = useState(null);
+  const [statusFilter, setStatusFilter] = useState('active');
 
   const loadFosters = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await fetchFosters();
+      const data = await fetchFosters({ status: statusFilter });
       setFosters(data);
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [statusFilter]);
 
   useEffect(() => {
     loadFosters();
@@ -114,13 +115,26 @@ function FosterListPage() {
 
       <FosterForm onSubmit={handleCreateFoster} submitting={submitting} />
 
+      <div className="mb-4 flex flex-wrap gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="rounded-lg border border-slate-200 px-3 py-2 text-sm"
+          aria-label="Filter fosters by status"
+        >
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+          <option value="all">All</option>
+        </select>
+      </div>
+
       {error && <div className="mb-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}
       {notice && <div className="mb-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800">{notice}</div>}
       {loading && <p className="text-slate-500">Loading fosters...</p>}
 
       {!loading && !error && fosters.length === 0 && (
         <p className="rounded-lg bg-slate-100 px-4 py-6 text-center text-slate-600">
-          No fosters found yet.
+          No fosters match this filter.
         </p>
       )}
 

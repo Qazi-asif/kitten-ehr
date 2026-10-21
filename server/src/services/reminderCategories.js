@@ -164,10 +164,16 @@ export function buildReminderWhere(key) {
 }
 
 /** Counts for every category, for the collapsed dashboard rows. */
-export async function getReminderCategoryCounts(prisma) {
+function mergeWhere(base, extra) {
+  if (!extra || Object.keys(extra).length === 0) return base;
+  if (!base || Object.keys(base).length === 0) return extra;
+  return { AND: [base, extra] };
+}
+
+export async function getReminderCategoryCounts(prisma, extraWhere = {}) {
   const counts = await Promise.all(
     REMINDER_CATEGORIES.map(async (category) => {
-      const count = await prisma.kitten.count({ where: category.buildWhere() });
+      const count = await prisma.kitten.count({ where: mergeWhere(category.buildWhere(), extraWhere) });
       return {
         key: category.key,
         label: category.label,
@@ -181,11 +187,11 @@ export async function getReminderCategoryCounts(prisma) {
 }
 
 /** Full cat list for one category, for the all-reminders view. */
-export async function getReminderCategoryItems(prisma, key, { limit } = {}) {
+export async function getReminderCategoryItems(prisma, key, { limit, extraWhere } = {}) {
   const where = buildReminderWhere(key);
   if (!where) return null;
   return prisma.kitten.findMany({
-    where,
+    where: mergeWhere(where, extraWhere),
     select: {
       id: true,
       name: true,

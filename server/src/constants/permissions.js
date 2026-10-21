@@ -112,6 +112,22 @@ export const DEFAULT_ROLES = [
     permissions: PERMISSION_KEYS.filter((k) => k.endsWith('.view')),
   },
   {
+    name: 'Own Cats',
+    description: 'Create and manage only cats this user added. Reports are not included.',
+    isSystem: true,
+    scopesToOwnCats: true,
+    permissions: [
+      'dashboard.view',
+      'kittens.view',
+      'kittens.create',
+      'kittens.edit',
+      'medical.view',
+      'medical.manage',
+      'documents.view',
+      'documents.manage',
+    ],
+  },
+  {
     // Deliberately distinct from the pre-existing "Foster Parent" role
     // above, which is untouched by this addition. This role is consumed by
     // requireAuth/requirePortalAuth via the isPortalRole flag, not by name -

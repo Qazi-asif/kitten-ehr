@@ -11,6 +11,13 @@ async function publicRequest(path) {
   }, PUBLIC_CACHE_TTL_MS);
 }
 
+export async function fetchApplyStatus(cat) {
+  const query = new URLSearchParams({ cat: String(cat || '') }).toString();
+  const response = await publicFetch(`/public/apply-status?${query}`);
+  if (!response.ok) throw new Error('Request failed');
+  return response.json();
+}
+
 export function fetchPublicKittens(limit, options = {}) {
   const params = new URLSearchParams();
   if (limit) params.set('limit', String(limit));

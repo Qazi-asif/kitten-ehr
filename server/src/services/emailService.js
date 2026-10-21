@@ -805,3 +805,121 @@ ${signBlock}
     return { ok: false, error: describeSmtpError(error) };
   }
 }
+
+/** Staff-composed email (kitten records, etc.). Success only after SMTP accepts the message. */
+export async function sendCustomEmail({
+  toEmail,
+  subject,
+  html,
+  text,
+  attachments = [],
+  templateKey = 'kitten.documents',
+  relatedType = '',
+  relatedId = null,
+}) {
+  const settings = await getEmailSettings();
+  const recipient = toEmail?.trim();
+  const provider = resolveEmailProvider(settings);
+  const mailSubject = subject?.trim() || '(no subject)';
+
+  if (!settings.emailsEnabled) {
+    await logEmailAttempt({
+      templateKey,
+      toEmail: recipient || 'unknown',
+      subject: '(skipped - emails disabled)',
+      status: 'skipped',
+      provider,
+      errorMessage: 'Email sending is disabled in Settings → Emails. Turn on “Emails enabled” and confirm SMTP host, user, and password.',
+      relatedType,
+      relatedId,
+    });
+    return {
+      ok: false,
+      skipped: true,
+      errorMessage: 'Email sending is disabled in Settings → Emails. Turn on “Emails enabled” and confirm SMTP host, user, and password.',
+    };
+  }
+
+  if (!recipient) {
+    await logEmailAttempt({
+      templateKey,
+      toEmail: 'unknown',
+      subject: '(skipped - missing recipient)',
+      status: 'skipped',
+      provider,
+      errorMessage: 'Recipient email is missing',
+      relatedType,
+      relatedId,
+    });
+    return { ok: false, skipped: true, errorMessage: 'Recipient email is required.' };
+  }
+
+  const smtpPass = process.env.SMTP_PASS || process.env.SENDGRID_API_KEY || settings.smtpPass;
+  const smtpHost = process.env.SMTP_HOST || settings.smtpHost;
+  const smtpUser = process.env.SMTP_USER || settings.smtpUser;
+
+  if (!smtpHost || !smtpUser || !smtpPass) {
+    await logEmailAttempt({
+      templateKey,
+      toEmail: recipient,
+      subject: mailSubject,
+      status: 'skipped',
+      provider,
+      errorMessage: 'SMTP is not fully configured. Set host, username, and password in Settings → Emails (or SMTP_* env vars), then try again.',
+      relatedType,
+      relatedId,
+    });
+    return {
+      ok: false,
+      skipped: true,
+      errorMessage: 'SMTP is not fully configured. Set host, username, and password in Settings → Emails (or SMTP_* env vars), then try again.',
+    };
+  }
+
+  const layoutHtml = await getLayoutTemplate();
+  const wrappedHtml = wrapEmailContent(
+    html || `<p>${escapeHtml(text || '')}</p>`,
+    { orgName: settings.orgName, orgLogoUrl: settings.orgLogoUrl || '' },
+    layoutHtml,
+  );
+  const plainText = text || stripHtml(html || '');
+
+  try {
+    const transporter = getSmtpTransporter(settings, smtpHost, smtpUser, smtpPass);
+    const info = await transporter.sendMail({
+      from: `"${settings.fromName || settings.orgName}" <${settings.fromEmail || smtpUser}>`,
+      to: recipient,
+      subject: mailSubject,
+      text: plainText,
+      html: wrappedHtml || undefined,
+      attachments: attachments.length ? attachments : undefined,
+    });
+
+    await logEmailAttempt({
+      templateKey,
+      toEmail: recipient,
+      subject: mailSubject,
+      status: 'sent',
+      provider,
+      externalMessageId: info.messageId || '',
+      relatedType,
+      relatedId,
+    });
+
+    return { ok: true, messageId: info.messageId };
+  } catch (error) {
+    const friendly = describeSmtpError(error);
+    await logEmailAttempt({
+      templateKey,
+      toEmail: recipient,
+      subject: mailSubject,
+      status: 'failed',
+      provider,
+      errorMessage: friendly,
+      relatedType,
+      relatedId,
+    });
+    console.error(`Email failed (${templateKey}):`, friendly);
+    return { ok: false, error: friendly, errorMessage: friendly };
+  }
+}

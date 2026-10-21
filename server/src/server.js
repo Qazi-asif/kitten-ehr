@@ -49,11 +49,39 @@ try {
   console.error('[social-scheduler] Failed to start:', err.message || err);
 }
 
+if (process.env.SYNDICATION_SCHEDULER_ENABLED !== 'false') {
+  const FIFTEEN_MIN = 15 * 60 * 1000;
+  const DAY_MS = 24 * 60 * 60 * 1000;
+  setInterval(() => {
+    import('./services/syndicationService.js')
+      .then(({ processOutbox }) => processOutbox())
+      .then((summary) => console.log('[syndication-outbox]', JSON.stringify(summary)))
+      .catch((err) => console.error('[syndication-outbox]', err.message || err));
+  }, FIFTEEN_MIN);
+  setInterval(() => {
+    import('./services/syndicationService.js')
+      .then(({ reconcileListings }) => reconcileListings())
+      .then((summary) => console.log('[syndication-reconcile]', JSON.stringify(summary)))
+      .catch((err) => console.error('[syndication-reconcile]', err.message || err));
+  }, DAY_MS);
+}
+
 const PORT = process.env.PORT || 5000;
 const server = http.createServer(app);
 
 server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
+
+  import('./services/listingsBackfill.js')
+    .then(({ backfillListingFields }) => backfillListingFields())
+    .then((backfill) => {
+      console.log(
+        `[listings] Backfill listedOnWebsite=${backfill.listedOnWebsite} externalIds=${backfill.externalIds}`,
+      );
+    })
+    .catch((err) => {
+      console.error('[listings] Backfill failed (continuing):', err.message || err);
+    });
 
   // Warn if the database is behind schema.prisma (a deploy without db push).
   // Started only once we are already accepting requests, imported dynamically

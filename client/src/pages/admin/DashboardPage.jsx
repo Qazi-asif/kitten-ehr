@@ -274,6 +274,7 @@ function DashboardPage() {
   }
 
   const reminderCategories = metrics?.reminderCategories ?? [];
+  const calendarReminders = metrics?.calendarReminders ?? [];
   const pendingApplications = metrics?.pendingApplications ?? [];
   const appCounts = metrics?.applicationStatusCounts || {};
   const pendingTotal = (appCounts.New || 0) + (appCounts['Under Review'] || 0) + (appCounts.Approved || 0);
@@ -321,13 +322,29 @@ function DashboardPage() {
           </div>
           {loading ? (
             <p className="text-sm text-slate-500">Loading reminders…</p>
-          ) : reminderCategories.length === 0 ? (
+          ) : reminderCategories.length === 0 && calendarReminders.length === 0 ? (
             <p className="text-sm text-slate-500">
-              No reminders right now. Spay/neuter eligibility, FVRCP, rabies, deworming and active
-              medications appear here.
+              No reminders right now. Calendar events, spay/neuter eligibility, FVRCP, rabies,
+              deworming and active medications appear here.
             </p>
           ) : (
             <ul className="space-y-2">
+              {calendarReminders.map((event) => (
+                <li key={event.id}>
+                  <Link
+                    to="/admin/calendar"
+                    className="flex items-center justify-between gap-3 rounded-lg bg-teal-50 px-3 py-2.5 text-teal-800 hover:opacity-80"
+                  >
+                    <span className="min-w-0">
+                      <span className="block truncate text-sm font-semibold">{event.title}</span>
+                      <span className="block truncate text-xs font-medium opacity-80">
+                        {event.dueDate ? formatPacificDisplay(event.dueDate, { withTime: true }) : 'Calendar event'}
+                        {event.kittenName ? ` · ${event.kittenName}` : ''}
+                      </span>
+                    </span>
+                  </Link>
+                </li>
+              ))}
               {reminderCategories.map((category) => (
                 <li key={category.key}>
                   <Link

@@ -208,6 +208,21 @@ export type Wishlist = $Result.DefaultSelection<Prisma.$WishlistPayload>
  * 
  */
 export type SocialPost = $Result.DefaultSelection<Prisma.$SocialPostPayload>
+/**
+ * Model SyndicationLookup
+ * 
+ */
+export type SyndicationLookup = $Result.DefaultSelection<Prisma.$SyndicationLookupPayload>
+/**
+ * Model SyndicationRun
+ * 
+ */
+export type SyndicationRun = $Result.DefaultSelection<Prisma.$SyndicationRunPayload>
+/**
+ * Model SyndicationOutbox
+ * 
+ */
+export type SyndicationOutbox = $Result.DefaultSelection<Prisma.$SyndicationOutboxPayload>
 
 /**
  * Enums
@@ -893,6 +908,36 @@ export class PrismaClient<
     * ```
     */
   get socialPost(): Prisma.SocialPostDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.syndicationLookup`: Exposes CRUD operations for the **SyndicationLookup** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SyndicationLookups
+    * const syndicationLookups = await prisma.syndicationLookup.findMany()
+    * ```
+    */
+  get syndicationLookup(): Prisma.SyndicationLookupDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.syndicationRun`: Exposes CRUD operations for the **SyndicationRun** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SyndicationRuns
+    * const syndicationRuns = await prisma.syndicationRun.findMany()
+    * ```
+    */
+  get syndicationRun(): Prisma.SyndicationRunDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.syndicationOutbox`: Exposes CRUD operations for the **SyndicationOutbox** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SyndicationOutboxes
+    * const syndicationOutboxes = await prisma.syndicationOutbox.findMany()
+    * ```
+    */
+  get syndicationOutbox(): Prisma.SyndicationOutboxDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1372,7 +1417,10 @@ export namespace Prisma {
     EmailLog: 'EmailLog',
     Transaction: 'Transaction',
     Wishlist: 'Wishlist',
-    SocialPost: 'SocialPost'
+    SocialPost: 'SocialPost',
+    SyndicationLookup: 'SyndicationLookup',
+    SyndicationRun: 'SyndicationRun',
+    SyndicationOutbox: 'SyndicationOutbox'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1391,7 +1439,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "litter" | "foster" | "kitten" | "update" | "sponsorship" | "placement" | "weightLog" | "vaccine" | "medication" | "vetAppointment" | "document" | "application" | "contractTemplate" | "contract" | "contractHouseholdAcknowledgment" | "fosterOnboarding" | "onboardingChecklist" | "applicationUpload" | "content" | "contentCompletion" | "event" | "eventRSVP" | "eventCats" | "role" | "permission" | "rolePermission" | "user" | "passwordResetToken" | "protocol" | "protocolDrug" | "activeProtocol" | "protocolDose" | "activeProtocolDrugLink" | "settings" | "emailTemplate" | "emailLog" | "transaction" | "wishlist" | "socialPost"
+      modelProps: "litter" | "foster" | "kitten" | "update" | "sponsorship" | "placement" | "weightLog" | "vaccine" | "medication" | "vetAppointment" | "document" | "application" | "contractTemplate" | "contract" | "contractHouseholdAcknowledgment" | "fosterOnboarding" | "onboardingChecklist" | "applicationUpload" | "content" | "contentCompletion" | "event" | "eventRSVP" | "eventCats" | "role" | "permission" | "rolePermission" | "user" | "passwordResetToken" | "protocol" | "protocolDrug" | "activeProtocol" | "protocolDose" | "activeProtocolDrugLink" | "settings" | "emailTemplate" | "emailLog" | "transaction" | "wishlist" | "socialPost" | "syndicationLookup" | "syndicationRun" | "syndicationOutbox"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -4281,6 +4329,228 @@ export namespace Prisma {
           }
         }
       }
+      SyndicationLookup: {
+        payload: Prisma.$SyndicationLookupPayload<ExtArgs>
+        fields: Prisma.SyndicationLookupFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SyndicationLookupFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationLookupPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SyndicationLookupFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationLookupPayload>
+          }
+          findFirst: {
+            args: Prisma.SyndicationLookupFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationLookupPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SyndicationLookupFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationLookupPayload>
+          }
+          findMany: {
+            args: Prisma.SyndicationLookupFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationLookupPayload>[]
+          }
+          create: {
+            args: Prisma.SyndicationLookupCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationLookupPayload>
+          }
+          createMany: {
+            args: Prisma.SyndicationLookupCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SyndicationLookupCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationLookupPayload>[]
+          }
+          delete: {
+            args: Prisma.SyndicationLookupDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationLookupPayload>
+          }
+          update: {
+            args: Prisma.SyndicationLookupUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationLookupPayload>
+          }
+          deleteMany: {
+            args: Prisma.SyndicationLookupDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SyndicationLookupUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SyndicationLookupUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationLookupPayload>[]
+          }
+          upsert: {
+            args: Prisma.SyndicationLookupUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationLookupPayload>
+          }
+          aggregate: {
+            args: Prisma.SyndicationLookupAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSyndicationLookup>
+          }
+          groupBy: {
+            args: Prisma.SyndicationLookupGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SyndicationLookupGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SyndicationLookupCountArgs<ExtArgs>
+            result: $Utils.Optional<SyndicationLookupCountAggregateOutputType> | number
+          }
+        }
+      }
+      SyndicationRun: {
+        payload: Prisma.$SyndicationRunPayload<ExtArgs>
+        fields: Prisma.SyndicationRunFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SyndicationRunFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationRunPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SyndicationRunFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationRunPayload>
+          }
+          findFirst: {
+            args: Prisma.SyndicationRunFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationRunPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SyndicationRunFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationRunPayload>
+          }
+          findMany: {
+            args: Prisma.SyndicationRunFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationRunPayload>[]
+          }
+          create: {
+            args: Prisma.SyndicationRunCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationRunPayload>
+          }
+          createMany: {
+            args: Prisma.SyndicationRunCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SyndicationRunCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationRunPayload>[]
+          }
+          delete: {
+            args: Prisma.SyndicationRunDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationRunPayload>
+          }
+          update: {
+            args: Prisma.SyndicationRunUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationRunPayload>
+          }
+          deleteMany: {
+            args: Prisma.SyndicationRunDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SyndicationRunUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SyndicationRunUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationRunPayload>[]
+          }
+          upsert: {
+            args: Prisma.SyndicationRunUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationRunPayload>
+          }
+          aggregate: {
+            args: Prisma.SyndicationRunAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSyndicationRun>
+          }
+          groupBy: {
+            args: Prisma.SyndicationRunGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SyndicationRunGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SyndicationRunCountArgs<ExtArgs>
+            result: $Utils.Optional<SyndicationRunCountAggregateOutputType> | number
+          }
+        }
+      }
+      SyndicationOutbox: {
+        payload: Prisma.$SyndicationOutboxPayload<ExtArgs>
+        fields: Prisma.SyndicationOutboxFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SyndicationOutboxFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationOutboxPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SyndicationOutboxFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationOutboxPayload>
+          }
+          findFirst: {
+            args: Prisma.SyndicationOutboxFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationOutboxPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SyndicationOutboxFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationOutboxPayload>
+          }
+          findMany: {
+            args: Prisma.SyndicationOutboxFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationOutboxPayload>[]
+          }
+          create: {
+            args: Prisma.SyndicationOutboxCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationOutboxPayload>
+          }
+          createMany: {
+            args: Prisma.SyndicationOutboxCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SyndicationOutboxCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationOutboxPayload>[]
+          }
+          delete: {
+            args: Prisma.SyndicationOutboxDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationOutboxPayload>
+          }
+          update: {
+            args: Prisma.SyndicationOutboxUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationOutboxPayload>
+          }
+          deleteMany: {
+            args: Prisma.SyndicationOutboxDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SyndicationOutboxUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SyndicationOutboxUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationOutboxPayload>[]
+          }
+          upsert: {
+            args: Prisma.SyndicationOutboxUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SyndicationOutboxPayload>
+          }
+          aggregate: {
+            args: Prisma.SyndicationOutboxAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSyndicationOutbox>
+          }
+          groupBy: {
+            args: Prisma.SyndicationOutboxGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SyndicationOutboxGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SyndicationOutboxCountArgs<ExtArgs>
+            result: $Utils.Optional<SyndicationOutboxCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -4416,6 +4686,9 @@ export namespace Prisma {
     transaction?: TransactionOmit
     wishlist?: WishlistOmit
     socialPost?: SocialPostOmit
+    syndicationLookup?: SyndicationLookupOmit
+    syndicationRun?: SyndicationRunOmit
+    syndicationOutbox?: SyndicationOutboxOmit
   }
 
   /* Types for Logging */
@@ -5054,6 +5327,7 @@ export namespace Prisma {
     activatedProtocols: number
     administeredProtocolDoses: number
     passwordResetTokens: number
+    createdKittens: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5063,6 +5337,7 @@ export namespace Prisma {
     activatedProtocols?: boolean | UserCountOutputTypeCountActivatedProtocolsArgs
     administeredProtocolDoses?: boolean | UserCountOutputTypeCountAdministeredProtocolDosesArgs
     passwordResetTokens?: boolean | UserCountOutputTypeCountPasswordResetTokensArgs
+    createdKittens?: boolean | UserCountOutputTypeCountCreatedKittensArgs
   }
 
   // Custom InputTypes
@@ -5116,6 +5391,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountPasswordResetTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PasswordResetTokenWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCreatedKittensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: KittenWhereInput
   }
 
 
@@ -7735,6 +8017,7 @@ export namespace Prisma {
   export type KittenAvgAggregateOutputType = {
     id: number | null
     litterId: number | null
+    createdByUserId: number | null
     bondedWithKittenId: number | null
     currentFosterId: number | null
   }
@@ -7742,6 +8025,7 @@ export namespace Prisma {
   export type KittenSumAggregateOutputType = {
     id: number | null
     litterId: number | null
+    createdByUserId: number | null
     bondedWithKittenId: number | null
     currentFosterId: number | null
   }
@@ -7770,13 +8054,17 @@ export namespace Prisma {
     notes: string | null
     internalNotes: string | null
     isListedOnWebsite: boolean | null
+    isActive: boolean | null
     websiteFeaturedComment: string | null
+    externalId: string | null
+    createdByUserId: number | null
     isBondedPair: boolean | null
     bondedWithKittenId: number | null
     bondedWithName: string | null
     isMedicalSpecialNeeds: boolean | null
     isTnr: boolean | null
     isColony: boolean | null
+    isCommunitySave: boolean | null
     currentFosterId: number | null
     createdAt: Date | null
   }
@@ -7805,13 +8093,17 @@ export namespace Prisma {
     notes: string | null
     internalNotes: string | null
     isListedOnWebsite: boolean | null
+    isActive: boolean | null
     websiteFeaturedComment: string | null
+    externalId: string | null
+    createdByUserId: number | null
     isBondedPair: boolean | null
     bondedWithKittenId: number | null
     bondedWithName: string | null
     isMedicalSpecialNeeds: boolean | null
     isTnr: boolean | null
     isColony: boolean | null
+    isCommunitySave: boolean | null
     currentFosterId: number | null
     createdAt: Date | null
   }
@@ -7840,14 +8132,18 @@ export namespace Prisma {
     notes: number
     internalNotes: number
     isListedOnWebsite: number
+    isActive: number
     websiteFeaturedComment: number
     publishTargets: number
+    externalId: number
+    createdByUserId: number
     isBondedPair: number
     bondedWithKittenId: number
     bondedWithName: number
     isMedicalSpecialNeeds: number
     isTnr: number
     isColony: number
+    isCommunitySave: number
     currentFosterId: number
     createdAt: number
     _all: number
@@ -7857,6 +8153,7 @@ export namespace Prisma {
   export type KittenAvgAggregateInputType = {
     id?: true
     litterId?: true
+    createdByUserId?: true
     bondedWithKittenId?: true
     currentFosterId?: true
   }
@@ -7864,6 +8161,7 @@ export namespace Prisma {
   export type KittenSumAggregateInputType = {
     id?: true
     litterId?: true
+    createdByUserId?: true
     bondedWithKittenId?: true
     currentFosterId?: true
   }
@@ -7892,13 +8190,17 @@ export namespace Prisma {
     notes?: true
     internalNotes?: true
     isListedOnWebsite?: true
+    isActive?: true
     websiteFeaturedComment?: true
+    externalId?: true
+    createdByUserId?: true
     isBondedPair?: true
     bondedWithKittenId?: true
     bondedWithName?: true
     isMedicalSpecialNeeds?: true
     isTnr?: true
     isColony?: true
+    isCommunitySave?: true
     currentFosterId?: true
     createdAt?: true
   }
@@ -7927,13 +8229,17 @@ export namespace Prisma {
     notes?: true
     internalNotes?: true
     isListedOnWebsite?: true
+    isActive?: true
     websiteFeaturedComment?: true
+    externalId?: true
+    createdByUserId?: true
     isBondedPair?: true
     bondedWithKittenId?: true
     bondedWithName?: true
     isMedicalSpecialNeeds?: true
     isTnr?: true
     isColony?: true
+    isCommunitySave?: true
     currentFosterId?: true
     createdAt?: true
   }
@@ -7962,14 +8268,18 @@ export namespace Prisma {
     notes?: true
     internalNotes?: true
     isListedOnWebsite?: true
+    isActive?: true
     websiteFeaturedComment?: true
     publishTargets?: true
+    externalId?: true
+    createdByUserId?: true
     isBondedPair?: true
     bondedWithKittenId?: true
     bondedWithName?: true
     isMedicalSpecialNeeds?: true
     isTnr?: true
     isColony?: true
+    isCommunitySave?: true
     currentFosterId?: true
     createdAt?: true
     _all?: true
@@ -8085,14 +8395,18 @@ export namespace Prisma {
     notes: string
     internalNotes: string
     isListedOnWebsite: boolean
+    isActive: boolean
     websiteFeaturedComment: string
     publishTargets: string[]
+    externalId: string | null
+    createdByUserId: number | null
     isBondedPair: boolean
     bondedWithKittenId: number | null
     bondedWithName: string
     isMedicalSpecialNeeds: boolean
     isTnr: boolean
     isColony: boolean
+    isCommunitySave: boolean
     currentFosterId: number | null
     createdAt: Date
     _count: KittenCountAggregateOutputType | null
@@ -8140,17 +8454,22 @@ export namespace Prisma {
     notes?: boolean
     internalNotes?: boolean
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: boolean
     publishTargets?: boolean
+    externalId?: boolean
+    createdByUserId?: boolean
     isBondedPair?: boolean
     bondedWithKittenId?: boolean
     bondedWithName?: boolean
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     currentFosterId?: boolean
     createdAt?: boolean
     litter?: boolean | Kitten$litterArgs<ExtArgs>
+    createdByUser?: boolean | Kitten$createdByUserArgs<ExtArgs>
     bondedWithKitten?: boolean | Kitten$bondedWithKittenArgs<ExtArgs>
     bondedPartners?: boolean | Kitten$bondedPartnersArgs<ExtArgs>
     currentFoster?: boolean | Kitten$currentFosterArgs<ExtArgs>
@@ -8193,17 +8512,22 @@ export namespace Prisma {
     notes?: boolean
     internalNotes?: boolean
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: boolean
     publishTargets?: boolean
+    externalId?: boolean
+    createdByUserId?: boolean
     isBondedPair?: boolean
     bondedWithKittenId?: boolean
     bondedWithName?: boolean
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     currentFosterId?: boolean
     createdAt?: boolean
     litter?: boolean | Kitten$litterArgs<ExtArgs>
+    createdByUser?: boolean | Kitten$createdByUserArgs<ExtArgs>
     bondedWithKitten?: boolean | Kitten$bondedWithKittenArgs<ExtArgs>
     currentFoster?: boolean | Kitten$currentFosterArgs<ExtArgs>
   }, ExtArgs["result"]["kitten"]>
@@ -8232,17 +8556,22 @@ export namespace Prisma {
     notes?: boolean
     internalNotes?: boolean
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: boolean
     publishTargets?: boolean
+    externalId?: boolean
+    createdByUserId?: boolean
     isBondedPair?: boolean
     bondedWithKittenId?: boolean
     bondedWithName?: boolean
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     currentFosterId?: boolean
     createdAt?: boolean
     litter?: boolean | Kitten$litterArgs<ExtArgs>
+    createdByUser?: boolean | Kitten$createdByUserArgs<ExtArgs>
     bondedWithKitten?: boolean | Kitten$bondedWithKittenArgs<ExtArgs>
     currentFoster?: boolean | Kitten$currentFosterArgs<ExtArgs>
   }, ExtArgs["result"]["kitten"]>
@@ -8271,21 +8600,26 @@ export namespace Prisma {
     notes?: boolean
     internalNotes?: boolean
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: boolean
     publishTargets?: boolean
+    externalId?: boolean
+    createdByUserId?: boolean
     isBondedPair?: boolean
     bondedWithKittenId?: boolean
     bondedWithName?: boolean
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     currentFosterId?: boolean
     createdAt?: boolean
   }
 
-  export type KittenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "litterId" | "status" | "rescueStory" | "dateOfBirth" | "sex" | "fixedStatus" | "breed" | "color" | "coatPattern" | "fivFelvStatus" | "specialNeeds" | "microchipNumber" | "primaryPhotoUrl" | "thumbnailUrl" | "intakeDate" | "intakeSource" | "outcomeDate" | "outcomeDetail" | "notes" | "internalNotes" | "isListedOnWebsite" | "websiteFeaturedComment" | "publishTargets" | "isBondedPair" | "bondedWithKittenId" | "bondedWithName" | "isMedicalSpecialNeeds" | "isTnr" | "isColony" | "currentFosterId" | "createdAt", ExtArgs["result"]["kitten"]>
+  export type KittenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "litterId" | "status" | "rescueStory" | "dateOfBirth" | "sex" | "fixedStatus" | "breed" | "color" | "coatPattern" | "fivFelvStatus" | "specialNeeds" | "microchipNumber" | "primaryPhotoUrl" | "thumbnailUrl" | "intakeDate" | "intakeSource" | "outcomeDate" | "outcomeDetail" | "notes" | "internalNotes" | "isListedOnWebsite" | "isActive" | "websiteFeaturedComment" | "publishTargets" | "externalId" | "createdByUserId" | "isBondedPair" | "bondedWithKittenId" | "bondedWithName" | "isMedicalSpecialNeeds" | "isTnr" | "isColony" | "isCommunitySave" | "currentFosterId" | "createdAt", ExtArgs["result"]["kitten"]>
   export type KittenInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     litter?: boolean | Kitten$litterArgs<ExtArgs>
+    createdByUser?: boolean | Kitten$createdByUserArgs<ExtArgs>
     bondedWithKitten?: boolean | Kitten$bondedWithKittenArgs<ExtArgs>
     bondedPartners?: boolean | Kitten$bondedPartnersArgs<ExtArgs>
     currentFoster?: boolean | Kitten$currentFosterArgs<ExtArgs>
@@ -8305,11 +8639,13 @@ export namespace Prisma {
   }
   export type KittenIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     litter?: boolean | Kitten$litterArgs<ExtArgs>
+    createdByUser?: boolean | Kitten$createdByUserArgs<ExtArgs>
     bondedWithKitten?: boolean | Kitten$bondedWithKittenArgs<ExtArgs>
     currentFoster?: boolean | Kitten$currentFosterArgs<ExtArgs>
   }
   export type KittenIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     litter?: boolean | Kitten$litterArgs<ExtArgs>
+    createdByUser?: boolean | Kitten$createdByUserArgs<ExtArgs>
     bondedWithKitten?: boolean | Kitten$bondedWithKittenArgs<ExtArgs>
     currentFoster?: boolean | Kitten$currentFosterArgs<ExtArgs>
   }
@@ -8318,6 +8654,7 @@ export namespace Prisma {
     name: "Kitten"
     objects: {
       litter: Prisma.$LitterPayload<ExtArgs> | null
+      createdByUser: Prisma.$UserPayload<ExtArgs> | null
       bondedWithKitten: Prisma.$KittenPayload<ExtArgs> | null
       bondedPartners: Prisma.$KittenPayload<ExtArgs>[]
       currentFoster: Prisma.$FosterPayload<ExtArgs> | null
@@ -8358,14 +8695,18 @@ export namespace Prisma {
       notes: string
       internalNotes: string
       isListedOnWebsite: boolean
+      isActive: boolean
       websiteFeaturedComment: string
       publishTargets: string[]
+      externalId: string | null
+      createdByUserId: number | null
       isBondedPair: boolean
       bondedWithKittenId: number | null
       bondedWithName: string
       isMedicalSpecialNeeds: boolean
       isTnr: boolean
       isColony: boolean
+      isCommunitySave: boolean
       currentFosterId: number | null
       createdAt: Date
     }, ExtArgs["result"]["kitten"]>
@@ -8763,6 +9104,7 @@ export namespace Prisma {
   export interface Prisma__KittenClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     litter<T extends Kitten$litterArgs<ExtArgs> = {}>(args?: Subset<T, Kitten$litterArgs<ExtArgs>>): Prisma__LitterClient<$Result.GetResult<Prisma.$LitterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    createdByUser<T extends Kitten$createdByUserArgs<ExtArgs> = {}>(args?: Subset<T, Kitten$createdByUserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     bondedWithKitten<T extends Kitten$bondedWithKittenArgs<ExtArgs> = {}>(args?: Subset<T, Kitten$bondedWithKittenArgs<ExtArgs>>): Prisma__KittenClient<$Result.GetResult<Prisma.$KittenPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     bondedPartners<T extends Kitten$bondedPartnersArgs<ExtArgs> = {}>(args?: Subset<T, Kitten$bondedPartnersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$KittenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     currentFoster<T extends Kitten$currentFosterArgs<ExtArgs> = {}>(args?: Subset<T, Kitten$currentFosterArgs<ExtArgs>>): Prisma__FosterClient<$Result.GetResult<Prisma.$FosterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -8830,14 +9172,18 @@ export namespace Prisma {
     readonly notes: FieldRef<"Kitten", 'String'>
     readonly internalNotes: FieldRef<"Kitten", 'String'>
     readonly isListedOnWebsite: FieldRef<"Kitten", 'Boolean'>
+    readonly isActive: FieldRef<"Kitten", 'Boolean'>
     readonly websiteFeaturedComment: FieldRef<"Kitten", 'String'>
     readonly publishTargets: FieldRef<"Kitten", 'String[]'>
+    readonly externalId: FieldRef<"Kitten", 'String'>
+    readonly createdByUserId: FieldRef<"Kitten", 'Int'>
     readonly isBondedPair: FieldRef<"Kitten", 'Boolean'>
     readonly bondedWithKittenId: FieldRef<"Kitten", 'Int'>
     readonly bondedWithName: FieldRef<"Kitten", 'String'>
     readonly isMedicalSpecialNeeds: FieldRef<"Kitten", 'Boolean'>
     readonly isTnr: FieldRef<"Kitten", 'Boolean'>
     readonly isColony: FieldRef<"Kitten", 'Boolean'>
+    readonly isCommunitySave: FieldRef<"Kitten", 'Boolean'>
     readonly currentFosterId: FieldRef<"Kitten", 'Int'>
     readonly createdAt: FieldRef<"Kitten", 'DateTime'>
   }
@@ -9252,6 +9598,25 @@ export namespace Prisma {
      */
     include?: LitterInclude<ExtArgs> | null
     where?: LitterWhereInput
+  }
+
+  /**
+   * Kitten.createdByUser
+   */
+  export type Kitten$createdByUserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
   }
 
   /**
@@ -32987,6 +33352,7 @@ export namespace Prisma {
     description: string | null
     isSystem: boolean | null
     isPortalRole: boolean | null
+    scopesToOwnCats: boolean | null
     createdAt: Date | null
   }
 
@@ -32996,6 +33362,7 @@ export namespace Prisma {
     description: string | null
     isSystem: boolean | null
     isPortalRole: boolean | null
+    scopesToOwnCats: boolean | null
     createdAt: Date | null
   }
 
@@ -33005,6 +33372,7 @@ export namespace Prisma {
     description: number
     isSystem: number
     isPortalRole: number
+    scopesToOwnCats: number
     createdAt: number
     _all: number
   }
@@ -33024,6 +33392,7 @@ export namespace Prisma {
     description?: true
     isSystem?: true
     isPortalRole?: true
+    scopesToOwnCats?: true
     createdAt?: true
   }
 
@@ -33033,6 +33402,7 @@ export namespace Prisma {
     description?: true
     isSystem?: true
     isPortalRole?: true
+    scopesToOwnCats?: true
     createdAt?: true
   }
 
@@ -33042,6 +33412,7 @@ export namespace Prisma {
     description?: true
     isSystem?: true
     isPortalRole?: true
+    scopesToOwnCats?: true
     createdAt?: true
     _all?: true
   }
@@ -33138,6 +33509,7 @@ export namespace Prisma {
     description: string
     isSystem: boolean
     isPortalRole: boolean
+    scopesToOwnCats: boolean
     createdAt: Date
     _count: RoleCountAggregateOutputType | null
     _avg: RoleAvgAggregateOutputType | null
@@ -33166,6 +33538,7 @@ export namespace Prisma {
     description?: boolean
     isSystem?: boolean
     isPortalRole?: boolean
+    scopesToOwnCats?: boolean
     createdAt?: boolean
     users?: boolean | Role$usersArgs<ExtArgs>
     permissions?: boolean | Role$permissionsArgs<ExtArgs>
@@ -33178,6 +33551,7 @@ export namespace Prisma {
     description?: boolean
     isSystem?: boolean
     isPortalRole?: boolean
+    scopesToOwnCats?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["role"]>
 
@@ -33187,6 +33561,7 @@ export namespace Prisma {
     description?: boolean
     isSystem?: boolean
     isPortalRole?: boolean
+    scopesToOwnCats?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["role"]>
 
@@ -33196,10 +33571,11 @@ export namespace Prisma {
     description?: boolean
     isSystem?: boolean
     isPortalRole?: boolean
+    scopesToOwnCats?: boolean
     createdAt?: boolean
   }
 
-  export type RoleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "isSystem" | "isPortalRole" | "createdAt", ExtArgs["result"]["role"]>
+  export type RoleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "isSystem" | "isPortalRole" | "scopesToOwnCats" | "createdAt", ExtArgs["result"]["role"]>
   export type RoleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     users?: boolean | Role$usersArgs<ExtArgs>
     permissions?: boolean | Role$permissionsArgs<ExtArgs>
@@ -33220,6 +33596,7 @@ export namespace Prisma {
       description: string
       isSystem: boolean
       isPortalRole: boolean
+      scopesToOwnCats: boolean
       createdAt: Date
     }, ExtArgs["result"]["role"]>
     composites: {}
@@ -33651,6 +34028,7 @@ export namespace Prisma {
     readonly description: FieldRef<"Role", 'String'>
     readonly isSystem: FieldRef<"Role", 'Boolean'>
     readonly isPortalRole: FieldRef<"Role", 'Boolean'>
+    readonly scopesToOwnCats: FieldRef<"Role", 'Boolean'>
     readonly createdAt: FieldRef<"Role", 'DateTime'>
   }
     
@@ -36524,6 +36902,7 @@ export namespace Prisma {
     activatedProtocols?: boolean | User$activatedProtocolsArgs<ExtArgs>
     administeredProtocolDoses?: boolean | User$administeredProtocolDosesArgs<ExtArgs>
     passwordResetTokens?: boolean | User$passwordResetTokensArgs<ExtArgs>
+    createdKittens?: boolean | User$createdKittensArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -36583,6 +36962,7 @@ export namespace Prisma {
     activatedProtocols?: boolean | User$activatedProtocolsArgs<ExtArgs>
     administeredProtocolDoses?: boolean | User$administeredProtocolDosesArgs<ExtArgs>
     passwordResetTokens?: boolean | User$passwordResetTokensArgs<ExtArgs>
+    createdKittens?: boolean | User$createdKittensArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -36605,6 +36985,7 @@ export namespace Prisma {
       activatedProtocols: Prisma.$ActiveProtocolPayload<ExtArgs>[]
       administeredProtocolDoses: Prisma.$ProtocolDosePayload<ExtArgs>[]
       passwordResetTokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[]
+      createdKittens: Prisma.$KittenPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -37020,6 +37401,7 @@ export namespace Prisma {
     activatedProtocols<T extends User$activatedProtocolsArgs<ExtArgs> = {}>(args?: Subset<T, User$activatedProtocolsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActiveProtocolPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     administeredProtocolDoses<T extends User$administeredProtocolDosesArgs<ExtArgs> = {}>(args?: Subset<T, User$administeredProtocolDosesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProtocolDosePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     passwordResetTokens<T extends User$passwordResetTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$passwordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    createdKittens<T extends User$createdKittensArgs<ExtArgs> = {}>(args?: Subset<T, User$createdKittensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$KittenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -37616,6 +37998,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PasswordResetTokenScalarFieldEnum | PasswordResetTokenScalarFieldEnum[]
+  }
+
+  /**
+   * User.createdKittens
+   */
+  export type User$createdKittensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Kitten
+     */
+    select?: KittenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Kitten
+     */
+    omit?: KittenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: KittenInclude<ExtArgs> | null
+    where?: KittenWhereInput
+    orderBy?: KittenOrderByWithRelationInput | KittenOrderByWithRelationInput[]
+    cursor?: KittenWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: KittenScalarFieldEnum | KittenScalarFieldEnum[]
   }
 
   /**
@@ -51906,6 +52312,3257 @@ export namespace Prisma {
 
 
   /**
+   * Model SyndicationLookup
+   */
+
+  export type AggregateSyndicationLookup = {
+    _count: SyndicationLookupCountAggregateOutputType | null
+    _avg: SyndicationLookupAvgAggregateOutputType | null
+    _sum: SyndicationLookupSumAggregateOutputType | null
+    _min: SyndicationLookupMinAggregateOutputType | null
+    _max: SyndicationLookupMaxAggregateOutputType | null
+  }
+
+  export type SyndicationLookupAvgAggregateOutputType = {
+    id: number | null
+    version: number | null
+  }
+
+  export type SyndicationLookupSumAggregateOutputType = {
+    id: number | null
+    version: number | null
+  }
+
+  export type SyndicationLookupMinAggregateOutputType = {
+    id: number | null
+    kind: string | null
+    sourceValue: string | null
+    targetValue: string | null
+    version: number | null
+  }
+
+  export type SyndicationLookupMaxAggregateOutputType = {
+    id: number | null
+    kind: string | null
+    sourceValue: string | null
+    targetValue: string | null
+    version: number | null
+  }
+
+  export type SyndicationLookupCountAggregateOutputType = {
+    id: number
+    kind: number
+    sourceValue: number
+    targetValue: number
+    version: number
+    _all: number
+  }
+
+
+  export type SyndicationLookupAvgAggregateInputType = {
+    id?: true
+    version?: true
+  }
+
+  export type SyndicationLookupSumAggregateInputType = {
+    id?: true
+    version?: true
+  }
+
+  export type SyndicationLookupMinAggregateInputType = {
+    id?: true
+    kind?: true
+    sourceValue?: true
+    targetValue?: true
+    version?: true
+  }
+
+  export type SyndicationLookupMaxAggregateInputType = {
+    id?: true
+    kind?: true
+    sourceValue?: true
+    targetValue?: true
+    version?: true
+  }
+
+  export type SyndicationLookupCountAggregateInputType = {
+    id?: true
+    kind?: true
+    sourceValue?: true
+    targetValue?: true
+    version?: true
+    _all?: true
+  }
+
+  export type SyndicationLookupAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SyndicationLookup to aggregate.
+     */
+    where?: SyndicationLookupWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SyndicationLookups to fetch.
+     */
+    orderBy?: SyndicationLookupOrderByWithRelationInput | SyndicationLookupOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SyndicationLookupWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SyndicationLookups from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SyndicationLookups.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SyndicationLookups
+    **/
+    _count?: true | SyndicationLookupCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SyndicationLookupAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SyndicationLookupSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SyndicationLookupMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SyndicationLookupMaxAggregateInputType
+  }
+
+  export type GetSyndicationLookupAggregateType<T extends SyndicationLookupAggregateArgs> = {
+        [P in keyof T & keyof AggregateSyndicationLookup]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSyndicationLookup[P]>
+      : GetScalarType<T[P], AggregateSyndicationLookup[P]>
+  }
+
+
+
+
+  export type SyndicationLookupGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SyndicationLookupWhereInput
+    orderBy?: SyndicationLookupOrderByWithAggregationInput | SyndicationLookupOrderByWithAggregationInput[]
+    by: SyndicationLookupScalarFieldEnum[] | SyndicationLookupScalarFieldEnum
+    having?: SyndicationLookupScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SyndicationLookupCountAggregateInputType | true
+    _avg?: SyndicationLookupAvgAggregateInputType
+    _sum?: SyndicationLookupSumAggregateInputType
+    _min?: SyndicationLookupMinAggregateInputType
+    _max?: SyndicationLookupMaxAggregateInputType
+  }
+
+  export type SyndicationLookupGroupByOutputType = {
+    id: number
+    kind: string
+    sourceValue: string
+    targetValue: string
+    version: number
+    _count: SyndicationLookupCountAggregateOutputType | null
+    _avg: SyndicationLookupAvgAggregateOutputType | null
+    _sum: SyndicationLookupSumAggregateOutputType | null
+    _min: SyndicationLookupMinAggregateOutputType | null
+    _max: SyndicationLookupMaxAggregateOutputType | null
+  }
+
+  type GetSyndicationLookupGroupByPayload<T extends SyndicationLookupGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SyndicationLookupGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SyndicationLookupGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SyndicationLookupGroupByOutputType[P]>
+            : GetScalarType<T[P], SyndicationLookupGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SyndicationLookupSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    kind?: boolean
+    sourceValue?: boolean
+    targetValue?: boolean
+    version?: boolean
+  }, ExtArgs["result"]["syndicationLookup"]>
+
+  export type SyndicationLookupSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    kind?: boolean
+    sourceValue?: boolean
+    targetValue?: boolean
+    version?: boolean
+  }, ExtArgs["result"]["syndicationLookup"]>
+
+  export type SyndicationLookupSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    kind?: boolean
+    sourceValue?: boolean
+    targetValue?: boolean
+    version?: boolean
+  }, ExtArgs["result"]["syndicationLookup"]>
+
+  export type SyndicationLookupSelectScalar = {
+    id?: boolean
+    kind?: boolean
+    sourceValue?: boolean
+    targetValue?: boolean
+    version?: boolean
+  }
+
+  export type SyndicationLookupOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "kind" | "sourceValue" | "targetValue" | "version", ExtArgs["result"]["syndicationLookup"]>
+
+  export type $SyndicationLookupPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SyndicationLookup"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      kind: string
+      sourceValue: string
+      targetValue: string
+      version: number
+    }, ExtArgs["result"]["syndicationLookup"]>
+    composites: {}
+  }
+
+  type SyndicationLookupGetPayload<S extends boolean | null | undefined | SyndicationLookupDefaultArgs> = $Result.GetResult<Prisma.$SyndicationLookupPayload, S>
+
+  type SyndicationLookupCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SyndicationLookupFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SyndicationLookupCountAggregateInputType | true
+    }
+
+  export interface SyndicationLookupDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SyndicationLookup'], meta: { name: 'SyndicationLookup' } }
+    /**
+     * Find zero or one SyndicationLookup that matches the filter.
+     * @param {SyndicationLookupFindUniqueArgs} args - Arguments to find a SyndicationLookup
+     * @example
+     * // Get one SyndicationLookup
+     * const syndicationLookup = await prisma.syndicationLookup.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SyndicationLookupFindUniqueArgs>(args: SelectSubset<T, SyndicationLookupFindUniqueArgs<ExtArgs>>): Prisma__SyndicationLookupClient<$Result.GetResult<Prisma.$SyndicationLookupPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SyndicationLookup that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SyndicationLookupFindUniqueOrThrowArgs} args - Arguments to find a SyndicationLookup
+     * @example
+     * // Get one SyndicationLookup
+     * const syndicationLookup = await prisma.syndicationLookup.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SyndicationLookupFindUniqueOrThrowArgs>(args: SelectSubset<T, SyndicationLookupFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SyndicationLookupClient<$Result.GetResult<Prisma.$SyndicationLookupPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SyndicationLookup that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SyndicationLookupFindFirstArgs} args - Arguments to find a SyndicationLookup
+     * @example
+     * // Get one SyndicationLookup
+     * const syndicationLookup = await prisma.syndicationLookup.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SyndicationLookupFindFirstArgs>(args?: SelectSubset<T, SyndicationLookupFindFirstArgs<ExtArgs>>): Prisma__SyndicationLookupClient<$Result.GetResult<Prisma.$SyndicationLookupPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SyndicationLookup that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SyndicationLookupFindFirstOrThrowArgs} args - Arguments to find a SyndicationLookup
+     * @example
+     * // Get one SyndicationLookup
+     * const syndicationLookup = await prisma.syndicationLookup.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SyndicationLookupFindFirstOrThrowArgs>(args?: SelectSubset<T, SyndicationLookupFindFirstOrThrowArgs<ExtArgs>>): Prisma__SyndicationLookupClient<$Result.GetResult<Prisma.$SyndicationLookupPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SyndicationLookups that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SyndicationLookupFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SyndicationLookups
+     * const syndicationLookups = await prisma.syndicationLookup.findMany()
+     * 
+     * // Get first 10 SyndicationLookups
+     * const syndicationLookups = await prisma.syndicationLookup.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const syndicationLookupWithIdOnly = await prisma.syndicationLookup.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SyndicationLookupFindManyArgs>(args?: SelectSubset<T, SyndicationLookupFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SyndicationLookupPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SyndicationLookup.
+     * @param {SyndicationLookupCreateArgs} args - Arguments to create a SyndicationLookup.
+     * @example
+     * // Create one SyndicationLookup
+     * const SyndicationLookup = await prisma.syndicationLookup.create({
+     *   data: {
+     *     // ... data to create a SyndicationLookup
+     *   }
+     * })
+     * 
+     */
+    create<T extends SyndicationLookupCreateArgs>(args: SelectSubset<T, SyndicationLookupCreateArgs<ExtArgs>>): Prisma__SyndicationLookupClient<$Result.GetResult<Prisma.$SyndicationLookupPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SyndicationLookups.
+     * @param {SyndicationLookupCreateManyArgs} args - Arguments to create many SyndicationLookups.
+     * @example
+     * // Create many SyndicationLookups
+     * const syndicationLookup = await prisma.syndicationLookup.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SyndicationLookupCreateManyArgs>(args?: SelectSubset<T, SyndicationLookupCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SyndicationLookups and returns the data saved in the database.
+     * @param {SyndicationLookupCreateManyAndReturnArgs} args - Arguments to create many SyndicationLookups.
+     * @example
+     * // Create many SyndicationLookups
+     * const syndicationLookup = await prisma.syndicationLookup.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SyndicationLookups and only return the `id`
+     * const syndicationLookupWithIdOnly = await prisma.syndicationLookup.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SyndicationLookupCreateManyAndReturnArgs>(args?: SelectSubset<T, SyndicationLookupCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SyndicationLookupPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SyndicationLookup.
+     * @param {SyndicationLookupDeleteArgs} args - Arguments to delete one SyndicationLookup.
+     * @example
+     * // Delete one SyndicationLookup
+     * const SyndicationLookup = await prisma.syndicationLookup.delete({
+     *   where: {
+     *     // ... filter to delete one SyndicationLookup
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SyndicationLookupDeleteArgs>(args: SelectSubset<T, SyndicationLookupDeleteArgs<ExtArgs>>): Prisma__SyndicationLookupClient<$Result.GetResult<Prisma.$SyndicationLookupPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SyndicationLookup.
+     * @param {SyndicationLookupUpdateArgs} args - Arguments to update one SyndicationLookup.
+     * @example
+     * // Update one SyndicationLookup
+     * const syndicationLookup = await prisma.syndicationLookup.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SyndicationLookupUpdateArgs>(args: SelectSubset<T, SyndicationLookupUpdateArgs<ExtArgs>>): Prisma__SyndicationLookupClient<$Result.GetResult<Prisma.$SyndicationLookupPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SyndicationLookups.
+     * @param {SyndicationLookupDeleteManyArgs} args - Arguments to filter SyndicationLookups to delete.
+     * @example
+     * // Delete a few SyndicationLookups
+     * const { count } = await prisma.syndicationLookup.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SyndicationLookupDeleteManyArgs>(args?: SelectSubset<T, SyndicationLookupDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SyndicationLookups.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SyndicationLookupUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SyndicationLookups
+     * const syndicationLookup = await prisma.syndicationLookup.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SyndicationLookupUpdateManyArgs>(args: SelectSubset<T, SyndicationLookupUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SyndicationLookups and returns the data updated in the database.
+     * @param {SyndicationLookupUpdateManyAndReturnArgs} args - Arguments to update many SyndicationLookups.
+     * @example
+     * // Update many SyndicationLookups
+     * const syndicationLookup = await prisma.syndicationLookup.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SyndicationLookups and only return the `id`
+     * const syndicationLookupWithIdOnly = await prisma.syndicationLookup.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SyndicationLookupUpdateManyAndReturnArgs>(args: SelectSubset<T, SyndicationLookupUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SyndicationLookupPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SyndicationLookup.
+     * @param {SyndicationLookupUpsertArgs} args - Arguments to update or create a SyndicationLookup.
+     * @example
+     * // Update or create a SyndicationLookup
+     * const syndicationLookup = await prisma.syndicationLookup.upsert({
+     *   create: {
+     *     // ... data to create a SyndicationLookup
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SyndicationLookup we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SyndicationLookupUpsertArgs>(args: SelectSubset<T, SyndicationLookupUpsertArgs<ExtArgs>>): Prisma__SyndicationLookupClient<$Result.GetResult<Prisma.$SyndicationLookupPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SyndicationLookups.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SyndicationLookupCountArgs} args - Arguments to filter SyndicationLookups to count.
+     * @example
+     * // Count the number of SyndicationLookups
+     * const count = await prisma.syndicationLookup.count({
+     *   where: {
+     *     // ... the filter for the SyndicationLookups we want to count
+     *   }
+     * })
+    **/
+    count<T extends SyndicationLookupCountArgs>(
+      args?: Subset<T, SyndicationLookupCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SyndicationLookupCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SyndicationLookup.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SyndicationLookupAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SyndicationLookupAggregateArgs>(args: Subset<T, SyndicationLookupAggregateArgs>): Prisma.PrismaPromise<GetSyndicationLookupAggregateType<T>>
+
+    /**
+     * Group by SyndicationLookup.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SyndicationLookupGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SyndicationLookupGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SyndicationLookupGroupByArgs['orderBy'] }
+        : { orderBy?: SyndicationLookupGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SyndicationLookupGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSyndicationLookupGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SyndicationLookup model
+   */
+  readonly fields: SyndicationLookupFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SyndicationLookup.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SyndicationLookupClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SyndicationLookup model
+   */
+  interface SyndicationLookupFieldRefs {
+    readonly id: FieldRef<"SyndicationLookup", 'Int'>
+    readonly kind: FieldRef<"SyndicationLookup", 'String'>
+    readonly sourceValue: FieldRef<"SyndicationLookup", 'String'>
+    readonly targetValue: FieldRef<"SyndicationLookup", 'String'>
+    readonly version: FieldRef<"SyndicationLookup", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SyndicationLookup findUnique
+   */
+  export type SyndicationLookupFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationLookup
+     */
+    select?: SyndicationLookupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationLookup
+     */
+    omit?: SyndicationLookupOmit<ExtArgs> | null
+    /**
+     * Filter, which SyndicationLookup to fetch.
+     */
+    where: SyndicationLookupWhereUniqueInput
+  }
+
+  /**
+   * SyndicationLookup findUniqueOrThrow
+   */
+  export type SyndicationLookupFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationLookup
+     */
+    select?: SyndicationLookupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationLookup
+     */
+    omit?: SyndicationLookupOmit<ExtArgs> | null
+    /**
+     * Filter, which SyndicationLookup to fetch.
+     */
+    where: SyndicationLookupWhereUniqueInput
+  }
+
+  /**
+   * SyndicationLookup findFirst
+   */
+  export type SyndicationLookupFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationLookup
+     */
+    select?: SyndicationLookupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationLookup
+     */
+    omit?: SyndicationLookupOmit<ExtArgs> | null
+    /**
+     * Filter, which SyndicationLookup to fetch.
+     */
+    where?: SyndicationLookupWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SyndicationLookups to fetch.
+     */
+    orderBy?: SyndicationLookupOrderByWithRelationInput | SyndicationLookupOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SyndicationLookups.
+     */
+    cursor?: SyndicationLookupWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SyndicationLookups from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SyndicationLookups.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SyndicationLookups.
+     */
+    distinct?: SyndicationLookupScalarFieldEnum | SyndicationLookupScalarFieldEnum[]
+  }
+
+  /**
+   * SyndicationLookup findFirstOrThrow
+   */
+  export type SyndicationLookupFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationLookup
+     */
+    select?: SyndicationLookupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationLookup
+     */
+    omit?: SyndicationLookupOmit<ExtArgs> | null
+    /**
+     * Filter, which SyndicationLookup to fetch.
+     */
+    where?: SyndicationLookupWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SyndicationLookups to fetch.
+     */
+    orderBy?: SyndicationLookupOrderByWithRelationInput | SyndicationLookupOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SyndicationLookups.
+     */
+    cursor?: SyndicationLookupWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SyndicationLookups from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SyndicationLookups.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SyndicationLookups.
+     */
+    distinct?: SyndicationLookupScalarFieldEnum | SyndicationLookupScalarFieldEnum[]
+  }
+
+  /**
+   * SyndicationLookup findMany
+   */
+  export type SyndicationLookupFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationLookup
+     */
+    select?: SyndicationLookupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationLookup
+     */
+    omit?: SyndicationLookupOmit<ExtArgs> | null
+    /**
+     * Filter, which SyndicationLookups to fetch.
+     */
+    where?: SyndicationLookupWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SyndicationLookups to fetch.
+     */
+    orderBy?: SyndicationLookupOrderByWithRelationInput | SyndicationLookupOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SyndicationLookups.
+     */
+    cursor?: SyndicationLookupWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SyndicationLookups from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SyndicationLookups.
+     */
+    skip?: number
+    distinct?: SyndicationLookupScalarFieldEnum | SyndicationLookupScalarFieldEnum[]
+  }
+
+  /**
+   * SyndicationLookup create
+   */
+  export type SyndicationLookupCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationLookup
+     */
+    select?: SyndicationLookupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationLookup
+     */
+    omit?: SyndicationLookupOmit<ExtArgs> | null
+    /**
+     * The data needed to create a SyndicationLookup.
+     */
+    data: XOR<SyndicationLookupCreateInput, SyndicationLookupUncheckedCreateInput>
+  }
+
+  /**
+   * SyndicationLookup createMany
+   */
+  export type SyndicationLookupCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SyndicationLookups.
+     */
+    data: SyndicationLookupCreateManyInput | SyndicationLookupCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SyndicationLookup createManyAndReturn
+   */
+  export type SyndicationLookupCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationLookup
+     */
+    select?: SyndicationLookupSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationLookup
+     */
+    omit?: SyndicationLookupOmit<ExtArgs> | null
+    /**
+     * The data used to create many SyndicationLookups.
+     */
+    data: SyndicationLookupCreateManyInput | SyndicationLookupCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SyndicationLookup update
+   */
+  export type SyndicationLookupUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationLookup
+     */
+    select?: SyndicationLookupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationLookup
+     */
+    omit?: SyndicationLookupOmit<ExtArgs> | null
+    /**
+     * The data needed to update a SyndicationLookup.
+     */
+    data: XOR<SyndicationLookupUpdateInput, SyndicationLookupUncheckedUpdateInput>
+    /**
+     * Choose, which SyndicationLookup to update.
+     */
+    where: SyndicationLookupWhereUniqueInput
+  }
+
+  /**
+   * SyndicationLookup updateMany
+   */
+  export type SyndicationLookupUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SyndicationLookups.
+     */
+    data: XOR<SyndicationLookupUpdateManyMutationInput, SyndicationLookupUncheckedUpdateManyInput>
+    /**
+     * Filter which SyndicationLookups to update
+     */
+    where?: SyndicationLookupWhereInput
+    /**
+     * Limit how many SyndicationLookups to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SyndicationLookup updateManyAndReturn
+   */
+  export type SyndicationLookupUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationLookup
+     */
+    select?: SyndicationLookupSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationLookup
+     */
+    omit?: SyndicationLookupOmit<ExtArgs> | null
+    /**
+     * The data used to update SyndicationLookups.
+     */
+    data: XOR<SyndicationLookupUpdateManyMutationInput, SyndicationLookupUncheckedUpdateManyInput>
+    /**
+     * Filter which SyndicationLookups to update
+     */
+    where?: SyndicationLookupWhereInput
+    /**
+     * Limit how many SyndicationLookups to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SyndicationLookup upsert
+   */
+  export type SyndicationLookupUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationLookup
+     */
+    select?: SyndicationLookupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationLookup
+     */
+    omit?: SyndicationLookupOmit<ExtArgs> | null
+    /**
+     * The filter to search for the SyndicationLookup to update in case it exists.
+     */
+    where: SyndicationLookupWhereUniqueInput
+    /**
+     * In case the SyndicationLookup found by the `where` argument doesn't exist, create a new SyndicationLookup with this data.
+     */
+    create: XOR<SyndicationLookupCreateInput, SyndicationLookupUncheckedCreateInput>
+    /**
+     * In case the SyndicationLookup was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SyndicationLookupUpdateInput, SyndicationLookupUncheckedUpdateInput>
+  }
+
+  /**
+   * SyndicationLookup delete
+   */
+  export type SyndicationLookupDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationLookup
+     */
+    select?: SyndicationLookupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationLookup
+     */
+    omit?: SyndicationLookupOmit<ExtArgs> | null
+    /**
+     * Filter which SyndicationLookup to delete.
+     */
+    where: SyndicationLookupWhereUniqueInput
+  }
+
+  /**
+   * SyndicationLookup deleteMany
+   */
+  export type SyndicationLookupDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SyndicationLookups to delete
+     */
+    where?: SyndicationLookupWhereInput
+    /**
+     * Limit how many SyndicationLookups to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SyndicationLookup without action
+   */
+  export type SyndicationLookupDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationLookup
+     */
+    select?: SyndicationLookupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationLookup
+     */
+    omit?: SyndicationLookupOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SyndicationRun
+   */
+
+  export type AggregateSyndicationRun = {
+    _count: SyndicationRunCountAggregateOutputType | null
+    _avg: SyndicationRunAvgAggregateOutputType | null
+    _sum: SyndicationRunSumAggregateOutputType | null
+    _min: SyndicationRunMinAggregateOutputType | null
+    _max: SyndicationRunMaxAggregateOutputType | null
+  }
+
+  export type SyndicationRunAvgAggregateOutputType = {
+    id: number | null
+    rowCount: number | null
+    consecutiveFailures: number | null
+  }
+
+  export type SyndicationRunSumAggregateOutputType = {
+    id: number | null
+    rowCount: number | null
+    consecutiveFailures: number | null
+  }
+
+  export type SyndicationRunMinAggregateOutputType = {
+    id: number | null
+    startedAt: Date | null
+    finishedAt: Date | null
+    status: string | null
+    rowCount: number | null
+    fileHash: string | null
+    platformResponse: string | null
+    errorMessage: string | null
+    consecutiveFailures: number | null
+    overrideUsed: boolean | null
+    snapshotPath: string | null
+  }
+
+  export type SyndicationRunMaxAggregateOutputType = {
+    id: number | null
+    startedAt: Date | null
+    finishedAt: Date | null
+    status: string | null
+    rowCount: number | null
+    fileHash: string | null
+    platformResponse: string | null
+    errorMessage: string | null
+    consecutiveFailures: number | null
+    overrideUsed: boolean | null
+    snapshotPath: string | null
+  }
+
+  export type SyndicationRunCountAggregateOutputType = {
+    id: number
+    startedAt: number
+    finishedAt: number
+    status: number
+    rowCount: number
+    fileHash: number
+    idsAdded: number
+    idsRemoved: number
+    platformResponse: number
+    errorMessage: number
+    consecutiveFailures: number
+    overrideUsed: number
+    snapshotPath: number
+    _all: number
+  }
+
+
+  export type SyndicationRunAvgAggregateInputType = {
+    id?: true
+    rowCount?: true
+    consecutiveFailures?: true
+  }
+
+  export type SyndicationRunSumAggregateInputType = {
+    id?: true
+    rowCount?: true
+    consecutiveFailures?: true
+  }
+
+  export type SyndicationRunMinAggregateInputType = {
+    id?: true
+    startedAt?: true
+    finishedAt?: true
+    status?: true
+    rowCount?: true
+    fileHash?: true
+    platformResponse?: true
+    errorMessage?: true
+    consecutiveFailures?: true
+    overrideUsed?: true
+    snapshotPath?: true
+  }
+
+  export type SyndicationRunMaxAggregateInputType = {
+    id?: true
+    startedAt?: true
+    finishedAt?: true
+    status?: true
+    rowCount?: true
+    fileHash?: true
+    platformResponse?: true
+    errorMessage?: true
+    consecutiveFailures?: true
+    overrideUsed?: true
+    snapshotPath?: true
+  }
+
+  export type SyndicationRunCountAggregateInputType = {
+    id?: true
+    startedAt?: true
+    finishedAt?: true
+    status?: true
+    rowCount?: true
+    fileHash?: true
+    idsAdded?: true
+    idsRemoved?: true
+    platformResponse?: true
+    errorMessage?: true
+    consecutiveFailures?: true
+    overrideUsed?: true
+    snapshotPath?: true
+    _all?: true
+  }
+
+  export type SyndicationRunAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SyndicationRun to aggregate.
+     */
+    where?: SyndicationRunWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SyndicationRuns to fetch.
+     */
+    orderBy?: SyndicationRunOrderByWithRelationInput | SyndicationRunOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SyndicationRunWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SyndicationRuns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SyndicationRuns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SyndicationRuns
+    **/
+    _count?: true | SyndicationRunCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SyndicationRunAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SyndicationRunSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SyndicationRunMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SyndicationRunMaxAggregateInputType
+  }
+
+  export type GetSyndicationRunAggregateType<T extends SyndicationRunAggregateArgs> = {
+        [P in keyof T & keyof AggregateSyndicationRun]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSyndicationRun[P]>
+      : GetScalarType<T[P], AggregateSyndicationRun[P]>
+  }
+
+
+
+
+  export type SyndicationRunGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SyndicationRunWhereInput
+    orderBy?: SyndicationRunOrderByWithAggregationInput | SyndicationRunOrderByWithAggregationInput[]
+    by: SyndicationRunScalarFieldEnum[] | SyndicationRunScalarFieldEnum
+    having?: SyndicationRunScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SyndicationRunCountAggregateInputType | true
+    _avg?: SyndicationRunAvgAggregateInputType
+    _sum?: SyndicationRunSumAggregateInputType
+    _min?: SyndicationRunMinAggregateInputType
+    _max?: SyndicationRunMaxAggregateInputType
+  }
+
+  export type SyndicationRunGroupByOutputType = {
+    id: number
+    startedAt: Date
+    finishedAt: Date | null
+    status: string
+    rowCount: number
+    fileHash: string
+    idsAdded: string[]
+    idsRemoved: string[]
+    platformResponse: string
+    errorMessage: string
+    consecutiveFailures: number
+    overrideUsed: boolean
+    snapshotPath: string
+    _count: SyndicationRunCountAggregateOutputType | null
+    _avg: SyndicationRunAvgAggregateOutputType | null
+    _sum: SyndicationRunSumAggregateOutputType | null
+    _min: SyndicationRunMinAggregateOutputType | null
+    _max: SyndicationRunMaxAggregateOutputType | null
+  }
+
+  type GetSyndicationRunGroupByPayload<T extends SyndicationRunGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SyndicationRunGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SyndicationRunGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SyndicationRunGroupByOutputType[P]>
+            : GetScalarType<T[P], SyndicationRunGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SyndicationRunSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    startedAt?: boolean
+    finishedAt?: boolean
+    status?: boolean
+    rowCount?: boolean
+    fileHash?: boolean
+    idsAdded?: boolean
+    idsRemoved?: boolean
+    platformResponse?: boolean
+    errorMessage?: boolean
+    consecutiveFailures?: boolean
+    overrideUsed?: boolean
+    snapshotPath?: boolean
+  }, ExtArgs["result"]["syndicationRun"]>
+
+  export type SyndicationRunSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    startedAt?: boolean
+    finishedAt?: boolean
+    status?: boolean
+    rowCount?: boolean
+    fileHash?: boolean
+    idsAdded?: boolean
+    idsRemoved?: boolean
+    platformResponse?: boolean
+    errorMessage?: boolean
+    consecutiveFailures?: boolean
+    overrideUsed?: boolean
+    snapshotPath?: boolean
+  }, ExtArgs["result"]["syndicationRun"]>
+
+  export type SyndicationRunSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    startedAt?: boolean
+    finishedAt?: boolean
+    status?: boolean
+    rowCount?: boolean
+    fileHash?: boolean
+    idsAdded?: boolean
+    idsRemoved?: boolean
+    platformResponse?: boolean
+    errorMessage?: boolean
+    consecutiveFailures?: boolean
+    overrideUsed?: boolean
+    snapshotPath?: boolean
+  }, ExtArgs["result"]["syndicationRun"]>
+
+  export type SyndicationRunSelectScalar = {
+    id?: boolean
+    startedAt?: boolean
+    finishedAt?: boolean
+    status?: boolean
+    rowCount?: boolean
+    fileHash?: boolean
+    idsAdded?: boolean
+    idsRemoved?: boolean
+    platformResponse?: boolean
+    errorMessage?: boolean
+    consecutiveFailures?: boolean
+    overrideUsed?: boolean
+    snapshotPath?: boolean
+  }
+
+  export type SyndicationRunOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "startedAt" | "finishedAt" | "status" | "rowCount" | "fileHash" | "idsAdded" | "idsRemoved" | "platformResponse" | "errorMessage" | "consecutiveFailures" | "overrideUsed" | "snapshotPath", ExtArgs["result"]["syndicationRun"]>
+
+  export type $SyndicationRunPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SyndicationRun"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      startedAt: Date
+      finishedAt: Date | null
+      status: string
+      rowCount: number
+      fileHash: string
+      idsAdded: string[]
+      idsRemoved: string[]
+      platformResponse: string
+      errorMessage: string
+      consecutiveFailures: number
+      overrideUsed: boolean
+      snapshotPath: string
+    }, ExtArgs["result"]["syndicationRun"]>
+    composites: {}
+  }
+
+  type SyndicationRunGetPayload<S extends boolean | null | undefined | SyndicationRunDefaultArgs> = $Result.GetResult<Prisma.$SyndicationRunPayload, S>
+
+  type SyndicationRunCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SyndicationRunFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SyndicationRunCountAggregateInputType | true
+    }
+
+  export interface SyndicationRunDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SyndicationRun'], meta: { name: 'SyndicationRun' } }
+    /**
+     * Find zero or one SyndicationRun that matches the filter.
+     * @param {SyndicationRunFindUniqueArgs} args - Arguments to find a SyndicationRun
+     * @example
+     * // Get one SyndicationRun
+     * const syndicationRun = await prisma.syndicationRun.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SyndicationRunFindUniqueArgs>(args: SelectSubset<T, SyndicationRunFindUniqueArgs<ExtArgs>>): Prisma__SyndicationRunClient<$Result.GetResult<Prisma.$SyndicationRunPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SyndicationRun that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SyndicationRunFindUniqueOrThrowArgs} args - Arguments to find a SyndicationRun
+     * @example
+     * // Get one SyndicationRun
+     * const syndicationRun = await prisma.syndicationRun.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SyndicationRunFindUniqueOrThrowArgs>(args: SelectSubset<T, SyndicationRunFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SyndicationRunClient<$Result.GetResult<Prisma.$SyndicationRunPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SyndicationRun that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SyndicationRunFindFirstArgs} args - Arguments to find a SyndicationRun
+     * @example
+     * // Get one SyndicationRun
+     * const syndicationRun = await prisma.syndicationRun.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SyndicationRunFindFirstArgs>(args?: SelectSubset<T, SyndicationRunFindFirstArgs<ExtArgs>>): Prisma__SyndicationRunClient<$Result.GetResult<Prisma.$SyndicationRunPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SyndicationRun that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SyndicationRunFindFirstOrThrowArgs} args - Arguments to find a SyndicationRun
+     * @example
+     * // Get one SyndicationRun
+     * const syndicationRun = await prisma.syndicationRun.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SyndicationRunFindFirstOrThrowArgs>(args?: SelectSubset<T, SyndicationRunFindFirstOrThrowArgs<ExtArgs>>): Prisma__SyndicationRunClient<$Result.GetResult<Prisma.$SyndicationRunPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SyndicationRuns that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SyndicationRunFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SyndicationRuns
+     * const syndicationRuns = await prisma.syndicationRun.findMany()
+     * 
+     * // Get first 10 SyndicationRuns
+     * const syndicationRuns = await prisma.syndicationRun.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const syndicationRunWithIdOnly = await prisma.syndicationRun.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SyndicationRunFindManyArgs>(args?: SelectSubset<T, SyndicationRunFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SyndicationRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SyndicationRun.
+     * @param {SyndicationRunCreateArgs} args - Arguments to create a SyndicationRun.
+     * @example
+     * // Create one SyndicationRun
+     * const SyndicationRun = await prisma.syndicationRun.create({
+     *   data: {
+     *     // ... data to create a SyndicationRun
+     *   }
+     * })
+     * 
+     */
+    create<T extends SyndicationRunCreateArgs>(args: SelectSubset<T, SyndicationRunCreateArgs<ExtArgs>>): Prisma__SyndicationRunClient<$Result.GetResult<Prisma.$SyndicationRunPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SyndicationRuns.
+     * @param {SyndicationRunCreateManyArgs} args - Arguments to create many SyndicationRuns.
+     * @example
+     * // Create many SyndicationRuns
+     * const syndicationRun = await prisma.syndicationRun.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SyndicationRunCreateManyArgs>(args?: SelectSubset<T, SyndicationRunCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SyndicationRuns and returns the data saved in the database.
+     * @param {SyndicationRunCreateManyAndReturnArgs} args - Arguments to create many SyndicationRuns.
+     * @example
+     * // Create many SyndicationRuns
+     * const syndicationRun = await prisma.syndicationRun.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SyndicationRuns and only return the `id`
+     * const syndicationRunWithIdOnly = await prisma.syndicationRun.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SyndicationRunCreateManyAndReturnArgs>(args?: SelectSubset<T, SyndicationRunCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SyndicationRunPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SyndicationRun.
+     * @param {SyndicationRunDeleteArgs} args - Arguments to delete one SyndicationRun.
+     * @example
+     * // Delete one SyndicationRun
+     * const SyndicationRun = await prisma.syndicationRun.delete({
+     *   where: {
+     *     // ... filter to delete one SyndicationRun
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SyndicationRunDeleteArgs>(args: SelectSubset<T, SyndicationRunDeleteArgs<ExtArgs>>): Prisma__SyndicationRunClient<$Result.GetResult<Prisma.$SyndicationRunPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SyndicationRun.
+     * @param {SyndicationRunUpdateArgs} args - Arguments to update one SyndicationRun.
+     * @example
+     * // Update one SyndicationRun
+     * const syndicationRun = await prisma.syndicationRun.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SyndicationRunUpdateArgs>(args: SelectSubset<T, SyndicationRunUpdateArgs<ExtArgs>>): Prisma__SyndicationRunClient<$Result.GetResult<Prisma.$SyndicationRunPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SyndicationRuns.
+     * @param {SyndicationRunDeleteManyArgs} args - Arguments to filter SyndicationRuns to delete.
+     * @example
+     * // Delete a few SyndicationRuns
+     * const { count } = await prisma.syndicationRun.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SyndicationRunDeleteManyArgs>(args?: SelectSubset<T, SyndicationRunDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SyndicationRuns.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SyndicationRunUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SyndicationRuns
+     * const syndicationRun = await prisma.syndicationRun.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SyndicationRunUpdateManyArgs>(args: SelectSubset<T, SyndicationRunUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SyndicationRuns and returns the data updated in the database.
+     * @param {SyndicationRunUpdateManyAndReturnArgs} args - Arguments to update many SyndicationRuns.
+     * @example
+     * // Update many SyndicationRuns
+     * const syndicationRun = await prisma.syndicationRun.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SyndicationRuns and only return the `id`
+     * const syndicationRunWithIdOnly = await prisma.syndicationRun.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SyndicationRunUpdateManyAndReturnArgs>(args: SelectSubset<T, SyndicationRunUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SyndicationRunPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SyndicationRun.
+     * @param {SyndicationRunUpsertArgs} args - Arguments to update or create a SyndicationRun.
+     * @example
+     * // Update or create a SyndicationRun
+     * const syndicationRun = await prisma.syndicationRun.upsert({
+     *   create: {
+     *     // ... data to create a SyndicationRun
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SyndicationRun we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SyndicationRunUpsertArgs>(args: SelectSubset<T, SyndicationRunUpsertArgs<ExtArgs>>): Prisma__SyndicationRunClient<$Result.GetResult<Prisma.$SyndicationRunPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SyndicationRuns.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SyndicationRunCountArgs} args - Arguments to filter SyndicationRuns to count.
+     * @example
+     * // Count the number of SyndicationRuns
+     * const count = await prisma.syndicationRun.count({
+     *   where: {
+     *     // ... the filter for the SyndicationRuns we want to count
+     *   }
+     * })
+    **/
+    count<T extends SyndicationRunCountArgs>(
+      args?: Subset<T, SyndicationRunCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SyndicationRunCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SyndicationRun.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SyndicationRunAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SyndicationRunAggregateArgs>(args: Subset<T, SyndicationRunAggregateArgs>): Prisma.PrismaPromise<GetSyndicationRunAggregateType<T>>
+
+    /**
+     * Group by SyndicationRun.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SyndicationRunGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SyndicationRunGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SyndicationRunGroupByArgs['orderBy'] }
+        : { orderBy?: SyndicationRunGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SyndicationRunGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSyndicationRunGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SyndicationRun model
+   */
+  readonly fields: SyndicationRunFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SyndicationRun.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SyndicationRunClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SyndicationRun model
+   */
+  interface SyndicationRunFieldRefs {
+    readonly id: FieldRef<"SyndicationRun", 'Int'>
+    readonly startedAt: FieldRef<"SyndicationRun", 'DateTime'>
+    readonly finishedAt: FieldRef<"SyndicationRun", 'DateTime'>
+    readonly status: FieldRef<"SyndicationRun", 'String'>
+    readonly rowCount: FieldRef<"SyndicationRun", 'Int'>
+    readonly fileHash: FieldRef<"SyndicationRun", 'String'>
+    readonly idsAdded: FieldRef<"SyndicationRun", 'String[]'>
+    readonly idsRemoved: FieldRef<"SyndicationRun", 'String[]'>
+    readonly platformResponse: FieldRef<"SyndicationRun", 'String'>
+    readonly errorMessage: FieldRef<"SyndicationRun", 'String'>
+    readonly consecutiveFailures: FieldRef<"SyndicationRun", 'Int'>
+    readonly overrideUsed: FieldRef<"SyndicationRun", 'Boolean'>
+    readonly snapshotPath: FieldRef<"SyndicationRun", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SyndicationRun findUnique
+   */
+  export type SyndicationRunFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationRun
+     */
+    select?: SyndicationRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationRun
+     */
+    omit?: SyndicationRunOmit<ExtArgs> | null
+    /**
+     * Filter, which SyndicationRun to fetch.
+     */
+    where: SyndicationRunWhereUniqueInput
+  }
+
+  /**
+   * SyndicationRun findUniqueOrThrow
+   */
+  export type SyndicationRunFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationRun
+     */
+    select?: SyndicationRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationRun
+     */
+    omit?: SyndicationRunOmit<ExtArgs> | null
+    /**
+     * Filter, which SyndicationRun to fetch.
+     */
+    where: SyndicationRunWhereUniqueInput
+  }
+
+  /**
+   * SyndicationRun findFirst
+   */
+  export type SyndicationRunFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationRun
+     */
+    select?: SyndicationRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationRun
+     */
+    omit?: SyndicationRunOmit<ExtArgs> | null
+    /**
+     * Filter, which SyndicationRun to fetch.
+     */
+    where?: SyndicationRunWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SyndicationRuns to fetch.
+     */
+    orderBy?: SyndicationRunOrderByWithRelationInput | SyndicationRunOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SyndicationRuns.
+     */
+    cursor?: SyndicationRunWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SyndicationRuns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SyndicationRuns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SyndicationRuns.
+     */
+    distinct?: SyndicationRunScalarFieldEnum | SyndicationRunScalarFieldEnum[]
+  }
+
+  /**
+   * SyndicationRun findFirstOrThrow
+   */
+  export type SyndicationRunFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationRun
+     */
+    select?: SyndicationRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationRun
+     */
+    omit?: SyndicationRunOmit<ExtArgs> | null
+    /**
+     * Filter, which SyndicationRun to fetch.
+     */
+    where?: SyndicationRunWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SyndicationRuns to fetch.
+     */
+    orderBy?: SyndicationRunOrderByWithRelationInput | SyndicationRunOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SyndicationRuns.
+     */
+    cursor?: SyndicationRunWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SyndicationRuns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SyndicationRuns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SyndicationRuns.
+     */
+    distinct?: SyndicationRunScalarFieldEnum | SyndicationRunScalarFieldEnum[]
+  }
+
+  /**
+   * SyndicationRun findMany
+   */
+  export type SyndicationRunFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationRun
+     */
+    select?: SyndicationRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationRun
+     */
+    omit?: SyndicationRunOmit<ExtArgs> | null
+    /**
+     * Filter, which SyndicationRuns to fetch.
+     */
+    where?: SyndicationRunWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SyndicationRuns to fetch.
+     */
+    orderBy?: SyndicationRunOrderByWithRelationInput | SyndicationRunOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SyndicationRuns.
+     */
+    cursor?: SyndicationRunWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SyndicationRuns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SyndicationRuns.
+     */
+    skip?: number
+    distinct?: SyndicationRunScalarFieldEnum | SyndicationRunScalarFieldEnum[]
+  }
+
+  /**
+   * SyndicationRun create
+   */
+  export type SyndicationRunCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationRun
+     */
+    select?: SyndicationRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationRun
+     */
+    omit?: SyndicationRunOmit<ExtArgs> | null
+    /**
+     * The data needed to create a SyndicationRun.
+     */
+    data?: XOR<SyndicationRunCreateInput, SyndicationRunUncheckedCreateInput>
+  }
+
+  /**
+   * SyndicationRun createMany
+   */
+  export type SyndicationRunCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SyndicationRuns.
+     */
+    data: SyndicationRunCreateManyInput | SyndicationRunCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SyndicationRun createManyAndReturn
+   */
+  export type SyndicationRunCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationRun
+     */
+    select?: SyndicationRunSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationRun
+     */
+    omit?: SyndicationRunOmit<ExtArgs> | null
+    /**
+     * The data used to create many SyndicationRuns.
+     */
+    data: SyndicationRunCreateManyInput | SyndicationRunCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SyndicationRun update
+   */
+  export type SyndicationRunUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationRun
+     */
+    select?: SyndicationRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationRun
+     */
+    omit?: SyndicationRunOmit<ExtArgs> | null
+    /**
+     * The data needed to update a SyndicationRun.
+     */
+    data: XOR<SyndicationRunUpdateInput, SyndicationRunUncheckedUpdateInput>
+    /**
+     * Choose, which SyndicationRun to update.
+     */
+    where: SyndicationRunWhereUniqueInput
+  }
+
+  /**
+   * SyndicationRun updateMany
+   */
+  export type SyndicationRunUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SyndicationRuns.
+     */
+    data: XOR<SyndicationRunUpdateManyMutationInput, SyndicationRunUncheckedUpdateManyInput>
+    /**
+     * Filter which SyndicationRuns to update
+     */
+    where?: SyndicationRunWhereInput
+    /**
+     * Limit how many SyndicationRuns to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SyndicationRun updateManyAndReturn
+   */
+  export type SyndicationRunUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationRun
+     */
+    select?: SyndicationRunSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationRun
+     */
+    omit?: SyndicationRunOmit<ExtArgs> | null
+    /**
+     * The data used to update SyndicationRuns.
+     */
+    data: XOR<SyndicationRunUpdateManyMutationInput, SyndicationRunUncheckedUpdateManyInput>
+    /**
+     * Filter which SyndicationRuns to update
+     */
+    where?: SyndicationRunWhereInput
+    /**
+     * Limit how many SyndicationRuns to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SyndicationRun upsert
+   */
+  export type SyndicationRunUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationRun
+     */
+    select?: SyndicationRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationRun
+     */
+    omit?: SyndicationRunOmit<ExtArgs> | null
+    /**
+     * The filter to search for the SyndicationRun to update in case it exists.
+     */
+    where: SyndicationRunWhereUniqueInput
+    /**
+     * In case the SyndicationRun found by the `where` argument doesn't exist, create a new SyndicationRun with this data.
+     */
+    create: XOR<SyndicationRunCreateInput, SyndicationRunUncheckedCreateInput>
+    /**
+     * In case the SyndicationRun was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SyndicationRunUpdateInput, SyndicationRunUncheckedUpdateInput>
+  }
+
+  /**
+   * SyndicationRun delete
+   */
+  export type SyndicationRunDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationRun
+     */
+    select?: SyndicationRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationRun
+     */
+    omit?: SyndicationRunOmit<ExtArgs> | null
+    /**
+     * Filter which SyndicationRun to delete.
+     */
+    where: SyndicationRunWhereUniqueInput
+  }
+
+  /**
+   * SyndicationRun deleteMany
+   */
+  export type SyndicationRunDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SyndicationRuns to delete
+     */
+    where?: SyndicationRunWhereInput
+    /**
+     * Limit how many SyndicationRuns to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SyndicationRun without action
+   */
+  export type SyndicationRunDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationRun
+     */
+    select?: SyndicationRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationRun
+     */
+    omit?: SyndicationRunOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SyndicationOutbox
+   */
+
+  export type AggregateSyndicationOutbox = {
+    _count: SyndicationOutboxCountAggregateOutputType | null
+    _avg: SyndicationOutboxAvgAggregateOutputType | null
+    _sum: SyndicationOutboxSumAggregateOutputType | null
+    _min: SyndicationOutboxMinAggregateOutputType | null
+    _max: SyndicationOutboxMaxAggregateOutputType | null
+  }
+
+  export type SyndicationOutboxAvgAggregateOutputType = {
+    id: number | null
+    kittenId: number | null
+    attempts: number | null
+  }
+
+  export type SyndicationOutboxSumAggregateOutputType = {
+    id: number | null
+    kittenId: number | null
+    attempts: number | null
+  }
+
+  export type SyndicationOutboxMinAggregateOutputType = {
+    id: number | null
+    eventType: string | null
+    kittenId: number | null
+    availableAt: Date | null
+    attempts: number | null
+    lastError: string | null
+    processedAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type SyndicationOutboxMaxAggregateOutputType = {
+    id: number | null
+    eventType: string | null
+    kittenId: number | null
+    availableAt: Date | null
+    attempts: number | null
+    lastError: string | null
+    processedAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type SyndicationOutboxCountAggregateOutputType = {
+    id: number
+    eventType: number
+    kittenId: number
+    payload: number
+    availableAt: number
+    attempts: number
+    lastError: number
+    processedAt: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type SyndicationOutboxAvgAggregateInputType = {
+    id?: true
+    kittenId?: true
+    attempts?: true
+  }
+
+  export type SyndicationOutboxSumAggregateInputType = {
+    id?: true
+    kittenId?: true
+    attempts?: true
+  }
+
+  export type SyndicationOutboxMinAggregateInputType = {
+    id?: true
+    eventType?: true
+    kittenId?: true
+    availableAt?: true
+    attempts?: true
+    lastError?: true
+    processedAt?: true
+    createdAt?: true
+  }
+
+  export type SyndicationOutboxMaxAggregateInputType = {
+    id?: true
+    eventType?: true
+    kittenId?: true
+    availableAt?: true
+    attempts?: true
+    lastError?: true
+    processedAt?: true
+    createdAt?: true
+  }
+
+  export type SyndicationOutboxCountAggregateInputType = {
+    id?: true
+    eventType?: true
+    kittenId?: true
+    payload?: true
+    availableAt?: true
+    attempts?: true
+    lastError?: true
+    processedAt?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type SyndicationOutboxAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SyndicationOutbox to aggregate.
+     */
+    where?: SyndicationOutboxWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SyndicationOutboxes to fetch.
+     */
+    orderBy?: SyndicationOutboxOrderByWithRelationInput | SyndicationOutboxOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SyndicationOutboxWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SyndicationOutboxes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SyndicationOutboxes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SyndicationOutboxes
+    **/
+    _count?: true | SyndicationOutboxCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SyndicationOutboxAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SyndicationOutboxSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SyndicationOutboxMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SyndicationOutboxMaxAggregateInputType
+  }
+
+  export type GetSyndicationOutboxAggregateType<T extends SyndicationOutboxAggregateArgs> = {
+        [P in keyof T & keyof AggregateSyndicationOutbox]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSyndicationOutbox[P]>
+      : GetScalarType<T[P], AggregateSyndicationOutbox[P]>
+  }
+
+
+
+
+  export type SyndicationOutboxGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SyndicationOutboxWhereInput
+    orderBy?: SyndicationOutboxOrderByWithAggregationInput | SyndicationOutboxOrderByWithAggregationInput[]
+    by: SyndicationOutboxScalarFieldEnum[] | SyndicationOutboxScalarFieldEnum
+    having?: SyndicationOutboxScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SyndicationOutboxCountAggregateInputType | true
+    _avg?: SyndicationOutboxAvgAggregateInputType
+    _sum?: SyndicationOutboxSumAggregateInputType
+    _min?: SyndicationOutboxMinAggregateInputType
+    _max?: SyndicationOutboxMaxAggregateInputType
+  }
+
+  export type SyndicationOutboxGroupByOutputType = {
+    id: number
+    eventType: string
+    kittenId: number | null
+    payload: JsonValue | null
+    availableAt: Date
+    attempts: number
+    lastError: string
+    processedAt: Date | null
+    createdAt: Date
+    _count: SyndicationOutboxCountAggregateOutputType | null
+    _avg: SyndicationOutboxAvgAggregateOutputType | null
+    _sum: SyndicationOutboxSumAggregateOutputType | null
+    _min: SyndicationOutboxMinAggregateOutputType | null
+    _max: SyndicationOutboxMaxAggregateOutputType | null
+  }
+
+  type GetSyndicationOutboxGroupByPayload<T extends SyndicationOutboxGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SyndicationOutboxGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SyndicationOutboxGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SyndicationOutboxGroupByOutputType[P]>
+            : GetScalarType<T[P], SyndicationOutboxGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SyndicationOutboxSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventType?: boolean
+    kittenId?: boolean
+    payload?: boolean
+    availableAt?: boolean
+    attempts?: boolean
+    lastError?: boolean
+    processedAt?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["syndicationOutbox"]>
+
+  export type SyndicationOutboxSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventType?: boolean
+    kittenId?: boolean
+    payload?: boolean
+    availableAt?: boolean
+    attempts?: boolean
+    lastError?: boolean
+    processedAt?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["syndicationOutbox"]>
+
+  export type SyndicationOutboxSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventType?: boolean
+    kittenId?: boolean
+    payload?: boolean
+    availableAt?: boolean
+    attempts?: boolean
+    lastError?: boolean
+    processedAt?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["syndicationOutbox"]>
+
+  export type SyndicationOutboxSelectScalar = {
+    id?: boolean
+    eventType?: boolean
+    kittenId?: boolean
+    payload?: boolean
+    availableAt?: boolean
+    attempts?: boolean
+    lastError?: boolean
+    processedAt?: boolean
+    createdAt?: boolean
+  }
+
+  export type SyndicationOutboxOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventType" | "kittenId" | "payload" | "availableAt" | "attempts" | "lastError" | "processedAt" | "createdAt", ExtArgs["result"]["syndicationOutbox"]>
+
+  export type $SyndicationOutboxPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SyndicationOutbox"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      eventType: string
+      kittenId: number | null
+      payload: Prisma.JsonValue | null
+      availableAt: Date
+      attempts: number
+      lastError: string
+      processedAt: Date | null
+      createdAt: Date
+    }, ExtArgs["result"]["syndicationOutbox"]>
+    composites: {}
+  }
+
+  type SyndicationOutboxGetPayload<S extends boolean | null | undefined | SyndicationOutboxDefaultArgs> = $Result.GetResult<Prisma.$SyndicationOutboxPayload, S>
+
+  type SyndicationOutboxCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SyndicationOutboxFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SyndicationOutboxCountAggregateInputType | true
+    }
+
+  export interface SyndicationOutboxDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SyndicationOutbox'], meta: { name: 'SyndicationOutbox' } }
+    /**
+     * Find zero or one SyndicationOutbox that matches the filter.
+     * @param {SyndicationOutboxFindUniqueArgs} args - Arguments to find a SyndicationOutbox
+     * @example
+     * // Get one SyndicationOutbox
+     * const syndicationOutbox = await prisma.syndicationOutbox.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SyndicationOutboxFindUniqueArgs>(args: SelectSubset<T, SyndicationOutboxFindUniqueArgs<ExtArgs>>): Prisma__SyndicationOutboxClient<$Result.GetResult<Prisma.$SyndicationOutboxPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SyndicationOutbox that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SyndicationOutboxFindUniqueOrThrowArgs} args - Arguments to find a SyndicationOutbox
+     * @example
+     * // Get one SyndicationOutbox
+     * const syndicationOutbox = await prisma.syndicationOutbox.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SyndicationOutboxFindUniqueOrThrowArgs>(args: SelectSubset<T, SyndicationOutboxFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SyndicationOutboxClient<$Result.GetResult<Prisma.$SyndicationOutboxPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SyndicationOutbox that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SyndicationOutboxFindFirstArgs} args - Arguments to find a SyndicationOutbox
+     * @example
+     * // Get one SyndicationOutbox
+     * const syndicationOutbox = await prisma.syndicationOutbox.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SyndicationOutboxFindFirstArgs>(args?: SelectSubset<T, SyndicationOutboxFindFirstArgs<ExtArgs>>): Prisma__SyndicationOutboxClient<$Result.GetResult<Prisma.$SyndicationOutboxPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SyndicationOutbox that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SyndicationOutboxFindFirstOrThrowArgs} args - Arguments to find a SyndicationOutbox
+     * @example
+     * // Get one SyndicationOutbox
+     * const syndicationOutbox = await prisma.syndicationOutbox.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SyndicationOutboxFindFirstOrThrowArgs>(args?: SelectSubset<T, SyndicationOutboxFindFirstOrThrowArgs<ExtArgs>>): Prisma__SyndicationOutboxClient<$Result.GetResult<Prisma.$SyndicationOutboxPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SyndicationOutboxes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SyndicationOutboxFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SyndicationOutboxes
+     * const syndicationOutboxes = await prisma.syndicationOutbox.findMany()
+     * 
+     * // Get first 10 SyndicationOutboxes
+     * const syndicationOutboxes = await prisma.syndicationOutbox.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const syndicationOutboxWithIdOnly = await prisma.syndicationOutbox.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SyndicationOutboxFindManyArgs>(args?: SelectSubset<T, SyndicationOutboxFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SyndicationOutboxPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SyndicationOutbox.
+     * @param {SyndicationOutboxCreateArgs} args - Arguments to create a SyndicationOutbox.
+     * @example
+     * // Create one SyndicationOutbox
+     * const SyndicationOutbox = await prisma.syndicationOutbox.create({
+     *   data: {
+     *     // ... data to create a SyndicationOutbox
+     *   }
+     * })
+     * 
+     */
+    create<T extends SyndicationOutboxCreateArgs>(args: SelectSubset<T, SyndicationOutboxCreateArgs<ExtArgs>>): Prisma__SyndicationOutboxClient<$Result.GetResult<Prisma.$SyndicationOutboxPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SyndicationOutboxes.
+     * @param {SyndicationOutboxCreateManyArgs} args - Arguments to create many SyndicationOutboxes.
+     * @example
+     * // Create many SyndicationOutboxes
+     * const syndicationOutbox = await prisma.syndicationOutbox.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SyndicationOutboxCreateManyArgs>(args?: SelectSubset<T, SyndicationOutboxCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SyndicationOutboxes and returns the data saved in the database.
+     * @param {SyndicationOutboxCreateManyAndReturnArgs} args - Arguments to create many SyndicationOutboxes.
+     * @example
+     * // Create many SyndicationOutboxes
+     * const syndicationOutbox = await prisma.syndicationOutbox.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SyndicationOutboxes and only return the `id`
+     * const syndicationOutboxWithIdOnly = await prisma.syndicationOutbox.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SyndicationOutboxCreateManyAndReturnArgs>(args?: SelectSubset<T, SyndicationOutboxCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SyndicationOutboxPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SyndicationOutbox.
+     * @param {SyndicationOutboxDeleteArgs} args - Arguments to delete one SyndicationOutbox.
+     * @example
+     * // Delete one SyndicationOutbox
+     * const SyndicationOutbox = await prisma.syndicationOutbox.delete({
+     *   where: {
+     *     // ... filter to delete one SyndicationOutbox
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SyndicationOutboxDeleteArgs>(args: SelectSubset<T, SyndicationOutboxDeleteArgs<ExtArgs>>): Prisma__SyndicationOutboxClient<$Result.GetResult<Prisma.$SyndicationOutboxPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SyndicationOutbox.
+     * @param {SyndicationOutboxUpdateArgs} args - Arguments to update one SyndicationOutbox.
+     * @example
+     * // Update one SyndicationOutbox
+     * const syndicationOutbox = await prisma.syndicationOutbox.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SyndicationOutboxUpdateArgs>(args: SelectSubset<T, SyndicationOutboxUpdateArgs<ExtArgs>>): Prisma__SyndicationOutboxClient<$Result.GetResult<Prisma.$SyndicationOutboxPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SyndicationOutboxes.
+     * @param {SyndicationOutboxDeleteManyArgs} args - Arguments to filter SyndicationOutboxes to delete.
+     * @example
+     * // Delete a few SyndicationOutboxes
+     * const { count } = await prisma.syndicationOutbox.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SyndicationOutboxDeleteManyArgs>(args?: SelectSubset<T, SyndicationOutboxDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SyndicationOutboxes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SyndicationOutboxUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SyndicationOutboxes
+     * const syndicationOutbox = await prisma.syndicationOutbox.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SyndicationOutboxUpdateManyArgs>(args: SelectSubset<T, SyndicationOutboxUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SyndicationOutboxes and returns the data updated in the database.
+     * @param {SyndicationOutboxUpdateManyAndReturnArgs} args - Arguments to update many SyndicationOutboxes.
+     * @example
+     * // Update many SyndicationOutboxes
+     * const syndicationOutbox = await prisma.syndicationOutbox.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SyndicationOutboxes and only return the `id`
+     * const syndicationOutboxWithIdOnly = await prisma.syndicationOutbox.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SyndicationOutboxUpdateManyAndReturnArgs>(args: SelectSubset<T, SyndicationOutboxUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SyndicationOutboxPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SyndicationOutbox.
+     * @param {SyndicationOutboxUpsertArgs} args - Arguments to update or create a SyndicationOutbox.
+     * @example
+     * // Update or create a SyndicationOutbox
+     * const syndicationOutbox = await prisma.syndicationOutbox.upsert({
+     *   create: {
+     *     // ... data to create a SyndicationOutbox
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SyndicationOutbox we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SyndicationOutboxUpsertArgs>(args: SelectSubset<T, SyndicationOutboxUpsertArgs<ExtArgs>>): Prisma__SyndicationOutboxClient<$Result.GetResult<Prisma.$SyndicationOutboxPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SyndicationOutboxes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SyndicationOutboxCountArgs} args - Arguments to filter SyndicationOutboxes to count.
+     * @example
+     * // Count the number of SyndicationOutboxes
+     * const count = await prisma.syndicationOutbox.count({
+     *   where: {
+     *     // ... the filter for the SyndicationOutboxes we want to count
+     *   }
+     * })
+    **/
+    count<T extends SyndicationOutboxCountArgs>(
+      args?: Subset<T, SyndicationOutboxCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SyndicationOutboxCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SyndicationOutbox.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SyndicationOutboxAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SyndicationOutboxAggregateArgs>(args: Subset<T, SyndicationOutboxAggregateArgs>): Prisma.PrismaPromise<GetSyndicationOutboxAggregateType<T>>
+
+    /**
+     * Group by SyndicationOutbox.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SyndicationOutboxGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SyndicationOutboxGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SyndicationOutboxGroupByArgs['orderBy'] }
+        : { orderBy?: SyndicationOutboxGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SyndicationOutboxGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSyndicationOutboxGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SyndicationOutbox model
+   */
+  readonly fields: SyndicationOutboxFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SyndicationOutbox.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SyndicationOutboxClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SyndicationOutbox model
+   */
+  interface SyndicationOutboxFieldRefs {
+    readonly id: FieldRef<"SyndicationOutbox", 'Int'>
+    readonly eventType: FieldRef<"SyndicationOutbox", 'String'>
+    readonly kittenId: FieldRef<"SyndicationOutbox", 'Int'>
+    readonly payload: FieldRef<"SyndicationOutbox", 'Json'>
+    readonly availableAt: FieldRef<"SyndicationOutbox", 'DateTime'>
+    readonly attempts: FieldRef<"SyndicationOutbox", 'Int'>
+    readonly lastError: FieldRef<"SyndicationOutbox", 'String'>
+    readonly processedAt: FieldRef<"SyndicationOutbox", 'DateTime'>
+    readonly createdAt: FieldRef<"SyndicationOutbox", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SyndicationOutbox findUnique
+   */
+  export type SyndicationOutboxFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationOutbox
+     */
+    select?: SyndicationOutboxSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationOutbox
+     */
+    omit?: SyndicationOutboxOmit<ExtArgs> | null
+    /**
+     * Filter, which SyndicationOutbox to fetch.
+     */
+    where: SyndicationOutboxWhereUniqueInput
+  }
+
+  /**
+   * SyndicationOutbox findUniqueOrThrow
+   */
+  export type SyndicationOutboxFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationOutbox
+     */
+    select?: SyndicationOutboxSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationOutbox
+     */
+    omit?: SyndicationOutboxOmit<ExtArgs> | null
+    /**
+     * Filter, which SyndicationOutbox to fetch.
+     */
+    where: SyndicationOutboxWhereUniqueInput
+  }
+
+  /**
+   * SyndicationOutbox findFirst
+   */
+  export type SyndicationOutboxFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationOutbox
+     */
+    select?: SyndicationOutboxSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationOutbox
+     */
+    omit?: SyndicationOutboxOmit<ExtArgs> | null
+    /**
+     * Filter, which SyndicationOutbox to fetch.
+     */
+    where?: SyndicationOutboxWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SyndicationOutboxes to fetch.
+     */
+    orderBy?: SyndicationOutboxOrderByWithRelationInput | SyndicationOutboxOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SyndicationOutboxes.
+     */
+    cursor?: SyndicationOutboxWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SyndicationOutboxes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SyndicationOutboxes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SyndicationOutboxes.
+     */
+    distinct?: SyndicationOutboxScalarFieldEnum | SyndicationOutboxScalarFieldEnum[]
+  }
+
+  /**
+   * SyndicationOutbox findFirstOrThrow
+   */
+  export type SyndicationOutboxFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationOutbox
+     */
+    select?: SyndicationOutboxSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationOutbox
+     */
+    omit?: SyndicationOutboxOmit<ExtArgs> | null
+    /**
+     * Filter, which SyndicationOutbox to fetch.
+     */
+    where?: SyndicationOutboxWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SyndicationOutboxes to fetch.
+     */
+    orderBy?: SyndicationOutboxOrderByWithRelationInput | SyndicationOutboxOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SyndicationOutboxes.
+     */
+    cursor?: SyndicationOutboxWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SyndicationOutboxes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SyndicationOutboxes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SyndicationOutboxes.
+     */
+    distinct?: SyndicationOutboxScalarFieldEnum | SyndicationOutboxScalarFieldEnum[]
+  }
+
+  /**
+   * SyndicationOutbox findMany
+   */
+  export type SyndicationOutboxFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationOutbox
+     */
+    select?: SyndicationOutboxSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationOutbox
+     */
+    omit?: SyndicationOutboxOmit<ExtArgs> | null
+    /**
+     * Filter, which SyndicationOutboxes to fetch.
+     */
+    where?: SyndicationOutboxWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SyndicationOutboxes to fetch.
+     */
+    orderBy?: SyndicationOutboxOrderByWithRelationInput | SyndicationOutboxOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SyndicationOutboxes.
+     */
+    cursor?: SyndicationOutboxWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SyndicationOutboxes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SyndicationOutboxes.
+     */
+    skip?: number
+    distinct?: SyndicationOutboxScalarFieldEnum | SyndicationOutboxScalarFieldEnum[]
+  }
+
+  /**
+   * SyndicationOutbox create
+   */
+  export type SyndicationOutboxCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationOutbox
+     */
+    select?: SyndicationOutboxSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationOutbox
+     */
+    omit?: SyndicationOutboxOmit<ExtArgs> | null
+    /**
+     * The data needed to create a SyndicationOutbox.
+     */
+    data: XOR<SyndicationOutboxCreateInput, SyndicationOutboxUncheckedCreateInput>
+  }
+
+  /**
+   * SyndicationOutbox createMany
+   */
+  export type SyndicationOutboxCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SyndicationOutboxes.
+     */
+    data: SyndicationOutboxCreateManyInput | SyndicationOutboxCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SyndicationOutbox createManyAndReturn
+   */
+  export type SyndicationOutboxCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationOutbox
+     */
+    select?: SyndicationOutboxSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationOutbox
+     */
+    omit?: SyndicationOutboxOmit<ExtArgs> | null
+    /**
+     * The data used to create many SyndicationOutboxes.
+     */
+    data: SyndicationOutboxCreateManyInput | SyndicationOutboxCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SyndicationOutbox update
+   */
+  export type SyndicationOutboxUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationOutbox
+     */
+    select?: SyndicationOutboxSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationOutbox
+     */
+    omit?: SyndicationOutboxOmit<ExtArgs> | null
+    /**
+     * The data needed to update a SyndicationOutbox.
+     */
+    data: XOR<SyndicationOutboxUpdateInput, SyndicationOutboxUncheckedUpdateInput>
+    /**
+     * Choose, which SyndicationOutbox to update.
+     */
+    where: SyndicationOutboxWhereUniqueInput
+  }
+
+  /**
+   * SyndicationOutbox updateMany
+   */
+  export type SyndicationOutboxUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SyndicationOutboxes.
+     */
+    data: XOR<SyndicationOutboxUpdateManyMutationInput, SyndicationOutboxUncheckedUpdateManyInput>
+    /**
+     * Filter which SyndicationOutboxes to update
+     */
+    where?: SyndicationOutboxWhereInput
+    /**
+     * Limit how many SyndicationOutboxes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SyndicationOutbox updateManyAndReturn
+   */
+  export type SyndicationOutboxUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationOutbox
+     */
+    select?: SyndicationOutboxSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationOutbox
+     */
+    omit?: SyndicationOutboxOmit<ExtArgs> | null
+    /**
+     * The data used to update SyndicationOutboxes.
+     */
+    data: XOR<SyndicationOutboxUpdateManyMutationInput, SyndicationOutboxUncheckedUpdateManyInput>
+    /**
+     * Filter which SyndicationOutboxes to update
+     */
+    where?: SyndicationOutboxWhereInput
+    /**
+     * Limit how many SyndicationOutboxes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SyndicationOutbox upsert
+   */
+  export type SyndicationOutboxUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationOutbox
+     */
+    select?: SyndicationOutboxSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationOutbox
+     */
+    omit?: SyndicationOutboxOmit<ExtArgs> | null
+    /**
+     * The filter to search for the SyndicationOutbox to update in case it exists.
+     */
+    where: SyndicationOutboxWhereUniqueInput
+    /**
+     * In case the SyndicationOutbox found by the `where` argument doesn't exist, create a new SyndicationOutbox with this data.
+     */
+    create: XOR<SyndicationOutboxCreateInput, SyndicationOutboxUncheckedCreateInput>
+    /**
+     * In case the SyndicationOutbox was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SyndicationOutboxUpdateInput, SyndicationOutboxUncheckedUpdateInput>
+  }
+
+  /**
+   * SyndicationOutbox delete
+   */
+  export type SyndicationOutboxDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationOutbox
+     */
+    select?: SyndicationOutboxSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationOutbox
+     */
+    omit?: SyndicationOutboxOmit<ExtArgs> | null
+    /**
+     * Filter which SyndicationOutbox to delete.
+     */
+    where: SyndicationOutboxWhereUniqueInput
+  }
+
+  /**
+   * SyndicationOutbox deleteMany
+   */
+  export type SyndicationOutboxDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SyndicationOutboxes to delete
+     */
+    where?: SyndicationOutboxWhereInput
+    /**
+     * Limit how many SyndicationOutboxes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SyndicationOutbox without action
+   */
+  export type SyndicationOutboxDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyndicationOutbox
+     */
+    select?: SyndicationOutboxSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SyndicationOutbox
+     */
+    omit?: SyndicationOutboxOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -51974,14 +55631,18 @@ export namespace Prisma {
     notes: 'notes',
     internalNotes: 'internalNotes',
     isListedOnWebsite: 'isListedOnWebsite',
+    isActive: 'isActive',
     websiteFeaturedComment: 'websiteFeaturedComment',
     publishTargets: 'publishTargets',
+    externalId: 'externalId',
+    createdByUserId: 'createdByUserId',
     isBondedPair: 'isBondedPair',
     bondedWithKittenId: 'bondedWithKittenId',
     bondedWithName: 'bondedWithName',
     isMedicalSpecialNeeds: 'isMedicalSpecialNeeds',
     isTnr: 'isTnr',
     isColony: 'isColony',
+    isCommunitySave: 'isCommunitySave',
     currentFosterId: 'currentFosterId',
     createdAt: 'createdAt'
   };
@@ -52294,6 +55955,7 @@ export namespace Prisma {
     description: 'description',
     isSystem: 'isSystem',
     isPortalRole: 'isPortalRole',
+    scopesToOwnCats: 'scopesToOwnCats',
     createdAt: 'createdAt'
   };
 
@@ -52550,12 +56212,65 @@ export namespace Prisma {
   export type SocialPostScalarFieldEnum = (typeof SocialPostScalarFieldEnum)[keyof typeof SocialPostScalarFieldEnum]
 
 
+  export const SyndicationLookupScalarFieldEnum: {
+    id: 'id',
+    kind: 'kind',
+    sourceValue: 'sourceValue',
+    targetValue: 'targetValue',
+    version: 'version'
+  };
+
+  export type SyndicationLookupScalarFieldEnum = (typeof SyndicationLookupScalarFieldEnum)[keyof typeof SyndicationLookupScalarFieldEnum]
+
+
+  export const SyndicationRunScalarFieldEnum: {
+    id: 'id',
+    startedAt: 'startedAt',
+    finishedAt: 'finishedAt',
+    status: 'status',
+    rowCount: 'rowCount',
+    fileHash: 'fileHash',
+    idsAdded: 'idsAdded',
+    idsRemoved: 'idsRemoved',
+    platformResponse: 'platformResponse',
+    errorMessage: 'errorMessage',
+    consecutiveFailures: 'consecutiveFailures',
+    overrideUsed: 'overrideUsed',
+    snapshotPath: 'snapshotPath'
+  };
+
+  export type SyndicationRunScalarFieldEnum = (typeof SyndicationRunScalarFieldEnum)[keyof typeof SyndicationRunScalarFieldEnum]
+
+
+  export const SyndicationOutboxScalarFieldEnum: {
+    id: 'id',
+    eventType: 'eventType',
+    kittenId: 'kittenId',
+    payload: 'payload',
+    availableAt: 'availableAt',
+    attempts: 'attempts',
+    lastError: 'lastError',
+    processedAt: 'processedAt',
+    createdAt: 'createdAt'
+  };
+
+  export type SyndicationOutboxScalarFieldEnum = (typeof SyndicationOutboxScalarFieldEnum)[keyof typeof SyndicationOutboxScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
   };
 
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+  export const NullableJsonNullValueInput: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull
+  };
+
+  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
   export const QueryMode: {
@@ -52572,6 +56287,15 @@ export namespace Prisma {
   };
 
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
   /**
@@ -52822,6 +56546,20 @@ export namespace Prisma {
    */
   export type ListEnumSocialPostStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SocialPostStatus[]'>
     
+
+
+  /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
   /**
    * Deep Input Types
    */
@@ -53028,17 +56766,22 @@ export namespace Prisma {
     notes?: StringFilter<"Kitten"> | string
     internalNotes?: StringFilter<"Kitten"> | string
     isListedOnWebsite?: BoolFilter<"Kitten"> | boolean
+    isActive?: BoolFilter<"Kitten"> | boolean
     websiteFeaturedComment?: StringFilter<"Kitten"> | string
     publishTargets?: StringNullableListFilter<"Kitten">
+    externalId?: StringNullableFilter<"Kitten"> | string | null
+    createdByUserId?: IntNullableFilter<"Kitten"> | number | null
     isBondedPair?: BoolFilter<"Kitten"> | boolean
     bondedWithKittenId?: IntNullableFilter<"Kitten"> | number | null
     bondedWithName?: StringFilter<"Kitten"> | string
     isMedicalSpecialNeeds?: BoolFilter<"Kitten"> | boolean
     isTnr?: BoolFilter<"Kitten"> | boolean
     isColony?: BoolFilter<"Kitten"> | boolean
+    isCommunitySave?: BoolFilter<"Kitten"> | boolean
     currentFosterId?: IntNullableFilter<"Kitten"> | number | null
     createdAt?: DateTimeFilter<"Kitten"> | Date | string
     litter?: XOR<LitterNullableScalarRelationFilter, LitterWhereInput> | null
+    createdByUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     bondedWithKitten?: XOR<KittenNullableScalarRelationFilter, KittenWhereInput> | null
     bondedPartners?: KittenListRelationFilter
     currentFoster?: XOR<FosterNullableScalarRelationFilter, FosterWhereInput> | null
@@ -53080,17 +56823,22 @@ export namespace Prisma {
     notes?: SortOrder
     internalNotes?: SortOrder
     isListedOnWebsite?: SortOrder
+    isActive?: SortOrder
     websiteFeaturedComment?: SortOrder
     publishTargets?: SortOrder
+    externalId?: SortOrderInput | SortOrder
+    createdByUserId?: SortOrderInput | SortOrder
     isBondedPair?: SortOrder
     bondedWithKittenId?: SortOrderInput | SortOrder
     bondedWithName?: SortOrder
     isMedicalSpecialNeeds?: SortOrder
     isTnr?: SortOrder
     isColony?: SortOrder
+    isCommunitySave?: SortOrder
     currentFosterId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     litter?: LitterOrderByWithRelationInput
+    createdByUser?: UserOrderByWithRelationInput
     bondedWithKitten?: KittenOrderByWithRelationInput
     bondedPartners?: KittenOrderByRelationAggregateInput
     currentFoster?: FosterOrderByWithRelationInput
@@ -53110,6 +56858,7 @@ export namespace Prisma {
 
   export type KittenWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    externalId?: string
     AND?: KittenWhereInput | KittenWhereInput[]
     OR?: KittenWhereInput[]
     NOT?: KittenWhereInput | KittenWhereInput[]
@@ -53135,17 +56884,21 @@ export namespace Prisma {
     notes?: StringFilter<"Kitten"> | string
     internalNotes?: StringFilter<"Kitten"> | string
     isListedOnWebsite?: BoolFilter<"Kitten"> | boolean
+    isActive?: BoolFilter<"Kitten"> | boolean
     websiteFeaturedComment?: StringFilter<"Kitten"> | string
     publishTargets?: StringNullableListFilter<"Kitten">
+    createdByUserId?: IntNullableFilter<"Kitten"> | number | null
     isBondedPair?: BoolFilter<"Kitten"> | boolean
     bondedWithKittenId?: IntNullableFilter<"Kitten"> | number | null
     bondedWithName?: StringFilter<"Kitten"> | string
     isMedicalSpecialNeeds?: BoolFilter<"Kitten"> | boolean
     isTnr?: BoolFilter<"Kitten"> | boolean
     isColony?: BoolFilter<"Kitten"> | boolean
+    isCommunitySave?: BoolFilter<"Kitten"> | boolean
     currentFosterId?: IntNullableFilter<"Kitten"> | number | null
     createdAt?: DateTimeFilter<"Kitten"> | Date | string
     litter?: XOR<LitterNullableScalarRelationFilter, LitterWhereInput> | null
+    createdByUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     bondedWithKitten?: XOR<KittenNullableScalarRelationFilter, KittenWhereInput> | null
     bondedPartners?: KittenListRelationFilter
     currentFoster?: XOR<FosterNullableScalarRelationFilter, FosterWhereInput> | null
@@ -53161,7 +56914,7 @@ export namespace Prisma {
     contracts?: ContractListRelationFilter
     activeProtocols?: ActiveProtocolListRelationFilter
     eventCats?: EventCatsListRelationFilter
-  }, "id">
+  }, "id" | "externalId">
 
   export type KittenOrderByWithAggregationInput = {
     id?: SortOrder
@@ -53187,14 +56940,18 @@ export namespace Prisma {
     notes?: SortOrder
     internalNotes?: SortOrder
     isListedOnWebsite?: SortOrder
+    isActive?: SortOrder
     websiteFeaturedComment?: SortOrder
     publishTargets?: SortOrder
+    externalId?: SortOrderInput | SortOrder
+    createdByUserId?: SortOrderInput | SortOrder
     isBondedPair?: SortOrder
     bondedWithKittenId?: SortOrderInput | SortOrder
     bondedWithName?: SortOrder
     isMedicalSpecialNeeds?: SortOrder
     isTnr?: SortOrder
     isColony?: SortOrder
+    isCommunitySave?: SortOrder
     currentFosterId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: KittenCountOrderByAggregateInput
@@ -53231,14 +56988,18 @@ export namespace Prisma {
     notes?: StringWithAggregatesFilter<"Kitten"> | string
     internalNotes?: StringWithAggregatesFilter<"Kitten"> | string
     isListedOnWebsite?: BoolWithAggregatesFilter<"Kitten"> | boolean
+    isActive?: BoolWithAggregatesFilter<"Kitten"> | boolean
     websiteFeaturedComment?: StringWithAggregatesFilter<"Kitten"> | string
     publishTargets?: StringNullableListFilter<"Kitten">
+    externalId?: StringNullableWithAggregatesFilter<"Kitten"> | string | null
+    createdByUserId?: IntNullableWithAggregatesFilter<"Kitten"> | number | null
     isBondedPair?: BoolWithAggregatesFilter<"Kitten"> | boolean
     bondedWithKittenId?: IntNullableWithAggregatesFilter<"Kitten"> | number | null
     bondedWithName?: StringWithAggregatesFilter<"Kitten"> | string
     isMedicalSpecialNeeds?: BoolWithAggregatesFilter<"Kitten"> | boolean
     isTnr?: BoolWithAggregatesFilter<"Kitten"> | boolean
     isColony?: BoolWithAggregatesFilter<"Kitten"> | boolean
+    isCommunitySave?: BoolWithAggregatesFilter<"Kitten"> | boolean
     currentFosterId?: IntNullableWithAggregatesFilter<"Kitten"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"Kitten"> | Date | string
   }
@@ -54832,6 +58593,7 @@ export namespace Prisma {
     description?: StringFilter<"Role"> | string
     isSystem?: BoolFilter<"Role"> | boolean
     isPortalRole?: BoolFilter<"Role"> | boolean
+    scopesToOwnCats?: BoolFilter<"Role"> | boolean
     createdAt?: DateTimeFilter<"Role"> | Date | string
     users?: UserListRelationFilter
     permissions?: RolePermissionListRelationFilter
@@ -54843,6 +58605,7 @@ export namespace Prisma {
     description?: SortOrder
     isSystem?: SortOrder
     isPortalRole?: SortOrder
+    scopesToOwnCats?: SortOrder
     createdAt?: SortOrder
     users?: UserOrderByRelationAggregateInput
     permissions?: RolePermissionOrderByRelationAggregateInput
@@ -54857,6 +58620,7 @@ export namespace Prisma {
     description?: StringFilter<"Role"> | string
     isSystem?: BoolFilter<"Role"> | boolean
     isPortalRole?: BoolFilter<"Role"> | boolean
+    scopesToOwnCats?: BoolFilter<"Role"> | boolean
     createdAt?: DateTimeFilter<"Role"> | Date | string
     users?: UserListRelationFilter
     permissions?: RolePermissionListRelationFilter
@@ -54868,6 +58632,7 @@ export namespace Prisma {
     description?: SortOrder
     isSystem?: SortOrder
     isPortalRole?: SortOrder
+    scopesToOwnCats?: SortOrder
     createdAt?: SortOrder
     _count?: RoleCountOrderByAggregateInput
     _avg?: RoleAvgOrderByAggregateInput
@@ -54885,6 +58650,7 @@ export namespace Prisma {
     description?: StringWithAggregatesFilter<"Role"> | string
     isSystem?: BoolWithAggregatesFilter<"Role"> | boolean
     isPortalRole?: BoolWithAggregatesFilter<"Role"> | boolean
+    scopesToOwnCats?: BoolWithAggregatesFilter<"Role"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Role"> | Date | string
   }
 
@@ -55009,6 +58775,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolListRelationFilter
     administeredProtocolDoses?: ProtocolDoseListRelationFilter
     passwordResetTokens?: PasswordResetTokenListRelationFilter
+    createdKittens?: KittenListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -55031,6 +58798,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolOrderByRelationAggregateInput
     administeredProtocolDoses?: ProtocolDoseOrderByRelationAggregateInput
     passwordResetTokens?: PasswordResetTokenOrderByRelationAggregateInput
+    createdKittens?: KittenOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -55056,6 +58824,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolListRelationFilter
     administeredProtocolDoses?: ProtocolDoseListRelationFilter
     passwordResetTokens?: PasswordResetTokenListRelationFilter
+    createdKittens?: KittenListRelationFilter
   }, "id" | "email" | "fosterId">
 
   export type UserOrderByWithAggregationInput = {
@@ -56220,6 +59989,229 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"SocialPost"> | Date | string
   }
 
+  export type SyndicationLookupWhereInput = {
+    AND?: SyndicationLookupWhereInput | SyndicationLookupWhereInput[]
+    OR?: SyndicationLookupWhereInput[]
+    NOT?: SyndicationLookupWhereInput | SyndicationLookupWhereInput[]
+    id?: IntFilter<"SyndicationLookup"> | number
+    kind?: StringFilter<"SyndicationLookup"> | string
+    sourceValue?: StringFilter<"SyndicationLookup"> | string
+    targetValue?: StringFilter<"SyndicationLookup"> | string
+    version?: IntFilter<"SyndicationLookup"> | number
+  }
+
+  export type SyndicationLookupOrderByWithRelationInput = {
+    id?: SortOrder
+    kind?: SortOrder
+    sourceValue?: SortOrder
+    targetValue?: SortOrder
+    version?: SortOrder
+  }
+
+  export type SyndicationLookupWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    kind_sourceValue_version?: SyndicationLookupKindSourceValueVersionCompoundUniqueInput
+    AND?: SyndicationLookupWhereInput | SyndicationLookupWhereInput[]
+    OR?: SyndicationLookupWhereInput[]
+    NOT?: SyndicationLookupWhereInput | SyndicationLookupWhereInput[]
+    kind?: StringFilter<"SyndicationLookup"> | string
+    sourceValue?: StringFilter<"SyndicationLookup"> | string
+    targetValue?: StringFilter<"SyndicationLookup"> | string
+    version?: IntFilter<"SyndicationLookup"> | number
+  }, "id" | "kind_sourceValue_version">
+
+  export type SyndicationLookupOrderByWithAggregationInput = {
+    id?: SortOrder
+    kind?: SortOrder
+    sourceValue?: SortOrder
+    targetValue?: SortOrder
+    version?: SortOrder
+    _count?: SyndicationLookupCountOrderByAggregateInput
+    _avg?: SyndicationLookupAvgOrderByAggregateInput
+    _max?: SyndicationLookupMaxOrderByAggregateInput
+    _min?: SyndicationLookupMinOrderByAggregateInput
+    _sum?: SyndicationLookupSumOrderByAggregateInput
+  }
+
+  export type SyndicationLookupScalarWhereWithAggregatesInput = {
+    AND?: SyndicationLookupScalarWhereWithAggregatesInput | SyndicationLookupScalarWhereWithAggregatesInput[]
+    OR?: SyndicationLookupScalarWhereWithAggregatesInput[]
+    NOT?: SyndicationLookupScalarWhereWithAggregatesInput | SyndicationLookupScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"SyndicationLookup"> | number
+    kind?: StringWithAggregatesFilter<"SyndicationLookup"> | string
+    sourceValue?: StringWithAggregatesFilter<"SyndicationLookup"> | string
+    targetValue?: StringWithAggregatesFilter<"SyndicationLookup"> | string
+    version?: IntWithAggregatesFilter<"SyndicationLookup"> | number
+  }
+
+  export type SyndicationRunWhereInput = {
+    AND?: SyndicationRunWhereInput | SyndicationRunWhereInput[]
+    OR?: SyndicationRunWhereInput[]
+    NOT?: SyndicationRunWhereInput | SyndicationRunWhereInput[]
+    id?: IntFilter<"SyndicationRun"> | number
+    startedAt?: DateTimeFilter<"SyndicationRun"> | Date | string
+    finishedAt?: DateTimeNullableFilter<"SyndicationRun"> | Date | string | null
+    status?: StringFilter<"SyndicationRun"> | string
+    rowCount?: IntFilter<"SyndicationRun"> | number
+    fileHash?: StringFilter<"SyndicationRun"> | string
+    idsAdded?: StringNullableListFilter<"SyndicationRun">
+    idsRemoved?: StringNullableListFilter<"SyndicationRun">
+    platformResponse?: StringFilter<"SyndicationRun"> | string
+    errorMessage?: StringFilter<"SyndicationRun"> | string
+    consecutiveFailures?: IntFilter<"SyndicationRun"> | number
+    overrideUsed?: BoolFilter<"SyndicationRun"> | boolean
+    snapshotPath?: StringFilter<"SyndicationRun"> | string
+  }
+
+  export type SyndicationRunOrderByWithRelationInput = {
+    id?: SortOrder
+    startedAt?: SortOrder
+    finishedAt?: SortOrderInput | SortOrder
+    status?: SortOrder
+    rowCount?: SortOrder
+    fileHash?: SortOrder
+    idsAdded?: SortOrder
+    idsRemoved?: SortOrder
+    platformResponse?: SortOrder
+    errorMessage?: SortOrder
+    consecutiveFailures?: SortOrder
+    overrideUsed?: SortOrder
+    snapshotPath?: SortOrder
+  }
+
+  export type SyndicationRunWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: SyndicationRunWhereInput | SyndicationRunWhereInput[]
+    OR?: SyndicationRunWhereInput[]
+    NOT?: SyndicationRunWhereInput | SyndicationRunWhereInput[]
+    startedAt?: DateTimeFilter<"SyndicationRun"> | Date | string
+    finishedAt?: DateTimeNullableFilter<"SyndicationRun"> | Date | string | null
+    status?: StringFilter<"SyndicationRun"> | string
+    rowCount?: IntFilter<"SyndicationRun"> | number
+    fileHash?: StringFilter<"SyndicationRun"> | string
+    idsAdded?: StringNullableListFilter<"SyndicationRun">
+    idsRemoved?: StringNullableListFilter<"SyndicationRun">
+    platformResponse?: StringFilter<"SyndicationRun"> | string
+    errorMessage?: StringFilter<"SyndicationRun"> | string
+    consecutiveFailures?: IntFilter<"SyndicationRun"> | number
+    overrideUsed?: BoolFilter<"SyndicationRun"> | boolean
+    snapshotPath?: StringFilter<"SyndicationRun"> | string
+  }, "id">
+
+  export type SyndicationRunOrderByWithAggregationInput = {
+    id?: SortOrder
+    startedAt?: SortOrder
+    finishedAt?: SortOrderInput | SortOrder
+    status?: SortOrder
+    rowCount?: SortOrder
+    fileHash?: SortOrder
+    idsAdded?: SortOrder
+    idsRemoved?: SortOrder
+    platformResponse?: SortOrder
+    errorMessage?: SortOrder
+    consecutiveFailures?: SortOrder
+    overrideUsed?: SortOrder
+    snapshotPath?: SortOrder
+    _count?: SyndicationRunCountOrderByAggregateInput
+    _avg?: SyndicationRunAvgOrderByAggregateInput
+    _max?: SyndicationRunMaxOrderByAggregateInput
+    _min?: SyndicationRunMinOrderByAggregateInput
+    _sum?: SyndicationRunSumOrderByAggregateInput
+  }
+
+  export type SyndicationRunScalarWhereWithAggregatesInput = {
+    AND?: SyndicationRunScalarWhereWithAggregatesInput | SyndicationRunScalarWhereWithAggregatesInput[]
+    OR?: SyndicationRunScalarWhereWithAggregatesInput[]
+    NOT?: SyndicationRunScalarWhereWithAggregatesInput | SyndicationRunScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"SyndicationRun"> | number
+    startedAt?: DateTimeWithAggregatesFilter<"SyndicationRun"> | Date | string
+    finishedAt?: DateTimeNullableWithAggregatesFilter<"SyndicationRun"> | Date | string | null
+    status?: StringWithAggregatesFilter<"SyndicationRun"> | string
+    rowCount?: IntWithAggregatesFilter<"SyndicationRun"> | number
+    fileHash?: StringWithAggregatesFilter<"SyndicationRun"> | string
+    idsAdded?: StringNullableListFilter<"SyndicationRun">
+    idsRemoved?: StringNullableListFilter<"SyndicationRun">
+    platformResponse?: StringWithAggregatesFilter<"SyndicationRun"> | string
+    errorMessage?: StringWithAggregatesFilter<"SyndicationRun"> | string
+    consecutiveFailures?: IntWithAggregatesFilter<"SyndicationRun"> | number
+    overrideUsed?: BoolWithAggregatesFilter<"SyndicationRun"> | boolean
+    snapshotPath?: StringWithAggregatesFilter<"SyndicationRun"> | string
+  }
+
+  export type SyndicationOutboxWhereInput = {
+    AND?: SyndicationOutboxWhereInput | SyndicationOutboxWhereInput[]
+    OR?: SyndicationOutboxWhereInput[]
+    NOT?: SyndicationOutboxWhereInput | SyndicationOutboxWhereInput[]
+    id?: IntFilter<"SyndicationOutbox"> | number
+    eventType?: StringFilter<"SyndicationOutbox"> | string
+    kittenId?: IntNullableFilter<"SyndicationOutbox"> | number | null
+    payload?: JsonNullableFilter<"SyndicationOutbox">
+    availableAt?: DateTimeFilter<"SyndicationOutbox"> | Date | string
+    attempts?: IntFilter<"SyndicationOutbox"> | number
+    lastError?: StringFilter<"SyndicationOutbox"> | string
+    processedAt?: DateTimeNullableFilter<"SyndicationOutbox"> | Date | string | null
+    createdAt?: DateTimeFilter<"SyndicationOutbox"> | Date | string
+  }
+
+  export type SyndicationOutboxOrderByWithRelationInput = {
+    id?: SortOrder
+    eventType?: SortOrder
+    kittenId?: SortOrderInput | SortOrder
+    payload?: SortOrderInput | SortOrder
+    availableAt?: SortOrder
+    attempts?: SortOrder
+    lastError?: SortOrder
+    processedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SyndicationOutboxWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: SyndicationOutboxWhereInput | SyndicationOutboxWhereInput[]
+    OR?: SyndicationOutboxWhereInput[]
+    NOT?: SyndicationOutboxWhereInput | SyndicationOutboxWhereInput[]
+    eventType?: StringFilter<"SyndicationOutbox"> | string
+    kittenId?: IntNullableFilter<"SyndicationOutbox"> | number | null
+    payload?: JsonNullableFilter<"SyndicationOutbox">
+    availableAt?: DateTimeFilter<"SyndicationOutbox"> | Date | string
+    attempts?: IntFilter<"SyndicationOutbox"> | number
+    lastError?: StringFilter<"SyndicationOutbox"> | string
+    processedAt?: DateTimeNullableFilter<"SyndicationOutbox"> | Date | string | null
+    createdAt?: DateTimeFilter<"SyndicationOutbox"> | Date | string
+  }, "id">
+
+  export type SyndicationOutboxOrderByWithAggregationInput = {
+    id?: SortOrder
+    eventType?: SortOrder
+    kittenId?: SortOrderInput | SortOrder
+    payload?: SortOrderInput | SortOrder
+    availableAt?: SortOrder
+    attempts?: SortOrder
+    lastError?: SortOrder
+    processedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: SyndicationOutboxCountOrderByAggregateInput
+    _avg?: SyndicationOutboxAvgOrderByAggregateInput
+    _max?: SyndicationOutboxMaxOrderByAggregateInput
+    _min?: SyndicationOutboxMinOrderByAggregateInput
+    _sum?: SyndicationOutboxSumOrderByAggregateInput
+  }
+
+  export type SyndicationOutboxScalarWhereWithAggregatesInput = {
+    AND?: SyndicationOutboxScalarWhereWithAggregatesInput | SyndicationOutboxScalarWhereWithAggregatesInput[]
+    OR?: SyndicationOutboxScalarWhereWithAggregatesInput[]
+    NOT?: SyndicationOutboxScalarWhereWithAggregatesInput | SyndicationOutboxScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"SyndicationOutbox"> | number
+    eventType?: StringWithAggregatesFilter<"SyndicationOutbox"> | string
+    kittenId?: IntNullableWithAggregatesFilter<"SyndicationOutbox"> | number | null
+    payload?: JsonNullableWithAggregatesFilter<"SyndicationOutbox">
+    availableAt?: DateTimeWithAggregatesFilter<"SyndicationOutbox"> | Date | string
+    attempts?: IntWithAggregatesFilter<"SyndicationOutbox"> | number
+    lastError?: StringWithAggregatesFilter<"SyndicationOutbox"> | string
+    processedAt?: DateTimeNullableWithAggregatesFilter<"SyndicationOutbox"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"SyndicationOutbox"> | Date | string
+  }
+
   export type LitterCreateInput = {
     name: string
     intakeDate?: Date | string | null
@@ -56434,15 +60426,19 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
     bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -56484,14 +60480,18 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
+    createdByUserId?: number | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -56531,15 +60531,19 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
     bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -56581,14 +60585,18 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: NullableIntFieldUpdateOperationsInput | number | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -56630,14 +60638,18 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
+    createdByUserId?: number | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
   }
@@ -56664,13 +60676,16 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -56698,14 +60713,18 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: NullableIntFieldUpdateOperationsInput | number | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -58349,6 +62368,7 @@ export namespace Prisma {
     description?: string
     isSystem?: boolean
     isPortalRole?: boolean
+    scopesToOwnCats?: boolean
     createdAt?: Date | string
     users?: UserCreateNestedManyWithoutRoleInput
     permissions?: RolePermissionCreateNestedManyWithoutRoleInput
@@ -58360,6 +62380,7 @@ export namespace Prisma {
     description?: string
     isSystem?: boolean
     isPortalRole?: boolean
+    scopesToOwnCats?: boolean
     createdAt?: Date | string
     users?: UserUncheckedCreateNestedManyWithoutRoleInput
     permissions?: RolePermissionUncheckedCreateNestedManyWithoutRoleInput
@@ -58370,6 +62391,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     isSystem?: BoolFieldUpdateOperationsInput | boolean
     isPortalRole?: BoolFieldUpdateOperationsInput | boolean
+    scopesToOwnCats?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUpdateManyWithoutRoleNestedInput
     permissions?: RolePermissionUpdateManyWithoutRoleNestedInput
@@ -58381,6 +62403,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     isSystem?: BoolFieldUpdateOperationsInput | boolean
     isPortalRole?: BoolFieldUpdateOperationsInput | boolean
+    scopesToOwnCats?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUncheckedUpdateManyWithoutRoleNestedInput
     permissions?: RolePermissionUncheckedUpdateManyWithoutRoleNestedInput
@@ -58392,6 +62415,7 @@ export namespace Prisma {
     description?: string
     isSystem?: boolean
     isPortalRole?: boolean
+    scopesToOwnCats?: boolean
     createdAt?: Date | string
   }
 
@@ -58400,6 +62424,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     isSystem?: BoolFieldUpdateOperationsInput | boolean
     isPortalRole?: BoolFieldUpdateOperationsInput | boolean
+    scopesToOwnCats?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -58409,6 +62434,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     isSystem?: BoolFieldUpdateOperationsInput | boolean
     isPortalRole?: BoolFieldUpdateOperationsInput | boolean
+    scopesToOwnCats?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -58513,6 +62539,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    createdKittens?: KittenCreateNestedManyWithoutCreatedByUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -58533,6 +62560,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    createdKittens?: KittenUncheckedCreateNestedManyWithoutCreatedByUserInput
   }
 
   export type UserUpdateInput = {
@@ -58552,6 +62580,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    createdKittens?: KittenUpdateManyWithoutCreatedByUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -58572,6 +62601,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    createdKittens?: KittenUncheckedUpdateManyWithoutCreatedByUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -59843,6 +63873,249 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type SyndicationLookupCreateInput = {
+    kind: string
+    sourceValue: string
+    targetValue: string
+    version?: number
+  }
+
+  export type SyndicationLookupUncheckedCreateInput = {
+    id?: number
+    kind: string
+    sourceValue: string
+    targetValue: string
+    version?: number
+  }
+
+  export type SyndicationLookupUpdateInput = {
+    kind?: StringFieldUpdateOperationsInput | string
+    sourceValue?: StringFieldUpdateOperationsInput | string
+    targetValue?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type SyndicationLookupUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    kind?: StringFieldUpdateOperationsInput | string
+    sourceValue?: StringFieldUpdateOperationsInput | string
+    targetValue?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type SyndicationLookupCreateManyInput = {
+    id?: number
+    kind: string
+    sourceValue: string
+    targetValue: string
+    version?: number
+  }
+
+  export type SyndicationLookupUpdateManyMutationInput = {
+    kind?: StringFieldUpdateOperationsInput | string
+    sourceValue?: StringFieldUpdateOperationsInput | string
+    targetValue?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type SyndicationLookupUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    kind?: StringFieldUpdateOperationsInput | string
+    sourceValue?: StringFieldUpdateOperationsInput | string
+    targetValue?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type SyndicationRunCreateInput = {
+    startedAt?: Date | string
+    finishedAt?: Date | string | null
+    status?: string
+    rowCount?: number
+    fileHash?: string
+    idsAdded?: SyndicationRunCreateidsAddedInput | string[]
+    idsRemoved?: SyndicationRunCreateidsRemovedInput | string[]
+    platformResponse?: string
+    errorMessage?: string
+    consecutiveFailures?: number
+    overrideUsed?: boolean
+    snapshotPath?: string
+  }
+
+  export type SyndicationRunUncheckedCreateInput = {
+    id?: number
+    startedAt?: Date | string
+    finishedAt?: Date | string | null
+    status?: string
+    rowCount?: number
+    fileHash?: string
+    idsAdded?: SyndicationRunCreateidsAddedInput | string[]
+    idsRemoved?: SyndicationRunCreateidsRemovedInput | string[]
+    platformResponse?: string
+    errorMessage?: string
+    consecutiveFailures?: number
+    overrideUsed?: boolean
+    snapshotPath?: string
+  }
+
+  export type SyndicationRunUpdateInput = {
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    rowCount?: IntFieldUpdateOperationsInput | number
+    fileHash?: StringFieldUpdateOperationsInput | string
+    idsAdded?: SyndicationRunUpdateidsAddedInput | string[]
+    idsRemoved?: SyndicationRunUpdateidsRemovedInput | string[]
+    platformResponse?: StringFieldUpdateOperationsInput | string
+    errorMessage?: StringFieldUpdateOperationsInput | string
+    consecutiveFailures?: IntFieldUpdateOperationsInput | number
+    overrideUsed?: BoolFieldUpdateOperationsInput | boolean
+    snapshotPath?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SyndicationRunUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    rowCount?: IntFieldUpdateOperationsInput | number
+    fileHash?: StringFieldUpdateOperationsInput | string
+    idsAdded?: SyndicationRunUpdateidsAddedInput | string[]
+    idsRemoved?: SyndicationRunUpdateidsRemovedInput | string[]
+    platformResponse?: StringFieldUpdateOperationsInput | string
+    errorMessage?: StringFieldUpdateOperationsInput | string
+    consecutiveFailures?: IntFieldUpdateOperationsInput | number
+    overrideUsed?: BoolFieldUpdateOperationsInput | boolean
+    snapshotPath?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SyndicationRunCreateManyInput = {
+    id?: number
+    startedAt?: Date | string
+    finishedAt?: Date | string | null
+    status?: string
+    rowCount?: number
+    fileHash?: string
+    idsAdded?: SyndicationRunCreateidsAddedInput | string[]
+    idsRemoved?: SyndicationRunCreateidsRemovedInput | string[]
+    platformResponse?: string
+    errorMessage?: string
+    consecutiveFailures?: number
+    overrideUsed?: boolean
+    snapshotPath?: string
+  }
+
+  export type SyndicationRunUpdateManyMutationInput = {
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    rowCount?: IntFieldUpdateOperationsInput | number
+    fileHash?: StringFieldUpdateOperationsInput | string
+    idsAdded?: SyndicationRunUpdateidsAddedInput | string[]
+    idsRemoved?: SyndicationRunUpdateidsRemovedInput | string[]
+    platformResponse?: StringFieldUpdateOperationsInput | string
+    errorMessage?: StringFieldUpdateOperationsInput | string
+    consecutiveFailures?: IntFieldUpdateOperationsInput | number
+    overrideUsed?: BoolFieldUpdateOperationsInput | boolean
+    snapshotPath?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SyndicationRunUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    rowCount?: IntFieldUpdateOperationsInput | number
+    fileHash?: StringFieldUpdateOperationsInput | string
+    idsAdded?: SyndicationRunUpdateidsAddedInput | string[]
+    idsRemoved?: SyndicationRunUpdateidsRemovedInput | string[]
+    platformResponse?: StringFieldUpdateOperationsInput | string
+    errorMessage?: StringFieldUpdateOperationsInput | string
+    consecutiveFailures?: IntFieldUpdateOperationsInput | number
+    overrideUsed?: BoolFieldUpdateOperationsInput | boolean
+    snapshotPath?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SyndicationOutboxCreateInput = {
+    eventType: string
+    kittenId?: number | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    availableAt?: Date | string
+    attempts?: number
+    lastError?: string
+    processedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type SyndicationOutboxUncheckedCreateInput = {
+    id?: number
+    eventType: string
+    kittenId?: number | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    availableAt?: Date | string
+    attempts?: number
+    lastError?: string
+    processedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type SyndicationOutboxUpdateInput = {
+    eventType?: StringFieldUpdateOperationsInput | string
+    kittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    availableAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attempts?: IntFieldUpdateOperationsInput | number
+    lastError?: StringFieldUpdateOperationsInput | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SyndicationOutboxUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    eventType?: StringFieldUpdateOperationsInput | string
+    kittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    availableAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attempts?: IntFieldUpdateOperationsInput | number
+    lastError?: StringFieldUpdateOperationsInput | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SyndicationOutboxCreateManyInput = {
+    id?: number
+    eventType: string
+    kittenId?: number | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    availableAt?: Date | string
+    attempts?: number
+    lastError?: string
+    processedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type SyndicationOutboxUpdateManyMutationInput = {
+    eventType?: StringFieldUpdateOperationsInput | string
+    kittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    availableAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attempts?: IntFieldUpdateOperationsInput | number
+    lastError?: StringFieldUpdateOperationsInput | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SyndicationOutboxUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    eventType?: StringFieldUpdateOperationsInput | string
+    kittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    availableAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attempts?: IntFieldUpdateOperationsInput | number
+    lastError?: StringFieldUpdateOperationsInput | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -60313,14 +64586,18 @@ export namespace Prisma {
     notes?: SortOrder
     internalNotes?: SortOrder
     isListedOnWebsite?: SortOrder
+    isActive?: SortOrder
     websiteFeaturedComment?: SortOrder
     publishTargets?: SortOrder
+    externalId?: SortOrder
+    createdByUserId?: SortOrder
     isBondedPair?: SortOrder
     bondedWithKittenId?: SortOrder
     bondedWithName?: SortOrder
     isMedicalSpecialNeeds?: SortOrder
     isTnr?: SortOrder
     isColony?: SortOrder
+    isCommunitySave?: SortOrder
     currentFosterId?: SortOrder
     createdAt?: SortOrder
   }
@@ -60328,6 +64605,7 @@ export namespace Prisma {
   export type KittenAvgOrderByAggregateInput = {
     id?: SortOrder
     litterId?: SortOrder
+    createdByUserId?: SortOrder
     bondedWithKittenId?: SortOrder
     currentFosterId?: SortOrder
   }
@@ -60356,13 +64634,17 @@ export namespace Prisma {
     notes?: SortOrder
     internalNotes?: SortOrder
     isListedOnWebsite?: SortOrder
+    isActive?: SortOrder
     websiteFeaturedComment?: SortOrder
+    externalId?: SortOrder
+    createdByUserId?: SortOrder
     isBondedPair?: SortOrder
     bondedWithKittenId?: SortOrder
     bondedWithName?: SortOrder
     isMedicalSpecialNeeds?: SortOrder
     isTnr?: SortOrder
     isColony?: SortOrder
+    isCommunitySave?: SortOrder
     currentFosterId?: SortOrder
     createdAt?: SortOrder
   }
@@ -60391,13 +64673,17 @@ export namespace Prisma {
     notes?: SortOrder
     internalNotes?: SortOrder
     isListedOnWebsite?: SortOrder
+    isActive?: SortOrder
     websiteFeaturedComment?: SortOrder
+    externalId?: SortOrder
+    createdByUserId?: SortOrder
     isBondedPair?: SortOrder
     bondedWithKittenId?: SortOrder
     bondedWithName?: SortOrder
     isMedicalSpecialNeeds?: SortOrder
     isTnr?: SortOrder
     isColony?: SortOrder
+    isCommunitySave?: SortOrder
     currentFosterId?: SortOrder
     createdAt?: SortOrder
   }
@@ -60405,6 +64691,7 @@ export namespace Prisma {
   export type KittenSumOrderByAggregateInput = {
     id?: SortOrder
     litterId?: SortOrder
+    createdByUserId?: SortOrder
     bondedWithKittenId?: SortOrder
     currentFosterId?: SortOrder
   }
@@ -61590,6 +65877,7 @@ export namespace Prisma {
     description?: SortOrder
     isSystem?: SortOrder
     isPortalRole?: SortOrder
+    scopesToOwnCats?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -61603,6 +65891,7 @@ export namespace Prisma {
     description?: SortOrder
     isSystem?: SortOrder
     isPortalRole?: SortOrder
+    scopesToOwnCats?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -61612,6 +65901,7 @@ export namespace Prisma {
     description?: SortOrder
     isSystem?: SortOrder
     isPortalRole?: SortOrder
+    scopesToOwnCats?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -62659,6 +66949,197 @@ export namespace Prisma {
     _max?: NestedEnumSocialPostStatusFilter<$PrismaModel>
   }
 
+  export type SyndicationLookupKindSourceValueVersionCompoundUniqueInput = {
+    kind: string
+    sourceValue: string
+    version: number
+  }
+
+  export type SyndicationLookupCountOrderByAggregateInput = {
+    id?: SortOrder
+    kind?: SortOrder
+    sourceValue?: SortOrder
+    targetValue?: SortOrder
+    version?: SortOrder
+  }
+
+  export type SyndicationLookupAvgOrderByAggregateInput = {
+    id?: SortOrder
+    version?: SortOrder
+  }
+
+  export type SyndicationLookupMaxOrderByAggregateInput = {
+    id?: SortOrder
+    kind?: SortOrder
+    sourceValue?: SortOrder
+    targetValue?: SortOrder
+    version?: SortOrder
+  }
+
+  export type SyndicationLookupMinOrderByAggregateInput = {
+    id?: SortOrder
+    kind?: SortOrder
+    sourceValue?: SortOrder
+    targetValue?: SortOrder
+    version?: SortOrder
+  }
+
+  export type SyndicationLookupSumOrderByAggregateInput = {
+    id?: SortOrder
+    version?: SortOrder
+  }
+
+  export type SyndicationRunCountOrderByAggregateInput = {
+    id?: SortOrder
+    startedAt?: SortOrder
+    finishedAt?: SortOrder
+    status?: SortOrder
+    rowCount?: SortOrder
+    fileHash?: SortOrder
+    idsAdded?: SortOrder
+    idsRemoved?: SortOrder
+    platformResponse?: SortOrder
+    errorMessage?: SortOrder
+    consecutiveFailures?: SortOrder
+    overrideUsed?: SortOrder
+    snapshotPath?: SortOrder
+  }
+
+  export type SyndicationRunAvgOrderByAggregateInput = {
+    id?: SortOrder
+    rowCount?: SortOrder
+    consecutiveFailures?: SortOrder
+  }
+
+  export type SyndicationRunMaxOrderByAggregateInput = {
+    id?: SortOrder
+    startedAt?: SortOrder
+    finishedAt?: SortOrder
+    status?: SortOrder
+    rowCount?: SortOrder
+    fileHash?: SortOrder
+    platformResponse?: SortOrder
+    errorMessage?: SortOrder
+    consecutiveFailures?: SortOrder
+    overrideUsed?: SortOrder
+    snapshotPath?: SortOrder
+  }
+
+  export type SyndicationRunMinOrderByAggregateInput = {
+    id?: SortOrder
+    startedAt?: SortOrder
+    finishedAt?: SortOrder
+    status?: SortOrder
+    rowCount?: SortOrder
+    fileHash?: SortOrder
+    platformResponse?: SortOrder
+    errorMessage?: SortOrder
+    consecutiveFailures?: SortOrder
+    overrideUsed?: SortOrder
+    snapshotPath?: SortOrder
+  }
+
+  export type SyndicationRunSumOrderByAggregateInput = {
+    id?: SortOrder
+    rowCount?: SortOrder
+    consecutiveFailures?: SortOrder
+  }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type SyndicationOutboxCountOrderByAggregateInput = {
+    id?: SortOrder
+    eventType?: SortOrder
+    kittenId?: SortOrder
+    payload?: SortOrder
+    availableAt?: SortOrder
+    attempts?: SortOrder
+    lastError?: SortOrder
+    processedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SyndicationOutboxAvgOrderByAggregateInput = {
+    id?: SortOrder
+    kittenId?: SortOrder
+    attempts?: SortOrder
+  }
+
+  export type SyndicationOutboxMaxOrderByAggregateInput = {
+    id?: SortOrder
+    eventType?: SortOrder
+    kittenId?: SortOrder
+    availableAt?: SortOrder
+    attempts?: SortOrder
+    lastError?: SortOrder
+    processedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SyndicationOutboxMinOrderByAggregateInput = {
+    id?: SortOrder
+    eventType?: SortOrder
+    kittenId?: SortOrder
+    availableAt?: SortOrder
+    attempts?: SortOrder
+    lastError?: SortOrder
+    processedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SyndicationOutboxSumOrderByAggregateInput = {
+    id?: SortOrder
+    kittenId?: SortOrder
+    attempts?: SortOrder
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
+  }
+
   export type KittenCreateNestedManyWithoutLitterInput = {
     create?: XOR<KittenCreateWithoutLitterInput, KittenUncheckedCreateWithoutLitterInput> | KittenCreateWithoutLitterInput[] | KittenUncheckedCreateWithoutLitterInput[]
     connectOrCreate?: KittenCreateOrConnectWithoutLitterInput | KittenCreateOrConnectWithoutLitterInput[]
@@ -62963,6 +67444,12 @@ export namespace Prisma {
     connect?: LitterWhereUniqueInput
   }
 
+  export type UserCreateNestedOneWithoutCreatedKittensInput = {
+    create?: XOR<UserCreateWithoutCreatedKittensInput, UserUncheckedCreateWithoutCreatedKittensInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedKittensInput
+    connect?: UserWhereUniqueInput
+  }
+
   export type KittenCreateNestedOneWithoutBondedPartnersInput = {
     create?: XOR<KittenCreateWithoutBondedPartnersInput, KittenUncheckedCreateWithoutBondedPartnersInput>
     connectOrCreate?: KittenCreateOrConnectWithoutBondedPartnersInput
@@ -63170,6 +67657,16 @@ export namespace Prisma {
     delete?: LitterWhereInput | boolean
     connect?: LitterWhereUniqueInput
     update?: XOR<XOR<LitterUpdateToOneWithWhereWithoutKittensInput, LitterUpdateWithoutKittensInput>, LitterUncheckedUpdateWithoutKittensInput>
+  }
+
+  export type UserUpdateOneWithoutCreatedKittensNestedInput = {
+    create?: XOR<UserCreateWithoutCreatedKittensInput, UserUncheckedCreateWithoutCreatedKittensInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedKittensInput
+    upsert?: UserUpsertWithoutCreatedKittensInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCreatedKittensInput, UserUpdateWithoutCreatedKittensInput>, UserUncheckedUpdateWithoutCreatedKittensInput>
   }
 
   export type KittenUpdateOneWithoutBondedPartnersNestedInput = {
@@ -64611,6 +69108,13 @@ export namespace Prisma {
     connect?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
   }
 
+  export type KittenCreateNestedManyWithoutCreatedByUserInput = {
+    create?: XOR<KittenCreateWithoutCreatedByUserInput, KittenUncheckedCreateWithoutCreatedByUserInput> | KittenCreateWithoutCreatedByUserInput[] | KittenUncheckedCreateWithoutCreatedByUserInput[]
+    connectOrCreate?: KittenCreateOrConnectWithoutCreatedByUserInput | KittenCreateOrConnectWithoutCreatedByUserInput[]
+    createMany?: KittenCreateManyCreatedByUserInputEnvelope
+    connect?: KittenWhereUniqueInput | KittenWhereUniqueInput[]
+  }
+
   export type ApplicationUncheckedCreateNestedManyWithoutRejectedByInput = {
     create?: XOR<ApplicationCreateWithoutRejectedByInput, ApplicationUncheckedCreateWithoutRejectedByInput> | ApplicationCreateWithoutRejectedByInput[] | ApplicationUncheckedCreateWithoutRejectedByInput[]
     connectOrCreate?: ApplicationCreateOrConnectWithoutRejectedByInput | ApplicationCreateOrConnectWithoutRejectedByInput[]
@@ -64651,6 +69155,13 @@ export namespace Prisma {
     connectOrCreate?: PasswordResetTokenCreateOrConnectWithoutUserInput | PasswordResetTokenCreateOrConnectWithoutUserInput[]
     createMany?: PasswordResetTokenCreateManyUserInputEnvelope
     connect?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
+  }
+
+  export type KittenUncheckedCreateNestedManyWithoutCreatedByUserInput = {
+    create?: XOR<KittenCreateWithoutCreatedByUserInput, KittenUncheckedCreateWithoutCreatedByUserInput> | KittenCreateWithoutCreatedByUserInput[] | KittenUncheckedCreateWithoutCreatedByUserInput[]
+    connectOrCreate?: KittenCreateOrConnectWithoutCreatedByUserInput | KittenCreateOrConnectWithoutCreatedByUserInput[]
+    createMany?: KittenCreateManyCreatedByUserInputEnvelope
+    connect?: KittenWhereUniqueInput | KittenWhereUniqueInput[]
   }
 
   export type RoleUpdateOneRequiredWithoutUsersNestedInput = {
@@ -64755,6 +69266,20 @@ export namespace Prisma {
     deleteMany?: PasswordResetTokenScalarWhereInput | PasswordResetTokenScalarWhereInput[]
   }
 
+  export type KittenUpdateManyWithoutCreatedByUserNestedInput = {
+    create?: XOR<KittenCreateWithoutCreatedByUserInput, KittenUncheckedCreateWithoutCreatedByUserInput> | KittenCreateWithoutCreatedByUserInput[] | KittenUncheckedCreateWithoutCreatedByUserInput[]
+    connectOrCreate?: KittenCreateOrConnectWithoutCreatedByUserInput | KittenCreateOrConnectWithoutCreatedByUserInput[]
+    upsert?: KittenUpsertWithWhereUniqueWithoutCreatedByUserInput | KittenUpsertWithWhereUniqueWithoutCreatedByUserInput[]
+    createMany?: KittenCreateManyCreatedByUserInputEnvelope
+    set?: KittenWhereUniqueInput | KittenWhereUniqueInput[]
+    disconnect?: KittenWhereUniqueInput | KittenWhereUniqueInput[]
+    delete?: KittenWhereUniqueInput | KittenWhereUniqueInput[]
+    connect?: KittenWhereUniqueInput | KittenWhereUniqueInput[]
+    update?: KittenUpdateWithWhereUniqueWithoutCreatedByUserInput | KittenUpdateWithWhereUniqueWithoutCreatedByUserInput[]
+    updateMany?: KittenUpdateManyWithWhereWithoutCreatedByUserInput | KittenUpdateManyWithWhereWithoutCreatedByUserInput[]
+    deleteMany?: KittenScalarWhereInput | KittenScalarWhereInput[]
+  }
+
   export type ApplicationUncheckedUpdateManyWithoutRejectedByNestedInput = {
     create?: XOR<ApplicationCreateWithoutRejectedByInput, ApplicationUncheckedCreateWithoutRejectedByInput> | ApplicationCreateWithoutRejectedByInput[] | ApplicationUncheckedCreateWithoutRejectedByInput[]
     connectOrCreate?: ApplicationCreateOrConnectWithoutRejectedByInput | ApplicationCreateOrConnectWithoutRejectedByInput[]
@@ -64837,6 +69362,20 @@ export namespace Prisma {
     update?: PasswordResetTokenUpdateWithWhereUniqueWithoutUserInput | PasswordResetTokenUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: PasswordResetTokenUpdateManyWithWhereWithoutUserInput | PasswordResetTokenUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: PasswordResetTokenScalarWhereInput | PasswordResetTokenScalarWhereInput[]
+  }
+
+  export type KittenUncheckedUpdateManyWithoutCreatedByUserNestedInput = {
+    create?: XOR<KittenCreateWithoutCreatedByUserInput, KittenUncheckedCreateWithoutCreatedByUserInput> | KittenCreateWithoutCreatedByUserInput[] | KittenUncheckedCreateWithoutCreatedByUserInput[]
+    connectOrCreate?: KittenCreateOrConnectWithoutCreatedByUserInput | KittenCreateOrConnectWithoutCreatedByUserInput[]
+    upsert?: KittenUpsertWithWhereUniqueWithoutCreatedByUserInput | KittenUpsertWithWhereUniqueWithoutCreatedByUserInput[]
+    createMany?: KittenCreateManyCreatedByUserInputEnvelope
+    set?: KittenWhereUniqueInput | KittenWhereUniqueInput[]
+    disconnect?: KittenWhereUniqueInput | KittenWhereUniqueInput[]
+    delete?: KittenWhereUniqueInput | KittenWhereUniqueInput[]
+    connect?: KittenWhereUniqueInput | KittenWhereUniqueInput[]
+    update?: KittenUpdateWithWhereUniqueWithoutCreatedByUserInput | KittenUpdateWithWhereUniqueWithoutCreatedByUserInput[]
+    updateMany?: KittenUpdateManyWithWhereWithoutCreatedByUserInput | KittenUpdateManyWithWhereWithoutCreatedByUserInput[]
+    deleteMany?: KittenScalarWhereInput | KittenScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutPasswordResetTokensInput = {
@@ -65340,6 +69879,24 @@ export namespace Prisma {
     set?: $Enums.SocialPostStatus
   }
 
+  export type SyndicationRunCreateidsAddedInput = {
+    set: string[]
+  }
+
+  export type SyndicationRunCreateidsRemovedInput = {
+    set: string[]
+  }
+
+  export type SyndicationRunUpdateidsAddedInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type SyndicationRunUpdateidsRemovedInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
   export type NestedIntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -65777,6 +70334,29 @@ export namespace Prisma {
     _min?: NestedEnumSocialPostStatusFilter<$PrismaModel>
     _max?: NestedEnumSocialPostStatusFilter<$PrismaModel>
   }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type KittenCreateWithoutLitterInput = {
     name: string
@@ -65800,14 +70380,18 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     createdAt?: Date | string
+    createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
     bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -65848,14 +70432,18 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
+    createdByUserId?: number | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -65926,14 +70514,18 @@ export namespace Prisma {
     notes?: StringFilter<"Kitten"> | string
     internalNotes?: StringFilter<"Kitten"> | string
     isListedOnWebsite?: BoolFilter<"Kitten"> | boolean
+    isActive?: BoolFilter<"Kitten"> | boolean
     websiteFeaturedComment?: StringFilter<"Kitten"> | string
     publishTargets?: StringNullableListFilter<"Kitten">
+    externalId?: StringNullableFilter<"Kitten"> | string | null
+    createdByUserId?: IntNullableFilter<"Kitten"> | number | null
     isBondedPair?: BoolFilter<"Kitten"> | boolean
     bondedWithKittenId?: IntNullableFilter<"Kitten"> | number | null
     bondedWithName?: StringFilter<"Kitten"> | string
     isMedicalSpecialNeeds?: BoolFilter<"Kitten"> | boolean
     isTnr?: BoolFilter<"Kitten"> | boolean
     isColony?: BoolFilter<"Kitten"> | boolean
+    isCommunitySave?: BoolFilter<"Kitten"> | boolean
     currentFosterId?: IntNullableFilter<"Kitten"> | number | null
     createdAt?: DateTimeFilter<"Kitten"> | Date | string
   }
@@ -65960,15 +70552,19 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
     bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     placements?: PlacementCreateNestedManyWithoutKittenInput
@@ -66009,14 +70605,18 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
+    createdByUserId?: number | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
@@ -66155,6 +70755,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    createdKittens?: KittenCreateNestedManyWithoutCreatedByUserInput
   }
 
   export type UserUncheckedCreateWithoutFosterInput = {
@@ -66174,6 +70775,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    createdKittens?: KittenUncheckedCreateNestedManyWithoutCreatedByUserInput
   }
 
   export type UserCreateOrConnectWithoutFosterInput = {
@@ -66377,6 +70979,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    createdKittens?: KittenUpdateManyWithoutCreatedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFosterInput = {
@@ -66396,6 +70999,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    createdKittens?: KittenUncheckedUpdateManyWithoutCreatedByUserNestedInput
   }
 
   export type DocumentUpsertWithWhereUniqueWithoutSubmittedByFosterInput = {
@@ -66497,6 +71101,50 @@ export namespace Prisma {
     create: XOR<LitterCreateWithoutKittensInput, LitterUncheckedCreateWithoutKittensInput>
   }
 
+  export type UserCreateWithoutCreatedKittensInput = {
+    email: string
+    passwordHash: string
+    firstName: string
+    lastName: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastLoginAt?: Date | string | null
+    role: RoleCreateNestedOneWithoutUsersInput
+    foster?: FosterCreateNestedOneWithoutPortalUserInput
+    rejectedApplications?: ApplicationCreateNestedManyWithoutRejectedByInput
+    completedChecklistItems?: OnboardingChecklistCreateNestedManyWithoutCompletedByUserInput
+    contentCompletions?: ContentCompletionCreateNestedManyWithoutUserInput
+    activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
+    administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutCreatedKittensInput = {
+    id?: number
+    email: string
+    passwordHash: string
+    firstName: string
+    lastName: string
+    isActive?: boolean
+    roleId: number
+    fosterId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastLoginAt?: Date | string | null
+    rejectedApplications?: ApplicationUncheckedCreateNestedManyWithoutRejectedByInput
+    completedChecklistItems?: OnboardingChecklistUncheckedCreateNestedManyWithoutCompletedByUserInput
+    contentCompletions?: ContentCompletionUncheckedCreateNestedManyWithoutUserInput
+    activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
+    administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutCreatedKittensInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCreatedKittensInput, UserUncheckedCreateWithoutCreatedKittensInput>
+  }
+
   export type KittenCreateWithoutBondedPartnersInput = {
     name: string
     status?: string
@@ -66519,15 +71167,19 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
     placements?: PlacementCreateNestedManyWithoutKittenInput
@@ -66568,14 +71220,18 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
+    createdByUserId?: number | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
@@ -66619,15 +71275,19 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
     bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
     placements?: PlacementCreateNestedManyWithoutKittenInput
@@ -66668,13 +71328,17 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
+    createdByUserId?: number | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -67180,6 +71844,56 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
   }
 
+  export type UserUpsertWithoutCreatedKittensInput = {
+    update: XOR<UserUpdateWithoutCreatedKittensInput, UserUncheckedUpdateWithoutCreatedKittensInput>
+    create: XOR<UserCreateWithoutCreatedKittensInput, UserUncheckedCreateWithoutCreatedKittensInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCreatedKittensInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCreatedKittensInput, UserUncheckedUpdateWithoutCreatedKittensInput>
+  }
+
+  export type UserUpdateWithoutCreatedKittensInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: RoleUpdateOneRequiredWithoutUsersNestedInput
+    foster?: FosterUpdateOneWithoutPortalUserNestedInput
+    rejectedApplications?: ApplicationUpdateManyWithoutRejectedByNestedInput
+    completedChecklistItems?: OnboardingChecklistUpdateManyWithoutCompletedByUserNestedInput
+    contentCompletions?: ContentCompletionUpdateManyWithoutUserNestedInput
+    activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
+    administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCreatedKittensInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    roleId?: IntFieldUpdateOperationsInput | number
+    fosterId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedApplications?: ApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
+    completedChecklistItems?: OnboardingChecklistUncheckedUpdateManyWithoutCompletedByUserNestedInput
+    contentCompletions?: ContentCompletionUncheckedUpdateManyWithoutUserNestedInput
+    activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
+    administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  }
+
   export type KittenUpsertWithoutBondedPartnersInput = {
     update: XOR<KittenUpdateWithoutBondedPartnersInput, KittenUncheckedUpdateWithoutBondedPartnersInput>
     create: XOR<KittenCreateWithoutBondedPartnersInput, KittenUncheckedCreateWithoutBondedPartnersInput>
@@ -67213,15 +71927,19 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
     placements?: PlacementUpdateManyWithoutKittenNestedInput
@@ -67262,14 +71980,18 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: NullableIntFieldUpdateOperationsInput | number | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
@@ -67696,15 +72418,19 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
     bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -67745,14 +72471,18 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
+    createdByUserId?: number | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -67807,15 +72537,19 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
     bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -67856,14 +72590,18 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: NullableIntFieldUpdateOperationsInput | number | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -67902,15 +72640,19 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
     bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -67951,14 +72693,18 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
+    createdByUserId?: number | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -68013,15 +72759,19 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
     bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -68062,14 +72812,18 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: NullableIntFieldUpdateOperationsInput | number | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -68108,15 +72862,19 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
     bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -68157,14 +72915,18 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
+    createdByUserId?: number | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -68265,15 +73027,19 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
     bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -68314,14 +73080,18 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: NullableIntFieldUpdateOperationsInput | number | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -68412,15 +73182,19 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
     bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -68461,14 +73235,18 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
+    createdByUserId?: number | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -68523,15 +73301,19 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
     bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -68572,14 +73354,18 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: NullableIntFieldUpdateOperationsInput | number | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -68618,15 +73404,19 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
     bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -68667,14 +73457,18 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
+    createdByUserId?: number | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -68764,15 +73558,19 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
     bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -68813,14 +73611,18 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: NullableIntFieldUpdateOperationsInput | number | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -68892,15 +73694,19 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
     bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -68941,14 +73747,18 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
+    createdByUserId?: number | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -69061,15 +73871,19 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
     bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -69110,14 +73924,18 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: NullableIntFieldUpdateOperationsInput | number | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -69199,15 +74017,19 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
     bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -69248,14 +74070,18 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
+    createdByUserId?: number | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -69310,15 +74136,19 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
     bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -69359,14 +74189,18 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: NullableIntFieldUpdateOperationsInput | number | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -69405,15 +74239,19 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
     bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -69454,14 +74292,18 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
+    createdByUserId?: number | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -69562,15 +74404,19 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
     bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -69611,14 +74457,18 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: NullableIntFieldUpdateOperationsInput | number | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -69703,6 +74553,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    createdKittens?: KittenCreateNestedManyWithoutCreatedByUserInput
   }
 
   export type UserUncheckedCreateWithoutRejectedApplicationsInput = {
@@ -69722,6 +74573,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    createdKittens?: KittenUncheckedCreateNestedManyWithoutCreatedByUserInput
   }
 
   export type UserCreateOrConnectWithoutRejectedApplicationsInput = {
@@ -69903,6 +74755,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    createdKittens?: KittenUpdateManyWithoutCreatedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRejectedApplicationsInput = {
@@ -69922,6 +74775,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    createdKittens?: KittenUncheckedUpdateManyWithoutCreatedByUserNestedInput
   }
 
   export type ContractUpsertWithWhereUniqueWithoutApplicationInput = {
@@ -70027,15 +74881,19 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
     bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -70076,14 +74934,18 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
+    createdByUserId?: number | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -70249,15 +75111,19 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
     bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -70298,14 +75164,18 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: NullableIntFieldUpdateOperationsInput | number | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -70676,6 +75546,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    createdKittens?: KittenCreateNestedManyWithoutCreatedByUserInput
   }
 
   export type UserUncheckedCreateWithoutCompletedChecklistItemsInput = {
@@ -70695,6 +75566,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    createdKittens?: KittenUncheckedCreateNestedManyWithoutCreatedByUserInput
   }
 
   export type UserCreateOrConnectWithoutCompletedChecklistItemsInput = {
@@ -70757,6 +75629,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    createdKittens?: KittenUpdateManyWithoutCreatedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCompletedChecklistItemsInput = {
@@ -70776,6 +75649,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    createdKittens?: KittenUncheckedUpdateManyWithoutCreatedByUserNestedInput
   }
 
   export type ApplicationCreateWithoutUploadsInput = {
@@ -70927,6 +75801,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    createdKittens?: KittenCreateNestedManyWithoutCreatedByUserInput
   }
 
   export type UserUncheckedCreateWithoutContentCompletionsInput = {
@@ -70946,6 +75821,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    createdKittens?: KittenUncheckedCreateNestedManyWithoutCreatedByUserInput
   }
 
   export type UserCreateOrConnectWithoutContentCompletionsInput = {
@@ -71006,6 +75882,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    createdKittens?: KittenUpdateManyWithoutCreatedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutContentCompletionsInput = {
@@ -71025,6 +75902,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    createdKittens?: KittenUncheckedUpdateManyWithoutCreatedByUserNestedInput
   }
 
   export type ContentUpsertWithoutCompletionsInput = {
@@ -71290,15 +76168,19 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
     bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -71339,14 +76221,18 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
+    createdByUserId?: number | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -71445,15 +76331,19 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
     bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -71494,14 +76384,18 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: NullableIntFieldUpdateOperationsInput | number | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -71534,6 +76428,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    createdKittens?: KittenCreateNestedManyWithoutCreatedByUserInput
   }
 
   export type UserUncheckedCreateWithoutRoleInput = {
@@ -71553,6 +76448,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    createdKittens?: KittenUncheckedCreateNestedManyWithoutCreatedByUserInput
   }
 
   export type UserCreateOrConnectWithoutRoleInput = {
@@ -71679,6 +76575,7 @@ export namespace Prisma {
     description?: string
     isSystem?: boolean
     isPortalRole?: boolean
+    scopesToOwnCats?: boolean
     createdAt?: Date | string
     users?: UserCreateNestedManyWithoutRoleInput
   }
@@ -71689,6 +76586,7 @@ export namespace Prisma {
     description?: string
     isSystem?: boolean
     isPortalRole?: boolean
+    scopesToOwnCats?: boolean
     createdAt?: Date | string
     users?: UserUncheckedCreateNestedManyWithoutRoleInput
   }
@@ -71732,6 +76630,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     isSystem?: BoolFieldUpdateOperationsInput | boolean
     isPortalRole?: BoolFieldUpdateOperationsInput | boolean
+    scopesToOwnCats?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUpdateManyWithoutRoleNestedInput
   }
@@ -71742,6 +76641,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     isSystem?: BoolFieldUpdateOperationsInput | boolean
     isPortalRole?: BoolFieldUpdateOperationsInput | boolean
+    scopesToOwnCats?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUncheckedUpdateManyWithoutRoleNestedInput
   }
@@ -71775,6 +76675,7 @@ export namespace Prisma {
     description?: string
     isSystem?: boolean
     isPortalRole?: boolean
+    scopesToOwnCats?: boolean
     createdAt?: Date | string
     permissions?: RolePermissionCreateNestedManyWithoutRoleInput
   }
@@ -71785,6 +76686,7 @@ export namespace Prisma {
     description?: string
     isSystem?: boolean
     isPortalRole?: boolean
+    scopesToOwnCats?: boolean
     createdAt?: Date | string
     permissions?: RolePermissionUncheckedCreateNestedManyWithoutRoleInput
   }
@@ -72028,6 +76930,119 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type KittenCreateWithoutCreatedByUserInput = {
+    name: string
+    status?: string
+    rescueStory?: string
+    dateOfBirth?: Date | string | null
+    sex?: string
+    fixedStatus?: string
+    breed: string
+    color?: string
+    coatPattern?: string
+    fivFelvStatus?: string | null
+    specialNeeds?: string | null
+    microchipNumber?: string
+    primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
+    intakeDate?: Date | string | null
+    intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
+    notes?: string
+    internalNotes?: string
+    isListedOnWebsite?: boolean
+    isActive?: boolean
+    websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
+    isBondedPair?: boolean
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
+    isCommunitySave?: boolean
+    createdAt?: Date | string
+    litter?: LitterCreateNestedOneWithoutKittensInput
+    bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
+    bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
+    currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
+    placements?: PlacementCreateNestedManyWithoutKittenInput
+    weightLogs?: WeightLogCreateNestedManyWithoutKittenInput
+    vaccines?: VaccineCreateNestedManyWithoutKittenInput
+    medications?: MedicationCreateNestedManyWithoutKittenInput
+    vetAppointments?: VetAppointmentCreateNestedManyWithoutKittenInput
+    documents?: DocumentCreateNestedManyWithoutKittenInput
+    sponsorships?: SponsorshipCreateNestedManyWithoutKittenInput
+    updates?: UpdateCreateNestedManyWithoutKittenInput
+    transactions?: TransactionCreateNestedManyWithoutKittenInput
+    contracts?: ContractCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsCreateNestedManyWithoutKittenInput
+  }
+
+  export type KittenUncheckedCreateWithoutCreatedByUserInput = {
+    id?: number
+    name: string
+    litterId?: number | null
+    status?: string
+    rescueStory?: string
+    dateOfBirth?: Date | string | null
+    sex?: string
+    fixedStatus?: string
+    breed: string
+    color?: string
+    coatPattern?: string
+    fivFelvStatus?: string | null
+    specialNeeds?: string | null
+    microchipNumber?: string
+    primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
+    intakeDate?: Date | string | null
+    intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
+    notes?: string
+    internalNotes?: string
+    isListedOnWebsite?: boolean
+    isActive?: boolean
+    websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
+    isBondedPair?: boolean
+    bondedWithKittenId?: number | null
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
+    isCommunitySave?: boolean
+    currentFosterId?: number | null
+    createdAt?: Date | string
+    bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
+    placements?: PlacementUncheckedCreateNestedManyWithoutKittenInput
+    weightLogs?: WeightLogUncheckedCreateNestedManyWithoutKittenInput
+    vaccines?: VaccineUncheckedCreateNestedManyWithoutKittenInput
+    medications?: MedicationUncheckedCreateNestedManyWithoutKittenInput
+    vetAppointments?: VetAppointmentUncheckedCreateNestedManyWithoutKittenInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutKittenInput
+    sponsorships?: SponsorshipUncheckedCreateNestedManyWithoutKittenInput
+    updates?: UpdateUncheckedCreateNestedManyWithoutKittenInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutKittenInput
+    contracts?: ContractUncheckedCreateNestedManyWithoutKittenInput
+    activeProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutKittenInput
+    eventCats?: EventCatsUncheckedCreateNestedManyWithoutKittenInput
+  }
+
+  export type KittenCreateOrConnectWithoutCreatedByUserInput = {
+    where: KittenWhereUniqueInput
+    create: XOR<KittenCreateWithoutCreatedByUserInput, KittenUncheckedCreateWithoutCreatedByUserInput>
+  }
+
+  export type KittenCreateManyCreatedByUserInputEnvelope = {
+    data: KittenCreateManyCreatedByUserInput | KittenCreateManyCreatedByUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type RoleUpsertWithoutUsersInput = {
     update: XOR<RoleUpdateWithoutUsersInput, RoleUncheckedUpdateWithoutUsersInput>
     create: XOR<RoleCreateWithoutUsersInput, RoleUncheckedCreateWithoutUsersInput>
@@ -72044,6 +77059,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     isSystem?: BoolFieldUpdateOperationsInput | boolean
     isPortalRole?: BoolFieldUpdateOperationsInput | boolean
+    scopesToOwnCats?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     permissions?: RolePermissionUpdateManyWithoutRoleNestedInput
   }
@@ -72054,6 +77070,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     isSystem?: BoolFieldUpdateOperationsInput | boolean
     isPortalRole?: BoolFieldUpdateOperationsInput | boolean
+    scopesToOwnCats?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     permissions?: RolePermissionUncheckedUpdateManyWithoutRoleNestedInput
   }
@@ -72240,6 +77257,22 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"PasswordResetToken"> | Date | string
   }
 
+  export type KittenUpsertWithWhereUniqueWithoutCreatedByUserInput = {
+    where: KittenWhereUniqueInput
+    update: XOR<KittenUpdateWithoutCreatedByUserInput, KittenUncheckedUpdateWithoutCreatedByUserInput>
+    create: XOR<KittenCreateWithoutCreatedByUserInput, KittenUncheckedCreateWithoutCreatedByUserInput>
+  }
+
+  export type KittenUpdateWithWhereUniqueWithoutCreatedByUserInput = {
+    where: KittenWhereUniqueInput
+    data: XOR<KittenUpdateWithoutCreatedByUserInput, KittenUncheckedUpdateWithoutCreatedByUserInput>
+  }
+
+  export type KittenUpdateManyWithWhereWithoutCreatedByUserInput = {
+    where: KittenScalarWhereInput
+    data: XOR<KittenUpdateManyMutationInput, KittenUncheckedUpdateManyWithoutCreatedByUserInput>
+  }
+
   export type UserCreateWithoutPasswordResetTokensInput = {
     email: string
     passwordHash: string
@@ -72256,6 +77289,7 @@ export namespace Prisma {
     contentCompletions?: ContentCompletionCreateNestedManyWithoutUserInput
     activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
+    createdKittens?: KittenCreateNestedManyWithoutCreatedByUserInput
   }
 
   export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
@@ -72275,6 +77309,7 @@ export namespace Prisma {
     contentCompletions?: ContentCompletionUncheckedCreateNestedManyWithoutUserInput
     activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
     administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
+    createdKittens?: KittenUncheckedCreateNestedManyWithoutCreatedByUserInput
   }
 
   export type UserCreateOrConnectWithoutPasswordResetTokensInput = {
@@ -72309,6 +77344,7 @@ export namespace Prisma {
     contentCompletions?: ContentCompletionUpdateManyWithoutUserNestedInput
     activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
+    createdKittens?: KittenUpdateManyWithoutCreatedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
@@ -72328,6 +77364,7 @@ export namespace Prisma {
     contentCompletions?: ContentCompletionUncheckedUpdateManyWithoutUserNestedInput
     activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
+    createdKittens?: KittenUncheckedUpdateManyWithoutCreatedByUserNestedInput
   }
 
   export type ProtocolDrugCreateWithoutProtocolInput = {
@@ -72646,15 +77683,19 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
     bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -72695,14 +77736,18 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
+    createdByUserId?: number | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -72740,6 +77785,7 @@ export namespace Prisma {
     contentCompletions?: ContentCompletionCreateNestedManyWithoutUserInput
     administeredProtocolDoses?: ProtocolDoseCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    createdKittens?: KittenCreateNestedManyWithoutCreatedByUserInput
   }
 
   export type UserUncheckedCreateWithoutActivatedProtocolsInput = {
@@ -72759,6 +77805,7 @@ export namespace Prisma {
     contentCompletions?: ContentCompletionUncheckedCreateNestedManyWithoutUserInput
     administeredProtocolDoses?: ProtocolDoseUncheckedCreateNestedManyWithoutAdministeredByInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    createdKittens?: KittenUncheckedCreateNestedManyWithoutCreatedByUserInput
   }
 
   export type UserCreateOrConnectWithoutActivatedProtocolsInput = {
@@ -72887,15 +77934,19 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
     bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -72936,14 +77987,18 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: NullableIntFieldUpdateOperationsInput | number | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -72987,6 +78042,7 @@ export namespace Prisma {
     contentCompletions?: ContentCompletionUpdateManyWithoutUserNestedInput
     administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    createdKittens?: KittenUpdateManyWithoutCreatedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutActivatedProtocolsInput = {
@@ -73006,6 +78062,7 @@ export namespace Prisma {
     contentCompletions?: ContentCompletionUncheckedUpdateManyWithoutUserNestedInput
     administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    createdKittens?: KittenUncheckedUpdateManyWithoutCreatedByUserNestedInput
   }
 
   export type ProtocolDoseUpsertWithWhereUniqueWithoutActiveProtocolInput = {
@@ -73120,6 +78177,7 @@ export namespace Prisma {
     contentCompletions?: ContentCompletionCreateNestedManyWithoutUserInput
     activatedProtocols?: ActiveProtocolCreateNestedManyWithoutActivatedByInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    createdKittens?: KittenCreateNestedManyWithoutCreatedByUserInput
   }
 
   export type UserUncheckedCreateWithoutAdministeredProtocolDosesInput = {
@@ -73139,6 +78197,7 @@ export namespace Prisma {
     contentCompletions?: ContentCompletionUncheckedCreateNestedManyWithoutUserInput
     activatedProtocols?: ActiveProtocolUncheckedCreateNestedManyWithoutActivatedByInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    createdKittens?: KittenUncheckedCreateNestedManyWithoutCreatedByUserInput
   }
 
   export type UserCreateOrConnectWithoutAdministeredProtocolDosesInput = {
@@ -73311,6 +78370,7 @@ export namespace Prisma {
     contentCompletions?: ContentCompletionUpdateManyWithoutUserNestedInput
     activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    createdKittens?: KittenUpdateManyWithoutCreatedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAdministeredProtocolDosesInput = {
@@ -73330,6 +78390,7 @@ export namespace Prisma {
     contentCompletions?: ContentCompletionUncheckedUpdateManyWithoutUserNestedInput
     activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    createdKittens?: KittenUncheckedUpdateManyWithoutCreatedByUserNestedInput
   }
 
   export type MedicationUpsertWithoutProtocolDosesInput = {
@@ -73642,15 +78703,19 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     createdAt?: Date | string
     litter?: LitterCreateNestedOneWithoutKittensInput
+    createdByUser?: UserCreateNestedOneWithoutCreatedKittensInput
     bondedWithKitten?: KittenCreateNestedOneWithoutBondedPartnersInput
     bondedPartners?: KittenCreateNestedManyWithoutBondedWithKittenInput
     currentFoster?: FosterCreateNestedOneWithoutCurrentKittensInput
@@ -73691,14 +78756,18 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
+    createdByUserId?: number | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
     bondedPartners?: KittenUncheckedCreateNestedManyWithoutBondedWithKittenInput
@@ -73753,15 +78822,19 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
     bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -73802,14 +78875,18 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: NullableIntFieldUpdateOperationsInput | number | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -73849,14 +78926,18 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
+    createdByUserId?: number | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
   }
@@ -73883,14 +78964,18 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
     bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
@@ -73931,14 +79016,18 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: NullableIntFieldUpdateOperationsInput | number | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -73979,14 +79068,18 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: NullableIntFieldUpdateOperationsInput | number | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -74015,14 +79108,18 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
+    createdByUserId?: number | null
     isBondedPair?: boolean
     bondedWithKittenId?: number | null
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     createdAt?: Date | string
   }
 
@@ -74099,15 +79196,19 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
     bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
     bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     placements?: PlacementUpdateManyWithoutKittenNestedInput
@@ -74148,14 +79249,18 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: NullableIntFieldUpdateOperationsInput | number | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
     placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
@@ -74196,14 +79301,18 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: NullableIntFieldUpdateOperationsInput | number | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -74383,13 +79492,17 @@ export namespace Prisma {
     notes?: string
     internalNotes?: string
     isListedOnWebsite?: boolean
+    isActive?: boolean
     websiteFeaturedComment?: string
     publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
+    createdByUserId?: number | null
     isBondedPair?: boolean
     bondedWithName?: string
     isMedicalSpecialNeeds?: boolean
     isTnr?: boolean
     isColony?: boolean
+    isCommunitySave?: boolean
     currentFosterId?: number | null
     createdAt?: Date | string
   }
@@ -74559,15 +79672,19 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     litter?: LitterUpdateOneWithoutKittensNestedInput
+    createdByUser?: UserUpdateOneWithoutCreatedKittensNestedInput
     bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
     currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
     placements?: PlacementUpdateManyWithoutKittenNestedInput
@@ -74608,13 +79725,17 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: NullableIntFieldUpdateOperationsInput | number | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
@@ -74656,13 +79777,17 @@ export namespace Prisma {
     notes?: StringFieldUpdateOperationsInput | string
     internalNotes?: StringFieldUpdateOperationsInput | string
     isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
     publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: NullableIntFieldUpdateOperationsInput | number | null
     isBondedPair?: BoolFieldUpdateOperationsInput | boolean
     bondedWithName?: StringFieldUpdateOperationsInput | string
     isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
     isTnr?: BoolFieldUpdateOperationsInput | boolean
     isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
     currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -75626,6 +80751,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    createdKittens?: KittenUpdateManyWithoutCreatedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRoleInput = {
@@ -75645,6 +80771,7 @@ export namespace Prisma {
     activatedProtocols?: ActiveProtocolUncheckedUpdateManyWithoutActivatedByNestedInput
     administeredProtocolDoses?: ProtocolDoseUncheckedUpdateManyWithoutAdministeredByNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    createdKittens?: KittenUncheckedUpdateManyWithoutCreatedByUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutRoleInput = {
@@ -75747,6 +80874,45 @@ export namespace Prisma {
     usedAt?: Date | string | null
     createdIp?: string | null
     usedIp?: string | null
+    createdAt?: Date | string
+  }
+
+  export type KittenCreateManyCreatedByUserInput = {
+    id?: number
+    name: string
+    litterId?: number | null
+    status?: string
+    rescueStory?: string
+    dateOfBirth?: Date | string | null
+    sex?: string
+    fixedStatus?: string
+    breed: string
+    color?: string
+    coatPattern?: string
+    fivFelvStatus?: string | null
+    specialNeeds?: string | null
+    microchipNumber?: string
+    primaryPhotoUrl?: string | null
+    thumbnailUrl?: string | null
+    intakeDate?: Date | string | null
+    intakeSource?: string
+    outcomeDate?: Date | string | null
+    outcomeDetail?: string | null
+    notes?: string
+    internalNotes?: string
+    isListedOnWebsite?: boolean
+    isActive?: boolean
+    websiteFeaturedComment?: string
+    publishTargets?: KittenCreatepublishTargetsInput | string[]
+    externalId?: string | null
+    isBondedPair?: boolean
+    bondedWithKittenId?: number | null
+    bondedWithName?: string
+    isMedicalSpecialNeeds?: boolean
+    isTnr?: boolean
+    isColony?: boolean
+    isCommunitySave?: boolean
+    currentFosterId?: number | null
     createdAt?: Date | string
   }
 
@@ -75937,6 +81103,148 @@ export namespace Prisma {
     usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdIp?: NullableStringFieldUpdateOperationsInput | string | null
     usedIp?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type KittenUpdateWithoutCreatedByUserInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rescueStory?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sex?: StringFieldUpdateOperationsInput | string
+    fixedStatus?: StringFieldUpdateOperationsInput | string
+    breed?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
+    fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
+    microchipNumber?: StringFieldUpdateOperationsInput | string
+    primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
+    internalNotes?: StringFieldUpdateOperationsInput | string
+    isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    litter?: LitterUpdateOneWithoutKittensNestedInput
+    bondedWithKitten?: KittenUpdateOneWithoutBondedPartnersNestedInput
+    bondedPartners?: KittenUpdateManyWithoutBondedWithKittenNestedInput
+    currentFoster?: FosterUpdateOneWithoutCurrentKittensNestedInput
+    placements?: PlacementUpdateManyWithoutKittenNestedInput
+    weightLogs?: WeightLogUpdateManyWithoutKittenNestedInput
+    vaccines?: VaccineUpdateManyWithoutKittenNestedInput
+    medications?: MedicationUpdateManyWithoutKittenNestedInput
+    vetAppointments?: VetAppointmentUpdateManyWithoutKittenNestedInput
+    documents?: DocumentUpdateManyWithoutKittenNestedInput
+    sponsorships?: SponsorshipUpdateManyWithoutKittenNestedInput
+    updates?: UpdateUpdateManyWithoutKittenNestedInput
+    transactions?: TransactionUpdateManyWithoutKittenNestedInput
+    contracts?: ContractUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUpdateManyWithoutKittenNestedInput
+  }
+
+  export type KittenUncheckedUpdateWithoutCreatedByUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    litterId?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    rescueStory?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sex?: StringFieldUpdateOperationsInput | string
+    fixedStatus?: StringFieldUpdateOperationsInput | string
+    breed?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
+    fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
+    microchipNumber?: StringFieldUpdateOperationsInput | string
+    primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
+    internalNotes?: StringFieldUpdateOperationsInput | string
+    isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bondedPartners?: KittenUncheckedUpdateManyWithoutBondedWithKittenNestedInput
+    placements?: PlacementUncheckedUpdateManyWithoutKittenNestedInput
+    weightLogs?: WeightLogUncheckedUpdateManyWithoutKittenNestedInput
+    vaccines?: VaccineUncheckedUpdateManyWithoutKittenNestedInput
+    medications?: MedicationUncheckedUpdateManyWithoutKittenNestedInput
+    vetAppointments?: VetAppointmentUncheckedUpdateManyWithoutKittenNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutKittenNestedInput
+    sponsorships?: SponsorshipUncheckedUpdateManyWithoutKittenNestedInput
+    updates?: UpdateUncheckedUpdateManyWithoutKittenNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutKittenNestedInput
+    contracts?: ContractUncheckedUpdateManyWithoutKittenNestedInput
+    activeProtocols?: ActiveProtocolUncheckedUpdateManyWithoutKittenNestedInput
+    eventCats?: EventCatsUncheckedUpdateManyWithoutKittenNestedInput
+  }
+
+  export type KittenUncheckedUpdateManyWithoutCreatedByUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    litterId?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    rescueStory?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sex?: StringFieldUpdateOperationsInput | string
+    fixedStatus?: StringFieldUpdateOperationsInput | string
+    breed?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    coatPattern?: StringFieldUpdateOperationsInput | string
+    fivFelvStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    specialNeeds?: NullableStringFieldUpdateOperationsInput | string | null
+    microchipNumber?: StringFieldUpdateOperationsInput | string
+    primaryPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    intakeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    intakeSource?: StringFieldUpdateOperationsInput | string
+    outcomeDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outcomeDetail?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
+    internalNotes?: StringFieldUpdateOperationsInput | string
+    isListedOnWebsite?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    websiteFeaturedComment?: StringFieldUpdateOperationsInput | string
+    publishTargets?: KittenUpdatepublishTargetsInput | string[]
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    isBondedPair?: BoolFieldUpdateOperationsInput | boolean
+    bondedWithKittenId?: NullableIntFieldUpdateOperationsInput | number | null
+    bondedWithName?: StringFieldUpdateOperationsInput | string
+    isMedicalSpecialNeeds?: BoolFieldUpdateOperationsInput | boolean
+    isTnr?: BoolFieldUpdateOperationsInput | boolean
+    isColony?: BoolFieldUpdateOperationsInput | boolean
+    isCommunitySave?: BoolFieldUpdateOperationsInput | boolean
+    currentFosterId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

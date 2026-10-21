@@ -19,6 +19,8 @@ import { buildDashboardInsights } from '../services/dashboardInsights.js';
 import { getCachedResponse, setCachedResponse, invalidateCacheByPrefix } from '../utils/responseCache.js';
 import { parsePacificDateOnly, toPacificDateString } from '../utils/pacificDate.js';
 import { buildReminderWhere } from '../services/reminderCategories.js';
+import { enqueueSyndication } from '../services/syndicationService.js';
+import { formatExternalId, kittenOwnerWhere, mergeKittenWhere } from '../utils/kittenScope.js';
 
 const DASHBOARD_STATS_TTL_MS = 60 * 1000;
 
@@ -51,7 +53,7 @@ export async function getAllKittens(req, res) {
       || req.query.ids
       || req.query.reminder;
 
-    const where = buildKittenListWhere(req.query);
+    const where = mergeKittenWhere(buildKittenListWhere(req.query), kittenOwnerWhere(req));
 
     if (!usePagination) {
       // CR-90: every kitten <select>/dropdown fed by this unpaginated shape
@@ -128,6 +130,9 @@ function buildKittenListOrderBy(query, { fallback } = {}) {
 
 function buildKittenListWhere(query) {
   const where = {};
+  if (query.includeInactive !== '1' && query.includeInactive !== 'true') {
+    where.isActive = true;
+  }
 
   // CR-86: dashboard reminder links filter the list to an explicit set of
   // kitten ids (e.g. /admin/kittens?ids=4,9,12) — bypasses status filtering
@@ -228,6 +233,7 @@ export async function createKitten(req, res, next) {
       microchipNumber,
       isTnr,
       isColony,
+      isCommunitySave,
     } = parsed.data;
 
     const parsedLitterId = litterId ?? null;
@@ -262,10 +268,11 @@ export async function createKitten(req, res, next) {
           microchipNumber: microchipNumber ?? '',
           isTnr: Boolean(isTnr),
           isColony: Boolean(isColony),
+          isCommunitySave: Boolean(isCommunitySave),
+          createdByUserId: req.user?.id ?? null,
         },
         include: kittenIncludes,
       });
-
       if (parsedFosterId) {
         await tx.placement.create({
           data: {
@@ -276,13 +283,18 @@ export async function createKitten(req, res, next) {
         });
       }
 
-      return created;
+      return tx.kitten.update({
+        where: { id: created.id },
+        data: { externalId: formatExternalId(created.id) },
+        include: kittenIncludes,
+      });
     });
 
     // Bust cached public kittens list and dashboard so the new kitten appears immediately
     invalidateCacheByPrefix('public-kittens');
     invalidateCacheByPrefix('public-stats');
     invalidateCacheByPrefix('dashboard-metrics');
+    await enqueueSyndication('kitten.created', kitten.id);
 
     res.status(201).json(kitten);
   } catch (error) {
@@ -295,8 +307,8 @@ export async function getKittenById(req, res, next) {
     const id = Number.parseInt(req.params.id, 10);
 
     const [kitten, vaccines, weightLogs] = await Promise.all([
-      prisma.kitten.findUnique({
-        where: { id },
+      prisma.kitten.findFirst({
+        where: mergeKittenWhere({ id }, kittenOwnerWhere(req)),
         include: kittenIncludes,
       }),
       prisma.vaccine.findMany({
@@ -333,7 +345,9 @@ export async function updateKitten(req, res, next) {
       return res.status(400).json({ error: formatZodError(parsed.error) });
     }
 
-    const existing = await prisma.kitten.findUnique({ where: { id } });
+    const existing = await prisma.kitten.findFirst({
+      where: mergeKittenWhere({ id }, kittenOwnerWhere(req)),
+    });
     if (!existing) return res.status(404).json({ error: 'Kitten not found' });
 
     const body = parsed.data;
@@ -360,16 +374,12 @@ export async function updateKitten(req, res, next) {
     }
     if (body.publishTargets !== undefined) {
       data.publishTargets = normalizePublishTargets(body.publishTargets);
-      data.isListedOnWebsite = targetsIncludeWebsite(data.publishTargets);
-    } else if (body.isListedOnWebsite !== undefined) {
-      const currentTargets = normalizePublishTargets(existing.publishTargets);
+      if (body.isListedOnWebsite === undefined) {
+        data.isListedOnWebsite = targetsIncludeWebsite(data.publishTargets);
+      }
+    }
+    if (body.isListedOnWebsite !== undefined) {
       data.isListedOnWebsite = body.isListedOnWebsite;
-      if (body.isListedOnWebsite && !currentTargets.includes('WEBSITE')) {
-        data.publishTargets = [...currentTargets, 'WEBSITE'];
-      }
-      if (!body.isListedOnWebsite) {
-        data.publishTargets = currentTargets.filter((target) => target !== 'WEBSITE');
-      }
     }
 
     delete data.weightGrams;
@@ -537,6 +547,7 @@ export async function updateKitten(req, res, next) {
     invalidateCacheByPrefix('public-kittens');
     invalidateCacheByPrefix('public-stats');
     invalidateCacheByPrefix('dashboard-metrics');
+    await enqueueSyndication('kitten.changed', id);
 
     res.json(serializeKittenForDetail(kitten));
   } catch (error) {
@@ -553,16 +564,20 @@ export async function deleteKitten(req, res, next) {
       return res.status(400).json({ error: 'Valid kitten id is required' });
     }
 
-    const existing = await prisma.kitten.findUnique({
-      where: { id },
-      select: { id: true, name: true },
+    const existing = await prisma.kitten.findFirst({
+      where: mergeKittenWhere({ id }, kittenOwnerWhere(req)),
+      select: { id: true, name: true, isActive: true },
     });
 
     if (!existing) {
       return res.status(404).json({ error: 'Kitten not found' });
     }
 
-    await prisma.kitten.delete({ where: { id } });
+    await prisma.kitten.update({
+      where: { id },
+      data: { isActive: false, isListedOnWebsite: false },
+    });
+    await enqueueSyndication('kitten.deactivated', id);
 
     // Bust caches — kitten removed from public list
     invalidateCacheByPrefix('public-kittens');
@@ -578,9 +593,11 @@ export async function deleteKitten(req, res, next) {
   }
 }
 
-export async function getDashboardStats(_req, res, next) {
+export async function getDashboardStats(req, res, next) {
   try {
-    const cached = getCachedResponse('dashboard-stats', DASHBOARD_STATS_TTL_MS);
+    const ownerWhere = kittenOwnerWhere(req);
+    const cacheKey = `dashboard-stats:${ownerWhere.createdByUserId || 'all'}`;
+    const cached = getCachedResponse(cacheKey, DASHBOARD_STATS_TTL_MS);
     if (cached) {
       return res.json(cached);
     }
@@ -599,13 +616,13 @@ export async function getDashboardStats(_req, res, next) {
       insights,
     ] = await Promise.all([
       prisma.kitten.count({
-        where: { status: { in: ['In Foster Care', 'Medical Hold'] } },
+        where: mergeKittenWhere({ status: { in: ['In Foster Care', 'Medical Hold'] } }, ownerWhere),
       }),
-      prisma.kitten.count({ where: { status: 'Available for Adoption' } }),
+      prisma.kitten.count({ where: mergeKittenWhere({ status: 'Available for Adoption' }, ownerWhere) }),
       prisma.application.count({ where: { status: { in: ['New', 'Under Review'] } } }),
       prisma.foster.count({ where: { currentKittens: { some: {} } } }),
       prisma.kitten.count({
-        where: { status: 'Adopted', createdAt: { gte: yearStart } },
+        where: mergeKittenWhere({ status: 'Adopted', createdAt: { gte: yearStart } }, ownerWhere),
       }),
       buildDashboardInsights(prisma),
     ]);
@@ -620,7 +637,7 @@ export async function getDashboardStats(_req, res, next) {
       medicalConcerns: insights.medicalConcerns,
     };
 
-    setCachedResponse('dashboard-stats', payload);
+    setCachedResponse(cacheKey, payload);
     res.json(payload);
   } catch (error) {
     next(error);

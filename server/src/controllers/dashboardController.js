@@ -8,6 +8,7 @@ import {
   getReminderCategoryItems,
   REMINDER_CATEGORIES,
 } from '../services/reminderCategories.js';
+import { kittenOwnerWhere, mergeKittenWhere } from '../utils/kittenScope.js';
 
 const ALERT_LIMIT = 25;
 // Cats considered "active" for reminder purposes — excludes terminal outcomes
@@ -126,6 +127,12 @@ function mapSpayNeuterAlert(kitten) {
   };
 }
 
+function reminderWindow() {
+  const todayStartUtc = startOfPacificTodayUtc();
+  const windowEndUtc = endOfPacificDayUtc(addPacificDays(todayStartUtc, 7));
+  return { todayStartUtc, windowEndUtc };
+}
+
 function mapCalendarAlert(event) {
   const kittens = (event.eventCats || []).map((ec) => ec.kitten).filter(Boolean);
   return {
@@ -165,9 +172,29 @@ function resolveWeightGrams(log) {
 // lower bound previously excluded anything scheduled earlier "today" (e.g. a
 // dose stored at Pacific midnight looks like it's already in the past for
 // most of the day), which was the root cause of doses silently disappearing.
-export async function getDashboardAlerts() {
-  const todayStartUtc = startOfPacificTodayUtc();
-  const windowEndUtc = endOfPacificDayUtc(addPacificDays(todayStartUtc, 7));
+async function getCalendarReminderEvents() {
+  const { todayStartUtc, windowEndUtc } = reminderWindow();
+  const events = await prisma.event.findMany({
+    where: {
+      showInReminders: true,
+      date: { gte: todayStartUtc, lte: windowEndUtc },
+    },
+    select: {
+      id: true,
+      title: true,
+      date: true,
+      eventCats: { select: { kitten: { select: { id: true, name: true } } } },
+    },
+    orderBy: { date: 'asc' },
+    take: ALERT_LIMIT,
+  });
+  return events.map(mapCalendarAlert);
+}
+
+export async function getDashboardAlerts(req) {
+  const { todayStartUtc, windowEndUtc } = reminderWindow();
+  const ownerWhere = kittenOwnerWhere(req);
+  const activeKitten = mergeKittenWhere({ status: { in: ACTIVE_KITTEN_STATUSES } }, ownerWhere);
 
   const [
     vaccinesDueSoon,
@@ -176,12 +203,11 @@ export async function getDashboardAlerts() {
     upcomingVetVisits,
     protocolFollowUps,
     spayEligibleKittens,
-    calendarReminderEvents,
   ] = await Promise.all([
     prisma.vaccine.findMany({
       where: {
         nextDueDate: { not: null, gte: todayStartUtc, lte: windowEndUtc },
-        kitten: { status: { in: ACTIVE_KITTEN_STATUSES } },
+        kitten: activeKitten,
       },
       distinct: ['kittenId', 'type'],
       select: vaccineSelect,
@@ -191,7 +217,7 @@ export async function getDashboardAlerts() {
     prisma.vaccine.findMany({
       where: {
         nextDueDate: { not: null, lt: todayStartUtc },
-        kitten: { status: { in: ACTIVE_KITTEN_STATUSES } },
+        kitten: activeKitten,
       },
       distinct: ['kittenId', 'type'],
       select: vaccineSelect,
@@ -202,7 +228,7 @@ export async function getDashboardAlerts() {
       where: {
         status: { in: ['Active', 'ACTIVE'] },
         endDate: { not: null, gte: todayStartUtc, lte: windowEndUtc },
-        kitten: { status: { in: ACTIVE_KITTEN_STATUSES } },
+        kitten: activeKitten,
       },
       select: medicationSelect,
       orderBy: { endDate: 'asc' },
@@ -211,7 +237,7 @@ export async function getDashboardAlerts() {
     prisma.vetAppointment.findMany({
       where: {
         date: { gte: todayStartUtc, lte: windowEndUtc },
-        kitten: { status: { in: ACTIVE_KITTEN_STATUSES } },
+        kitten: activeKitten,
       },
       select: vetAppointmentSelect,
       orderBy: { date: 'asc' },
@@ -221,7 +247,7 @@ export async function getDashboardAlerts() {
       where: {
         status: 'SCHEDULED',
         scheduledDate: { gte: todayStartUtc, lte: windowEndUtc },
-        activeProtocol: { status: 'ACTIVE', kitten: { status: { in: ACTIVE_KITTEN_STATUSES } } },
+        activeProtocol: { status: 'ACTIVE', kitten: activeKitten },
       },
       // Distinct on drug + date (not just date) so multiple drugs due the
       // same day don't collapse into a single row and silently drop doses.
@@ -244,30 +270,15 @@ export async function getDashboardAlerts() {
     // CR-88: spay/neuter eligibility — active, not-yet-fixed kittens whose
     // latest weight is at/above the eligibility threshold.
     prisma.kitten.findMany({
-      where: {
+      where: mergeKittenWhere({
         status: { in: ACTIVE_KITTEN_STATUSES },
         fixedStatus: { not: 'Spayed/Neutered' },
-      },
+      }, ownerWhere),
       select: { id: true, name: true },
     }),
-    // CR-89: calendar events explicitly flagged to appear in reminders,
-    // within the same rolling window, tagged to at least one kitten.
-    prisma.event.findMany({
-      where: {
-        showInReminders: true,
-        date: { gte: todayStartUtc, lte: windowEndUtc },
-        eventCats: { some: {} },
-      },
-      select: {
-        id: true,
-        title: true,
-        date: true,
-        eventCats: { select: { kitten: { select: { id: true, name: true } } } },
-      },
-      orderBy: { date: 'asc' },
-      take: ALERT_LIMIT,
-    }),
   ]);
+
+  const calendarReminderEvents = await getCalendarReminderEvents();
 
   let spayNeuterEligible = [];
   if (spayEligibleKittens.length > 0) {
@@ -295,14 +306,15 @@ export async function getDashboardAlerts() {
     upcomingVetVisits: upcomingVetVisits.map(mapVetVisitAlert),
     protocolFollowUps: protocolFollowUps.map(mapProtocolFollowUp),
     spayNeuterEligible,
-    calendarReminders: calendarReminderEvents.map(mapCalendarAlert),
+    calendarReminders: calendarReminderEvents,
   };
 }
 
-export async function getDashboardMetrics(_req, res, next) {
+export async function getDashboardMetrics(req, res, next) {
   try {
-    // Serve from cache when available — avoids hammering the DB on every page load
-    const cached = getCachedResponse('dashboard-metrics', DASHBOARD_METRICS_TTL_MS);
+    const ownerWhere = kittenOwnerWhere(req);
+    const cacheKey = `dashboard-metrics:${ownerWhere.createdByUserId || 'all'}`;
+    const cached = getCachedResponse(cacheKey, DASHBOARD_METRICS_TTL_MS);
     if (cached) {
       return res.json(cached);
     }
@@ -325,36 +337,42 @@ export async function getDashboardMetrics(_req, res, next) {
       applicationStatusGroups,
       upcomingEvents,
     ] = await Promise.all([
-      prisma.kitten.count(),
-      prisma.kitten.count({ where: { status: 'Available for Adoption' } }),
+      prisma.kitten.count({ where: mergeKittenWhere({}, ownerWhere) }),
+      prisma.kitten.count({ where: mergeKittenWhere({ status: 'Available for Adoption' }, ownerWhere) }),
       // "Total Fosters" on the dashboard means currently-active fosters, not
       // every foster ever created — Foster.isActive tracks that directly.
       prisma.foster.count({ where: { isActive: true } }),
-      prisma.kitten.count({ where: { status: 'Adopted' } }),
-      prisma.kitten.count({ where: { intakeSource: { contains: 'Euthanasia' } } }),
+      prisma.kitten.count({ where: mergeKittenWhere({ status: 'Adopted' }, ownerWhere) }),
+      prisma.kitten.count({ where: mergeKittenWhere({ intakeSource: { contains: 'Euthanasia' } }, ownerWhere) }),
       prisma.kitten.count({
-        where: {
+        where: mergeKittenWhere({
           OR: [
             { isTnr: true },
             { status: 'Released' },
           ],
-        },
+        }, ownerWhere),
       }),
-      prisma.activeProtocol.count(),
-      getDashboardAlerts(),
+      prisma.activeProtocol.count({
+        where: ownerWhere.createdByUserId
+          ? { kitten: { createdByUserId: ownerWhere.createdByUserId } }
+          : {},
+      }),
+      getDashboardAlerts(req),
       buildDashboardInsights(prisma),
-      getReminderCategoryCounts(prisma),
+      getReminderCategoryCounts(prisma, ownerWhere),
       prisma.kitten.groupBy({
         by: ['status'],
+        where: mergeKittenWhere({}, ownerWhere),
         _count: { _all: true },
       }),
       prisma.kitten.findMany({
+        where: mergeKittenWhere({}, ownerWhere),
         orderBy: [{ intakeDate: 'desc' }, { id: 'desc' }],
         take: 4,
         select: dashboardKittenSelect,
       }),
       prisma.kitten.findMany({
-        where: { status: 'Adopted' },
+        where: mergeKittenWhere({ status: 'Adopted' }, ownerWhere),
         orderBy: [{ intakeDate: 'desc' }, { id: 'desc' }],
         take: 4,
         select: dashboardKittenSelect,
@@ -426,7 +444,7 @@ export async function getDashboardMetrics(_req, res, next) {
       ...alerts,
     };
 
-    setCachedResponse('dashboard-metrics', payload);
+    setCachedResponse(cacheKey, payload);
     res.json(payload);
   } catch (error) {
     next(error);
@@ -450,7 +468,9 @@ export async function getAllReminders(req, res, next) {
 
     const results = await Promise.all(
       categories.map(async (category) => {
-        const kittens = await getReminderCategoryItems(prisma, category.key);
+        const kittens = await getReminderCategoryItems(prisma, category.key, {
+          extraWhere: kittenOwnerWhere(req),
+        });
         return {
           key: category.key,
           label: category.label,
@@ -462,7 +482,9 @@ export async function getAllReminders(req, res, next) {
       }),
     );
 
-    res.json({ categories: results });
+    const calendarReminders = requested ? [] : await getCalendarReminderEvents();
+
+    res.json({ categories: results, calendarReminders });
   } catch (error) {
     next(error);
   }

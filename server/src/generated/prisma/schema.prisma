@@ -121,8 +121,12 @@ model Kitten {
   notes                  String           @default("")
   internalNotes          String           @default("")
   isListedOnWebsite      Boolean          @default(false)
+  isActive               Boolean          @default(true)
   websiteFeaturedComment String           @default("")
   publishTargets         String[]         @default([])
+  externalId             String?
+  createdByUserId        Int?
+  createdByUser          User?            @relation("KittenCreatedBy", fields: [createdByUserId], references: [id], onDelete: SetNull)
   isBondedPair           Boolean          @default(false)
   bondedWithKittenId     Int?
   bondedWithKitten       Kitten?          @relation("KittenBondedPair", fields: [bondedWithKittenId], references: [id], onDelete: SetNull)
@@ -131,6 +135,7 @@ model Kitten {
   isMedicalSpecialNeeds  Boolean          @default(false)
   isTnr                  Boolean          @default(false)
   isColony               Boolean          @default(false)
+  isCommunitySave        Boolean          @default(false)
   currentFosterId        Int?
   currentFoster          Foster?          @relation("CurrentFoster", fields: [currentFosterId], references: [id], onDelete: SetNull)
   createdAt              DateTime         @default(now())
@@ -147,10 +152,14 @@ model Kitten {
   activeProtocols        ActiveProtocol[]
   eventCats              EventCats[]
 
+  @@unique([externalId])
   @@index([status])
   @@index([litterId])
   @@index([currentFosterId])
   @@index([status, createdAt])
+  @@index([createdByUserId])
+  @@index([isListedOnWebsite])
+  @@index([isActive])
 }
 
 model Update {
@@ -539,14 +548,15 @@ model EventCats {
 }
 
 model Role {
-  id           Int              @id @default(autoincrement())
-  name         String           @unique
-  description  String           @default("")
-  isSystem     Boolean          @default(false)
-  isPortalRole Boolean          @default(false)
-  createdAt    DateTime         @default(now())
-  users        User[]
-  permissions  RolePermission[]
+  id              Int              @id @default(autoincrement())
+  name            String           @unique
+  description     String           @default("")
+  isSystem        Boolean          @default(false)
+  isPortalRole    Boolean          @default(false)
+  scopesToOwnCats Boolean          @default(false)
+  createdAt       DateTime         @default(now())
+  users           User[]
+  permissions     RolePermission[]
 }
 
 model Permission {
@@ -586,6 +596,7 @@ model User {
   activatedProtocols        ActiveProtocol[]      @relation("ProtocolActivatedBy")
   administeredProtocolDoses ProtocolDose[]        @relation("ProtocolDoseAdministeredBy")
   passwordResetTokens       PasswordResetToken[]
+  createdKittens            Kitten[]              @relation("KittenCreatedBy")
 }
 
 model PasswordResetToken {
@@ -836,4 +847,46 @@ model SocialPost {
 
   @@index([status, scheduledFor])
   @@map("social_posts")
+}
+
+model SyndicationLookup {
+  id          Int    @id @default(autoincrement())
+  kind        String
+  sourceValue String
+  targetValue String
+  version     Int    @default(1)
+
+  @@unique([kind, sourceValue, version])
+  @@index([kind, version])
+}
+
+model SyndicationRun {
+  id                  Int       @id @default(autoincrement())
+  startedAt           DateTime  @default(now())
+  finishedAt          DateTime?
+  status              String    @default("queued")
+  rowCount            Int       @default(0)
+  fileHash            String    @default("")
+  idsAdded            String[]  @default([])
+  idsRemoved          String[]  @default([])
+  platformResponse    String    @default("")
+  errorMessage        String    @default("")
+  consecutiveFailures Int       @default(0)
+  overrideUsed        Boolean   @default(false)
+  snapshotPath        String    @default("")
+}
+
+model SyndicationOutbox {
+  id          Int       @id @default(autoincrement())
+  eventType   String
+  kittenId    Int?
+  payload     Json?
+  availableAt DateTime  @default(now())
+  attempts    Int       @default(0)
+  lastError   String    @default("")
+  processedAt DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([processedAt, availableAt])
+  @@index([kittenId])
 }

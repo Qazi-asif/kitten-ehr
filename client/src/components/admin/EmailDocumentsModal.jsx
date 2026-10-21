@@ -46,15 +46,19 @@ function EmailDocumentsModal({ open, onClose, kittenId, documents, onSuccess }) 
 
     setSending(true);
     try {
-      await sendKittenDocumentsEmail(kittenId, {
+      const result = await sendKittenDocumentsEmail(kittenId, {
         to: to.trim(),
         subject: subject.trim(),
         message: message.trim(),
         documentIds: selectedIds,
       });
-      onSuccess?.();
+      if (!result?.success) {
+        setError(result?.error || result?.message || 'Email was not dispatched.');
+        return;
+      }
+      onSuccess?.(result);
     } catch (err) {
-      setError(err.message || 'Could not send email.');
+      setError(err.message || 'Email was not dispatched.');
     } finally {
       setSending(false);
     }

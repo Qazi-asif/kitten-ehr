@@ -22,19 +22,20 @@ const OUTCOME_STATUSES = ['Adopted', 'Transferred', 'Deceased', 'Released'];
 const LIVE_OUTCOME_STATUSES = ['Adopted', 'Transferred', 'Released'];
 
 /**
- * Normalizes free-text `intakeSource` plus the `isTnr`/`isColony` flags into the
- * four buckets the board and grant reports ask for. Source is free text, so it
- * is matched on substrings; the boolean flags win when set.
+ * Normalizes free-text `intakeSource` plus the TNR/Colony/Community Save flags
+ * into the buckets the board and grant reports ask for. Source is free text, so
+ * it is matched on substrings; the boolean flags win when set.
  */
 export function intakeSourceBucket(kitten) {
   const raw = (kitten.intakeSource || '').toLowerCase();
   if (/euth|e-list|elist|kill list/.test(raw)) return 'Euthanasia List';
   if (kitten.isTnr || /\btnr\b|trap.?neuter/.test(raw)) return 'TNR';
   if (kitten.isColony || /colony/.test(raw)) return 'Colony';
+  if (kitten.isCommunitySave || /community.?save/.test(raw)) return 'Community Save';
   return 'Other';
 }
 
-const INTAKE_BUCKETS = ['Euthanasia List', 'TNR', 'Colony', 'Other'];
+const INTAKE_BUCKETS = ['Euthanasia List', 'TNR', 'Colony', 'Community Save', 'Other'];
 
 export function resolveDateRange(query = {}) {
   const endDate = query.endDate
@@ -83,7 +84,7 @@ async function intakeOutcomeSummary(prisma, { startDate, endDate }) {
   const kittens = await prisma.kitten.findMany({
     where: { intakeDate: { gte: startDate, lte: endDate } },
     select: {
-      id: true, status: true, intakeSource: true, isTnr: true, isColony: true, intakeDate: true,
+      id: true, status: true, intakeSource: true, isTnr: true, isColony: true, isCommunitySave: true, intakeDate: true,
     },
   });
 
@@ -162,6 +163,7 @@ async function outcomesByIntakeSource(prisma, { startDate, endDate }) {
       intakeSource: true,
       isTnr: true,
       isColony: true,
+      isCommunitySave: true,
       intakeDate: true,
       outcomeDate: true,
       outcomeDetail: true,
@@ -176,6 +178,9 @@ async function outcomesByIntakeSource(prisma, { startDate, endDate }) {
       kitten.name,
       intakeSourceBucket(kitten),
       kitten.intakeSource || '',
+      kitten.isTnr ? 'Yes' : 'No',
+      kitten.isColony ? 'Yes' : 'No',
+      kitten.isCommunitySave ? 'Yes' : 'No',
       d(kitten.intakeDate),
       kitten.status,
       d(kitten.outcomeDate),
@@ -185,7 +190,7 @@ async function outcomesByIntakeSource(prisma, { startDate, endDate }) {
     ];
   });
 
-  const withStay = rows.map((r) => r[8]).filter((v) => typeof v === 'number');
+  const withStay = rows.map((r) => r[11]).filter((v) => typeof v === 'number');
   const avgStay = withStay.length
     ? Math.round(withStay.reduce((a, b) => a + b, 0) / withStay.length)
     : 0;
@@ -193,12 +198,13 @@ async function outcomesByIntakeSource(prisma, { startDate, endDate }) {
   return {
     summary: [
       { label: 'Cats in range', value: rows.length },
-      { label: 'Completed outcomes', value: rows.filter((r) => r[9] === 'Completed').length },
-      { label: 'Still in care', value: rows.filter((r) => r[9] === 'Still in care').length },
+      { label: 'Completed outcomes', value: rows.filter((r) => r[12] === 'Completed').length },
+      { label: 'Still in care', value: rows.filter((r) => r[12] === 'Still in care').length },
       { label: 'Average length of stay', value: `${avgStay} days`, hint: 'Across cats with a completed outcome.' },
     ],
     columns: [
-      'ID', 'Name', 'Intake Source', 'Intake Source (raw)', 'Intake Date', 'Outcome',
+      'ID', 'Name', 'Intake Source', 'Intake Source (raw)', 'TNR', 'Colony', 'Community Save',
+      'Intake Date', 'Outcome',
       'Outcome Date', 'Outcome Detail', 'Length of Stay (days)', 'Case Status',
     ],
     rows,
@@ -369,7 +375,7 @@ async function ageAtIntake(prisma, { startDate, endDate }) {
     orderBy: [{ intakeDate: 'desc' }],
     select: {
       id: true, name: true, dateOfBirth: true, intakeDate: true, status: true,
-      intakeSource: true, isTnr: true, isColony: true,
+      intakeSource: true, isTnr: true, isColony: true, isCommunitySave: true,
     },
   });
 
@@ -437,6 +443,9 @@ async function fullExport(prisma, { startDate, endDate }) {
     d(kitten.intakeDate),
     kitten.intakeSource || '',
     intakeSourceBucket(kitten),
+    kitten.isTnr ? 'Yes' : 'No',
+    kitten.isColony ? 'Yes' : 'No',
+    kitten.isCommunitySave ? 'Yes' : 'No',
     d(kitten.outcomeDate),
     kitten.outcomeDetail || '',
     kitten.litter?.name || '',
@@ -449,6 +458,7 @@ async function fullExport(prisma, { startDate, endDate }) {
     columns: [
       'ID', 'Name', 'Status', 'Breed', 'Coat Color', 'Coat Pattern', 'Sex', 'Fixed Status', 'FIV/FeLV',
       'Microchip', 'Date of Birth', 'Intake Date', 'Intake Source (raw)', 'Intake Source',
+      'TNR', 'Colony', 'Community Save',
       'Outcome Date', 'Outcome Detail', 'Litter', 'Current Foster', 'Special Needs',
     ],
     rows,

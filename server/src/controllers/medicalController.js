@@ -1,5 +1,13 @@
 import prisma from '../lib/prisma.js';
 import { normalizeDateField } from '../utils/dateFields.js';
+import { kittenOwnerWhere, mergeKittenWhere } from '../utils/kittenScope.js';
+
+async function findAccessibleKitten(req, kittenId) {
+  return prisma.kitten.findFirst({
+    where: mergeKittenWhere({ id: kittenId }, kittenOwnerWhere(req)),
+    select: { id: true },
+  });
+}
 
 const vaccineDate = (field, value) => normalizeDateField(`Vaccine.${field}`, value);
 const medicationDate = (field, value) => normalizeDateField(`Medication.${field}`, value);
@@ -10,7 +18,7 @@ export async function getMedicalByKittenId(req, res, next) {
     const kittenId = Number.parseInt(req.params.kittenId, 10);
 
     const [kitten, vaccines, medications, vetAppointments] = await Promise.all([
-      prisma.kitten.findUnique({ where: { id: kittenId }, select: { id: true } }),
+      findAccessibleKitten(req, kittenId),
       prisma.vaccine.findMany({ where: { kittenId }, orderBy: { dateGiven: 'desc' } }),
       prisma.medication.findMany({ where: { kittenId }, orderBy: { startDate: 'desc' } }),
       prisma.vetAppointment.findMany({ where: { kittenId }, orderBy: { date: 'desc' } }),
@@ -44,7 +52,7 @@ export async function createVaccine(req, res, next) {
     }
 
     const parsedKittenId = Number.parseInt(kittenId, 10);
-    const kitten = await prisma.kitten.findUnique({ where: { id: parsedKittenId } });
+    const kitten = await findAccessibleKitten(req, parsedKittenId);
     if (!kitten) return res.status(404).json({ error: 'Kitten not found' });
 
     const vaccine = await prisma.vaccine.create({
@@ -86,7 +94,7 @@ export async function createVetAppointment(req, res, next) {
     }
 
     const parsedKittenId = Number.parseInt(kittenId, 10);
-    const kitten = await prisma.kitten.findUnique({ where: { id: parsedKittenId } });
+    const kitten = await findAccessibleKitten(req, parsedKittenId);
     if (!kitten) return res.status(404).json({ error: 'Kitten not found' });
 
     const appointment = await prisma.vetAppointment.create({
@@ -130,7 +138,7 @@ export async function createMedication(req, res, next) {
     }
 
     const parsedKittenId = Number.parseInt(kittenId, 10);
-    const kitten = await prisma.kitten.findUnique({ where: { id: parsedKittenId } });
+    const kitten = await findAccessibleKitten(req, parsedKittenId);
     if (!kitten) return res.status(404).json({ error: 'Kitten not found' });
 
     const medication = await prisma.medication.create({

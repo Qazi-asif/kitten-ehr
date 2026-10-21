@@ -18,6 +18,7 @@ const FosterDetailPage = lazy(() => import('./pages/FosterDetailPage'));
 const FosterListPage = lazy(() => import('./pages/FosterListPage'));
 const KittenDetailPage = lazy(() => import('./pages/KittenDetailPage'));
 const KittenListPage = lazy(() => import('./pages/KittenListPage'));
+const KittenSpreadsheetPage = lazy(() => import('./pages/admin/KittenSpreadsheetPage'));
 const LitterDetailPage = lazy(() => import('./pages/LitterDetailPage'));
 const LitterListPage = lazy(() => import('./pages/LitterListPage'));
 const ApplicationsPage = lazy(() => import('./pages/admin/ApplicationsPage'));
@@ -104,6 +105,7 @@ function App() {
                 </Route>
                 <Route element={<ProtectedRoute permission="kittens.view" />}>
                   <Route path="kittens" element={<KittenListPage />} />
+                  <Route path="kittens/spreadsheet" element={<KittenSpreadsheetPage />} />
                   <Route path="kittens/:id" element={<KittenDetailPage />} />
                 </Route>
                 <Route element={<ProtectedRoute permission="fosters.view" />}>

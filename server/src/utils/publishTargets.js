@@ -11,10 +11,8 @@ export function targetsIncludeWebsite(targets) {
 
 export function buildPublicWebsiteWhereClause() {
   return {
-    OR: [
-      { publishTargets: { isEmpty: true } },
-      { publishTargets: { has: 'WEBSITE' } },
-    ],
+    isListedOnWebsite: true,
+    isActive: true,
   };
 }
 

@@ -42,6 +42,7 @@ const navItems = [
 const pageMeta = [
   { match: (p) => p === '/admin', title: 'Dashboard' },
   { match: (p) => p.startsWith('/admin/kittens/'), title: 'Kitten Profile', subtitle: 'Medical records, publishing, and adoption details.' },
+  { match: (p) => p === '/admin/kittens/spreadsheet', title: 'Cat Spreadsheet', subtitle: 'Bulk-edit active cats in a spreadsheet view.' },
   { match: (p) => p === '/admin/kittens', title: 'Cats', subtitle: 'Manage cats and link them to litter intake groups.' },
   { match: (p) => p.startsWith('/admin/litters/'), title: 'Litter Group', subtitle: 'View kittens linked to this intake group.' },
   { match: (p) => p === '/admin/litters', title: 'Litters', subtitle: 'Create and manage litter intake groups.' },

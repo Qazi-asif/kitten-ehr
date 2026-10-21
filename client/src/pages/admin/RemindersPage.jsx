@@ -92,6 +92,7 @@ function CategorySection({ category, expanded, onToggle }) {
 
 function RemindersPage() {
   const [categories, setCategories] = useState([]);
+  const [calendarReminders, setCalendarReminders] = useState([]);
   const [expanded, setExpanded] = useState(() => new Set());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -102,6 +103,7 @@ function RemindersPage() {
     try {
       const data = await fetchAllReminders();
       setCategories(data.categories || []);
+      setCalendarReminders(data.calendarReminders || []);
       // Open the categories that actually need attention.
       setExpanded(new Set((data.categories || []).filter((c) => c.count > 0).map((c) => c.key)));
     } catch (err) {
@@ -124,7 +126,7 @@ function RemindersPage() {
     });
   }
 
-  const total = categories.reduce((sum, category) => sum + category.count, 0);
+  const total = categories.reduce((sum, category) => sum + category.count, 0) + calendarReminders.length;
 
   return (
     <div className="space-y-5">
@@ -144,6 +146,32 @@ function RemindersPage() {
         <p className="text-sm text-slate-500">Loading reminders…</p>
       ) : (
         <div className="space-y-4">
+          {calendarReminders.length > 0 && (
+            <section className="overflow-hidden rounded-xl border border-teal-200 bg-white shadow-sm">
+              <div className="flex items-center justify-between gap-3 border-b border-teal-200 bg-teal-50 px-5 py-4 text-teal-800">
+                <div>
+                  <p className="text-sm font-bold">Calendar events</p>
+                  <p className="text-xs font-medium opacity-80">Shown individually at the top of Upcoming Reminders</p>
+                </div>
+                <span className="shrink-0 rounded-full bg-white/70 px-2.5 py-1 text-xs font-bold tabular-nums">
+                  {calendarReminders.length}
+                </span>
+              </div>
+              <ul className="divide-y divide-slate-100">
+                {calendarReminders.map((event) => (
+                  <li key={event.id} className="px-5 py-3">
+                    <Link to="/admin/calendar" className="block text-sm font-semibold text-brand hover:underline">
+                      {event.title}
+                    </Link>
+                    <p className="mt-0.5 text-xs text-slate-500">
+                      {event.dueDate ? formatPacificDisplay(event.dueDate, { withTime: true }) : ''}
+                      {event.kittenName ? ` · ${event.kittenName}` : ''}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
           {categories.map((category) => (
             <CategorySection
               key={category.key}

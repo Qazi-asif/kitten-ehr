@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import HouseholdPetsSection from './HouseholdPetsSection';
 import PhoneInput from './PhoneInput';
-import { fetchPublicSettings, submitApplication } from '../services/publicApi';
+import { fetchApplyStatus, fetchPublicSettings, submitApplication } from '../services/publicApi';
 import { CheckCircle2, ImagePlus, Send, X } from 'lucide-react';
 
 const OWN_OR_RENT_OPTIONS = ['', 'Own', 'Rent'];
@@ -86,7 +86,7 @@ const FORM_COPY = {
 };
 
 function getPrefilledKittenInterest(params) {
-  return params.get('kitten') || params.get('name') || params.get('kittenId') || params.get('id') || '';
+  return params.get('kitten') || params.get('name') || params.get('kittenId') || params.get('id') || params.get('cat') || '';
 }
 
 function ApplicationForm({
@@ -110,6 +110,7 @@ function ApplicationForm({
   const [photoPreviews, setPhotoPreviews] = useState([]);
   const [selectedKittenId, setSelectedKittenId] = useState(prefilledKittenId);
   const [showCurrentPetsOnAdoptionForm, setShowCurrentPetsOnAdoptionForm] = useState(false);
+  const [applyStatus, setApplyStatus] = useState(null);
   const [form, setForm] = useState({
     fullName: '',
     email: '',
@@ -135,6 +136,22 @@ function ApplicationForm({
     bottleFeedingAge: '',
     message: '',
   });
+
+  useEffect(() => {
+    const cat = params.get('cat');
+    if (applicationType !== 'Adoption' || !cat) return undefined;
+    let cancelled = false;
+    fetchApplyStatus(cat)
+      .then((status) => {
+        if (!cancelled) setApplyStatus(status);
+      })
+      .catch(() => {
+        if (!cancelled) setApplyStatus(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [applicationType, params]);
 
   useEffect(() => {
     if (applicationType !== 'Adoption') return;
@@ -311,6 +328,22 @@ function ApplicationForm({
     <div className="mx-auto max-w-4xl px-6 py-12 lg:px-8">
       
       {error && <div className="mb-8 rounded-xl bg-red-50 border border-red-200 px-6 py-4 text-sm font-medium text-red-800">{error}</div>}
+      {applyStatus && applyStatus.available === false && applyStatus.reason === 'found_a_home' && (
+        <div className="mb-8 rounded-xl border border-amber-200 bg-amber-50 px-6 py-4 text-sm text-amber-900">
+          <p className="font-semibold">{applyStatus.message || 'This cat has found a home, here are similar cats'}</p>
+          {Array.isArray(applyStatus.similar) && applyStatus.similar.length > 0 && (
+            <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+              {applyStatus.similar.map((kitten) => (
+                <li key={kitten.id}>
+                  <a className="font-medium text-brand hover:underline" href={`/kittens/${kitten.id}`}>
+                    {kitten.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} className="rounded-3xl border border-brand/20 bg-white p-5 shadow-sm sm:p-8 lg:p-12">
         

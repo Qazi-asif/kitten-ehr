@@ -170,14 +170,18 @@ exports.Prisma.KittenScalarFieldEnum = {
   notes: 'notes',
   internalNotes: 'internalNotes',
   isListedOnWebsite: 'isListedOnWebsite',
+  isActive: 'isActive',
   websiteFeaturedComment: 'websiteFeaturedComment',
   publishTargets: 'publishTargets',
+  externalId: 'externalId',
+  createdByUserId: 'createdByUserId',
   isBondedPair: 'isBondedPair',
   bondedWithKittenId: 'bondedWithKittenId',
   bondedWithName: 'bondedWithName',
   isMedicalSpecialNeeds: 'isMedicalSpecialNeeds',
   isTnr: 'isTnr',
   isColony: 'isColony',
+  isCommunitySave: 'isCommunitySave',
   currentFosterId: 'currentFosterId',
   createdAt: 'createdAt'
 };
@@ -427,6 +431,7 @@ exports.Prisma.RoleScalarFieldEnum = {
   description: 'description',
   isSystem: 'isSystem',
   isPortalRole: 'isPortalRole',
+  scopesToOwnCats: 'scopesToOwnCats',
   createdAt: 'createdAt'
 };
 
@@ -635,9 +640,50 @@ exports.Prisma.SocialPostScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.SyndicationLookupScalarFieldEnum = {
+  id: 'id',
+  kind: 'kind',
+  sourceValue: 'sourceValue',
+  targetValue: 'targetValue',
+  version: 'version'
+};
+
+exports.Prisma.SyndicationRunScalarFieldEnum = {
+  id: 'id',
+  startedAt: 'startedAt',
+  finishedAt: 'finishedAt',
+  status: 'status',
+  rowCount: 'rowCount',
+  fileHash: 'fileHash',
+  idsAdded: 'idsAdded',
+  idsRemoved: 'idsRemoved',
+  platformResponse: 'platformResponse',
+  errorMessage: 'errorMessage',
+  consecutiveFailures: 'consecutiveFailures',
+  overrideUsed: 'overrideUsed',
+  snapshotPath: 'snapshotPath'
+};
+
+exports.Prisma.SyndicationOutboxScalarFieldEnum = {
+  id: 'id',
+  eventType: 'eventType',
+  kittenId: 'kittenId',
+  payload: 'payload',
+  availableAt: 'availableAt',
+  attempts: 'attempts',
+  lastError: 'lastError',
+  processedAt: 'processedAt',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -648,6 +694,12 @@ exports.Prisma.QueryMode = {
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 exports.DocumentKind = exports.$Enums.DocumentKind = {
   PHOTO: 'PHOTO',
@@ -769,7 +821,10 @@ exports.Prisma.ModelName = {
   EmailLog: 'EmailLog',
   Transaction: 'Transaction',
   Wishlist: 'Wishlist',
-  SocialPost: 'SocialPost'
+  SocialPost: 'SocialPost',
+  SyndicationLookup: 'SyndicationLookup',
+  SyndicationRun: 'SyndicationRun',
+  SyndicationOutbox: 'SyndicationOutbox'
 };
 
 /**

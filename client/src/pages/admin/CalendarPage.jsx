@@ -232,8 +232,8 @@ function CalendarPage() {
           <span>
             <span className="font-medium">Show in Upcoming Reminders</span>
             <span className="block text-xs text-slate-500">
-              When checked, this event appears on the Dashboard&apos;s Upcoming Reminders (within 7 days of its date)
-              and links to the cat(s) tagged above. Requires at least one tagged cat.
+              When checked, this event appears individually at the top of the Dashboard&apos;s
+              Upcoming Reminders (within 7 days of its date). Tagged cats are optional.
             </span>
           </span>
         </label>

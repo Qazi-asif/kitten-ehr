@@ -77,6 +77,21 @@ export async function fetchDashboardStats() {
   }
 }
 
+export async function fetchSpreadsheet() {
+  const response = await adminFetch('/kittens/spreadsheet');
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to load spreadsheet'));
+  return response.json();
+}
+
+export async function patchSpreadsheetCell(payload) {
+  const response = await adminFetch('/kittens/spreadsheet', {
+    method: 'PATCH',
+    body: JSON.stringify(payload),
+  });
+  if (!response.ok) throw new Error(await readApiError(response, 'Failed to save cell'));
+  return response.json();
+}
+
 export async function createKitten(kittenData) {
   let response;
   try {
@@ -101,8 +116,11 @@ export async function fetchKittenById(id) {
   return response.json();
 }
 
-export async function fetchFosters() {
-  const response = await adminFetch('/fosters');
+export async function fetchFosters(params = {}) {
+  const searchParams = new URLSearchParams();
+  if (params.status) searchParams.set('status', params.status);
+  const query = searchParams.toString();
+  const response = await adminFetch(`/fosters${query ? `?${query}` : ''}`);
   if (!response.ok) throw new Error(await readApiError(response, 'Failed to load fosters'));
   return response.json();
 }

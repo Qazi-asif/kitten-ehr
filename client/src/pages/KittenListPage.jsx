@@ -209,14 +209,22 @@ function KittensPage() {
             </button>
           ))}
         </div>
-        <button
-          type="button"
-          onClick={() => setSearchParams({ add: '1' })}
-          className="inline-flex items-center gap-2 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark"
-        >
-          <Plus className="h-4 w-4" />
-          Add Cat
-        </button>
+        <div className="flex flex-wrap gap-2">
+          <Link
+            to="/admin/kittens/spreadsheet"
+            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+          >
+            Spreadsheet
+          </Link>
+          <button
+            type="button"
+            onClick={() => setSearchParams({ add: '1' })}
+            className="inline-flex items-center gap-2 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark"
+          >
+            <Plus className="h-4 w-4" />
+            Add Cat
+          </button>
+        </div>
       </div>
 
       {reminderIds && (

@@ -25,6 +25,7 @@ async function seedAuth() {
         description: roleDef.description,
         isSystem: roleDef.isSystem,
         isPortalRole: roleDef.isPortalRole ?? false,
+        scopesToOwnCats: roleDef.scopesToOwnCats ?? false,
       },
     });
 
