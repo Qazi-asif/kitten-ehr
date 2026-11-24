@@ -1,19 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import HouseholdPetsSection from './HouseholdPetsSection';
+import AdoptionApplicationFields, { NOT_LISTED } from './AdoptionApplicationFields';
 import PhoneInput from './PhoneInput';
-import { fetchApplyStatus, fetchPublicSettings, submitApplication } from '../services/publicApi';
+import { fetchApplyStatus, submitApplication } from '../services/publicApi';
 import { CheckCircle2, ImagePlus, Send, X } from 'lucide-react';
 
 const OWN_OR_RENT_OPTIONS = ['', 'Own', 'Rent'];
-const ADOPTION_EXPERIENCE_OPTIONS = [
-  '',
-  'None, first-time cat owner',
-  'Some, I\'ve had cats of my own before',
-  'Experienced, I\'ve had multiple cats across my life',
-  'Advanced, I\'ve had medical cases and/or raised kittens from bottle babies',
-  'Other',
-];
+const NEVER_OUTSIDE = 'No, never';
 const FOSTER_EXPERIENCE_OPTIONS = [
   '',
   'None (first-time foster)',
@@ -93,6 +87,41 @@ function getApplyStatusLookup(params) {
   return params.get('cat') || params.get('kittenId') || params.get('kitten') || params.get('id') || params.get('name') || '';
 }
 
+function firstSelectedKittenId(selectedCatIds) {
+  const ids = Array.isArray(selectedCatIds) ? selectedCatIds : [];
+  for (const id of ids) {
+    if (id === NOT_LISTED) continue;
+    const parsed = Number.parseInt(id, 10);
+    if (Number.isInteger(parsed) && parsed > 0) return parsed;
+  }
+  return undefined;
+}
+
+function adoptionCatChoices(availableKittens, lockedCatId, fallbackName, fallbackStatus) {
+  const list = Array.isArray(availableKittens) ? availableKittens : [];
+  if (!lockedCatId || list.some((kitten) => String(kitten.id) === String(lockedCatId))) {
+    return list;
+  }
+  return [
+    {
+      id: lockedCatId,
+      name: fallbackName || `Cat #${lockedCatId}`,
+      status: fallbackStatus || '',
+    },
+    ...list,
+  ];
+}
+
+function kittenNamesFromSelection(selectedCatIds, cats) {
+  const ids = Array.isArray(selectedCatIds) ? selectedCatIds : [];
+  const labels = ids.map((id) => {
+    if (id === NOT_LISTED) return 'Not listed';
+    const kitten = cats.find((item) => String(item.id) === String(id));
+    return kitten?.name || '';
+  }).filter(Boolean);
+  return labels.join(', ').slice(0, 200);
+}
+
 function ApplicationForm({
   defaultType = 'Adoption',
   lockType = true,
@@ -105,23 +134,57 @@ function ApplicationForm({
   const lockedKitten = Boolean(prefilledKitten);
   const prefilledKittenId = Number.parseInt(params.get('kittenId'), 10) || undefined;
   const applicationType = defaultType === 'Foster' ? 'Foster' : 'Adoption';
-  const useKittenDropdown = applicationType === 'Adoption' && !lockedKitten;
   const copy = FORM_COPY[applicationType];
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [photoFiles, setPhotoFiles] = useState([]);
   const [photoPreviews, setPhotoPreviews] = useState([]);
-  const [selectedKittenId, setSelectedKittenId] = useState(prefilledKittenId);
-  const [showCurrentPetsOnAdoptionForm, setShowCurrentPetsOnAdoptionForm] = useState(false);
   const [applyStatus, setApplyStatus] = useState(null);
   const [form, setForm] = useState({
     fullName: '',
+    firstName: '',
+    lastName: '',
     email: '',
     phone: '',
     address: '',
+    confirmAge18: false,
     kittenOfInterest: prefilledKitten,
+    selectedCatIds: prefilledKittenId ? [String(prefilledKittenId)] : [],
+    lockedCatId: prefilledKittenId ? String(prefilledKittenId) : '',
+    unlistedCatDescription: '',
+    whyThisCat: '',
+    bondedPair: '',
+    householdMembers: '',
+    allergicToCats: '',
+    allergyPlan: '',
+    primaryCaregiver: '',
+    hoursHomeAlone: '',
+    travelCare: '',
+    unableToCarePlan: '',
     ownOrRent: '',
+    landlordContact: '',
+    leaseAllowsCats: '',
+    ifMovePlan: '',
+    hasCurrentPets: '',
+    currentPetDetails: '',
+    currentCatsOutside: [],
+    currentCatsDeclawed: '',
+    vetContact: '',
+    hadPastPets: '',
+    pastPetsDetails: '',
+    lastVetVisit: '',
+    vetContactConsent: false,
+    newCatOutside: [],
+    considerDeclawing: '',
+    litterBoxPlan: '',
+    scratchingPlan: '',
+    otherPetsConflictPlan: '',
+    canCoverVetBill: '',
+    agreeHomeCheck: false,
+    agreeSpayNeuter: false,
+    agreeTruthful: false,
+    agreeMayDecline: false,
     currentPets: [],
     experience: '',
     experienceLevel: '',
@@ -158,31 +221,54 @@ function ApplicationForm({
   }, [applicationType, params]);
 
   useEffect(() => {
-    if (applicationType !== 'Adoption') return;
-    let cancelled = false;
-    fetchPublicSettings()
-      .then((settings) => {
-        if (!cancelled) setShowCurrentPetsOnAdoptionForm(Boolean(settings?.showCurrentPetsOnAdoptionForm));
-      })
-      .catch(() => {
-        if (!cancelled) setShowCurrentPetsOnAdoptionForm(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [applicationType]);
+    if (applicationType !== 'Adoption' || !lockedKitten) return undefined;
+    const idFromQuery = prefilledKittenId ? String(prefilledKittenId) : '';
+    const matched = availableKittens.find((kitten) => {
+      if (idFromQuery && String(kitten.id) === idFromQuery) return true;
+      if (prefilledKitten && kitten.name?.toLowerCase() === String(prefilledKitten).toLowerCase()) return true;
+      if (prefilledKitten && String(kitten.id) === String(prefilledKitten)) return true;
+      return false;
+    });
+    const statusId = applyStatus?.kitten?.id ? String(applyStatus.kitten.id) : '';
+    const resolvedId = idFromQuery || (matched ? String(matched.id) : '') || statusId;
+    if (!resolvedId) return undefined;
+    setForm((prev) => {
+      if (prev.lockedCatId === resolvedId && (prev.selectedCatIds || []).includes(resolvedId)) {
+        return prev;
+      }
+      const rest = (prev.selectedCatIds || []).filter((item) => item !== resolvedId);
+      return {
+        ...prev,
+        lockedCatId: resolvedId,
+        selectedCatIds: [resolvedId, ...rest],
+      };
+    });
+    return undefined;
+  }, [applicationType, lockedKitten, prefilledKittenId, prefilledKitten, availableKittens, applyStatus]);
 
-  function handleKittenSelect(e) {
-    const raw = e.target.value;
-    const id = Number.parseInt(raw, 10);
-    if (!raw || !Number.isInteger(id)) {
-      setSelectedKittenId(undefined);
-      setForm((prev) => ({ ...prev, kittenOfInterest: '' }));
-      return;
-    }
-    const kitten = availableKittens.find((item) => item.id === id);
-    setSelectedKittenId(id);
-    setForm((prev) => ({ ...prev, kittenOfInterest: kitten?.name || '' }));
+  function toggleCat(id, checked) {
+    setForm((prev) => {
+      if (!checked && prev.lockedCatId && id === String(prev.lockedCatId)) return prev;
+      const current = Array.isArray(prev.selectedCatIds) ? prev.selectedCatIds : [];
+      const next = checked
+        ? (current.includes(id) ? current : [...current, id])
+        : current.filter((item) => item !== id);
+      return { ...prev, selectedCatIds: next };
+    });
+  }
+
+  function toggleOutdoor(name, option, checked) {
+    setForm((prev) => {
+      const current = Array.isArray(prev[name]) ? prev[name] : [];
+      if (option === NEVER_OUTSIDE) {
+        return { ...prev, [name]: checked ? [NEVER_OUTSIDE] : [] };
+      }
+      const withoutNever = current.filter((item) => item !== NEVER_OUTSIDE);
+      const next = checked
+        ? (withoutNever.includes(option) ? withoutNever : [...withoutNever, option])
+        : withoutNever.filter((item) => item !== option);
+      return { ...prev, [name]: next };
+    });
   }
 
   function handleChange(e) {
@@ -263,23 +349,90 @@ function ApplicationForm({
       setSubmitting(false);
       return;
     }
+    if (applicationType === 'Adoption') {
+      if (form.hasCurrentPets === 'Yes' && form.currentCatsOutside.length === 0) {
+        setError('Please answer whether your current cats go outside.');
+        setSubmitting(false);
+        return;
+      }
+      if (form.newCatOutside.length === 0) {
+        setError('Please answer whether your new cat will go outside.');
+        setSubmitting(false);
+        return;
+      }
+    }
     try {
-      const payload = {
-        fullName: form.fullName,
-        email: form.email,
-        phone: form.phone,
-        address: form.address,
-        kittenOfInterest: form.kittenOfInterest,
-        ownOrRent: form.ownOrRent,
-        currentPets: form.currentPets,
-        message: form.message,
-      };
+      const showVet = form.hasCurrentPets === 'Yes' || form.hadPastPets === 'Yes';
+      const includesNotListed = (form.selectedCatIds || []).includes(NOT_LISTED);
+      const statusKitten = applyStatus?.kitten;
+      const lockedName = statusKitten && String(statusKitten.id) === String(form.lockedCatId)
+        ? statusKitten.name
+        : (prefilledKitten && !/^\d+$/.test(String(prefilledKitten)) ? prefilledKitten : form.kittenOfInterest);
+      const cats = adoptionCatChoices(
+        availableKittens,
+        form.lockedCatId,
+        lockedName,
+        statusKitten && String(statusKitten.id) === String(form.lockedCatId) ? statusKitten.status : '',
+      );
+      const adoptionInterest = kittenNamesFromSelection(form.selectedCatIds, cats);
+      const payload = applicationType === 'Adoption'
+        ? {
+          firstName: form.firstName.trim(),
+          lastName: form.lastName.trim(),
+          fullName: `${form.firstName.trim()} ${form.lastName.trim()}`.trim(),
+          email: form.email,
+          phone: form.phone,
+          address: form.address,
+          confirmAge18: Boolean(form.confirmAge18),
+          kittenOfInterest: adoptionInterest,
+          unlistedCatDescription: includesNotListed ? form.unlistedCatDescription.trim() : '',
+          whyThisCat: form.whyThisCat,
+          bondedPair: form.bondedPair,
+          householdMembers: form.householdMembers,
+          allergicToCats: form.allergicToCats,
+          allergyPlan: form.allergicToCats === 'Yes' ? form.allergyPlan.trim() : '',
+          primaryCaregiver: form.primaryCaregiver,
+          hoursHomeAlone: form.hoursHomeAlone,
+          travelCare: form.travelCare,
+          unableToCarePlan: form.unableToCarePlan,
+          homeType: form.homeType,
+          ownOrRent: form.ownOrRent,
+          landlordContact: form.ownOrRent === 'Rent' ? form.landlordContact.trim() : '',
+          leaseAllowsCats: form.ownOrRent === 'Rent' ? form.leaseAllowsCats : '',
+          ifMovePlan: form.ifMovePlan,
+          hasCurrentPets: form.hasCurrentPets,
+          currentPetDetails: form.hasCurrentPets === 'Yes' ? form.currentPetDetails.trim() : '',
+          currentCatsOutside: form.hasCurrentPets === 'Yes' ? form.currentCatsOutside : [],
+          currentCatsDeclawed: form.hasCurrentPets === 'Yes' ? form.currentCatsDeclawed : '',
+          lastVetVisit: form.hasCurrentPets === 'Yes' ? form.lastVetVisit : '',
+          hadPastPets: form.hadPastPets,
+          pastPetsDetails: form.hadPastPets === 'Yes' ? form.pastPetsDetails.trim() : '',
+          vetContact: showVet ? form.vetContact.trim() : '',
+          vetContactConsent: showVet ? Boolean(form.vetContactConsent) : undefined,
+          newCatOutside: form.newCatOutside,
+          considerDeclawing: form.considerDeclawing,
+          litterBoxPlan: form.litterBoxPlan,
+          scratchingPlan: form.scratchingPlan,
+          otherPetsConflictPlan: form.otherPetsConflictPlan,
+          canCoverVetBill: form.canCoverVetBill,
+          agreeHomeCheck: Boolean(form.agreeHomeCheck),
+          agreeSpayNeuter: Boolean(form.agreeSpayNeuter),
+          agreeTruthful: Boolean(form.agreeTruthful),
+          agreeMayDecline: Boolean(form.agreeMayDecline),
+          message: form.message,
+        }
+        : {
+          fullName: form.fullName,
+          email: form.email,
+          phone: form.phone,
+          address: form.address,
+          kittenOfInterest: form.kittenOfInterest,
+          ownOrRent: form.ownOrRent,
+          currentPets: form.currentPets,
+          message: form.message,
+        };
 
-      if (applicationType === 'Adoption') {
-        payload.experience = form.experience === 'Other'
-          ? (form.experienceOther.trim() || 'Other')
-          : form.experience;
-      } else {
+      if (applicationType === 'Foster') {
         payload.experienceLevel = form.experienceLevel === 'Other'
           ? (form.experienceOther.trim() || 'Other')
           : form.experienceLevel;
@@ -304,7 +457,7 @@ function ApplicationForm({
         applicationType,
         payload,
         allowPhotoUpload ? photoFiles : [],
-        selectedKittenId || prefilledKittenId,
+        applicationType === 'Adoption' ? firstSelectedKittenId(form.selectedCatIds) : prefilledKittenId,
       );
       setSubmitted(true);
     } catch (err) {
@@ -327,6 +480,18 @@ function ApplicationForm({
       </div>
     );
   }
+
+  const statusKitten = applyStatus?.kitten;
+  const namedPrefill = prefilledKitten && !/^\d+$/.test(String(prefilledKitten)) ? prefilledKitten : '';
+  const lockedFallbackName = statusKitten && String(statusKitten.id) === String(form.lockedCatId)
+    ? statusKitten.name
+    : namedPrefill;
+  const adoptionKittens = adoptionCatChoices(
+    availableKittens,
+    form.lockedCatId,
+    lockedFallbackName,
+    statusKitten && String(statusKitten.id) === String(form.lockedCatId) ? statusKitten.status : '',
+  );
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-12 lg:px-8">
@@ -363,6 +528,62 @@ function ApplicationForm({
           </div>
         )}
 
+        {applicationType === 'Adoption' && (
+          <>
+            <h3 className="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand/10 text-brand text-xs">1</span>
+              About you
+            </h3>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 mb-10">
+              <label className="block">
+                <span className="mb-2 block text-sm font-semibold text-slate-800">First Name *</span>
+                <input name="firstName" value={form.firstName} onChange={handleChange} required className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm focus:border-brand focus:ring-brand" />
+              </label>
+              <label className="block">
+                <span className="mb-2 block text-sm font-semibold text-slate-800">Last Name *</span>
+                <input name="lastName" value={form.lastName} onChange={handleChange} required className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm focus:border-brand focus:ring-brand" />
+              </label>
+              <label className="block">
+                <span className="mb-2 block text-sm font-semibold text-slate-800">Email *</span>
+                <input type="email" name="email" value={form.email} onChange={handleChange} required className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm focus:border-brand focus:ring-brand" />
+              </label>
+              <label className="block">
+                <span className="mb-2 block text-sm font-semibold text-slate-800">Phone *</span>
+                <PhoneInput
+                  value={form.phone}
+                  onChange={(phone) => setForm((prev) => ({ ...prev, phone }))}
+                  required
+                />
+              </label>
+              <label className="block sm:col-span-2">
+                <span className="mb-2 block text-sm font-semibold text-slate-800">Full Address *</span>
+                <input name="address" value={form.address} onChange={handleChange} required className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm focus:border-brand focus:ring-brand" />
+              </label>
+              <label className="flex items-start gap-2 text-sm text-slate-800 sm:col-span-2">
+                <input
+                  type="checkbox"
+                  name="confirmAge18"
+                  checked={Boolean(form.confirmAge18)}
+                  onChange={(e) => handleChange({ target: { name: 'confirmAge18', value: e.target.checked } })}
+                  required
+                  className="mt-1"
+                />
+                <span>I am 18 years of age or older *</span>
+              </label>
+            </div>
+            <AdoptionApplicationFields
+              form={form}
+              onChange={handleChange}
+              onToggleOutdoor={toggleOutdoor}
+              onToggleCat={toggleCat}
+              availableKittens={adoptionKittens}
+              lockedKitten={Boolean(form.lockedCatId)}
+            />
+          </>
+        )}
+
+        {applicationType === 'Foster' && (
+          <>
         {/* Section: Applicant Information */}
         <h3 className="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
           <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand/10 text-brand text-xs">1</span>
@@ -409,71 +630,19 @@ function ApplicationForm({
           
           <label className="block">
             <span className="mb-2 block text-sm font-semibold text-slate-800">Kitten of interest</span>
-            {useKittenDropdown ? (
-              <select
-                name="kittenOfInterest"
-                value={selectedKittenId ? String(selectedKittenId) : ''}
-                onChange={handleKittenSelect}
-                className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm focus:border-brand focus:ring-brand"
-              >
-                <option value="">
-                  {availableKittens.length === 0 ? 'No kittens currently listed' : 'Select a kitten (optional)'}
-                </option>
-                {availableKittens.map((kitten) => (
-                  <option key={kitten.id} value={kitten.id}>
-                    {kitten.name}
-                    {kitten.status ? ` — ${kitten.status}` : ''}
-                  </option>
-                ))}
-              </select>
-            ) : (
-              <input
-                name="kittenOfInterest"
-                value={form.kittenOfInterest}
-                onChange={handleChange}
-                disabled={lockedKitten}
-                placeholder={applicationType === 'Foster' ? 'Specific kitten (optional)' : 'Which kitten?'}
-                className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm disabled:bg-slate-50 disabled:text-slate-500 focus:border-brand focus:ring-brand"
-              />
-            )}
+            <input
+              name="kittenOfInterest"
+              value={form.kittenOfInterest}
+              onChange={handleChange}
+              disabled={lockedKitten}
+              placeholder="Specific kitten (optional)"
+              className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm disabled:bg-slate-50 disabled:text-slate-500 focus:border-brand focus:ring-brand"
+            />
             {lockedKitten && (
               <p className="mt-2 text-xs font-medium text-brand">✓ Pre-filled from the kitten profile</p>
             )}
           </label>
-          
-          {applicationType === 'Adoption' ? (
-            <>
-              <label className="block sm:col-span-2">
-                <span className="mb-2 block text-sm font-semibold text-slate-800">Experience Level *</span>
-                <select
-                  name="experience"
-                  value={form.experience}
-                  onChange={handleChange}
-                  required
-                  className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm focus:border-brand focus:ring-brand"
-                >
-                  <option value="" disabled>Select your experience level</option>
-                  {ADOPTION_EXPERIENCE_OPTIONS.filter(Boolean).map((option) => (
-                    <option key={option} value={option}>{option}</option>
-                  ))}
-                </select>
-              </label>
-              {form.experience === 'Other' && (
-                <label className="block sm:col-span-2">
-                  <span className="mb-2 block text-sm font-semibold text-slate-800">Describe your experience *</span>
-                  <input
-                    name="experienceOther"
-                    value={form.experienceOther}
-                    onChange={handleChange}
-                    required
-                    placeholder="Tell us about your experience with cats"
-                    className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm focus:border-brand focus:ring-brand"
-                  />
-                </label>
-              )}
-            </>
-          ) : (
-            <>
+
               <label className="block">
                 <span className="mb-2 block text-sm font-semibold text-slate-800">Experience Level *</span>
                 <select
@@ -691,26 +860,18 @@ function ApplicationForm({
                   className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm focus:border-brand focus:ring-brand"
                 />
               </label>
-            </>
-          )}
         </div>
 
-        {/* Section: Current Pets - Foster applications always ask; Adoption
-            applications only ask when the org has enabled it in Settings. */}
-        {(applicationType === 'Foster' || showCurrentPetsOnAdoptionForm) && (
-          <>
-            <h3 className="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand/10 text-brand text-xs">3</span>
-              Current Pets
-            </h3>
-            <div className="mb-10 bg-slate-50 rounded-2xl p-6 border border-slate-100">
-               <HouseholdPetsSection
-                 pets={form.currentPets}
-                 onChange={(currentPets) => setForm((prev) => ({ ...prev, currentPets }))}
-               />
-            </div>
-          </>
-        )}
+        <h3 className="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
+          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand/10 text-brand text-xs">3</span>
+          Current Pets
+        </h3>
+        <div className="mb-10 bg-slate-50 rounded-2xl p-6 border border-slate-100">
+           <HouseholdPetsSection
+             pets={form.currentPets}
+             onChange={(currentPets) => setForm((prev) => ({ ...prev, currentPets }))}
+           />
+        </div>
         
         {/* Section: Additional Message */}
         <h3 className="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
@@ -723,6 +884,8 @@ function ApplicationForm({
             <textarea name="message" value={form.message} onChange={handleChange} rows={5} placeholder="Anything else we should know?" className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm focus:border-brand focus:ring-brand" />
           </label>
         </div>
+          </>
+        )}
 
         {allowPhotoUpload && (
           <>

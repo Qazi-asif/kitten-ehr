@@ -7,6 +7,7 @@ import {
   getApplicationDisplaySections,
   getApplicationSummary,
   getHouseholdPets,
+  isRevisedAdoptionApplication,
   parseApplicationFormData,
   resolveKittenOfInterest,
 } from '../../utils/applicationFormData';
@@ -65,6 +66,11 @@ function ApplicationDetailPanel({
   const householdPets = useMemo(
     () => getHouseholdPets(application?.formData),
     [application?.formData],
+  );
+
+  const revisedAdoption = useMemo(
+    () => application?.type === 'Adoption' && isRevisedAdoptionApplication(application?.formData),
+    [application?.type, application?.formData],
   );
 
   const applicantEmail = useMemo(() => {
@@ -220,28 +226,30 @@ function ApplicationDetailPanel({
           </div>
         </div>
 
-        <div>
-          <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500">Current Pets in Household</h3>
-          {householdPets.length === 0 ? (
-            <p className="mt-3 rounded-lg border border-gray-100 bg-gray-50 px-4 py-3 text-sm text-gray-500">
-              No household pets listed.
-            </p>
-          ) : (
-            <div className="mt-3 space-y-3">
-              {householdPets.map((pet, index) => (
-                <div key={index} className="rounded-lg border border-gray-100 bg-gray-50 p-4">
-                  <p className="text-sm font-semibold text-gray-900">Pet {index + 1}: {pet.name || 'Unnamed'}</p>
-                  <dl className="mt-3 grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
-                    <div><span className="text-gray-500">Species:</span> {pet.species || '—'}</div>
-                    <div><span className="text-gray-500">Age:</span> {pet.age || '—'}</div>
-                    <div><span className="text-gray-500">Fixed:</span> {pet.fixed || '—'}</div>
-                    <div><span className="text-gray-500">Good with Other Animals:</span> {pet.goodWithOtherAnimals || '—'}</div>
-                  </dl>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+        {!revisedAdoption && (
+          <div>
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500">Current Pets in Household</h3>
+            {householdPets.length === 0 ? (
+              <p className="mt-3 rounded-lg border border-gray-100 bg-gray-50 px-4 py-3 text-sm text-gray-500">
+                No household pets listed.
+              </p>
+            ) : (
+              <div className="mt-3 space-y-3">
+                {householdPets.map((pet, index) => (
+                  <div key={index} className="rounded-lg border border-gray-100 bg-gray-50 p-4">
+                    <p className="text-sm font-semibold text-gray-900">Pet {index + 1}: {pet.name || 'Unnamed'}</p>
+                    <dl className="mt-3 grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
+                      <div><span className="text-gray-500">Species:</span> {pet.species || '—'}</div>
+                      <div><span className="text-gray-500">Age:</span> {pet.age || '—'}</div>
+                      <div><span className="text-gray-500">Fixed:</span> {pet.fixed || '—'}</div>
+                      <div><span className="text-gray-500">Good with Other Animals:</span> {pet.goodWithOtherAnimals || '—'}</div>
+                    </dl>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         <ApplicationDocumentsSection
           applicationId={application.id}
